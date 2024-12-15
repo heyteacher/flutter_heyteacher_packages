@@ -65,10 +65,18 @@ Future<void> signOut() async {
   }
 }
 
+
 bool get userAutenticated {
   return FirebaseAuth.instance.currentUser != null;
 }
 
-String? get username {
+String? get authUserDisplayName {
   return FirebaseAuth.instance.currentUser?.displayName;
 }
+
+String? get authUserUid {
+  return FirebaseAuth.instance.currentUser?.uid;
+}
+
+Stream<User?> authStateChangesStream = FirebaseAuth.instance.authStateChanges();
+
