@@ -1,0 +1,54 @@
+import 'dart:async';
+import 'dart:ui';
+
+import '../../firebase/firestore/user_data.dart';
+import '../../firebase/firestore/user_store.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logging/logging.dart';
+
+class LocalizationModel {
+  final Logger _log = Logger("LocalizationModel");
+
+  final StreamController<Locale?> _localeStreamController =
+      StreamController<Locale?>.broadcast();
+  Stream<Locale?> get localeStream => _localeStreamController.stream;
+
+  static LocalizationModel? _instance;
+  static LocalizationModel get instance => _instance ??= LocalizationModel._();
+  LocalizationModel._();
+
+  void init(
+      List<Locale> supportedLocales) async {
+    // check if autenticated
+    if (FirebaseAuth.instance.currentUser == null) return;
+    // user language code found
+    UserData user = await UserStore.instance.get(FirebaseAuth.instance.currentUser!.uid);
+    if (user.localeLanguageCode != null) {
+      // firestore user locale is supported
+      if (supportedLocales
+          .where(
+              (Locale locale) => locale.languageCode == user.localeLanguageCode)
+          .isNotEmpty) {
+        //feed locale found
+        _localeStreamController.sink.add(Locale(user.localeLanguageCode!));
+        _log.fine(
+            "initLocale: load locale '${user.localeLanguageCode!}' store in user collection");
+      } else {
+        _log.warning(
+            "initLocale: locale '${user.localeLanguageCode!}' store in user not supported. Do nothing");
+      }
+    } else {
+      _log.fine("initLocale: no locale stored in user collection");
+    }
+  }
+
+  void onChangeLocale(Locale locale) {
+    _localeStreamController.sink.add(locale);
+    _log.fine("onChangeLocale: load locale '${locale.languageCode}'");
+    if (FirebaseAuth.instance.currentUser == null) return;
+    _log.fine(
+        "onChangeLocale: store locale '${locale.languageCode}' in user collection");
+    UserStore.instance.update(FirebaseAuth.instance.currentUser!.uid,
+        UserData.fromLocalization(locale: locale));
+  }
+}

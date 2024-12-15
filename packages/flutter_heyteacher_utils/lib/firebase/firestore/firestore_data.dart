@@ -1,0 +1,29 @@
+import 'firestore_type_unregistred_exception.dart';
+import 'invalid_firestore_data_type_exception.dart';
+
+abstract class FirestoreData<T> {
+
+  String get id;
+
+  static final Map<Type, Function> _registeredToFirestoreFn = {};
+
+  static registerFromFirestoreFactory<T>(Function toFirestoreFn) {
+    if (T == dynamic) {
+      throw InvalidFirestoreDataTypeException(
+          "please specify the correct type calling registerFromFirestoreFactory<T>");
+    }
+    _registeredToFirestoreFn[T] = toFirestoreFn;
+  }
+
+  static T fromFirestoreFactory<T extends FirestoreData>(Map<String, dynamic> map) {
+    T? object = _registeredToFirestoreFn[T]?.call(map);
+    if (object != null) {
+      return object;
+    } else {
+      throw FirestoreTypeUnregistredException(
+          "function toFirestore not registered for type ${T.runtimeType} ");
+    }
+  }
+
+  Map<String, dynamic> toFirestore();
+}
