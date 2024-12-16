@@ -8,9 +8,8 @@
             "name": "flutter_heyteacher_utils",
             "request": "launch",
             "type": "dart",
+            "program": "bin/version.dart",
             "args": [
-                "run",
-                "flutter_heyteacher_utils:version",
                 "--show"
             ],
             "preLaunchTask": "dart: run flutter_heyteacher_utils:version --build"
