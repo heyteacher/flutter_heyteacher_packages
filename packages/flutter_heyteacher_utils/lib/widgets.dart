@@ -2,6 +2,18 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
+void showSnackBarError({required BuildContext context, required String message}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+          duration: Duration(
+              seconds: FirebaseRemoteConfig.instance
+                  .getInt("snackBarDurationInSeconds")),
+          backgroundColor: Theme.of(context).colorScheme.onError,
+          content: Text(message)),
+    );
+}
+
+
 Future<void> dialogBuilder(
     BuildContext context, String title, String content, Function confirmFn,
     [dynamic confirmFnObj]) async {
@@ -43,14 +55,7 @@ Future<void> dialogBuilder(
       rethrow;
     } finally {
       if (context.mounted && error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              duration: Duration(
-                  seconds: FirebaseRemoteConfig.instance
-                      .getInt("snackBarDurationInSeconds")),
-              backgroundColor: Theme.of(context).colorScheme.onError,
-              content: Text(message)),
-        );
+        showSnackBarError(context: context, message: message);
       }
     }
   }

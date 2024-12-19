@@ -1,203 +1,252 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_heyteacher_utils/ble/data/enums.dart';
+import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
+import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
+import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
 import 'package:logging/logging.dart';
-import '../ble_device_helper.dart';
+import 'package:flutter_heyteacher_utils/ble/ble_device_helper.dart';
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 
 abstract class BleModel {
-  final Logger _log = Logger("BleModel");
+  static final Logger _log = Logger("BleModel");
 
-  List<ScanResult> scanResults = [];
+  BleType bleType;
+
+  BleUserData? _userData;
+
+  BluetoothDevice? _device;
+
+  StreamSubscription<bool>? _isDisconnectingStreamSubscription;
+
+  bool get deviceNotNull => _device != null;
+
+  String? get deviceName => _device?.platformName.trim() != ""
+      ? _device?.platformName
+      : _userData?.devices[bleType]?[BleField.name];
+
+  String? get deviceId =>
+      _device?.remoteId.str ?? _userData?.devices[bleType]?[BleField.id];
 
   @protected
-  bool inProgess = false;
+  final StreamController<Map<String, String>> streamController =
+      StreamController<Map<String, String>>.broadcast();
+
+  Stream<Map<String, String>> get deviceStream => streamController.stream;
+
+  final StreamController<Map<String, dynamic>>
+      _deviceConnectedStreamController =
+      StreamController<Map<String, dynamic>>.broadcast();
+
+  Stream<Map<String, dynamic>> get deviceConnectedStream =>
+      _deviceConnectedStreamController.stream;
 
   @protected
-  StreamSubscription<List<ScanResult>>? _scanResultsSubscription;
+  BleModel(this.bleType);
 
-  Stream<BluetoothAdapterState>? _adapterStateStream;
-
-  BluetoothAdapterState? bluetoothAdapterState;
-
+  // abstract
   @protected
-  Future<void> retrieveUserDevices([VoidCallback? callback]);
+  void onInit();
 
-  init([VoidCallback? callback]) async {
-    if (await FlutterBluePlus.isSupported == false) {
-      _log.fine("init: Bluetooth not supported by this device");
-      return;
-    }
-    // turn on bluetooth ourself if we can
-    // for iOS, the user controls bluetooth enable/disable
-    if (Platform.isAndroid) {
-      await FlutterBluePlus.turnOn();
-    }
-
-    if (_adapterStateStream == null) {
-      _log.fine("init: listen ble adapter state");
-      _adapterStateStream ??= FlutterBluePlus.adapterState;
-      _adapterStateStream!.listen(
-          (BluetoothAdapterState bluetoothAdapterState) =>
-              this.bluetoothAdapterState = bluetoothAdapterState);
-      callback?.call();
-    }
-
-    retrieveUserDevices(callback);
-    _log.fine("init: listen scan results");
-    _scanResultsSubscription ??= FlutterBluePlus.scanResults.listen((results) {
-      scanResults = results;
-      callback?.call();
-    });
-  }
+  // abstract
+  @protected
+  void onData(List<int> event);
 
   void dispose() {
-    _log.fine("dispose");
+    _log.fine("dispose: ${bleType.name}");
     close();
   }
 
-  void turnOn([VoidCallback? callback]) async {
-    try {
-      if (Platform.isAndroid) {
-        await FlutterBluePlus.turnOn();
-        callback?.call();
+  void close() {
+    _log.fine(
+        "close:  ${bleType.name} cancel subscriptions and close stream controllers");
+    disconnect(isToStore: false);
+    // _logStreamSubscription?.cancel();
+    // _logStreamSubscription = null;
+    // _isScanningSubscription?.cancel();
+    // _isScanningSubscription = null;
+    _isDisconnectingStreamSubscription?.cancel();
+    _isDisconnectingStreamSubscription = null;
+    // _bleAdaptreStreamSubscription?.cancel();
+    // _bleAdaptreStreamSubscription = null;
+    // _scanResultsSubscription?.cancel();
+    // _scanResultsSubscription = null;
+  }
+
+  Future<void> init([VoidCallback? callback]) async {
+    BleModelFactory.initBle(callback);
+    if (authUserUid != null &&
+        await BleUserStore.instance.exists(authUserUid!)) {
+      _userData = await BleUserStore.instance.get(authUserUid!);
+    }
+    _log.fine(
+        "init: ${bleType.name} remote user devices ${_userData?.devices[bleType]}");
+    if (_userData?.devices[bleType]?[BleField.id] != null &&
+        _userData?.devices[bleType]?[BleField.id]!.trim() != "") {
+      _deviceConnectedStreamController.sink.add({
+        "id": _userData!.devices[bleType]![BleField.id],
+        "name": _userData!.devices[bleType]![BleField.name],
+        "connected": _device?.isConnected ?? false
+      });
+      callback?.call();
+      _log.fine("init: ${bleType.name} try auto connection to device");
+      _device =
+          BluetoothDevice.fromId(_userData!.devices[bleType]![BleField.id]!);
+      if (_device!.isDisconnected) {
+        _log.fine("init:  ${bleType.name} connect(autoConnect: true)");
+        connect(device: _device!, autoConnect: true, callback: callback);
       }
+    }
+    callback?.call();
+  }
+
+  Future<void> connect(
+      {required BluetoothDevice device,
+      bool autoConnect = false,
+      VoidCallback? callback}) async {
+    try {
+      _log.fine(
+          "connect: ${bleType.name} ${device.remoteId.str} connecting...");
+      device.connectAndUpdateStream(autoConnect: autoConnect);
+      // autoconnect
+      if (autoConnect) {
+        _log.fine(
+            "connect: ${bleType.name} ${device.remoteId.str} autoConnect true, wait device...");
+        await device.connectionState
+            .where((bluetoothConnectionState) =>
+                bluetoothConnectionState == BluetoothConnectionState.connected)
+            .first;
+        // manual connecting, stop scan whe connecting and reset results
+      } else {
+        BleModelFactory.scanResults = [];
+        BleModelFactory.stopScan(callback);
+      }
+      StreamSubscription<bool> isConnectingStreamSubscription =
+          device.isConnecting.listen((connecting) async {
+        _log.fine(
+            "connect: ${bleType.name} ${device.remoteId.str} connecting $connecting");
+        if (!connecting) {
+          _log.fine(
+              "connect: ${bleType.name} ${device.remoteId.str} connected");
+          _connectDevice(device, callback: callback);
+        }
+      });
+      device.cancelWhenDisconnected(isConnectingStreamSubscription);
     } catch (e, s) {
-      _log.severe("turnOn: error", e, s);
+      _log.fine(
+          "connect: ${bleType.name} device not found ${_device?.remoteId.str}",
+          e,
+          s);
     }
   }
 
-  void close() {
-    _log.fine("close: cancel subscriptions and close stream controllers");
-    closeDevices();
-
-    _scanResultsSubscription?.cancel();
-    _scanResultsSubscription = null;
+  void reconnect({VoidCallback? callback}) {
+    if (_device == null) {
+      throw Exception("${bleType.name} try to connect to a null device");
+    }
+    _log.fine(
+        "reconnect:  ${bleType.name} ${_device!.remoteId.str} try to reconnect");
+    connect(device: _device!, autoConnect: true, callback: callback);
   }
 
-  @protected
-  void closeDevices();
-
-  Future startScan([VoidCallback? callback]) async {
-    _log.fine("startScan");
-    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
-    callback?.call();
-    // invoke callback when stop stanning
-    FlutterBluePlus.isScanning
-        .listen((bool isScanning) => !isScanning ? callback?.call() : null);
-  }
-
-  Future stopScan([VoidCallback? callback]) async {
-    _log.fine("stopScan");
-    await FlutterBluePlus.stopScan();
-    callback?.call();
-  }
-
-  void disconnect(BluetoothDevice? device,
-      {isToUpdateUserDevices = false, VoidCallback? callback}) async {
-    if (device == null || device.isDisconnected) {
-      _log.fine("disconnect: already disconnected ${device?.remoteId.str}");
+  void disconnect({isToStore = false, VoidCallback? callback}) async {
+    if (_device == null || _device!.isDisconnected) {
+      _log.fine(
+          "disconnect: ${bleType.name} ${_device?.remoteId.str} already disconnected ");
       return;
     }
-    // stop listening an update user store
-    disconnectDevice(device, isToUpdateUserDevices);
-    _log.fine("disconnect: ${device.remoteId.str}");
-    device.disconnectAndUpdateStream();
-    device.isDisconnecting.listen(
-      (isDisconnecting) {
-        inProgess = isDisconnecting;
-        callback?.call();
+    _log.fine("disconnect: $deviceId disconnecting...");
+    _device?.disconnectAndUpdateStream();
+    _isDisconnectingStreamSubscription ??= _device!.isDisconnecting.listen(
+      (disconnecting) {
+        _log.fine(
+            "connect: ${bleType.name} $deviceId connecting $disconnecting");
+        if (!disconnecting) {
+          _log.fine("disconnect: ${bleType.name} $deviceId disconnected");
+          // stop listening an update user store
+          //_characteristic.setNotifyValue(false);
+          // notify disconnection
+          _deviceConnectedStreamController.sink
+              .add({"name": "", "id": null, "connected": false});
+          // reset last stream value
+          streamController.sink.add({BleModelFactory.streamKey: ""});
+
+          // persist disconnection
+          _device = null;
+          if (isToStore) _store();
+          callback?.call();
+        }
       },
     );
   }
 
-  @protected
-  void disconnectDevice(BluetoothDevice device, bool isToUpdateUserDevices);
+  bool _serviceAllowed(BluetoothService service) =>
+      BleModelFactory.serviceAllowedByType(bleType, service);
 
-  Future<void> connect(BluetoothDevice device, {bool autoConnect =false, VoidCallback? callback}) async {
-    try {
-      _log.fine("connect: ${device.remoteId.str} connecting...");
-      await device.connectAndUpdateStream();
+  bool _characteristicAllowed(BluetoothCharacteristic characteristic) =>
+      BleModelFactory.characteristicAllowedByType(bleType, characteristic);
 
-      device.isConnecting.listen((connecting) {
-        inProgess = connecting;
-        if (!connecting) {
-         _log.fine("connect: ${device.remoteId.str} connected!");
-          connectDevice(device, callback);
-        }
-      });
-    } catch (e, s) {
-      _log.fine("connect: device not found ${device.remoteId.str}", e, s);
+  void _store() {
+    if (userAutenticated) {
+      BleUserData userData = BleUserData.fromBle({bleType: _device});
+      _log.fine(
+          "_store:  ${bleType.name} persist device ${userData.devices[bleType]}");
+      BleUserStore.instance.update(authUserUid!, userData);
     }
   }
 
-  @protected
-  stopListening(BluetoothCharacteristic? characteristic,
-      StreamController<Map<String, dynamic>> streamController,
-      {isToUpdateUserDevices = false}) {
-    characteristic?.setNotifyValue(false);
-    streamController.sink.add({"name": "", "id": null, "connected": false});
-    if (isToUpdateUserDevices) updateUserDevices();
-  }
-
-  void connectDevice(BluetoothDevice device, [VoidCallback? callback]) async {
-    _log.fine("connectDevice: connecting ${device.remoteId.str}");
-    Iterable<BluetoothService> services = await device.discoverServices();
-    _log.fine("services discovered ${services.map((e) => e.uuid.str)}");
+  Future<void> _connectDevice(BluetoothDevice device,
+      {VoidCallback? callback}) async {
+    _log.fine(
+        "_connectDevice: ${bleType.name} connecting ${device.remoteId.str}");
+    Iterable<BluetoothService>? services = await device.discoverServices();
     services =
-        services.where((BluetoothService service) => serviceAllowed(service));
+        services.where((BluetoothService service) => _serviceAllowed(service));
     // no allowed service, disconnect device
     if (services.isEmpty) {
       _log.fine(
-          "connectDevice: no service allowed, disconnect ${device.remoteId.str}");
+          "_connectDevice: ${bleType.name} no service allowed, disconnect ${device.remoteId.str}");
       device.disconnect();
     } else {
       // allowed services found, check caratteristics
       for (BluetoothService service in services) {
         BluetoothCharacteristic? characteristic = service.characteristics
-            .where((characteristic) => characteristicAllowed(characteristic))
+            .where((characteristic) => _characteristicAllowed(characteristic))
             .firstOrNull;
         // no allowed characteristic, disconnect device
         if (characteristic == null) {
           _log.fine(
-              "connectDevice: no characteristic allowed, disconnect ${device.remoteId.str}");
+              "_connectDevice: ${bleType.name} no characteristic allowed, disconnect ${device.remoteId.str}");
           device.disconnect();
           // heart rate caratteristic found, listen it
         } else {
-          startListeningDevices(characteristic, device);
+          // notify listener device connection
+          _deviceConnectedStreamController.sink.add({
+            "id": _userData?.devices[bleType]?[BleField.id] ??
+                device.remoteId.str,
+            "name": _userData?.devices[bleType]?[BleField.name] ??
+                device.platformName,
+            "connected": true
+          });
+          _device = device;
+          BleModelFactory.stopScan();
+          BleModelFactory.scanResults = [];
+          _store();
+          _log.fine(
+              "_connectDevice: ${bleType.name} start stream device ${device.remoteId.str} service ${service.uuid} characteristic ${characteristic.uuid}");
+          StreamSubscription<List<int>> characteristicStreanSubscription =
+              characteristic.lastValueStream.listen((List<int> event) {
+            onData(event);
+          });
+          device.cancelWhenDisconnected(characteristicStreanSubscription);
+          characteristic.setNotifyValue(true);
+          // invoke callbask
+          onInit();
         }
       }
     }
-    updateUserDevices();
-    inProgess = false;
     callback?.call();
   }
-
-  @protected
-  startListening(BluetoothCharacteristic characteristic,
-      StreamController<Map<String, dynamic>> streamController,
-      {required String? userDeviceName,
-      required String? userDeviceId,
-      required BluetoothDevice device,
-      required void Function(dynamic event) onData}) {
-    _log.fine(
-        "startListening: start stream device ${device.remoteId.str} characteristic ${characteristic.uuid}");
-    characteristic.setNotifyValue(true);
-    characteristic.lastValueStream.listen(onData);
-    streamController.sink.add({
-      "name": userDeviceName ?? device.platformName,
-      "id": userDeviceId ?? device.remoteId.str,
-      "connected": true
-    });
-  }
-
-  void startListeningDevices(
-      BluetoothCharacteristic characteristic, BluetoothDevice device);
-
-  void updateUserDevices();
-
-  bool serviceAllowed(BluetoothService service);
-
-  bool characteristicAllowed(BluetoothCharacteristic characteristic);
 }
