@@ -64,8 +64,8 @@ abstract class Store<ListType extends FirestoreData,
     return retQuery;
   }
 
-  Query<Map<String,dynamic>> queryCollection(String collection) {
-    Query<Map<String,dynamic>>? retQuery;
+  Query<Map<String, dynamic>> queryCollection(String collection) {
+    Query<Map<String, dynamic>>? retQuery;
     // apply order by
     for (MapEntry<String, bool> orderbyField in orderByFields?.entries ?? {}) {
       retQuery = (retQuery ??
@@ -76,7 +76,7 @@ abstract class Store<ListType extends FirestoreData,
     return retQuery;
   }
 
-  Future<Iterable<Map<String,dynamic>>> listCollection(
+  Future<Iterable<Map<String, dynamic>>> listCollection(
       {required String collection}) async {
     _log.fine(
         "listCollection(${_collectionPathLogDynamic(collection)},orderByFields: $orderByFields)");
@@ -87,32 +87,6 @@ abstract class Store<ListType extends FirestoreData,
     _log.fine("list($_collectionPathLog,orderByFields: $orderByFields)");
     return (await query.get()).docs.map((e) => e.data());
   }
-
-  void listenQueryList(
-      {required StreamController<Iterable<ListType>> streamController}) async {
-    _log.fine(
-        "listenQueryList($_collectionPathLog, orderByFields: $orderByFields)");
-    query.snapshots().listen(
-          _onData(streamController.sink),
-          onError: _onError(streamController.sink, orderByFields),
-        );
-  }
-
-  Function(QuerySnapshot<ListType>) _onData(
-          StreamSink<Iterable<ListType>> sink) =>
-      (QuerySnapshot<ListType> snapShot) => sink.add(snapShot.docs.map(
-          (QueryDocumentSnapshot<ListType> documentSnapshot) =>
-              documentSnapshot.data()));
-
-  Function(dynamic, dynamic) _onError(StreamSink<Iterable<ListType>> sink,
-          Map<String, bool>? orderByFields) =>
-      (error, stacktrace) {
-        _log.severe(
-            "error on listenQueryList($_collectionPathLog, orderByFields: $orderByFields))",
-            error,
-            stacktrace);
-        sink.addError(error, stacktrace);
-      };
 
   Future<bool> exists(String id) async {
     _log.fine("exists($_objectCollectionPathLog/$id)");
