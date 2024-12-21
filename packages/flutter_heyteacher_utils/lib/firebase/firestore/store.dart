@@ -22,14 +22,14 @@ abstract class Store<ListType extends FirestoreData,
   late String objectCollection;
 
   @protected
-  Store(
-      {required this.collection,
-      this.userProfile = true,
-      this.separatedDetailCollection = false,
-      this.orderByFields,
-      required Function fromFirestoreFactory,
-      Function? objectFromFirestoreFactory,
-      }) {
+  Store({
+    required this.collection,
+    this.userProfile = true,
+    this.separatedDetailCollection = false,
+    this.orderByFields,
+    required Function fromFirestoreFactory,
+    Function? objectFromFirestoreFactory,
+  }) {
     _log.fine(
         "costructor: $_collectionPathLog userProfile $userProfile  separatedDetailCollection $separatedDetailCollection orderByFields $orderByFields");
 
@@ -39,7 +39,7 @@ abstract class Store<ListType extends FirestoreData,
     if (separatedDetailCollection) {
       this.objectCollection = "${collection}_details";
       _log.fine("costructor: objectCollection $_objectCollectionPathLog ");
- 
+
       if (objectFromFirestoreFactory != null) {
         _log.fine("costructor: register objectFromFirestoreFactory");
         FirestoreData.registerFromFirestoreFactory<ObjectType>(
@@ -62,6 +62,25 @@ abstract class Store<ListType extends FirestoreData,
     }
     retQuery ??= _collectionReference;
     return retQuery;
+  }
+
+  Query<Map<String,dynamic>> queryCollection(String collection) {
+    Query<Map<String,dynamic>>? retQuery;
+    // apply order by
+    for (MapEntry<String, bool> orderbyField in orderByFields?.entries ?? {}) {
+      retQuery = (retQuery ??
+              _firestore.collection(_collectionPathDynamic(collection)))
+          .orderBy(orderbyField.key, descending: orderbyField.value);
+    }
+    retQuery ??= _firestore.collection(_collectionPathDynamic(collection));
+    return retQuery;
+  }
+
+  Future<Iterable<Map<String,dynamic>>> listCollection(
+      {required String collection}) async {
+    _log.fine(
+        "listCollection(${_collectionPathLogDynamic(collection)},orderByFields: $orderByFields)");
+    return (await queryCollection(collection).get()).docs.map((e) => e.data());
   }
 
   Future<Iterable<ListType>> list() async {
@@ -167,7 +186,7 @@ abstract class Store<ListType extends FirestoreData,
               "${ObjectType.runtimeType}.getParentData() returns null");
         }
       }
-    // document not found, create it
+      // document not found, create it
     } else {
       set(id, document);
     }
@@ -191,7 +210,6 @@ abstract class Store<ListType extends FirestoreData,
       ? "users"
           "${collection == "" ? "" : "/$_uid/$collection"}"
       : collection;
-
   String get _collectionPathLog => userProfile
       ? "users"
           "${collection == "" ? "" : "/<uid>/$collection"}"
@@ -201,11 +219,19 @@ abstract class Store<ListType extends FirestoreData,
       ? "users"
           "${objectCollection == "" ? "" : "/$_uid/$objectCollection"}"
       : objectCollection;
-
   String? get _objectCollectionPathLog => userProfile
       ? "users"
           "${objectCollection == "" ? "" : "/<uid>/$objectCollection"}"
       : objectCollection;
+
+  String _collectionPathDynamic(String collection) => userProfile
+      ? "users"
+          "${collection == "" ? "" : "/$_uid/$collection"}"
+      : collection;
+  String _collectionPathLogDynamic(String collection) => userProfile
+      ? "users"
+          "${collection == "" ? "" : "/<uid>/$collection"}"
+      : collection;
 
   String get _uid {
     if (userNotAutenticated) {

@@ -2,28 +2,32 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
-void showSnackBarError({required BuildContext context, required String message}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-          duration: Duration(
-              seconds: FirebaseRemoteConfig.instance
-                  .getInt("snackBarDurationInSeconds")),
-          backgroundColor: Theme.of(context).colorScheme.onError,
-          content: Text(message)),
-    );
+void showSnackBar(
+    {required BuildContext context, required String message, bool error = false}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+        duration: Duration(
+            seconds: FirebaseRemoteConfig.instance
+                .getInt("snackBarDurationInSeconds")),
+        backgroundColor: error? Theme.of(context).colorScheme.onError: Theme.of(context).colorScheme.onPrimary,
+        content: Text(message)),
+  );
 }
 
-
-Future<void> dialogBuilder(
-    BuildContext context, String title, String content, Function confirmFn,
-    [dynamic confirmFnObj]) async {
+Future<void> dialogBuilder<T>(
+    {required BuildContext context,
+    required Future<String> Function(T?) confirmFn,
+    T? confirmFnObj,
+    String title = "Attention",
+    String confirmQuestion = "Confirm action?"}) async {
   final log = Logger("dialogBuilder");
+
   final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title),
-          content: Text(content),
+          content: Text(confirmQuestion),
           actions: <Widget>[
             IconButton(
               key: ValueKey("ib_dialog_no"),
@@ -45,7 +49,7 @@ Future<void> dialogBuilder(
       });
   if (confirm != null && confirm) {
     String message = "";
-    bool error = false;
+    bool error = false;  
     try {
       message = await confirmFn(confirmFnObj);
     } catch (e, s) {
@@ -54,8 +58,8 @@ Future<void> dialogBuilder(
       log.severe("${confirmFn.toString()}: error", e, s);
       rethrow;
     } finally {
-      if (context.mounted && error) {
-        showSnackBarError(context: context, message: message);
+      if (context.mounted) {
+        showSnackBar(context: context, message: message, error: error);
       }
     }
   }
