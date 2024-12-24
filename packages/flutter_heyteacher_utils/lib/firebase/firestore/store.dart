@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/exceptions/object_from_firestore_factory_null_exception.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/exceptions/parent_data_null_exception.dart';
@@ -8,6 +9,8 @@ import '../auth.dart';
 import 'firestore_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logging/logging.dart';
+
+enum AggregationQuery { sum, average }
 
 abstract class Store<ListType extends FirestoreData,
     ObjectType extends FirestoreData> {
@@ -18,18 +21,25 @@ abstract class Store<ListType extends FirestoreData,
   bool userProfile;
   bool separatedDetailCollection;
   Map<String, bool>? orderByFields;
+  Map<String, AggregationQuery>? aggregationQueries;
 
   late String objectCollection;
 
+  final StreamController<Map<String, num?>> _aggregateStreamController =
+      StreamController<Map<String, num?>>.broadcast();
+
+  Stream<Map<String, num?>> get aggregateStream =>
+      _aggregateStreamController.stream;
+
   @protected
-  Store({
-    required this.collection,
-    this.userProfile = true,
-    this.separatedDetailCollection = false,
-    this.orderByFields,
-    required Function fromFirestoreFactory,
-    Function? objectFromFirestoreFactory,
-  }) {
+  Store(
+      {required this.collection,
+      this.userProfile = true,
+      this.separatedDetailCollection = false,
+      this.orderByFields,
+      required Function fromFirestoreFactory,
+      Function? objectFromFirestoreFactory,
+      this.aggregationQueries}) {
     _log.fine(
         "costructor: $_collectionPathLog userProfile $userProfile  separatedDetailCollection $separatedDetailCollection orderByFields $orderByFields");
 
@@ -53,35 +63,29 @@ abstract class Store<ListType extends FirestoreData,
     }
   }
 
+  void initAggregatesStream() {
+    authStateChangesStream.listen(_listenAggregates);
+  }
+
   Query<ListType> get query {
-    Query<ListType>? retQuery;
+    Query<ListType> retQuery = _collectionReference;
     // apply order by
     for (MapEntry<String, bool> orderbyField in orderByFields?.entries ?? {}) {
-      retQuery = (retQuery ?? _collectionReference)
-          .orderBy(orderbyField.key, descending: orderbyField.value);
+      retQuery =
+          retQuery.orderBy(orderbyField.key, descending: orderbyField.value);
     }
-    retQuery ??= _collectionReference;
     return retQuery;
   }
 
-  Query<Map<String, dynamic>> queryCollection(String collection) {
-    Query<Map<String, dynamic>>? retQuery;
-    // apply order by
-    for (MapEntry<String, bool> orderbyField in orderByFields?.entries ?? {}) {
-      retQuery = (retQuery ??
-              _firestore.collection(_collectionPathDynamic(collection)))
-          .orderBy(orderbyField.key, descending: orderbyField.value);
-    }
-    retQuery ??= _firestore.collection(_collectionPathDynamic(collection));
-    return retQuery;
-  }
+  Stream<QuerySnapshot<ListType>> get stream => query.snapshots();
 
-  Future<Iterable<Map<String, dynamic>>> listCollection(
-      {required String collection}) async {
-    _log.fine(
-        "listCollection(${_collectionPathLogDynamic(collection)},orderByFields: $orderByFields)");
-    return (await queryCollection(collection).get()).docs.map((e) => e.data());
-  }
+  Future<int> get count async => (await query.count().get()).count ?? 0;
+
+  Future<num?> sumByField(String field) async =>
+      (await _collectionReference.aggregate(sum(field)).get()).getSum(field);
+
+  Future<num?> averageByField(String field) async =>
+      (await _collectionReference.aggregate(sum(field)).get()).getAverage(field);
 
   Future<Iterable<ListType>> list() async {
     _log.fine("list($_collectionPathLog,orderByFields: $orderByFields)");
@@ -198,19 +202,23 @@ abstract class Store<ListType extends FirestoreData,
           "${objectCollection == "" ? "" : "/<uid>/$objectCollection"}"
       : objectCollection;
 
-  String _collectionPathDynamic(String collection) => userProfile
-      ? "users"
-          "${collection == "" ? "" : "/$_uid/$collection"}"
-      : collection;
-  String _collectionPathLogDynamic(String collection) => userProfile
-      ? "users"
-          "${collection == "" ? "" : "/<uid>/$collection"}"
-      : collection;
-
-  String get _uid {
+  static String get _uid {
     if (userNotAutenticated) {
       throw UserNotAuthenticatedException("not autenticated");
     }
     return authUserUid!;
   }
+
+  void _listenAggregates(User? user) => user != null
+      ? stream.listen((_) async => _aggregateStreamController.sink.add({
+            "count": await count,
+            for (MapEntry<String, AggregationQuery> aggregate
+                in (aggregationQueries ?? {}).entries)
+              "${aggregate.value.name}_${aggregate.key}": switch (
+                  aggregate.value) {
+                AggregationQuery.sum => await sumByField(aggregate.key),
+                AggregationQuery.average => await averageByField(aggregate.key)
+              }
+          }))
+      : null;
 }
