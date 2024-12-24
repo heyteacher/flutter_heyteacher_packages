@@ -67,29 +67,33 @@ abstract class Store<ListType extends FirestoreData,
     authStateChangesStream.listen(_listenAggregates);
   }
 
-  Query<ListType> get query {
+  Query<ListType> query({bool applyOrderBy = false}) {
     Query<ListType> retQuery = _collectionReference;
     // apply order by
-    for (MapEntry<String, bool> orderbyField in orderByFields?.entries ?? {}) {
-      retQuery =
-          retQuery.orderBy(orderbyField.key, descending: orderbyField.value);
+    if (applyOrderBy) {
+      for (MapEntry<String, bool> orderbyField
+          in orderByFields?.entries ?? {}) {
+        retQuery =
+            retQuery.orderBy(orderbyField.key, descending: orderbyField.value);
+      }
     }
     return retQuery;
   }
 
-  Stream<QuerySnapshot<ListType>> get stream => query.snapshots();
+  Stream<QuerySnapshot<ListType>> get stream => query(applyOrderBy: true).snapshots();
 
-  Future<int> get count async => (await query.count().get()).count ?? 0;
+  Future<int> get count async => (await query().count().get()).count ?? 0;
 
   Future<num?> sumByField(String field) async =>
-      (await _collectionReference.aggregate(sum(field)).get()).getSum(field);
+      (await query().aggregate(sum(field)).get()).getSum(field);
 
   Future<num?> averageByField(String field) async =>
-      (await _collectionReference.aggregate(sum(field)).get()).getAverage(field);
+      (await query().aggregate(sum(field)).get())
+          .getAverage(field);
 
   Future<Iterable<ListType>> list() async {
     _log.fine("list($_collectionPathLog,orderByFields: $orderByFields)");
-    return (await query.get()).docs.map((e) => e.data());
+    return (await query(applyOrderBy: true).get()).docs.map((e) => e.data());
   }
 
   Future<bool> exists(String id) async {
