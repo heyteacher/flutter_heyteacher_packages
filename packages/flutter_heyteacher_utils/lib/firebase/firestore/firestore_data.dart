@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'exceptions/firestore_type_unregistred_exception.dart';
 import 'exceptions/invalid_firestore_data_type_exception.dart';
 
@@ -32,4 +34,12 @@ abstract class FirestoreData<T> {
   void setParentData(FirestoreData parentData) {}
 
   Map<String, dynamic> toFirestore();
+
+  static Timestamp? toFirestoreTimestamp(DateTime? dateTime) {
+    return dateTime == null? null: Timestamp.fromDate(dateTime);
+  }
+
+  static DateTime? fromFirestoreTimestamp(Timestamp? timestamp) {
+    return timestamp?.toDate();
+  }
 }
