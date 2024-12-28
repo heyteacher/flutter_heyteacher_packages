@@ -32,11 +32,10 @@ abstract class Store<ListType extends FirestoreData,
   @protected
   late String objectCollection;
 
-  final StreamController<Map<String, AggregateQuerySnapshot>>
-      _aggregateStreamController =
-      StreamController<Map<String, AggregateQuerySnapshot>>.broadcast();
+  final StreamController<AggregateQuerySnapshot> _aggregateStreamController =
+      StreamController<AggregateQuerySnapshot>.broadcast();
 
-  Stream<Map<String, AggregateQuerySnapshot>> get aggregateStream =>
+  Stream<AggregateQuerySnapshot> get aggregateStream =>
       _aggregateStreamController.stream;
 
   StreamSubscription<User?>? _aggregatesSubscription;
@@ -73,13 +72,19 @@ abstract class Store<ListType extends FirestoreData,
     } else {
       this.objectCollection = collection;
     }
-    // manage the group by counter
+    // check and initializa group by counter
     if (groupByCounterFields != null) {
       if (!userProfile) {
         throw InvalidGroupByCounterConfigurationException(
             collection: collection);
       }
       _initGroupByCounter();
+    }
+    // check aggregate fields
+    if (aggregateFields != null) {
+      if (aggregateFields!.length > 29) {
+        throw TooManyAggregateFieldsException(collection: collection, count: aggregateFields!.length);
+      }
     }
   }
 
@@ -210,47 +215,43 @@ abstract class Store<ListType extends FirestoreData,
     if (aggregateFields == null) return;
 
     List<AggregateField?> aggregateParams = [
-      for (var i = 0; i < 30; i++)
+      for (var i = 0; i < 29; i++)
         aggregateFields!.length > i ? sum(aggregateFields![i]) : null
     ];
-    Query<ListType> queryList = query();
-    _aggregateStreamController.sink.add({
-      "count": await queryList.count().get(),
-      "aggregate": await query()
-          .aggregate(
-              aggregateParams[0]!,
-              aggregateParams[1],
-              aggregateParams[2],
-              aggregateParams[3],
-              aggregateParams[4],
-              aggregateParams[5],
-              aggregateParams[6],
-              aggregateParams[7],
-              aggregateParams[8],
-              aggregateParams[9],
-              aggregateParams[10],
-              aggregateParams[11],
-              aggregateParams[12],
-              aggregateParams[13],
-              aggregateParams[14],
-              aggregateParams[15],
-              aggregateParams[16],
-              aggregateParams[17],
-              aggregateParams[18],
-              aggregateParams[19],
-              aggregateParams[20],
-              aggregateParams[21],
-              aggregateParams[22],
-              aggregateParams[23],
-              aggregateParams[24],
-              aggregateParams[25],
-              aggregateParams[26],
-              aggregateParams[27],
-              aggregateParams[28],
-              aggregateParams[29]
-              )
-          .get()
-    });
+    _aggregateStreamController.sink.add(await query()
+        .aggregate(
+          count(),
+          aggregateParams[0],
+          aggregateParams[1],
+          aggregateParams[2],
+          aggregateParams[3],
+          aggregateParams[4],
+          aggregateParams[5],
+          aggregateParams[6],
+          aggregateParams[7],
+          aggregateParams[8],
+          aggregateParams[9],
+          aggregateParams[10],
+          aggregateParams[11],
+          aggregateParams[12],
+          aggregateParams[13],
+          aggregateParams[14],
+          aggregateParams[15],
+          aggregateParams[16],
+          aggregateParams[17],
+          aggregateParams[18],
+          aggregateParams[19],
+          aggregateParams[20],
+          aggregateParams[21],
+          aggregateParams[22],
+          aggregateParams[23],
+          aggregateParams[24],
+          aggregateParams[25],
+          aggregateParams[26],
+          aggregateParams[27],
+          aggregateParams[28],
+        )
+        .get());
   }
 
   CollectionReference<ListType> get _collectionReference =>
@@ -358,6 +359,18 @@ abstract class Store<ListType extends FirestoreData,
     }
     _log.fine("_initGroupByCounter: stop scan");
   }
+}
+
+class TooManyAggregateFieldsException {
+  String collection;
+  
+  int count;
+
+  TooManyAggregateFieldsException({required this.collection, required this.count});
+  @override
+  String toString() =>
+      "too many aggregateFields for collection $collection. Expected <= 29 found "
+      " groupByCounterFields works only in user profile collections";
 }
 
 class InvalidGroupByCounterConfigurationException implements Exception {
