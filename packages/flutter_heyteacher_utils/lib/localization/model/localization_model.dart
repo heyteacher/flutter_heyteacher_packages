@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
-
-import '../../firebase/firestore/user_data.dart';
-import '../../firebase/firestore/user_store.dart';
+import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logging/logging.dart';
 
@@ -17,12 +15,12 @@ class LocalizationModel {
   static LocalizationModel get instance => _instance ??= LocalizationModel._();
   LocalizationModel._();
 
-  void init(
-      List<Locale> supportedLocales) async {
+  void init(List<Locale> supportedLocales) async {
     // check if autenticated
     if (FirebaseAuth.instance.currentUser == null) return;
     // user language code found
-    UserData user = await UserStore.instance.get(FirebaseAuth.instance.currentUser!.uid);
+    UserData user =
+        await UserStore.instance.get(FirebaseAuth.instance.currentUser!.uid);
     if (user.localeLanguageCode != null) {
       // firestore user locale is supported
       if (supportedLocales

@@ -1,35 +1,92 @@
+/// Store filters define how to filter data provided by [Store] and i they match the structure of Firestore Filter.
+/// Store filter are passed as paramenter [Store.storeFilter].
+///
+/// There are three type of filter which implement [StoreFilter] interface:
+///
+/// * [ValueStoreFilter]  where [ValueStoreFilter.field] is compared to 
+///   [ValueStoreFilter.value] according [Operator]
+///
+/// * [IterableValueStoreFilter] where [IterableValueStoreFilter.field] is compare to 
+///   iterable [IterableValueStoreFilter.values] according [IterableOperator]
+///
+/// * [IsNullStoreFilter] check if [IsNullStoreFilter.field] is null 
+///   in the case [IsNullStoreFilter.value] is true, or is not null if [IsNullStoreFilter.value] is false
+///
+/// * [LogicalStoreFilter] coumpound [StoreFilter] according [LogicalOperator]
+///
+/// For example, to filter data in an interval:
+/// ```dart
+/// LogicalStoreFilter(
+///  logicalOperator: LogicalOperator.and,
+///   filter1: ValueStoreFilter(
+///    field: "startTime",
+///    operator: Operator.isGreaterThanOrEqualTo,
+///    value: DateTime(intFormatter.parse(value).toInt())),
+///   filter2: ValueStoreFilter(
+///    field: "startTime",
+///    operator: Operator.isLessThan,
+///    value: DateTime(intFormatter.parse(value).toInt() + 1)));
+/// ```
+library;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Operators used in [ValueStoreFilter]
 enum Operator {
+  /// If field value is equal to value
   isEqualTo,
+  /// If field value isn't equal to value
   isNotEqualTo,
+  /// If field value is less than field
   isLessThan,
+  /// If field value is less then or equal to value
   isLessThanOrEqualTo,
+  /// If field value is greater than field
   isGreaterThan,
+  /// If field value is greater then or equal to value
   isGreaterThanOrEqualTo,
+  /// If field array value contains the value
   arrayContains,
 }
 
+/// Operators used in [IterableValueStoreFilter]
 enum IterableOperator {
+  /// If field value is contained into the iterable values
   arrayContainsAny,
+  /// If field value is is into iterable values
   whereIn,
+  /// If field value isn't into the iterable values
   whereNotIn,
 }
 
-enum LogicalOperator { and, or }
+/// Operators used in [LogicalStoreFilter]
+enum LogicalOperator { 
+  /// All [StoreFilter] children must be satisfied
+  and,
+  /// At least one [StoreFilter] children is satisfied
+  or 
+}
 
+/// The interface implemented by all store filters
 abstract class StoreFilter {
+  /// Converts the filter into Firestore [Filter]
   Filter toFirestore();
 }
 
+/// Compares [field] value to [value] according [Operator]
 class ValueStoreFilter implements StoreFilter {
+  /// The field in document 
   String field;
+  /// The operator used in comparition
   Operator operator;
+  /// The value to check
   Object value;
 
+  /// Creates a  value store filter 
   ValueStoreFilter(
       {required this.field, required this.operator, required this.value});
 
+  /// Converts the value store filter into a Firestore filter
   @override
   Filter toFirestore() {
     return switch (operator) {
@@ -44,22 +101,29 @@ class ValueStoreFilter implements StoreFilter {
     };
   }
 
+  /// Prints the filter in polish notation
   @override
   String toString() {
     return "${operator.name}($field:$value)";
   }
 }
 
+/// Compares [field] value to iterable [values] according the [IterableOperator]
 class IterableValueStoreFilter implements StoreFilter {
+  /// The field in document 
   String field;
+  /// The operator used in comparison
   IterableOperator iterableOperator;
+  /// The iterable values to check
   Iterable<Object?> values;
 
+  /// Creates a iterable store filter 
   IterableValueStoreFilter(
       {required this.field,
       required this.iterableOperator,
       required this.values});
 
+  /// Converts the Iterable value store filter into a Firestore filter
   @override
   Filter toFirestore() {
     return switch (iterableOperator) {
@@ -70,61 +134,103 @@ class IterableValueStoreFilter implements StoreFilter {
     };
   }
 
+  /// Prints the filter in polish notation
   @override
   String toString() {
     return "${iterableOperator.name}($field:$values)";
   }
 }
 
+/// If [value] is `true`, checks if [field] is null. Otherwise checks [field] is not null.  
 class IsNullStoreFilter implements StoreFilter {
+  /// The field to check nullability
   String field;
+  /// if `true`, check nullability. If `false` checks non-nullability
   bool value;
 
+  /// creates a is null store filter
   IsNullStoreFilter({required this.field, required this.value});
 
+  /// Converts the is null store filter into a Firestore filter
   @override
   Filter toFirestore() {
     return Filter(field, isNull: value);
   }
 
+  /// Prints the filter in polish notation
   @override
   String toString() {
     return "isNull($field:$value)";
   }
 }
 
+/// Applies [LogicalOperator] to [StoreFilter]. If [LogicalOperator.and] all [StoreFilter] must be satisfied.
+/// If [LogicalOperator.or] at least one [StoreFilter] must be satisfied. 
 class LogicalStoreFilter implements StoreFilter {
+  /// The logical operator applied to filters
   LogicalOperator logicalOperator;
+  /// The filter to evaluate 
   StoreFilter filter1;
+  /// The filter to evaluate 
   StoreFilter filter2;
+  /// The filter to evaluate 
   StoreFilter? filter3;
+  /// The filter to evaluate 
   StoreFilter? filter4;
+  /// The filter to evaluate 
   StoreFilter? filter5;
+  /// The filter to evaluate 
   StoreFilter? filter6;
+  /// The filter to evaluate 
   StoreFilter? filter7;
+  /// The filter to evaluate 
   StoreFilter? filter8;
+  /// The filter to evaluate 
   StoreFilter? filter9;
+  /// The filter to evaluate 
   StoreFilter? filter10;
+  /// The filter to evaluate 
   StoreFilter? filter11;
+  /// The filter to evaluate 
   StoreFilter? filter12;
+  /// The filter to evaluate 
   StoreFilter? filter13;
+  /// The filter to evaluate 
   StoreFilter? filter14;
+  /// The filter to evaluate 
   StoreFilter? filter15;
+  /// The filter to evaluate 
   StoreFilter? filter16;
+  /// The filter to evaluate 
   StoreFilter? filter17;
+  /// The filter to evaluate 
   StoreFilter? filter18;
+  /// The filter to evaluate 
   StoreFilter? filter19;
+  /// The filter to evaluate 
   StoreFilter? filter20;
+  /// The filter to evaluate 
   StoreFilter? filter21;
+  /// The filter to evaluate 
   StoreFilter? filter22;
+  /// The filter to evaluate 
   StoreFilter? filter23;
+  /// The filter to evaluate 
   StoreFilter? filter24;
+  /// The filter to evaluate 
   StoreFilter? filter25;
+  /// The filter to evaluate 
   StoreFilter? filter26;
+  /// The filter to evaluate 
   StoreFilter? filter27;
+  /// The filter to evaluate 
   StoreFilter? filter28;
+  /// The filter to evaluate 
   StoreFilter? filter29;
+  /// The filter to evaluate 
   StoreFilter? filter30;
+
+  // Creates a logical filter 
   LogicalStoreFilter({
     required this.logicalOperator,
     required this.filter1,
@@ -159,6 +265,7 @@ class LogicalStoreFilter implements StoreFilter {
     this.filter30,
   });
 
+  /// Converts the logical store filter into a Firestore filter
   @override
   Filter toFirestore() {
     return switch (logicalOperator) {
@@ -229,6 +336,7 @@ class LogicalStoreFilter implements StoreFilter {
     };
   }
 
+  /// Prints the filter in polish notation
   @override
   String toString() {
     return "${logicalOperator.name}("
@@ -263,4 +371,13 @@ class LogicalStoreFilter implements StoreFilter {
         "${filter29 ?? ""}"
         "${filter30 ?? ""})";
   }
+}
+
+class ParentDataNullException {
+  String message;
+  
+  ParentDataNullException(this.message);
+
+  @override
+  String toString() => message;
 }

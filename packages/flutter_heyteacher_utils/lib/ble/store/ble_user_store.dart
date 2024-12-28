@@ -8,6 +8,10 @@ class BleUserStore extends Store<BleUserData, BleUserData> {
     _instance ??= BleUserStore._();
     return _instance!;
   }
+
   BleUserStore._()
-      : super(collection: "", fromFirestoreFactory: BleUserData.fromFirestore);
+      : super(
+            collection: "",
+            userProfile: true,
+            fromFirestoreFactory: BleUserData.fromFirestore);
 }
