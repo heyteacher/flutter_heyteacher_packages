@@ -11,8 +11,6 @@ import 'firestore_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logging/logging.dart';
 
-enum AggregationQuery { sum, average }
-
 abstract class Store<ListType extends FirestoreData,
     ObjectType extends FirestoreData> {
   final _log = Logger("Store");
@@ -26,23 +24,19 @@ abstract class Store<ListType extends FirestoreData,
   bool separatedDetailCollection;
 
   Map<String, bool>? orderByFields;
-  Map<String, AggregationQuery>? aggregationQueries;
+  List<String>? aggregateFields;
   StoreFilter? storeFilter;
   @protected
-  String? groupByCounterField;
-  @protected
-  String Function(ObjectType)? groupByCounterFunction;
+  Map<String, String Function(ObjectType)?>? groupByCounterFields;
 
   @protected
   late String objectCollection;
 
-  String get collectionGroupByCounterField =>
-      "${collection}_$groupByCounterField";
+  final StreamController<Map<String, AggregateQuerySnapshot>>
+      _aggregateStreamController =
+      StreamController<Map<String, AggregateQuerySnapshot>>.broadcast();
 
-  final StreamController<Map<String, num?>> _aggregateStreamController =
-      StreamController<Map<String, num?>>.broadcast();
-
-  Stream<Map<String, num?>> get aggregateStream =>
+  Stream<Map<String, AggregateQuerySnapshot>> get aggregateStream =>
       _aggregateStreamController.stream;
 
   StreamSubscription<User?>? _aggregatesSubscription;
@@ -55,10 +49,9 @@ abstract class Store<ListType extends FirestoreData,
       this.orderByFields,
       required Function fromFirestoreFactory,
       Function? objectFromFirestoreFactory,
-      this.aggregationQueries,
+      this.aggregateFields,
       this.storeFilter,
-      this.groupByCounterField,
-      this.groupByCounterFunction}) {
+      this.groupByCounterFields}) {
     _log.fine(
         "costructor: $_collectionPathLog userProfile $userProfile  separatedDetailCollection $separatedDetailCollection orderByFields $orderByFields");
 
@@ -81,21 +74,12 @@ abstract class Store<ListType extends FirestoreData,
       this.objectCollection = collection;
     }
     // manage the group by counter
-    if (groupByCounterField != null) {
-      if (!userProfile || groupByCounterFunction == null) {
+    if (groupByCounterFields != null) {
+      if (!userProfile) {
         throw InvalidGroupByCounterConfigurationException(
-            userProfile: userProfile,
-            groupByCounterField: groupByCounterField,
-            groupByCounterFunction: groupByCounterFunction);
+            collection: collection);
       }
       _initGroupByCounter();
-    } else {
-      if (groupByCounterFunction != null) {
-        throw InvalidGroupByCounterConfigurationException(
-            userProfile: userProfile,
-            groupByCounterField: groupByCounterField,
-            groupByCounterFunction: groupByCounterFunction);
-      }
     }
   }
 
@@ -127,8 +111,6 @@ abstract class Store<ListType extends FirestoreData,
 
   Stream<QuerySnapshot<ListType>> get stream =>
       query(applyOrderBy: true).snapshots();
-
-  Future<int> get count async => (await query().count().get()).count ?? 0;
 
   Future<Iterable<ListType>> list() async {
     _log.fine("list($_collectionPathLog,orderByFields: $orderByFields)");
@@ -218,10 +200,57 @@ abstract class Store<ListType extends FirestoreData,
     notifyAggregatesChanges();
   }
 
-  Future<Map<String, dynamic>?> groupByCounter() async {
+  Future<Map<String, dynamic>?> groupByCounter(String field) async {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await _firestore.collection("users").doc(_uid).get();
-    return documentSnapshot.data()?[collectionGroupByCounterField];
+    return documentSnapshot.data()?[_groupByCounterCollectionField(field)];
+  }
+
+  notifyAggregatesChanges() async {
+    if (aggregateFields == null) return;
+
+    List<AggregateField?> aggregateParams = [
+      for (var i = 0; i < 30; i++)
+        aggregateFields!.length > i ? sum(aggregateFields![i]) : null
+    ];
+    Query<ListType> queryList = query();
+    _aggregateStreamController.sink.add({
+      "count": await queryList.count().get(),
+      "aggregate": await query()
+          .aggregate(
+              aggregateParams[0]!,
+              aggregateParams[1],
+              aggregateParams[2],
+              aggregateParams[3],
+              aggregateParams[4],
+              aggregateParams[5],
+              aggregateParams[6],
+              aggregateParams[7],
+              aggregateParams[8],
+              aggregateParams[9],
+              aggregateParams[10],
+              aggregateParams[11],
+              aggregateParams[12],
+              aggregateParams[13],
+              aggregateParams[14],
+              aggregateParams[15],
+              aggregateParams[16],
+              aggregateParams[17],
+              aggregateParams[18],
+              aggregateParams[19],
+              aggregateParams[20],
+              aggregateParams[21],
+              aggregateParams[22],
+              aggregateParams[23],
+              aggregateParams[24],
+              aggregateParams[25],
+              aggregateParams[26],
+              aggregateParams[27],
+              aggregateParams[28],
+              aggregateParams[29]
+              )
+          .get()
+    });
   }
 
   CollectionReference<ListType> get _collectionReference =>
@@ -238,11 +267,10 @@ abstract class Store<ListType extends FirestoreData,
 
   Future<void> _changeGrouByCounter(ObjectType object,
       {required bool increment}) async {
-    if (groupByCounterField == null) {
+    if (groupByCounterFields == null) {
       return;
     }
     assert(userProfile);
-    assert(groupByCounterFunction != null);
     // user document reference
     DocumentReference<Map<String, dynamic>> userDocumentReference =
         _firestore.collection("users").doc(_uid);
@@ -251,26 +279,33 @@ abstract class Store<ListType extends FirestoreData,
         await userDocumentReference.get();
     // get the user document
     Map<String, dynamic> userDocument = userDocumentSnapshot.data() ?? {};
-    // get the user document map which store group by values
-    // into field <collection>_<groupByCounterField>
-    _log.fine(
-        "_initGroupByCounter: get map $collectionGroupByCounterField in /user/<uid> document");
-    Map<String, dynamic> userDocumentMap =
-        userDocument[collectionGroupByCounterField] ?? {};
-    // retrieve the group by counter key calling groupByCounterFunction provided
-    String groupByCounterKey = groupByCounterFunction!(object);
-    // get the group by counter value
-    int groupByCounterValue = userDocumentMap[groupByCounterKey] ?? 0;
-    groupByCounterValue =
-        increment ? groupByCounterValue + 1 : groupByCounterValue - 1;
-    _log.fine(
-        "_initGroupByCounter: $groupByCounterKey new value $groupByCounterValue");
-    // increment/decrement group by counter value based
-    userDocumentMap[groupByCounterFunction!(object)] = groupByCounterValue;
-    // update the user document
-    userDocument[collectionGroupByCounterField] = userDocumentMap;
+
+    for (MapEntry groupByCounterField in groupByCounterFields!.entries) {
+      String groupByCounterCollectionField =
+          _groupByCounterCollectionField(groupByCounterField.key);
+      // get the user document map which store group by values
+      // into field <collection>_<groupByCounterField>
+      _log.fine(
+          "_changeGrouByCounter: get map $groupByCounterCollectionField in /user/<uid> document");
+      Map<String, dynamic> userDocumentMap =
+          userDocument[groupByCounterCollectionField] ?? {};
+      // retrieve the group by counter key calling groupByCounterFunction provided
+      String groupByCounterKey = groupByCounterField.value(object);
+      // get the group by counter value
+      int groupByCounterValue = userDocumentMap[groupByCounterKey] ?? 0;
+      groupByCounterValue =
+          increment ? groupByCounterValue + 1 : groupByCounterValue - 1;
+      _log.fine(
+          "_changeGrouByCounter: $groupByCounterKey new value $groupByCounterValue");
+      // increment/decrement group by counter value based
+      userDocumentMap[groupByCounterKey] = groupByCounterValue;
+      // update the user document
+      userDocument[groupByCounterCollectionField] = userDocumentMap;
+    }
     await userDocumentReference.update(userDocument);
   }
+
+  String _groupByCounterCollectionField(String field) => "${collection}_$field";
 
   // userProfile false: <collection>
   // userProfile true: /users/<uid>/<collection>
@@ -299,61 +334,39 @@ abstract class Store<ListType extends FirestoreData,
     return authUserUid!;
   }
 
-  notifyAggregatesChanges() async {
-    _aggregateStreamController.sink.add({
-      "count": await count,
-      for (MapEntry<String, AggregationQuery> aggregate
-          in (aggregationQueries ?? {}).entries)
-        "${aggregate.value.name}_${aggregate.key}": switch (aggregate.value) {
-          AggregationQuery.sum => await _sumByField(aggregate.key),
-          AggregationQuery.average => await _averageByField(aggregate.key)
-        }
-    });
-  }
-
-  Future<num?> _sumByField(String field) async =>
-      (await query().aggregate(sum(field)).get()).getSum(field);
-
-  Future<num?> _averageByField(String field) async =>
-      (await query().aggregate(sum(field)).get()).getAverage(field);
-
   void _initGroupByCounter() async {
     if (userNotAutenticated) {
       _log.fine("_initGroupByCounter: user not authenticate, do nothing");
       return;
     }
-
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await _firestore.collection("users").doc(_uid).get();
-    if (documentSnapshot.data()?[collectionGroupByCounterField] != null) {
+    for (MapEntry groupByCounterField in groupByCounterFields?.entries ?? {}) {
+      String groupByCounterCollectionField =
+          _groupByCounterCollectionField(groupByCounterField.key);
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await _firestore.collection("users").doc(_uid).get();
+      if (documentSnapshot.data()?[groupByCounterCollectionField] != null) {
+        _log.fine(
+            "_initGroupByCounter: user $groupByCounterCollectionField already initialized. Do nothing");
+        return;
+      }
       _log.fine(
-          "_initGroupByCounter: user $collectionGroupByCounterField already initialized. Do nothing");
-      return;
-    }
-    _log.fine(
-        "_initGroupByCounter: start scan on $collection and update $collectionGroupByCounterField");
-    for (var objectList in await list()) {
-      ObjectType objectDetail = await get(objectList.id);
-      await _changeGrouByCounter(objectDetail, increment: true);
+          "_initGroupByCounter: start scan on $collection and update $groupByCounterCollectionField");
+      for (var objectList in await list()) {
+        ObjectType objectDetail = await get(objectList.id);
+        await _changeGrouByCounter(objectDetail, increment: true);
+      }
     }
     _log.fine("_initGroupByCounter: stop scan");
   }
 }
 
-class InvalidGroupByCounterConfigurationException<ObjectType>
-    implements Exception {
-  bool userProfile;
-  String? groupByCounterField;
-  String Function(ObjectType)? groupByCounterFunction;
+class InvalidGroupByCounterConfigurationException implements Exception {
+  String collection;
 
-  InvalidGroupByCounterConfigurationException(
-      {required this.userProfile,
-      required this.groupByCounterField,
-      required this.groupByCounterFunction});
+  InvalidGroupByCounterConfigurationException({required this.collection});
+
   @override
-  String toString() => "expecting userProfile:true "
-      "groupByCounterField and groupByCounterFunction all null or all not null, "
-      "found  userProfile:$userProfile "
-      "groupByCounterField: ${groupByCounterField == null ? "null" : "not null"} "
-      "groupByCounterFunction: ${groupByCounterFunction == null ? "null" : "not null"} ";
+  String toString() =>
+      "groupByCounterFields is set and userProfile is false for collection $collection."
+      " groupByCounterFields works only in user profile collections";
 }
