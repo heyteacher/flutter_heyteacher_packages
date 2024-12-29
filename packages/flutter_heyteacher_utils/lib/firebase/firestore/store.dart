@@ -1,44 +1,45 @@
-/// Utility built on Firebase Firestore using `Generics`. 
-/// 
+/// Firebase Firestore library using [generics](https://dart.dev/language/generics|generics).
+///
 /// Main funtionality are:
-/// 
-/// * use generics to define two different DataType in [CollectionReference.withConverter] 
+///
+/// * use [generics](https://dart.dev/language/generics|generics) to define two different DataType in [CollectionReference.withConverter]
 ///   * `<LightDataType>` the lighweight [FirestoreData] document used in [Store.list] and [Store.query]
-///   * `<DetailsDataType>` the full detailed [FirestoreData] document used in [Store.get], [Store.set] and [Store.update] 
-/// 
-/// * manage collection separation in a main collection wich store `<LightDataType>` documents 
+///   * `<DetailsDataType>` the full detailed [FirestoreData] document used in [Store.get], [Store.set] and [Store.update]
+///
+/// * manage collection separation in a main collection wich store `<LightDataType>` documents
 ///   and a `<collection>_details` which store `<DetailsDataType>`; document (via [Store.separatedDetailsCollection])
-/// 
-/// * manage the user collection `/users/<uid>/` with [Store.userProfile] integrating [FirebaseAuth] using 
-///   automatically the `uid` of authenticated user 
-/// 
+///
+/// * manage the user collection `/users/<uid>/` with [Store.userProfile] integrating [FirebaseAuth] using
+///   automatically the `uid` of authenticated user
+///
 /// * manage data filtering with [StoreFilter]
-/// 
-/// * manage multiple order by with [Store.orderByFields]
-/// 
+///
+/// * manage multiple order by field with [Store.orderByFields]
+///
 /// * implement distinct and group by counter [Store.groupByCounterFields]
-/// 
+///
 /// * manage aggregate field via [Store.aggregateFields] and notify aggregate value changes via [Store.aggregateStream]
-/// 
+///
 /// # Usage
-/// 
+///
 /// * Import the library in your code
 ///   ```dart
 ///   import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 ///   ```
-/// 
+///
 /// * Extends the `abstract` `class` [Store] supplying configuration parameters.
-/// 
+///
 /// # Examples
-///  
-/// ## TrackStore 
-/// 
-/// * store in `/users/<uid>/tracks` `BaseTrackData` document (`<LightDataType>`)  
+///
+/// ## TrackStore
+///
+/// * store in `/users/<uid>/tracks` `BaseTrackData` document (`<LightDataType>`)
 /// * store in `/users<uid>/tracks_details` `TrackData` document (`<DetailsDataType>`)
 /// * order by track `startTime` descending
 /// * aggregate `distance` and `duration`
 /// * group by track `year`
-/// 
+///
+/// ### Definition
 /// ```dart
 /// class TrackStore extends Store<BaseTrackData, TrackData> {
 ///  TrackStore._()
@@ -75,11 +76,115 @@
 ///  }
 ///}
 ///```
+/// ### DataType Definitions
+///
+/// `BaseTrackData` is the `<LightDataType>` which store basic data in `/users/<uid>/tracks` collection
+///
+/// ```dart
+/// class BaseTrackData extends FirestoreData {
+///  static final DateFormat keyDateTimeFormatter = DateFormat("yyyyMMdd_HHmmss");
+///
+///  DateTime startTime;
+///  DateTime? stopTime;
+///  num? duration;
+///  num? distance;
+///
+///  @override
+///  String get id => keyDateTimeFormatter.format(startTime.toLocal());
+///
+///  BaseTrackData(
+///      {required this.startTime,
+///      this.stopTime,
+///      this.duration,
+///      this.distance});
+
+///  factory BaseTrackData.fromFirestore(Map<String, dynamic> map) {
+///    return BaseTrackData(
+///        startTime: FirestoreData.fromFirestoreTimestamp(map["startTime"])!,
+///        stopTime: map["stopTime"] != null
+///            ? FirestoreData.fromFirestoreTimestamp(map["stopTime"])
+///            : null,
+///        duration: map["stopTime"] != null
+///           ? map["duration"]
+///            : calculateDuration(
+///                FirestoreData.fromFirestoreTimestamp(map["startTime"])!,
+///                DateTime.now(),
+///                0),
+///        distance: ((map["distance"] as num? ?? 0) * 10).round() / 10);
+///  }
+///
+///  @override
+///  Map<String, dynamic> toFirestore() => {
+///        'startTime': FirestoreData.toFirestoreTimestamp(startTime),
+///        'stopTime': FirestoreData.toFirestoreTimestamp(stopTime),
+///        'duration': duration,
+///        'distance': distance,
+///  };
+///}
+///```
+///
+/// `TrackData` is the `<DetailsDataType>` which store details data in `/users/<uid>/tracks_details` collection.
+///
+/// * extends the `<LightDataType>` `TrackData`
+///
+/// * implements [FirestoreData.getParentData] and [FirestoreData.setParentData] used to get and set data
+///   of super class `BaseTrackData` which store data in `/users/<uid>/tracks`
+///
+/// So, `<DetailsDataType>` contains the merge of data stored `/users/<uid>/tracks` `/users/<uid>/tracks_details`
+///
+///```
+///class TrackData extends BaseTrackData {
+///   late List<LocationData> locations;
+///
+///   TrackData(
+///       {required super.startTime,
+///       super.stopTime,
+///       super.duration,
+///       super.distance,
+///       super.average,
+///       this.locations = const []});
+///
+///   factory TrackData.fromFirestore(Map<String, dynamic> map) {
+///     List<LocationData> locations = [];
+///     for (var location in jsonDecode(map["locations"])) {
+///       locations.add(LocationData.fromMap(location));
+///     }
+///     return TrackData(
+///         startTime: FirestoreData.fromFirestoreTimestamp(map['startTime'])!,
+///         locations: locations);
+///   }
+///
+///   @override
+///   Map<String, dynamic> toFirestore() => {
+///         'startTime': FirestoreData.toFirestoreTimestamp(startTime),
+///         'locations': jsonEncode(locations)
+///       };
+///
+///   @override
+///   void setParentData(FirestoreData parentData) {
+///     BaseTrackData baseTrackData = parentData as BaseTrackData;
+///     startTime = baseTrackData.startTime;
+///     distance = baseTrackData.distance;
+///     duration = baseTrackData.duration;
+///     stopTime = baseTrackData.stopTime;
+///   }
+///
+///   @override
+///   FirestoreData getParentData() {
+///     return BaseTrackData(
+///         startTime: startTime,
+///         distance: distance,
+///         duration: duration,
+///         stopTime: stopTime);
+///   }
+/// }
+/// ```
+///
 ///
 /// ## UserStore
-/// 
+///
 /// Stores on user collection `/users/<uid>` ([Store.collection] is empty).
-/// Since [Store.separatedDetailsCollection] is `false` `<LightDataType>` and `<DetailsDataType>` are equal to [UserData] 
+/// Since [Store.separatedDetailsCollection] is `false` `<LightDataType>` and `<DetailsDataType>` are equal to [UserData]
 /// ```dart
 /// class UserStore extends Store<UserData, UserData> {
 /// UserStore._()
@@ -96,7 +201,7 @@
 /// }
 ///}
 ///```
-///  
+///
 library;
 
 import 'dart:async';
@@ -110,7 +215,8 @@ import 'package:logging/logging.dart';
 abstract class Store<LightDataType extends FirestoreData,
     DetailsDataType extends LightDataType> {
   final _log = Logger("Store");
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  late final FirebaseFirestore _firestore;
 
   @protected
   String collection;
@@ -146,12 +252,15 @@ abstract class Store<LightDataType extends FirestoreData,
       Function? detailsFromFirestoreFactory,
       this.aggregateFields,
       this.storeFilter,
-      this.groupByCounterFields}) {
+      this.groupByCounterFields,
+      FirebaseFirestore? firebaseFirestore}) {
+    _firestore = firebaseFirestore ?? FirebaseFirestore.instance;
     _log.fine(
         "costructor: $_collectionPathLog userProfile $userProfile  separatedDetailsCollection $separatedDetailsCollection orderByFields $orderByFields");
 
     _log.fine("costructor: register fromFireStoreFactory");
-    FirestoreData.registerFromFirestoreFactory<LightDataType>(fromFirestoreFactory);
+    FirestoreData.registerFromFirestoreFactory<LightDataType>(
+        fromFirestoreFactory);
     // manage the separated detail collection
     if (separatedDetailsCollection) {
       this.objectCollection = "${collection}_details";
@@ -187,7 +296,8 @@ abstract class Store<LightDataType extends FirestoreData,
 
   void listenAggregatesStream() {
     _aggregatesSubscription?.cancel();
-    _aggregatesSubscription ??= authStateChangesStream
+    _aggregatesSubscription ??= Auth.instance()
+        .stateChangesStream
         .where((user) => user != null)
         .listen(((_) => notifyAggregatesChanges()));
   }
@@ -263,11 +373,16 @@ abstract class Store<LightDataType extends FirestoreData,
     }
   }
 
-  Future<void> set(String id, DetailsDataType object) async {
+  Future<void> set(DetailsDataType document, {String? id}) async {
+    id ??= document.id;
+    DetailsDataType? oldDocument;
+    if (await exists(id)) {
+      oldDocument = await get(id);
+    }
     _log.fine("set($_objectCollectionPathLog/$id)");
-    await _objectCollectionReference.doc(id).set(object);
+    await _objectCollectionReference.doc(id).set(document);
     if (separatedDetailsCollection) {
-      LightDataType? parentData = object.getParentData() as LightDataType?;
+      LightDataType? parentData = document.getParentData() as LightDataType?;
       if (parentData != null) {
         _log.fine("set($_collectionPathLog/$id)");
         await _collectionReference.doc(id).set(parentData);
@@ -276,20 +391,22 @@ abstract class Store<LightDataType extends FirestoreData,
             "${DetailsDataType.runtimeType}.getParentData() returns null");
       }
     }
-    await _changeGrouByCounter(object, increment: true);
+    await _changeGrouByCounter(document,
+        increment: true, oldDocument: oldDocument);
     notifyAggregatesChanges();
   }
 
-  Future<void> update(String id, DetailsDataType document) async {
+  Future<void> update(DetailsDataType document, {String? id}) async {
+    id ??= document.id;
     _log.fine("update($_objectCollectionPathLog/$id)");
     if (await exists(id)) {
-      _objectCollectionReference.doc(id).update(document.toFirestore());
+      _objectCollectionReference.doc(id).update(document.toFirestore(update: true));
       if (separatedDetailsCollection) {
         if (document.getParentData() != null) {
           _log.fine("update($_collectionPathLog/$id)");
           _collectionReference
               .doc(id)
-              .update(document.getParentData()!.toFirestore());
+              .update(document.getParentData()!.toFirestore(update: true));
         } else {
           throw ParentDataNullException(
               "${DetailsDataType.runtimeType}.getParentData() returns null");
@@ -297,7 +414,7 @@ abstract class Store<LightDataType extends FirestoreData,
       }
       // document not found, create it
     } else {
-      set(id, document);
+      set(document);
     }
     notifyAggregatesChanges();
   }
@@ -308,7 +425,7 @@ abstract class Store<LightDataType extends FirestoreData,
     return documentSnapshot.data()?[_groupByCounterCollectionField(field)];
   }
 
-  notifyAggregatesChanges() async {
+  Future<void> notifyAggregatesChanges() async {
     if (aggregateFields == null) return;
 
     List<AggregateField?> aggregateParams = [
@@ -354,17 +471,19 @@ abstract class Store<LightDataType extends FirestoreData,
   CollectionReference<LightDataType> get _collectionReference =>
       _firestore.collection(_collectionPath).withConverter(
           fromFirestore: (snapshot, _) =>
-              FirestoreData.fromFirestoreFactory<LightDataType>(snapshot.data()!),
+              FirestoreData.fromFirestoreFactory<LightDataType>(
+                  snapshot.data()!),
           toFirestore: (LightDataType obj, _) => obj.toFirestore());
 
   CollectionReference<DetailsDataType> get _objectCollectionReference =>
       _firestore.collection(_objectCollectionPath!).withConverter(
           fromFirestore: (snapshot, _) =>
-              FirestoreData.fromFirestoreFactory<DetailsDataType>(snapshot.data()!),
+              FirestoreData.fromFirestoreFactory<DetailsDataType>(
+                  snapshot.data()!),
           toFirestore: (DetailsDataType obj, _) => obj.toFirestore());
 
   Future<void> _changeGrouByCounter(DetailsDataType object,
-      {required bool increment}) async {
+      {required bool increment, DetailsDataType? oldDocument}) async {
     if (groupByCounterFields == null) {
       return;
     }
@@ -397,10 +516,21 @@ abstract class Store<LightDataType extends FirestoreData,
           "_changeGrouByCounter: $groupByCounterKey new value $groupByCounterValue");
       // increment/decrement group by counter value based
       userDocumentMap[groupByCounterKey] = groupByCounterValue;
+      // if increment and oldDocument is set, decrement counter for old document
+      if (oldDocument != null && increment) {
+        String oldGroupByCounterKey = groupByCounterField.value(oldDocument);
+        int oldGroupByCounterValue = userDocumentMap[oldGroupByCounterKey] ?? 0;
+        oldGroupByCounterValue--;
+        userDocumentMap[oldGroupByCounterKey] = oldGroupByCounterValue;
+      }
       // update the user document
       userDocument[groupByCounterCollectionField] = userDocumentMap;
     }
-    await userDocumentReference.update(userDocument);
+    if ((await userDocumentReference.get()).exists) {
+      await userDocumentReference.update(userDocument);
+    } else {
+      await userDocumentReference.set(userDocument);
+    }
   }
 
   String _groupByCounterCollectionField(String field) => "${collection}_$field";
@@ -426,14 +556,14 @@ abstract class Store<LightDataType extends FirestoreData,
       : objectCollection;
 
   static String get _uid {
-    if (userNotAutenticated) {
+    if (Auth.instance().notAutenticated) {
       throw UserNotAuthenticatedException("not autenticated");
     }
-    return authUserUid!;
+    return Auth.instance().uid!;
   }
 
   void _initGroupByCounter() async {
-    if (userNotAutenticated) {
+    if (Auth.instance().notAutenticated) {
       _log.fine("_initGroupByCounter: user not authenticate, do nothing");
       return;
     }
@@ -501,7 +631,7 @@ abstract class FirestoreData<T> {
 
   void setParentData(FirestoreData parentData) {}
 
-  Map<String, dynamic> toFirestore();
+  Map<String, dynamic> toFirestore({bool update=false});
 
   static Timestamp? toFirestoreTimestamp(DateTime? dateTime) {
     return dateTime == null ? null : Timestamp.fromDate(dateTime);
