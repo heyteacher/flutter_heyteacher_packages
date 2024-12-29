@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logging/logging.dart';
 
 class LocalizationModel {
@@ -17,10 +17,11 @@ class LocalizationModel {
 
   void init(List<Locale> supportedLocales) async {
     // check if autenticated
-    if (FirebaseAuth.instance.currentUser == null) return;
+    if (Auth.instance().notAutenticated) return;
     // user language code found
-    UserData user =
-        await UserStore.instance.get(FirebaseAuth.instance.currentUser!.uid);
+    UserData user = await UserStore.instance.exists(Auth.instance().uid!)
+        ? await UserStore.instance.get(Auth.instance().uid!)
+        : UserData(null);
     if (user.localeLanguageCode != null) {
       // firestore user locale is supported
       if (supportedLocales
@@ -43,7 +44,7 @@ class LocalizationModel {
   void onChangeLocale(Locale locale) {
     _localeStreamController.sink.add(locale);
     _log.fine("onChangeLocale: load locale '${locale.languageCode}'");
-    if (FirebaseAuth.instance.currentUser == null) return;
+    if (Auth.instance().notAutenticated) return;
     _log.fine(
         "onChangeLocale: store locale '${locale.languageCode}' in user collection");
     UserStore.instance.update(UserData.fromLocalization(locale: locale));
