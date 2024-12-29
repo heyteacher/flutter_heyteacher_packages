@@ -28,6 +28,7 @@ end
 
 desc "fl test\n\tRun tests"
 lane :test do
+  _increment_flutter_build_number
   Dir.chdir("../") do
     sh("flutter test")
   end
@@ -35,6 +36,7 @@ end
 
 desc "fl release version:--mayor|--minor|--patch [suffix:<nmenonic_tag_suffix>]\n\trelease e version tagging in git"
 lane :release do |options|
+   test
    tag = ""
    Dir.chdir("../") do
     tag = sh("dart run flutter_heyteacher_utils:version #{options[:version]}")
