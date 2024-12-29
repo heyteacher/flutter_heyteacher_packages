@@ -77,9 +77,9 @@ abstract class BleModel {
 
   Future<void> init([VoidCallback? callback]) async {
     BleModelFactory.initBle(callback);
-    if (authUserUid != null &&
-        await BleUserStore.instance.exists(authUserUid!)) {
-      _userData = await BleUserStore.instance.get(authUserUid!);
+    if (Auth.instance().uid != null &&
+        await BleUserStore.instance.exists(Auth.instance().uid!)) {
+      _userData = await BleUserStore.instance.get(Auth.instance().uid!);
     }
     _log.fine(
         "init: ${bleType.name} remote user devices ${_userData?.devices[bleType]}");
@@ -189,11 +189,11 @@ abstract class BleModel {
       BleModelFactory.characteristicAllowedByType(bleType, characteristic);
 
   void _store() {
-    if (userAutenticated) {
+    if (Auth.instance().autenticated) {
       BleUserData userData = BleUserData.fromBle({bleType: _device});
       _log.fine(
           "_store:  ${bleType.name} persist device ${userData.devices[bleType]}");
-      BleUserStore.instance.update(authUserUid!, userData);
+      BleUserStore.instance.update(userData);
     }
   }
 

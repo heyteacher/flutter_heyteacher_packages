@@ -7,7 +7,7 @@ class BleUserData extends UserData {
   Map<BleType, Map<BleField, String?>> devices = {};
 
   @override
-  String get id => authUserUid ?? "guest";
+  String get id => Auth.instance().uid ?? "guest";
 
   BleUserData._(this.devices) : super(null);
 
@@ -28,7 +28,7 @@ class BleUserData extends UserData {
   }
 
   @override
-  Map<String, dynamic> toFirestore() => {
+  Map<String, dynamic> toFirestore({bool update=false}) => {
         ...super.toFirestore(),
         // set firestoreFieldId for each ble types
         for (BleType bleType in BleType.values)

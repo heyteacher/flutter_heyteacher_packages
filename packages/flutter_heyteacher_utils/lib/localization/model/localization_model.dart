@@ -46,7 +46,6 @@ class LocalizationModel {
     if (FirebaseAuth.instance.currentUser == null) return;
     _log.fine(
         "onChangeLocale: store locale '${locale.languageCode}' in user collection");
-    UserStore.instance.update(FirebaseAuth.instance.currentUser!.uid,
-        UserData.fromLocalization(locale: locale));
+    UserStore.instance.update(UserData.fromLocalization(locale: locale));
   }
 }
