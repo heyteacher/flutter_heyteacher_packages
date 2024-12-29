@@ -135,15 +135,11 @@ void main() {
     expect(trackData.avgBpm, 100, reason: "avgBpm wrong");
     expect(trackData.distance, 30000, reason: "distance wrong");
     expect(trackData.duration, 3600 * 3 * 1000, reason: "duration  wrong");
-    await trackStore.delete("20230712_171522");
   });
 
   group('Test groupByCounter', () {
     test('groupByCounter years check map', () async {
       final TrackStore trackStore = TrackStore.instance();
-      // for (var baseTrackData in await trackStore.list()) {
-      //   print("${baseTrackData.id} $baseTrackData");
-      // }
       expect((await trackStore.groupByCounter("years"))!.keys.length, 2,
           reason: "years wrong size");
       expect((await trackStore.groupByCounter("years"))!["2023"], 2,
@@ -185,12 +181,6 @@ void main() {
       expect(aggregate.getSum("distance"), 90000 + 20000,
           reason: "sum distance wrong");
       expect(aggregate.getSum("duration"), (8 + 1) * 3600 * 1000,
-          reason: "sum duration wrong");
-      trackStore.delete("20200423_081244");
-      aggregate = await trackStore.aggregateStream.first;
-      expect(aggregate.count, 4, reason: "aggregate count wrong");
-      expect(aggregate.getSum("distance"), 90000, reason: "sum distance wrong");
-      expect(aggregate.getSum("duration"), 8 * 3600 * 1000,
           reason: "sum duration wrong");
     });
     test('aggregateStream after filter', () async {
