@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+
 import 'formats.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
@@ -27,7 +28,7 @@ Future<void> configureLogging() async {
     final String stackTrace =
         record.stackTrace != null ? "\n${record.stackTrace}" : "";
     // get uid from firebase auth
-    final String uid = FirebaseAuth.instance.currentUser?.uid ?? "guest";
+    final String uid = Auth.instance().uid ?? "guest";
     // print in standard output
     if (kDebugMode) {
       print('${timeWithSecondsFormatter.format(record.time)} '

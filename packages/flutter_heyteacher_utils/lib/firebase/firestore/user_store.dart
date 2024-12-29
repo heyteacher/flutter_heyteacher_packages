@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 
 class UserStore extends Store<UserData, UserData> {
@@ -22,7 +22,7 @@ class UserData extends FirestoreData {
   String? localeLanguageCode;
 
   @override
-  String get id => FirebaseAuth.instance.currentUser?.uid ?? "guest";
+  String get id => Auth.instance().uid ?? "guest";
 
   @protected
   UserData(this.localeLanguageCode);
