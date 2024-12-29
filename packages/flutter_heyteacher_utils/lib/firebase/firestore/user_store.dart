@@ -34,8 +34,8 @@ class UserData extends FirestoreData {
   }
 
   @override
-  Map<String, dynamic> toFirestore() => {
-        if (localeLanguageCode != null)
+  Map<String, dynamic> toFirestore({bool update=false}) => {
+        if (!update || localeLanguageCode != null)
           "locale_language_code": localeLanguageCode
       };
 
