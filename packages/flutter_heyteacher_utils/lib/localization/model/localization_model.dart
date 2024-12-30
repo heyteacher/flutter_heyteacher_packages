@@ -19,8 +19,8 @@ class LocalizationModel {
     // check if autenticated
     if (Auth.instance().notAutenticated) return;
     // user language code found
-    UserData user = await UserStore.instance.exists(Auth.instance().uid!)
-        ? await UserStore.instance.get(Auth.instance().uid!)
+    UserData user = await UserStore.instance().exists(Auth.instance().uid!)
+        ? await UserStore.instance().get(Auth.instance().uid!)
         : UserData(null);
     if (user.localeLanguageCode != null) {
       // firestore user locale is supported
@@ -47,6 +47,6 @@ class LocalizationModel {
     if (Auth.instance().notAutenticated) return;
     _log.fine(
         "onChangeLocale: store locale '${locale.languageCode}' in user collection");
-    UserStore.instance.update(UserData.fromLocalization(locale: locale));
+    UserStore.instance().update(UserData.fromLocalization(locale: locale));
   }
 }

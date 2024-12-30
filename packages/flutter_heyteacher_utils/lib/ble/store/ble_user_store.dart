@@ -4,12 +4,12 @@ import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 class BleUserStore extends Store<BleUserData, BleUserData> {
   // singleton
   static BleUserStore? _instance;
-  static BleUserStore get instance {
-    _instance ??= BleUserStore._();
+  static BleUserStore instance({dynamic firebaseFirestore}) {
+    _instance ??= BleUserStore._(firebaseFirestore: firebaseFirestore);
     return _instance!;
   }
 
-  BleUserStore._()
+  BleUserStore._({super.firebaseFirestore})
       : super(
             collection: "",
             userProfile: true,
