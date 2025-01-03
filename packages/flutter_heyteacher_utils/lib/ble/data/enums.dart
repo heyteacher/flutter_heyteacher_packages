@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 enum BleType {
   heartRate(
       icon: FontAwesomeIcons.heartPulse,
-      firestoreFieldId: "heart_rate_device_id",
-      firestoreFieldName: "heart_rate_device_name"),
+      firestoreFieldId: "heartRateDeviceId",
+      firestoreFieldName: "heartRateDeviceName"),
   cadence(
       icon: Icons.change_circle,
-      firestoreFieldId: "cadence_device_id",
-      firestoreFieldName: "cadence_device_name");
+      firestoreFieldId: "cadenceDeviceId",
+      firestoreFieldName: "cadenceDeviceName");
 
   const BleType(
       {required this.icon,

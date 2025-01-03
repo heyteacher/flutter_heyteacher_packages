@@ -396,17 +396,17 @@ abstract class Store<LightDataType extends FirestoreData,
     notifyAggregatesChanges();
   }
 
-  Future<void> update(DetailsDataType document, {String? id}) async {
+  Future<void> update(DetailsDataType document, {required List<String>fields, String? id}) async {
     id ??= document.id;
     _log.fine("update($_objectCollectionPathLog/$id)");
     if (await exists(id)) {
-      _objectCollectionReference.doc(id).update(document.toFirestore(update: true));
+      _objectCollectionReference.doc(id).update(document.toFirestore(fields: fields));
       if (separatedDetailsCollection) {
         if (document.getParentData() != null) {
           _log.fine("update($_collectionPathLog/$id)");
           _collectionReference
               .doc(id)
-              .update(document.getParentData()!.toFirestore(update: true));
+              .update(document.getParentData()!.toFirestore(fields: fields));
         } else {
           throw ParentDataNullException(
               "${DetailsDataType.runtimeType}.getParentData() returns null");
@@ -631,7 +631,7 @@ abstract class FirestoreData<T> {
 
   void setParentData(FirestoreData parentData) {}
 
-  Map<String, dynamic> toFirestore({bool update=false});
+  Map<String, dynamic> toFirestore({List<String>? fields});
 
   static Timestamp? toFirestoreTimestamp(DateTime? dateTime) {
     return dateTime == null ? null : Timestamp.fromDate(dateTime);

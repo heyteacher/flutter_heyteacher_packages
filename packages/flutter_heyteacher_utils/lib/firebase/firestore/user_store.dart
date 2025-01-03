@@ -3,7 +3,6 @@ import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 
 class UserStore extends Store<UserData, UserData> {
-
   UserStore._({super.firebaseFirestore})
       : super(
             collection: "",
@@ -30,13 +29,13 @@ class UserData extends FirestoreData {
   UserData.fromLocalization({required locale}) : this(locale.languageCode);
 
   factory UserData.fromFirestore(Map<String, dynamic> map) {
-    return UserData(map["locale_language_code"]);
+    return UserData(map["localeLanguageCode"]);
   }
 
   @override
-  Map<String, dynamic> toFirestore({bool update=false}) => {
-        if (!update || localeLanguageCode != null)
-          "locale_language_code": localeLanguageCode
+  Map<String, dynamic> toFirestore({List<String>? fields}) => {
+        if (fields?.contains("localeLanguageCode") ?? true)
+          "localeLanguageCode": localeLanguageCode
       };
 
   @override

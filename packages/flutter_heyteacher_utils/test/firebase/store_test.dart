@@ -100,7 +100,7 @@ void main() {
       final TrackStore trackStore = TrackStore.instance();
       TrackData trackData = await trackStore.get("20230712_171522");
       trackData.avgRpm = 80;
-      await trackStore.update(trackData);
+      await trackStore.update(trackData,fields:["avgRpm"]);
       trackData = await trackStore.get("20230712_171522");
       expect(trackData.avgRpm, 80, reason: "avgRpm wrong");
       expect(trackData.avgBpm, 100, reason: "avgBpm wrong");
@@ -129,7 +129,7 @@ void main() {
         startTime: DateTime.parse("2023-07-12 17:15:22"),
         avgRpm: 80,
         distance: 30000);
-    await trackStore.update(trackData);
+    await trackStore.update(trackData,fields: ["avgRpm","distance"]);
     trackData = await trackStore.get("20230712_171522");
     expect(trackData.avgRpm, 80, reason: "avgRpm wrong");
     expect(trackData.avgBpm, 100, reason: "avgBpm wrong");
@@ -233,10 +233,10 @@ class TrackData extends BaseTrackData {
   }
 
   @override
-  Map<String, dynamic> toFirestore({bool update = false}) => {
+  Map<String, dynamic> toFirestore({List<String>? fields}) => {
         'startTime': FirestoreData.toFirestoreTimestamp(startTime),
-        if (!update || avgBpm != null) 'avgBpm': avgBpm,
-        if (!update || avgRpm != null) 'avgRpm': avgRpm,
+        if (fields?.contains("avgBpm") ?? true) 'avgBpm': avgBpm,
+        if (fields?.contains("avgRpm") ?? true) 'avgRpm': avgRpm,
       };
 
   @override
@@ -281,12 +281,12 @@ class BaseTrackData extends FirestoreData {
   }
 
   @override
-  Map<String, dynamic> toFirestore({bool update = false}) => {
+  Map<String, dynamic> toFirestore({List<String>? fields}) => {
         'startTime': FirestoreData.toFirestoreTimestamp(startTime),
-        if (!update || stopTime != null)
+        if (fields?.contains("stopTime") ?? true)
           'stopTime': FirestoreData.toFirestoreTimestamp(stopTime),
-        if (!update || duration != null) 'duration': duration,
-        if (!update || distance != null) 'distance': distance,
+        if (fields?.contains("duration") ?? true) 'duration': duration,
+        if (fields?.contains("distance") ?? true) 'distance': distance,
       };
 }
 

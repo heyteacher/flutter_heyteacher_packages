@@ -28,7 +28,7 @@ class BleUserData extends UserData {
   }
 
   @override
-  Map<String, dynamic> toFirestore({bool update=false}) => {
+  Map<String, dynamic> toFirestore({List<String>? fields}) => {
         ...super.toFirestore(),
         // set firestoreFieldId for each ble types
         for (BleType bleType in BleType.values)

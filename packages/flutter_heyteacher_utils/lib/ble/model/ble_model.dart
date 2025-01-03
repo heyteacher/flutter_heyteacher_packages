@@ -193,7 +193,7 @@ abstract class BleModel {
       BleUserData userData = BleUserData.fromBle({bleType: _device});
       _log.fine(
           "_store:  ${bleType.name} persist device ${userData.devices[bleType]}");
-      BleUserStore.instance().update(userData);
+      BleUserStore.instance().update(userData, fields: []);
     }
   }
 
