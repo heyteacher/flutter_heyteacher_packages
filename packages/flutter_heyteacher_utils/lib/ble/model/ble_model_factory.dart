@@ -149,16 +149,14 @@ class BleModelFactory {
     });
   }
 
-  static Guid _serviceGuid(BleType bleType) => Guid(
-      FirebaseRemoteConfig.instance.getString("${bleType.name}UUIDService"));
+  static Guid _serviceGuid(BleType bleType) => Guid(bleType.uuidService);
 
   static bool serviceAllowedByType(BleType type, BluetoothService service) {
     return service.uuid == _serviceGuid(type);
   }
 
   static Guid _characteristicGuid(BleType bleType) =>
-      Guid(FirebaseRemoteConfig.instance
-          .getString("${bleType.name}UUIDCharacteristic"));
+      Guid(bleType.uuidCharacteristic);
 
   static bool characteristicAllowedByType(
           BleType bleType, BluetoothCharacteristic characteristic) =>
