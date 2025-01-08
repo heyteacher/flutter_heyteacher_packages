@@ -1,15 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:logging/logging.dart';
-import '../platform_helper.dart';
 
 class Auth {
   final log = Logger("Auth");
   late final FirebaseAuth _firebaseAuth;
-
-  Auth._({FirebaseAuth? firebaseAuth}) {
-    _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-  }
+  late GoogleProvider _googleProvider;
 
   // singleton
   static Auth? _instance;
@@ -18,55 +16,19 @@ class Auth {
     return _instance!;
   }
 
-  Future<void> signInEmailAndPassword(String email, String password) async {
-    await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
-  }
-
-  Future<void> signInWithGoogle() async {
-    // Trigger the authentication flow
-    try {
-      if (PlatformHelper.isMobile) {
-        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-        // Obtain the auth details from the request
-        final GoogleSignInAuthentication? googleAuth =
-            await googleUser?.authentication;
-        // Create a new credential
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken,
-        );
-        // Once signed in, return the UserCredential
-        await _firebaseAuth.signInWithCredential(credential);
-
-        log.info(
-            "signInWithGoogle[mobile]: ${autenticated ? "user autenticated" : "user not autenticated"}");
-      } else if (PlatformHelper.isWeb) {
-        // Create a new provider
-        GoogleAuthProvider googleProvider = GoogleAuthProvider();
-
-        googleProvider
-            .addScope('https://www.googleapis.com/auth/contacts.readonly');
-        googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
-
-        // Once signed in, return the UserCredential
-        await _firebaseAuth.signInWithPopup(googleProvider);
-
-        // Or use signInWithRedirect
-        // return await _firebaseAuth.signInWithRedirect(googleProvider);
-        log.info(
-            "signInWithGoogle[web]: ${autenticated ? "user autenticated" : "user not autenticated"}");
-      }
-    } catch (e, s) {
-      log.severe("signInWithGoogle: failed", e, s);
-    }
+  Auth._({FirebaseAuth? firebaseAuth}) {
+    _googleProvider = GoogleProvider(
+        clientId:
+            FirebaseRemoteConfig.instance.getString("authGoogleClientId"));
+    FirebaseUIAuth.configureProviders([_googleProvider]);
+    _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
   }
 
   Future<void> signOut() async {
     final log = Logger("signOut");
     try {
-      // Once signed in, return the UserCredential
       await _firebaseAuth.signOut();
+      _googleProvider.logOutProvider();
       log.info("sign out");
     } catch (e, s) {
       log.severe("signOut: failed", e, s);

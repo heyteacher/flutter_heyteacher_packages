@@ -1,6 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+
+class RoutingHelper {
+  static final _log = Logger("RoutingHelper");
+
+  static RoutingHelper? _instance;
+  static RoutingHelper get instance => _instance ??= RoutingHelper._();
+  RoutingHelper._();
+
+  GoRoute authGoRouter(
+      {required String signedIdLocation, required String signedOutLocation}) {
+    return GoRoute(
+      path: 'auth',
+      builder: (BuildContext context, GoRouterState state) => SizedBox.shrink(),
+      routes: <RouteBase>[
+        GoRoute(
+            path: 'sign-in',
+            builder: (BuildContext context, GoRouterState state) =>
+                SignInScreen(
+                  showAuthActionSwitch: false,
+                  actions: [
+                    AuthStateChangeAction<UserCreated>((context, userCreated) {
+                      _log.fine(
+                          "auth/sign-in (user created) go to $signedIdLocation");
+                      GoRouter.of(context).go(signedIdLocation);
+                    }),
+                    AuthStateChangeAction<SignedIn>((context, state) {
+                      _log.fine("auth/sign-in go to $signedIdLocation");
+                      GoRouter.of(context).go(signedIdLocation);
+                    }),
+                  ],
+                )),
+        GoRoute(
+          path: 'sign-out',
+          redirect: (context, state) async {
+            await Auth.instance().signOut();
+            return signedOutLocation;
+          },
+        ),
+      ],
+    );
+  }
+}
 
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where child is placed in the body of the Scaffold.
@@ -40,7 +84,8 @@ class ScaffoldWithNavBar extends StatelessWidget {
         // Navigate to the current location of the branch at the provided index
         // when tapping an item in the BottomNavigationBar.
         onTap: (int index) {
-          _log.fine("go(index, initialLocation: ${onTapInitialLocation(index)})");
+          _log.fine(
+              "go(index, initialLocation: ${onTapInitialLocation(index)})");
           return navigationShell.goBranch(index,
               initialLocation: onTapInitialLocation(index));
         },
