@@ -324,6 +324,16 @@ abstract class Store<LightDataType extends FirestoreData,
   Stream<QuerySnapshot<LightDataType>> get stream =>
       query(applyOrderBy: true).snapshots();
 
+  Future<bool> empty() async {
+    _log.fine("empty($_collectionPathLog,orderByFields: $orderByFields)");
+    return ((await query(applyOrderBy: true).count().get()).count ?? 0) > 0;
+  } 
+
+  Future<bool> notEmpty() async {
+    _log.fine("empty($_collectionPathLog,orderByFields: $orderByFields)");
+    return ((await query(applyOrderBy: true).count().get()).count ?? 0) == 0;
+  } 
+
   Future<Iterable<LightDataType>> list() async {
     _log.fine("list($_collectionPathLog,orderByFields: $orderByFields)");
     return (await query(applyOrderBy: true).get()).docs.map((e) => e.data());
