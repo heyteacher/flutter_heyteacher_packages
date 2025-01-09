@@ -7,28 +7,31 @@ import 'package:logging/logging.dart';
 class Auth {
   final log = Logger("Auth");
   late final FirebaseAuth _firebaseAuth;
-  late GoogleProvider _googleProvider;
+  GoogleProvider? _googleProvider;
 
   // singleton
   static Auth? _instance;
   static Auth instance({FirebaseAuth? firebaseAuth}) {
-    _instance ??= Auth._(firebaseAuth: firebaseAuth);
+    _instance ??= Auth._(mockedFirebaseAuth: firebaseAuth);
     return _instance!;
   }
 
-  Auth._({FirebaseAuth? firebaseAuth}) {
-    _googleProvider = GoogleProvider(
+  Auth._({FirebaseAuth? mockedFirebaseAuth}) {
+    // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth and configure provider
+    if (mockedFirebaseAuth == null) {
+      _googleProvider = GoogleProvider(
         clientId:
             FirebaseRemoteConfig.instance.getString("authGoogleClientId"));
-    FirebaseUIAuth.configureProviders([_googleProvider]);
-    _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+     FirebaseUIAuth.configureProviders([_googleProvider!]);
+    }
+    _firebaseAuth = mockedFirebaseAuth ?? FirebaseAuth.instance;
   }
 
   Future<void> signOut() async {
     final log = Logger("signOut");
     try {
       await _firebaseAuth.signOut();
-      _googleProvider.logOutProvider();
+      _googleProvider?.logOutProvider();
       log.info("sign out");
     } catch (e, s) {
       log.severe("signOut: failed", e, s);
