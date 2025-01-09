@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+final DateFormat firestorKeyDateTimeFormatter = DateFormat("yyyyMMdd_HHmmss");
+
 final DateFormat dateTimeFormatter = DateFormat("dd/MM/yyyy HH:mm");
 
 final DateFormat timeWithSecondsFormatter = DateFormat("HH:mm:ss");
