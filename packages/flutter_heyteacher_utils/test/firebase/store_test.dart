@@ -100,7 +100,7 @@ void main() {
       final TrackStore trackStore = TrackStore.instance();
       TrackData trackData = await trackStore.get("20230712_171522");
       trackData.avgRpm = 80;
-      await trackStore.update(trackData,fields:["avgRpm"]);
+      await trackStore.update(trackData, fields: ["avgRpm"]);
       trackData = await trackStore.get("20230712_171522");
       expect(trackData.avgRpm, 80, reason: "avgRpm wrong");
       expect(trackData.avgBpm, 100, reason: "avgBpm wrong");
@@ -129,7 +129,7 @@ void main() {
         startTime: DateTime.parse("2023-07-12 17:15:22"),
         avgRpm: 80,
         distance: 30000);
-    await trackStore.update(trackData,fields: ["avgRpm","distance"]);
+    await trackStore.update(trackData, fields: ["avgRpm", "distance"]);
     trackData = await trackStore.get("20230712_171522");
     expect(trackData.avgRpm, 80, reason: "avgRpm wrong");
     expect(trackData.avgBpm, 100, reason: "avgBpm wrong");
@@ -201,6 +201,22 @@ void main() {
       expect(aggregate.getSum("distance"), 30000, reason: "sum distance wrong");
       expect(aggregate.getSum("duration"), 2 * 3600 * 1000,
           reason: "sum duration wrong");
+    });
+  });
+
+  group('Test empty notEmpty', () {
+    test('collection not empty check', () async {
+      final TrackStore trackStore = TrackStore.instance();
+      expect(await trackStore.notEmpty(), true, reason: "notEmpty wrong");
+      expect(await trackStore.empty(), false, reason: "empty wrong");
+    });
+    test('collection empty check', () async {
+      final TrackStore trackStore = TrackStore.instance();
+      for (var baseTrackData in await trackStore.list()) {
+        await trackStore.delete(baseTrackData.id);
+      }
+      expect(await trackStore.notEmpty(), false, reason: "notEmpty wrong");
+      expect(await trackStore.empty(), true, reason: "empty wrong");
     });
   });
 
