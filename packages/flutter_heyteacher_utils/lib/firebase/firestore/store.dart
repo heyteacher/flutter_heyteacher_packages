@@ -229,7 +229,7 @@ abstract class Store<LightDataType extends FirestoreData,
   String collection;
   @protected
   bool userProfile;
-  
+
   final bool _separatedDetailsCollection;
   StreamSubscription<User?>? _aggregatesSubscription;
 
@@ -343,7 +343,9 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   Future<void> delete(String id) async {
-    await _changeGrouByCounter(await get(id), increment: false);
+    if (groupByCounterFields != null) {
+      await _changeGrouByCounter(await get(id), increment: false);
+    }
     _log.fine("delete($_objectCollectionPathLog/$id)");
     await _objectCollectionReference.doc(id).delete();
     if (_separatedDetailsCollection) {
@@ -383,7 +385,7 @@ abstract class Store<LightDataType extends FirestoreData,
   Future<void> set(DetailsDataType document, {String? id}) async {
     id ??= document.id;
     DetailsDataType? oldDocument;
-    if (await exists(id)) {
+    if (groupByCounterFields != null && await exists(id)) {
       oldDocument = await get(id);
     }
     _log.fine("set($_objectCollectionPathLog/$id)");
@@ -398,8 +400,10 @@ abstract class Store<LightDataType extends FirestoreData,
             "${DetailsDataType.runtimeType}.getParentData() returns null");
       }
     }
-    await _changeGrouByCounter(document,
-        increment: true, oldDocument: oldDocument);
+    if (groupByCounterFields != null) {
+      await _changeGrouByCounter(document,
+          increment: true, oldDocument: oldDocument);
+    }
     notifyAggregatesChanges();
   }
 
