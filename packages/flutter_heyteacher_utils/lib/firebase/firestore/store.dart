@@ -7,7 +7,7 @@
 ///   * `<DetailsDataType>` the full detailed [FirestoreData] document used in [Store.get], [Store.set] and [Store.update]
 ///
 /// * manage collection separation in a main collection wich store `<LightDataType>` documents
-///   and a `<collection>_details` which store `<DetailsDataType>`; document (via [Store.separatedDetailsCollection])
+///   and a `<collection>_details` which store `<DetailsDataType>` documents (only if `<LightDataType>` and `<DetailsDataType>` differs)
 ///
 /// * manage the user collection `/users/<uid>/` with [Store.userProfile] integrating [FirebaseAuth] using
 ///   automatically the `uid` of authenticated user
@@ -48,8 +48,6 @@
 ///            collection: "tracks",
 ///            // store data into /users/<uid>/tracks
 ///            userProfile: true,
-///            // store TrackData documents into /users/<uid>/tracks_details
-///            separatedDetailsCollection: true,
 ///            // order by track start time
 ///            orderByFields: {"startTime": true},
 ///            // aggregate per track distance and track duration
@@ -184,7 +182,7 @@
 /// ## UserStore
 ///
 /// Stores on user collection `/users/<uid>` ([Store.collection] is empty).
-/// Since [Store.separatedDetailsCollection] is `false` `<LightDataType>` and `<DetailsDataType>` are equal to [UserData]
+/// Since `<LightDataType>` and `<DetailsDataType>` are equal to [UserData] *_details collection isn't created
 /// ```dart
 /// class UserStore extends Store<UserData, UserData> {
 /// UserStore._()
@@ -218,13 +216,6 @@ abstract class Store<LightDataType extends FirestoreData,
 
   late final FirebaseFirestore _firestore;
 
-  @protected
-  String collection;
-  @protected
-  bool userProfile;
-  @protected
-  bool separatedDetailsCollection;
-
   Map<String, bool>? orderByFields;
   List<String>? aggregateFields;
   StoreFilter? storeFilter;
@@ -234,35 +225,41 @@ abstract class Store<LightDataType extends FirestoreData,
   @protected
   late String objectCollection;
 
+  @protected
+  String collection;
+  @protected
+  bool userProfile;
+  
+  final bool _separatedDetailsCollection;
+  StreamSubscription<User?>? _aggregatesSubscription;
+
   final StreamController<AggregateQuerySnapshot> _aggregateStreamController =
       StreamController<AggregateQuerySnapshot>.broadcast();
 
   Stream<AggregateQuerySnapshot> get aggregateStream =>
       _aggregateStreamController.stream;
 
-  StreamSubscription<User?>? _aggregatesSubscription;
-
   @protected
   Store(
       {required this.collection,
       required this.userProfile,
-      this.separatedDetailsCollection = false,
       this.orderByFields,
       required Function fromFirestoreFactory,
       Function? detailsFromFirestoreFactory,
       this.aggregateFields,
       this.storeFilter,
       this.groupByCounterFields,
-      FirebaseFirestore? firebaseFirestore}) {
+      FirebaseFirestore? firebaseFirestore})
+      : _separatedDetailsCollection = LightDataType != DetailsDataType {
     _firestore = firebaseFirestore ?? FirebaseFirestore.instance;
     _log.fine(
-        "costructor: $_collectionPathLog userProfile $userProfile  separatedDetailsCollection $separatedDetailsCollection orderByFields $orderByFields");
+        "costructor: $_collectionPathLog userProfile $userProfile  separatedDetailsCollection $_separatedDetailsCollection orderByFields $orderByFields");
 
     _log.fine("costructor: register fromFireStoreFactory");
     FirestoreData.registerFromFirestoreFactory<LightDataType>(
         fromFirestoreFactory);
     // manage the separated detail collection
-    if (separatedDetailsCollection) {
+    if (_separatedDetailsCollection) {
       this.objectCollection = "${collection}_details";
       _log.fine("costructor: objectCollection $_objectCollectionPathLog ");
 
@@ -327,12 +324,12 @@ abstract class Store<LightDataType extends FirestoreData,
   Future<bool> empty() async {
     _log.fine("empty($_collectionPathLog,orderByFields: $orderByFields)");
     return ((await query(applyOrderBy: true).count().get()).count ?? 0) == 0;
-  } 
+  }
 
   Future<bool> notEmpty() async {
     _log.fine("notEmpty($_collectionPathLog,orderByFields: $orderByFields)");
     return !await empty();
-  } 
+  }
 
   Future<Iterable<LightDataType>> list() async {
     _log.fine("list($_collectionPathLog,orderByFields: $orderByFields)");
@@ -349,7 +346,7 @@ abstract class Store<LightDataType extends FirestoreData,
     await _changeGrouByCounter(await get(id), increment: false);
     _log.fine("delete($_objectCollectionPathLog/$id)");
     await _objectCollectionReference.doc(id).delete();
-    if (separatedDetailsCollection) {
+    if (_separatedDetailsCollection) {
       _log.fine("delete($_collectionPathLog/$id)");
       await _collectionReference.doc(id).delete();
     }
@@ -363,7 +360,7 @@ abstract class Store<LightDataType extends FirestoreData,
     // check if exists
     if (objectDocumentSnapshot.exists) {
       DetailsDataType details = objectDocumentSnapshot.data()!;
-      if (separatedDetailsCollection) {
+      if (_separatedDetailsCollection) {
         _log.fine("get($_collectionPathLog/$id)");
         DocumentSnapshot<LightDataType> documentSnapshot =
             await _collectionReference.doc(id).get();
@@ -391,7 +388,7 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     _log.fine("set($_objectCollectionPathLog/$id)");
     await _objectCollectionReference.doc(id).set(document);
-    if (separatedDetailsCollection) {
+    if (_separatedDetailsCollection) {
       LightDataType? parentData = document.getParentData() as LightDataType?;
       if (parentData != null) {
         _log.fine("set($_collectionPathLog/$id)");
@@ -406,12 +403,15 @@ abstract class Store<LightDataType extends FirestoreData,
     notifyAggregatesChanges();
   }
 
-  Future<void> update(DetailsDataType document, {required List<String>fields, String? id}) async {
+  Future<void> update(DetailsDataType document,
+      {required List<String> fields, String? id}) async {
     id ??= document.id;
     _log.fine("update($_objectCollectionPathLog/$id)");
     if (await exists(id)) {
-      _objectCollectionReference.doc(id).update(document.toFirestore(fields: fields));
-      if (separatedDetailsCollection) {
+      _objectCollectionReference
+          .doc(id)
+          .update(document.toFirestore(fields: fields));
+      if (_separatedDetailsCollection) {
         if (document.getParentData() != null) {
           _log.fine("update($_collectionPathLog/$id)");
           _collectionReference
