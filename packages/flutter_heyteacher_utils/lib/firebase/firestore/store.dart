@@ -323,40 +323,34 @@ abstract class Store<LightDataType extends FirestoreData,
 
   Future<bool> empty() async {
     _log.fine("empty($_collectionPathLog,orderByFields: $orderByFields)");
+    _checkAuthenticated();
     return ((await query(applyOrderBy: true).count().get()).count ?? 0) == 0;
   }
 
   Future<bool> notEmpty() async {
     _log.fine("notEmpty($_collectionPathLog,orderByFields: $orderByFields)");
+    _checkAuthenticated();
     return !await empty();
   }
 
   Future<Iterable<LightDataType>> list() async {
     _log.fine("list($_collectionPathLog,orderByFields: $orderByFields)");
+    _checkAuthenticated();
     return (await query(applyOrderBy: true).get()).docs.map((e) => e.data());
   }
 
   Future<bool> exists(String id) async {
     _log.fine("exists($_objectCollectionPathLog/$id)");
+    _checkAuthenticated();
     bool ret = (await _objectCollectionReference.doc(id).get()).exists;
     return ret;
   }
 
-  Future<void> delete(String id) async {
-    if (groupByCounterFields != null) {
-      await _changeGrouByCounter(await get(id), increment: false);
-    }
-    _log.fine("delete($_objectCollectionPathLog/$id)");
-    await _objectCollectionReference.doc(id).delete();
-    if (_separatedDetailsCollection) {
-      _log.fine("delete($_collectionPathLog/$id)");
-      await _collectionReference.doc(id).delete();
-    }
-    notifyAggregatesChanges();
-  }
 
   Future<DetailsDataType> get(String id) async {
     _log.fine("get($_objectCollectionPathLog/$id)");
+    _checkAuthenticated();
+
     DocumentSnapshot<DetailsDataType>? objectDocumentSnapshot =
         await _objectCollectionReference.doc(id).get();
     // check if exists
@@ -382,19 +376,64 @@ abstract class Store<LightDataType extends FirestoreData,
     }
   }
 
-  Future<void> set(DetailsDataType document, {String? id}) async {
+  Future<void> delete(String id, {WriteBatch? batch}) async {
+    _log.fine("delete($_objectCollectionPathLog/$id)");
+    _checkAuthenticated();
+    if (groupByCounterFields != null) {
+      await _changeGrouByCounter(await get(id), increment: false);
+    }
+    if (batch != null) {
+      batch.delete(_objectCollectionReference.doc(id));
+    } else {
+      await _objectCollectionReference.doc(id).delete();
+    }
+    if (_separatedDetailsCollection) {
+      _log.fine("delete($_collectionPathLog/$id)");
+      if (batch != null) {
+        batch.delete(_collectionReference.doc(id));
+      } else {
+        await _collectionReference.doc(id).delete();
+      }
+    }
+    notifyAggregatesChanges();
+  }
+
+  Future<void> bulkDelete(
+    List<String> ids,
+  ) async {
+    _log.fine("bulkDelete($_objectCollectionPathLog, ids: $ids)");
+    _checkAuthenticated();
+    final batch = _firestore.batch();
+    for (var i = 0; i < ids.length; i++) {
+      delete(ids[i], batch: batch);
+    }
+    await batch.commit();
+  }
+
+  Future<void> set(DetailsDataType document,
+      {String? id, WriteBatch? batch}) async {
     id ??= document.id;
+    _log.fine("set($_objectCollectionPathLog/$id)");
+    _checkAuthenticated();
     DetailsDataType? oldDocument;
     if (groupByCounterFields != null && await exists(id)) {
       oldDocument = await get(id);
     }
     _log.fine("set($_objectCollectionPathLog/$id)");
-    await _objectCollectionReference.doc(id).set(document);
+    if (batch != null) {
+      batch.set(_objectCollectionReference.doc(id), document);
+    } else {
+      await _objectCollectionReference.doc(id).set(document);
+    }
     if (_separatedDetailsCollection) {
       LightDataType? parentData = document.getParentData() as LightDataType?;
       if (parentData != null) {
         _log.fine("set($_collectionPathLog/$id)");
-        await _collectionReference.doc(id).set(parentData);
+        if (batch != null) {
+          batch.set(_collectionReference.doc(id), parentData);
+        } else {
+          await _collectionReference.doc(id).set(parentData);
+        }
       } else {
         throw ParentDataNullException(
             "${DetailsDataType.runtimeType}.getParentData() returns null");
@@ -407,20 +446,42 @@ abstract class Store<LightDataType extends FirestoreData,
     notifyAggregatesChanges();
   }
 
+  Future<void> bulkSet(List<DetailsDataType> documents,
+      {List<String>? ids}) async {
+    _log.fine("bulkSet($_objectCollectionPathLog)");
+    _checkAuthenticated();
+    final batch = _firestore.batch();
+    for (var i = 0; i < documents.length; i++) {
+      set(documents[i], id: ids?[i], batch: batch);
+    }
+    await batch.commit();
+  }
+
   Future<void> update(DetailsDataType document,
-      {required List<String> fields, String? id}) async {
+      {required List<String> fields, String? id, WriteBatch? batch}) async {
     id ??= document.id;
-    _log.fine("update($_objectCollectionPathLog/$id)");
+    _log.fine("update($_objectCollectionPathLog/$id, fields: $fields)");
+    _checkAuthenticated();
     if (await exists(id)) {
-      _objectCollectionReference
-          .doc(id)
-          .update(document.toFirestore(fields: fields));
+      if (batch != null) {
+        batch.update(_objectCollectionReference.doc(id),
+            document.toFirestore(fields: fields));
+      } else {
+        _objectCollectionReference
+            .doc(id)
+            .update(document.toFirestore(fields: fields));
+      }
       if (_separatedDetailsCollection) {
         if (document.getParentData() != null) {
           _log.fine("update($_collectionPathLog/$id)");
-          _collectionReference
-              .doc(id)
-              .update(document.getParentData()!.toFirestore(fields: fields));
+          if (batch != null) {
+            batch.update(_collectionReference.doc(id),
+                document.getParentData()!.toFirestore(fields: fields));
+          } else {
+            _collectionReference
+                .doc(id)
+                .update(document.getParentData()!.toFirestore(fields: fields));
+          }
         } else {
           throw ParentDataNullException(
               "${DetailsDataType.runtimeType}.getParentData() returns null");
@@ -428,18 +489,33 @@ abstract class Store<LightDataType extends FirestoreData,
       }
       // document not found, create it
     } else {
-      set(document);
+      set(document, batch: batch);
     }
     notifyAggregatesChanges();
   }
 
+  Future<void> bulkUpdate(List<DetailsDataType> documents,
+      {required List<String> fields, List<String>? ids}) async {
+    _log.fine("bulkUpdate($_objectCollectionPathLog, $fields)");
+    _checkAuthenticated();
+    final batch = _firestore.batch();
+    for (var i = 0; i < documents.length; i++) {
+      update(documents[i], fields: fields, id: ids?[i], batch: batch);
+    }
+    await batch.commit();
+  }
+
   Future<Map<String, dynamic>?> groupByCounter(String field) async {
+    _log.fine("groupByCounter($field) collection $_objectCollectionPathLog");
+    _checkAuthenticated();
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await _firestore.collection("users").doc(_uid).get();
     return documentSnapshot.data()?[_groupByCounterCollectionField(field)];
   }
 
   Future<void> notifyAggregatesChanges() async {
+    _log.fine("notifyAggregatesChanges()");
+    _checkAuthenticated();
     if (aggregateFields == null) return;
 
     List<AggregateField?> aggregateParams = [
@@ -480,6 +556,12 @@ abstract class Store<LightDataType extends FirestoreData,
           aggregateParams[28],
         )
         .get());
+  }
+
+  void _checkAuthenticated() {
+    if (userProfile && Auth.instance().notAutenticated) {
+      throw UserNotAuthenticatedException();
+    }
   }
 
   CollectionReference<LightDataType> get _collectionReference =>
@@ -569,12 +651,8 @@ abstract class Store<LightDataType extends FirestoreData,
           "${objectCollection == "" ? "" : "/<uid>/$objectCollection"}"
       : objectCollection;
 
-  static String get _uid {
-    if (Auth.instance().notAutenticated) {
-      throw UserNotAuthenticatedException("not autenticated");
-    }
-    return Auth.instance().uid!;
-  }
+  static String get _uid =>
+      Auth.instance().notAutenticated ? "guest" : Auth.instance().uid!;
 
   void _initGroupByCounter() async {
     if (Auth.instance().notAutenticated) {
