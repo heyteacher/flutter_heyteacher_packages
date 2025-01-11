@@ -11,34 +11,38 @@ class RoutingHelper {
   static RoutingHelper get instance => _instance ??= RoutingHelper._();
   RoutingHelper._();
 
-  GoRoute authGoRouter(
-      {required String signedIdLocation, required String signedOutLocation}) {
+  GoRoute authGoRouter() {
     return GoRoute(
       path: 'auth',
       builder: (BuildContext context, GoRouterState state) => SizedBox.shrink(),
       routes: <RouteBase>[
         GoRoute(
+            name: "auth-sign-in",
             path: 'sign-in',
             builder: (BuildContext context, GoRouterState state) =>
                 SignInScreen(
                   showAuthActionSwitch: false,
                   actions: [
                     AuthStateChangeAction<UserCreated>((context, userCreated) {
-                      _log.fine(
-                          "auth/sign-in (user created) go to $signedIdLocation");
-                      GoRouter.of(context).go(signedIdLocation);
+                      _log.fine("auth/sign-in (user created)");
+                      GoRouter.of(context).pop();
                     }),
                     AuthStateChangeAction<SignedIn>((context, state) {
-                      _log.fine("auth/sign-in go to $signedIdLocation");
-                      GoRouter.of(context).go(signedIdLocation);
+                      _log.fine("auth/sign-in");
+                      GoRouter.of(context).pop();
                     }),
                   ],
                 )),
         GoRoute(
+          name: "auth-sign-out",
           path: 'sign-out',
           redirect: (context, state) async {
             await Auth.instance().signOut();
-            return signedOutLocation;
+            if (context.mounted) {
+              GoRouter.of(context).pop();
+              return GoRouterState.of(context).uri.toString();
+            }
+            return "/";
           },
         ),
       ],
