@@ -50,8 +50,5 @@ class Auth {
 }
 
 class UserNotAuthenticatedException {
-  String message;
-  UserNotAuthenticatedException(this.message);
-  @override
-  toString() => message;
+  UserNotAuthenticatedException();
 }
