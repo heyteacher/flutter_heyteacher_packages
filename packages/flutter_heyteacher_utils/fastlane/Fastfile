@@ -46,7 +46,7 @@ lane :release do |options|
     end
   end
   # commit bump and push remote
-  git_commit(path: "pubspec.yaml", message: "Version Bump")
+  git_commit(path: "pubspec.yaml", message: "Version Bump #{tag}")
   push_to_git_remote
   # add tag and puth remote
   add_git_tag(tag: tag)
