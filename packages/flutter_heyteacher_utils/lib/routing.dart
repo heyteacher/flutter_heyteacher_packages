@@ -11,7 +11,7 @@ class RoutingHelper {
   static RoutingHelper get instance => _instance ??= RoutingHelper._();
   RoutingHelper._();
 
-  GoRoute authGoRouter() {
+  GoRoute authGoRouter({required String signedOutRoutePath}) {
     return GoRoute(
       path: 'auth',
       builder: (BuildContext context, GoRouterState state) => SizedBox.shrink(),
@@ -38,11 +38,7 @@ class RoutingHelper {
           path: 'sign-out',
           redirect: (context, state) async {
             await Auth.instance().signOut();
-            if (context.mounted) {
-              GoRouter.of(context).pop();
-              return GoRouterState.of(context).uri.toString();
-            }
-            return "/";
+            return signedOutRoutePath;
           },
         ),
       ],
