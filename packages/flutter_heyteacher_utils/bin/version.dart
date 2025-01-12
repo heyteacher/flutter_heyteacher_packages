@@ -17,27 +17,27 @@ void main(List<String> arguments) async {
   final List<String?>? version =
       regex.firstMatch(curretVersion)?.groups([1, 2, 3, 4]);
   switch (arguments.isNotEmpty ? arguments[0] : "") {
-    case "--mayor":
+    case "mayor":
       _incrementVersion(version, mayor);
       _setVersion(version, minor, "0");
       _setVersion(version, patch, "0");
-    case "--minor":
+    case "minor":
       _incrementVersion(version, minor);
       _setVersion(version, patch, "0");
-    case "--patch":
+    case "patch":
       _incrementVersion(version, patch);
-    case "--build":
+    case "build":
       break;
-    case "--show":
+    case "show":
       stdout.write(curretVersion);
       return;
-    case "--show-build":
+    case "show-build":
       stdout.write(version?[build]);
       return;
     default:
         // ignore: avoid_print
         print(
-            "usage dart version.dart --mayor|--minor|--patch|--build|--show|--show-build [--dry-run]\n"
+            "usage dart version.dart mayor|minor|patch|build|show|show-build [--dry-run]\n"
             "found $arguments");
       exit(-1);
   }

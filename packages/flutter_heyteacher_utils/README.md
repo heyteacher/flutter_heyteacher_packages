@@ -52,20 +52,20 @@ flutter pub add flutter_heytecher_utils
 From the root of your project, run:
 
 ```
-dart run flutter_heyteacher_utils:version --mayor|--minor|--patch|--build|--show|--show-build [--dry-run]
+dart run flutter_heyteacher_utils:version mayor|minor|patch|build|show|show-build [--dry-run]
 ```
 
-* `--mayor`,`--minor`, `--patch` increment the version in your `pubsec.yaml`. `--dry-run` show how the version will be changed without modify `pubsec.yaml`
+* `mayor`,`minor`, `patch` increment the version in your `pubsec.yaml`. `--dry-run` show how the version will be changed without modify `pubsec.yaml`
 
-* `--build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on the current time. 
+* `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on the current time. 
   
-* `--dry-run` show how the version will be changed without modify `pubsec.yaml`
+* `dry-run` show how the version will be changed without modify `pubsec.yaml`
 
-* `--show` print the version in `pubsec.yaml`
+* `show` print the version in `pubsec.yaml`
 
-* `--show-build` print only the build version from `pubsec.yaml`
+* `show-build` print only the build version from `pubsec.yaml`
 
-You can configure you `vscode` to execute the command with `--build` in order to automatically update build version every run/debug execution of your code:
+You can configure you `vscode` to execute the command with `build` in order to automatically update build version every run/debug execution of your code:
 
 * create/modify `vscode/tasks.json` in the root of your project 
   
@@ -79,11 +79,11 @@ You can configure you `vscode` to execute the command with `--build` in order to
                         "args": [
                                 "run",
                                 "flutter_heyteacher_utils:version",
-                                "--build"
+                                "build"
                         ],
                         "group": "build",
                         "problemMatcher": [],
-                        "label": "dart: run flutter_heyteacher_utils:version --build",
+                        "label": "dart: run flutter_heyteacher_utils:version build",
                         "detail": "increment version build number",
                         "presentation": {
                                 "close": true,
@@ -104,7 +104,7 @@ You can configure you `vscode` to execute the command with `--build` in order to
   ```json
   ...
     
-    "preLaunchTask": "dart: run flutter_heyteacher_utils:version --build"
+    "preLaunchTask": "dart: run flutter_heyteacher_utils:version build"
   ```
 
 ## Additional information
