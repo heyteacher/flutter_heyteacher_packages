@@ -346,7 +346,6 @@ abstract class Store<LightDataType extends FirestoreData,
     return ret;
   }
 
-
   Future<DetailsDataType> get(String id) async {
     _log.fine("get($_objectCollectionPathLog/$id)");
     _checkAuthenticated();
@@ -395,7 +394,10 @@ abstract class Store<LightDataType extends FirestoreData,
         await _collectionReference.doc(id).delete();
       }
     }
-    notifyAggregatesChanges();
+    // if batch in set, delegate thee caller to notify changes
+    if (batch == null) {
+      notifyAggregatesChanges();
+    }
   }
 
   Future<void> bulkDelete(
@@ -408,6 +410,7 @@ abstract class Store<LightDataType extends FirestoreData,
       delete(ids[i], batch: batch);
     }
     await batch.commit();
+    notifyAggregatesChanges();
   }
 
   Future<void> set(DetailsDataType document,
@@ -443,7 +446,10 @@ abstract class Store<LightDataType extends FirestoreData,
       await _changeGrouByCounter(document,
           increment: true, oldDocument: oldDocument);
     }
-    notifyAggregatesChanges();
+    // if batch in set, delegate thee caller to notify changes
+    if (batch == null) {
+      notifyAggregatesChanges();
+    }
   }
 
   Future<void> bulkSet(List<DetailsDataType> documents,
@@ -455,6 +461,7 @@ abstract class Store<LightDataType extends FirestoreData,
       set(documents[i], id: ids?[i], batch: batch);
     }
     await batch.commit();
+    notifyAggregatesChanges();
   }
 
   Future<void> update(DetailsDataType document,
@@ -491,7 +498,10 @@ abstract class Store<LightDataType extends FirestoreData,
     } else {
       set(document, batch: batch);
     }
-    notifyAggregatesChanges();
+    // if batch in set, delegate thee caller to notify changes
+    if (batch == null) {
+      notifyAggregatesChanges();
+    }
   }
 
   Future<void> bulkUpdate(List<DetailsDataType> documents,
@@ -503,6 +513,7 @@ abstract class Store<LightDataType extends FirestoreData,
       update(documents[i], fields: fields, id: ids?[i], batch: batch);
     }
     await batch.commit();
+    notifyAggregatesChanges();
   }
 
   Future<Map<String, dynamic>?> groupByCounter(String field) async {
