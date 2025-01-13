@@ -47,6 +47,6 @@ class LocalizationModel {
     if (Auth.instance().notAutenticated) return;
     _log.fine(
         "onChangeLocale: store locale '${locale.languageCode}' in user collection");
-    UserStore.instance().update(UserData.fromLocalization(locale: locale), fields:["localeLanguageCode"]);
+    UserStore.instance().update(UserData.fromLocale(locale: locale), fields:["localeLanguageCode"]);
   }
 }

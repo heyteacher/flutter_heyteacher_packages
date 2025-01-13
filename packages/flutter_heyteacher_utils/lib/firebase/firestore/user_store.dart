@@ -26,7 +26,7 @@ class UserData extends FirestoreData {
   @protected
   UserData(this.localeLanguageCode);
 
-  UserData.fromLocalization({required locale}) : this(locale.languageCode);
+  UserData.fromLocale({required locale}) : this(locale.languageCode);
 
   factory UserData.fromFirestore(Map<String, dynamic> map) {
     return UserData(map["localeLanguageCode"]);
