@@ -18,97 +18,99 @@ enum HeartRateTrainingZone {
   z4(minIntensity: 80, maxIntensity: 90),
   z5(minIntensity: 90, maxIntensity: 100);
 
-  final int minIntensity, maxIntensity;
+  final int minIntensity;
+  final int maxIntensity;
   const HeartRateTrainingZone(
       {required this.minIntensity, required this.maxIntensity});
 
   (HeartRateTrainingZone heartRateTrainingZone, int? min, int? max) targetBpm(
-          {required Gender? gender,
-          required int? age,
-          required int? restBpm}) =>
+          {({Gender? gender, int? age, int? restBpm})? biometrics}) =>
       (
         this,
-        _targetBpm(
-            gender: gender,
-            age: age,
-            restBpm: restBpm,
-            intensity: minIntensity),
-        _targetBpm(
-            gender: gender, age: age, restBpm: restBpm, intensity: maxIntensity)
+        _targetBpm(biometrics: biometrics, intensity: minIntensity),
+        _targetBpm(biometrics: biometrics, intensity: maxIntensity)
       );
 
-  // TargetHR = [(220 - Age - RestHR) x %Intensity] + RestHR
+  // targetBpm = [((female: 226| male: 200) - age - restBpm) x intensity%] + restBpm
   int? _targetBpm(
-          {required Gender? gender,
-          required int? age,
-          required int? restBpm,
+          {required ({Gender? gender, int? age, int? restBpm})? biometrics,
           required int? intensity}) =>
-      gender != null || age != null || restBpm != null || intensity != null
-          ? (((gender!.heartRateCoeff - age! - restBpm!) * intensity!) + restBpm).round()
+      biometrics?.gender != null &&
+              biometrics?.age != null &&
+              biometrics?.restBpm != null &&
+              intensity != null
+          ? (((biometrics!.gender!.heartRateCoeff -
+                          biometrics.age! -
+                          biometrics.restBpm!) *
+                      intensity) +
+                  biometrics.restBpm!)
+              .round()
           : null;
 }
 
 class BleUserData extends UserData {
   Map<BleType, Map<BleField, String?>>? devices;
 
-  int? restBpm;
-  int? age;
-  Gender? gender;
+  ({int? restBpm, int? age, Gender? gender})? biometrics;
 
-  // %Intensity = (HR - RestHR / (220 - Age - RestHR)) * 100
-  int? intensity(int bpm) => gender != null && age != null && restBpm != null
-      ? ((bpm - restBpm!) / (gender!.heartRateCoeff - age! - restBpm!) * 100)
+  // intensity% = (bpm -restBpm / ( (female: 226| male: 200) - age - restBpm)) * 100
+  int? intensity(int bpm) => biometrics?.gender != null &&
+          biometrics?.age != null &&
+          biometrics?.restBpm != null
+      ? ((bpm - biometrics!.restBpm!) /
+              (biometrics!.gender!.heartRateCoeff -
+                  biometrics!.age! -
+                  biometrics!.restBpm!) *
+              100)
           .round()
       : null;
 
   Iterable<(HeartRateTrainingZone heartRateTrainingZone, num? min, num? max)>
-      get heartRateTrainingZones => HeartRateTrainingZone.values.map(
-          (heartRateTrainingZone) => heartRateTrainingZone.targetBpm(
-              gender: gender!, age: age!, restBpm: restBpm!));
+      get heartRateTrainingZones =>
+          HeartRateTrainingZone.values.map((heartRateTrainingZone) =>
+              heartRateTrainingZone.targetBpm(biometrics: biometrics));
 
   @override
   String get id => Auth.instance().uid ?? "guest";
 
-  BleUserData._({this.devices, this.restBpm, this.age, this.gender})
-      : super(null);
+  BleUserData._({this.devices, this.biometrics}) : super(null);
 
-  BleUserData.fromDevices(
-      {Map<BleType, BluetoothDevice?>? devices,
-      Gender? gender,
-      int? age,
-      int? restBpm})
+  BleUserData.fromDevices({Map<BleType, BluetoothDevice?>? devices})
       : this._(
             devices: devices?.map((bleType, device) => MapEntry(bleType, {
                   BleField.id: device?.remoteId.str ?? "",
                   BleField.name: device?.platformName ?? ""
                 })));
 
-  BleUserData.fromHeartRate({Gender? gender, int? age, int? restBpm})
-      : this._(gender: gender, age: age, restBpm: restBpm);
+  BleUserData.fromHeartRate(
+      ({Gender? gender, int? age, int? restBpm}) biometrics)
+      : this._(biometrics: biometrics);
 
   factory BleUserData.fromFirestore(Map<String, dynamic> map) {
-    return BleUserData._(
-        devices: {
-          for (BleType bleType in BleType.values)
-            bleType: {
-              BleField.id: map[bleType.firestoreFieldId],
-              BleField.name: map[bleType.firestoreFieldName],
-            },
+    return BleUserData._(devices: {
+      for (BleType bleType in BleType.values)
+        bleType: {
+          BleField.id: map[bleType.firestoreFieldId],
+          BleField.name: map[bleType.firestoreFieldName],
         },
-        restBpm: map["restBpm"],
-        age: map["age"],
-        gender: Gender.values
-            .where((gender) => gender.name == map["gender"])
-            .firstOrNull);
+    }, biometrics: (
+      restBpm: map["biometrics"]?["restBpm"],
+      age: map["biometrics"]?["age"],
+      gender: Gender.values
+          .where((gender) => gender.name == map["biometrics"]?["gender"])
+          .firstOrNull
+    ));
   }
 
   @override
   Map<String, dynamic> toFirestore({List<String>? fields}) => {
         ...super.toFirestore(),
-        if (fields?.contains("restBpm") ?? true) "restBpm": restBpm,
-        if (fields?.contains("age") ?? true) "age": age,
-        if (fields?.contains("gender") ?? true) "gender": gender?.name,
-
+        if (fields?.contains("biometrics") ?? true)
+          "biometrics": {
+            "restBpm": biometrics?.restBpm,
+            "age": biometrics?.age,
+            "gender": biometrics?.gender?.name,
+          },
         // set firestoreFieldId for each ble types
         for (BleType bleType in BleType.values)
           // update only if not null, empty string for reset
@@ -128,5 +130,6 @@ class BleUserData extends UserData {
 
   @override
   String toString() => "${super.toString()}, "
-      "bleDevices: ${devices?.map((key, value) => MapEntry(key.name, "${value[BleField.name]} (${value[BleField.id]})"))}";
+      "devices: ${devices?.map((key, value) => MapEntry(key.name, "${value[BleField.name]} (${value[BleField.id]})"))}, "
+      "biometrics: $biometrics";
 }
