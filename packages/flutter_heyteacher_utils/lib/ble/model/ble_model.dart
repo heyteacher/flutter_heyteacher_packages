@@ -21,14 +21,14 @@ abstract class BleModel {
 
   StreamSubscription<bool>? _isDisconnectingStreamSubscription;
 
-  bool get deviceNotNull => _device != null;
+  bool get notConnected => !(_device?.isConnected ?? false);
 
   String? get deviceName => _device?.platformName.trim() != ""
       ? _device?.platformName
-      : _userData?.devices[bleType]?[BleField.name];
+      : _userData?.devices?[bleType]?[BleField.name];
 
   String? get deviceId =>
-      _device?.remoteId.str ?? _userData?.devices[bleType]?[BleField.id];
+      _device?.remoteId.str ?? _userData?.devices?[bleType]?[BleField.id];
 
   @protected
   final StreamController<Map<String, String>> streamController =
@@ -82,21 +82,23 @@ abstract class BleModel {
       _userData = await BleUserStore.instance().get(Auth.instance().uid!);
     }
     _log.fine(
-        "init: ${bleType.name} remote user devices ${_userData?.devices[bleType]}");
-    if (_userData?.devices[bleType]?[BleField.id] != null &&
-        _userData?.devices[bleType]?[BleField.id]!.trim() != "") {
+        "init: ${bleType.name} remote user devices ${_userData?.devices?[bleType]}");
+    if (_userData?.devices?[bleType]?[BleField.id] != null &&
+        _userData?.devices?[bleType]?[BleField.id]!.trim() != "") {
       _deviceConnectedStreamController.sink.add({
-        "id": _userData!.devices[bleType]![BleField.id],
-        "name": _userData!.devices[bleType]![BleField.name],
+        "id": _userData!.devices?[bleType]![BleField.id],
+        "name": _userData!.devices?[bleType]![BleField.name],
         "connected": _device?.isConnected ?? false
       });
       callback?.call();
-      _log.fine("init: ${bleType.name} try auto connection to device");
-      _device =
-          BluetoothDevice.fromId(_userData!.devices[bleType]![BleField.id]!);
-      if (_device!.isDisconnected) {
-        _log.fine("init:  ${bleType.name} connect(autoConnect: true)");
-        connect(device: _device!, autoConnect: true, callback: callback);
+      if (_userData?.devices != null && _userData!.devices![bleType] != null) {
+        _log.fine("init: ${bleType.name} try auto connection to device");
+        _device =
+            BluetoothDevice.fromId(_userData!.devices![bleType]![BleField.id]!);
+        if (_device!.isDisconnected) {
+          _log.fine("init:  ${bleType.name} connect(autoConnect: true)");
+          connect(device: _device!, autoConnect: true, callback: callback);
+        }
       }
     }
     callback?.call();
@@ -190,9 +192,10 @@ abstract class BleModel {
 
   void _store() {
     if (Auth.instance().autenticated) {
-      BleUserData userData = BleUserData.fromBle({bleType: _device});
+      BleUserData userData =
+          BleUserData.fromDevices(devices: {bleType: _device});
       _log.fine(
-          "_store:  ${bleType.name} persist device ${userData.devices[bleType]}");
+          "_store:  ${bleType.name} persist device ${userData.devices![bleType]}");
       BleUserStore.instance().update(userData, fields: []);
     }
   }
@@ -224,9 +227,9 @@ abstract class BleModel {
         } else {
           // notify listener device connection
           _deviceConnectedStreamController.sink.add({
-            "id": _userData?.devices[bleType]?[BleField.id] ??
+            "id": _userData?.devices?[bleType]?[BleField.id] ??
                 device.remoteId.str,
-            "name": _userData?.devices[bleType]?[BleField.name] ??
+            "name": _userData?.devices?[bleType]?[BleField.name] ??
                 device.platformName,
             "connected": true
           });
