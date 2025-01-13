@@ -107,6 +107,43 @@ You can configure you `vscode` to execute the command with `build` in order to a
     "preLaunchTask": "dart: run flutter_heyteacher_utils:version build"
   ```
 
+## BLE Ant+ (Bluetooth Low Emission)
+
+### `THR` Target Heart Rate
+
+* `MHR` Max Heart Rate Equation
+  ```
+  MHR = 220 - Age
+  ```
+
+* `THR` Target Heart Rate Formula (Basic)
+  ```
+  THR = MHR * %Intensity
+  ```
+
+* `THR` Target Heart Rate Formula (Karvonen Formula)
+  ```
+   THR = [(MHR - RHR) x %Intensity] + RHR
+   THR = [(220 - Age - RHR) x %Intensity] + RHR
+  ```
+
+* `%Intensity` (Karvonen Formula)
+  ```
+   THR = [(MHR - RHR) x %Intensity] + RHR
+   THR - RHR = [(MHR - RHR) x %Intensity] 
+   THR - RHR = (220 - Age - RHR) x %Intensity 
+   %Intensity = (THR - RHR / (220 - Age - RHR)) * 100 
+  ```
+### Heart Rate Zones
+
+| Zones | Description    | Min Intensity | Max Intensity |
+|-------|----------------|---------------|---------------|
+|   Z1  | Warn Up Zone   |      50%      |      60%      |
+|   Z2  | Fat Burn Zone  |      60%      |      70%      |
+|   Z3  | Aerobic Zone   |      70%      |      80%      |
+|   Z4  | Anaerobic Zone |      80%      |      90%      |
+|   Z5  | VO2 Max Zone   |      90%      |      100%     |
+
 ## Additional information
 
 TODO: Tell users more about the package: where to find more information, how to
