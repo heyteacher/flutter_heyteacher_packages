@@ -3,13 +3,13 @@
 ///
 /// There are three type of filter which implement [StoreFilter] interface:
 ///
-/// * [ValueStoreFilter]  where [ValueStoreFilter.field] is compared to 
+/// * [ValueStoreFilter]  where [ValueStoreFilter.field] is compared to
 ///   [ValueStoreFilter.value] according [Operator]
 ///
-/// * [IterableValueStoreFilter] where [IterableValueStoreFilter.field] is compare to 
+/// * [IterableValueStoreFilter] where [IterableValueStoreFilter.field] is compare to
 ///   iterable [IterableValueStoreFilter.values] according [IterableOperator]
 ///
-/// * [IsNullStoreFilter] check if [IsNullStoreFilter.field] is null 
+/// * [IsNullStoreFilter] check if [IsNullStoreFilter.field] is null
 ///   in the case [IsNullStoreFilter.value] is true, or is not null if [IsNullStoreFilter.value] is false
 ///
 /// * [LogicalStoreFilter] coumpound [StoreFilter] according [LogicalOperator]
@@ -35,16 +35,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 enum Operator {
   /// If field value is equal to value
   isEqualTo,
+
   /// If field value isn't equal to value
   isNotEqualTo,
+
   /// If field value is less than field
   isLessThan,
+
   /// If field value is less then or equal to value
   isLessThanOrEqualTo,
+
   /// If field value is greater than field
   isGreaterThan,
+
   /// If field value is greater then or equal to value
   isGreaterThanOrEqualTo,
+
   /// If field array value contains the value
   arrayContains,
 }
@@ -53,18 +59,21 @@ enum Operator {
 enum IterableOperator {
   /// If field value is contained into the iterable values
   arrayContainsAny,
+
   /// If field value is is into iterable values
   whereIn,
+
   /// If field value isn't into the iterable values
   whereNotIn,
 }
 
 /// Operators used in [LogicalStoreFilter]
-enum LogicalOperator { 
+enum LogicalOperator {
   /// All [StoreFilter] children must be satisfied
   and,
+
   /// At least one [StoreFilter] children is satisfied
-  or 
+  or
 }
 
 /// The interface implemented by all store filters
@@ -75,14 +84,16 @@ abstract class StoreFilter {
 
 /// Compares [field] value to [value] according [Operator]
 class ValueStoreFilter implements StoreFilter {
-  /// The field in document 
+  /// The field in document
   String field;
+
   /// The operator used in comparition
   Operator operator;
+
   /// The value to check
   Object value;
 
-  /// Creates a  value store filter 
+  /// Creates a  value store filter
   ValueStoreFilter(
       {required this.field, required this.operator, required this.value});
 
@@ -110,14 +121,16 @@ class ValueStoreFilter implements StoreFilter {
 
 /// Compares [field] value to iterable [values] according the [IterableOperator]
 class IterableValueStoreFilter implements StoreFilter {
-  /// The field in document 
+  /// The field in document
   String field;
+
   /// The operator used in comparison
   IterableOperator iterableOperator;
+
   /// The iterable values to check
   Iterable<Object?> values;
 
-  /// Creates a iterable store filter 
+  /// Creates a iterable store filter
   IterableValueStoreFilter(
       {required this.field,
       required this.iterableOperator,
@@ -141,10 +154,11 @@ class IterableValueStoreFilter implements StoreFilter {
   }
 }
 
-/// If [value] is `true`, checks if [field] is null. Otherwise checks [field] is not null.  
+/// If [value] is `true`, checks if [field] is null. Otherwise checks [field] is not null.
 class IsNullStoreFilter implements StoreFilter {
   /// The field to check nullability
   String field;
+
   /// if `true`, check nullability. If `false` checks non-nullability
   bool value;
 
@@ -165,72 +179,102 @@ class IsNullStoreFilter implements StoreFilter {
 }
 
 /// Applies [LogicalOperator] to [StoreFilter]. If [LogicalOperator.and] all [StoreFilter] must be satisfied.
-/// If [LogicalOperator.or] at least one [StoreFilter] must be satisfied. 
+/// If [LogicalOperator.or] at least one [StoreFilter] must be satisfied.
 class LogicalStoreFilter implements StoreFilter {
   /// The logical operator applied to filters
   LogicalOperator logicalOperator;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter filter1;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter filter2;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter3;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter4;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter5;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter6;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter7;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter8;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter9;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter10;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter11;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter12;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter13;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter14;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter15;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter16;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter17;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter18;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter19;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter20;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter21;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter22;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter23;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter24;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter25;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter26;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter27;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter28;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter29;
-  /// The filter to evaluate 
+
+  /// The filter to evaluate
   StoreFilter? filter30;
 
-  // Creates a logical filter 
+  // Creates a logical filter
   LogicalStoreFilter({
     required this.logicalOperator,
     required this.filter1,
@@ -371,13 +415,4 @@ class LogicalStoreFilter implements StoreFilter {
         "${filter29 ?? ""}"
         "${filter30 ?? ""})";
   }
-}
-
-class ParentDataNullException {
-  String message;
-  
-  ParentDataNullException(this.message);
-
-  @override
-  String toString() => message;
 }
