@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:flutter_heyteacher_utils/ble/data/enums.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -5,33 +7,49 @@ import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
 
 enum Gender {
   male(heartRateCoeff: 220),
-  female(heartRateCoeff: 226);
+  female(heartRateCoeff: 226),
+  other(heartRateCoeff: 223);
 
   final int heartRateCoeff;
   const Gender({required this.heartRateCoeff});
+
+  @override
+  String toString() {
+    return name;
+  }
 }
 
 enum HeartRateTrainingZone {
-  z1(minIntensity: 50, maxIntensity: 60),
-  z2(minIntensity: 60, maxIntensity: 70),
-  z3(minIntensity: 70, maxIntensity: 80),
-  z4(minIntensity: 80, maxIntensity: 90),
-  z5(minIntensity: 90, maxIntensity: 100);
+  z1(minIntensity: 50, maxIntensity: 60, color: Colors.cyanAccent),
+  z2(minIntensity: 60, maxIntensity: 70, color: Colors.greenAccent),
+  z3(minIntensity: 70, maxIntensity: 80, color: Colors.yellowAccent),
+  z4(minIntensity: 80, maxIntensity: 90, color: Colors.orangeAccent),
+  z5(minIntensity: 90, maxIntensity: 100, color: Colors.redAccent);
 
   final int minIntensity;
   final int maxIntensity;
+  final Color color;
   const HeartRateTrainingZone(
-      {required this.minIntensity, required this.maxIntensity});
+      {required this.minIntensity,
+      required this.maxIntensity,
+      required this.color});
 
-  (HeartRateTrainingZone heartRateTrainingZone, int? min, int? max) targetBpm(
+  static Color? intensityColor(int? intensity) => HeartRateTrainingZone.values
+      .where((zone) =>
+          (intensity ?? 0) >= zone.minIntensity &&
+          (intensity ?? 0) < zone.maxIntensity)
+      .firstOrNull
+      ?.color;
+
+  ({HeartRateTrainingZone heartRateTrainingZone, int? min, int? max}) targetBpm(
           {({Gender? gender, int? age, int? restBpm})? biometrics}) =>
       (
-        this,
-        _targetBpm(biometrics: biometrics, intensity: minIntensity),
-        _targetBpm(biometrics: biometrics, intensity: maxIntensity)
+        heartRateTrainingZone: this,
+        min: _targetBpm(biometrics: biometrics, intensity: minIntensity),
+        max: _targetBpm(biometrics: biometrics, intensity: maxIntensity)
       );
 
-  // targetBpm = [((female: 226| male: 200) - age - restBpm) x intensity%] + restBpm
+  // targetBpm = [((female: 226| male: 200) - age - restBpm) x intensity% \ 100] + restBpm
   int? _targetBpm(
           {required ({Gender? gender, int? age, int? restBpm})? biometrics,
           required int? intensity}) =>
@@ -42,7 +60,8 @@ enum HeartRateTrainingZone {
           ? (((biometrics!.gender!.heartRateCoeff -
                           biometrics.age! -
                           biometrics.restBpm!) *
-                      intensity) +
+                      intensity /
+                      100) +
                   biometrics.restBpm!)
               .round()
           : null;
@@ -65,10 +84,13 @@ class BleUserData extends UserData {
           .round()
       : null;
 
-  Iterable<(HeartRateTrainingZone heartRateTrainingZone, num? min, num? max)>
-      get heartRateTrainingZones =>
-          HeartRateTrainingZone.values.map((heartRateTrainingZone) =>
-              heartRateTrainingZone.targetBpm(biometrics: biometrics));
+  Iterable<({HeartRateTrainingZone heartRateTrainingZone, num? min, num? max})>?
+      get heartRateTrainingZones => biometrics?.gender != null &&
+              biometrics?.age != null &&
+              biometrics?.restBpm != null
+          ? HeartRateTrainingZone.values.map((heartRateTrainingZone) =>
+              heartRateTrainingZone.targetBpm(biometrics: biometrics))
+          : null;
 
   @override
   String get id => Auth.instance().uid ?? "guest";
