@@ -1,7 +1,6 @@
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
 import 'package:flutter_heyteacher_utils/ble/data/enums.dart';
 import 'package:flutter_heyteacher_utils/ble/data/crank_revolution_record_data.dart';
-import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
 import 'package:logging/logging.dart';
 
 class CadenceBleModel extends BleModel {
@@ -50,8 +49,7 @@ class CadenceBleModel extends BleModel {
         .toList();
     // skip first five records
     if (_crankRevolutionRecords.length < 5) {
-      streamController.sink
-          .add({BleModelFactory.streamKey: "0"});
+      streamController.sink.add(null);
       _log.fine(
           "onData: only ${_crankRevolutionRecords.length} recorded, waiting at least 5 records ");
       return;
@@ -69,6 +67,12 @@ class CadenceBleModel extends BleModel {
     // "_crankRevolutionsCycles $_crankRevolutionsCycles "
     // "_crankRevolutionRecords.length ${_crankRevolutionRecords.length}"
     //    );
-    streamController.sink.add({BleModelFactory.streamKey: rpm.toString()});
+    streamController.sink.add((
+      value: rpm,
+      formatted: rpm.toString(),
+      subValue: null,
+      subFormatted: null,
+      color: null
+    ));
   }
 }
