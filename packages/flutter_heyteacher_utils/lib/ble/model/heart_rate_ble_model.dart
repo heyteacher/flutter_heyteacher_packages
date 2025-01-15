@@ -17,14 +17,19 @@ class HeartRateBleModel extends BleModel {
   void onData(List<int> event) {
     if (event.length >= 2) {
       if (event[1] > 0) {
-        int bpm = event[1];
-        int? intensityValue = intensity(bpm);
+        final int bpm = event[1];
+        final int? intensityValue = intensity(bpm);
+        final HeartRateTrainingZone? heartRateTrainingZone =
+            HeartRateTrainingZone.fromIntensity(intensityValue);
+        final String zone = heartRateTrainingZone != null
+            ? " ${heartRateTrainingZone.name.toUpperCase()}"
+            : "";
         streamController.sink.add((
           value: bpm,
           formatted: bpm.toString(),
           subValue: intensityValue,
-          subFormatted: intensityValue != null ? "$intensity%" : "",
-          color: HeartRateTrainingZone.intensityColor(intensityValue)
+          subFormatted: intensityValue != null ? "$intensityValue%$zone" : "",
+          color: heartRateTrainingZone?.color
         ));
       }
       // _log.fine("bpm ${event[1]}");

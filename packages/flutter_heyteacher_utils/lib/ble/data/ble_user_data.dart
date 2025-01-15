@@ -34,12 +34,12 @@ enum HeartRateTrainingZone {
       required this.maxIntensity,
       required this.color});
 
-  static Color? intensityColor(int? intensity) => HeartRateTrainingZone.values
-      .where((zone) =>
-          (intensity ?? 0) >= zone.minIntensity &&
-          (intensity ?? 0) < zone.maxIntensity)
-      .firstOrNull
-      ?.color;
+  static HeartRateTrainingZone? fromIntensity(int? intensity) =>
+      HeartRateTrainingZone.values
+          .where((zone) =>
+              (intensity ?? 0) >= zone.minIntensity &&
+              (intensity ?? 0) < zone.maxIntensity)
+          .firstOrNull;
 
   ({HeartRateTrainingZone heartRateTrainingZone, int? min, int? max}) targetBpm(
           {({Gender? gender, int? age, int? restBpm})? biometrics}) =>
