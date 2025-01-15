@@ -21,7 +21,9 @@ abstract class BleModel {
 
   StreamSubscription<bool>? _isDisconnectingStreamSubscription;
 
-  bool get notConnected => !(_device?.isConnected ?? false);
+  bool get notConnected => !connected;
+
+ bool get connected => _device?.isConnected ?? false;
 
   String? get deviceName => _device?.platformName.trim() != ""
       ? _device?.platformName
@@ -32,37 +34,36 @@ abstract class BleModel {
 
   @protected
   final StreamController<
-          ({
-            int? value,
-            String? formatted,
-            int? subValue,
-            String? subFormatted,
-            Color? color
-          })?> streamController =
-      StreamController<
-          ({
-            int? value,
-            String? formatted,
-            int? subValue,
-            String? subFormatted,
-            Color? color
-          })?>.broadcast();
+      ({
+        dynamic value,
+        String? formatted,
+        dynamic subValue,
+        String? subFormatted,
+        Color? color
+      })?> streamController = StreamController<
+      ({
+        dynamic value,
+        String? formatted,
+        dynamic subValue,
+        String? subFormatted,
+        Color? color
+      })?>.broadcast();
 
   Stream<
       ({
-        int? value,
+        dynamic value,
         String? formatted,
-        int? subValue,
+        dynamic subValue,
         String? subFormatted,
         Color? color
       })?> get stream => streamController.stream;
 
   final StreamController<({String? id, String? name, bool connected})>
-      _deviceConnectedStreamController = StreamController<
+      _deviceStatusStreamController = StreamController<
           ({String? id, String? name, bool connected})>.broadcast();
 
   Stream<({String? id, String? name, bool connected})>
-      get deviceConnectedStream => _deviceConnectedStreamController.stream;
+      get deviceStatusStream => _deviceStatusStreamController.stream;
 
   @protected
   BleModel(this.bleType);
@@ -106,17 +107,16 @@ abstract class BleModel {
         "init: ${bleType.name} remote user devices ${_userData?.devices?[bleType]}");
     if (_userData?.devices?[bleType]?[BleField.id] != null &&
         _userData?.devices?[bleType]?[BleField.id]!.trim() != "") {
-      _deviceConnectedStreamController.sink.add((
+      _deviceStatusStreamController.sink.add((
         id: _userData!.devices?[bleType]![BleField.id],
         name: _userData!.devices?[bleType]![BleField.name],
         connected: _device?.isConnected ?? false
       ));
       callback?.call();
-      if (_userData?.devices != null &&
-          _userData!.devices![bleType] != null) {
+      if (_userData?.devices != null && _userData!.devices![bleType] != null) {
         _log.fine("init: ${bleType.name} try auto connection to device");
-        _device = BluetoothDevice.fromId(
-            _userData!.devices![bleType]![BleField.id]!);
+        _device =
+            BluetoothDevice.fromId(_userData!.devices![bleType]![BleField.id]!);
         if (_device!.isDisconnected) {
           _log.fine("init:  ${bleType.name} connect(autoConnect: true)");
           connect(device: _device!, autoConnect: true, callback: callback);
@@ -192,7 +192,7 @@ abstract class BleModel {
           // stop listening an update user store
           //_characteristic.setNotifyValue(false);
           // notify disconnection
-          _deviceConnectedStreamController.sink
+          _deviceStatusStreamController.sink
               .add((name: "", id: null, connected: false));
           // reset last stream value
           streamController.sink.add(null);
@@ -211,11 +211,12 @@ abstract class BleModel {
 
   Iterable<({HeartRateTrainingZone heartRateTrainingZone, num? max, num? min})>?
       get heartRateTrainingZones => _userData?.heartRateTrainingZones;
- 
+
   @protected
   int? intensity(int bpm) => _userData?.intensity(bpm);
 
-  void updateBiometrics({({int? age, Gender? gender, int? restBpm})? biometrics}) {
+  void updateBiometrics(
+      {({int? age, Gender? gender, int? restBpm})? biometrics}) {
     if (_userData != null) {
       _userData!.biometrics = biometrics;
       BleUserStore.instance().update(_userData!, fields: ["biometrics"]);
@@ -264,7 +265,7 @@ abstract class BleModel {
           // heart rate caratteristic found, listen it
         } else {
           // notify listener device connection
-          _deviceConnectedStreamController.sink.add((
+          _deviceStatusStreamController.sink.add((
             id: _userData?.devices?[bleType]?[BleField.id] ??
                 device.remoteId.str,
             name: _userData?.devices?[bleType]?[BleField.name] ??
