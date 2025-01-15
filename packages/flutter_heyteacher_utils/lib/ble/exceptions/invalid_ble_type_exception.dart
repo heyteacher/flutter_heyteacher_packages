@@ -1,3 +1,0 @@
-class InvalidBleTypeException implements Exception {
-  
-}
