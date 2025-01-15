@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:flutter_heyteacher_utils/ble/data/enums.dart';
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
 import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
@@ -27,10 +26,10 @@ abstract class BleModel {
 
   String? get deviceName => _device?.platformName.trim() != ""
       ? _device?.platformName
-      : _userData?.devices?[bleType]?[BleField.name];
+      : _userData?.devices?[bleType]?.name;
 
   String? get deviceId =>
-      _device?.remoteId.str ?? _userData?.devices?[bleType]?[BleField.id];
+      _device?.remoteId.str ?? _userData?.devices?[bleType]?.id;
 
   @protected
   final StreamController<
@@ -105,18 +104,18 @@ abstract class BleModel {
     }
     _log.fine(
         "init: ${bleType.name} remote user devices ${_userData?.devices?[bleType]}");
-    if (_userData?.devices?[bleType]?[BleField.id] != null &&
-        _userData?.devices?[bleType]?[BleField.id]!.trim() != "") {
+    if (_userData?.devices?[bleType]?.id != null &&
+        _userData?.devices?[bleType]?.id!.trim() != "") {
       _deviceStatusStreamController.sink.add((
-        id: _userData!.devices?[bleType]![BleField.id],
-        name: _userData!.devices?[bleType]![BleField.name],
+        id: _userData!.devices?[bleType]!.id,
+        name: _userData!.devices?[bleType]!.name,
         connected: _device?.isConnected ?? false
       ));
       callback?.call();
       if (_userData?.devices != null && _userData!.devices![bleType] != null) {
         _log.fine("init: ${bleType.name} try auto connection to device");
         _device =
-            BluetoothDevice.fromId(_userData!.devices![bleType]![BleField.id]!);
+            BluetoothDevice.fromId(_userData!.devices![bleType]!.id!);
         if (_device!.isDisconnected) {
           _log.fine("init:  ${bleType.name} connect(autoConnect: true)");
           connect(device: _device!, autoConnect: true, callback: callback);
@@ -266,9 +265,9 @@ abstract class BleModel {
         } else {
           // notify listener device connection
           _deviceStatusStreamController.sink.add((
-            id: _userData?.devices?[bleType]?[BleField.id] ??
+            id: _userData?.devices?[bleType]?.id ??
                 device.remoteId.str,
-            name: _userData?.devices?[bleType]?[BleField.name] ??
+            name: _userData?.devices?[bleType]?.name ??
                 device.platformName,
             connected: true
           ));

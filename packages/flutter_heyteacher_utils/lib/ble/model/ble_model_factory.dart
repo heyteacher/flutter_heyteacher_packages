@@ -1,5 +1,5 @@
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:flutter_heyteacher_utils/ble/data/enums.dart';
+import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
 import 'package:flutter_heyteacher_utils/ble/model/cadence_ble_model.dart';
 import 'package:flutter_heyteacher_utils/ble/model/heart_rate_ble_model.dart';

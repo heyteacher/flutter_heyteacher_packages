@@ -1,9 +1,36 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_heyteacher_utils/ble/data/enums.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+enum BleType {
+  heartRate(
+      icon: FontAwesomeIcons.heartPulse,
+      firestoreFieldId: "heartRateDeviceId",
+      firestoreFieldName: "heartRateDeviceName",
+      uuidService: "180d",
+      uuidCharacteristic:"2a37"),
+  cadence(
+      icon: Icons.change_circle,
+      firestoreFieldId: "cadenceDeviceId",
+      firestoreFieldName: "cadenceDeviceName",
+            uuidService: "1816",
+      uuidCharacteristic:"2a5b");
+
+  const BleType(
+      {required this.icon,
+      required this.firestoreFieldId,
+      required this.firestoreFieldName,
+      required this.uuidService,
+      required this.uuidCharacteristic});
+  final IconData icon;
+  final String firestoreFieldId;
+  final String firestoreFieldName;
+  final String uuidService;
+  final String uuidCharacteristic;
+}
 
 enum Gender {
   male(heartRateCoeff: 220),
@@ -67,8 +94,14 @@ enum HeartRateTrainingZone {
           : null;
 }
 
+class CrankRevolutionRecordData {
+  DateTime timestamp;
+  int counter;
+  CrankRevolutionRecordData({required this.timestamp, required this.counter});
+}
+
 class BleUserData extends UserData {
-  Map<BleType, Map<BleField, String?>>? devices;
+  Map<BleType, ({String? id, String? name})>? devices;
 
   ({int? restBpm, int? age, Gender? gender})? biometrics;
 
@@ -99,10 +132,10 @@ class BleUserData extends UserData {
 
   BleUserData.fromDevices({Map<BleType, BluetoothDevice?>? devices})
       : this._(
-            devices: devices?.map((bleType, device) => MapEntry(bleType, {
-                  BleField.id: device?.remoteId.str ?? "",
-                  BleField.name: device?.platformName ?? ""
-                })));
+            devices: devices?.map((bleType, device) => MapEntry(bleType,( 
+                  id: device?.remoteId.str ?? "",
+                  name: device?.platformName ?? ""
+                ))));
 
   BleUserData.fromHeartRate(
       ({Gender? gender, int? age, int? restBpm}) biometrics)
@@ -111,10 +144,10 @@ class BleUserData extends UserData {
   factory BleUserData.fromFirestore(Map<String, dynamic> map) {
     return BleUserData._(devices: {
       for (BleType bleType in BleType.values)
-        bleType: {
-          BleField.id: map[bleType.firestoreFieldId],
-          BleField.name: map[bleType.firestoreFieldName],
-        },
+        bleType: (
+          id: map[bleType.firestoreFieldId],
+          name: map[bleType.firestoreFieldName],
+        ),
     }, biometrics: (
       restBpm: map["biometrics"]?["restBpm"],
       age: map["biometrics"]?["age"],
@@ -136,22 +169,22 @@ class BleUserData extends UserData {
         // set firestoreFieldId for each ble types
         for (BleType bleType in BleType.values)
           // update only if not null, empty string for reset
-          if (devices?[bleType]?[BleField.id] != null)
-            bleType.firestoreFieldId: devices![bleType]![BleField.id],
+          if (devices?[bleType]?.id != null)
+            bleType.firestoreFieldId: devices![bleType]!.id,
 
         // set firestoreFieldName  for each ble types
         // if id in not null or empty, dont update name if is empty
         // id not null and name empty occurs when ble device is restore on app restart
         // so, in this way is preserved the stored name during scan and connect
         for (BleType bleType in BleType.values)
-          if (devices?[bleType]?[BleField.id] == "" ||
-              (devices?[bleType]?[BleField.name] != null &&
-                  devices?[bleType]?[BleField.name]?.trim() != ""))
-            bleType.firestoreFieldName: devices?[bleType]?[BleField.name],
+          if (devices?[bleType]?.id == "" ||
+              (devices?[bleType]?.name != null &&
+                  devices?[bleType]?.name?.trim() != ""))
+            bleType.firestoreFieldName: devices?[bleType]?.name,
       };
 
   @override
   String toString() => "${super.toString()}, "
-      "devices: ${devices?.map((key, value) => MapEntry(key.name, "${value[BleField.name]} (${value[BleField.id]})"))}, "
+      "devices: ${devices?.map((key, value) => MapEntry(key.name, "${value.name} (${value.id})"))}, "
       "biometrics: $biometrics";
 }

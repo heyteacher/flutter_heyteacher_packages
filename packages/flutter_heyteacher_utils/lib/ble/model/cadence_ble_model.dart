@@ -1,6 +1,5 @@
+import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
-import 'package:flutter_heyteacher_utils/ble/data/enums.dart';
-import 'package:flutter_heyteacher_utils/ble/data/crank_revolution_record_data.dart';
 import 'package:logging/logging.dart';
 
 class CadenceBleModel extends BleModel {
