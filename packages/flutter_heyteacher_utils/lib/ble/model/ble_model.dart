@@ -5,6 +5,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
 import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
+import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_heyteacher_utils/ble/ble_device_helper.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
@@ -14,7 +15,7 @@ abstract class BleModel {
 
   BleType bleType;
 
-  BleUserData? _userData;
+  static BleUserData? _userData;
 
   BluetoothDevice? _device;
 
@@ -22,7 +23,7 @@ abstract class BleModel {
 
   bool get notConnected => !connected;
 
- bool get connected => _device?.isConnected ?? false;
+  bool get connected => _device?.isConnected ?? false;
 
   String? get deviceName => _device?.platformName.trim() != ""
       ? _device?.platformName
@@ -61,8 +62,8 @@ abstract class BleModel {
       _deviceStatusStreamController = StreamController<
           ({String? id, String? name, bool connected})>.broadcast();
 
-  Stream<({String? id, String? name, bool connected})>
-      get deviceStatusStream => _deviceStatusStreamController.stream;
+  Stream<({String? id, String? name, bool connected})> get deviceStatusStream =>
+      _deviceStatusStreamController.stream;
 
   @protected
   BleModel(this.bleType);
@@ -98,24 +99,27 @@ abstract class BleModel {
 
   Future<void> init([VoidCallback? callback]) async {
     BleModelFactory.initBle(callback);
-    if (Auth.instance().uid != null &&
-        await BleUserStore.instance().exists(Auth.instance().uid!)) {
-      _userData = await BleUserStore.instance().get(Auth.instance().uid!);
+    try {
+      _userData ??= Auth.instance().autenticated
+          ? await BleUserStore.instance().get(Auth.instance().uid!)
+          : null;
+    } on DocumentNotFoundException {
+      _log.fine("user data not found in store");
     }
-    _log.fine(
-        "init: ${bleType.name} remote user devices ${_userData?.devices?[bleType]}");
-    if (_userData?.devices?[bleType]?.id != null &&
-        _userData?.devices?[bleType]?.id!.trim() != "") {
+    ({String? id, String? name})? userDevice =
+        _userData?.devices?[bleType];
+    _log.fine("init: ${bleType.name} remote user devices $userDevice");
+
+    if (userDevice?.id?.trim() != "") {
       _deviceStatusStreamController.sink.add((
-        id: _userData!.devices?[bleType]!.id,
-        name: _userData!.devices?[bleType]!.name,
+        id: userDevice?.id,
+        name: userDevice?.name,
         connected: _device?.isConnected ?? false
       ));
       callback?.call();
-      if (_userData?.devices != null && _userData!.devices![bleType] != null) {
+      if (userDevice != null) {
         _log.fine("init: ${bleType.name} try auto connection to device");
-        _device =
-            BluetoothDevice.fromId(_userData!.devices![bleType]!.id!);
+        _device = BluetoothDevice.fromId(userDevice.id!);
         if (_device!.isDisconnected) {
           _log.fine("init:  ${bleType.name} connect(autoConnect: true)");
           connect(device: _device!, autoConnect: true, callback: callback);
@@ -265,10 +269,8 @@ abstract class BleModel {
         } else {
           // notify listener device connection
           _deviceStatusStreamController.sink.add((
-            id: _userData?.devices?[bleType]?.id ??
-                device.remoteId.str,
-            name: _userData?.devices?[bleType]?.name ??
-                device.platformName,
+            id: _userData?.devices?[bleType]?.id ?? device.remoteId.str,
+            name: _userData?.devices?[bleType]?.name ?? device.platformName,
             connected: true
           ));
           _device = device;
