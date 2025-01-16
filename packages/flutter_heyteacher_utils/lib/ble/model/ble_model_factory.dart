@@ -20,11 +20,6 @@ class BleModelFactory {
 
   static StreamSubscription<List<ScanResult>>? _scanResultsSubscription;
 
-  static BluetoothAdapterState? bluetoothAdapterState;
-
-  static StreamSubscription<BluetoothAdapterState>?
-      _bleAdaptreStreamSubscription;
-
   static StreamSubscription<bool>? _isScanningSubscription;
 
   static StreamSubscription<String>? _logStreamSubscription;
@@ -66,9 +61,12 @@ class BleModelFactory {
     }
   }
 
-  static void turnOn([VoidCallback? callback]) async {
+ static Future<void> turnOn({VoidCallback? callback}) async {
+      _log.fine("turnOn: if android try to turn on Ble");
     try {
-      if (Platform.isAndroid) {
+      if (Platform.isAndroid &&
+          FlutterBluePlus.adapterStateNow != BluetoothAdapterState.on) {
+        _log.fine("turnOn: android bluetooth isn't on, turn on");
         await FlutterBluePlus.turnOn();
         callback?.call();
       }
@@ -131,22 +129,6 @@ class BleModelFactory {
       _log.fine("initBle: Bluetooth not supported by this device");
       return;
     }
-    // initialize bluetoothAdapterState
-    if (_bleAdaptreStreamSubscription == null) {
-      _log.fine("initBle: listen bluetooth adapter state");
-    }
-    _bleAdaptreStreamSubscription ??= FlutterBluePlus.adapterState
-        .listen((BluetoothAdapterState newBluetoothAdapterState) async {
-      bluetoothAdapterState = newBluetoothAdapterState;
-      // turn on bluetooth ourself if we can
-      // for iOS, the user controls bluetooth enable/disable
-      if (Platform.isAndroid &&
-          bluetoothAdapterState != BluetoothAdapterState.on) {
-        _log.fine("initBle: bluetooth isn't on, turn on");
-        await FlutterBluePlus.turnOn();
-        callback?.call();
-      }
-    });
   }
 
   static Guid _serviceGuid(BleType bleType) => Guid(bleType.uuidService);
