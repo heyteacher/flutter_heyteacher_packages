@@ -184,6 +184,9 @@ enum HeartRateTrainingZone {
                   biometrics.restBpm!)
               .round()
           : null;
+
+  @override
+  toString() => name;
 }
 
 class CrankRevolutionRecordData {
