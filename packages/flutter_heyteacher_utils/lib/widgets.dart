@@ -1,6 +1,7 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:flutter_heyteacher_utils/theme.dart';
 
 void showSnackBar(
     {required BuildContext context, required String message, bool error = false}) {
@@ -9,7 +10,7 @@ void showSnackBar(
         duration: Duration(
             seconds: FirebaseRemoteConfig.instance
                 .getInt("snackBarDurationInSeconds")),
-        backgroundColor: error? Theme.of(context).colorScheme.onError: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: error? Theme.of(context).colorScheme.error: ThemeHepler.instance().greenTextColor,
         content: Text(message)),
   );
 }

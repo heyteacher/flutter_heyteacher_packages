@@ -1,3 +1,5 @@
+import 'package:flutter_heyteacher_utils/theme.dart';
+
 import '../../formats.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +126,7 @@ class _LineChartViewState extends State<LineChartView> {
       padding: const EdgeInsets.only(right: 5),
       child: Text(_roundToInterval(value, widget.intervalY).toInt().toString(),
           style: widget.theme.textTheme.bodySmall!
-              .copyWith(color: widget.theme.colorScheme.onTertiary),
+              .copyWith(color: ThemeHepler.instance().greenTextColor),
           textAlign: TextAlign.right),
     );
   }
@@ -141,7 +143,7 @@ class _LineChartViewState extends State<LineChartView> {
               formatDuration(
                   _roundToInterval(value, widget.intervalX) * 60 * 1000),
               style: widget.theme.textTheme.bodySmall!
-                  .copyWith(color: widget.theme.colorScheme.onSecondary),
+                  .copyWith(color: ThemeHepler.instance().orangeTextColor),
             ),
           ),
         ));
@@ -168,7 +170,7 @@ class _LineChartViewState extends State<LineChartView> {
   LineChartBarData get _lineChartBarData => LineChartBarData(
       isCurved: true,
       //curveSmoothness: 0,
-      color: widget.theme.colorScheme.onTertiary /*.withOpacity(0.5)*/,
+      color: ThemeHepler.instance().greenTextColor/*.withOpacity(0.5)*/,
       barWidth: 1,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),

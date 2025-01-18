@@ -1,67 +1,95 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
-class ThemeSwitcher extends InheritedWidget {
-  final ThemeSwitcherWidgetState data;
+class ThemeHepler {
+  ThemeData darkTheme = ThemeData.dark(), lightTheme = ThemeData.light();
+  ThemeMode themeMode = ThemeMode.system;
+  Color blueTextColor = Colors.blueAccent,
+      orangeTextColor = Colors.orangeAccent ,
+      greenTextColor = Colors.greenAccent;
 
-  const ThemeSwitcher({
-    super.key,
-    required this.data,
-    required super.child,
-  });
+  ThemeData get theme => switch (themeMode) {
+        ThemeMode.dark => darkTheme,
+        ThemeMode.light => lightTheme,
+        ThemeMode.system => darkTheme
+      };
 
-  static ThemeSwitcherWidgetState of(BuildContext context) {
-    return (context.dependOnInheritedWidgetOfExactType<ThemeSwitcher>()
-            as ThemeSwitcher)
-        .data;
+  set theme(ThemeData theme) => switch (themeMode) {
+        ThemeMode.dark => darkTheme = theme,
+        ThemeMode.light => lightTheme = theme,
+        ThemeMode.system => darkTheme = theme
+      };
+
+  static ThemeHepler? _instance;
+  static ThemeHepler instance() => _instance ??= ThemeHepler._();
+  ThemeHepler._();
+
+  final StreamController<
+      ({
+        ThemeMode? themeMode,
+        Color? onPrimary,
+        Color? disabled,
+        Color? primary,
+        Color? onAlert,
+        Color? alert,
+        Color? onSurface,
+        Color? surface,
+        Color? onSurfaceVariant,
+        Color? surfaceContainer,
+      })?> _themeStreamController = StreamController<
+      ({
+        ThemeMode? themeMode,
+        Color? onPrimary,
+        Color? disabled,
+        Color? primary,
+        Color? onAlert,
+        Color? alert,
+        Color? onSurface,
+        Color? surface,
+        Color? onSurfaceVariant,
+        Color? surfaceContainer,
+      })?>.broadcast();
+  Stream<
+      ({
+        ThemeMode? themeMode,
+        Color? onPrimary,
+        Color? disabled,
+        Color? primary,
+        Color? onAlert,
+        Color? alert,
+        Color? onSurface,
+        Color? surface,
+        Color? onSurfaceVariant,
+        Color? surfaceContainer,
+      })?> get themeStream => _themeStreamController.stream;
+
+  void setDefault() {
+    _themeStreamController.sink.add(null);
   }
 
-  @override
-  bool updateShouldNotify(ThemeSwitcher oldWidget) {
-    return this != oldWidget;
-  }
-}
-
-class ThemeSwitcherWidget extends StatefulWidget {
-  final ThemeData initialTheme;
-  final Widget child;
-
-  const ThemeSwitcherWidget(
-      {super.key, required this.initialTheme, required this.child});
-
-  @override
-  ThemeSwitcherWidgetState createState() => ThemeSwitcherWidgetState();
-}
-
-class ThemeSwitcherWidgetState extends State<ThemeSwitcherWidget> {
-  ThemeData? themeData;
-
-  void switchTheme(ThemeData theme) {
-    setState(() {
-      themeData = theme;
-    });
-  }
-
-  void switchInitialTheme() {
-    setState(() {
-      themeData = widget.initialTheme;
-    });
-  }
-
-  void switchColorSurface(Color surface) {
-    setState(() {
-      if (themeData != null) {
-        themeData = themeData!.copyWith(
-            colorScheme: themeData!.colorScheme.copyWith(surface: surface));
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    themeData = themeData ?? widget.initialTheme;
-    return ThemeSwitcher(
-      data: this,
-      child: widget.child,
-    );
+  void updateTheme(
+      {ThemeMode? themeMode,
+      Color? onPrimary,
+      Color? primary,
+      Color? disabled,
+      Color? onAlert,
+      Color? alert,
+      Color? onSurface,
+      Color? surface,
+      Color? onSurfaceVariant,
+      Color? surfaceContainer}) {
+    _themeStreamController.sink.add((
+      themeMode: themeMode,
+      onPrimary: onPrimary,
+      primary: primary,
+      disabled: disabled,
+      onAlert: onAlert,
+      alert: alert,
+      onSurface: onSurface,
+      surface: surface,
+      onSurfaceVariant: onSurfaceVariant,
+      surfaceContainer: surfaceContainer
+    ));
   }
 }
