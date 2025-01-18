@@ -38,13 +38,15 @@ class Auth {
     }
   }
 
-  bool get autenticated => _firebaseAuth.currentUser != null;
+  User? get user => _firebaseAuth.currentUser;
 
-  bool get notAutenticated => _firebaseAuth.currentUser == null;
+  bool get autenticated => user != null;
 
-  String? get displayName => _firebaseAuth.currentUser?.displayName;
+  bool get notAutenticated => !autenticated;
 
-  String? get uid => _firebaseAuth.currentUser?.uid;
+  String? get displayName => user?.displayName;
+
+  String? get uid => user?.uid;
 
   Stream<User?> get stateChangesStream => _firebaseAuth.authStateChanges();
 }
