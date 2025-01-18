@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
-import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:logging/logging.dart';
 
@@ -35,20 +34,30 @@ class HeartRateBleModel extends BleModel {
           subFormatted: intensityValue != null ? "$intensityValue%$zone" : "",
           color: heartRateTrainingZone?.color
         ));
-        // new heartRateTrainingZone  
+        // new heartRateTrainingZone
         if (heartRateTrainingZone != null &&
             lastHeartRateTrainingZone != heartRateTrainingZone) {
-          _log.fine(
-              "heartRateTrainingZone $lastHeartRateTrainingZone -> $heartRateTrainingZone, bpm $bpm, intensity $intensityValue ");
-          BuildContext? context = ContextHelper.context;
+          _log.fine("heartRateTrainingZone "
+              "$lastHeartRateTrainingZone -> $heartRateTrainingZone, "
+              "bpm $bpm, "
+              "intensity $intensityValue");
           // change the background
-          if (context != null) {
-            ThemeSwitcher.of(ContextHelper.context!).switchColorSurface(
-                heartRateTrainingZone.color.withValues(alpha: 0.2));
+          if (heartRateTrainingZone != HeartRateTrainingZone.z0) {
+            ThemeHepler.instance().updateTheme(
+                surface: _surfaceColor(heartRateTrainingZone.color));
+          } else {
+            ThemeHepler.instance().setDefault();
           }
           lastHeartRateTrainingZone = heartRateTrainingZone;
         }
       }
     }
   }
+
+  _surfaceColor(Color color) => Color.lerp(
+      color,
+      ThemeHepler.instance().themeMode == ThemeMode.light
+          ? Colors.white
+          : Colors.black,
+      0.7);
 }
