@@ -153,6 +153,13 @@ enum HeartRateTrainingZone {
       required this.maxIntensity,
       required this.color});
 
+  static HeartRateTrainingZone? fromName(String? name) =>
+      HeartRateTrainingZone.values
+          .where((zone) =>
+              zone.name == name)
+          .firstOrNull;
+
+
   static HeartRateTrainingZone? fromIntensity(int? intensity) =>
       HeartRateTrainingZone.values
           .where((zone) =>
