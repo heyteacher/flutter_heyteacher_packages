@@ -43,7 +43,7 @@ class HeartRateBleModel extends BleModel {
               "intensity $intensityValue");
           // change the background
           if (heartRateTrainingZone != HeartRateTrainingZone.z0) {
-            ThemeHepler.instance().updateTheme(
+            ThemeHepler.instance().updateColorScheme(
                 surface: _surfaceColor(heartRateTrainingZone.color));
           } else {
             ThemeHepler.instance().setDefault();
