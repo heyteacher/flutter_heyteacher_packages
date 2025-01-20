@@ -377,6 +377,13 @@ abstract class Store<LightDataType extends FirestoreData,
     }
   }
 
+  Future<DetailsDataType?> getOrNull(String id) async {
+    _log.fine("getOrNull($_detailsCollectionPathLog/$id)");
+    _checkAuthenticated();
+    return await exists(id)? get(id): null;
+  }
+
+
   Future<void> delete(String id, {WriteBatch? batch}) async {
     _log.fine("delete($_detailsCollectionPathLog/$id)");
     _checkAuthenticated();
