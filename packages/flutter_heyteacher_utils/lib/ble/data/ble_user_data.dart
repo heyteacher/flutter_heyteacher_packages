@@ -34,7 +34,7 @@ class BleUserData extends UserData {
   @override
   String get id => Auth.instance().uid ?? "guest";
 
-  BleUserData._({this.devices, this.biometrics}) : super(null);
+  BleUserData._({this.devices, this.biometrics}) : super();
 
   BleUserData.fromDevices({Map<BleType, BluetoothDevice?>? devices})
       : this._(

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
 
 class ThemeHepler {
   final ({
@@ -18,22 +20,28 @@ class ThemeHepler {
 
   ThemeData darkTheme = ThemeData.dark(), lightTheme = ThemeData.light();
 
-  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode _themeMode;
   ThemeMode get themeMode => _themeMode;
-  set themeMode(ThemeMode themeMode) {
-    _themeMode = themeMode;
+
+  void setThemeMode(ThemeMode newThemeMode) async {
+    _themeMode = newThemeMode;
     _themeStreamController.sink.add(null);
+    if (Auth.instance().autenticated) {
+      UserStore.instance().update(UserData.fromThemeMode(themeMode: themeMode),
+          fields: ["themeMode"]);
+    }
   }
 
-  Color get blueTextColor => _themeMode == ThemeMode.light? Colors.blue: Colors.blue.shade300;
-  Color get orangeTextColor => _themeMode ==ThemeMode.light? Colors.orange:Colors.orange.shade300;
-  Color get greenTextColor => _themeMode ==ThemeMode.light? Colors.green:Colors.green.shade300;
+  Color get blueTextColor =>
+      _themeMode == ThemeMode.light ? Colors.blue : Colors.blue.shade300;
+  Color get orangeTextColor =>
+      _themeMode == ThemeMode.light ? Colors.orange : Colors.orange.shade300;
+  Color get greenTextColor =>
+      _themeMode == ThemeMode.light ? Colors.green : Colors.green.shade300;
 
   static ThemeHepler? _instance;
   static ThemeHepler instance(
-          {bool initialize = false,
-          ThemeMode? themeMode,
-          ({
+          {          ({
             Color primary,
             Color disabled,
             Color onPrimary,
@@ -59,15 +67,11 @@ class ThemeHepler {
             Color onSurfaceVariant,
             Color surfaceContainer,
           })? initialLightColorScheme}) =>
-      initialize
-          ? _instance = ThemeHepler._(
-              themeMode: themeMode!,
+      _instance ??= ThemeHepler._(
               initialDarkColorScheme: initialDarkColorScheme!,
-              initialLightColorScheme: initialLightColorScheme!)
-          : _instance!;
+              initialLightColorScheme: initialLightColorScheme!);
   ThemeHepler._(
-      {required ThemeMode themeMode,
-      required ({
+      {required ({
         Color primary,
         Color disabled,
         Color onPrimary,
@@ -95,7 +99,20 @@ class ThemeHepler {
       }) initialLightColorScheme})
       : _initialLightColorScheme = initialLightColorScheme,
         _initialDarkColorScheme = initialDarkColorScheme,
-        _themeMode = themeMode {
+        _themeMode = ThemeMode.system {
+    // load from store user the theme mode
+    Auth.instance().autenticated
+        ? UserStore.instance()
+            .getOrNull(Auth.instance().uid!)
+            .then((user) => _themeMode = switch (user?.themeMode) {
+                  "dark" => ThemeMode.dark,
+                  "light" => ThemeMode.light,
+                  _ => ThemeMode.system,
+                })
+        : _themeMode = ThemeMode.system;
+    // if store user theme mode isn't the default, notify to UI the changee
+    if (_themeMode != ThemeMode.system) _themeStreamController.sink.add(null);
+    // initializa dark and light theme
     darkTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
     lightTheme = _themeData(
@@ -106,7 +123,7 @@ class ThemeHepler {
       StreamController<dynamic>.broadcast();
   Stream<dynamic> get themeStream => _themeStreamController.stream;
 
-  setDefault() {
+  void setDefault() {
     darkTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
     lightTheme = _themeData(
@@ -114,39 +131,61 @@ class ThemeHepler {
     _themeStreamController.sink.add(null);
   }
 
-  updateColorScheme(
-      {Color? primary,
+  void update({
+    ({Color light, Color dark})? primary,
+    ({Color light, Color dark})? disabled,
+    ({Color light, Color dark})? onPrimary,
+    ({Color light, Color dark})? secondary,
+    ({Color light, Color dark})? onSecondary,
+    ({Color light, Color dark})? error,
+    ({Color light, Color dark})? onError,
+    ({Color light, Color dark})? onSurface,
+    ({Color light, Color dark})? surface,
+    ({Color light, Color dark})? onSurfaceVariant,
+    ({Color light, Color dark})? surfaceContainer,
+  }) {
+    ({
+      Color? primary,
       Color? disabled,
       Color? onPrimary,
       Color? secondary,
       Color? onSecondary,
-      Color? onError,
       Color? error,
+      Color? onError,
       Color? onSurface,
       Color? surface,
       Color? onSurfaceVariant,
-      Color? surfaceContainer}) {
-    var colorScheme = (
-      primary: primary,
-      disabled: disabled,
-      onPrimary: onPrimary,
-      secondary: secondary,
-      onSecondary: onSecondary,
-      onError: onError,
-      error: error,
-      surface: surface,
-      onSurface: onSurface,
-      surfaceContainer: surfaceContainer,
-      onSurfaceVariant: onSurfaceVariant,
-    );
-    switch (_themeMode) {
-      case ThemeMode.light:
-        lightTheme =
-            _themeData(themeMode: ThemeMode.light, colorScheme: colorScheme);
-      default:
-        darkTheme =
-            _themeData(themeMode: ThemeMode.dark, colorScheme: colorScheme);
-    }
+      Color? surfaceContainer,
+    }) lightColorScheme = (
+          primary: primary?.light,
+          disabled: disabled?.light,
+          onPrimary: onPrimary?.light,
+          secondary: secondary?.light,
+          onSecondary: onSecondary?.light,
+          onError: onError?.light,
+          error: error?.light,
+          surface: surface?.light,
+          onSurface: onSurface?.light,
+          surfaceContainer: surfaceContainer?.light,
+          onSurfaceVariant: onSurfaceVariant?.light,
+        ),
+        darkColorScheme = (
+          primary: primary?.dark,
+          disabled: disabled?.dark,
+          onPrimary: onPrimary?.dark,
+          secondary: secondary?.dark,
+          onSecondary: onSecondary?.dark,
+          onError: onError?.dark,
+          error: error?.dark,
+          surface: surface?.dark,
+          onSurface: onSurface?.dark,
+          surfaceContainer: surfaceContainer?.dark,
+          onSurfaceVariant: onSurfaceVariant?.dark,
+        );
+    lightTheme =
+        _themeData(themeMode: ThemeMode.light, colorScheme: lightColorScheme);
+    darkTheme =
+        _themeData(themeMode: ThemeMode.dark, colorScheme: darkColorScheme);
     _themeStreamController.sink.add(null);
   }
 
@@ -185,11 +224,11 @@ class ThemeHepler {
 
     return ThemeData(
         brightness:
-            themeMode == ThemeMode.dark ? Brightness.dark : Brightness.light,
+            themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
         disabledColor: disabled,
         colorScheme: ColorScheme(
           brightness:
-              themeMode == ThemeMode.dark ? Brightness.dark : Brightness.light,
+              themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
           primary: primary,
           onPrimary: onPrimary,
           secondary: secondary,

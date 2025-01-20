@@ -43,8 +43,8 @@ class HeartRateBleModel extends BleModel {
               "intensity $intensityValue");
           // change the background
           if (heartRateTrainingZone != HeartRateTrainingZone.z0) {
-            ThemeHepler.instance().updateColorScheme(
-                surface: _surfaceColor(heartRateTrainingZone.color));
+            ThemeHepler.instance()
+                .update(surface: _surfaceColor(heartRateTrainingZone.color));
           } else {
             ThemeHepler.instance().setDefault();
           }
@@ -54,10 +54,8 @@ class HeartRateBleModel extends BleModel {
     }
   }
 
-  _surfaceColor(Color color) => Color.lerp(
-      color,
-      ThemeHepler.instance().themeMode == ThemeMode.light
-          ? Colors.white
-          : Colors.black,
-      0.7);
+  ({Color light, Color dark}) _surfaceColor(Color color) => (
+        light: Color.lerp(color, Colors.white, 0.7)!,
+        dark: Color.lerp(color, Colors.black, 0.7)!
+      );
 }

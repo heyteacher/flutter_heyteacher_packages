@@ -21,7 +21,7 @@ class LocalizationModel {
     // user language code found
     UserData user = await UserStore.instance().exists(Auth.instance().uid!)
         ? await UserStore.instance().get(Auth.instance().uid!)
-        : UserData(null);
+        : UserData();
     if (user.localeLanguageCode != null) {
       // firestore user locale is supported
       if (supportedLocales

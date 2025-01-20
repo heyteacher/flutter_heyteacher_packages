@@ -19,25 +19,34 @@ class UserStore extends Store<UserData, UserData> {
 
 class UserData extends FirestoreData {
   String? localeLanguageCode;
+  String? themeMode;
 
   @override
   String get id => Auth.instance().uid ?? "guest";
 
   @protected
-  UserData(this.localeLanguageCode);
+  UserData({this.localeLanguageCode, this.themeMode});
 
-  UserData.fromLocale({required locale}) : this(locale.languageCode);
+  UserData.fromLocale({required Locale locale})
+      : this(localeLanguageCode: locale.languageCode);
+
+  UserData.fromThemeMode({required ThemeMode themeMode})
+      : this(themeMode: themeMode.name);
 
   factory UserData.fromFirestore(Map<String, dynamic> map) {
-    return UserData(map["localeLanguageCode"]);
+    return UserData(
+        localeLanguageCode: map["localeLanguageCode"],
+        themeMode: map["themeMode"]);
   }
 
   @override
   Map<String, dynamic> toFirestore({List<String>? fields}) => {
         if (fields?.contains("localeLanguageCode") ?? true)
-          "localeLanguageCode": localeLanguageCode
+          "localeLanguageCode": localeLanguageCode,
+        if (fields?.contains("themeMode") ?? true) "themeMode": themeMode
       };
 
   @override
-  String toString() => "localeLanguageCode: $localeLanguageCode";
+  String toString() =>
+      "localeLanguageCode: $localeLanguageCode themeMode $themeMode";
 }
