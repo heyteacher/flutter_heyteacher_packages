@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
@@ -171,7 +173,7 @@ enum HeartRateTrainingZone {
           {({Gender? gender, int? age, int? restBpm})? biometrics}) =>
       (
         heartRateTrainingZone: this,
-        min: _targetBpm(biometrics: biometrics, intensity: minIntensity),
+        min: max( _targetBpm(biometrics: biometrics, intensity: minIntensity) ?? 0, biometrics?.restBpm ?? 0),
         max: _targetBpm(biometrics: biometrics, intensity: maxIntensity)
       );
 
