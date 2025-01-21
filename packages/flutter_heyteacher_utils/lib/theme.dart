@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
 
@@ -19,6 +20,10 @@ class ThemeHepler {
   }) _initialDarkColorScheme, _initialLightColorScheme;
 
   ThemeData darkTheme = ThemeData.dark(), lightTheme = ThemeData.light();
+  ThemeData get theme =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+          ? lightTheme
+          : darkTheme;
 
   ThemeMode _themeMode;
   ThemeMode get themeMode => _themeMode;
@@ -32,16 +37,19 @@ class ThemeHepler {
     }
   }
 
-  Color get blueTextColor =>
-      _themeMode == ThemeMode.light ? Colors.blue : Colors.blue.shade300;
-  Color get orangeTextColor =>
-      _themeMode == ThemeMode.light ? Colors.orange : Colors.orange.shade300;
-  Color get greenTextColor =>
-      _themeMode == ThemeMode.light ? Colors.green : Colors.green.shade300;
+  Color get blueTextColor => _themeMode == ThemeMode.light || _brightness == Brightness.light
+      ? Colors.blue.shade700
+      : Colors.blue.shade300;
+  Color get orangeTextColor => _themeMode == ThemeMode.light || _brightness == Brightness.light
+      ? Colors.orange.shade700
+      : Colors.orange.shade300;
+  Color get greenTextColor => _themeMode == ThemeMode.light || _brightness == Brightness.light
+      ? Colors.green.shade700
+      : Colors.green.shade300;
 
   static ThemeHepler? _instance;
   static ThemeHepler instance(
-          {          ({
+          {({
             Color primary,
             Color disabled,
             Color onPrimary,
@@ -68,8 +76,8 @@ class ThemeHepler {
             Color surfaceContainer,
           })? initialLightColorScheme}) =>
       _instance ??= ThemeHepler._(
-              initialDarkColorScheme: initialDarkColorScheme!,
-              initialLightColorScheme: initialLightColorScheme!);
+          initialDarkColorScheme: initialDarkColorScheme!,
+          initialLightColorScheme: initialLightColorScheme!);
   ThemeHepler._(
       {required ({
         Color primary,
@@ -265,4 +273,7 @@ class ThemeHepler {
         /* dark theme settings */
         );
   }
+
+  Brightness get _brightness =>
+      SchedulerBinding.instance.platformDispatcher.platformBrightness;
 }
