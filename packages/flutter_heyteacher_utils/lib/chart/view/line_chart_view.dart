@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_heyteacher_utils/theme.dart';
 
 import '../../formats.dart';
@@ -13,7 +15,11 @@ class LineChartView extends StatefulWidget {
   late final double maxX;
   late final double minY;
   late final double maxY;
-  final ThemeData theme;
+  final Iterable<({num y, Color color})>? extraHorizontalLines;
+  final Iterable<({num x, Color color})>? extraVerticalLines;
+  final Iterable<({num minY, num maxY, Color color})>?
+      horizontalRangeAnnotations;
+  final Iterable<({num minX, num maxX, Color color})>? verticalRangeAnnotations;
 
   late final int intervalX;
   late final int intervalY;
@@ -28,33 +34,23 @@ class LineChartView extends StatefulWidget {
       required maxX,
       required num minY,
       required num maxY,
-      required this.theme}) {
+      this.extraHorizontalLines,
+      this.extraVerticalLines,
+      this.horizontalRangeAnnotations,
+      this.verticalRangeAnnotations}) {
     intervalX = _interval(minX, maxX);
     intervalY = _interval(minY, maxY);
-
-    this.minX = _LineChartViewState._roundToInterval(minX, intervalX);
-    this.maxX = _LineChartViewState._roundToInterval(maxX, intervalX);
-    this.minY =
-        _LineChartViewState._roundToInterval(minY, intervalY) - intervalY;
-    this.maxY =
-        _LineChartViewState._roundToInterval(maxY, intervalY) + intervalY;
+    this.minX = _roundToInterval(minX, intervalX);
+    this.maxX = _roundToInterval(maxX, intervalX);
+    this.minY = _roundToInterval(minY, intervalY) -  intervalY;
+    this.maxY = _roundToInterval(maxY, intervalY) + intervalY;
   }
 
-  int _interval(num min, num max, {int offset = 10}) {
-    int interval = ((max - min) / offset / offset).round() * offset;
-    return interval == 0 ? offset : interval;
-  }
+  int _interval(num minValue, num maxValue, {int offset = 10}) =>
+      max(((maxValue - minValue) / offset / offset).round() * offset, offset);
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return "$title: "
-        "minX $minX, "
-        "maxX $maxX, "
-        "minY $minY, "
-        "maxY $maxY, "
-        "intervalX $intervalX, "
-        "intervalY $intervalY";
-  }
+  static double _roundToInterval(num value, num interval) =>
+      interval != 0 ? ((value / interval).round() * interval).toDouble() : 0;
 
   @override
   State<LineChartView> createState() => _LineChartViewState();
@@ -65,11 +61,12 @@ class _LineChartViewState extends State<LineChartView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(widget.title, style: widget.theme.textTheme.titleLarge),
+        Text(widget.title,
+            style: ThemeHepler.instance().theme.textTheme.titleLarge),
         AspectRatio(
           aspectRatio: 1.5,
           child: Padding(
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(10.0),
             child: LineChart(
               _lineChartData,
               //duration: const Duration(milliseconds: 250),
@@ -84,6 +81,12 @@ class _LineChartViewState extends State<LineChartView> {
         lineTouchData: const LineTouchData(
           enabled: false,
         ),
+        
+        rangeAnnotations: RangeAnnotations(
+            verticalRangeAnnotations: _verticalRangeAnnotations,
+            horizontalRangeAnnotations: _horizontalRangeAnnotations),
+        extraLinesData: ExtraLinesData(
+            horizontalLines: _horizontalLines, verticalLines: _verticalLines),
         gridData: const FlGridData(show: false),
         titlesData: _titlesData,
         borderData: _borderData,
@@ -121,48 +124,69 @@ class _LineChartViewState extends State<LineChartView> {
         ),
       );
 
-  Widget _leftTitleWidgets(double value, TitleMeta meta) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 5),
-      child: Text(_roundToInterval(value, widget.intervalY).toInt().toString(),
-          style: widget.theme.textTheme.bodySmall!
-              .copyWith(color: ThemeHepler.instance().greenTextColor),
-          textAlign: TextAlign.right),
-    );
-  }
+  Widget _leftTitleWidgets(double value, TitleMeta meta) => Padding(
+        padding: const EdgeInsets.only(right: 5),
+        child: Text(
+            LineChartView._roundToInterval(value, widget.intervalY)
+                .toInt()
+                .toString(),
+            style: ThemeHepler.instance().theme.textTheme.bodySmall!
+            //.copyWith(color: ThemeHepler.instance().greenTextColor)
+            ,
+            textAlign: TextAlign.right),
+      );
 
-  Widget _bottomTitleWidgets(double value, TitleMeta meta) {
-    return SideTitleWidget(
-        axisSide: meta.axisSide,
-        space: 5,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 10, left: 5),
-          child: RotatedBox(
-            quarterTurns: 3,
-            child: Text(
-              formatDuration(
-                  _roundToInterval(value, widget.intervalX) * 60 * 1000),
-              style: widget.theme.textTheme.bodySmall!
-                  .copyWith(color: ThemeHepler.instance().orangeTextColor),
-            ),
+  Widget _bottomTitleWidgets(double value, TitleMeta meta) => SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 3,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 0, left: 5),
+        child: RotatedBox(
+          quarterTurns: 3,
+          child: Text(
+            formatDuration(
+                LineChartView._roundToInterval(value, widget.intervalX) *
+                    60 *
+                    1000),
+            style: ThemeHepler.instance()
+                .theme
+                .textTheme
+                .bodySmall!
+                .copyWith(color: ThemeHepler.instance().orangeTextColor),
           ),
-        ));
-  }
+        ),
+      ));
 
   FlBorderData get _borderData => FlBorderData(
         show: true,
         border: Border(
           bottom: BorderSide(
-              color: widget.theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              color: ThemeHepler.instance()
+                  .theme
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.5),
               width: 1),
           left: BorderSide(
-              color: widget.theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              color: ThemeHepler.instance()
+                  .theme
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.5),
               width: 1),
           right: BorderSide(
-              color: widget.theme.colorScheme.onSurface.withValues(alpha: 0),
+              color: ThemeHepler.instance()
+                  .theme
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0),
               width: 1),
           top: BorderSide(
-              color: widget.theme.colorScheme.onSurface.withValues(alpha: 0),
+              color: ThemeHepler.instance()
+                  .theme
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0),
               width: 1),
         ),
       );
@@ -170,13 +194,51 @@ class _LineChartViewState extends State<LineChartView> {
   LineChartBarData get _lineChartBarData => LineChartBarData(
       isCurved: true,
       //curveSmoothness: 0,
-      color: ThemeHepler.instance().greenTextColor/*.withOpacity(0.5)*/,
+      color: ThemeHepler.instance()
+          .theme
+          .colorScheme
+          .onSurface /*.withOpacity(0.5)*/,
       barWidth: 1,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
       spots: widget.chartSpots != null ? widget.chartSpots!.toList() : []);
 
-  static double _roundToInterval(num value, num interval) =>
-      interval != 0 ? ((value / interval).round() * interval).toDouble() : 0;
+  List<HorizontalLine> get _horizontalLines =>
+      widget.extraHorizontalLines
+          ?.map(
+            (e) => HorizontalLine(y: e.y.toDouble(), color: e.color),
+          )
+          .toList() ??
+      [];
+
+  List<VerticalLine> get _verticalLines =>
+      widget.extraVerticalLines
+          ?.map(
+            (e) => VerticalLine(x: e.x.toDouble(), color: e.color),
+          )
+          .toList() ??
+      [];
+
+  List<VerticalRangeAnnotation> get _verticalRangeAnnotations =>
+      widget.verticalRangeAnnotations
+          ?.map(
+            (e) => VerticalRangeAnnotation(
+                x1: max(e.minX.toDouble(), widget.minX),
+                x2: min(e.maxX.toDouble(), widget.maxX),
+                color: e.color),
+          )
+          .toList() ??
+      [];
+
+  List<HorizontalRangeAnnotation> get _horizontalRangeAnnotations =>
+      widget.horizontalRangeAnnotations
+          ?.map(
+            (e) => HorizontalRangeAnnotation(
+                y1: max(e.minY.toDouble(), widget.minY),
+                y2: min(e.maxY.toDouble(), widget.maxY),
+                color: e.color),
+          )
+          .toList() ??
+      [];
 }
