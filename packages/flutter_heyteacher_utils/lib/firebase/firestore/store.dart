@@ -295,10 +295,14 @@ abstract class Store<LightDataType extends FirestoreData,
 
   void listenAggregatesStream() {
     _aggregatesSubscription?.cancel();
-    _aggregatesSubscription ??= Auth.instance()
+    _aggregatesSubscription = Auth.instance()
         .stateChangesStream
         .where((user) => user != null)
         .listen(((_) => notifyAggregatesChanges()));
+  }
+
+  dispose(){
+    _aggregatesSubscription?.cancel();
   }
 
   Query<LightDataType> query(
@@ -377,8 +381,9 @@ abstract class Store<LightDataType extends FirestoreData,
     }
   }
 
-  Future<DetailsDataType?> getOrNull(String id) async {
+  Future<DetailsDataType?> getOrNull(String? id) async {
     _log.fine("getOrNull($_detailsCollectionPathLog/$id)");
+    if (id == null) return null;
     _checkAuthenticated();
     return await exists(id)? get(id): null;
   }
@@ -483,22 +488,22 @@ abstract class Store<LightDataType extends FirestoreData,
     if (await exists(id)) {
       if (batch != null) {
         batch.update(_detailsCollectionReference.doc(id),
-            document.toFirestore(fields: fields));
+            document.toFirestore(fields));
       } else {
         _detailsCollectionReference
             .doc(id)
-            .update(document.toFirestore(fields: fields));
+            .update(document.toFirestore(fields));
       }
       if (_separatedDetailsCollection) {
         if (document.getParentData() != null) {
           _log.fine("update($_collectionPathLog/$id)");
           if (batch != null) {
             batch.update(_collectionReference.doc(id),
-                document.getParentData()!.toFirestore(fields: fields));
+                document.getParentData()!.toFirestore(fields));
           } else {
             _collectionReference
                 .doc(id)
-                .update(document.getParentData()!.toFirestore(fields: fields));
+                .update(document.getParentData()!.toFirestore(fields));
           }
         } else {
           throw ParentDataNullException(DetailsDataType.runtimeType);
@@ -590,7 +595,7 @@ abstract class Store<LightDataType extends FirestoreData,
           fromFirestore: (snapshot, _) =>
               FirestoreData.fromFirestoreFactory<LightDataType>(
                   snapshot.data()!),
-          toFirestore: (LightDataType lightData, _) => lightData.toFirestore());
+          toFirestore: (LightDataType lightData, _) => lightData.toFirestore(null));
 
   CollectionReference<DetailsDataType> get _detailsCollectionReference =>
       _firestore.collection(_detailsCollectionPath!).withConverter(
@@ -598,7 +603,7 @@ abstract class Store<LightDataType extends FirestoreData,
               FirestoreData.fromFirestoreFactory<DetailsDataType>(
                   snapshot.data()!),
           toFirestore: (DetailsDataType detailsData, _) =>
-              detailsData.toFirestore());
+              detailsData.toFirestore(null));
 
   Future<void> _changeGrouByCounter(DetailsDataType details,
       {required bool increment, DetailsDataType? oldDocument}) async {
@@ -743,7 +748,7 @@ abstract class FirestoreData<T> {
 
   void setParentData(FirestoreData parentData) {}
 
-  Map<String, dynamic> toFirestore({List<String>? fields});
+  Map<String, dynamic> toFirestore(List<String>? fields);
 
   static Timestamp? toFirestoreTimestamp(DateTime? dateTime) {
     return dateTime == null ? null : Timestamp.fromDate(dateTime);
