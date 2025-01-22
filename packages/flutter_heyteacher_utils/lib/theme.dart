@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
@@ -28,24 +29,30 @@ class ThemeHepler {
   ThemeMode _themeMode;
   ThemeMode get themeMode => _themeMode;
 
+  final StreamController<dynamic> _themeStreamController =
+      StreamController<dynamic>.broadcast();
+  Stream<dynamic> get themeStream => _themeStreamController.stream;
+
   void setThemeMode(ThemeMode newThemeMode) async {
     _themeMode = newThemeMode;
-    _themeStreamController.sink.add(null);
     if (Auth.instance().autenticated) {
-      UserStore.instance().update(UserData.fromThemeMode(themeMode: themeMode),
-          fields: ["themeMode"]);
+      UserStore.instance()
+          .update(UserData(themeMode: _themeMode), fields: ["themeMode"]);
     }
   }
 
-  Color get blueTextColor => _themeMode == ThemeMode.light || _brightness == Brightness.light
-      ? Colors.blue.shade700
-      : Colors.blue.shade300;
-  Color get orangeTextColor => _themeMode == ThemeMode.light || _brightness == Brightness.light
-      ? Colors.orange.shade700
-      : Colors.orange.shade300;
-  Color get greenTextColor => _themeMode == ThemeMode.light || _brightness == Brightness.light
-      ? Colors.green.shade700
-      : Colors.green.shade300;
+  Color get blueTextColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+          ? Colors.blue.shade700
+          : Colors.blue.shade300;
+  Color get orangeTextColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+          ? Colors.orange.shade700
+          : Colors.orange.shade300;
+  Color get greenTextColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+          ? Colors.green.shade700
+          : Colors.green.shade300;
 
   static ThemeHepler? _instance;
   static ThemeHepler instance(
@@ -110,26 +117,20 @@ class ThemeHepler {
         _themeMode = ThemeMode.system {
     // load from store user the theme mode
     Auth.instance().autenticated
-        ? UserStore.instance()
-            .getOrNull(Auth.instance().uid!)
-            .then((user) => _themeMode = switch (user?.themeMode) {
-                  "dark" => ThemeMode.dark,
-                  "light" => ThemeMode.light,
-                  _ => ThemeMode.system,
-                })
+        ? UserStore.instance().getOrNull(Auth.instance().uid!).then((user) {
+            _themeMode = user?.themeMode ?? ThemeMode.system;
+            // if store user theme mode isn't the default, notify to UI the changee
+            if (_themeMode != ThemeMode.system) {
+              _themeStreamController.sink.add(null);
+            }
+          })
         : _themeMode = ThemeMode.system;
-    // if store user theme mode isn't the default, notify to UI the changee
-    if (_themeMode != ThemeMode.system) _themeStreamController.sink.add(null);
     // initializa dark and light theme
     darkTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
     lightTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialLightColorScheme);
   }
-
-  final StreamController<dynamic> _themeStreamController =
-      StreamController<dynamic>.broadcast();
-  Stream<dynamic> get themeStream => _themeStreamController.stream;
 
   void setDefault() {
     darkTheme = _themeData(
@@ -197,6 +198,19 @@ class ThemeHepler {
     _themeStreamController.sink.add(null);
   }
 
+  Color? themeForegroundColor(Color? color, {ThemeMode? themeMode}) => (themeMode ?? _themeMode) == ThemeMode.light
+      ? Color.lerp(color, Colors.black, 0.7)
+      : Color.lerp(color, Colors.white, 0.7);
+
+  Color? themeBackgroundColor(Color? color, {ThemeMode? themeMode}) => (themeMode ?? _themeMode) == ThemeMode.light
+      ? Color.lerp(color, Colors.white, 0.5)
+      : Color.lerp(color, Colors.black, 0.5);
+
+
+  ({Color light, Color dark}) backgroundColor(Color color) => (
+        light: themeBackgroundColor(color, themeMode: ThemeMode.light)!,
+        dark: themeBackgroundColor(color, themeMode: ThemeMode.dark)!
+      );
   ThemeData _themeData(
       {required ThemeMode themeMode,
       required ({

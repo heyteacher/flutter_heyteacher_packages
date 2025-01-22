@@ -1,7 +1,8 @@
-import 'dart:ui';
+import 'dart:async';
 
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
 
-import '../../localization/model/localization_model.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
@@ -11,6 +12,8 @@ class TtsModel {
 
   late FlutterTts _textToSpeech;
 
+  StreamSubscription? _streamSubscription;
+
   static TtsModel? _instance;
   static TtsModel get instance => _instance ??= TtsModel._();
   TtsModel._() {
@@ -18,7 +21,15 @@ class TtsModel {
     _textToSpeech = FlutterTts();
     _setAwaitOptions();
     _textToSpeech.setSpeechRate(1);
-    LocalizationModel.instance.localeStream.listen(_changeLanguage);
+    _streamSubscription?.cancel();
+    Auth.instance().stateChangesStream.listen((user) async => _changeLanguage(
+        user != null ? await UserStore.instance().getOrNull(user.uid) : null));
+    _streamSubscription =
+        UserStore.instance().onUserUpdated.listen(_changeLanguage);
+  }
+
+  dispose() {
+    _streamSubscription?.cancel();
   }
 
   Future<void> speak(String text) async {
@@ -30,7 +41,8 @@ class TtsModel {
     _textToSpeech.awaitSpeakCompletion(true);
   }
 
-  void _changeLanguage(Locale? locale) {
-    _textToSpeech.setLanguage(locale?.languageCode ?? Intl.getCurrentLocale());
+  void _changeLanguage(UserData? userData) {
+    _textToSpeech
+        .setLanguage(userData?.locale?.languageCode ?? Intl.getCurrentLocale());
   }
 }

@@ -1,5 +1,6 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store_filters.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
@@ -63,17 +64,17 @@ void main() {
       expect(await userStore.exists(userId), true,
           reason: "user $userId does't exists");
       UserData userData = await userStore.get(userId);
-      expect(userData.localeLanguageCode, null,
-          reason: "language code is set to ${userData.localeLanguageCode}");
+      expect(userData.locale, Locale(Intl.getCurrentLocale()),
+          reason: "language code is set to ${userData.locale?.languageCode}");
     });
     test('update language code', () async {
       final UserStore userStore = UserStore.instance();
       UserData userData = await userStore.get(userId);
-      userData.localeLanguageCode = "en";
-      await userStore.update(userData, fields: ["localeLanguageCode"]);
+      userData.locale = Locale("it");
+      await userStore.update(userData, fields: ["locale"]);
       userData = await userStore.get(userId);
-      expect(userData.localeLanguageCode, "en",
-          reason: "language code wrong: ${userData.localeLanguageCode}");
+      expect(userData.locale, Locale("it"),
+          reason: "language code wrong: ${userData.locale}");
     });
   });
 
@@ -273,7 +274,8 @@ class TrackData extends BaseTrackData {
   }
 
   @override
-  Map<String, dynamic> toFirestore({List<String>? fields}) => {
+  Map<String, dynamic> toFirestore(List<String>? fields) => {
+        ...super.toFirestore(fields),
         'startTime': FirestoreData.toFirestoreTimestamp(startTime),
         if (fields?.contains("avgBpm") ?? true) 'avgBpm': avgBpm,
         if (fields?.contains("avgRpm") ?? true) 'avgRpm': avgRpm,
@@ -321,7 +323,7 @@ class BaseTrackData extends FirestoreData {
   }
 
   @override
-  Map<String, dynamic> toFirestore({List<String>? fields}) => {
+  Map<String, dynamic> toFirestore(List<String>? fields) => {
         'startTime': FirestoreData.toFirestoreTimestamp(startTime),
         if (fields?.contains("stopTime") ?? true)
           'stopTime': FirestoreData.toFirestoreTimestamp(stopTime),

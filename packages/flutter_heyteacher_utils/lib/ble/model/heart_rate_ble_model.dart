@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
@@ -44,7 +43,7 @@ class HeartRateBleModel extends BleModel {
           // change the background
           if (heartRateTrainingZone != HeartRateTrainingZone.z0) {
             ThemeHepler.instance()
-                .update(surface: _surfaceColor(heartRateTrainingZone.color));
+                .update(surface: ThemeHepler.instance().backgroundColor(heartRateTrainingZone.color));
           } else {
             ThemeHepler.instance().setDefault();
           }
@@ -53,9 +52,4 @@ class HeartRateBleModel extends BleModel {
       }
     }
   }
-
-  ({Color light, Color dark}) _surfaceColor(Color color) => (
-        light: Color.lerp(color, Colors.white, 0.7)!,
-        dark: Color.lerp(color, Colors.black, 0.7)!
-      );
 }
