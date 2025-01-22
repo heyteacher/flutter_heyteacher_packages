@@ -42,10 +42,10 @@ class _NewStreamWithInitialValueTransformer<T>
   final T initialValue;
 
   /// controller for the new stream
-  late StreamController<T> controller;
+  late StreamController<T> _controller;
 
   /// subscription to the original stream
-  late StreamSubscription<T> subscription;
+  late StreamSubscription<T> _subscription;
 
   /// new stream listener count
   var listenerCount = 0;
@@ -68,28 +68,28 @@ class _NewStreamWithInitialValueTransformer<T>
 
     /// When the original stream emits data, forward it to our new stream
     void onData(T data) {
-      controller.add(data);
+      _controller.add(data);
     }
 
     /// When the original stream is done, close our new stream
     void onDone() {
-      controller.close();
+      _controller.close();
     }
 
     /// When the original stream has an error, forward it to our new stream
     void onError(Object error) {
-      controller.addError(error);
+      _controller.addError(error);
     }
 
     /// When a client listens to our new stream, emit the
     /// initial value and subscribe to original stream if needed
     void onListen() {
       // Emit the initial value to our new stream
-      controller.add(initialValue);
+      _controller.add(initialValue);
 
       // listen to the original stream, if needed
       if (listenerCount == 0) {
-        subscription = stream.listen(
+        _subscription = stream.listen(
           onData,
           onError: onError,
           onDone: onDone,
@@ -107,13 +107,13 @@ class _NewStreamWithInitialValueTransformer<T>
     /// (Single Subscription Only) When a client pauses
     /// the new stream, pause the original stream
     void onPause() {
-      subscription.pause();
+      _subscription.pause();
     }
 
     /// (Single Subscription Only) When a client resumes
     /// the new stream, resume the original stream
     void onResume() {
-      subscription.resume();
+      _subscription.resume();
     }
 
     /// Called when a client cancels their
@@ -126,8 +126,8 @@ class _NewStreamWithInitialValueTransformer<T>
       // cancel the subscription to the original stream,
       // and close the new stream controller
       if (listenerCount == 0) {
-        subscription.cancel();
-        controller.close();
+        _subscription.cancel();
+        _controller.close();
       }
     }
 
@@ -137,12 +137,12 @@ class _NewStreamWithInitialValueTransformer<T>
 
     // create a new stream controller
     if (broadcast) {
-      controller = StreamController<T>.broadcast(
+      _controller = StreamController<T>.broadcast(
         onListen: onListen,
         onCancel: onCancel,
       );
     } else {
-      controller = StreamController<T>(
+      _controller = StreamController<T>(
         onListen: onListen,
         onPause: onPause,
         onResume: onResume,
@@ -150,6 +150,6 @@ class _NewStreamWithInitialValueTransformer<T>
       );
     }
 
-    return controller.stream;
+    return _controller.stream;
   }
 }
