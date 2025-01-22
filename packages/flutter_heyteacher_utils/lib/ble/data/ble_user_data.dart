@@ -66,8 +66,8 @@ class BleUserData extends UserData {
   }
 
   @override
-  Map<String, dynamic> toFirestore({List<String>? fields}) => {
-        ...super.toFirestore(),
+  Map<String, dynamic> toFirestore(List<String>? fields) => {
+        ...super.toFirestore(fields),
         if (fields?.contains("biometrics") ?? true)
           "biometrics": {
             "restBpm": biometrics?.restBpm,
@@ -140,12 +140,12 @@ enum Gender {
 
 enum HeartRateTrainingZone {
   z0(minIntensity: 0, maxIntensity: 50, color: Colors.white70),
-  z1(minIntensity: 50, maxIntensity: 60, color: Colors.cyanAccent),
-  z2(minIntensity: 60, maxIntensity: 70, color: Colors.greenAccent),
-  z3(minIntensity: 70, maxIntensity: 80, color: Colors.yellowAccent),
-  z4(minIntensity: 80, maxIntensity: 90, color: Colors.orangeAccent),
-  z5(minIntensity: 90, maxIntensity: 100, color: Colors.redAccent),
-  z6(minIntensity: 100, maxIntensity: 1000, color: Colors.purpleAccent);
+  z1(minIntensity: 50, maxIntensity: 60, color: Colors.cyan),
+  z2(minIntensity: 60, maxIntensity: 70, color: Colors.green),
+  z3(minIntensity: 70, maxIntensity: 80, color: Colors.yellow),
+  z4(minIntensity: 80, maxIntensity: 90, color: Colors.orange),
+  z5(minIntensity: 90, maxIntensity: 100, color: Colors.red),
+  z6(minIntensity: 100, maxIntensity: 1000, color: Colors.purple);
 
   final int minIntensity;
   final int maxIntensity;
