@@ -9,16 +9,16 @@ class LineChartView extends StatefulWidget {
   //static final _log = Logger("LineChartView");
 
   final Iterable<({double x, double y})>? chartSpots;
-  late final num  minX;
-  late final num  maxX;
-  late final num  minY;
-  late final num  maxY;
   final Iterable<({num y, Color color})>? extraHorizontalLines;
   final Iterable<({num x, Color color})>? extraVerticalLines;
   final Iterable<({num minY, num maxY, Color color})>?
       horizontalRangeAnnotations;
   final Iterable<({num minX, num maxX, Color color})>? verticalRangeAnnotations;
 
+  late final num  minX;
+  late final num  maxX;
+  late final num  minY;
+  late final num  maxY;
   late final int intervalX;
   late final int intervalY;
 
@@ -66,24 +66,21 @@ class LineChartView extends StatefulWidget {
 class _LineChartViewState extends State<LineChartView> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          Text(widget.title,
-              style: ThemeHepler.instance().theme.textTheme.titleLarge),
-          AspectRatio(
-            aspectRatio: 1.5,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: LineChart(
-                _lineChartData,
-                //duration: const Duration(milliseconds: 250),
-              ),
+    return Column(
+      children: [
+        Text(widget.title,
+            style: ThemeHepler.instance().theme.textTheme.titleLarge),
+        AspectRatio(
+          aspectRatio: 1.5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: LineChart(
+              _lineChartData,
+              //duration: const Duration(milliseconds: 250),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 
