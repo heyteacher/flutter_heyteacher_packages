@@ -1,5 +1,6 @@
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
+import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:logging/logging.dart';
 
@@ -23,16 +24,7 @@ class HeartRateBleModel extends BleModel {
         final int? intensityValue = intensity(bpm);
         final HeartRateTrainingZone? heartRateTrainingZone =
             HeartRateTrainingZone.fromIntensity(intensityValue);
-        final String zone = heartRateTrainingZone != null
-            ? " ${heartRateTrainingZone.name.toUpperCase()}"
-            : "";
-        streamController.sink.add((
-          value: bpm,
-          formatted: bpm.toString(),
-          subValue: intensityValue,
-          subFormatted: intensityValue != null ? "$intensityValue%$zone" : "",
-          color: heartRateTrainingZone?.color
-        ));
+        streamController.sink.add(bpm);
         // new heartRateTrainingZone
         if (heartRateTrainingZone != null &&
             lastHeartRateTrainingZone != heartRateTrainingZone) {
@@ -52,4 +44,21 @@ class HeartRateBleModel extends BleModel {
       }
     }
   }
+
+ 
+  ({int? age, Gender? gender, int? restBpm})? get biometrics =>
+      BleModel.userData?.biometrics;
+
+  Iterable<({HeartRateTrainingZone heartRateTrainingZone, num? max, num? min})>?
+      get heartRateTrainingZones => BleModel.userData?.heartRateTrainingZones;
+
+  static int? intensity(int bpm) => BleModel.userData?.intensity(bpm);
+
+  void updateBiometrics(
+      {({int? age, Gender? gender, int? restBpm})? biometrics}) {
+    if (BleModel.userData != null) {
+      BleModel.userData!.biometrics = biometrics;
+      BleUserStore.instance().update(BleModel.userData!, fields: ["biometrics"]);
+    }
+  } 
 }

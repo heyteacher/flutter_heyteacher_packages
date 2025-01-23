@@ -66,12 +66,6 @@ class CadenceBleModel extends BleModel {
     // "_crankRevolutionsCycles $_crankRevolutionsCycles "
     // "_crankRevolutionRecords.length ${_crankRevolutionRecords.length}"
     //    );
-    streamController.sink.add((
-      value: rpm,
-      formatted: rpm.toString(),
-      subValue: null,
-      subFormatted: null,
-      color: null
-    ));
+    streamController.sink.add(rpm);
   }
 }

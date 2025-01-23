@@ -15,7 +15,8 @@ abstract class BleModel {
 
   BleType bleType;
 
-  static BleUserData? _userData;
+  @protected
+  static BleUserData? userData;
 
   BluetoothDevice? _device;
 
@@ -27,36 +28,15 @@ abstract class BleModel {
 
   String? get deviceName => _device?.platformName.trim() != ""
       ? _device?.platformName
-      : _userData?.devices?[bleType]?.name;
+      : userData?.devices?[bleType]?.name;
 
   String? get deviceId =>
-      _device?.remoteId.str ?? _userData?.devices?[bleType]?.id;
+      _device?.remoteId.str ?? userData?.devices?[bleType]?.id;
 
   @protected
-  final StreamController<
-      ({
-        dynamic value,
-        String? formatted,
-        dynamic subValue,
-        String? subFormatted,
-        Color? color
-      })?> streamController = StreamController<
-      ({
-        dynamic value,
-        String? formatted,
-        dynamic subValue,
-        String? subFormatted,
-        Color? color
-      })?>.broadcast();
+  final StreamController<num?> streamController = StreamController<num?>.broadcast();
 
-  Stream<
-      ({
-        dynamic value,
-        String? formatted,
-        dynamic subValue,
-        String? subFormatted,
-        Color? color
-      })?> get stream => streamController.stream;
+  Stream<num?> get stream => streamController.stream;
 
   final StreamController<({String? id, String? name, bool connected})>
       _deviceStatusStreamController = StreamController<
@@ -100,14 +80,14 @@ abstract class BleModel {
   Future<void> init([VoidCallback? callback]) async {
     BleModelFactory.initBle(callback);
     try {
-      _userData ??= Auth.instance().autenticated
+      userData ??= Auth.instance().autenticated
           ? await BleUserStore.instance().get(Auth.instance().uid!)
           : null;
     } on DocumentNotFoundException {
       _log.fine("user data not found in store");
     }
     ({String? id, String? name})? userDevice =
-        _userData?.devices?[bleType];
+        userData?.devices?[bleType];
     _log.fine("init: ${bleType.name} remote user devices $userDevice");
 
     if (userDevice?.id?.trim() != "") {
@@ -209,23 +189,6 @@ abstract class BleModel {
     );
   }
 
-  ({int? age, Gender? gender, int? restBpm})? get biometrics =>
-      _userData?.biometrics;
-
-  Iterable<({HeartRateTrainingZone heartRateTrainingZone, num? max, num? min})>?
-      get heartRateTrainingZones => _userData?.heartRateTrainingZones;
-
-  @protected
-  int? intensity(int bpm) => _userData?.intensity(bpm);
-
-  void updateBiometrics(
-      {({int? age, Gender? gender, int? restBpm})? biometrics}) {
-    if (_userData != null) {
-      _userData!.biometrics = biometrics;
-      BleUserStore.instance().update(_userData!, fields: ["biometrics"]);
-    }
-  }
-
   bool _serviceAllowed(BluetoothService service) =>
       BleModelFactory.serviceAllowedByType(bleType, service);
 
@@ -269,8 +232,8 @@ abstract class BleModel {
         } else {
           // notify listener device connection
           _deviceStatusStreamController.sink.add((
-            id: _userData?.devices?[bleType]?.id ?? device.remoteId.str,
-            name: _userData?.devices?[bleType]?.name ?? device.platformName,
+            id: userData?.devices?[bleType]?.id ?? device.remoteId.str,
+            name: userData?.devices?[bleType]?.name ?? device.platformName,
             connected: true
           ));
           _device = device;
