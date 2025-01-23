@@ -1,0 +1,12 @@
+{
+    "@@locale": "en",
+    "userNotAutenticated": "User not autenticated",
+    "@userNotAutenticated": {},
+    "notAuthenticated": "Not Authenticated",
+    "@notAuthenticated": {},
+    "errorOnRetrieveData": "Error on retrieve Data",
+    "@errorOnRetrieveData": {},
+    "timeoutOnRetrieveData": "Timeout on retieve data",
+    "@timeoutOnRetrieveData": {}
+}
+  

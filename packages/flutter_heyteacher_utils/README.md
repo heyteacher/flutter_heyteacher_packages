@@ -107,6 +107,92 @@ You can configure you `vscode` to execute the command with `build` in order to a
     "preLaunchTask": "dart: run flutter_heyteacher_utils:version build"
   ```
 
+## localization utils
+
+* install packages
+  ```bash
+  flutter pub add flutter_localizations --sdk=flutter
+  flutter pub add intl:any
+  ```
+
+* modify `pubspec.yaml` setting flutter artifact generation  
+  ```yaml
+  flutter:
+    generate: true
+  ```
+* in root project creat `l10n.yaml`
+  ```yaml
+  arb-dir: lib/l10n
+  template-arb-file: flutter_heyteacher_utils_en.arb
+  output-localization-file: flutter_heyteacher_utils.dart
+  output-class: FlutterHeyteacherUtilsLocalizations
+  output-dir: lib/src/l10n
+  untranslated-messages-file: desiredFileName.txt
+  synthetic-package: false
+  ```
+* create the `arb` files of your supported languages
+  ```bash
+  mkdir lib/l10n
+  touch lib/l10n/flutter_heyteacher_utils_en.arb
+  touch lib/l10n/flutter_heyteacher_utils_it.arb
+  ``` 
+
+* insert in `flutter_heyteacher_utils_en.arb` the translation
+
+* commit `desiredFileName.txt` the file containing localized strings to be translated, this file should be always empty
+  ```bash
+  git add desiredFileName.txt
+  git commit -m "localized strings to be translated, this file should be always empty"
+  ```
+
+* insert localized string into `flutter_heyteacher_utils_en.arb`
+  ```json
+  {
+    "@@locale": "en",
+    "userNotAutenticated": "User not autenticated",
+    "@userNotAutenticated": {},
+    "notAuthenticated": "Not Authenticated",
+    "@notAuthenticated": {},
+    "errorOnRetrieveData": "Error on retrieve Data",
+    "@errorOnRetrieveData": {},
+    "timeoutOnRetrieveData": "Timeout on retieve data",
+    "@timeoutOnRetrieveData": {}
+  }
+  ```
+* regenerate the artifacts
+  ```bash
+  flutter pub get
+  ```
+
+* create a file `lib/localizations.dart` containing the export
+  ```dart
+  export 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart' show FlutterHeyteacherUtilsLocalizations;
+  ```
+
+* add delegate to your app 
+  ```dart
+  MaterialApp.router(
+    localizationsDelegates: [
+      .
+      .
+      .
+      FlutterHeyteacherUtilsLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+
+  )
+  ```
+* import and use in your code
+  ```dart
+  import 'package:flutter_heyteacher_utils/localizations.dart';
+  .
+  .
+  .
+  FlutterHeyteacherUtilsLocalizations.of(context)!.userNotAutenticated
+  ```
+  
 ## BLE Ant+ (Bluetooth Low Emission)
 
 ### `THR` Target Heart Rate

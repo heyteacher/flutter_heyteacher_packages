@@ -1,0 +1,7 @@
+arb-dir: lib/l10n
+template-arb-file: flutter_heyteacher_utils_en.arb
+output-localization-file: flutter_heyteacher_utils.dart
+output-class: FlutterHeyteacherUtilsLocalizations
+output-dir: lib/src/l10n
+untranslated-messages-file: desiredFileName.txt
+synthetic-package: false
