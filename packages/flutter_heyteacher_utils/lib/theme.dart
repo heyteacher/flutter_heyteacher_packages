@@ -271,7 +271,7 @@ class ThemeHepler {
           backgroundColor: Colors.transparent,
         ),
         cardTheme: CardTheme(
-            elevation: 50, color: surfaceContainer.withValues(alpha: 0.8)),
+            elevation: 50, color: surfaceContainer),
         textTheme: TextTheme(
             displayLarge: TextStyle(
           fontSize: 120,
