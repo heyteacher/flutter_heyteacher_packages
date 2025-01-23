@@ -118,6 +118,108 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Timeout on retieve data'**
   String get timeoutOnRetrieveData;
+
+  /// No description provided for @bleAntPlus.
+  ///
+  /// In en, this message translates to:
+  /// **'Ble Ant+ '**
+  String get bleAntPlus;
+
+  /// No description provided for @bleAntPlusDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth Low Emission Ant+ Devices'**
+  String get bleAntPlusDevices;
+
+  /// No description provided for @age.
+  ///
+  /// In en, this message translates to:
+  /// **'age'**
+  String get age;
+
+  /// No description provided for @restBpm.
+  ///
+  /// In en, this message translates to:
+  /// **'rest bpm'**
+  String get restBpm;
+
+  /// No description provided for @gender.
+  ///
+  /// In en, this message translates to:
+  /// **'gender'**
+  String get gender;
+
+  /// No description provided for @genderValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{gender, select, male{Male} female{Female} other{Other}}'**
+  String genderValue(String gender);
+
+  /// No description provided for @trainingZoneValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{trainingZone, select, z0{Z0 Rest} z1{Z1 Warm Up} z2{Z2 Fat Burn} z3{Z3 Aerobic} z4{Z4 Anaerobic} z5{Z5 V02 Max} z6{Z6 Death}  other{}}'**
+  String trainingZoneValue(String trainingZone);
+
+  /// No description provided for @trainingZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Training Zone'**
+  String get trainingZone;
+
+  /// No description provided for @bpm.
+  ///
+  /// In en, this message translates to:
+  /// **'BPM'**
+  String get bpm;
+
+  /// No description provided for @maxRpm.
+  ///
+  /// In en, this message translates to:
+  /// **'Max RPM'**
+  String get maxRpm;
+
+  /// No description provided for @minBpm.
+  ///
+  /// In en, this message translates to:
+  /// **'Min Bpm'**
+  String get minBpm;
+
+  /// No description provided for @rpm.
+  ///
+  /// In en, this message translates to:
+  /// **'RPM'**
+  String get rpm;
+
+  /// No description provided for @maxBpm.
+  ///
+  /// In en, this message translates to:
+  /// **'Max BPM'**
+  String get maxBpm;
+
+  /// No description provided for @bleTypeDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'{bleType, select, cadence{Cadence Device} heartRate{Heart Rate Device} other{Unknow}}'**
+  String bleTypeDevice(String bleType);
+
+  /// No description provided for @bluetoothAdapterStateIs.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth adapter state is '**
+  String get bluetoothAdapterStateIs;
+
+  /// No description provided for @bluetoothAdapterState.
+  ///
+  /// In en, this message translates to:
+  /// **'{bluetoothAdapterState, select, unavailable{Unavailable} unauthorized{Unauthorized} turningOn{Turning On} on{On} turningOff{Turning Off} off{Off} other{Unknow}}'**
+  String bluetoothAdapterState(String bluetoothAdapterState);
+
+  /// No description provided for @deviceIsNotBleTypesDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'device is not {bleTypes} device'**
+  String deviceIsNotBleTypesDevice(Object bleTypes);
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {

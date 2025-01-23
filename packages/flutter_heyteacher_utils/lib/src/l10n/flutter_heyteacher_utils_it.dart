@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intl;
+
 import 'flutter_heyteacher_utils.dart';
 
 // ignore_for_file: type=lint
@@ -17,4 +19,107 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
 
   @override
   String get timeoutOnRetrieveData => 'Timeout durante in caricamento dei dati';
+
+  @override
+  String get bleAntPlus => 'Ble Ant+ ';
+
+  @override
+  String get bleAntPlusDevices => 'Dispositivi Bluetooth Low Emission Ant+';
+
+  @override
+  String get age => 'età';
+
+  @override
+  String get restBpm => 'bpm riposo';
+
+  @override
+  String get gender => 'genere';
+
+  @override
+  String genderValue(String gender) {
+    String _temp0 = intl.Intl.selectLogic(
+      gender,
+      {
+        'male': 'Uomo',
+        'female': 'Donna',
+        'other': 'Altro',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String trainingZoneValue(String trainingZone) {
+    String _temp0 = intl.Intl.selectLogic(
+      trainingZone,
+      {
+        'z0': 'Z0 Riposo',
+        'z1': 'Z1 Riscaldamento',
+        'z2': 'Z2 Brucia Grassi',
+        'z3': 'Z3 Aerobico',
+        'z4': 'Z4 Anaerobico',
+        'z5': 'Z5 V02 Max',
+        'z6': 'Z6 Morte',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get trainingZone => 'Zone Allenamento';
+
+  @override
+  String get bpm => 'BPM';
+
+  @override
+  String get maxRpm => 'Max RPM';
+
+  @override
+  String get minBpm => 'Min BPM';
+
+  @override
+  String get rpm => 'RPM';
+
+  @override
+  String get maxBpm => 'Max BPM';
+
+  @override
+  String bleTypeDevice(String bleType) {
+    String _temp0 = intl.Intl.selectLogic(
+      bleType,
+      {
+        'cadence': 'Contapedalate',
+        'heartRate': 'Cardiofrequenzimetro',
+        'other': 'Sconosciuto',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get bluetoothAdapterStateIs => 'Lo stato del Bluetooth è ';
+
+  @override
+  String bluetoothAdapterState(String bluetoothAdapterState) {
+    String _temp0 = intl.Intl.selectLogic(
+      bluetoothAdapterState,
+      {
+        'unknown': 'Sconosciuto',
+        'unavailable': 'Non Disponibile',
+        'unauthorized': 'Non Autorizzato',
+        'turningOn': 'In Accensione',
+        'on': 'Attivo',
+        'turningOff': 'In Spegnimento',
+        'off': 'Spento',
+        'other': 'Sconosciuto',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String deviceIsNotBleTypesDevice(Object bleTypes) {
+    return 'il device non è un $bleTypes device';
+  }
 }

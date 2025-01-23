@@ -1,12 +1,65 @@
 {
-    "@@locale": "en",
-    "userNotAutenticated": "User not autenticated",
-    "@userNotAutenticated": {},
-    "notAuthenticated": "Not Authenticated",
-    "@notAuthenticated": {},
-    "errorOnRetrieveData": "Error on retrieve Data",
-    "@errorOnRetrieveData": {},
-    "timeoutOnRetrieveData": "Timeout on retieve data",
-    "@timeoutOnRetrieveData": {}
+  "@@locale": "en",
+  "userNotAutenticated": "User not autenticated",
+  "@userNotAutenticated": {},
+  "notAuthenticated": "Not Authenticated",
+  "@notAuthenticated": {},
+  "errorOnRetrieveData": "Error on retrieve Data",
+  "@errorOnRetrieveData": {},
+  "timeoutOnRetrieveData": "Timeout on retieve data",
+  "@timeoutOnRetrieveData": {},
+  "bleAntPlus": "Ble Ant+ ",
+  "@bleAntPlus": {},
+  "bleAntPlusDevices": "Bluetooth Low Emission Ant+ Devices",
+  "@bleAntPlusDevices": {},
+  "age": "age",
+  "@age": {},
+  "restBpm": "rest bpm",
+  "@restBpm": {},
+  "gender": "gender",
+  "@gender": {},
+  "genderValue": "{gender, select, male{Male} female{Female} other{Other}}",
+  "@genderValue": {
+    "placeholders": {
+      "gender": {}
+    }
+  },
+  "trainingZoneValue": "{trainingZone, select, z0{Z0 Rest} z1{Z1 Warm Up} z2{Z2 Fat Burn} z3{Z3 Aerobic} z4{Z4 Anaerobic} z5{Z5 V02 Max} z6{Z6 Death}  other{}}",
+  "@trainingZoneValue": {
+    "placeholders": {
+      "trainingZone": {}
+    }
+  },
+  "trainingZone": "Training Zone",
+  "@trainingZone": {},
+  "bpm": "BPM",
+  "@bpm": {},
+  "maxRpm": "Max RPM",
+  "@maxRpm": {},
+  "minBpm": "Min Bpm",
+  "@minBpm": {},
+  "rpm": "RPM",
+  "@rpm": {},
+  "maxBpm": "Max BPM",
+  "@maxBpm": {},
+  "bleTypeDevice": "{bleType, select, cadence{Cadence Device} heartRate{Heart Rate Device} other{Unknow}}",
+  "@bleTypeDevice": {
+    "placeholders": {
+      "bleType": {}
+    }
+  },
+  "bluetoothAdapterStateIs": "Bluetooth adapter state is ",
+  "@bluetoothAdapterStateIs": {},
+  "bluetoothAdapterState": "{bluetoothAdapterState, select, unavailable{Unavailable} unauthorized{Unauthorized} turningOn{Turning On} on{On} turningOff{Turning Off} off{Off} other{Unknow}}",
+  "@bluetoothAdapterState": {
+    "placeholders": {
+      "bluetoothAdapterState": {}
+    }
+  },
+  "deviceIsNotBleTypesDevice": "device is not {bleTypes} device",
+  "@deviceIsNotBleTypesDevice": {
+    "placeholders": {
+      "bleTypes": {}
+    }
+  }
 }
-  

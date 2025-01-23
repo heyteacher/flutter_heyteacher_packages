@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/context_helper.dart';
 
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
+import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 
 class BleUserData extends UserData {
   Map<BleType, ({String? id, String? name})>? devices;
@@ -40,7 +41,7 @@ class BleUserData extends UserData {
 
   BleUserData.fromDevices({Map<BleType, BluetoothDevice?>? devices})
       : this._(
-            devices: devices?.map((bleType, device) => MapEntry(bleType,( 
+            devices: devices?.map((bleType, device) => MapEntry(bleType, (
                   id: device?.remoteId.str ?? "",
                   name: device?.platformName ?? ""
                 ))));
@@ -103,13 +104,13 @@ enum BleType {
       firestoreFieldId: "heartRateDeviceId",
       firestoreFieldName: "heartRateDeviceName",
       uuidService: "180d",
-      uuidCharacteristic:"2a37"),
+      uuidCharacteristic: "2a37"),
   cadence(
       icon: Icons.change_circle,
       firestoreFieldId: "cadenceDeviceId",
       firestoreFieldName: "cadenceDeviceName",
-            uuidService: "1816",
-      uuidCharacteristic:"2a5b");
+      uuidService: "1816",
+      uuidCharacteristic: "2a5b");
 
   const BleType(
       {required this.icon,
@@ -157,10 +158,8 @@ enum HeartRateTrainingZone {
 
   static HeartRateTrainingZone? fromName(String? name) =>
       HeartRateTrainingZone.values
-          .where((zone) =>
-              zone.name == name)
+          .where((zone) => zone.name == name)
           .firstOrNull;
-
 
   static HeartRateTrainingZone? fromIntensity(int? intensity) =>
       HeartRateTrainingZone.values
@@ -173,7 +172,9 @@ enum HeartRateTrainingZone {
           {({Gender? gender, int? age, int? restBpm})? biometrics}) =>
       (
         heartRateTrainingZone: this,
-        min: max( _targetBpm(biometrics: biometrics, intensity: minIntensity) ?? 0, biometrics?.restBpm ?? 0),
+        min: max(
+            _targetBpm(biometrics: biometrics, intensity: minIntensity) ?? 0,
+            biometrics?.restBpm ?? 0),
         max: _targetBpm(biometrics: biometrics, intensity: maxIntensity)
       );
 
@@ -195,7 +196,11 @@ enum HeartRateTrainingZone {
           : null;
 
   @override
-  toString() => name;
+  toString() => ContextHelper.context != null
+      ? FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)
+              ?.trainingZoneValue(name) ??
+          name
+      : name;
 }
 
 class CrankRevolutionRecordData {
