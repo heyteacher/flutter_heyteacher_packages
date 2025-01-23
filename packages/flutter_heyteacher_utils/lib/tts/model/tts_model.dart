@@ -20,7 +20,6 @@ class TtsModel {
     _log.fine("costructor");
     _textToSpeech = FlutterTts();
     _setAwaitOptions();
-    _textToSpeech.setSpeechRate(1);
     _streamSubscription?.cancel();
     Auth.instance().stateChangesStream.listen((user) async => _changeLanguage(
         user != null ? await UserStore.instance().getOrNull(user.uid) : null));
@@ -32,8 +31,9 @@ class TtsModel {
     _streamSubscription?.cancel();
   }
 
-  Future<void> speak(String text) async {
-    _log.fine("speak: text");
+  Future<void> speak(String text, {double speechRate=0}) async {
+    _log.fine("speak({speechRate:$speechRate}): $text");
+    await _textToSpeech.setSpeechRate(speechRate);
     _textToSpeech.speak(text);
   }
 
