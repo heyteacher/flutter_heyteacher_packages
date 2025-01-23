@@ -14,7 +14,6 @@ dependencies:
   firebase_auth: ^5.3.4
   firebase_crashlytics: ^4.2.0
   firebase_remote_config: ^5.2.0
-  fl_chart: ^0.69.2
   flutter:
     sdk: flutter
   flutter_background_service: ^5.1.0
@@ -30,6 +29,7 @@ dependencies:
   yaml_edit: ^2.2.1
   firebase_ui_auth: ^1.16.0
   firebase_ui_oauth_google: ^1.4.0
+  fl_chart: ^0.70.2
 
 dev_dependencies:
   flutter_test:

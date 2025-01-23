@@ -1,7 +1,5 @@
 import 'dart:math';
-
 import 'package:flutter_heyteacher_utils/theme.dart';
-
 import '../../formats.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +8,11 @@ import 'package:flutter/material.dart';
 class LineChartView extends StatefulWidget {
   //static final _log = Logger("LineChartView");
 
-  final Iterable<FlSpot>? chartSpots;
-  late final double minX;
-  late final double maxX;
-  late final double minY;
-  late final double maxY;
+  final Iterable<({double x, double y})>? chartSpots;
+  late final num  minX;
+  late final num  maxX;
+  late final num  minY;
+  late final num  maxY;
   final Iterable<({num y, Color color})>? extraHorizontalLines;
   final Iterable<({num x, Color color})>? extraVerticalLines;
   final Iterable<({num minY, num maxY, Color color})>?
@@ -30,27 +28,36 @@ class LineChartView extends StatefulWidget {
       {super.key,
       required this.title,
       required this.chartSpots,
-      required minX,
-      required maxX,
-      required num minY,
-      required num maxY,
+      required int minX,
+      required int maxX,
+      required int  minY,
+      required int  maxY,
       this.extraHorizontalLines,
       this.extraVerticalLines,
       this.horizontalRangeAnnotations,
       this.verticalRangeAnnotations}) {
     intervalX = _interval(minX, maxX);
     intervalY = _interval(minY, maxY);
-    this.minX = _roundToInterval(minX, intervalX);
-    this.maxX = _roundToInterval(maxX, intervalX);
-    this.minY = _roundToInterval(minY, intervalY) -  intervalY;
-    this.maxY = _roundToInterval(maxY, intervalY) + intervalY;
+    this.minX = _floorToInterval(minX, intervalX);
+    this.maxX = _ceilToInterval(maxX, intervalX);
+    this.minY = _floorToInterval(minY, intervalY);
+    this.maxY = _ceilToInterval(maxY, intervalY);
   }
 
-  int _interval(num minValue, num maxValue, {int offset = 10}) =>
-      max(((maxValue - minValue) / offset / offset).round() * offset, offset);
+  int _interval(num minValue, num maxValue, {int multiplier = 5, int occurences = 10}) =>
+      max((
+        (maxValue - minValue) / occurences // the interval to have <occurrences> in axies 
+        / multiplier).round() * multiplier,  // round the value to multiplier
+        multiplier); // if inverval is less than multiplier, use multiplier
 
-  static double _roundToInterval(num value, num interval) =>
-      interval != 0 ? ((value / interval).round() * interval).toDouble() : 0;
+  static int _roundToInterval(num value, num interval) =>
+      interval != 0 ? ((value/ interval).round() * interval).toInt() : 0;
+
+  static int _ceilToInterval(num value, num interval) =>
+      interval != 0 ? ((value/ interval).ceil() * interval).toInt() : 0;
+
+  static int _floorToInterval(num value, num interval) =>
+      interval != 0 ? ((value/ interval).floor() * interval).toInt() : 0;
 
   @override
   State<LineChartView> createState() => _LineChartViewState();
@@ -59,21 +66,24 @@ class LineChartView extends StatefulWidget {
 class _LineChartViewState extends State<LineChartView> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(widget.title,
-            style: ThemeHepler.instance().theme.textTheme.titleLarge),
-        AspectRatio(
-          aspectRatio: 1.5,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: LineChart(
-              _lineChartData,
-              //duration: const Duration(milliseconds: 250),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Text(widget.title,
+              style: ThemeHepler.instance().theme.textTheme.titleLarge),
+          AspectRatio(
+            aspectRatio: 1.5,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: LineChart(
+                _lineChartData,
+                //duration: const Duration(milliseconds: 250),
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
@@ -93,10 +103,10 @@ class _LineChartViewState extends State<LineChartView> {
         lineBarsData: [
           _lineChartBarData,
         ],
-        minX: widget.minX,
-        maxX: widget.maxX,
-        minY: widget.minY,
-        maxY: widget.maxY,
+        minX: widget.minX.toDouble(),
+        maxX: widget.maxX.toDouble(),
+        minY: widget.minY.toDouble(),
+        maxY: widget.maxY.toDouble(),
       );
 
   FlTitlesData get _titlesData => FlTitlesData(
@@ -137,7 +147,7 @@ class _LineChartViewState extends State<LineChartView> {
       );
 
   Widget _bottomTitleWidgets(double value, TitleMeta meta) => SideTitleWidget(
-      axisSide: meta.axisSide,
+      meta: meta,
       space: 3,
       child: Padding(
         padding: const EdgeInsets.only(right: 0, left: 5),
@@ -202,7 +212,7 @@ class _LineChartViewState extends State<LineChartView> {
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
-      spots: widget.chartSpots != null ? widget.chartSpots!.toList() : []);
+      spots: widget.chartSpots != null ? widget.chartSpots!.map((e) => FlSpot(e.x, e.y),).toList() : []);
 
   List<HorizontalLine> get _horizontalLines =>
       widget.extraHorizontalLines
@@ -224,8 +234,8 @@ class _LineChartViewState extends State<LineChartView> {
       widget.verticalRangeAnnotations
           ?.map(
             (e) => VerticalRangeAnnotation(
-                x1: max(e.minX.toDouble(), widget.minX),
-                x2: min(e.maxX.toDouble(), widget.maxX),
+                x1: max(e.minX.toDouble(), widget.minX.toDouble()),
+                x2: min(e.maxX.toDouble(), widget.maxX.toDouble()),
                 color: e.color),
           )
           .toList() ??
@@ -235,8 +245,8 @@ class _LineChartViewState extends State<LineChartView> {
       widget.horizontalRangeAnnotations
           ?.map(
             (e) => HorizontalRangeAnnotation(
-                y1: max(e.minY.toDouble(), widget.minY),
-                y2: min(e.maxY.toDouble(), widget.maxY),
+                y1: max(e.minY.toDouble(), widget.minY.toDouble()),
+                y2: min(e.maxY.toDouble(), widget.maxY.toDouble()),
                 color: e.color),
           )
           .toList() ??
