@@ -161,18 +161,3 @@ class ErrorView extends StatelessWidget {
       .copyWith(color: Theme.of(context).colorScheme.onError);
 }
 
-class NotAuthenticatedView extends StatelessWidget {
-  const NotAuthenticatedView({super.key});
-
-  @override
-  Column build(BuildContext context) => Column(
-        children: [
-          Expanded(
-              child: Center(
-                  child: Text(
-                      key: ValueKey("text_notAuth"),
-                      FlutterHeyteacherUtilsLocalizations.of(context)!
-                          .userNotAutenticated))),
-        ],
-      );
-}
