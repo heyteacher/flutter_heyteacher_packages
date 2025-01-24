@@ -21,8 +21,8 @@ class LineChartView extends StatefulWidget {
   late final num  maxY;
   late final int intervalX;
   late final int intervalY;
-
   final String title;
+
 
   LineChartView(
       {super.key,
@@ -41,7 +41,7 @@ class LineChartView extends StatefulWidget {
     this.minX = _floorToInterval(minX, intervalX);
     this.maxX = _ceilToInterval(maxX, intervalX);
     this.minY = _floorToInterval(minY, intervalY);
-    this.maxY = _ceilToInterval(maxY, intervalY);
+    this.maxY = _ceilToInterval(maxY + intervalY, intervalY);
   }
 
   int _interval(num minValue, num maxValue, {int multiplier = 5, int occurences = 10}) =>
@@ -68,15 +68,13 @@ class _LineChartViewState extends State<LineChartView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(widget.title,
-            style: ThemeHepler.instance().theme.textTheme.titleLarge),
-        AspectRatio(
-          aspectRatio: 1.5,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+        Text(widget.title),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AspectRatio(
+            aspectRatio: 1.5,
             child: LineChart(
               _lineChartData,
-              //duration: const Duration(milliseconds: 250),
             ),
           ),
         )
