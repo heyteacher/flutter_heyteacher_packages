@@ -30,18 +30,15 @@ class UserStore extends Store<UserData, UserData> {
   }
 }
 
-enum TrackType { indoor, outdoor }
-
 class UserData extends FirestoreData {
   Locale? locale;
   ThemeMode? themeMode;
-  TrackType? trackType;
 
   @override
   String get id => Auth.instance().uid ?? "guest";
 
   @protected
-  UserData({this.locale, this.themeMode, this.trackType});
+  UserData({this.locale, this.themeMode});
 
   factory UserData.fromFirestore(Map<String, dynamic> map) {
     return UserData(
@@ -50,10 +47,6 @@ class UserData extends FirestoreData {
           "light" => ThemeMode.light,
           "dark" => ThemeMode.dark,
           _ => ThemeMode.system
-        },
-        trackType: switch (map["trackType"]) {
-          "indoor" => TrackType.indoor,
-          _ => TrackType.outdoor
         });
   }
 
@@ -61,10 +54,9 @@ class UserData extends FirestoreData {
   Map<String, dynamic> toFirestore(List<String>? fields) => {
         if (fields?.contains("locale") ?? true) "locale": locale?.languageCode,
         if (fields?.contains("themeMode") ?? true) "themeMode": themeMode?.name,
-        if (fields?.contains("trackType") ?? true) "trackType": trackType?.name
       };
 
   @override
   String toString() =>
-      "locale: $locale themeMode $themeMode trackType $trackType}";
+      "locale: $locale themeMode $themeMode";
 }
