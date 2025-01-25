@@ -21,17 +21,22 @@ class TtsModel {
     _textToSpeech = FlutterTts();
     _setAwaitOptions();
     _streamSubscription?.cancel();
-    Auth.instance().stateChangesStream.listen((user) async => _changeLanguage(
-        user != null ? await UserStore.instance().getOrNull(user.uid) : null));
-    _streamSubscription =
-        UserStore.instance().onUserUpdated.listen(_changeLanguage);
+    Auth.instance().stateChangesStream.listen((_) async => _changeLanguage(
+        Auth.instance().autenticated
+            ? (await UserStore.instance().getOrNull(Auth.instance().uid))
+                ?.locale
+                ?.languageCode
+            : null));
+    _streamSubscription = UserStore.instance()
+        .onUserUpdated
+        .listen((user) => _changeLanguage(user.locale?.languageCode));
   }
 
   dispose() {
     _streamSubscription?.cancel();
   }
 
-  Future<void> speak(String text, {double speechRate=0}) async {
+  Future<void> speak(String text, {double speechRate = 0}) async {
     _log.fine("speak({speechRate:$speechRate}): $text");
     await _textToSpeech.setSpeechRate(speechRate);
     _textToSpeech.speak(text);
@@ -41,8 +46,7 @@ class TtsModel {
     _textToSpeech.awaitSpeakCompletion(true);
   }
 
-  void _changeLanguage(UserData? userData) {
-    _textToSpeech
-        .setLanguage(userData?.locale?.languageCode ?? Intl.getCurrentLocale());
+  void _changeLanguage(String? languageCode) {
+    _textToSpeech.setLanguage(languageCode ?? Intl.getCurrentLocale());
   }
 }
