@@ -25,8 +25,13 @@ class UserStore extends Store<UserData, UserData> {
   @override
   Future<void> update(UserData document,
       {required List<String> fields, String? id, WriteBatch? batch}) async {
-    await super.update(document, fields: fields, id: id, batch: batch);
-    _userUpdatedStreamController.sink.add(await get(id ??= document.id));
+    if (Auth.instance().autenticated) {
+      await super.update(document, fields: fields, id: id, batch: batch);
+      _userUpdatedStreamController.sink.add(await get(id ??= document.id));
+    // anyway, yield user to stream controller  
+    } else {
+      _userUpdatedStreamController.sink.add(document);
+    }
   }
 }
 
@@ -57,6 +62,5 @@ class UserData extends FirestoreData {
       };
 
   @override
-  String toString() =>
-      "locale: $locale themeMode $themeMode";
+  String toString() => "locale: $locale themeMode $themeMode";
 }

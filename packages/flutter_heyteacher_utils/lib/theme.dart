@@ -33,12 +33,10 @@ class ThemeHepler {
       StreamController<dynamic>.broadcast();
   Stream<dynamic> get themeStream => _themeStreamController.stream;
 
-  void setThemeMode(ThemeMode newThemeMode) async {
+  void setThemeMode(ThemeMode newThemeMode) {
     _themeMode = newThemeMode;
-    if (Auth.instance().autenticated) {
-      UserStore.instance()
-          .update(UserData(themeMode: _themeMode), fields: ["themeMode"]);
-    }
+    UserStore.instance()
+        .update(UserData(themeMode: _themeMode), fields: ["themeMode"]);
   }
 
   Color get blueTextColor =>
@@ -198,14 +196,15 @@ class ThemeHepler {
     _themeStreamController.sink.add(null);
   }
 
-  Color? themeForegroundColor(Color? color, {ThemeMode? themeMode}) => (themeMode ?? _themeMode) == ThemeMode.light
-      ? Color.lerp(color, Colors.black, 0.7)
-      : Color.lerp(color, Colors.white, 0.7);
+  Color? themeForegroundColor(Color? color, {ThemeMode? themeMode}) =>
+      (themeMode ?? _themeMode) == ThemeMode.light
+          ? Color.lerp(color, Colors.black, 0.7)
+          : Color.lerp(color, Colors.white, 0.7);
 
-  Color? themeBackgroundColor(Color? color, {ThemeMode? themeMode}) => (themeMode ?? _themeMode) == ThemeMode.light
-      ? Color.lerp(color, Colors.white, 0.5)
-      : Color.lerp(color, Colors.black, 0.5);
-
+  Color? themeBackgroundColor(Color? color, {ThemeMode? themeMode}) =>
+      (themeMode ?? _themeMode) == ThemeMode.light
+          ? Color.lerp(color, Colors.white, 0.5)
+          : Color.lerp(color, Colors.black, 0.5);
 
   ({Color light, Color dark}) backgroundColor(Color color) => (
         light: themeBackgroundColor(color, themeMode: ThemeMode.light)!,
@@ -270,8 +269,7 @@ class ThemeHepler {
           unselectedItemColor: disabled,
           backgroundColor: Colors.transparent,
         ),
-        cardTheme: CardTheme(
-            elevation: 50, color: surfaceContainer),
+        cardTheme: CardTheme(elevation: 50, color: surfaceContainer),
         textTheme: TextTheme(
             displayLarge: TextStyle(
           fontSize: 120,
