@@ -26,12 +26,12 @@ class BleUserData extends UserData {
           .round()
       : null;
 
-  Iterable<({HeartRateTrainingZone heartRateTrainingZone, num? min, num? max})>?
-      get heartRateTrainingZones => biometrics?.gender != null &&
+  Iterable<({HRTrainingZone hrTrainingZone, num? min, num? max})>?
+      get hrTrainingZones => biometrics?.gender != null &&
               biometrics?.age != null &&
               biometrics?.restBpm != null
-          ? HeartRateTrainingZone.values.map((heartRateTrainingZone) =>
-              heartRateTrainingZone.targetBpm(biometrics: biometrics))
+          ? HRTrainingZone.values.map((hrTrainingZone) =>
+              hrTrainingZone.targetBpm(biometrics: biometrics))
           : null;
 
   @override
@@ -139,7 +139,7 @@ enum Gender {
   }
 }
 
-enum HeartRateTrainingZone {
+enum HRTrainingZone {
   z0(minIntensity: 0, maxIntensity: 50, color: Colors.white70),
   z1(minIntensity: 50, maxIntensity: 60, color: Colors.cyan),
   z2(minIntensity: 60, maxIntensity: 70, color: Colors.green),
@@ -151,27 +151,27 @@ enum HeartRateTrainingZone {
   final int minIntensity;
   final int maxIntensity;
   final Color color;
-  const HeartRateTrainingZone(
+  const HRTrainingZone(
       {required this.minIntensity,
       required this.maxIntensity,
       required this.color});
 
-  static HeartRateTrainingZone? fromName(String? name) =>
-      HeartRateTrainingZone.values
+  static HRTrainingZone? fromName(String? name) =>
+      HRTrainingZone.values
           .where((zone) => zone.name == name)
           .firstOrNull;
 
-  static HeartRateTrainingZone? fromIntensity(int? intensity) =>
-      HeartRateTrainingZone.values
+  static HRTrainingZone? fromIntensity(int? intensity) =>
+      HRTrainingZone.values
           .where((zone) =>
               (intensity ?? 0) >= zone.minIntensity &&
               (intensity ?? 0) < zone.maxIntensity)
           .firstOrNull;
 
-  ({HeartRateTrainingZone heartRateTrainingZone, int? min, int? max}) targetBpm(
+  ({HRTrainingZone hrTrainingZone, int? min, int? max}) targetBpm(
           {({Gender? gender, int? age, int? restBpm})? biometrics}) =>
       (
-        heartRateTrainingZone: this,
+        hrTrainingZone: this,
         min: max(
             _targetBpm(biometrics: biometrics, intensity: minIntensity) ?? 0,
             biometrics?.restBpm ?? 0),

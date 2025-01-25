@@ -7,7 +7,7 @@ import 'package:logging/logging.dart';
 class HeartRateBleModel extends BleModel {
   final Logger _log = Logger("HeartRateBleModel");
 
-  HeartRateTrainingZone? lastHeartRateTrainingZone;
+  HRTrainingZone? lastHeartRateTrainingZone;
 
   @override
   void onInit() async {}
@@ -22,24 +22,24 @@ class HeartRateBleModel extends BleModel {
       if (event[1] > 0) {
         final int bpm = event[1];
         final int? intensityValue = intensity(bpm);
-        final HeartRateTrainingZone? heartRateTrainingZone =
-            HeartRateTrainingZone.fromIntensity(intensityValue);
+        final HRTrainingZone? hrTrainingZone =
+            HRTrainingZone.fromIntensity(intensityValue);
         streamController.sink.add(bpm);
-        // new heartRateTrainingZone
-        if (heartRateTrainingZone != null &&
-            lastHeartRateTrainingZone != heartRateTrainingZone) {
-          _log.fine("heartRateTrainingZone "
-              "$lastHeartRateTrainingZone -> $heartRateTrainingZone, "
+        // new hrTrainingZone
+        if (hrTrainingZone != null &&
+            lastHeartRateTrainingZone != hrTrainingZone) {
+          _log.fine("hrTrainingZone "
+              "$lastHeartRateTrainingZone -> $hrTrainingZone, "
               "bpm $bpm, "
               "intensity $intensityValue");
           // change the background
-          if (heartRateTrainingZone != HeartRateTrainingZone.z0) {
+          if (hrTrainingZone != HRTrainingZone.z0) {
             ThemeHepler.instance()
-                .update(surface: ThemeHepler.instance().backgroundColor(heartRateTrainingZone.color));
+                .update(surface: ThemeHepler.instance().backgroundColor(hrTrainingZone.color));
           } else {
             ThemeHepler.instance().setDefault();
           }
-          lastHeartRateTrainingZone = heartRateTrainingZone;
+          lastHeartRateTrainingZone = hrTrainingZone;
         }
       }
     }
@@ -49,8 +49,8 @@ class HeartRateBleModel extends BleModel {
   ({int? age, Gender? gender, int? restBpm})? get biometrics =>
       BleModel.userData?.biometrics;
 
-  Iterable<({HeartRateTrainingZone heartRateTrainingZone, num? max, num? min})>?
-      get heartRateTrainingZones => BleModel.userData?.heartRateTrainingZones;
+  Iterable<({HRTrainingZone hrTrainingZone, num? max, num? min})>?
+      get hrTrainingZones => BleModel.userData?.hrTrainingZones;
 
   static int? intensity(int bpm) => BleModel.userData?.intensity(bpm);
 
