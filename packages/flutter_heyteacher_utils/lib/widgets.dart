@@ -82,9 +82,11 @@ class ProgressIndicatorWiew extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [CircularProgressIndicator()]);
+  Widget build(BuildContext context) => Center(
+    child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [CircularProgressIndicator()]),
+  );
 }
 
 class ErrorView extends StatelessWidget {
