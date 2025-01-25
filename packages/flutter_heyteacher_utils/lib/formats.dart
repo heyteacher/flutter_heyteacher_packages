@@ -23,12 +23,12 @@ String formatDurationTts(num? milliseconds, Function(int) nHours, Function(int) 
   }
 }
 
-String formatDuration(num? milliseconds, {bool showSeconds = false}) {
+String formatDuration(num? milliseconds, {bool showSeconds = false, bool showHoursIfZero = true}) {
   if (milliseconds != null) {
     Duration duration = Duration(milliseconds: milliseconds.toInt());
     NumberFormat numberFormat = NumberFormat("00");
     return ""
-        "${numberFormat.format(duration.inHours)}:"
+        "${showHoursIfZero || duration.inHours != 0?"${numberFormat.format(duration.inHours)}:":""}"
         "${numberFormat.format(duration.inMinutes - (duration.inHours * 60))}"
         "${showSeconds ? ":${numberFormat.format(duration.inSeconds - (duration.inMinutes * 60))}" : ""}";
   } else {
