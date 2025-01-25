@@ -9,16 +9,19 @@ import 'package:go_router/go_router.dart';
 void showSnackBar(
     {required BuildContext context,
     required String message,
+    int? duration,
     bool error = false}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
         duration: Duration(
-            seconds: FirebaseRemoteConfig.instance
+            seconds: duration ?? FirebaseRemoteConfig.instance
                 .getInt("snackBarDurationInSeconds")),
         backgroundColor: error
             ? Theme.of(context).colorScheme.error
             : ThemeHepler.instance().greenTextColor,
-        content: Text(message)),
+        content: Text(message,
+            style: TextStyle(
+                color: ThemeHepler.instance().theme.colorScheme.surface))),
   );
 }
 
@@ -73,29 +76,15 @@ Future<void> dialogBuilder<T>(
   }
 }
 
-class ProgressIndicatorWidget extends StatelessWidget {
-  const ProgressIndicatorWidget({
+class ProgressIndicatorWiew extends StatelessWidget {
+  const ProgressIndicatorWiew({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
+  Widget build(BuildContext context) => Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                  child: Container(
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator())),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+      children: [CircularProgressIndicator()]);
 }
 
 class ErrorView extends StatelessWidget {
@@ -160,4 +149,3 @@ class ErrorView extends StatelessWidget {
       .headlineLarge!
       .copyWith(color: Theme.of(context).colorScheme.onError);
 }
-
