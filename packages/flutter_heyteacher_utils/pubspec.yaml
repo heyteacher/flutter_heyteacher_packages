@@ -32,6 +32,7 @@ dependencies:
   fl_chart: ^0.70.2
   flutter_localizations:
     sdk: flutter
+  collection: ^1.19.0
 
 dev_dependencies:
   flutter_test:
