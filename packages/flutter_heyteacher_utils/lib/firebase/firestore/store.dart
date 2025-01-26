@@ -421,7 +421,8 @@ abstract class Store<LightDataType extends FirestoreData,
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < ids.length; i++) {
-      delete(ids[i], batch: batch);
+      // need await operation in order batch commit will by executed as last operation 
+      await delete(ids[i], batch: batch);
     }
     await batch.commit();
     notifyAggregatesChanges();
@@ -471,7 +472,8 @@ abstract class Store<LightDataType extends FirestoreData,
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < documents.length; i++) {
-      set(documents[i], id: ids?[i], batch: batch);
+      // need await operation in order batch commit will by executed as last operation 
+      await set(documents[i], id: ids?[i], batch: batch);
     }
     await batch.commit();
     notifyAggregatesChanges();
@@ -525,7 +527,8 @@ abstract class Store<LightDataType extends FirestoreData,
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < documents.length; i++) {
-      update(documents[i], fields: fields, id: ids?[i], batch: batch);
+      // need await operation in order batch commit will by executed as last operation 
+      await update(documents[i], fields: fields, id: ids?[i], batch: batch);
     }
     await batch.commit();
     notifyAggregatesChanges();
