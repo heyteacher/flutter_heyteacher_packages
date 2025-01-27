@@ -157,15 +157,13 @@ enum HRTrainingZone {
       required this.color});
 
   static HRTrainingZone? fromName(String? name) =>
-      HRTrainingZone.values
-          .where((zone) => zone.name == name)
-          .firstOrNull;
+      HRTrainingZone.values.where((zone) => zone.name == name).firstOrNull;
 
-  static HRTrainingZone? fromIntensity(int? intensity) =>
+  static HRTrainingZone? fromBpm(
+          int? bpm, ({Gender? gender, int? age, int? restBpm})? biometrics) =>
       HRTrainingZone.values
-          .where((zone) =>
-              (intensity ?? 0) >= zone.minIntensity &&
-              (intensity ?? 0) < zone.maxIntensity)
+          .where(
+              (zone) => _between(bpm, zone.targetBpm(biometrics: biometrics)))
           .firstOrNull;
 
   ({HRTrainingZone hrTrainingZone, int? min, int? max}) targetBpm(
@@ -178,7 +176,7 @@ enum HRTrainingZone {
         max: _targetBpm(biometrics: biometrics, intensity: maxIntensity)
       );
 
-  // targetBpm = [((female: 226| male: 200) - age - restBpm) x intensity% \ 100] + restBpm
+  // targetBpm = [((female: 226| male: 220) - age - restBpm) x intensity% \ 100] + restBpm
   int? _targetBpm(
           {required ({Gender? gender, int? age, int? restBpm})? biometrics,
           required int? intensity}) =>
@@ -201,6 +199,10 @@ enum HRTrainingZone {
               ?.trainingZoneValue(name) ??
           name
       : name;
+
+  static bool _between(int? bpm,
+          ({HRTrainingZone hrTrainingZone, int? max, int? min}) targetBpm) =>
+      (bpm ?? 0) >= (targetBpm.min ?? 0) && (bpm ?? 0) < (targetBpm.max ?? 0);
 }
 
 class CrankRevolutionRecordData {

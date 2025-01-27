@@ -21,17 +21,15 @@ class HeartRateBleModel extends BleModel {
     if (event.length >= 2) {
       if (event[1] > 0) {
         final int bpm = event[1];
-        final int? intensityValue = intensity(bpm);
         final HRTrainingZone? hrTrainingZone =
-            HRTrainingZone.fromIntensity(intensityValue);
+            HRTrainingZone.fromBpm(bpm,BleModel.userData?.biometrics);
         streamController.sink.add(bpm);
         // new hrTrainingZone
         if (hrTrainingZone != null &&
             lastHeartRateTrainingZone != hrTrainingZone) {
           _log.fine("hrTrainingZone "
               "$lastHeartRateTrainingZone -> $hrTrainingZone, "
-              "bpm $bpm, "
-              "intensity $intensityValue");
+              "bpm $bpm ");
           // change the background
           if (hrTrainingZone != HRTrainingZone.z0) {
             ThemeHepler.instance()
