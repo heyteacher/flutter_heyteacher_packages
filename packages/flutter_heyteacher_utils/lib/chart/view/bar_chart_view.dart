@@ -16,7 +16,6 @@ class BarChartView extends ChartView {
   final String Function(num value) formatterY;
   final bool horizontal;
 
-  late final num _minY;
   late final num _maxY;
   late final int _intervalY;
 
@@ -28,7 +27,6 @@ class BarChartView extends ChartView {
     num maxY = dataList.map((e) => e.value).max;
     num minY = dataList.map((e) => e.value).min;
     _intervalY = interval(minY, maxY, multiplier: 1);
-    _minY = ChartView.floorToInterval(minY, _intervalY);
     _maxY = ChartView.ceilToInterval(maxY, _intervalY) +  _intervalY;
   }
 
@@ -99,7 +97,7 @@ class BarChartView extends ChartView {
                   ),
                 ),
                 maxY: _maxY.toDouble(),
-                minY: _minY.toDouble(),
+                minY: 0,
               ),
             ),
           ),
