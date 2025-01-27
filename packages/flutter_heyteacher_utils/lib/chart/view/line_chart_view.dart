@@ -1,48 +1,37 @@
 import 'dart:math';
 import 'package:flutter_heyteacher_utils/chart/view/chart_view.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
-import '../../formats.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class LineChartView extends ChartView {
   //static final _log = Logger("LineChartView");
 
-  final Iterable<({double x, double y})>? chartSpots;
   final Iterable<({num y, Color color})>? extraHorizontalLines;
   final Iterable<({num x, Color color})>? extraVerticalLines;
   final Iterable<({num minY, num maxY, Color color})>?
       horizontalRangeAnnotations;
   final Iterable<({num minX, num maxX, Color color})>? verticalRangeAnnotations;
 
-  late final num  minX;
-  late final num  maxX;
-  late final int intervalX;
-  late final num  minY;
-  late final num  maxY;
-  late final int intervalY;
   final String title;
 
 
   LineChartView(
       {super.key,
       required this.title,
-      required this.chartSpots,
-      required int minX,
-      required int maxX,
-      required int  minY,
-      required int  maxY,
+      required super.chartDataList,
+      super.maxX,
+      super.minX,
+      super.minIntervalX,
+      required super.formatterX,
+      super.maxY,
+      super.minY,
+      super.minIntervalY,
+      required super.formatterY,
       this.extraHorizontalLines,
       this.extraVerticalLines,
       this.horizontalRangeAnnotations,
-      this.verticalRangeAnnotations}) {
-    intervalX = interval(minX, maxX);
-    intervalY = interval(minY, maxY);
-    this.minX = ChartView.floorToInterval(minX, intervalX);
-    this.maxX = ChartView.ceilToInterval(maxX, intervalX);
-    this.minY = ChartView.floorToInterval(minY, intervalY);
-    this.maxY = ChartView.ceilToInterval(maxY + intervalY, intervalY);
-  }
+      this.verticalRangeAnnotations});
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +101,7 @@ class LineChartView extends ChartView {
   Widget _leftTitleWidgets(double value, TitleMeta meta) => Padding(
         padding: const EdgeInsets.only(right: 5),
         child: Text(
-            ChartView.roundToInterval(value, intervalY)
-                .toInt()
-                .toString(),
+            formatterY(value),
             style: ThemeHepler.instance().theme.textTheme.bodySmall!
             //.copyWith(color: ThemeHepler.instance().greenTextColor)
             ,
@@ -129,10 +116,7 @@ class LineChartView extends ChartView {
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
-            formatDuration(
-                ChartView.roundToInterval(value, intervalX) *
-                    60 *
-                    1000),
+            formatterX(value),
             style: ThemeHepler.instance()
                 .theme
                 .textTheme
@@ -187,7 +171,7 @@ class LineChartView extends ChartView {
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
-      spots: chartSpots != null ? chartSpots!.map((e) => FlSpot(e.x, e.y),).toList() : []);
+      spots: chartDataList.map((e) => FlSpot(e.x.toDouble(), e.y.toDouble()),).toList());
 
   List<HorizontalLine> get _horizontalLines =>
       extraHorizontalLines

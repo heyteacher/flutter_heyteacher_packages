@@ -1,34 +1,24 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter_heyteacher_utils/chart/view/chart_view.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 
-class BarData {
-  const BarData(this.title, this.color, this.value);
-  final String title;
-  final Color color;
-  final num value;
-}
-
 class BarChartView extends ChartView {
-  final List<BarData> dataList;
-  final String Function(num value) formatterY;
   final bool horizontal;
 
-  late final num _maxY;
-  late final int _intervalY;
-
   BarChartView(
-      {required this.dataList,
-      required this.formatterY,
+      {required super.chartDataList,
+      super.maxX,
+      super.minX,
+      super.minIntervalX,
+      required super.formatterX,
+      super.maxY,
+      super.minY,
+      super.minIntervalY,
+      required super.formatterY,
+      super.key,
       this.horizontal = false,
-      super.key}) {
-    num maxY = dataList.map((e) => e.value).max;
-    num minY = dataList.map((e) => e.value).min;
-    _intervalY = interval(minY, maxY, multiplier: 1);
-    _maxY = ChartView.ceilToInterval(maxY, _intervalY) +  _intervalY;
-  }
+ });
 
   @override
   Widget build(BuildContext context) {
@@ -54,19 +44,19 @@ class BarChartView extends ChartView {
                 ),
                 gridData: FlGridData(
                   show: true,
-                  horizontalInterval: _intervalY.toDouble(),
+                  horizontalInterval: intervalY.toDouble(),
                   drawVerticalLine: false,
                   getDrawingHorizontalLine: (value) => FlLine(
                     color: Colors.grey.withValues(alpha: 0.2),
                     strokeWidth: 1,
                   ),
                 ),
-                barGroups: dataList.asMap().entries.map((e) {
-                  final index = e.key;
-                  final data = e.value;
+                barGroups: chartDataList.indexed.map((e) {
+                  final int index = e.$1;
+                  final ChartData data = e.$2;
                   return BarChartGroupData(x: index, barRods: [
                     BarChartRodData(
-                      toY: data.value.toDouble(),
+                      toY: data.y.toDouble(),
                       color: data.color,
                       borderRadius: BorderRadius.zero,
                       width: 25,
@@ -88,7 +78,7 @@ class BarChartView extends ChartView {
                       int rodIndex,
                     ) {
                       return BarTooltipItem(
-                        formatterY(dataList[groupIndex].value),
+                        formatterY(chartDataList.elementAt(groupIndex).y),
                         TextStyle(
                           color: rod.color,
                         ),
@@ -96,8 +86,8 @@ class BarChartView extends ChartView {
                     },
                   ),
                 ),
-                maxY: _maxY.toDouble(),
-                minY: 0,
+                maxY: maxY.toDouble(),
+                minY: minY.toDouble(),
               ),
             ),
           ),
@@ -116,8 +106,8 @@ class BarChartView extends ChartView {
                       return SideTitleWidget(
                         meta: meta,
                         child: Text(
-                          dataList[index].title,
-                          style: TextStyle(color: dataList[index].color),
+                          formatterX(chartDataList.elementAt(index).x),
+                          style: TextStyle(color: chartDataList.elementAt(index).color),
                         ),
                       );
                     },
@@ -131,7 +121,7 @@ class BarChartView extends ChartView {
                   sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 50,
-                      interval: _intervalY.toDouble(),
+                      interval: intervalY.toDouble(),
                       getTitlesWidget: (value, meta) {
                         final index = value.toInt();
                         return RotatedBox(
