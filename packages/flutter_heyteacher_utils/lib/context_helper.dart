@@ -6,7 +6,7 @@ class ContextHelper {
       GlobalKey<ScaffoldMessengerState>();
 
   static BuildContext? get context =>
-      scaffoldMessengerKey.currentContext!;
+      scaffoldMessengerKey.currentContext;
 
   ContextHelper._();
 }
