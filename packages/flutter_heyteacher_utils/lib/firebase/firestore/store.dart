@@ -301,7 +301,7 @@ abstract class Store<LightDataType extends FirestoreData,
         .listen(((_) => notifyAggregatesChanges()));
   }
 
-  dispose(){
+  dispose() {
     _aggregatesSubscription?.cancel();
   }
 
@@ -385,15 +385,18 @@ abstract class Store<LightDataType extends FirestoreData,
     _log.fine("getOrNull($_detailsCollectionPathLog/$id)");
     if (id == null) return null;
     _checkAuthenticated();
-    return await exists(id)? get(id): null;
+    return await exists(id) ? get(id) : null;
   }
-
 
   Future<void> delete(String id, {WriteBatch? batch}) async {
     _log.fine("delete($_detailsCollectionPathLog/$id)");
     _checkAuthenticated();
     if (groupByCounterFields != null) {
-      await _changeGrouByCounter(await get(id), increment: false);
+      try {
+        await _changeGrouByCounter(await get(id), increment: false);
+      } catch (e,s) {
+        _log.warning("delete($_detailsCollectionPathLog/$id) error on _changeGrouByCounter", e,s);      
+      }
     }
     if (batch != null) {
       batch.delete(_detailsCollectionReference.doc(id));
@@ -421,7 +424,7 @@ abstract class Store<LightDataType extends FirestoreData,
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < ids.length; i++) {
-      // need await operation in order batch commit will by executed as last operation 
+      // need await operation in order batch commit will by executed as last operation
       await delete(ids[i], batch: batch);
     }
     await batch.commit();
@@ -472,7 +475,7 @@ abstract class Store<LightDataType extends FirestoreData,
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < documents.length; i++) {
-      // need await operation in order batch commit will by executed as last operation 
+      // need await operation in order batch commit will by executed as last operation
       await set(documents[i], id: ids?[i], batch: batch);
     }
     await batch.commit();
@@ -489,8 +492,8 @@ abstract class Store<LightDataType extends FirestoreData,
     _checkAuthenticated();
     if (await exists(id)) {
       if (batch != null) {
-        batch.update(_detailsCollectionReference.doc(id),
-            document.toFirestore(fields));
+        batch.update(
+            _detailsCollectionReference.doc(id), document.toFirestore(fields));
       } else {
         _detailsCollectionReference
             .doc(id)
@@ -527,7 +530,7 @@ abstract class Store<LightDataType extends FirestoreData,
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < documents.length; i++) {
-      // need await operation in order batch commit will by executed as last operation 
+      // need await operation in order batch commit will by executed as last operation
       await update(documents[i], fields: fields, id: ids?[i], batch: batch);
     }
     await batch.commit();
@@ -598,7 +601,8 @@ abstract class Store<LightDataType extends FirestoreData,
           fromFirestore: (snapshot, _) =>
               FirestoreData.fromFirestoreFactory<LightDataType>(
                   snapshot.data()!),
-          toFirestore: (LightDataType lightData, _) => lightData.toFirestore(null));
+          toFirestore: (LightDataType lightData, _) =>
+              lightData.toFirestore(null));
 
   CollectionReference<DetailsDataType> get _detailsCollectionReference =>
       _firestore.collection(_detailsCollectionPath!).withConverter(
