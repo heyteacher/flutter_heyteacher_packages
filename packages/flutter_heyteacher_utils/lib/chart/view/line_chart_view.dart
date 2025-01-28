@@ -13,20 +13,19 @@ class LineChartView extends ChartView {
       horizontalRangeAnnotations;
   final Iterable<({num minX, num maxX, Color color})>? verticalRangeAnnotations;
 
-  final String title;
-
-
   LineChartView(
       {super.key,
-      required this.title,
+      required super.title,
       required super.chartDataList,
       super.maxX,
       super.minX,
       super.minIntervalX,
       required super.formatterX,
+      required super.colorX,
       super.maxY,
       super.minY,
       super.minIntervalY,
+      required super.colorY,
       required super.formatterY,
       this.extraHorizontalLines,
       this.extraVerticalLines,
@@ -77,7 +76,7 @@ class LineChartView extends ChartView {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 40,
+            reservedSize: 60,
             interval: intervalX.toDouble(),
             getTitlesWidget: _bottomTitleWidgets,
           ),
@@ -101,7 +100,7 @@ class LineChartView extends ChartView {
   Widget _leftTitleWidgets(double value, TitleMeta meta) => Padding(
         padding: const EdgeInsets.only(right: 5),
         child: Text(
-            formatterY(value),
+            formatterY(ChartData(x:0 , y: value)),
             style: ThemeHepler.instance().theme.textTheme.bodySmall!
             //.copyWith(color: ThemeHepler.instance().greenTextColor)
             ,
@@ -116,7 +115,7 @@ class LineChartView extends ChartView {
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
-            formatterX(value),
+            formatterX(ChartData(x: value, y:0)),
             style: ThemeHepler.instance()
                 .theme
                 .textTheme
