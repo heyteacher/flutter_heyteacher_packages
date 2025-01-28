@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 
@@ -12,26 +10,25 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class BleUserData extends UserData {
   Map<BleType, ({String? id, String? name})>? devices;
 
-  ({int? restBpm, int? age, Gender? gender})? biometrics;
+  ({int restBpm, int age, Gender gender})? biometrics;
 
   // intensity% = (bpm -restBpm / ( (female: 226| male: 200) - age - restBpm)) * 100
-  int? intensity(int bpm) => biometrics?.gender != null &&
+  num? intensity(num? bpm) => bpm != null &&
+          biometrics?.gender != null &&
           biometrics?.age != null &&
           biometrics?.restBpm != null
-      ? ((bpm - biometrics!.restBpm!) /
-              (biometrics!.gender!.heartRateCoeff -
-                  biometrics!.age! -
-                  biometrics!.restBpm!) *
+      ? ((bpm - biometrics!.restBpm) /
+              (biometrics!.gender.heartRateCoeff -
+                  biometrics!.age -
+                  biometrics!.restBpm) *
               100)
           .round()
       : null;
 
-  Iterable<({HRTrainingZone hrTrainingZone, num? min, num? max})>?
-      get hrTrainingZones => biometrics?.gender != null &&
-              biometrics?.age != null &&
-              biometrics?.restBpm != null
+  Iterable<({HRTrainingZone hrTrainingZone, num min, num max})>?
+      get hrTrainingZones => biometrics != null
           ? HRTrainingZone.values.map((hrTrainingZone) =>
-              hrTrainingZone.targetBpm(biometrics: biometrics))
+              hrTrainingZone.targetBpm(biometrics: biometrics)!)
           : null;
 
   @override
@@ -46,35 +43,42 @@ class BleUserData extends UserData {
                   name: device?.platformName ?? ""
                 ))));
 
-  BleUserData.fromHeartRate(
-      ({Gender? gender, int? age, int? restBpm}) biometrics)
+  BleUserData.fromHeartRate(({Gender gender, int age, int restBpm})? biometrics)
       : this._(biometrics: biometrics);
 
   factory BleUserData.fromFirestore(Map<String, dynamic> map) {
-    return BleUserData._(devices: {
-      for (BleType bleType in BleType.values)
-        bleType: (
-          id: map[bleType.firestoreFieldId],
-          name: map[bleType.firestoreFieldName],
-        ),
-    }, biometrics: (
-      restBpm: map["biometrics"]?["restBpm"],
-      age: map["biometrics"]?["age"],
-      gender: Gender.values
-          .where((gender) => gender.name == map["biometrics"]?["gender"])
-          .firstOrNull
-    ));
+    return BleUserData._(
+        devices: {
+          for (BleType bleType in BleType.values)
+            bleType: (
+              id: map[bleType.firestoreFieldId],
+              name: map[bleType.firestoreFieldName],
+            ),
+        },
+        biometrics: map["biometrics"] != null
+            ? (
+                restBpm: map["biometrics"]?["restBpm"] ?? 0,
+                age: map["biometrics"]?["age"] ?? 0,
+                gender: Gender.values
+                        .where((gender) =>
+                            gender.name == map["biometrics"]?["gender"])
+                        .firstOrNull ??
+                    Gender.other
+              )
+            : null);
   }
 
   @override
   Map<String, dynamic> toFirestore(List<String>? fields) => {
         ...super.toFirestore(fields),
         if (fields?.contains("biometrics") ?? true)
-          "biometrics": {
-            "restBpm": biometrics?.restBpm,
-            "age": biometrics?.age,
-            "gender": biometrics?.gender?.name,
-          },
+          "biometrics": biometrics != null
+              ? {
+                  "restBpm": biometrics!.restBpm,
+                  "age": biometrics!.age,
+                  "gender": biometrics!.gender.name,
+                }
+              : null,
         // set firestoreFieldId for each ble types
         for (BleType bleType in BleType.values)
           // update only if not null, empty string for reset
@@ -160,36 +164,33 @@ enum HRTrainingZone {
       HRTrainingZone.values.where((zone) => zone.name == name).firstOrNull;
 
   static HRTrainingZone? fromBpm(
-          int? bpm, ({Gender? gender, int? age, int? restBpm})? biometrics) =>
-      HRTrainingZone.values
-          .where(
-              (zone) => _between(bpm, zone.targetBpm(biometrics: biometrics)))
-          .firstOrNull;
+          num? bpm, ({Gender gender, int age, int restBpm})? biometrics) =>
+      biometrics != null && bpm != null && bpm <= (biometrics.restBpm)
+          ? HRTrainingZone.z0 // bpm is less then rest PBM, return z0
+          : HRTrainingZone.values
+              .where((zone) =>
+                  _between(bpm, zone.targetBpm(biometrics: biometrics)))
+              .firstOrNull;
 
-  ({HRTrainingZone hrTrainingZone, int? min, int? max}) targetBpm(
-          {({Gender? gender, int? age, int? restBpm})? biometrics}) =>
+  ({HRTrainingZone hrTrainingZone, int min, int max})? targetBpm(
+          {({Gender gender, int age, int restBpm})? biometrics}) => biometrics != null?
       (
         hrTrainingZone: this,
-        min: max(
-            _targetBpm(biometrics: biometrics, intensity: minIntensity) ?? 0,
-            biometrics?.restBpm ?? 0),
-        max: _targetBpm(biometrics: biometrics, intensity: maxIntensity)
-      );
+        min: _targetBpm(biometrics: biometrics, intensity: minIntensity) ?? 0,
+        max: _targetBpm(biometrics: biometrics, intensity: maxIntensity) ?? 0
+      ): null;
 
   // targetBpm = [((female: 226| male: 220) - age - restBpm) x intensity% \ 100] + restBpm
   int? _targetBpm(
-          {required ({Gender? gender, int? age, int? restBpm})? biometrics,
+          {required ({Gender gender, int age, int restBpm})? biometrics,
           required int? intensity}) =>
-      biometrics?.gender != null &&
-              biometrics?.age != null &&
-              biometrics?.restBpm != null &&
-              intensity != null
-          ? (((biometrics!.gender!.heartRateCoeff -
-                          biometrics.age! -
-                          biometrics.restBpm!) *
+      biometrics != null && intensity != null
+          ? (((biometrics.gender.heartRateCoeff -
+                          biometrics.age -
+                          biometrics.restBpm) *
                       intensity /
                       100) +
-                  biometrics.restBpm!)
+                  biometrics.restBpm)
               .round()
           : null;
 
@@ -200,9 +201,9 @@ enum HRTrainingZone {
           name
       : name;
 
-  static bool _between(int? bpm,
-          ({HRTrainingZone hrTrainingZone, int? max, int? min}) targetBpm) =>
-      (bpm ?? 0) >= (targetBpm.min ?? 0) && (bpm ?? 0) < (targetBpm.max ?? 0);
+  static bool _between(num? bpm,
+          ({HRTrainingZone hrTrainingZone, num? max, num? min})? targetBpm) =>
+      (bpm ?? 0) >= (targetBpm?.min ?? 0) && (bpm ?? 0) < (targetBpm?.max ?? 0);
 }
 
 class CrankRevolutionRecordData {
