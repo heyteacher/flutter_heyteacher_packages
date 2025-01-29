@@ -11,7 +11,6 @@ class ChartData {
       {required this.x, required this.y, this.yColor, this.y1});
 }
 
-// ignore: must_be_immutable
 abstract class ChartView extends StatelessWidget {
   final String title;
   final Iterable<ChartData> chartDataList;

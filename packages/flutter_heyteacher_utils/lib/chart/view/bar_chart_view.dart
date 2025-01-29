@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/chart/view/chart_view.dart';
 
-// ignore: must_be_immutable
 class BarChartView extends ChartView {
   final bool horizontal;
 
