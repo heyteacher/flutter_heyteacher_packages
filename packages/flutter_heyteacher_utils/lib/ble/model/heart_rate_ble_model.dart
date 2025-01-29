@@ -2,6 +2,7 @@ import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
 import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
+import 'package:flutter_heyteacher_utils/tts/model/tts_model.dart';
 import 'package:logging/logging.dart';
 
 class HeartRateBleModel extends BleModel {
@@ -30,10 +31,11 @@ class HeartRateBleModel extends BleModel {
           _log.fine("hrTrainingZone "
               "$lastHeartRateTrainingZone -> $hrTrainingZone, "
               "bpm $bpm ");
-          // change the background
+          // change the background and speak new zone
           if (hrTrainingZone != HRTrainingZone.z0) {
             ThemeHepler.instance()
                 .update(surface: ThemeHepler.instance().backgroundColor(hrTrainingZone.color));
+            TtsModel.instance.speak(hrTrainingZone.toString());
           } else {
             ThemeHepler.instance().setDefault();
           }
