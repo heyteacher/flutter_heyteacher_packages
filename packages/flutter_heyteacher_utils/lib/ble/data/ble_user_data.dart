@@ -109,6 +109,12 @@ enum BleType {
       firestoreFieldName: "heartRateDeviceName",
       uuidService: "180d",
       uuidCharacteristic: "2a37"),
+  cyclingPower(
+      icon: Icons.electric_bolt,
+      firestoreFieldId: "cyclingPowerDeviceId",
+      firestoreFieldName: "cyclingPowerDeviceName",
+      uuidService: "1818",
+      uuidCharacteristic: "2a63"),
   cadence(
       icon: Icons.change_circle,
       firestoreFieldId: "cadenceDeviceId",

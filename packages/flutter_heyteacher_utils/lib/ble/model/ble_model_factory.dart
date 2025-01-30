@@ -2,6 +2,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
 import 'package:flutter_heyteacher_utils/ble/model/cadence_ble_model.dart';
+import 'package:flutter_heyteacher_utils/ble/model/cycling_power_ble_model.dart';
 import 'package:flutter_heyteacher_utils/ble/model/heart_rate_ble_model.dart';
 import 'package:flutter_heyteacher_utils/ble/ble_device_helper.dart';
 import 'dart:async';
@@ -35,6 +36,8 @@ class BleModelFactory {
         return CadenceBleModel.instance;
       case BleType.heartRate:
         return HeartRateBleModel.instance;
+      case BleType.cyclingPower:
+        return CyclingPowerBleModel.instance;
     }
   }
 
