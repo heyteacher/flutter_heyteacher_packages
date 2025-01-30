@@ -1,15 +1,8 @@
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
 import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
-import 'package:flutter_heyteacher_utils/tts/model/tts_model.dart';
-import 'package:logging/logging.dart';
 
 class HeartRateBleModel extends BleModel {
-  final Logger _log = Logger("HeartRateBleModel");
-
-  HRTrainingZone? lastHeartRateTrainingZone;
-
   @override
   void onInit() async {}
 
@@ -22,30 +15,11 @@ class HeartRateBleModel extends BleModel {
     if (event.length >= 2) {
       if (event[1] > 0) {
         final int bpm = event[1];
-        final HRTrainingZone? hrTrainingZone =
-            HRTrainingZone.fromBpm(bpm,BleModel.userData?.biometrics);
         streamController.sink.add(bpm);
-        // new hrTrainingZone
-        if (hrTrainingZone != null &&
-            lastHeartRateTrainingZone != hrTrainingZone) {
-          _log.fine("hrTrainingZone "
-              "$lastHeartRateTrainingZone -> $hrTrainingZone, "
-              "bpm $bpm ");
-          // change the background and speak new zone
-          if (hrTrainingZone != HRTrainingZone.z0) {
-            ThemeHepler.instance()
-                .update(surface: ThemeHepler.instance().backgroundColor(hrTrainingZone.color));
-            TtsModel.instance.speak(hrTrainingZone.toString());
-          } else {
-            ThemeHepler.instance().setDefault();
-          }
-          lastHeartRateTrainingZone = hrTrainingZone;
-        }
       }
     }
   }
 
- 
   ({int age, Gender gender, int restBpm})? get biometrics =>
       BleModel.userData?.biometrics;
 
@@ -54,11 +28,11 @@ class HeartRateBleModel extends BleModel {
 
   static num? intensity(num? bpm) => BleModel.userData?.intensity(bpm);
 
-  void updateBiometrics(
-      {({int age, Gender gender, int restBpm})? biometrics}) {
+  void updateBiometrics({({int age, Gender gender, int restBpm})? biometrics}) {
     if (BleModel.userData != null) {
       BleModel.userData!.biometrics = biometrics;
-      BleUserStore.instance().update(BleModel.userData!, fields: ["biometrics"]);
+      BleUserStore.instance()
+          .update(BleModel.userData!, fields: ["biometrics"]);
     }
-  } 
+  }
 }
