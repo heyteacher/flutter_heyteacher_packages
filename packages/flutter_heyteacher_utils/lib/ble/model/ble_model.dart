@@ -97,11 +97,11 @@ abstract class BleModel {
         connected: _device?.isConnected ?? false
       ));
       callback?.call();
-      if (userDevice != null) {
-        _log.fine("init: ${bleType.name} try auto connection to device");
+      if (userDevice != null && userDevice.id != null) {
+        _log.fine("init: ${bleType.name} try auto connection to device $userDevice");
         _device = BluetoothDevice.fromId(userDevice.id!);
         if (_device!.isDisconnected) {
-          _log.fine("init:  ${bleType.name} connect(autoConnect: true)");
+          _log.fine("init:  ${bleType.name} connect(autoConnect: true) to decive $userDevice");
           connect(device: _device!, autoConnect: true, callback: callback);
         }
       }
