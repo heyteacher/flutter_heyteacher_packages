@@ -41,6 +41,9 @@ class BleModelFactory {
     }
   }
 
+  static Iterable<BleModel> get bleModels => BleType.values
+      .map((bleType) => BleModelFactory.instance(bleType: bleType));
+
   static Future<BleType?> detectBleType(BluetoothDevice? device) async {
     await device?.connectAndUpdateStream();
     await device?.discoverServices();
@@ -64,8 +67,8 @@ class BleModelFactory {
     }
   }
 
- static Future<void> turnOn({VoidCallback? callback}) async {
-      _log.fine("turnOn: if android try to turn on Ble");
+  static Future<void> turnOn({VoidCallback? callback}) async {
+    _log.fine("turnOn: if android try to turn on Ble");
     try {
       if (Platform.isAndroid &&
           FlutterBluePlus.adapterStateNow != BluetoothAdapterState.on) {
