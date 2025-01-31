@@ -394,8 +394,11 @@ abstract class Store<LightDataType extends FirestoreData,
     if (groupByCounterFields != null) {
       try {
         await _changeGrouByCounter(await get(id), increment: false);
-      } catch (e,s) {
-        _log.warning("delete($_detailsCollectionPathLog/$id) error on _changeGrouByCounter", e,s);      
+      } catch (e, s) {
+        _log.warning(
+            "delete($_detailsCollectionPathLog/$id) error on _changeGrouByCounter",
+            e,
+            s);
       }
     }
     if (batch != null) {
@@ -685,8 +688,9 @@ abstract class Store<LightDataType extends FirestoreData,
           "${detailsCollection == "" ? "" : "/<uid>/$detailsCollection"}"
       : detailsCollection;
 
-  static String get _uid =>
-      Auth.instance().notAutenticated ? "guest" : Auth.instance().uid!;
+  String get _uid => Auth.instance().autenticated
+      ? Auth.instance().uid!
+      : throw UserNotAuthenticatedException();
 
   void _initGroupByCounter() async {
     if (Auth.instance().notAutenticated) {

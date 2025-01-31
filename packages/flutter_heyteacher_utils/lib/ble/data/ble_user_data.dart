@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
@@ -30,9 +29,6 @@ class BleUserData extends UserData {
           ? HRTrainingZone.values.map((hrTrainingZone) =>
               hrTrainingZone.targetBpm(biometrics: biometrics)!)
           : null;
-
-  @override
-  String get id => Auth.instance().uid ?? "guest";
 
   BleUserData._({this.devices, this.biometrics}) : super();
 
