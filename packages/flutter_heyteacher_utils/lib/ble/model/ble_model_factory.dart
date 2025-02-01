@@ -27,6 +27,8 @@ class BleModelFactory {
 
   static BleType? scanningBleType;
 
+  static final Map<BleType, BluetoothDevice?> _connectingDevices = {};
+
   // block instantiation
   BleModelFactory._();
 
@@ -100,12 +102,15 @@ class BleModelFactory {
     });
     _log.fine("startScan: listen scan results");
     _scanResultsSubscription?.cancel();
-    _scanResultsSubscription = FlutterBluePlus.scanResults.listen((results) {
+    _connectingDevices[bleType] = null;
+    _scanResultsSubscription = FlutterBluePlus.scanResults.listen((results) async {
       scanResults = results;
-      if (scanResults.length == 1) {
+      // found one device and no device of bleType is already connecting, autoconnect
+      if (scanResults.length == 1 && _connectingDevices[bleType] == null) {
         _log.fine(
             "found one ${scanningBleType!.name} device, connect to ${scanResults.first.device.remoteId.str}");
-        BleModelFactory.instance(bleType: scanningBleType!).connect(
+        _connectingDevices[bleType] = results.first.device;
+        await BleModelFactory.instance(bleType: scanningBleType!).connect(
             device: results.first.device,
             autoConnect: true,
             callback: callback);
