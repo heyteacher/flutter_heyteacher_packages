@@ -21,12 +21,14 @@ class LineChartView extends ChartView {
       super.minX,
       super.minIntervalX,
       required super.formatterX,
+      super.formatterAxisX,
       required super.colorX,
       super.maxY,
       super.minY,
       super.minIntervalY,
       required super.colorY,
       required super.formatterY,
+      super.formatterAxisY,
       this.extraHorizontalLines,
       this.extraVerticalLines,
       this.horizontalRangeAnnotations,
@@ -100,7 +102,7 @@ class LineChartView extends ChartView {
   Widget _leftTitleWidgets(double value, TitleMeta meta) => Padding(
         padding: const EdgeInsets.only(right: 5),
         child: Text(
-            formatterY(ChartData(x:0 , y: value)),
+            formatterAxisY(ChartData(x:0 , y: value)),
             style: ThemeHepler.instance().theme.textTheme.bodySmall!
             //.copyWith(color: ThemeHepler.instance().greenTextColor)
             ,
@@ -115,7 +117,7 @@ class LineChartView extends ChartView {
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
-            formatterX(ChartData(x: value, y:0)),
+            formatterAxisX(ChartData(x: value, y:0)),
             style: ThemeHepler.instance()
                 .theme
                 .textTheme

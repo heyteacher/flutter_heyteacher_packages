@@ -13,11 +13,13 @@ class BarChartView extends ChartView {
     super.minX,
     super.minIntervalX,
     required super.formatterX,
+    super.formatterAxisX,
     required super.colorX,
     super.maxY,
     super.minY,
     super.minIntervalY,
     required super.formatterY,
+    super.formatterAxisY,
     required super.colorY,
     super.key,
   });
@@ -55,13 +57,13 @@ class BarChartView extends ChartView {
                             : _valueAxisTitles(
                                 interval: intervalY,
                                 color: colorY,
-                                formatter: formatterY),
+                                formatter: formatterAxisY),
                         bottomTitles: _titleAxisTitles(),
                         rightTitles: horizontal
                             ? _valueAxisTitles(
                                 interval: intervalY,
                                 color: colorY,
-                                formatter: formatterY)
+                                formatter: formatterAxisY)
                             : const AxisTitles(),
                         topTitles: const AxisTitles(),
                       ),
@@ -93,7 +95,7 @@ class BarChartView extends ChartView {
                         handleBuiltInTouches: false,
                         touchTooltipData: BarTouchTooltipData(
                             getTooltipColor: (group) => Colors.transparent,
-                            tooltipMargin: 10,
+                            tooltipMargin: 13,
                             getTooltipItem: (
                               BarChartGroupData group,
                               int groupIndex,
@@ -106,7 +108,7 @@ class BarChartView extends ChartView {
                                       chartDataList.elementAt(groupIndex)),
                                   TextStyle(
                                     color: rod.color,
-                                    height: 0.7,
+                                    height: 0.9,
                                   ),
                                 )),
                       ),
@@ -133,7 +135,7 @@ class BarChartView extends ChartView {
           return SideTitleWidget(
             meta: meta,
             child: Text(
-              formatterX(chartDataList.elementAt(index)),
+              formatterAxisX(chartDataList.elementAt(index)),
               style: TextStyle(color: chartDataList.elementAt(index).yColor),
             ),
           );
@@ -162,7 +164,7 @@ class BarChartView extends ChartView {
                     child: SideTitleWidget(
                       meta: meta,
                       child: Text(
-                        formatterY(ChartData(x: 0, y: index)),
+                        formatterAxisY(ChartData(x: 0, y: index)),
                         style: TextStyle(color: color),
                       ),
                     ),

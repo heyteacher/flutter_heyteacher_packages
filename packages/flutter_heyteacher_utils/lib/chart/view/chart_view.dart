@@ -7,8 +7,7 @@ class ChartData {
   final num y;
   final Color? yColor;
   final num? y1;
-  const ChartData(
-      {required this.x, required this.y, this.yColor, this.y1});
+  const ChartData({required this.x, required this.y, this.yColor, this.y1});
 }
 
 abstract class ChartView extends StatelessWidget {
@@ -19,11 +18,13 @@ abstract class ChartView extends StatelessWidget {
   late final int intervalX;
   final Color colorX;
   final String Function(ChartData) formatterX;
+  final String Function(ChartData) formatterAxisX;
   late final num minY;
   late final num maxY;
   late final int intervalY;
   final Color colorY;
   final String Function(ChartData) formatterY;
+  final String Function(ChartData) formatterAxisY;
 
   ChartView(
       {required this.chartDataList,
@@ -32,26 +33,31 @@ abstract class ChartView extends StatelessWidget {
       num? minX,
       int minIntervalX = 1,
       required this.formatterX,
+      String Function(ChartData)? formatterAxisX,
       required this.colorX,
       num? maxY,
       num? minY,
       int minIntervalY = 1,
       required this.formatterY,
+      String Function(ChartData)? formatterAxisY,
       required this.colorY,
-      super.key}) {
+      super.key})
+      : formatterAxisX = formatterAxisX ?? formatterX,
+        formatterAxisY = formatterAxisY ?? formatterY {
+    // set intervalX maxX minX
     maxX ??= chartDataList.map((e) => e.x).max;
     minX ??= chartDataList.map((e) => e.x).min;
     intervalX = interval(minX, maxX, minInterval: minIntervalX);
     this.minX = ChartView.floorToInterval(minX, intervalX);
     this.maxX = ChartView.ceilToInterval(maxX, intervalX);
-
+    // set intervalY maxY minY
     var iterableY = chartDataList.map((e) => e.y).nonNulls;
     if (iterableY.isNotEmpty) {
-    maxY ??= iterableY.max;
-    minY ??= iterableY.min;
-    intervalY = interval(minY, maxY, minInterval: minIntervalY);
-    this.minY = ChartView.floorToInterval(minY, intervalY);
-    this.maxY = ChartView.ceilToInterval(maxY, intervalY) + intervalY;
+      maxY ??= iterableY.max;
+      minY ??= iterableY.min;
+      intervalY = interval(minY, maxY, minInterval: minIntervalY);
+      this.minY = ChartView.floorToInterval(minY, intervalY);
+      this.maxY = ChartView.ceilToInterval(maxY, intervalY) + intervalY;
     }
   }
 
