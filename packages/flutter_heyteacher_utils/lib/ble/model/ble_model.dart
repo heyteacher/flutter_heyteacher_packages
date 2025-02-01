@@ -6,6 +6,7 @@ import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
 import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_heyteacher_utils/ble/ble_device_helper.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
@@ -34,7 +35,8 @@ abstract class BleModel {
       _device?.remoteId.str ?? userData?.devices?[bleType]?.id;
 
   @protected
-  final StreamController<num?> streamController = StreamController<num?>.broadcast();
+  final StreamController<num?> streamController =
+      StreamController<num?>.broadcast();
 
   Stream<num?> get stream => streamController.stream;
 
@@ -84,10 +86,9 @@ abstract class BleModel {
           ? await BleUserStore.instance().get(Auth.instance().uid!)
           : null;
     } on DocumentNotFoundException {
-      _log.fine("user data not found in store");
+      _log.fine("init: user not found in store");
     }
-    ({String? id, String? name})? userDevice =
-        userData?.devices?[bleType];
+    ({String? id, String? name})? userDevice = userData?.devices?[bleType];
     _log.fine("init: ${bleType.name} remote user devices $userDevice");
 
     if (userDevice?.id?.trim() != "") {
@@ -98,11 +99,18 @@ abstract class BleModel {
       ));
       callback?.call();
       if (userDevice != null && userDevice.id != null) {
-        _log.fine("init: ${bleType.name} try auto connection to device $userDevice");
+        _log.fine("init: set ${bleType.name} device $userDevice");
         _device = BluetoothDevice.fromId(userDevice.id!);
-        if (_device!.isDisconnected) {
-          _log.fine("init:  ${bleType.name} connect(autoConnect: true) to decive $userDevice");
-          connect(device: _device!, autoConnect: true, callback: callback);
+        if (PlatformHelper.isMobile) {
+          _log.fine(
+              "init: try auto connection to ${bleType.name} device $userDevice");
+          if (_device!.isDisconnected) {
+            _log.fine(
+                "init:  ${bleType.name} auto connect to device $userDevice");
+            connect(device: _device!, autoConnect: true, callback: callback);
+          }
+        } else {
+          _log.fine("init: platform doesn't support ble connection");
         }
       }
     }
@@ -115,12 +123,12 @@ abstract class BleModel {
       VoidCallback? callback}) async {
     try {
       _log.fine(
-          "connect: ${bleType.name} ${device.remoteId.str} connecting...");
+          "connect: connecting to ${bleType.name} device ${device.remoteId.str}...");
       device.connectAndUpdateStream(autoConnect: autoConnect);
       // autoconnect
       if (autoConnect) {
         _log.fine(
-            "connect: ${bleType.name} ${device.remoteId.str} autoConnect true, wait device...");
+            "connect: autoConnect true, waiting ${bleType.name} device ${device.remoteId.str} ...");
         await device.connectionState
             .where((bluetoothConnectionState) =>
                 bluetoothConnectionState == BluetoothConnectionState.connected)
@@ -133,17 +141,17 @@ abstract class BleModel {
       StreamSubscription<bool> isConnectingStreamSubscription =
           device.isConnecting.listen((connecting) async {
         _log.fine(
-            "connect: ${bleType.name} ${device.remoteId.str} connecting $connecting");
+            "connect: on listening connection ${bleType.name} device ${device.remoteId.str} connecting $connecting");
         if (!connecting) {
           _log.fine(
-              "connect: ${bleType.name} ${device.remoteId.str} connected");
+              "connect: ${bleType.name} device ${device.remoteId.str} connected!");
           _connectDevice(device, callback: callback);
         }
       });
       device.cancelWhenDisconnected(isConnectingStreamSubscription);
     } catch (e, s) {
       _log.fine(
-          "connect: ${bleType.name} device not found ${_device?.remoteId.str}",
+          "connect: error on connectiond ${bleType.name} device ${_device?.remoteId.str}",
           e,
           s);
     }
@@ -151,27 +159,28 @@ abstract class BleModel {
 
   void reconnect({VoidCallback? callback}) {
     if (_device == null) {
-      throw Exception("${bleType.name} try to connect to a null device");
+      throw Exception("try to connect to a null ${bleType.name} device");
     }
     _log.fine(
-        "reconnect:  ${bleType.name} ${_device!.remoteId.str} try to reconnect");
+        "reconnect: try to reconnect ${bleType.name} device ${_device!.remoteId.str}");
     connect(device: _device!, autoConnect: true, callback: callback);
   }
 
   void disconnect({isToStore = false, VoidCallback? callback}) async {
     if (_device == null || _device!.isDisconnected) {
       _log.fine(
-          "disconnect: ${bleType.name} ${_device?.remoteId.str} already disconnected ");
+          "disconnect: ${bleType.name} device ${_device?.remoteId.str} already disconnected ");
       return;
     }
-    _log.fine("disconnect: $deviceId disconnecting...");
+    _log.fine("disconnect: ${bleType.name} device $deviceId disconnecting...");
     _device?.disconnectAndUpdateStream();
     _isDisconnectingStreamSubscription ??= _device!.isDisconnecting.listen(
       (disconnecting) {
         _log.fine(
-            "connect: ${bleType.name} $deviceId connecting $disconnecting");
+            "connect: on listening ${bleType.name} device $deviceId connecting $disconnecting");
         if (!disconnecting) {
-          _log.fine("disconnect: ${bleType.name} $deviceId disconnected");
+          _log.fine(
+              "disconnect: ${bleType.name} device $deviceId disconnected");
           // stop listening an update user store
           //_characteristic.setNotifyValue(false);
           // notify disconnection
@@ -207,15 +216,14 @@ abstract class BleModel {
 
   Future<void> _connectDevice(BluetoothDevice device,
       {VoidCallback? callback}) async {
-    _log.fine(
-        "_connectDevice: ${bleType.name} connecting ${device.remoteId.str}");
+    _log.fine("_connectDevice: ${bleType.name} device ${device.remoteId.str}");
     Iterable<BluetoothService>? services = await device.discoverServices();
     services =
         services.where((BluetoothService service) => _serviceAllowed(service));
     // no allowed service, disconnect device
     if (services.isEmpty) {
       _log.fine(
-          "_connectDevice: ${bleType.name} no service allowed, disconnect ${device.remoteId.str}");
+          "_connectDevice: no service allowed for ${bleType.name} device ${device.remoteId.str}, disconnect");
       device.disconnect();
     } else {
       // allowed services found, check caratteristics
@@ -226,29 +234,35 @@ abstract class BleModel {
         // no allowed characteristic, disconnect device
         if (characteristic == null) {
           _log.fine(
-              "_connectDevice: ${bleType.name} no characteristic allowed, disconnect ${device.remoteId.str}");
+              "_connectDevice: no characteristic allowed ${bleType.name} for ${device.remoteId.str}, disconnect");
           device.disconnect();
           // heart rate caratteristic found, listen it
         } else {
           // notify listener device connection
           _deviceStatusStreamController.sink.add((
-            id: userData?.devices?[bleType]?.id ?? device.remoteId.str,
-            name: userData?.devices?[bleType]?.name ?? device.platformName,
+            id: (userData?.devices?[bleType]?.id?.isNotEmpty ?? false)
+                ? userData!.devices![bleType]!.id
+                : device.remoteId.str,
+            name: (userData?.devices?[bleType]?.name?.isNotEmpty ?? false)
+                ? userData!.devices![bleType]!.name
+                : device.platformName,
             connected: true
           ));
           _device = device;
           BleModelFactory.stopScan();
           BleModelFactory.scanResults = [];
           _store();
-          _log.fine(
-              "_connectDevice: ${bleType.name} start stream device ${device.remoteId.str} service ${service.uuid} characteristic ${characteristic.uuid}");
+          _log.fine("_connectDevice: start stream for "
+              "${bleType.name} device ${device.remoteId.str} "
+              "on service ${service.uuid} "
+              "characteristic ${characteristic.uuid}");
           StreamSubscription<List<int>> characteristicStreanSubscription =
               characteristic.lastValueStream.listen((List<int> event) {
             onData(event);
           });
           device.cancelWhenDisconnected(characteristicStreanSubscription);
           characteristic.setNotifyValue(true);
-          // invoke callbask
+          // invoke init callback of ble type
           onInit();
         }
       }
