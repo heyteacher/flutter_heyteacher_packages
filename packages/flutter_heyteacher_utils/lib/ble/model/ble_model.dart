@@ -177,7 +177,7 @@ abstract class BleModel {
     _isDisconnectingStreamSubscription ??= _device!.isDisconnecting.listen(
       (disconnecting) {
         _log.fine(
-            "connect: on listening ${bleType.name} device $deviceId connecting $disconnecting");
+            "connect: on listening ${bleType.name} device $deviceId disconnecting $disconnecting");
         if (!disconnecting) {
           _log.fine(
               "disconnect: ${bleType.name} device $deviceId disconnected");
@@ -204,13 +204,16 @@ abstract class BleModel {
   bool _characteristicAllowed(BluetoothCharacteristic characteristic) =>
       BleModelFactory.characteristicAllowedByType(bleType, characteristic);
 
-  void _store() {
+  void _store() async {
     if (Auth.instance().autenticated) {
-      BleUserData userData =
+      BleUserData newUserData =
           BleUserData.fromDevices(devices: {bleType: _device});
       _log.fine(
-          "_store:  ${bleType.name} persist device ${userData.devices![bleType]}");
-      BleUserStore.instance().update(userData, fields: ["devices"]);
+          "_store:  ${bleType.name} persist device ${newUserData.devices![bleType]}");
+      await BleUserStore.instance().update(newUserData, fields: ["devices"]);
+      // update le local userData of
+      userData?.devices?[bleType] =
+          (id: _device?.remoteId.str ?? "", name: _device?.platformName ?? "");
     }
   }
 
