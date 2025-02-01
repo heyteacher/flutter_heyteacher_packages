@@ -23,6 +23,12 @@ String formatDurationTts(num? milliseconds, Function(int) nHours, Function(int) 
   }
 }
 
+/// formats [milliseconds] from Epoc in readable duration.
+/// 
+/// If [showHoursIfZero] is true, hours are always showed hh:mm;\[ss\], otherwise duration less then one hour 
+/// are showed inn mm:\[ss\].
+/// If [showSeconds] is true, the format is \[hh\]:mm:ss, otherwise \[hh\]:mm:\[ss\].
+///  If [milliseconds] is null, an empty string is returned
 String formatDuration(num? milliseconds, {bool showSeconds = false, bool showHoursIfZero = true}) {
   if (milliseconds != null) {
     Duration duration = Duration(milliseconds: milliseconds.toInt());
