@@ -2,6 +2,17 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/chart/view/chart_view.dart';
 
+class BarChartDataItem extends ChartDataItem {
+  final num? y1;
+  final num fromY;
+
+  BarChartDataItem({required this.fromY, required super.x, required super.y, super.yColor, this.y1});
+
+  @override
+  toString() => "x: $x, fromY: $fromY, y: $y,  y1: $y1";
+
+}
+
 class BarChartView extends ChartView {
   final bool horizontal;
 
@@ -78,9 +89,10 @@ class BarChartView extends ChartView {
                       ),
                       barGroups: chartDataList.indexed.map((e) {
                         final int index = e.$1;
-                        final ChartData data = e.$2;
+                        final BarChartDataItem data = e.$2 as BarChartDataItem;
                         return BarChartGroupData(x: index, barRods: [
                           BarChartRodData(
+                            fromY: data.fromY.toDouble(),
                             toY: data.y.toDouble(),
                             color: data.yColor,
                             borderRadius: BorderRadius.zero,
@@ -147,7 +159,7 @@ class BarChartView extends ChartView {
   AxisTitles _valueAxisTitles(
       {required num? interval,
       required Color? color,
-      required String Function(ChartData)? formatter}) {
+      required String Function(ChartDataItem)? formatter}) {
     return interval != null && color != null && formatter != null
         ? AxisTitles(
             drawBelowEverything: true,
@@ -164,7 +176,7 @@ class BarChartView extends ChartView {
                     child: SideTitleWidget(
                       meta: meta,
                       child: Text(
-                        formatterAxisY(ChartData(x: 0, y: index)),
+                        formatterAxisY(ChartDataItem(x: 0, y: index)),
                         style: TextStyle(color: color),
                       ),
                     ),

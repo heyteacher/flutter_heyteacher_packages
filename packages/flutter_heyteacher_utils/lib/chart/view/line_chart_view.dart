@@ -7,11 +7,10 @@ import 'package:flutter/material.dart';
 class LineChartView extends ChartView {
   //static final _log = Logger("LineChartView");
 
-  final Iterable<({num y, Color color})>? extraHorizontalLines;
-  final Iterable<({num x, Color color})>? extraVerticalLines;
-  final Iterable<({num minY, num maxY, Color color})>?
-      horizontalRangeAnnotations;
-  final Iterable<({num minX, num maxX, Color color})>? verticalRangeAnnotations;
+  final Iterable<ExtraLineData>? extraHorizontalLines;
+  final Iterable<ExtraLineData>? extraVerticalLines;
+  final Iterable<RangeAnnotationData>? horizontalRangeAnnotations;
+  final Iterable<RangeAnnotationData>? verticalRangeAnnotations;
 
   LineChartView(
       {super.key,
@@ -56,7 +55,6 @@ class LineChartView extends ChartView {
         lineTouchData: const LineTouchData(
           enabled: false,
         ),
-        
         rangeAnnotations: RangeAnnotations(
             verticalRangeAnnotations: _verticalRangeAnnotations,
             horizontalRangeAnnotations: _horizontalRangeAnnotations),
@@ -101,8 +99,7 @@ class LineChartView extends ChartView {
 
   Widget _leftTitleWidgets(double value, TitleMeta meta) => Padding(
         padding: const EdgeInsets.only(right: 5),
-        child: Text(
-            formatterAxisY(ChartData(x:0 , y: value)),
+        child: Text(formatterAxisY(ChartDataItem(x: 0, y: value)),
             style: ThemeHepler.instance().theme.textTheme.bodySmall!
             //.copyWith(color: ThemeHepler.instance().greenTextColor)
             ,
@@ -117,7 +114,7 @@ class LineChartView extends ChartView {
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
-            formatterAxisX(ChartData(x: value, y:0)),
+            formatterAxisX(ChartDataItem(x: value, y: 0)),
             style: ThemeHepler.instance()
                 .theme
                 .textTheme
@@ -172,30 +169,74 @@ class LineChartView extends ChartView {
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
       belowBarData: BarAreaData(show: false),
-      spots: chartDataList.map((e) => FlSpot(e.x.toDouble(), e.y.toDouble()),).toList());
-
-  List<HorizontalLine> get _horizontalLines =>
-      extraHorizontalLines
-          ?.map(
-            (e) => HorizontalLine(y: e.y.toDouble(), color: e.color),
+      spots: chartDataList
+          .map(
+            (e) => FlSpot(e.x.toDouble(), e.y.toDouble()),
           )
-          .toList() ??
-      [];
+          .toList());
 
-  List<VerticalLine> get _verticalLines =>
-      extraVerticalLines
-          ?.map(
-            (e) => VerticalLine(x: e.x.toDouble(), color: e.color),
-          )
-          .toList() ??
-      [];
+  List<HorizontalLine> get _horizontalLines => [
+        ...verticalRangeAnnotations?.map(
+              (e) => HorizontalLine(
+                  y: e.min.toDouble(),
+                  color: e.color,
+                  label: HorizontalLineLabel(
+                      show: true, labelResolver: (_) => e.label)),
+            ) ??
+            [],
+        ...extraHorizontalLines
+                ?.map(
+                  (e) => HorizontalLine(
+                      y: e.value.toDouble(),
+                      color: e.color,
+                      label: HorizontalLineLabel(
+                        show: true,
+                        alignment: Alignment.topRight,
+                        // padding: const EdgeInsets.only(right: 5, bottom: 5),
+                        // style: const TextStyle(
+                        //   fontSize: 9,
+                        //   fontWeight: FontWeight.bold,
+                        // ),
+                        labelResolver: (_) => e.label,
+                      )),
+                )
+                .toList() ??
+            []
+      ];
+
+  List<VerticalLine> get _verticalLines => [
+        ...verticalRangeAnnotations?.map(
+              (e) => VerticalLine(
+                  x: e.min.toDouble(),
+                  color: e.color,
+                  label: VerticalLineLabel(
+                      style: TextStyle(color: ThemeHepler.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+                      alignment: Alignment.topRight,
+                      show: true,
+                      labelResolver: (_) => e.label)),
+            ) ??
+            [],
+        ...extraVerticalLines
+                ?.map(
+                  (e) => VerticalLine(
+                      x: e.value.toDouble(),
+                      color: e.color,
+                      label: VerticalLineLabel(
+                        show: true,
+                        alignment: Alignment.topRight,
+                        labelResolver: (_) => e.label,
+                      )),
+                )
+                .toList() ??
+            []
+      ];
 
   List<VerticalRangeAnnotation> get _verticalRangeAnnotations =>
       verticalRangeAnnotations
           ?.map(
             (e) => VerticalRangeAnnotation(
-                x1: max(e.minX.toDouble(), minX.toDouble()),
-                x2: min(e.maxX.toDouble(), maxX.toDouble()),
+                x1: max(e.min.toDouble(), minX.toDouble()),
+                x2: min(e.max.toDouble(), maxX.toDouble()),
                 color: e.color),
           )
           .toList() ??
@@ -205,10 +246,30 @@ class LineChartView extends ChartView {
       horizontalRangeAnnotations
           ?.map(
             (e) => HorizontalRangeAnnotation(
-                y1: max(e.minY.toDouble(), minY.toDouble()),
-                y2: min(e.maxY.toDouble(), maxY.toDouble()),
+                y1: max(e.min.toDouble(), minY.toDouble()),
+                y2: min(e.max.toDouble(), maxY.toDouble()),
                 color: e.color),
           )
           .toList() ??
       [];
+}
+
+class ExtraLineData {
+  final num value;
+  final String label;
+  final Color color;
+  ExtraLineData(
+      {required this.value, required this.color, required this.label});
+}
+
+class RangeAnnotationData {
+  final num min, max, value;
+  final String label;
+  final Color color;
+  RangeAnnotationData(
+      {required this.min,
+      required this.max,
+      required this.value,
+      required this.label,
+      required this.color});
 }

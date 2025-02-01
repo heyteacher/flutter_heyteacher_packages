@@ -2,29 +2,31 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 
-class ChartData {
+class ChartDataItem {
   final num x;
   final num y;
   final Color? yColor;
-  final num? y1;
-  const ChartData({required this.x, required this.y, this.yColor, this.y1});
+  const ChartDataItem({required this.x, required this.y, this.yColor});
+
+  @override
+  toString() => "x: $x, y: $y";
 }
 
 abstract class ChartView extends StatelessWidget {
   final String title;
-  final Iterable<ChartData> chartDataList;
+  final Iterable<ChartDataItem> chartDataList;
   late final num minX;
   late final num maxX;
   late final int intervalX;
   final Color colorX;
-  final String Function(ChartData) formatterX;
-  final String Function(ChartData) formatterAxisX;
+  final String Function(ChartDataItem) formatterX;
+  final String Function(ChartDataItem) formatterAxisX;
   late final num minY;
   late final num maxY;
   late final int intervalY;
   final Color colorY;
-  final String Function(ChartData) formatterY;
-  final String Function(ChartData) formatterAxisY;
+  final String Function(ChartDataItem) formatterY;
+  final String Function(ChartDataItem) formatterAxisY;
 
   ChartView(
       {required this.chartDataList,
@@ -33,13 +35,13 @@ abstract class ChartView extends StatelessWidget {
       num? minX,
       int minIntervalX = 1,
       required this.formatterX,
-      String Function(ChartData)? formatterAxisX,
+      String Function(ChartDataItem)? formatterAxisX,
       required this.colorX,
       num? maxY,
       num? minY,
       int minIntervalY = 1,
       required this.formatterY,
-      String Function(ChartData)? formatterAxisY,
+      String Function(ChartDataItem)? formatterAxisY,
       required this.colorY,
       super.key})
       : formatterAxisX = formatterAxisX ?? formatterX,
