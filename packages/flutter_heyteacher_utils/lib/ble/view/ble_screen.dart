@@ -387,7 +387,9 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
 
 class BleDeviceConnectedListTile extends StatefulWidget {
   final BleModel bleModel;
-  const BleDeviceConnectedListTile({super.key, required this.bleModel});
+  final bool disableDisconnect;
+  const BleDeviceConnectedListTile({super.key, required this.bleModel, this.disableDisconnect = false});
+
 
   @override
   State<BleDeviceConnectedListTile> createState() =>
@@ -474,18 +476,20 @@ class _BleDeviceConnectedListTileState
             String? id,
             String? name
           })? deviceStatusData}) =>
-      deviceStatusData?.connected ?? false
-          ? IconButton(
+       (deviceStatusData?.connected ?? false)
+          ? !widget.disableDisconnect?IconButton(
               icon: Icon(Icons.link_off),
               color: Theme.of(context).colorScheme.onError,
               onPressed: () {
                 widget.bleModel.disconnect(isToStore: true, callback: _refresh);
-              })
+              }): IconButton(
+              icon: Icon(Icons.link),
+              color: Theme.of(context).colorScheme.onError,
+              onPressed: ()=> {})
           : IconButton(
               icon: Icon(Icons.link),
               color: Theme.of(context).iconTheme.color,
-              onPressed: deviceStatusData?.id?.isNotEmpty ?? false
-                  // device i set but disconnected, try to reconnect
+              onPressed: (deviceStatusData?.id?.isNotEmpty ?? false)                  // device i set but disconnected, try to reconnect
                   ? () => widget.bleModel.reconnect(callback: _refresh)
                   // device isn't set, disable reconnect button
                   : null);
