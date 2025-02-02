@@ -48,7 +48,7 @@ class BarChartView extends ChartView {
                 aspectRatio: switch (chartDataList.length) {
                   0 => 6,
                   1 => 3,
-                  2 => 3,
+                  2 => 2.5,
                   3 => 2,
                   _ => 1.3,
                 },
