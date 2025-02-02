@@ -67,18 +67,11 @@ abstract class BleModel {
     _log.fine(
         "close:  ${bleType.name} cancel subscriptions and close stream controllers");
     disconnect(isToStore: false);
-    // _logStreamSubscription?.cancel();
-    // _logStreamSubscription = null;
-    // _isScanningSubscription?.cancel();
-    // _isScanningSubscription = null;
     _isDisconnectingStreamSubscription?.cancel();
     _isDisconnectingStreamSubscription = null;
-    // _bleAdaptreStreamSubscription?.cancel();
-    // _bleAdaptreStreamSubscription = null;
-    // _scanResultsSubscription?.cancel();
-    // _scanResultsSubscription = null;
   }
 
+  bool _alreadyInitialized = false;
   Future<void> init([VoidCallback? callback]) async {
     BleModelFactory.initBle(callback);
     try {
@@ -90,17 +83,19 @@ abstract class BleModel {
     }
     ({String? id, String? name})? userDevice = userData?.devices?[bleType];
     _log.fine("init: ${bleType.name} remote user devices $userDevice");
-
     if (userDevice?.id?.trim() != "") {
       _deviceStatusStreamController.sink.add((
         id: userDevice?.id,
         name: userDevice?.name,
         connected: _device?.isConnected ?? false
       ));
-      callback?.call();
-      if (userDevice != null && userDevice.id != null) {
-        _log.fine("init: set ${bleType.name} device $userDevice");
-        _device = BluetoothDevice.fromId(userDevice.id!);
+    }
+    // semafor on init
+    if (!_alreadyInitialized) {
+      _alreadyInitialized = true;
+      _log.fine("init: initialize ${bleType.name}  device $userDevice");
+      if (userDevice?.id?.trim() != "") {
+        _device = BluetoothDevice.fromId(userDevice!.id!);
         if (PlatformHelper.isMobile) {
           _log.fine(
               "init: try auto connection to ${bleType.name} device $userDevice");
@@ -174,21 +169,19 @@ abstract class BleModel {
     }
     _log.fine("disconnect: ${bleType.name} device $deviceId disconnecting...");
     _device?.disconnectAndUpdateStream();
-    _isDisconnectingStreamSubscription ??= _device!.isDisconnecting.listen(
+    _isDisconnectingStreamSubscription?.cancel();
+    _isDisconnectingStreamSubscription = _device!.isDisconnecting.listen(
       (disconnecting) {
         _log.fine(
             "connect: on listening ${bleType.name} device $deviceId disconnecting $disconnecting");
         if (!disconnecting) {
           _log.fine(
               "disconnect: ${bleType.name} device $deviceId disconnected");
-          // stop listening an update user store
-          //_characteristic.setNotifyValue(false);
           // notify disconnection
           _deviceStatusStreamController.sink
               .add((name: "", id: null, connected: false));
           // reset last stream value
           streamController.sink.add(null);
-
           // persist disconnection
           _device = null;
           if (isToStore) _store();
@@ -206,14 +199,26 @@ abstract class BleModel {
 
   void _store() async {
     if (Auth.instance().autenticated) {
+      // create e new user data with new ble device to store
       BleUserData newUserData =
           BleUserData.fromDevices(devices: {bleType: _device});
-      _log.fine(
-          "_store:  ${bleType.name} persist device ${newUserData.devices![bleType]}");
-      await BleUserStore.instance().update(newUserData, fields: ["devices"]);
-      // update le local userData of
-      userData?.devices?[bleType] =
-          (id: _device?.remoteId.str ?? "", name: _device?.platformName ?? "");
+
+      // update only if id in changed and
+      if (userData?.devices?[bleType]?.id?.trim() == "" ||
+          userData?.devices?[bleType]?.id !=
+              newUserData.devices?[bleType]?.id) {
+        _log.fine(
+            "_store: store ${bleType.name} device ${newUserData.devices![bleType]}");
+        await BleUserStore.instance().update(newUserData, fields: ["devices"]);
+        // update le local userData of ble device
+        userData?.devices?[bleType] = (
+          id: _device?.remoteId.str ?? "",
+          name: _device?.platformName ?? ""
+        );
+      } else {
+        _log.fine(
+            "_store: ${bleType.name} device not store because new is ${newUserData.devices?[bleType]} and old is ${userData?.devices?[bleType]}");
+      }
     }
   }
 

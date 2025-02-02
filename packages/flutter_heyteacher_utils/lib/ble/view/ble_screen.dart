@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/ble/model/heart_rate_ble_model.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logging/logging.dart';
@@ -19,13 +20,10 @@ class BLEScreen extends StatelessWidget {
   Widget build(BuildContext context) => StreamBuilder<BluetoothAdapterState>(
       stream: FlutterBluePlus.adapterState,
       initialData: FlutterBluePlus.adapterStateNow,
-      builder: (context, snapshot) {
-        return snapshot.data == BluetoothAdapterState.on
-            ? BleOnView()
-            : snapshot.data == BluetoothAdapterState.off
-                ? BleOffView()
-                : SizedBox.shrink();
-      });
+      builder: (context, snapshot) => switch (snapshot.data) {
+            BluetoothAdapterState.on => BleOnView(),
+            _ => BleStatusView(snapshot.data)
+          });
 }
 
 class BleOnView extends StatefulWidget {
@@ -37,12 +35,6 @@ class BleOnView extends StatefulWidget {
 
 class _BleOnViewState extends State<BleOnView> {
   final Logger _log = Logger("BleOnView");
-
-  @override
-  void initState() {
-    _log.fine("initState");
-    super.initState();
-  }
 
   void _refresh() => mounted ? setState(() {}) : null;
 
@@ -155,10 +147,13 @@ class _BleOnViewState extends State<BleOnView> {
           .toList();
 }
 
-class BleOffView extends StatelessWidget {
-  BleOffView({super.key}) {
-    // if android try to turn on device bluetooth
-    BleModelFactory.turnOn();
+class BleStatusView extends StatelessWidget {
+  final BluetoothAdapterState? bluetoothAdapterState;
+  BleStatusView(this.bluetoothAdapterState, {super.key}) {
+    // try to turn on device bluetooth
+    if (bluetoothAdapterState == BluetoothAdapterState.off) {
+      BleModelFactory.turnOn();
+    }
   }
 
   @override
@@ -168,29 +163,33 @@ class BleOffView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Icon(
-                Icons.bluetooth_disabled,
+                switch (bluetoothAdapterState) {
+                  BluetoothAdapterState.on => Icons.bluetooth,
+                  BluetoothAdapterState.turningOn => Icons.bluetooth,
+                  _ => Icons.bluetooth_disabled
+                },
                 size: 200.0,
-                color: Theme.of(context).colorScheme.onError,
+                color: switch (bluetoothAdapterState) {
+                  BluetoothAdapterState.on =>
+                    ThemeHepler.instance().blueTextColor,
+                  BluetoothAdapterState.turningOn =>
+                    ThemeHepler.instance().blueTextColor,
+                  _ => Theme.of(context).colorScheme.onError
+                },
               ),
               Text(
                 style: TextStyle(
                     fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize),
-                FlutterHeyteacherUtilsLocalizations.of(context)!
-                        .bluetoothAdapterStateIs +
-                    FlutterHeyteacherUtilsLocalizations.of(context)!
-                        .bluetoothAdapterState(
-                            FlutterBluePlus.adapterStateNow.toString()),
+                "${FlutterHeyteacherUtilsLocalizations.of(context)!.bluetoothAdapterStateIs} "
+                "${FlutterHeyteacherUtilsLocalizations.of(context)!.bluetoothAdapterState(bluetoothAdapterState?.name ?? BluetoothAdapterState.unknown.name)}",
               ),
-              if (Platform.isAndroid)
+              if (Platform.isAndroid &&
+                  bluetoothAdapterState == BluetoothAdapterState.off)
                 Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Switch(
-                        // This bool value toggles the switch.
                         value: false,
-                        //activeColor: Colors.red,
-                        onChanged: (bool value) {
-                          BleModelFactory.turnOn();
-                        })),
+                        onChanged: (bool value) => BleModelFactory.turnOn())),
             ],
           ),
         ),
@@ -199,7 +198,8 @@ class BleOffView extends StatelessWidget {
 
 class HeartRateDeviceConnectedListTile extends StatefulWidget {
   final HeartRateBleModel heartRateBleModel;
-  const HeartRateDeviceConnectedListTile({super.key, required this.heartRateBleModel});
+  const HeartRateDeviceConnectedListTile(
+      {super.key, required this.heartRateBleModel});
 
   @override
   State<HeartRateDeviceConnectedListTile> createState() =>
@@ -372,14 +372,13 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
               DropdownMenuEntry<T?>(value: record.value, label: record.label))
         ],
         inputDecorationTheme: InputDecorationTheme(
-            isDense: true,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-            constraints: BoxConstraints.tight(const 
-             Size.fromHeight(35)),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+          constraints: BoxConstraints.tight(const Size.fromHeight(35)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
+        ),
       ),
     );
   }
@@ -388,8 +387,8 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
 class BleDeviceConnectedListTile extends StatefulWidget {
   final BleModel bleModel;
   final bool disableDisconnect;
-  const BleDeviceConnectedListTile({super.key, required this.bleModel, this.disableDisconnect = false});
-
+  const BleDeviceConnectedListTile(
+      {super.key, required this.bleModel, this.disableDisconnect = false});
 
   @override
   State<BleDeviceConnectedListTile> createState() =>
@@ -413,7 +412,7 @@ class _BleDeviceConnectedListTileState
           initialData: (
             id: widget.bleModel.deviceId ?? "",
             name: widget.bleModel.deviceName ?? "",
-            connected: false
+            connected: widget.bleModel.connected
           ),
           builder: (context, deviceStatusSnapshot) => ListTile(
               leading: _buildLeading(
@@ -466,8 +465,13 @@ class _BleDeviceConnectedListTileState
           })? deviceStatusData}) =>
       StreamBuilder<Object?>(
           stream: widget.bleModel.stream,
-          builder: (context, snapshot) =>
-              Text("${snapshot.data ?? deviceStatusData?.id ?? ""}"));
+          builder: (context, snapshot) => Text(
+                "${snapshot.data ?? deviceStatusData?.id ?? ""}",
+                style: TextStyle(
+                    color: deviceStatusData?.connected ?? false
+                        ? Theme.of(context).iconTheme.color
+                        : Theme.of(context).disabledColor),
+              ));
 
   Widget _buildTrailing(
           {required BuildContext context,
@@ -476,20 +480,24 @@ class _BleDeviceConnectedListTileState
             String? id,
             String? name
           })? deviceStatusData}) =>
-       (deviceStatusData?.connected ?? false)
-          ? !widget.disableDisconnect?IconButton(
-              icon: Icon(Icons.link_off),
-              color: Theme.of(context).colorScheme.onError,
-              onPressed: () {
-                widget.bleModel.disconnect(isToStore: true, callback: _refresh);
-              }): IconButton(
-              icon: Icon(Icons.link),
-              color: Theme.of(context).colorScheme.onError,
-              onPressed: ()=> {})
+      (deviceStatusData?.connected ?? false)
+          ? !widget.disableDisconnect
+              ? IconButton(
+                  icon: Icon(Icons.link_off),
+                  color: Theme.of(context).colorScheme.onError,
+                  onPressed: () {
+                    widget.bleModel
+                        .disconnect(isToStore: true, callback: _refresh);
+                  })
+              : IconButton(
+                  icon: Icon(Icons.link),
+                  color: ThemeHepler.instance().greenTextColor,
+                  onPressed: () => {})
           : IconButton(
               icon: Icon(Icons.link),
               color: Theme.of(context).iconTheme.color,
-              onPressed: (deviceStatusData?.id?.isNotEmpty ?? false)                  // device i set but disconnected, try to reconnect
+              onPressed: (deviceStatusData?.id?.isNotEmpty ??
+                      false) // device i set but disconnected, try to reconnect
                   ? () => widget.bleModel.reconnect(callback: _refresh)
                   // device isn't set, disable reconnect button
                   : null);
