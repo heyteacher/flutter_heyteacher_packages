@@ -14,8 +14,9 @@ void showSnackBar(
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
         duration: Duration(
-            seconds: duration ?? FirebaseRemoteConfig.instance
-                .getInt("snackBarDurationInSeconds")),
+            seconds: duration ??
+                FirebaseRemoteConfig.instance
+                    .getInt("snackBarDurationInSeconds")),
         backgroundColor: error
             ? Theme.of(context).colorScheme.error
             : ThemeHepler.instance().greenTextColor,
@@ -83,17 +84,23 @@ class ProgressIndicatorWiew extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Center(
-    child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [CircularProgressIndicator()]),
-  );
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [CircularProgressIndicator()]),
+      );
 }
 
 class ErrorView extends StatelessWidget {
+  static final _log = Logger("Store");
+
   final Object? error;
   final StackTrace? stackTrace;
 
-  const ErrorView(this.error, this.stackTrace, {super.key});
+  ErrorView(this.error, this.stackTrace, {super.key}) {
+    _log.severe("error",error,stackTrace);
+  }
+
+
 
   @override
   Widget build(context) => error == null ||
