@@ -16,7 +16,7 @@
 ///
 /// * manage multiple order by field with [Store.orderByFields]
 ///
-/// * implement distinct and group by counter [Store.groupByCounterFields]
+/// * implement distinct and group by [Store.groupByFields]
 ///
 /// * manage aggregate field via [Store.aggregateFields] and notify aggregate value changes via [Store.aggregateStream]
 ///
@@ -57,7 +57,7 @@
 ///            // factory per TrackData creation
 ///            detailsFromFirestoreFactory: TrackData.fromFirestore,
 ///            // group by track year, the map field /users/<uid>/tracks_years store years and // track count per year
-///            groupByCounterFields: {
+///            groupByFields: {
 ///              "years": _groupByYear,
 ///            });
 ///
@@ -220,7 +220,7 @@ abstract class Store<LightDataType extends FirestoreData,
   List<String>? aggregateFields;
   StoreFilter? storeFilter;
   @protected
-  Map<String, String Function(DetailsDataType)?>? groupByCounterFields;
+  Map<String, String Function(DetailsDataType)?>? groupByFields;
 
   @protected
   late String detailsCollection;
@@ -248,7 +248,7 @@ abstract class Store<LightDataType extends FirestoreData,
       Function? detailsFromFirestoreFactory,
       this.aggregateFields,
       this.storeFilter,
-      this.groupByCounterFields,
+      this.groupByFields,
       FirebaseFirestore? firebaseFirestore})
       : _separatedDetailsCollection = LightDataType != DetailsDataType {
     _firestore = firebaseFirestore ?? FirebaseFirestore.instance;
@@ -276,13 +276,12 @@ abstract class Store<LightDataType extends FirestoreData,
     } else {
       this.detailsCollection = collection;
     }
-    // check and initializa group by counter
-    if (groupByCounterFields != null) {
+    // check and initialize group by
+    if (groupByFields != null) {
       if (!userProfile) {
-        throw InvalidGroupByCounterConfigurationException(
-            collection: collection);
+        throw InvalidGroupByConfigurationException(collection: collection);
       }
-      _initGroupByCounter();
+      _initGroupBy();
     }
     // check aggregate fields
     if (aggregateFields != null) {
@@ -391,12 +390,12 @@ abstract class Store<LightDataType extends FirestoreData,
   Future<void> delete(String id, {WriteBatch? batch}) async {
     _log.fine("delete($_detailsCollectionPathLog/$id)");
     _checkAuthenticated();
-    if (groupByCounterFields != null) {
+    if (groupByFields != null) {
       try {
-        await _changeGrouByCounter(await get(id), increment: false);
+        await _changeGroupBy(await get(id), increment: false);
       } catch (e, s) {
         _log.warning(
-            "delete($_detailsCollectionPathLog/$id) error on _changeGrouByCounter",
+            "delete($_detailsCollectionPathLog/$id) error on _changeGroupBy",
             e,
             s);
       }
@@ -440,7 +439,7 @@ abstract class Store<LightDataType extends FirestoreData,
     _log.fine("set($_detailsCollectionPathLog/$id)");
     _checkAuthenticated();
     DetailsDataType? oldDocument;
-    if (groupByCounterFields != null && await exists(id)) {
+    if (groupByFields != null && await exists(id)) {
       oldDocument = await get(id);
     }
     _log.fine("set($_detailsCollectionPathLog/$id)");
@@ -462,9 +461,8 @@ abstract class Store<LightDataType extends FirestoreData,
         throw ParentDataNullException(DetailsDataType.runtimeType);
       }
     }
-    if (groupByCounterFields != null) {
-      await _changeGrouByCounter(document,
-          increment: true, oldDocument: oldDocument);
+    if (groupByFields != null) {
+      await _changeGroupBy(document, increment: true, oldDocument: oldDocument);
     }
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
@@ -540,12 +538,18 @@ abstract class Store<LightDataType extends FirestoreData,
     notifyAggregatesChanges();
   }
 
-  Future<Map<String, dynamic>?> groupByCounter(String field) async {
-    _log.fine("groupByCounter($field) collection $_detailsCollectionPathLog");
+  Future<Iterable<({Map<String, String> groupByFields, dynamic value})>?>
+      groupBy() async {
+    _log.fine("groupBy: collection $_detailsCollectionPathLog");
+    String? groupByUserField = _groupByUserField();
+    if (groupByUserField == null) return null;
     _checkAuthenticated();
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await _firestore.collection("users").doc(_uid).get();
-    return documentSnapshot.data()?[_groupByCounterCollectionField(field)];
+    var user = await _firestore.collection("users").doc(_uid).get();
+    Map<String, dynamic>? groupByKey = user.data()?[groupByUserField];
+    return groupByKey?.entries.map(
+      (mapEntry) =>
+          (groupByFields: _groupByFields(mapEntry.key)!, value: mapEntry.value),
+    );
   }
 
   Future<void> notifyAggregatesChanges() async {
@@ -593,6 +597,102 @@ abstract class Store<LightDataType extends FirestoreData,
         .get());
   }
 
+  void _initGroupBy() async {
+    if (Auth.instance().notAutenticated) {
+      _log.fine("_initGroupBy: user not authenticate, do nothing");
+      return;
+    }
+    String? groupByUserField = _groupByUserField();
+    if (groupByUserField != null) {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await _firestore.collection("users").doc(_uid).get();
+      if (documentSnapshot.data()?[groupByUserField] != null) {
+        _log.fine(
+            "_initGroupBy: user $groupByUserField already initialized. Do nothing");
+        return;
+      }
+      _log.fine(
+          "_initGroupBy: start scan on $collection and update $groupByUserField");
+      for (var lightData in await list()) {
+        DetailsDataType detailsData = await get(lightData.id);
+        await _changeGroupBy(detailsData, increment: true);
+      }
+    }
+    _log.fine("_initGroupBy: stop scan");
+  }
+
+  Future<void> _changeGroupBy(DetailsDataType details,
+      {required bool increment, DetailsDataType? oldDocument}) async {
+    if (groupByFields == null) {
+      return;
+    }
+    assert(userProfile);
+    // user document reference
+    DocumentReference<Map<String, dynamic>> userDocumentReference =
+        _firestore.collection("users").doc(_uid);
+    // get the user document snapshot
+    DocumentSnapshot<Map<String, dynamic>> userDocumentSnapshot =
+        await userDocumentReference.get();
+    // get the user document
+    Map<String, dynamic> userDocument = userDocumentSnapshot.data() ?? {};
+
+    String? groupByUserField = _groupByUserField();
+    String? groupByUserValue = _groupByUserValue(details);
+
+    if (groupByUserField != null && groupByUserValue != null) {
+      // get the user document map which store group by values
+      // into field <collection>_<groupByField>
+      _log.fine(
+          "_changeGroupBy: get map $groupByUserField in /user/<uid> document");
+      Map<String, dynamic> userDocumentMap =
+          userDocument[groupByUserField] ?? {};
+      // get the group by value
+      int groupByValue = userDocumentMap[groupByUserValue] ?? 0;
+      groupByValue = increment ? groupByValue + 1 : groupByValue - 1;
+      _log.fine("_changeGroupBy: $groupByUserValue new value $groupByValue");
+      // increment/decrement group by value based
+      userDocumentMap[groupByUserValue] = groupByValue;
+      // if increment and oldDocument is set, decrement value for old document
+      if (oldDocument != null && increment) {
+        String? oldGroupByUserValue = _groupByUserValue(oldDocument);
+        int oldGroupByValue = userDocumentMap[oldGroupByUserValue] ?? 0;
+        if (oldGroupByValue > 0) {
+          oldGroupByValue--;
+          userDocumentMap[oldGroupByUserValue!] = oldGroupByValue;
+        }
+      }
+      // update the user document
+      userDocument[groupByUserField] = userDocumentMap;
+    }
+    if ((await userDocumentReference.get()).exists) {
+      await userDocumentReference.update(userDocument);
+    } else {
+      await userDocumentReference.set(userDocument);
+    }
+  }
+
+  String? _groupByUserField() => groupByFields?.isNotEmpty ?? false
+      ? "$collection|${groupByFields!.keys.reduce((value, element) => "$value|$element")}"
+      : null;
+
+  String? _groupByUserValue(DetailsDataType details) =>
+      groupByFields?.isNotEmpty ?? false
+          ? "$collection|${groupByFields!.values.nonNulls.map(
+                (e) => e(details),
+              ).reduce((value, element) => "$value|$element")}"
+          : null;
+
+  Map<String, String>? _groupByFields(String? groupByKeyValue) {
+    if (groupByKeyValue == null) return null;
+    Map<String, String> ret = {};
+    List<String> values = groupByKeyValue.split("|").skip(1).toList();
+    for (var i = 0; i < values.length; i++) {
+      String keyValue = values[i];
+      ret[groupByFields!.keys.elementAt(i)] = keyValue;
+    }
+    return ret;
+  }
+
   void _checkAuthenticated() {
     if (userProfile && Auth.instance().notAutenticated) {
       throw UserNotAuthenticatedException();
@@ -614,59 +714,6 @@ abstract class Store<LightDataType extends FirestoreData,
                   snapshot.data()!),
           toFirestore: (DetailsDataType detailsData, _) =>
               detailsData.toFirestore(null));
-
-  Future<void> _changeGrouByCounter(DetailsDataType details,
-      {required bool increment, DetailsDataType? oldDocument}) async {
-    if (groupByCounterFields == null) {
-      return;
-    }
-    assert(userProfile);
-    // user document reference
-    DocumentReference<Map<String, dynamic>> userDocumentReference =
-        _firestore.collection("users").doc(_uid);
-    // get the user document snapshot
-    DocumentSnapshot<Map<String, dynamic>> userDocumentSnapshot =
-        await userDocumentReference.get();
-    // get the user document
-    Map<String, dynamic> userDocument = userDocumentSnapshot.data() ?? {};
-
-    for (MapEntry groupByCounterField in groupByCounterFields!.entries) {
-      String groupByCounterCollectionField =
-          _groupByCounterCollectionField(groupByCounterField.key);
-      // get the user document map which store group by values
-      // into field <collection>_<groupByCounterField>
-      _log.fine(
-          "_changeGrouByCounter: get map $groupByCounterCollectionField in /user/<uid> document");
-      Map<String, dynamic> userDocumentMap =
-          userDocument[groupByCounterCollectionField] ?? {};
-      // retrieve the group by counter key calling groupByCounterFunction provided
-      String groupByCounterKey = groupByCounterField.value(details);
-      // get the group by counter value
-      int groupByCounterValue = userDocumentMap[groupByCounterKey] ?? 0;
-      groupByCounterValue =
-          increment ? groupByCounterValue + 1 : groupByCounterValue - 1;
-      _log.fine(
-          "_changeGrouByCounter: $groupByCounterKey new value $groupByCounterValue");
-      // increment/decrement group by counter value based
-      userDocumentMap[groupByCounterKey] = groupByCounterValue;
-      // if increment and oldDocument is set, decrement counter for old document
-      if (oldDocument != null && increment) {
-        String oldGroupByCounterKey = groupByCounterField.value(oldDocument);
-        int oldGroupByCounterValue = userDocumentMap[oldGroupByCounterKey] ?? 0;
-        oldGroupByCounterValue--;
-        userDocumentMap[oldGroupByCounterKey] = oldGroupByCounterValue;
-      }
-      // update the user document
-      userDocument[groupByCounterCollectionField] = userDocumentMap;
-    }
-    if ((await userDocumentReference.get()).exists) {
-      await userDocumentReference.update(userDocument);
-    } else {
-      await userDocumentReference.set(userDocument);
-    }
-  }
-
-  String _groupByCounterCollectionField(String field) => "${collection}_$field";
 
   // userProfile false: <collection>
   // userProfile true: /users/<uid>/<collection>
@@ -691,31 +738,6 @@ abstract class Store<LightDataType extends FirestoreData,
   String get _uid => Auth.instance().autenticated
       ? Auth.instance().uid!
       : throw UserNotAuthenticatedException();
-
-  void _initGroupByCounter() async {
-    if (Auth.instance().notAutenticated) {
-      _log.fine("_initGroupByCounter: user not authenticate, do nothing");
-      return;
-    }
-    for (MapEntry groupByCounterField in groupByCounterFields?.entries ?? {}) {
-      String groupByCounterCollectionField =
-          _groupByCounterCollectionField(groupByCounterField.key);
-      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await _firestore.collection("users").doc(_uid).get();
-      if (documentSnapshot.data()?[groupByCounterCollectionField] != null) {
-        _log.fine(
-            "_initGroupByCounter: user $groupByCounterCollectionField already initialized. Do nothing");
-        return;
-      }
-      _log.fine(
-          "_initGroupByCounter: start scan on $collection and update $groupByCounterCollectionField");
-      for (var lightData in await list()) {
-        DetailsDataType detailsData = await get(lightData.id);
-        await _changeGrouByCounter(detailsData, increment: true);
-      }
-    }
-    _log.fine("_initGroupByCounter: stop scan");
-  }
 }
 
 class TooManyAggregateFieldsException {
@@ -728,7 +750,7 @@ class TooManyAggregateFieldsException {
   @override
   String toString() =>
       "too many aggregateFields for collection $collection. Expected <= 29 found "
-      " groupByCounterFields works only in user profile collections";
+      " groupByFields works only in user profile collections";
 }
 
 abstract class FirestoreData<T> {
@@ -770,14 +792,14 @@ abstract class FirestoreData<T> {
   }
 }
 
-class InvalidGroupByCounterConfigurationException implements Exception {
+class InvalidGroupByConfigurationException implements Exception {
   String collection;
-  InvalidGroupByCounterConfigurationException({required this.collection});
+  InvalidGroupByConfigurationException({required this.collection});
 
   @override
   String toString() =>
-      "groupByCounterFields is set and userProfile is false for collection $collection."
-      " groupByCounterFields works only in user profile collections";
+      "groupByFields is set and userProfile is false for collection $collection."
+      " groupByFields works only in user profile collections";
 }
 
 class FirestoreTypeUnregistredException implements Exception {

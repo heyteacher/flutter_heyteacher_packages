@@ -165,23 +165,23 @@ void main() {
   group('track groupByCounter group:', () {
     test('groupByCounter years check map', () async {
       final TrackStore trackStore = TrackStore.instance();
-      expect((await trackStore.groupByCounter("years"))!.keys.length, 2,
+      expect((await trackStore.groupBy())!.length, 2,
           reason: "years wrong size");
-      expect((await trackStore.groupByCounter("years"))!["2023"], 2,
+      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2023").first.value, 2,
           reason: "year 2023 wrong size");
-      expect((await trackStore.groupByCounter("years"))!["2024"], 2,
+      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2024").first.value, 2,
           reason: "year 2024 wrong size");
     });
     test('groupByCounter years check  map after add new track', () async {
       final TrackStore trackStore = TrackStore.instance();
       await trackStore.set(TrackData(startTime: DateTime(2020), distance: 0));
-      expect((await trackStore.groupByCounter("years"))!.keys.length, 3,
+      expect((await trackStore.groupBy())!.length, 3,
           reason: "years wrong size");
-      expect((await trackStore.groupByCounter("years"))!["2020"], 1,
+      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2020").first.value, 1,
           reason: "year 2020 wrong size");
-      expect((await trackStore.groupByCounter("years"))!["2023"], 2,
+      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2023").first.value, 2,
           reason: "year 2023 wrong size");
-      expect((await trackStore.groupByCounter("years"))!["2024"], 2,
+      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2024").first.value, 2,
           reason: "year 2024 wrong size");
     });
   });
@@ -341,8 +341,8 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
             aggregateFields: ["distance", "duration"],
             fromFirestoreFactory: BaseTrackData.fromFirestore,
             detailsFromFirestoreFactory: TrackData.fromFirestore,
-            groupByCounterFields: {
-              "years": _groupByYear,
+            groupByFields: {
+              "year": _groupByYear,
             });
 
   static String _groupByYear(TrackData trackData) {
