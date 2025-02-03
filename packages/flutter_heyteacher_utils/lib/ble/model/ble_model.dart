@@ -20,8 +20,8 @@ abstract class BleModel {
   static BleUserData? userData;
 
   BluetoothDevice? _device;
-
   StreamSubscription<bool>? _isDisconnectingStreamSubscription;
+  bool _alreadyInitialized = false;
 
   bool get notConnected => !connected;
 
@@ -71,8 +71,10 @@ abstract class BleModel {
     _isDisconnectingStreamSubscription = null;
   }
 
-  bool _alreadyInitialized = false;
   Future<void> init([VoidCallback? callback]) async {
+    // if not mobile, do nothing 
+    if (PlatformHelper.isNotMobile) return;
+
     BleModelFactory.initBle(callback);
     try {
       userData ??= Auth.instance().autenticated
