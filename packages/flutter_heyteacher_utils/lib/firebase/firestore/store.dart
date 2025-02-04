@@ -708,20 +708,20 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   String? _groupByUserField() => groupByFields?.isNotEmpty ?? false
-      ? "$collection|${groupByFields!.keys.reduce((value, element) => "$value|$element")}"
+      ? "_groupBy${collection.capitalize()}${groupByFields!.keys.reduce((value, element) => "$value${element.capitalize()}")}"
       : null;
 
   String? _groupByUserValue(DetailsDataType details) =>
       groupByFields?.isNotEmpty ?? false
-          ? "$collection|${groupByFields!.values.nonNulls.map(
+          ? groupByFields!.values.nonNulls.map(
                 (e) => e(details),
-              ).reduce((value, element) => "$value|$element")}"
+              ).reduce((value, element) => "$value|$element")
           : null;
 
   Map<String, String>? _groupByFields(String? groupByKeyValue) {
     if (groupByKeyValue == null) return null;
     Map<String, String> ret = {};
-    List<String> values = groupByKeyValue.split("|").skip(1).toList();
+    List<String> values = groupByKeyValue.split("|").toList();
     for (var i = 0; i < values.length; i++) {
       String keyValue = values[i];
       ret[groupByFields!.keys.elementAt(i)] = keyValue;
@@ -892,4 +892,9 @@ class ParentDataNullException {
   @override
   String toString() =>
       "<DetailsDataType> $detailsDataType getParentData() returns null";
+}
+extension StringExtension on String {
+    String capitalize() {
+      return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+    }
 }
