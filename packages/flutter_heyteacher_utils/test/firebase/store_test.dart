@@ -337,7 +337,7 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
       : super(
             collection: "tracks",
             userProfile: true,
-            orderByFields: {"startTime": true},
+            orderByFields: {"startTime": Order.desc},
             aggregateFields: ["distance", "duration"],
             fromFirestoreFactory: BaseTrackData.fromFirestore,
             detailsFromFirestoreFactory: TrackData.fromFirestore,

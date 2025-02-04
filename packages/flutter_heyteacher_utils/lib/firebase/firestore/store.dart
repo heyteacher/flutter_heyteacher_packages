@@ -204,11 +204,43 @@ library;
 
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import './store_filters.dart';
 import '../auth.dart';
 import 'package:logging/logging.dart';
+
+enum Order { desc, asc }
+
+class GroupByResult {
+  final Map<String, String> groupByFields;
+  final Object value;
+  GroupByResult({required this.groupByFields, required this.value});
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! GroupByResult) return false;
+    return compareTo(other) == 0;
+  }
+
+  compareTo(GroupByResult b) {
+    for (var key in groupByFields.keys) {
+      int compare = groupByFields[key]!.compareTo(b.groupByFields[key]!);
+      if (compare != 0) return compare;
+    }
+    return 0;
+  }
+
+  @override
+  int get hashCode {
+    var result = 17;
+    for (var key in groupByFields.keys) {
+      result = 37 * result + key.hashCode;
+    }
+    return result;
+  }
+}
 
 abstract class Store<LightDataType extends FirestoreData,
     DetailsDataType extends LightDataType> {
@@ -216,9 +248,11 @@ abstract class Store<LightDataType extends FirestoreData,
 
   late final FirebaseFirestore _firestore;
 
-  Map<String, bool>? orderByFields;
+  Map<String, Order>? orderByFields;
   List<String>? aggregateFields;
   StoreFilter? storeFilter;
+  GroupByResult? groupBySelected;
+
   @protected
   Map<String, String Function(DetailsDataType)?>? groupByFields;
 
@@ -314,10 +348,10 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     // apply order by
     if (applyOrderBy) {
-      for (MapEntry<String, bool> orderbyField
+      for (MapEntry<String, Order> orderbyField
           in orderByFields?.entries ?? {}) {
-        retQuery =
-            retQuery.orderBy(orderbyField.key, descending: orderbyField.value);
+        retQuery = retQuery.orderBy(orderbyField.key,
+            descending: orderbyField.value == Order.desc);
       }
     }
     return retQuery;
@@ -538,18 +572,20 @@ abstract class Store<LightDataType extends FirestoreData,
     notifyAggregatesChanges();
   }
 
-  Future<Iterable<({Map<String, String> groupByFields, dynamic value})>?>
-      groupBy() async {
+  Future<Iterable<GroupByResult>?> groupBy(
+      {Order groupByFieldsOrder = Order.asc}) async {
     _log.fine("groupBy: collection $_detailsCollectionPathLog");
     String? groupByUserField = _groupByUserField();
     if (groupByUserField == null) return null;
     _checkAuthenticated();
     var user = await _firestore.collection("users").doc(_uid).get();
     Map<String, dynamic>? groupByKey = user.data()?[groupByUserField];
-    return groupByKey?.entries.map(
-      (mapEntry) =>
-          (groupByFields: _groupByFields(mapEntry.key)!, value: mapEntry.value),
+    var iterable = groupByKey?.entries.map(
+      (mapEntry) => GroupByResult(
+          groupByFields: _groupByFields(mapEntry.key)!, value: mapEntry.value),
     );
+    return iterable?.sorted((a, b) =>
+        _sortByGroupByFields(a, b, groupByFieldsOrder: groupByFieldsOrder));
   }
 
   Future<void> notifyAggregatesChanges() async {
@@ -691,6 +727,12 @@ abstract class Store<LightDataType extends FirestoreData,
       ret[groupByFields!.keys.elementAt(i)] = keyValue;
     }
     return ret;
+  }
+
+  int _sortByGroupByFields(GroupByResult a, GroupByResult b,
+      {required Order groupByFieldsOrder}) {
+    // compare each groupByField returning when comparison differs
+    return a.compareTo(b) * (groupByFieldsOrder == Order.desc ? -1 : 1);
   }
 
   void _checkAuthenticated() {
