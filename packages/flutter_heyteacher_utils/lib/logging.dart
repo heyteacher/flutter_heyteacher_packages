@@ -41,10 +41,12 @@ Future<void> configureLogging() async {
         '$stackTrace');
     }
     // firebase analytics logging
+    // message error and stacktrace are limited to 100 char
     FirebaseAnalytics.instance.logEvent(name: "logger", parameters: {
       "time": record.time.toLocal().toIso8601String(),
       "version": version,
       "level": record.level.name,
+      "kDebugMode": kDebugMode.toString(),
       "name": record.loggerName,
       "message": record.message.substring(0, min(record.message.length, 100)),
       if (record.error != null)
