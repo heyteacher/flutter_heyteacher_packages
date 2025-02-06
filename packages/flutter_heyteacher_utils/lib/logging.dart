@@ -8,6 +8,34 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+
+Future<String> _device() async {
+  final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  if (kIsWeb) {
+    final webDeviceInfo = await deviceInfoPlugin.webBrowserInfo;
+    return "web ${webDeviceInfo.browserName} ua ${webDeviceInfo.userAgent}";
+  }
+  switch (defaultTargetPlatform) {
+    case TargetPlatform.android:
+      {
+        final androidDeviceInfo = await deviceInfoPlugin.androidInfo;
+        return "android ${androidDeviceInfo.model} "
+        "sdk ${androidDeviceInfo.version.sdkInt}"
+        "(${androidDeviceInfo.version.release})";
+      }
+    case TargetPlatform.iOS:
+      {
+        final iosDeviceInfo = await deviceInfoPlugin.iosInfo;
+        return "ios ${iosDeviceInfo.model} "
+        "sysver ${iosDeviceInfo.systemVersion}";
+      }
+    default:
+      {
+        return defaultTargetPlatform.name;
+      }
+  }
+}
 
 Future<void> configureLogging() async {
   // logging configuration, if debug mode force level ALL
@@ -17,11 +45,11 @@ Future<void> configureLogging() async {
           : FirebaseRemoteConfig.instance.getString("loggerRootLevelName"),
       kDebugMode
           ? 0
-          : FirebaseRemoteConfig.instance
-              .getInt("loggerRootLevelValue")); 
+          : FirebaseRemoteConfig.instance.getInt("loggerRootLevelValue"));
   // get version
   final packageInfo = await PackageInfo.fromPlatform();
   final String version = "${packageInfo.version}+${packageInfo.buildNumber}";
+  final String device = await _device();
   Logger.root.onRecord.listen((record) {
     // format error and stack trace
     final String error = record.error != null ? "\n${record.error}" : "";
@@ -32,19 +60,21 @@ Future<void> configureLogging() async {
     // print in standard output
     if (kDebugMode) {
       print('${timeWithSecondsFormatter.format(record.time)} '
-        '- version $version '
-        '- ${record.level.name} '
-        '- $uid '
-        '- ${record.loggerName} '
-        '- ${record.message} '
-        '$error'
-        '$stackTrace');
+          '- version $version '
+          '- $device '
+          '- ${record.level.name} '
+          '- $uid '
+          '- ${record.loggerName} '
+          '- ${record.message} '
+          '$error'
+          '$stackTrace');
     }
     // firebase analytics logging
     // message error and stacktrace are limited to 100 char
     FirebaseAnalytics.instance.logEvent(name: "logger", parameters: {
       "time": record.time.toLocal().toIso8601String(),
       "version": version,
+      "device": device,
       "level": record.level.name,
       "kDebugMode": kDebugMode.toString(),
       "name": record.loggerName,
