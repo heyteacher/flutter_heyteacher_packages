@@ -343,7 +343,7 @@ abstract class Store<LightDataType extends FirestoreData,
     Query<LightDataType> retQuery = _collectionReference;
     // apply filter
     if (applyFilterBy && storeFilter != null) {
-      _log.fine("query: apply storeFilter $storeFilter");
+      _log.fine("query: storeFilter $storeFilter");
       retQuery = retQuery.where(storeFilter!.toFirestore());
     }
     // apply order by
@@ -467,23 +467,23 @@ abstract class Store<LightDataType extends FirestoreData,
     notifyAggregatesChanges();
   }
 
-  Future<void> set(DetailsDataType document,
+  Future<void> set(DetailsDataType detailsData,
       {String? id, WriteBatch? batch}) async {
-    id ??= document.id;
+    id ??= detailsData.id;
     _log.fine("set($_detailsCollectionPathLog/$id)");
     _checkAuthenticated();
-    DetailsDataType? oldDocument;
+    DetailsDataType? oldDetailsData;
     if (groupByFields != null && await exists(id)) {
-      oldDocument = await get(id);
+      oldDetailsData = await get(id);
     }
     _log.fine("set($_detailsCollectionPathLog/$id)");
     if (batch != null) {
-      batch.set(_detailsCollectionReference.doc(id), document);
+      batch.set(_detailsCollectionReference.doc(id), detailsData);
     } else {
-      await _detailsCollectionReference.doc(id).set(document);
+      await _detailsCollectionReference.doc(id).set(detailsData);
     }
     if (_separatedDetailsCollection) {
-      LightDataType? parentData = document.getParentData() as LightDataType?;
+      LightDataType? parentData = detailsData.getParentData() as LightDataType?;
       if (parentData != null) {
         _log.fine("set($_collectionPathLog/$id)");
         if (batch != null) {
@@ -496,7 +496,7 @@ abstract class Store<LightDataType extends FirestoreData,
       }
     }
     if (groupByFields != null) {
-      await _changeGroupBy(document, increment: true, oldDocument: oldDocument);
+      await _changeGroupBy(detailsData, increment: true, oldDetailsData: oldDetailsData);
     }
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
@@ -589,14 +589,13 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   Future<void> notifyAggregatesChanges() async {
-    _log.fine("notifyAggregatesChanges()");
     _checkAuthenticated();
-    if (aggregateFields == null) return;
-
+    if (aggregateFields == null || aggregateFields!.isEmpty) return;
     List<AggregateField?> aggregateParams = [
       for (var i = 0; i < 29; i++)
         aggregateFields!.length > i ? sum(aggregateFields![i]) : null
     ];
+    _log.fine("notifyAggregatesChanges: notify");
     _aggregateStreamController.sink.add(await query()
         .aggregate(
           count(),
@@ -657,8 +656,8 @@ abstract class Store<LightDataType extends FirestoreData,
     _log.fine("_initGroupBy: stop scan");
   }
 
-  Future<void> _changeGroupBy(DetailsDataType details,
-      {required bool increment, DetailsDataType? oldDocument}) async {
+  Future<void> _changeGroupBy(DetailsDataType detailsData,
+      {required bool increment, DetailsDataType? oldDetailsData}) async {
     if (groupByFields == null) {
       return;
     }
@@ -673,13 +672,15 @@ abstract class Store<LightDataType extends FirestoreData,
     Map<String, dynamic> userDocument = userDocumentSnapshot.data() ?? {};
 
     String? groupByUserField = _groupByUserField();
-    String? groupByUserValue = _groupByUserValue(details);
+    String? groupByUserValue = _groupByUserValue(detailsData);
+    String? oldGroupByUserValue =
+        oldDetailsData != null ? _groupByUserValue(oldDetailsData) : null;
 
-    if (groupByUserField != null && groupByUserValue != null) {
+    if (groupByUserField != null &&
+        groupByUserValue != null &&
+        groupByUserValue != oldGroupByUserValue) {
       // get the user document map which store group by values
       // into field <collection>_<groupByField>
-      _log.fine(
-          "_changeGroupBy: get map $groupByUserField in /user/<uid> document");
       Map<String, dynamic> userDocumentMap =
           userDocument[groupByUserField] ?? {};
       // get the group by value
@@ -688,12 +689,14 @@ abstract class Store<LightDataType extends FirestoreData,
       _log.fine("_changeGroupBy: $groupByUserValue new value $groupByValue");
       // increment/decrement group by value based
       userDocumentMap[groupByUserValue] = groupByValue;
-      // if increment and oldDocument is set, decrement value for old document
-      if (oldDocument != null && increment) {
-        String? oldGroupByUserValue = _groupByUserValue(oldDocument);
+      // oldDocument is set, decrement/increment value for old document
+      if (oldDetailsData != null) {
         int oldGroupByValue = userDocumentMap[oldGroupByUserValue] ?? 0;
         if (oldGroupByValue > 0) {
-          oldGroupByValue--;
+          oldGroupByValue =
+              increment ? oldGroupByValue - 1 : oldGroupByValue + 1;
+          _log.fine(
+              "_changeGroupBy: $oldGroupByUserValue (old) new value $oldGroupByValue");
           userDocumentMap[oldGroupByUserValue!] = oldGroupByValue;
         }
       }
@@ -708,14 +711,16 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   String? _groupByUserField() => groupByFields?.isNotEmpty ?? false
-      ? "_groupBy${collection.capitalize()}${groupByFields!.keys.reduce((value, element) => "$value${element.capitalize()}")}"
+      ? "_groupBy${collection.capitalize()}${groupByFields!.keys.reduce((value, element) => "${value.capitalize()}${element.capitalize()}")}"
       : null;
 
   String? _groupByUserValue(DetailsDataType details) =>
       groupByFields?.isNotEmpty ?? false
-          ? groupByFields!.values.nonNulls.map(
+          ? groupByFields!.values.nonNulls
+              .map(
                 (e) => e(details),
-              ).reduce((value, element) => "$value|$element")
+              )
+              .reduce((value, element) => "$value|$element")
           : null;
 
   Map<String, String>? _groupByFields(String? groupByKeyValue) {
@@ -893,8 +898,9 @@ class ParentDataNullException {
   String toString() =>
       "<DetailsDataType> $detailsDataType getParentData() returns null";
 }
+
 extension StringExtension on String {
-    String capitalize() {
-      return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
-    }
+  String capitalize() {
+    return isEmpty ? this : "${this[0].toUpperCase()}${substring(1)}";
+  }
 }
