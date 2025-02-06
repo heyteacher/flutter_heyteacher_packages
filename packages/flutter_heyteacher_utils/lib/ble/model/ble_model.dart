@@ -96,8 +96,8 @@ abstract class BleModel {
     if (!_alreadyInitialized) {
       _alreadyInitialized = true;
       _log.fine("init: initialize ${bleType.name}  device $userDevice");
-      if (userDevice?.id?.trim() != "") {
-        _device = BluetoothDevice.fromId(userDevice!.id!);
+      if (userDevice?.id != null && userDevice!.id!.trim().isNotEmpty ) {
+        _device = BluetoothDevice.fromId(userDevice.id!);
         if (PlatformHelper.isMobile) {
           _log.fine(
               "init: try auto connection to ${bleType.name} device $userDevice");
