@@ -192,11 +192,6 @@ class LineChartView extends ChartView {
                       label: HorizontalLineLabel(
                         show: true,
                         alignment: Alignment.topRight,
-                        // padding: const EdgeInsets.only(right: 5, bottom: 5),
-                        // style: const TextStyle(
-                        //   fontSize: 9,
-                        //   fontWeight: FontWeight.bold,
-                        // ),
                         labelResolver: (_) => e.label,
                       )),
                 )
@@ -205,6 +200,7 @@ class LineChartView extends ChartView {
       ];
 
   List<VerticalLine> get _verticalLines => [
+        // draw a line at the start of range
         ...verticalRangeAnnotations?.map(
               (e) => VerticalLine(
                   x: e.min.toDouble(),
@@ -216,6 +212,19 @@ class LineChartView extends ChartView {
                       labelResolver: (_) => e.label)),
             ) ??
             [],
+        // draw a line at the end of range
+        ...verticalRangeAnnotations?.map(
+              (e) => VerticalLine(
+                  x: e.max.toDouble(),
+                  color: e.color,
+                  label: VerticalLineLabel(
+                      style: TextStyle(color: ThemeHepler.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+                      alignment: Alignment.topRight,
+                      show: true,
+                      labelResolver: (_) => "")),
+            ) ??
+            [],
+        // draw a extra vertical line
         ...extraVerticalLines
                 ?.map(
                   (e) => VerticalLine(
