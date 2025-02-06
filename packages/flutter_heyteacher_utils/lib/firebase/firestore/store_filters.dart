@@ -34,37 +34,43 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Operators used in [ValueStoreFilter]
 enum Operator {
   /// If field value is equal to value
-  isEqualTo,
+  isEqualTo("="),
 
   /// If field value isn't equal to value
-  isNotEqualTo,
+  isNotEqualTo("<>"),
 
   /// If field value is less than field
-  isLessThan,
+  isLessThan("<"),
 
   /// If field value is less then or equal to value
-  isLessThanOrEqualTo,
+  isLessThanOrEqualTo("<="),
 
   /// If field value is greater than field
-  isGreaterThan,
+  isGreaterThan(">"),
 
   /// If field value is greater then or equal to value
-  isGreaterThanOrEqualTo,
+  isGreaterThanOrEqualTo(">="),
 
   /// If field array value contains the value
-  arrayContains,
+  arrayContains("in");
+
+  final String printable;
+  const Operator(this.printable);
 }
 
 /// Operators used in [IterableValueStoreFilter]
 enum IterableOperator {
   /// If field value is contained into the iterable values
-  arrayContainsAny,
+  arrayContainsAny("in any"),
 
   /// If field value is is into iterable values
-  whereIn,
+  whereIn("in"),
 
   /// If field value isn't into the iterable values
-  whereNotIn,
+  whereNotIn("not in");
+
+  final String printable;
+  const IterableOperator(this.printable);
 }
 
 /// Operators used in [LogicalStoreFilter]
@@ -115,7 +121,7 @@ class ValueStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() {
-    return "${operator.name}($field:$value)";
+    return "$field ${operator.printable} $value";
   }
 }
 
@@ -150,7 +156,7 @@ class IterableValueStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() {
-    return "${iterableOperator.name}($field:$values)";
+    return "$field ${iterableOperator.printable} $values";
   }
 }
 
@@ -174,7 +180,7 @@ class IsNullStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() {
-    return "isNull($field:$value)";
+    return "$field is${value ? "" : "Not"}Null";
   }
 }
 
@@ -383,36 +389,36 @@ class LogicalStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() {
-    return "${logicalOperator.name}("
+    return "("
         "$filter1 "
-        "$filter2 "
-        "${filter3 ?? ""}"
-        "${filter4 ?? ""}"
-        "${filter5 ?? ""}"
-        "${filter6 ?? ""}"
-        "${filter7 ?? ""}"
-        "${filter8 ?? ""}"
-        "${filter9 ?? ""}"
-        "${filter10 ?? ""}"
-        "${filter11 ?? ""}"
-        "${filter12 ?? ""}"
-        "${filter13 ?? ""}"
-        "${filter14 ?? ""}"
-        "${filter15 ?? ""}"
-        "${filter16 ?? ""}"
-        "${filter17 ?? ""}"
-        "${filter18 ?? ""}"
-        "${filter19 ?? ""}"
-        "${filter20 ?? ""}"
-        "${filter21 ?? ""}"
-        "${filter22 ?? ""}"
-        "${filter23 ?? ""}"
-        "${filter24 ?? ""}"
-        "${filter25 ?? ""}"
-        "${filter26 ?? ""}"
-        "${filter27 ?? ""}"
-        "${filter28 ?? ""}"
-        "${filter29 ?? ""}"
-        "${filter30 ?? ""})";
+        "${logicalOperator.name} $filter2"
+        "${filter3 != null ? logicalOperator.name : ""} ${filter3 ?? ""}"
+        "${filter4 != null ? logicalOperator.name : ""} ${filter4 ?? ""}"
+        "${filter5!= null ? logicalOperator.name : ""} ${filter5 ?? ""}"
+        "${filter6 != null ? logicalOperator.name : ""} ${filter6 ?? ""}"
+        "${filter7 != null ? logicalOperator.name : ""} ${filter7 ?? ""}"
+        "${filter8 != null ? logicalOperator.name : ""} ${filter8 ?? ""}"
+        "${filter9 != null ? logicalOperator.name : ""} ${filter9 ?? ""}"
+        "${filter10 != null ? logicalOperator.name : ""} ${filter10 ?? ""}"
+        "${filter11 != null ? logicalOperator.name : ""} ${filter11 ?? ""}"
+        "${filter12 != null ? logicalOperator.name : ""} ${filter12 ?? ""}"
+        "${filter13 != null ? logicalOperator.name : ""} ${filter13 ?? ""}"
+        "${filter14 != null ? logicalOperator.name : ""} ${filter14 ?? ""}"
+        "${filter15 != null ? logicalOperator.name : ""} ${filter15 ?? ""}"
+        "${filter16 != null ? logicalOperator.name : ""} ${filter16 ?? ""}"
+        "${filter17 != null ? logicalOperator.name : ""} ${filter17 ?? ""}"
+        "${filter18 != null ? logicalOperator.name : ""} ${filter18 ?? ""}"
+        "${filter19 != null ? logicalOperator.name : ""} ${filter19 ?? ""}"
+        "${filter20 != null ? logicalOperator.name : ""} ${filter20 ?? ""}"
+        "${filter21 != null ? logicalOperator.name : ""} ${filter21 ?? ""}"
+        "${filter22 != null ? logicalOperator.name : ""} ${filter22 ?? ""}"
+        "${filter23 != null ? logicalOperator.name : ""} ${filter23 ?? ""}"
+        "${filter24 != null ? logicalOperator.name : ""} ${filter24 ?? ""}"
+        "${filter25 != null ? logicalOperator.name : ""} ${filter25 ?? ""}"
+        "${filter26 != null ? logicalOperator.name : ""} ${filter26 ?? ""}"
+        "${filter27 != null ? logicalOperator.name : ""} ${filter27 ?? ""}"
+        "${filter28 != null ? logicalOperator.name : ""} ${filter28 ?? ""}"
+        "${filter29 != null ? logicalOperator.name : ""} ${filter29 ?? ""}"
+        "${filter30 != null ? logicalOperator.name : ""} ${filter30 ?? ""})";
   }
 }
