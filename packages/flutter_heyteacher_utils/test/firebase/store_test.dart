@@ -1,10 +1,12 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store_filters.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +16,9 @@ void main() {
       userDisplayName = 'Test User';
 
   setUp(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    FlutterSecureStorage.setMockInitialValues({});
+
     // mock authentication
     MockFirebaseAuth auth = MockFirebaseAuth(
         mockUser: MockUser(
@@ -23,8 +28,7 @@ void main() {
       displayName: userDisplayName,
     ));
     // mock sign-in
-    auth.signInWithEmailAndPassword(
-        email: "test@example.com", password: "test@example.com");
+    auth.signInWithEmailAndPassword(email: userEmail, password: userEmail);
 
     // initialize Auth with MockFirebaseAuth
     Auth.instance(firebaseAuth: auth);
@@ -50,7 +54,7 @@ void main() {
         startTime: DateTime.parse("2023-07-12 17:15:22"),
         stopTime: DateTime.parse("2023-07-12 20:15:22"),
         distance: 30000,
-        avgBpm: 100));
+        avgBpm: await E2EE.instance(appName: "appName").encrypt("100")));
     await trackStore.set(TrackData(
       startTime: DateTime.parse("2023-09-12 17:15:22"),
       stopTime: DateTime.parse("2023-09-12 20:15:22"),
@@ -115,7 +119,10 @@ void main() {
     test('store get track and check fields', () async {
       final TrackStore trackStore = TrackStore.instance();
       TrackData trackData = await trackStore.get("20230712_171522");
-      expect(trackData.avgBpm, 100, reason: "avgBpm wrong");
+      expect(trackData.avgBpm != null, true, reason: "avgBpm is null ");
+      expect(await E2EE.instance(appName: "appName").decrypt(trackData.avgBpm!),
+          "100",
+          reason: "avgBpm wrong");
       expect(trackData.distance, 30000, reason: "distance  wrong");
       expect(trackData.duration, 3600 * 3 * 1000, reason: "duration  wrong");
     });
@@ -129,7 +136,9 @@ void main() {
       await trackStore.update(trackData, fields: ["avgRpm"]);
       trackData = await trackStore.get("20230712_171522");
       expect(trackData.avgRpm, 80, reason: "avgRpm wrong");
-      expect(trackData.avgBpm, 100, reason: "avgBpm wrong");
+      expect(await E2EE.instance(appName: "appName").decrypt(trackData.avgBpm!),
+          "100",
+          reason: "avgBpm wrong");
       expect(trackData.distance, 30000, reason: "distance wrong");
       expect(trackData.duration, 3600 * 3 * 1000, reason: "duration  wrong");
     });
@@ -156,7 +165,9 @@ void main() {
       await trackStore.update(trackData, fields: ["avgRpm", "distance"]);
       trackData = await trackStore.get("20230712_171522");
       expect(trackData.avgRpm, 80, reason: "avgRpm wrong");
-      expect(trackData.avgBpm, 100, reason: "avgBpm wrong");
+      expect(await E2EE.instance(appName: "appName").decrypt(trackData.avgBpm!),
+          "100",
+          reason: "avgBpm wrong");
       expect(trackData.distance, 30000, reason: "distance wrong");
       expect(trackData.duration, 3600 * 3 * 1000, reason: "duration  wrong");
     });
@@ -167,9 +178,19 @@ void main() {
       final TrackStore trackStore = TrackStore.instance();
       expect((await trackStore.groupBy())!.length, 2,
           reason: "years wrong size");
-      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2023").first.value, 2,
+      expect(
+          (await trackStore.groupBy())!
+              .where((e) => e.groupByFields["year"] == "2023")
+              .first
+              .value,
+          2,
           reason: "year 2023 wrong size");
-      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2024").first.value, 2,
+      expect(
+          (await trackStore.groupBy())!
+              .where((e) => e.groupByFields["year"] == "2024")
+              .first
+              .value,
+          2,
           reason: "year 2024 wrong size");
     });
     test('groupByCounter years check  map after add new track', () async {
@@ -177,11 +198,26 @@ void main() {
       await trackStore.set(TrackData(startTime: DateTime(2020), distance: 0));
       expect((await trackStore.groupBy())!.length, 3,
           reason: "years wrong size");
-      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2020").first.value, 1,
+      expect(
+          (await trackStore.groupBy())!
+              .where((e) => e.groupByFields["year"] == "2020")
+              .first
+              .value,
+          1,
           reason: "year 2020 wrong size");
-      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2023").first.value, 2,
+      expect(
+          (await trackStore.groupBy())!
+              .where((e) => e.groupByFields["year"] == "2023")
+              .first
+              .value,
+          2,
           reason: "year 2023 wrong size");
-      expect((await trackStore.groupBy())!.where((e) => e.groupByFields["year"] == "2024").first.value, 2,
+      expect(
+          (await trackStore.groupBy())!
+              .where((e) => e.groupByFields["year"] == "2024")
+              .first
+              .value,
+          2,
           reason: "year 2024 wrong size");
     });
   });
@@ -256,7 +292,7 @@ void main() {
 }
 
 class TrackData extends BaseTrackData {
-  num? avgBpm;
+  E2EEValue? avgBpm;
   num? avgRpm;
 
   TrackData(
@@ -266,18 +302,16 @@ class TrackData extends BaseTrackData {
       this.avgBpm,
       this.avgRpm});
 
-  factory TrackData.fromFirestore(Map<String, dynamic> map) {
-    return TrackData(
-        startTime: FirestoreData.fromFirestoreTimestamp(map['startTime'])!,
-        avgBpm: map["avgBpm"],
-        avgRpm: map["avgRpm"]);
-  }
+  factory TrackData.fromFirestore(Map<String, dynamic> map) => TrackData(
+      startTime: FirestoreData.fromFirestoreTimestamp(map['startTime'])!,
+      avgBpm: map["avgBpm"] != null ? E2EEValue.fromJson(map["avgBpm"]) : null,
+      avgRpm: map["avgRpm"]);
 
   @override
   Map<String, dynamic> toFirestore(List<String>? fields) => {
         ...super.toFirestore(fields),
         'startTime': FirestoreData.toFirestoreTimestamp(startTime),
-        if (fields?.contains("avgBpm") ?? true) 'avgBpm': avgBpm,
+        if (fields?.contains("avgBpm") ?? true) 'avgBpm': avgBpm?.toJson(),
         if (fields?.contains("avgRpm") ?? true) 'avgRpm': avgRpm,
       };
 
