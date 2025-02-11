@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,25 +10,29 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class BleUserData extends UserData {
   Map<BleType, ({String? id, String? name})>? devices;
 
-  ({int restBpm, int age, Gender gender})? biometrics;
+  ({int restBpm, DateTime birthDate, Gender gender})? biometrics;
 
   // intensity% = (bpm -restBpm / ( (female: 226| male: 200) - age - restBpm)) * 100
-  num? intensity(num? bpm) => bpm != null &&
+  num? intensity(num? bpm, {DateTime? dateTime}) => bpm != null &&
           biometrics?.gender != null &&
-          biometrics?.age != null &&
+          biometrics?.birthDate != null &&
           biometrics?.restBpm != null
       ? ((bpm - biometrics!.restBpm) /
               (biometrics!.gender.heartRateCoeff -
-                  biometrics!.age -
+                  ((dateTime ?? DateTime.now())
+                              .difference(biometrics!.birthDate)
+                              .inDays /
+                          365)
+                      .floor() -
                   biometrics!.restBpm) *
               100)
           .round()
       : null;
 
   Iterable<({HRTrainingZone hrTrainingZone, num min, num max})>?
-      get hrTrainingZones => biometrics != null
-          ? HRTrainingZone.values.map((hrTrainingZone) =>
-              hrTrainingZone.targetBpm(biometrics: biometrics)!)
+      hrTrainingZones({required DateTime dateTime}) => biometrics != null
+          ? HRTrainingZone.values.map((hrTrainingZone) => hrTrainingZone
+              .targetBpm(biometrics: biometrics, dateTime: dateTime)!)
           : null;
 
   BleUserData._({this.devices, this.biometrics}) : super();
@@ -39,7 +44,8 @@ class BleUserData extends UserData {
                   name: device?.platformName ?? ""
                 ))));
 
-  BleUserData.fromHeartRate(({Gender gender, int age, int restBpm})? biometrics)
+  BleUserData.fromHeartRate(
+      ({Gender gender, DateTime birthDate, int restBpm})? biometrics)
       : this._(biometrics: biometrics);
 
   factory BleUserData.fromFirestore(Map<String, dynamic> map) {
@@ -53,11 +59,12 @@ class BleUserData extends UserData {
         },
         biometrics: map["biometrics"] != null
             ? (
-                restBpm: map["biometrics"]?["restBpm"] ?? 0,
-                age: map["biometrics"]?["age"] ?? 0,
+                restBpm: map["biometrics"]!["restBpm"] ?? 0,
+                birthDate: FirestoreData.fromFirestoreTimestamp(
+                    map["biometrics"]!["birthDate"])!,
                 gender: Gender.values
                         .where((gender) =>
-                            gender.name == map["biometrics"]?["gender"])
+                            gender.name == map["biometrics"]!["gender"])
                         .firstOrNull ??
                     Gender.other
               )
@@ -71,7 +78,8 @@ class BleUserData extends UserData {
           "biometrics": biometrics != null
               ? {
                   "restBpm": biometrics!.restBpm,
-                  "age": biometrics!.age,
+                  "birthDate":
+                      FirestoreData.toFirestoreTimestamp(biometrics!.birthDate),
                   "gender": biometrics!.gender.name,
                 }
               : null,
@@ -166,29 +174,49 @@ enum HRTrainingZone {
       HRTrainingZone.values.where((zone) => zone.name == name).firstOrNull;
 
   static HRTrainingZone? fromBpm(
-          num? bpm, ({Gender gender, int age, int restBpm})? biometrics) =>
+          {required num? bpm,
+          required ({Gender gender, DateTime birthDate, int restBpm})? biometrics,
+          required DateTime dateTime}) =>
       biometrics != null && bpm != null && bpm <= (biometrics.restBpm)
           ? HRTrainingZone.z0 // bpm is less then rest PBM, return z0
           : HRTrainingZone.values
-              .where((zone) =>
-                  _between(bpm, zone.targetBpm(biometrics: biometrics)))
+              .where((zone) => _between(bpm,
+                  zone.targetBpm(biometrics: biometrics, dateTime: dateTime)))
               .firstOrNull;
 
   ({HRTrainingZone hrTrainingZone, int min, int max})? targetBpm(
-          {({Gender gender, int age, int restBpm})? biometrics}) => biometrics != null?
-      (
-        hrTrainingZone: this,
-        min: _targetBpm(biometrics: biometrics, intensity: minIntensity) ?? 0,
-        max: _targetBpm(biometrics: biometrics, intensity: maxIntensity) ?? 0
-      ): null;
+          {required ({Gender gender, DateTime birthDate, int restBpm})? biometrics,
+          required DateTime dateTime}) =>
+      biometrics != null
+          ? (
+              hrTrainingZone: this,
+              min: _targetBpm(
+                      biometrics: biometrics,
+                      intensity: minIntensity,
+                      dateTime: dateTime) ??
+                  0,
+              max: _targetBpm(
+                      biometrics: biometrics,
+                      intensity: maxIntensity,
+                      dateTime: dateTime) ??
+                  0
+            )
+          : null;
 
   // targetBpm = [((female: 226| male: 220) - age - restBpm) x intensity% \ 100] + restBpm
   int? _targetBpm(
-          {required ({Gender gender, int age, int restBpm})? biometrics,
-          required int? intensity}) =>
-      biometrics != null && intensity != null
+          {required ({
+            Gender gender,
+            DateTime birthDate,
+            int restBpm
+          })? biometrics,
+          required int? intensity,
+          DateTime? dateTime}) =>
+      biometrics != null && intensity != null && dateTime != null
           ? (((biometrics.gender.heartRateCoeff -
-                          biometrics.age -
+                          (dateTime.difference(biometrics.birthDate).inDays /
+                                  365)
+                              .floor() -
                           biometrics.restBpm) *
                       intensity /
                       100) +

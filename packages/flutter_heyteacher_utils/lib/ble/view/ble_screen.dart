@@ -6,6 +6,7 @@ import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/ble/model/heart_rate_ble_model.dart';
+import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
@@ -209,7 +210,7 @@ class HeartRateDeviceConnectedListTile extends StatefulWidget {
 class _HeartRateDeviceConnectedListTileState
     extends State<HeartRateDeviceConnectedListTile> {
   Gender? gender;
-  int? age;
+  DateTime? birthDate;
   int? restBpm;
   Iterable<({HRTrainingZone hrTrainingZone, num? min, num? max})>?
       _hrTrainingZones;
@@ -222,7 +223,7 @@ class _HeartRateDeviceConnectedListTileState
 
   void _initBiometrics() {
     gender = widget.heartRateBleModel.biometrics?.gender;
-    age = widget.heartRateBleModel.biometrics?.age;
+    birthDate = widget.heartRateBleModel.biometrics?.birthDate;
     restBpm = widget.heartRateBleModel.biometrics?.restBpm;
     _hrTrainingZones = widget.heartRateBleModel.hrTrainingZones;
     if (mounted) setState(() {});
@@ -230,13 +231,13 @@ class _HeartRateDeviceConnectedListTileState
 
   void _updateBiometrics([VoidCallback? voidCallback]) {
     if (voidCallback != null) voidCallback();
-    _hrTrainingZones = widget.heartRateBleModel.hrTrainingZones;
-    if (mounted) setState(() {});
     // update biometrics only when all 3 parameters are not null
     widget.heartRateBleModel.updateBiometrics(
-        biometrics: gender != null && age != null && restBpm != null
-            ? (gender: gender!, age: age!, restBpm: restBpm!)
+        biometrics: gender != null && birthDate != null && restBpm != null
+            ? (gender: gender!, birthDate: birthDate!, restBpm: restBpm!)
             : null);
+    _hrTrainingZones = widget.heartRateBleModel.hrTrainingZones;
+    if (mounted) setState(() {});
   }
 
   @override
@@ -262,14 +263,37 @@ class _HeartRateDeviceConnectedListTileState
                             ))
                         .toList(),
                     initialSelection: gender),
-                GenericsDropDownMenu<int>(
-                  label: FlutterHeyteacherUtilsLocalizations.of(context)!.age,
-                  onSelected: (value) => _updateBiometrics(() => age = value),
-                  values: [
-                    for (int i = 10; i <= 100; i++)
-                      (value: i, label: i.toString())
-                  ],
-                  initialSelection: age,
+                Expanded(
+                  child: TextField(
+                      onTap: () async {
+                        final newBirthDate = await showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1935),
+                            lastDate: DateTime(2015),
+                            currentDate: birthDate ?? DateTime(1975));
+                        if (newBirthDate != null) {
+                          _updateBiometrics(() => birthDate = newBirthDate);
+                        }
+                      },
+                      style: Theme.of(context).textTheme.labelSmall,
+                      readOnly: true,
+                      decoration: InputDecoration(
+                          isDense: true,
+                          constraints:
+                              BoxConstraints.tight(const Size.fromHeight(35)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          labelStyle: Theme.of(context).textTheme.labelSmall,
+                          labelText: birthDate != null ? "Birth Date" : ""),
+                      controller: TextEditingController(
+                          text: birthDate != null
+                              ? dateFormatter.format(birthDate!)
+                              : "Birth Date")),
                 ),
                 GenericsDropDownMenu<int>(
                     label: FlutterHeyteacherUtilsLocalizations.of(context)!
@@ -344,14 +368,12 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
   final void Function(T? value) onSelected;
   final List<({T value, String label})> values;
   final T? initialSelection;
-  final double? width;
 
   const GenericsDropDownMenu({
     required this.label,
     required this.onSelected,
     required this.values,
     this.initialSelection,
-    this.width,
     super.key,
   });
 
@@ -362,7 +384,6 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
         enableSearch: false,
         label: Text(label, style: Theme.of(context).textTheme.labelSmall),
         textStyle: Theme.of(context).textTheme.labelSmall,
-        width: width,
         initialSelection: initialSelection,
         trailingIcon: const Icon(Icons.filter_list),
         onSelected: onSelected,
