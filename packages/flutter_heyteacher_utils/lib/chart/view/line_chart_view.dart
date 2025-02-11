@@ -176,11 +176,13 @@ class LineChartView extends ChartView {
           .toList());
 
   List<HorizontalLine> get _horizontalLines => [
-        ...verticalRangeAnnotations?.map(
+        ...horizontalRangeAnnotations?.map(
               (e) => HorizontalLine(
                   y: e.min.toDouble(),
-                  color: e.color,
+                  color: e.color.withValues(alpha: 0.4),
                   label: HorizontalLineLabel(
+                      style: TextStyle(color: e.color, fontWeight: FontWeight.bold),
+                        alignment: Alignment.lerp(Alignment.centerLeft, Alignment.topLeft, 0.5)!,
                       show: true, labelResolver: (_) => e.label)),
             ) ??
             [],
@@ -188,15 +190,15 @@ class LineChartView extends ChartView {
                 ?.map(
                   (e) => HorizontalLine(
                       y: e.value.toDouble(),
-                      color: e.color,
+                      color: e.color.withValues(alpha: 0.4),
                       label: HorizontalLineLabel(
                         show: true,
-                        alignment: Alignment.topRight,
+                        alignment: Alignment.bottomRight,
                         labelResolver: (_) => e.label,
                       )),
                 )
-                .toList() ??
-            []
+               .toList() ??
+           []
       ];
 
   List<VerticalLine> get _verticalLines => [
@@ -204,9 +206,9 @@ class LineChartView extends ChartView {
         ...verticalRangeAnnotations?.map(
               (e) => VerticalLine(
                   x: e.min.toDouble(),
-                  color: e.color,
+                  color: e.color.withValues(alpha: 0.4),
                   label: VerticalLineLabel(
-                      style: TextStyle(color: ThemeHepler.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: e.color, fontWeight: FontWeight.bold),
                       alignment: Alignment.topRight,
                       show: true,
                       labelResolver: (_) => e.label)),
@@ -216,7 +218,7 @@ class LineChartView extends ChartView {
         ...verticalRangeAnnotations?.map(
               (e) => VerticalLine(
                   x: e.max.toDouble(),
-                  color: e.color,
+                  color: e.color.withValues(alpha: 0.4),
                   label: VerticalLineLabel(
                       style: TextStyle(color: ThemeHepler.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
                       alignment: Alignment.topRight,
@@ -246,7 +248,7 @@ class LineChartView extends ChartView {
             (e) => VerticalRangeAnnotation(
                 x1: max(e.min.toDouble(), minX.toDouble()),
                 x2: min(e.max.toDouble(), maxX.toDouble()),
-                color: e.color),
+                color: e.color.withValues(alpha: 0.4)),
           )
           .toList() ??
       [];
@@ -257,7 +259,7 @@ class LineChartView extends ChartView {
             (e) => HorizontalRangeAnnotation(
                 y1: max(e.min.toDouble(), minY.toDouble()),
                 y2: min(e.max.toDouble(), maxY.toDouble()),
-                color: e.color),
+                color: e.color.withValues(alpha: 0.4)),
           )
           .toList() ??
       [];
