@@ -41,10 +41,10 @@ Future<void> configureLogging() async {
   // logging configuration, if debug mode force level ALL
   Logger.root.level = Level(
       kDebugMode
-          ? "ALL"
+          ? "FINE"
           : FirebaseRemoteConfig.instance.getString("loggerRootLevelName"),
       kDebugMode
-          ? 0
+          ? 500
           : FirebaseRemoteConfig.instance.getInt("loggerRootLevelValue"));
   // get version
   final packageInfo = await PackageInfo.fromPlatform();
