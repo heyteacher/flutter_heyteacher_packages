@@ -31,6 +31,10 @@ TODO: List what your package can do. Maybe include images, gifs, or videos.
 * chart utils build on `FlChart` library
 * localization utils
 * TTS utils
+* End 2 End Encryption (E2EE)
+* Generics Firestore implementation
+* Theme helper
+* FL Chart utilities
 
 ## Getting started
 
@@ -230,8 +234,11 @@ You can configure you `vscode` to execute the command with `build` in order to a
 |   Z4  | Anaerobic Zone |      80%      |      90%      |
 |   Z5  | VO2 Max Zone   |      90%      |      100%     |
 
-## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+## End 2 End Encryption (E2EE) 
+
+compiler webwrypto library before first run of `flutter test`
+
+```bash
+flutter pub run webcrypto:setup
+```
