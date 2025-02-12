@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
+import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,32 +12,38 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class BleUserData extends UserData {
   Map<BleType, ({String? id, String? name})>? devices;
 
-  ({int restBpm, DateTime birthDate, Gender gender})? biometrics;
+  E2EEValue? _biometricsE2EE;
+
+  Future<void> setBiometrics(Biometrics newBiometrics) async => _biometricsE2EE =
+          await E2EE.instance.encrypt(jsonEncode(newBiometrics));
+
+  Future<Biometrics?> getBiometrics() async =>  _biometricsE2EE != null
+          ? Biometrics.fromJson(
+              await E2EE.instance.decrypt(_biometricsE2EE!))
+          : null;
 
   // intensity% = (bpm -restBpm / ( (female: 226| male: 200) - age - restBpm)) * 100
-  num? intensity(num? bpm, {DateTime? dateTime}) => bpm != null &&
-          biometrics?.gender != null &&
-          biometrics?.birthDate != null &&
-          biometrics?.restBpm != null
-      ? ((bpm - biometrics!.restBpm) /
-              (biometrics!.gender.heartRateCoeff -
-                  ((dateTime ?? DateTime.now())
-                              .difference(biometrics!.birthDate)
-                              .inDays /
+  num? intensity(num? bpm, {required Biometrics? biometrics}) => bpm != null &&
+          biometrics != null
+      ? ((bpm - biometrics.restBpm) /
+              (biometrics.gender.heartRateCoeff -
+                  ((DateTime.now()).difference(biometrics.birthDate).inDays /
                           365)
                       .floor() -
-                  biometrics!.restBpm) *
+                  biometrics.restBpm) *
               100)
           .round()
       : null;
 
   Iterable<({HRTrainingZone hrTrainingZone, num min, num max})>?
-      hrTrainingZones({required DateTime dateTime}) => biometrics != null
-          ? HRTrainingZone.values.map((hrTrainingZone) => hrTrainingZone
-              .targetBpm(biometrics: biometrics, dateTime: dateTime)!)
-          : null;
+      hrTrainingZones(
+              {required DateTime dateTime, required Biometrics? biometrics}) =>
+          biometrics != null
+              ? HRTrainingZone.values.map((hrTrainingZone) => hrTrainingZone
+                  .targetBpm(biometrics: biometrics, dateTime: dateTime)!)
+              : null;
 
-  BleUserData._({this.devices, this.biometrics}) : super();
+  BleUserData._({this.devices, E2EEValue? biometricsE2EE}) : _biometricsE2EE = biometricsE2EE, super();
 
   BleUserData.fromDevices({Map<BleType, BluetoothDevice?>? devices})
       : this._(
@@ -44,45 +52,21 @@ class BleUserData extends UserData {
                   name: device?.platformName ?? ""
                 ))));
 
-  BleUserData.fromHeartRate(
-      ({Gender gender, DateTime birthDate, int restBpm})? biometrics)
-      : this._(biometrics: biometrics);
-
   factory BleUserData.fromFirestore(Map<String, dynamic> map) {
-    return BleUserData._(
-        devices: {
-          for (BleType bleType in BleType.values)
-            bleType: (
-              id: map[bleType.firestoreFieldId],
-              name: map[bleType.firestoreFieldName],
-            ),
-        },
-        biometrics: map["biometrics"] != null
-            ? (
-                restBpm: map["biometrics"]!["restBpm"] ?? 0,
-                birthDate: FirestoreData.fromFirestoreTimestamp(
-                    map["biometrics"]!["birthDate"])!,
-                gender: Gender.values
-                        .where((gender) =>
-                            gender.name == map["biometrics"]!["gender"])
-                        .firstOrNull ??
-                    Gender.other
-              )
-            : null);
+    return BleUserData._(devices: {
+      for (BleType bleType in BleType.values)
+        bleType: (
+          id: map[bleType.firestoreFieldId],
+          name: map[bleType.firestoreFieldName],
+        ),
+    }, biometricsE2EE: map["biometrics"] != null? E2EEValue.fromJson(map["biometrics"]): null);
   }
 
   @override
   Map<String, dynamic> toFirestore(List<String>? fields) => {
         ...super.toFirestore(fields),
         if (fields?.contains("biometrics") ?? true)
-          "biometrics": biometrics != null
-              ? {
-                  "restBpm": biometrics!.restBpm,
-                  "birthDate":
-                      FirestoreData.toFirestoreTimestamp(biometrics!.birthDate),
-                  "gender": biometrics!.gender.name,
-                }
-              : null,
+          "biometrics": _biometricsE2EE?.toJson(),
         // set firestoreFieldId for each ble types
         for (BleType bleType in BleType.values)
           // update only if not null, empty string for reset
@@ -103,7 +87,7 @@ class BleUserData extends UserData {
   @override
   String toString() => "${super.toString()}, "
       "devices: ${devices?.map((key, value) => MapEntry(key.name, "${value.name} (${value.id})"))}, "
-      "biometrics: $biometrics";
+      "biometrics: is set ${_biometricsE2EE != null}";
 }
 
 enum BleType {
@@ -175,7 +159,7 @@ enum HRTrainingZone {
 
   static HRTrainingZone? fromBpm(
           {required num? bpm,
-          required ({Gender gender, DateTime birthDate, int restBpm})? biometrics,
+          required Biometrics? biometrics,
           required DateTime dateTime}) =>
       biometrics != null && bpm != null && bpm <= (biometrics.restBpm)
           ? HRTrainingZone.z0 // bpm is less then rest PBM, return z0
@@ -185,8 +169,7 @@ enum HRTrainingZone {
               .firstOrNull;
 
   ({HRTrainingZone hrTrainingZone, int min, int max})? targetBpm(
-          {required ({Gender gender, DateTime birthDate, int restBpm})? biometrics,
-          required DateTime dateTime}) =>
+          {required Biometrics? biometrics, required DateTime dateTime}) =>
       biometrics != null
           ? (
               hrTrainingZone: this,
@@ -205,11 +188,7 @@ enum HRTrainingZone {
 
   // targetBpm = [((female: 226| male: 220) - age - restBpm) x intensity% \ 100] + restBpm
   int? _targetBpm(
-          {required ({
-            Gender gender,
-            DateTime birthDate,
-            int restBpm
-          })? biometrics,
+          {required Biometrics? biometrics,
           required int? intensity,
           DateTime? dateTime}) =>
       biometrics != null && intensity != null && dateTime != null
@@ -234,6 +213,31 @@ enum HRTrainingZone {
   static bool _between(num? bpm,
           ({HRTrainingZone hrTrainingZone, num? max, num? min})? targetBpm) =>
       (bpm ?? 0) >= (targetBpm?.min ?? 0) && (bpm ?? 0) < (targetBpm?.max ?? 0);
+}
+
+class Biometrics {
+  int restBpm;
+  DateTime birthDate;
+  Gender gender;
+
+  Biometrics(
+      {required this.gender, required this.birthDate, required this.restBpm});
+
+  factory Biometrics.fromJson(String json) => Biometrics._fromMap(jsonDecode(json)); 
+
+  factory Biometrics._fromMap(Map<String, dynamic> map) => Biometrics(
+      restBpm: map["restBpm"] ?? 0,
+      birthDate: DateTime.fromMillisecondsSinceEpoch(map["birthDate"] ?? 0),
+      gender: Gender.values
+              .where((gender) => gender.name == map["gender"])
+              .firstOrNull ??
+          Gender.other);
+
+  Map<String, dynamic> toJson() => {
+        "restBpm": restBpm,
+        "birthDate": birthDate.millisecondsSinceEpoch,
+        "gender": gender.name
+      };
 }
 
 class CrankRevolutionRecordData {

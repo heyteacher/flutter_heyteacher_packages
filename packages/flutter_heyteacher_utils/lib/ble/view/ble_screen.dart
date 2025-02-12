@@ -221,22 +221,25 @@ class _HeartRateDeviceConnectedListTileState
     widget.heartRateBleModel.init(_initBiometrics);
   }
 
-  void _initBiometrics() {
-    gender = widget.heartRateBleModel.biometrics?.gender;
-    birthDate = widget.heartRateBleModel.biometrics?.birthDate;
-    restBpm = widget.heartRateBleModel.biometrics?.restBpm;
+  void _initBiometrics() async {
+    Biometrics? biometrics = BleModel.biometrics;
+    gender = biometrics?.gender;
+    birthDate = biometrics?.birthDate;
+    restBpm = biometrics?.restBpm;
     _hrTrainingZones = widget.heartRateBleModel.hrTrainingZones;
     if (mounted) setState(() {});
   }
 
-  void _updateBiometrics([VoidCallback? voidCallback]) {
-    if (voidCallback != null) voidCallback();
+  void _updateBiometrics([VoidCallback? preUpdateCallback]) {
+    if (preUpdateCallback != null) preUpdateCallback();
     // update biometrics only when all 3 parameters are not null
-    widget.heartRateBleModel.updateBiometrics(
-        biometrics: gender != null && birthDate != null && restBpm != null
-            ? (gender: gender!, birthDate: birthDate!, restBpm: restBpm!)
-            : null);
-    _hrTrainingZones = widget.heartRateBleModel.hrTrainingZones;
+    if (gender != null && birthDate != null && restBpm != null) {
+      widget.heartRateBleModel.updateBiometrics(
+          newBiometrics: Biometrics(
+              gender: gender!, birthDate: birthDate!, restBpm: restBpm!));
+
+      _hrTrainingZones = widget.heartRateBleModel.hrTrainingZones;
+    }
     if (mounted) setState(() {});
   }
 
@@ -282,7 +285,8 @@ class _HeartRateDeviceConnectedListTileState
                           constraints:
                               BoxConstraints.tight(const Size.fromHeight(35)),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onSurface),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           border: OutlineInputBorder(

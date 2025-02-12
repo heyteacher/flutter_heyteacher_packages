@@ -3,11 +3,11 @@ import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final bleUserData = BleUserData.fromHeartRate((
+  final biometrics = Biometrics(
     birthDate: DateTime.now().subtract(Duration(days: 366 * 20)),
     gender: Gender.male,
     restBpm: 60
-  ));
+  );
 
   setUp(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -18,28 +18,28 @@ void main() {
       expect(
           HRTrainingZone.fromBpm(
               bpm: 50,
-              biometrics: bleUserData.biometrics,
+              biometrics: biometrics,
               dateTime: DateTime.now()),
           HRTrainingZone.z0,
           reason: "less then restBpm doesn't return z0");
       expect(
           HRTrainingZone.fromBpm(
               bpm: 65,
-              biometrics: bleUserData.biometrics,
+              biometrics: biometrics,
               dateTime: DateTime.now()),
           HRTrainingZone.z0,
           reason: "greather then restBpm doesn't return z0");
       expect(
           HRTrainingZone.fromBpm(
               bpm: 200,
-              biometrics: bleUserData.biometrics,
+              biometrics: biometrics,
               dateTime: DateTime.now()),
           HRTrainingZone.z6,
           reason: "doesn't return z6");
       expect(
           HRTrainingZone.fromBpm(
               bpm: 199,
-              biometrics: bleUserData.biometrics,
+              biometrics: biometrics,
               dateTime: DateTime.now()),
           HRTrainingZone.z5,
           reason: "doesn't return z5");
@@ -48,7 +48,7 @@ void main() {
       expect(
           HRTrainingZone.fromBpm(
               bpm: null,
-              biometrics: bleUserData.biometrics,
+              biometrics: biometrics,
               dateTime: DateTime.now()),
           null,
           reason: "null, doesn't return null");
@@ -71,11 +71,11 @@ void main() {
   group('HRTrainingZone targetBpm group:', () {
     test('should return correct target bpm', () async {
       final targetBpm = HRTrainingZone.z4.targetBpm(
-          biometrics: bleUserData.biometrics, dateTime: DateTime.now());
+          biometrics: biometrics, dateTime: DateTime.now());
       expect(targetBpm?.min, 172,
-          reason: "biometrics ${bleUserData.biometrics} z4 min isn't 147");
+          reason: "biometrics $biometrics z4 min isn't 147");
       expect(targetBpm?.max, 186,
-          reason: "biometrics ${bleUserData.biometrics} z4 max isn't 158");
+          reason: "biometrics $biometrics z4 max isn't 158");
     });
     test('null biometrics should return null', () async {
       final targetBpm = HRTrainingZone.z4

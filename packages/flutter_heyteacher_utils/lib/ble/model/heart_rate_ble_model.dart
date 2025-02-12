@@ -20,19 +20,17 @@ class HeartRateBleModel extends BleModel {
     }
   }
 
-  ({DateTime birthDate, Gender gender, int restBpm})? get biometrics =>
-      BleModel.userData?.biometrics;
-
   Iterable<({HRTrainingZone hrTrainingZone, num? max, num? min})>?
-      get hrTrainingZones =>
-          BleModel.userData?.hrTrainingZones(dateTime: DateTime.now());
+      get hrTrainingZones => BleModel.userData?.hrTrainingZones(
+          dateTime: DateTime.now(), biometrics: BleModel.biometrics);
 
-  static num? intensity(num? bpm) => BleModel.userData?.intensity(bpm);
+  static num? intensity(num? bpm) =>
+      BleModel.userData?.intensity(bpm, biometrics: BleModel.biometrics);
 
-  void updateBiometrics(
-      {({DateTime birthDate, Gender gender, int restBpm})? biometrics}) {
+  void updateBiometrics({required Biometrics newBiometrics}) async {
+    BleModel.biometrics = newBiometrics;
     if (BleModel.userData != null) {
-      BleModel.userData!.biometrics = biometrics;
+      await BleModel.userData!.setBiometrics(newBiometrics);
       BleUserStore.instance()
           .update(BleModel.userData!, fields: ["biometrics"]);
     }

@@ -19,6 +19,8 @@ abstract class BleModel {
   @protected
   static BleUserData? userData;
 
+  static Biometrics? biometrics;
+
   BluetoothDevice? _device;
   StreamSubscription<bool>? _isDisconnectingStreamSubscription;
   bool _alreadyInitialized = false;
@@ -71,15 +73,22 @@ abstract class BleModel {
     _isDisconnectingStreamSubscription = null;
   }
 
+  /// Initialize [BleType] model, loading [BleType] device and [Biometrics] from user store.
+  ///
+  /// if [BleType] devices found, try to connect yielding [deviceStatusStream].
+  /// At the end, invoke [callback] if set, usually used by widgets for update state.
   Future<void> init([VoidCallback? callback]) async {
-    // if not mobile, do nothing 
+    // if not mobile, do nothing
     if (PlatformHelper.isNotMobile) return;
-
-    BleModelFactory.initBle(callback);
+    // initialize flutter_blue_plus logging package
+    BleModelFactory.initLog(callback);
     try {
+      // loading user data
       userData ??= Auth.instance().autenticated
           ? await BleUserStore.instance().get(Auth.instance().uid!)
           : null;
+      // loading biometrics
+      biometrics ??= await BleModel.userData?.getBiometrics();
     } on DocumentNotFoundException {
       _log.fine("init: user not found in store");
     }
@@ -96,18 +105,14 @@ abstract class BleModel {
     if (!_alreadyInitialized) {
       _alreadyInitialized = true;
       _log.fine("init: initialize ${bleType.name}  device $userDevice");
-      if (userDevice?.id != null && userDevice!.id!.trim().isNotEmpty ) {
+      if (userDevice?.id != null && userDevice!.id!.trim().isNotEmpty) {
         _device = BluetoothDevice.fromId(userDevice.id!);
-        if (PlatformHelper.isMobile) {
+        _log.fine(
+            "init: try auto connection to ${bleType.name} device $userDevice");
+        if (_device!.isDisconnected) {
           _log.fine(
-              "init: try auto connection to ${bleType.name} device $userDevice");
-          if (_device!.isDisconnected) {
-            _log.fine(
-                "init:  ${bleType.name} auto connect to device $userDevice");
-            connect(device: _device!, autoConnect: true, callback: callback);
-          }
-        } else {
-          _log.fine("init: platform doesn't support ble connection");
+              "init:  ${bleType.name} auto connect to device $userDevice");
+          connect(device: _device!, autoConnect: true, callback: callback);
         }
       }
     }
