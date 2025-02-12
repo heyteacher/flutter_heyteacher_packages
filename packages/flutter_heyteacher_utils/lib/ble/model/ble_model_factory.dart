@@ -130,7 +130,7 @@ class BleModelFactory {
     callback?.call();
   }
 
-  static Future<void> initBle([VoidCallback? callback]) async {
+  static Future<void> initLog([VoidCallback? callback]) async {
     // if your terminal doesn't support color you'll see annoying logs like `\x1B[1;35m`
     FlutterBluePlus.setLogLevel(LogLevel.error, color: false);
     _logStreamSubscription ??=
