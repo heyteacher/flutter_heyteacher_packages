@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:webcrypto/webcrypto.dart';
 
 class E2EEValue {
@@ -11,7 +14,7 @@ class E2EEValue {
   E2EEValue({required this.value, required this.iv});
 
   E2EEValue.fromJson(Map<String, dynamic> json)
-      : value = Uint8List.fromList( json['value']?.cast<int>() ?? []) ,
+      : value = Uint8List.fromList(json['value']?.cast<int>() ?? []),
         iv = Uint8List.fromList(json['iv']?.cast<int>() ?? []);
 
   Map<String, dynamic> toJson() => {
@@ -21,8 +24,6 @@ class E2EEValue {
 }
 
 class E2EE {
-  late FlutterSecureStorage _secureStorage;
-
   AndroidOptions _getAndroidOptions(String appName) => AndroidOptions(
       encryptedSharedPreferences: true,
       sharedPreferencesName: appName,
@@ -30,11 +31,19 @@ class E2EE {
 
   // singleton
   static E2EE? _instance;
-  static E2EE instance({required String appName}) =>
-      _instance ??= E2EE._(appName);
-  E2EE._(String appName) {
-    _secureStorage =
+  static E2EE get instance => _instance ??= E2EE._();
+  E2EE._();
+
+  FlutterSecureStorage? _secureStorageInstance;
+  Future<FlutterSecureStorage> get _secureStorage async {
+    if (_secureStorageInstance != null) return _secureStorageInstance!;
+    String appName = "appName";
+    if (PlatformHelper.isMobile) {
+      appName = (await PackageInfo.fromPlatform()).appName;
+    }
+    _secureStorageInstance =
         FlutterSecureStorage(aOptions: _getAndroidOptions(appName));
+    return _secureStorageInstance!;
   }
 
   Future<E2EEValue> encrypt(String value) async {
@@ -42,9 +51,12 @@ class E2EE {
     if (Auth.instance().notAutenticated) {
       throw UserNotAuthenticatedException();
     }
+
+    FlutterSecureStorage secureStorage = await _secureStorage;
+
     final AesGcmSecretKey secretKey;
     // first use, generate the key if non present in secure storage
-    if (!await _secureStorage.containsKey(key: Auth.instance().uid!)) {
+    if (!await secureStorage.containsKey(key: Auth.instance().uid!)) {
       // Generate a new random AES-GCM secret key for AES-256.
       secretKey = await AesGcmSecretKey.generateKey(256);
       // save into storage
@@ -52,7 +64,7 @@ class E2EE {
       // encode json the jwk
       final secretJwkJson = jsonEncode(secretJwk);
       // write the jwk json into storage
-      _secureStorage.write(key: Auth.instance().uid!, value: secretJwkJson);
+      secureStorage.write(key: Auth.instance().uid!, value: secretJwkJson);
       // secret key in secure storage, load it
     } else {
       // read the json jwk secret key from secure storage
@@ -74,8 +86,10 @@ class E2EE {
     if (Auth.instance().notAutenticated) {
       throw UserNotAuthenticatedException();
     }
+    FlutterSecureStorage secureStorage = await _secureStorage;
+
     // raise exception if key not found in secure storage
-    if (!await _secureStorage.containsKey(key: Auth.instance().uid!)) {
+    if (!await secureStorage.containsKey(key: Auth.instance().uid!)) {
       throw MissingSecretKeyInSecureStorage();
     }
     // read the secret key from secure storage
@@ -84,13 +98,15 @@ class E2EE {
     final decryptedBytes =
         await secretKey.decryptBytes(encrypted.value, encrypted.iv);
     // return string decripted utf8 decoding bytes
-    return utf8.decode(decryptedBytes);
+    final decrypted = utf8.decode(decryptedBytes);
+    return decrypted;
   }
 
   Future<AesGcmSecretKey> _readSecretKey() async {
+    FlutterSecureStorage secureStorage = await _secureStorage;
     // read the json jwk secret key from secure storage
     final String secretJwkJson =
-        (await _secureStorage.read(key: Auth.instance().uid!))!;
+        (await secureStorage.read(key: Auth.instance().uid!))!;
     // decode the json jwk
     final secretJwk = jsonDecode(secretJwkJson);
     // import the jwk into secret key
@@ -99,31 +115,3 @@ class E2EE {
 }
 
 class MissingSecretKeyInSecureStorage implements Exception {}
-
-
-/*
-// Generate a new random AES-GCM secret key for AES-256.
-final k = await AesGcmSecretKey.generate(256);
-
-// Use a unique IV for each message.
-final iv = Uint8List(16);
-fillRandomBytes(iv);
-
-// Specify optional additionalData
-final ad = utf8.encode('my-test-message');
-
-// Encrypt a message
-final c = await k.encryptBytes(
-  utf8.encode('hello world'),
-  iv,
-  additionalData: ad,
-);
-
-// Decrypt message (requires the same iv)
-print(utf8.decode(await k.decryptBytes(
-  c,
-  iv,
-  additionalData: ad,
-))); //
-
-*/

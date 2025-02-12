@@ -12,28 +12,26 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 /// flutter pub run webcrypto:setup
 /// ```
 void main() {
-  final e2ee = E2EE.instance(appName: "EE2EE_test");
+  final e2ee = E2EE.instance;
   const String userId = 'testuid',
       userEmail = 'test@example.com',
       userDisplayName = 'Test User';
 
-  setUp(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    FlutterSecureStorage.setMockInitialValues({});
-    // mock authentication
-    MockFirebaseAuth auth = MockFirebaseAuth(
-        mockUser: MockUser(
-      isAnonymous: false,
-      uid: userId,
-      email: userEmail,
-      displayName: userDisplayName,
-    ));
-    // mock sign-in
-    auth.signInWithEmailAndPassword(email: userEmail, password: userEmail);
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterSecureStorage.setMockInitialValues({});
+  // mock authentication
+  MockFirebaseAuth auth = MockFirebaseAuth(
+      mockUser: MockUser(
+    isAnonymous: false,
+    uid: userId,
+    email: userEmail,
+    displayName: userDisplayName,
+  ));
+  // mock sign-in
+  auth.signInWithEmailAndPassword(email: userEmail, password: userEmail);
 
-    // initialize Auth with MockFirebaseAuth
-    Auth.instance(firebaseAuth: auth);
-  });
+  // initialize Auth with MockFirebaseAuth
+  Auth.instance(firebaseAuth: auth);
 
   group('encrypt decryp message:', () {
     test('encrypted decrypted empty message return same', () async {

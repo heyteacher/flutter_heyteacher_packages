@@ -533,8 +533,8 @@ abstract class Store<LightDataType extends FirestoreData,
     _checkAuthenticated();
     if (await exists(id)) {
       if (batch != null) {
-        batch.update(_detailsCollectionReference.doc(id),
-            document.toFirestore(fields));
+        batch.update(
+            _detailsCollectionReference.doc(id), document.toFirestore(fields));
       } else {
         _detailsCollectionReference
             .doc(id)
@@ -757,7 +757,8 @@ abstract class Store<LightDataType extends FirestoreData,
           fromFirestore: (snapshot, _) =>
               FirestoreData.fromFirestoreFactory<LightDataType>(
                   snapshot.data()!),
-          toFirestore: (LightDataType lightData, _) => lightData.toFirestore(null));
+          toFirestore: (LightDataType lightData, _) =>
+              lightData.toFirestore(null));
 
   CollectionReference<DetailsDataType> get _detailsCollectionReference =>
       _firestore.collection(_detailsCollectionPath!).withConverter(
@@ -808,14 +809,11 @@ class TooManyAggregateFieldsException {
 abstract class FirestoreData<T> {
   String get id;
 
-  static final Map<
-      Type,
-      Function(
-          Map<String, dynamic> map)> _registeredFromFirestoreFactory = {};
+  static final Map<Type, Function(Map<String, dynamic> map)>
+      _registeredFromFirestoreFactory = {};
 
   static registerFromFirestoreFactory<T>(
-      T Function(Map<String, dynamic> map)
-          fromFirestoreFactory) {
+      T Function(Map<String, dynamic> map) fromFirestoreFactory) {
     if (T == dynamic) {
       throw InvalidFirestoreDataTypeException();
     }
@@ -824,8 +822,7 @@ abstract class FirestoreData<T> {
 
   static T fromFirestoreFactory<T extends FirestoreData>(
       Map<String, dynamic> map) {
-    T? object = _registeredFromFirestoreFactory[T]
-        ?.call(map);
+    T? object = _registeredFromFirestoreFactory[T]?.call(map);
     if (object != null) {
       return object;
     } else {
@@ -839,8 +836,7 @@ abstract class FirestoreData<T> {
 
   void setParentData(FirestoreData parentData) {}
 
-  Map<String, dynamic> toFirestore(
-      List<String>? fields);
+  Map<String, dynamic> toFirestore(List<String>? fields);
 
   static Timestamp? toFirestoreTimestamp(DateTime? dateTime) {
     return dateTime == null ? null : Timestamp.fromDate(dateTime);
@@ -851,13 +847,12 @@ abstract class FirestoreData<T> {
   }
 
   static Future<String> fromFirestoreE2EE(Map<String, dynamic> map) async {
-    return await E2EE
-        .instance(appName: "appName")
+    return await E2EE.instance
         .decrypt(E2EEValue(value: map["value"], iv: map["iv"]));
   }
 
   static Future<Map<String, dynamic>> toFirestoreE2EE(String value) async {
-    final encrypted = await E2EE.instance(appName: "appName").encrypt(value);
+    final encrypted = await E2EE.instance.encrypt(value);
     return {"value": encrypted.value, "iv": encrypted.iv};
   }
 }
