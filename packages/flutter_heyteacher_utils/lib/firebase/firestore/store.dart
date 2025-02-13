@@ -405,7 +405,6 @@ abstract class Store<LightDataType extends FirestoreData,
             await _collectionReference.doc(id).get();
         // populate parent data fields
         if (documentSnapshot.exists) {
-          _log.fine("setParentData $id");
           details.setParentData(documentSnapshot.data()!);
           return details;
         } else {
