@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
@@ -13,14 +13,32 @@ class E2EEValue {
   Uint8List iv;
   E2EEValue({required this.value, required this.iv});
 
-  E2EEValue.fromJson(Map<String, dynamic> json)
-      : value = Uint8List.fromList(json['value']?.cast<int>() ?? []),
-        iv = Uint8List.fromList(json['iv']?.cast<int>() ?? []);
+
+  E2EEValue.fromMap(Map<String, dynamic> map)
+      : value = Uint8List.fromList(_unzip(map['value'])?.cast<int>() ?? []),
+        iv = Uint8List.fromList(_unzip(map['iv'])?.cast<int>() ?? []);
 
   Map<String, dynamic> toJson() => {
-        'value': value,
-        'iv': iv,
+        'value': _zip(value),
+        'iv': _zip(iv),
       };
+
+  static String? _zip(dynamic object) {
+    if (object == null) return null;
+    final jsonEncodeValue = jsonEncode(object);
+    final utf8Encoded = utf8.encode(jsonEncodeValue);
+    final gzipEncoded = gzip.encode(utf8Encoded);
+    final base64Encoded = base64.encode(gzipEncoded);
+    return base64Encoded;
+  }
+
+  static dynamic _unzip(String? base64Encoded) {
+    if (base64Encoded == null) return null;
+    final base64Decoded = base64.decode(base64Encoded);
+    final gzipDecoded = gzip.decode(base64Decoded);
+    final uft8Decoded = utf8.decode(gzipDecoded);
+    return jsonDecode(uft8Decoded);
+  }
 }
 
 class E2EE {

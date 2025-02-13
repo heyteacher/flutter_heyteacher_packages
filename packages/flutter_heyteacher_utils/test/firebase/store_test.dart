@@ -304,7 +304,7 @@ class TrackData extends BaseTrackData {
 
   factory TrackData.fromFirestore(Map<String, dynamic> map) => TrackData(
       startTime: FirestoreData.fromFirestoreTimestamp(map['startTime'])!,
-      avgBpm: map["avgBpm"] != null ? E2EEValue.fromJson(map["avgBpm"]) : null,
+      avgBpm: map["avgBpm"] != null ? E2EEValue.fromMap(map["avgBpm"]) : null,
       avgRpm: map["avgRpm"]);
 
   @override

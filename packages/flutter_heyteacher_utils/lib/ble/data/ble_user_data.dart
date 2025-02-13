@@ -59,7 +59,7 @@ class BleUserData extends UserData {
           id: map[bleType.firestoreFieldId],
           name: map[bleType.firestoreFieldName],
         ),
-    }, biometricsE2EE: map["biometrics"] != null? E2EEValue.fromJson(map["biometrics"]): null);
+    }, biometricsE2EE: map["biometrics"] != null? E2EEValue.fromMap(map["biometrics"]): null);
   }
 
   @override
