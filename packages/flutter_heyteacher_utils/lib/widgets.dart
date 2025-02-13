@@ -7,24 +7,26 @@ import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:go_router/go_router.dart';
 
 void showSnackBar(
-    {required BuildContext context,
-    required String message,
-    int? duration,
-    bool error = false}) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-        duration: Duration(
-            seconds: duration ??
-                FirebaseRemoteConfig.instance
-                    .getInt("snackBarDurationInSeconds")),
-        backgroundColor: error
-            ? Theme.of(context).colorScheme.error
-            : ThemeHepler.instance().greenTextColor,
-        content: Text(message,
-            style: TextStyle(
-                color: ThemeHepler.instance().theme.colorScheme.surface))),
-  );
-}
+        {required BuildContext? context,
+        required String message,
+        int? duration,
+        bool error = false}) =>
+    context != null
+        ? ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                duration: Duration(
+                    seconds: duration ??
+                        FirebaseRemoteConfig.instance
+                            .getInt("snackBarDurationInSeconds")),
+                backgroundColor: error
+                    ? Theme.of(context).colorScheme.error
+                    : ThemeHepler.instance().greenTextColor,
+                content: Text(message,
+                    style: TextStyle(
+                        color:
+                            ThemeHepler.instance().theme.colorScheme.surface))),
+          )
+        : null;
 
 Future<void> dialogBuilder<T>(
     {required BuildContext context,
@@ -97,10 +99,8 @@ class ErrorView extends StatelessWidget {
   final StackTrace? stackTrace;
 
   ErrorView(this.error, this.stackTrace, {super.key}) {
-    _log.severe("error",error,stackTrace);
+    _log.severe("error", error, stackTrace);
   }
-
-
 
   @override
   Widget build(context) => error == null ||
