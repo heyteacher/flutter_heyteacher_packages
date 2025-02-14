@@ -41,65 +41,68 @@ class _BleOnViewState extends State<BleOnView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(
-              FlutterHeyteacherUtilsLocalizations.of(context)!.bleAntPlus,
-              textAlign: TextAlign.center),
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: [
-                  for (BleType bleType in BleType.values)
-                    if (bleType == BleType.heartRate)
-                      Card(
-                        child: HeartRateDeviceConnectedListTile(
-                          heartRateBleModel:
-                              BleModelFactory.instance(bleType: bleType)
-                                  as HeartRateBleModel,
-                        ),
-                      )
-                    else
-                      Card(
-                        child: BleDeviceConnectedListTile(
-                          bleModel: BleModelFactory.instance(bleType: bleType),
-                        ),
-                      ),
-                  ..._buildScanResultTiles(context),
-                ],
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (BleType bleType in BleType.values)
-              StreamBuilder<({bool connected, String? id, String? name})>(
-                  stream: BleModelFactory.instance(bleType: bleType)
-                      .deviceStatusStream,
-                  builder: (context, snapshot) {
-                    return !(snapshot.data?.connected ?? false)
-                        ? Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              height: 80,
-                              width: 80,
-                              child: _buildStartStopScanButton(context,
-                                  bleType: bleType,
-                                  deviceStatusData: snapshot.data),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 100.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      for (BleType bleType in BleType.values)
+                        if (bleType == BleType.heartRate)
+                          Card(
+                            child: HeartRateDeviceConnectedListTile(
+                              heartRateBleModel:
+                                  BleModelFactory.instance(bleType: bleType)
+                                      as HeartRateBleModel,
                             ),
                           )
-                        : SizedBox.shrink();
-                  }),
-          ],
+                        else
+                          Card(
+                            child: BleDeviceConnectedListTile(
+                              bleModel: BleModelFactory.instance(bleType: bleType),
+                            ),
+                          ),
+                      ..._buildScanResultTiles(context),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          child: Container(height: 80.0),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (BleType bleType in BleType.values)
+                StreamBuilder<({bool connected, String? id, String? name})>(
+                    stream: BleModelFactory.instance(bleType: bleType)
+                        .deviceStatusStream,
+                    builder: (context, snapshot) {
+                      return !(snapshot.data?.connected ?? false)
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                height: 80,
+                                width: 80,
+                                child: _buildStartStopScanButton(context,
+                                    bleType: bleType,
+                                    deviceStatusData: snapshot.data),
+                              ),
+                            )
+                          : SizedBox.shrink();
+                    }),
+            ],
+          ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+        // bottomNavigationBar: BottomAppBar(
+        //   shape: const CircularNotchedRectangle(),
+        //   child: Container(height: 80.0),
+        // ),
       );
 
   Widget _buildStartStopScanButton(BuildContext context,
