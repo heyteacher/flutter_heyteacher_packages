@@ -28,10 +28,11 @@ void showSnackBar(
           )
         : null;
 
-Future<void> dialogBuilder<T>(
+Future<void> showDialogGenerics<T>(
     {required BuildContext context,
-    required Future<String> Function(T?) confirmFn,
-    T? confirmFnObj,
+    required Future<String?> Function(T?) confirmCallback,
+    Future<String?> Function(T?)? cancelCallback,
+    T? param,
     String title = "Attention",
     String confirmQuestion = "Confirm action?"}) async {
   final log = Logger("dialogBuilder");
@@ -61,21 +62,25 @@ Future<void> dialogBuilder<T>(
           ],
         );
       });
-  if (confirm != null && confirm) {
-    String message = "";
+  if (confirm != null) {
+    if (confirm) {
+    String? message;
     bool error = false;
     try {
-      message = await confirmFn(confirmFnObj);
+      message = await confirmCallback(param);
     } catch (e, s) {
       error = true;
       message = e.toString();
-      log.severe("${confirmFn.toString()}: error", e, s);
+      log.severe("${confirmCallback.toString()}: error", e, s);
       rethrow;
     } finally {
-      if (context.mounted) {
+      if (context.mounted && message != null) {
         showSnackBar(context: context, message: message, error: error);
       }
     }
+  } else {
+    if (cancelCallback != null) cancelCallback(param);
+  } 
   }
 }
 
