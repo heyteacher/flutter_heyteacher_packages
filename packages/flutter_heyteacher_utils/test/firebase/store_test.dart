@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 
 void main() {
+
   const String userId = 'testuid',
       userEmail = 'test@example.com',
       userDisplayName = 'Test User';
@@ -32,6 +33,9 @@ void main() {
 
     // initialize Auth with MockFirebaseAuth
     Auth.instance(firebaseAuth: auth);
+
+    // set AAD
+    E2EE.instance.setAAD("aadValue");
 
     // mock firestore with mock authentication
     FakeFirebaseFirestore firestore =

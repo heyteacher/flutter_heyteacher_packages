@@ -12,7 +12,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 /// flutter pub run webcrypto:setup
 /// ```
 void main() {
-  final e2ee = E2EE.instance;
   const String userId = 'testuid',
       userEmail = 'test@example.com',
       userDisplayName = 'Test User';
@@ -32,17 +31,18 @@ void main() {
 
   // initialize Auth with MockFirebaseAuth
   Auth.instance(firebaseAuth: auth);
+  E2EE.instance.setAAD("aadValue");
 
   group('encrypt decryp message:', () {
     test('encrypted decrypted empty message return same', () async {
       final originalMessage = "";
-      final encrypted = await e2ee.encrypt(originalMessage);
+      final encrypted = await E2EE.instance.encrypt(originalMessage);
 
       expect(encrypted.value.isNotEmpty, true,
           reason: "encrypted value is empty");
       expect(encrypted.iv.isNotEmpty, true, reason: "encrypted iv is empty");
 
-      final decryptedMessage = await e2ee.decrypt(encrypted);
+      final decryptedMessage = await E2EE.instance.decrypt(encrypted);
       expect(originalMessage, decryptedMessage,
           reason:
               "decrypted message $decryptedMessage differs from original message $originalMessage");
@@ -50,13 +50,13 @@ void main() {
 
     test('encrypted decrypted message return same', () async {
       final originalMessage = "this is a message";
-      final encrypted = await e2ee.encrypt(originalMessage);
+      final encrypted = await E2EE.instance.encrypt(originalMessage);
 
       expect(encrypted.value.isNotEmpty, true,
           reason: "encrypted value is empty");
       expect(encrypted.iv.isNotEmpty, true, reason: "encrypted iv is empty");
 
-      final decryptedMessage = await e2ee.decrypt(encrypted);
+      final decryptedMessage = await E2EE.instance.decrypt(encrypted);
       expect(originalMessage, decryptedMessage,
           reason:
               "decrypted message $decryptedMessage differs from original message $originalMessage");
