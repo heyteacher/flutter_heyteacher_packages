@@ -50,20 +50,12 @@ class E2EE {
       _log.severe("decrypt: aad is empty");
       throw AADEmptyException();
     }
-    FlutterSecureStorage secureStorage = await _secureStorage;
+    final FlutterSecureStorage secureStorage = await _secureStorage;
 
     final AesGcmSecretKey secretKey;
     // first use, generate the key if non present in secure storage
-    if (!await secureStorage.containsKey(key: Auth.instance().uid!)) {
-      // Generate a new random AES-GCM secret key for AES-256.
-      secretKey = await AesGcmSecretKey.generateKey(256);
-      // save into storage
-      final secretJwk = await secretKey.exportJsonWebKey();
-      // encode json the jwk
-      final secretJwkJson = jsonEncode(secretJwk);
-      // write the jwk json into storage
-      secureStorage.write(key: Auth.instance().uid!, value: secretJwkJson);
-      // secret key in secure storage, load it
+    if (!await secureStorage.containsKey(key: _secretKeyKey)) {
+      secretKey = await _generateSecretKey();
     } else {
       // read the json jwk secret key from secure storage
       secretKey = await _readSecretKey();
@@ -96,7 +88,7 @@ class E2EE {
     FlutterSecureStorage secureStorage = await _secureStorage;
 
     // raise exception if key not found in secure storage
-    if (!await secureStorage.containsKey(key: Auth.instance().uid!)) {
+    if (!await secureStorage.containsKey(key: _secretKeyKey)) {
       _log.severe("decrypt: missing secret key");
       throw MissingSecretKeyInSecureStorageException();
     }
@@ -132,6 +124,44 @@ class E2EE {
     return secureStorage.read(key: _aadKey);
   }
 
+  Future<String> exportSecretJwkJson() async {
+    // read the secret key from secure storage
+    final secretKey = await _readSecretKey();
+    // save into storage
+    final secretJwk = await secretKey.exportJsonWebKey();
+    // encode json the jwk
+    final secretJwkJson = jsonEncode(secretJwk);
+    return secretJwkJson;
+  }
+
+  Future<void> importSecretJwkJson(String secretJwkJson) async {
+    final FlutterSecureStorage secureStorage = await _secureStorage;
+    // try to read secret key
+    await _readSecretKeyFromJwkJson(secretJwkJson);
+    // no exception raised, write the jwk json into storage
+    await secureStorage.write(key: _secretKeyKey, value: secretJwkJson);
+  }
+
+
+  Future<AesGcmSecretKey> _generateSecretKey() async {
+    // cannot encrypt if not auth
+    if (Auth.instance().notAutenticated) {
+      _log.severe("decrypt: user not authenticated");
+      throw UserNotAuthenticatedException();
+    }
+    final FlutterSecureStorage secureStorage = await _secureStorage;
+    // Generate a new random AES-GCM secret key for AES-256.
+    final secretKey = await AesGcmSecretKey.generateKey(256);
+    // save into storage
+    final secretJwk = await secretKey.exportJsonWebKey();
+    // encode json the jwk
+    final secretJwkJson = jsonEncode(secretJwk);
+    // write the jwk json into storage
+    secureStorage.write(key: _secretKeyKey, value: secretJwkJson);
+    // secret key in secure storage, load it
+    return secretKey;
+  }
+
   Future<AesGcmSecretKey> _readSecretKey() async {
     // cannot encrypt if not auth
     if (Auth.instance().notAutenticated) {
@@ -143,7 +173,12 @@ class E2EE {
     final String secretJwkJson =
         (await secureStorage.read(key: _secretKeyKey))!;
     // decode the json jwk
+    return await _readSecretKeyFromJwkJson(secretJwkJson);
+  }
+
+  Future<AesGcmSecretKey> _readSecretKeyFromJwkJson(String secretJwkJson) async {
     final secretJwk = jsonDecode(secretJwkJson);
+     _log.fine("_readSecretKeyFromJwkJson: secret key alg ${secretJwk["alg"]}"); 
     // import the jwk into secret key
     return await AesGcmSecretKey.importJsonWebKey(secretJwk);
   }
