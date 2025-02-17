@@ -91,7 +91,8 @@ class FlutterHeyteacherUtilsLocalizationsEn extends FlutterHeyteacherUtilsLocali
       {
         'cadence': 'Cadence Device',
         'heartRate': 'Heart Rate Device',
-        'other': 'Unknow',
+        'cyclingPower': 'Power Meter',
+        'other': 'Unknown',
       },
     );
     return '$_temp0';
@@ -121,4 +122,22 @@ class FlutterHeyteacherUtilsLocalizationsEn extends FlutterHeyteacherUtilsLocali
   String deviceIsNotBleTypesDevice(Object bleTypes) {
     return 'device is not $bleTypes device';
   }
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get areYouSureToConfirmTheAction => 'Are you sure to confirm the action?';
+
+  @override
+  String get encryptionPassphraseIsEmptySetIt => 'Encryption Passphrase is empty, set it';
+
+  @override
+  String get missingEncryptionSecretKeyImportIt => 'Missing Encryption Secret Key, import it';
+
+  @override
+  String get errorOnEncryptionCheckPassphrase => 'Error on encryption, check the passphrase';
+
+  @override
+  String get errorOnDecryptionCheckPassphrase => 'Error on decryption, check the passphrase';
 }

@@ -200,7 +200,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @bleTypeDevice.
   ///
   /// In en, this message translates to:
-  /// **'{bleType, select, cadence{Cadence Device} heartRate{Heart Rate Device} other{Unknow}}'**
+  /// **'{bleType, select, cadence{Cadence Device} heartRate{Heart Rate Device} cyclingPower{Power Meter} other{Unknown}}'**
   String bleTypeDevice(String bleType);
 
   /// No description provided for @bluetoothAdapterStateIs.
@@ -220,6 +220,42 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'device is not {bleTypes} device'**
   String deviceIsNotBleTypesDevice(Object bleTypes);
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @areYouSureToConfirmTheAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure to confirm the action?'**
+  String get areYouSureToConfirmTheAction;
+
+  /// No description provided for @encryptionPassphraseIsEmptySetIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Encryption Passphrase is empty, set it'**
+  String get encryptionPassphraseIsEmptySetIt;
+
+  /// No description provided for @missingEncryptionSecretKeyImportIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing Encryption Secret Key, import it'**
+  String get missingEncryptionSecretKeyImportIt;
+
+  /// No description provided for @errorOnEncryptionCheckPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Error on encryption, check the passphrase'**
+  String get errorOnEncryptionCheckPassphrase;
+
+  /// No description provided for @errorOnDecryptionCheckPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Error on decryption, check the passphrase'**
+  String get errorOnDecryptionCheckPassphrase;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {

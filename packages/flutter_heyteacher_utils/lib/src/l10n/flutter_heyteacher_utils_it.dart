@@ -91,6 +91,7 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
       {
         'cadence': 'Contapedalate',
         'heartRate': 'Cardiofrequenzimetro',
+        'cyclingPower': 'Misuratore Potenza',
         'other': 'Sconosciuto',
       },
     );
@@ -122,4 +123,22 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
   String deviceIsNotBleTypesDevice(Object bleTypes) {
     return 'il device non è un $bleTypes device';
   }
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get areYouSureToConfirmTheAction => 'Sei sicuro di confermare l\'azione?';
+
+  @override
+  String get encryptionPassphraseIsEmptySetIt => 'La Password di Criptazione non è valorizzata, impostala';
+
+  @override
+  String get missingEncryptionSecretKeyImportIt => 'La Chiave Secreta di Criptazione non presente, importala';
+
+  @override
+  String get errorOnEncryptionCheckPassphrase => 'Errore durante la criptazione, controlla la password di criptazione';
+
+  @override
+  String get errorOnDecryptionCheckPassphrase => 'Errore durante la decriptazione, controlla la password di criptazione';
 }

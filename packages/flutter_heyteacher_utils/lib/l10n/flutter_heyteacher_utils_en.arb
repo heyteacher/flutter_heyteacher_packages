@@ -42,7 +42,7 @@
   "@rpm": {},
   "maxBpm": "Max BPM",
   "@maxBpm": {},
-  "bleTypeDevice": "{bleType, select, cadence{Cadence Device} heartRate{Heart Rate Device} other{Unknow}}",
+  "bleTypeDevice": "{bleType, select, cadence{Cadence Device} heartRate{Heart Rate Device} cyclingPower{Power Meter} other{Unknown}}",
   "@bleTypeDevice": {
     "placeholders": {
       "bleType": {}
@@ -61,5 +61,18 @@
     "placeholders": {
       "bleTypes": {}
     }
-  }
+  },
+  "confirm": "Confirm",
+  "@confirm": {},
+  "areYouSureToConfirmTheAction": "Are you sure to confirm the action?",
+  "@areYouSureToConfirmTheAction": {},
+  "encryptionPassphraseIsEmptySetIt": "Encryption Passphrase is empty, set it",
+  "@encryptionPassphraseIsEmptySetIt": {},
+  "missingEncryptionSecretKeyImportIt": "Missing Encryption Secret Key, import it",
+  "@missingEncryptionSecretKeyImportIt": {},
+  "errorOnEncryptionCheckPassphrase": "Error on encryption, check the passphrase",
+  "@errorOnEncryptionCheckPassphrase": {},
+  "errorOnDecryptionCheckPassphrase": "Error on decryption, check the passphrase",
+  "@errorOnDecryptionCheckPassphrase": {}
+
 }

@@ -11,7 +11,6 @@
     "gender": "genere",
     "genderValue": "{gender, select, male{Uomo} female{Donna} other{Altro}}",
     "trainingZone": "Zone Allenamento",
-    "@trainingZone": {},
     "trainingZoneValue": "{trainingZone, select, z0{Z0 Riposo} z1{Z1 Riscaldamento} z2{Z2 Brucia Grassi} z3{Z3 Aerobico} z4{Z4 Anaerobico} z5{Z5 V02 Max} z6{Z6 Morte} other{}}",
     "@trainingZoneValue": {
         "placeholders": {
@@ -23,19 +22,15 @@
     "maxBpm": "Max BPM",
     "rpm": "RPM",
     "maxRpm": "Max RPM",
-    "bleTypeDevice": "{bleType, select, cadence{Contapedalate} heartRate{Cardiofrequenzimetro} other{Sconosciuto}}",
-    "@bleTypeDevice": {
-        "placeholders": {
-            "bleType": {}
-        }
-    },
+    "bleTypeDevice": "{bleType, select, cadence{Contapedalate} heartRate{Cardiofrequenzimetro}  cyclingPower{Misuratore Potenza}  other{Sconosciuto}}",
     "bluetoothAdapterStateIs": "Lo stato del Bluetooth è ",
-    "@bluetoothAdapterStateIs": {},
     "bluetoothAdapterState": "{bluetoothAdapterState, select, unknown{Sconosciuto} unavailable{Non Disponibile} unauthorized{Non Autorizzato} turningOn{In Accensione} on{Attivo} turningOff{In Spegnimento} off{Spento}other{Sconosciuto}}",
-    "@bluetoothAdapterState": {
-        "placeholders": {
-            "bluetoothAdapterState": {}
-        }
-    },
-    "deviceIsNotBleTypesDevice": "il device non è un {bleTypes} device"
+    "deviceIsNotBleTypesDevice": "il device non è un {bleTypes} device",
+    "confirm": "Confirm",
+    "areYouSureToConfirmTheAction": "Sei sicuro di confermare l'azione?",
+    "encryptionPassphraseIsEmptySetIt": "La Password di Criptazione non è valorizzata, impostala",
+    "missingEncryptionSecretKeyImportIt": "La Chiave Secreta di Criptazione non presente, importala",
+    "errorOnEncryptionCheckPassphrase": "Errore durante la criptazione, controlla la password di criptazione",
+    "errorOnDecryptionCheckPassphrase": "Errore durante la decriptazione, controlla la password di criptazione"
+  
 }
