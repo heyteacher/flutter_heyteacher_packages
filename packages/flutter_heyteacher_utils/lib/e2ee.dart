@@ -98,7 +98,7 @@ class E2EE {
     FlutterSecureStorage secureStorage = await _secureStorage;
 
     // raise exception if key not found in secure storage
-    if (!await secureStorage.containsKey(key: _secretKeyKey)) {
+    if (secretKey == null && !await secureStorage.containsKey(key: _secretKeyKey)) {
       _log.severe("decrypt: missing secret key");
       throw MissingEncryptionSecretKeyException();
     }
