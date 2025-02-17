@@ -344,7 +344,7 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   Query<LightDataType> query(
-      {bool applyOrderBy = false, bool applyFilterBy = true}) {
+      {bool applyOrderBy = false, bool applyFilterBy = true, int? limit}) {
     Query<LightDataType> retQuery = _collectionReference;
     // apply filter
     if (applyFilterBy && storeFilter != null) {
@@ -358,6 +358,10 @@ abstract class Store<LightDataType extends FirestoreData,
         retQuery = retQuery.orderBy(orderbyField.key,
             descending: orderbyField.value == Order.desc);
       }
+    }
+    // apply limit
+    if (limit != null && limit > 0) {
+      retQuery = retQuery.limit(limit);
     }
     return retQuery;
   }
@@ -377,7 +381,7 @@ abstract class Store<LightDataType extends FirestoreData,
     return !await empty();
   }
 
-  Future<Iterable<LightDataType>> list() async {
+  Future<Iterable<LightDataType>> list({int? limit}) async {
     _log.fine("list($_collectionPathLog,orderByFields: $orderByFields)");
     _checkAuthenticated();
     return (await query(applyOrderBy: true).get()).docs.map((e) => e.data());
