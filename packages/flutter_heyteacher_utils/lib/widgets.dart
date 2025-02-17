@@ -38,7 +38,9 @@ Future<void> showDialogGenerics<T>(
   final log = Logger("dialogBuilder");
 
   title = title ?? FlutterHeyteacherUtilsLocalizations.of(context)!.confirm;
-  confirmQuestion = confirmQuestion ??  FlutterHeyteacherUtilsLocalizations.of(context)!.areYouSureToConfirmTheAction;
+  confirmQuestion = confirmQuestion ??
+      FlutterHeyteacherUtilsLocalizations.of(context)!
+          .areYouSureToConfirmTheAction;
   final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -66,23 +68,23 @@ Future<void> showDialogGenerics<T>(
       });
   if (confirm != null) {
     if (confirm) {
-    String? message;
-    bool error = false;
-    try {
-      message = await confirmCallback(param);
-    } catch (e, s) {
-      error = true;
-      message = e.toString();
-      log.severe("${confirmCallback.toString()}: error", e, s);
-      rethrow;
-    } finally {
-      if (context.mounted && message != null) {
-        showSnackBar(context: context, message: message, error: error);
+      String? message;
+      bool error = false;
+      try {
+        message = await confirmCallback(param);
+      } catch (e, s) {
+        error = true;
+        message = e.toString();
+        log.severe("${confirmCallback.toString()}: error", e, s);
+        rethrow;
+      } finally {
+        if (context.mounted && message != null) {
+          showSnackBar(context: context, message: message, error: error);
+        }
       }
+    } else {
+      if (cancelCallback != null) cancelCallback(param);
     }
-  } else {
-    if (cancelCallback != null) cancelCallback(param);
-  } 
   }
 }
 
@@ -111,57 +113,58 @@ class ErrorView extends StatelessWidget {
 
   @override
   Widget build(context) => Scaffold(
-    appBar: AppBar(),
-    body: error == null ||
-            (error is FirebaseException &&
-                (error as FirebaseException).code == "permission-denied")
-        ? Column(children: [
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                    textAlign: TextAlign.center,
-                    FlutterHeyteacherUtilsLocalizations.of(context)!
-                        .userNotAutenticated,
-                    style: _errorStyle(context)),
-              ),
-            ),
-            Expanded(
-              child: Align(
-                  alignment: Alignment.topCenter,
-                  child: IconButton(
-                      key: ValueKey("ic_login_logout"),
-                      icon: Icon(Icons.login,
-                          size: Theme.of(context)
-                              .textTheme
-                              .displayMedium!
-                              .fontSize),
-                      color: Theme.of(context).iconTheme.color,
-                      onPressed: () async {
-                        GoRouter.of(context).pushNamed("auth-sign-in");
-                      })),
-            ),
-          ])
-        : Column(
-            children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                      FlutterHeyteacherUtilsLocalizations.of(context)!
-                          .errorOnRetrieveData,
-                      style: _errorStyle(context)),
+        appBar: AppBar(),
+        body: error == null ||
+                (error is FirebaseException &&
+                    (error as FirebaseException).code == "permission-denied")
+            ? Column(children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                        textAlign: TextAlign.center,
+                        FlutterHeyteacherUtilsLocalizations.of(context)!
+                            .userNotAutenticated,
+                        style: _errorStyle(context)),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(error.toString(), style: _errorStyle(context)),
+                Expanded(
+                  child: Align(
+                      alignment: Alignment.topCenter,
+                      child: IconButton(
+                          key: ValueKey("ic_login_logout"),
+                          icon: Icon(Icons.login,
+                              size: Theme.of(context)
+                                  .textTheme
+                                  .displayMedium!
+                                  .fontSize),
+                          color: Theme.of(context).iconTheme.color,
+                          onPressed: () async {
+                            GoRouter.of(context).pushNamed("auth-sign-in");
+                          })),
                 ),
+              ])
+            : Column(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                          FlutterHeyteacherUtilsLocalizations.of(context)!
+                              .errorOnRetrieveData,
+                          style: _errorStyle(context)),
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child:
+                          Text(error.toString(), style: _errorStyle(context)),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-  );
+      );
 
   TextStyle _errorStyle(context) => Theme.of(context)
       .textTheme
