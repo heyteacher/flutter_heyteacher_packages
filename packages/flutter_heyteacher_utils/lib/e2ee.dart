@@ -19,6 +19,8 @@ class E2EE {
 
   String get _secretKeyKey => "${Auth.instance().uid!}_secretKey";
 
+  Future<bool> get secretKeyStored async => (await _secureStorage).containsKey(key: _secretKeyKey); 
+
   // singleton
   static E2EE? _instance;
   static E2EE get instance => _instance ??= E2EE._();
