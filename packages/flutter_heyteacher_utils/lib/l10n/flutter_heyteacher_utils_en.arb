@@ -70,9 +70,9 @@
   "@encryptionPassphraseIsEmptySetIt": {},
   "missingEncryptionSecretKeyImportIt": "Missing Encryption Secret Key, import it",
   "@missingEncryptionSecretKeyImportIt": {},
-  "errorOnEncryptionCheckPassphrase": "Error on encryption, check the passphrase",
+  "errorOnEncryptionCheckPassphrase": "Error on encryption, check the Encryption Passphrase",
   "@errorOnEncryptionCheckPassphrase": {},
-  "errorOnDecryptionCheckPassphrase": "Error on decryption, check the passphrase",
+  "errorOnDecryptionCheckPassphrase": "Error on decryption, check the Encryption Passphrase",
   "@errorOnDecryptionCheckPassphrase": {}
 
 }

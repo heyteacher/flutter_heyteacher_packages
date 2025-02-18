@@ -125,7 +125,7 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
   }
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'Conferma';
 
   @override
   String get areYouSureToConfirmTheAction => 'Sei sicuro di confermare l\'azione?';
@@ -137,8 +137,8 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
   String get missingEncryptionSecretKeyImportIt => 'La Chiave Secreta di Criptazione non presente, importala';
 
   @override
-  String get errorOnEncryptionCheckPassphrase => 'Errore durante la criptazione, controlla la password di criptazione';
+  String get errorOnEncryptionCheckPassphrase => 'Errore durante la criptazione, controlla la Password di Criptazione';
 
   @override
-  String get errorOnDecryptionCheckPassphrase => 'Errore durante la decriptazione, controlla la password di criptazione';
+  String get errorOnDecryptionCheckPassphrase => 'Errore durante la decriptazione, controlla la Password di Criptazione';
 }

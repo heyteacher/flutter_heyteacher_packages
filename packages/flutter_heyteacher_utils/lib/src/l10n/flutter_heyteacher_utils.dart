@@ -248,13 +248,13 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @errorOnEncryptionCheckPassphrase.
   ///
   /// In en, this message translates to:
-  /// **'Error on encryption, check the passphrase'**
+  /// **'Error on encryption, check the Encryption Passphrase'**
   String get errorOnEncryptionCheckPassphrase;
 
   /// No description provided for @errorOnDecryptionCheckPassphrase.
   ///
   /// In en, this message translates to:
-  /// **'Error on decryption, check the passphrase'**
+  /// **'Error on decryption, check the Encryption Passphrase'**
   String get errorOnDecryptionCheckPassphrase;
 }
 

@@ -136,8 +136,8 @@ class FlutterHeyteacherUtilsLocalizationsEn extends FlutterHeyteacherUtilsLocali
   String get missingEncryptionSecretKeyImportIt => 'Missing Encryption Secret Key, import it';
 
   @override
-  String get errorOnEncryptionCheckPassphrase => 'Error on encryption, check the passphrase';
+  String get errorOnEncryptionCheckPassphrase => 'Error on encryption, check the Encryption Passphrase';
 
   @override
-  String get errorOnDecryptionCheckPassphrase => 'Error on decryption, check the passphrase';
+  String get errorOnDecryptionCheckPassphrase => 'Error on decryption, check the Encryption Passphrase';
 }

@@ -26,11 +26,11 @@
     "bluetoothAdapterStateIs": "Lo stato del Bluetooth è ",
     "bluetoothAdapterState": "{bluetoothAdapterState, select, unknown{Sconosciuto} unavailable{Non Disponibile} unauthorized{Non Autorizzato} turningOn{In Accensione} on{Attivo} turningOff{In Spegnimento} off{Spento}other{Sconosciuto}}",
     "deviceIsNotBleTypesDevice": "il device non è un {bleTypes} device",
-    "confirm": "Confirm",
+    "confirm": "Conferma",
     "areYouSureToConfirmTheAction": "Sei sicuro di confermare l'azione?",
     "encryptionPassphraseIsEmptySetIt": "La Password di Criptazione non è valorizzata, impostala",
     "missingEncryptionSecretKeyImportIt": "La Chiave Secreta di Criptazione non presente, importala",
-    "errorOnEncryptionCheckPassphrase": "Errore durante la criptazione, controlla la password di criptazione",
-    "errorOnDecryptionCheckPassphrase": "Errore durante la decriptazione, controlla la password di criptazione"
+    "errorOnEncryptionCheckPassphrase": "Errore durante la criptazione, controlla la Password di Criptazione",
+    "errorOnDecryptionCheckPassphrase": "Errore durante la decriptazione, controlla la Password di Criptazione"
   
 }
