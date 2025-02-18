@@ -30,11 +30,11 @@ void showSnackBar(
           )
         : null;
 
-Future<void> showDialogGenerics<T>(
+Future<void> showConfirmDialog<ObjectParamType>(
     {required BuildContext context,
-    required Future<String?> Function(T?) confirmCallback,
-    Future<String?> Function(T?)? cancelCallback,
-    T? param,
+    required Future<String?> Function(ObjectParamType?) confirmCallback,
+    Future<String?> Function(ObjectParamType?)? cancelCallback,
+    ObjectParamType? param,
     String? title,
     String? confirmQuestion}) async {
   final log = Logger("dialogBuilder");
@@ -90,8 +90,8 @@ Future<void> showDialogGenerics<T>(
   }
 }
 
-class ProgressIndicatorWiew extends StatelessWidget {
-  const ProgressIndicatorWiew({
+class ProgressIndicatorView extends StatelessWidget {
+  const ProgressIndicatorView({
     super.key,
   });
 

@@ -130,7 +130,7 @@ class _BleOnViewState extends State<BleOnView> {
               ),
             )
           : InkWell(
-              child: ProgressIndicatorWiew(),
+              child: ProgressIndicatorView(),
               onTap: () => BleModelFactory.stopScan(_refresh));
 
   List<Widget> _buildScanResultTiles(BuildContext context) =>
