@@ -133,8 +133,7 @@ class E2EE {
   Future<String?> getAAD() async {
     // cannot encrypt if not auth
     if (Auth.instance().notAutenticated) {
-      _log.severe("getAAD: user not authenticated");
-      throw UserNotAuthenticatedException();
+      return null;
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
     return secureStorage.read(key: _aadKey);
