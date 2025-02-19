@@ -122,8 +122,8 @@ class _BleOnViewState extends State<BleOnView> {
               // when is scanning for another ble type, disable button disable
               backgroundColor: BleModelFactory.scanningBleType == null &&
                       !(deviceStatusData?.connected ?? false)
-                  ? Theme.of(context).iconTheme.color
-                  : Theme.of(context).disabledColor,
+                  ? bleType.color
+                  : bleType.color.withValues(alpha: 0.5),
               child: Icon(
                 bleType.icon,
                 size: 80,
@@ -464,8 +464,8 @@ class _BleDeviceConnectedListTileState
           })? deviceStatusData}) =>
       FaIcon(widget.bleModel.bleType.icon,
           color: deviceStatusData?.connected ?? false
-              ? Theme.of(context).iconTheme.color
-              : Theme.of(context).disabledColor);
+              ? widget.bleModel.bleType.color
+              : widget.bleModel.bleType.color.withValues(alpha: 0.5));
 
   Text _buildTitle(
           {required BuildContext context,

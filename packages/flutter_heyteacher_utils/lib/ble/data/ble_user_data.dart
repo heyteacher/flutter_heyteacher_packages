@@ -93,18 +93,21 @@ class BleUserData extends UserData {
 enum BleType {
   heartRate(
       icon: FontAwesomeIcons.heartPulse,
+      color: Colors.redAccent,
       firestoreFieldId: "heartRateDeviceId",
       firestoreFieldName: "heartRateDeviceName",
       uuidService: "180d",
       uuidCharacteristic: "2a37"),
   cyclingPower(
       icon: Icons.electric_bolt,
+      color: Colors.yellowAccent,
       firestoreFieldId: "cyclingPowerDeviceId",
       firestoreFieldName: "cyclingPowerDeviceName",
       uuidService: "1818",
       uuidCharacteristic: "2a63"),
   cadence(
       icon: Icons.change_circle,
+      color:Colors.blueAccent,
       firestoreFieldId: "cadenceDeviceId",
       firestoreFieldName: "cadenceDeviceName",
       uuidService: "1816",
@@ -112,11 +115,13 @@ enum BleType {
 
   const BleType(
       {required this.icon,
+      required this.color,
       required this.firestoreFieldId,
       required this.firestoreFieldName,
       required this.uuidService,
       required this.uuidCharacteristic});
   final IconData icon;
+  final Color color;
   final String firestoreFieldId;
   final String firestoreFieldName;
   final String uuidService;
