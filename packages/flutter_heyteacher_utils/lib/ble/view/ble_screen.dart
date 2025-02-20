@@ -41,9 +41,13 @@ class _BleOnViewState extends State<BleOnView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: SafeArea(
+         appBar: AppBar(
+          title: Text(
+              FlutterHeyteacherUtilsLocalizations.of(context)!.bleAntPlus,
+              textAlign: TextAlign.center),
+        ),       body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(top: 100.0),
+            padding: const EdgeInsets.only(top: 80.0),
             child: Column(
               children: [
                 Expanded(
@@ -72,37 +76,30 @@ class _BleOnViewState extends State<BleOnView> {
             ),
           ),
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (BleType bleType in BleType.values)
-                StreamBuilder<({bool connected, String? id, String? name})>(
-                    stream: BleModelFactory.instance(bleType: bleType)
-                        .deviceStatusStream,
-                    builder: (context, snapshot) {
-                      return !(snapshot.data?.connected ?? false)
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                height: 80,
-                                width: 80,
-                                child: _buildStartStopScanButton(context,
-                                    bleType: bleType,
-                                    deviceStatusData: snapshot.data),
-                              ),
-                            )
-                          : SizedBox.shrink();
-                    }),
-            ],
-          ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (BleType bleType in BleType.values)
+              StreamBuilder<({bool connected, String? id, String? name})>(
+                  stream: BleModelFactory.instance(bleType: bleType)
+                      .deviceStatusStream,
+                  builder: (context, snapshot) {
+                    return !(snapshot.data?.connected ?? false)
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 64.0, left:4, right: 4),
+                            child: SizedBox(
+                              height: 80,
+                              width: 80,
+                              child: _buildStartStopScanButton(context,
+                                  bleType: bleType,
+                                  deviceStatusData: snapshot.data),
+                            ),
+                          )
+                        : SizedBox.shrink();
+                  }),
+          ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
-        // bottomNavigationBar: BottomAppBar(
-        //   shape: const CircularNotchedRectangle(),
-        //   child: Container(height: 80.0),
-        // ),
       );
 
   Widget _buildStartStopScanButton(BuildContext context,
