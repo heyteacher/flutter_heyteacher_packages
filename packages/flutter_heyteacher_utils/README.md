@@ -227,12 +227,12 @@ You can configure you `vscode` to execute the command with `build` in order to a
 ### Heart Rate Zones
 
 | Zones | Description    | Min Intensity | Max Intensity |
-|-------|----------------|---------------|---------------|
-|   Z1  | Warn Up Zone   |      50%      |      60%      |
-|   Z2  | Fat Burn Zone  |      60%      |      70%      |
-|   Z3  | Aerobic Zone   |      70%      |      80%      |
-|   Z4  | Anaerobic Zone |      80%      |      90%      |
-|   Z5  | VO2 Max Zone   |      90%      |      100%     |
+| ----- | -------------- | ------------- | ------------- |
+| Z1    | Warn Up Zone   | 50%           | 60%           |
+| Z2    | Fat Burn Zone  | 60%           | 70%           |
+| Z3    | Aerobic Zone   | 70%           | 80%           |
+| Z4    | Anaerobic Zone | 80%           | 90%           |
+| Z5    | VO2 Max Zone   | 90%           | 100%          |
 
 
 ## End 2 End Encryption (E2EE) 
@@ -242,3 +242,18 @@ compiler webwrypto library before first run of `flutter test`
 ```bash
 flutter pub run webcrypto:setup
 ```
+
+## Google Play Subcriptions
+
+### Setup
+
+* add `in_app_purchase` package
+  ```bash
+  flutter pub add in_app_purchase
+  ```
+
+* run locally then release in `Google Play`
+  ```bash
+  fl release version:patch
+  fl playstore track:alpha
+  ```
