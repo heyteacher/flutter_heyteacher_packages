@@ -73,6 +73,8 @@
   "errorOnEncryptionCheckPassphrase": "Error on encryption, check the Encryption Passphrase",
   "@errorOnEncryptionCheckPassphrase": {},
   "errorOnDecryptionCheckPassphrase": "Error on decryption, check the Encryption Passphrase",
-  "@errorOnDecryptionCheckPassphrase": {}
+  "@errorOnDecryptionCheckPassphrase": {},
+  "subscriptions": "Subscriptions",
+  "@subscriptions": {}
 
 }

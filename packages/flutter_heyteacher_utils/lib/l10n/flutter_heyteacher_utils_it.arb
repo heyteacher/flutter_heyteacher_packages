@@ -31,6 +31,6 @@
     "encryptionPassphraseIsEmptySetIt": "La Password di Criptazione non è valorizzata, impostala",
     "missingEncryptionSecretKeyImportIt": "La Chiave Secreta di Criptazione non presente, importala",
     "errorOnEncryptionCheckPassphrase": "Errore durante la criptazione, controlla la Password di Criptazione",
-    "errorOnDecryptionCheckPassphrase": "Errore durante la decriptazione, controlla la Password di Criptazione"
-  
+    "errorOnDecryptionCheckPassphrase": "Errore durante la decriptazione, controlla la Password di Criptazione",
+    "subscriptions": "Sottoscrizioni"
 }

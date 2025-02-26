@@ -141,4 +141,7 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
 
   @override
   String get errorOnDecryptionCheckPassphrase => 'Errore durante la decriptazione, controlla la Password di Criptazione';
+
+  @override
+  String get subscriptions => 'Sottoscrizioni';
 }
