@@ -1,27 +1,14 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/iap/iap_model.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:logging/logging.dart';
-// import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
-// import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 
-// import 'consumable_store.dart';
-
-// Auto-consume must be true on iOS.
-// To try without auto-consume on another platform, change `true` to `false` here.
-//final bool _kAutoConsume = Platform.isIOS || true;
-
-//const String _kConsumableId = 'consumable';
-//const String _kUpgradeId = 'upgrade';
 const String _indoorSubscriptionId = 'indoor';
 const String _outdoorIndoorSubscriptionId = 'outdoor_indoor';
 const List<String> _skipBasePlans = [
@@ -29,8 +16,6 @@ const List<String> _skipBasePlans = [
   "outdoor-indoor-montly-auto"
 ];
 const List<String> _kProductIds = <String>[
-  //_kConsumableId,
-  //_kUpgradeId,
   _indoorSubscriptionId,
   _outdoorIndoorSubscriptionId,
 ];
@@ -46,11 +31,9 @@ class _IapScreenState extends State<IapScreen> {
   final Logger _log = Logger("IapScreen");
 
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
-  late StreamSubscription<List<PurchaseDetails>> _subscription;
   List<String> _notFoundIds = <String>[];
   List<ProductDetails> _products = <ProductDetails>[];
-  List<PurchaseDetails> _purchases = <PurchaseDetails>[];
-  //List<String> _consumables = <String>[];
+
   bool _isAvailable = false;
   bool _purchasePending = false;
   bool _loading = true;
@@ -58,16 +41,6 @@ class _IapScreenState extends State<IapScreen> {
 
   @override
   void initState() {
-    final Stream<List<PurchaseDetails>> purchaseUpdated =
-        _inAppPurchase.purchaseStream;
-    _subscription =
-        purchaseUpdated.listen((List<PurchaseDetails> purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      _subscription.cancel();
-    }, onError: (Object error) {
-      // handle error here.
-    });
     initStoreInfo();
     super.initState();
   }
@@ -78,7 +51,6 @@ class _IapScreenState extends State<IapScreen> {
       setState(() {
         _isAvailable = isAvailable;
         _products = <ProductDetails>[];
-        _purchases = <PurchaseDetails>[];
         _notFoundIds = <String>[];
         //_consumables = <String>[];
         _purchasePending = false;
@@ -87,13 +59,6 @@ class _IapScreenState extends State<IapScreen> {
       return;
     }
 
-    // if (Platform.isIOS) {
-    //   final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
-    //       _inAppPurchase
-    //           .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
-    //   await iosPlatformAddition.setDelegate(ExamplePaymentQueueDelegate());
-    // }
-
     final ProductDetailsResponse productDetailResponse =
         await _inAppPurchase.queryProductDetails(_kProductIds.toSet());
     if (productDetailResponse.error != null) {
@@ -101,9 +66,7 @@ class _IapScreenState extends State<IapScreen> {
         _queryProductError = productDetailResponse.error!.message;
         _isAvailable = isAvailable;
         _products = productDetailResponse.productDetails;
-        _purchases = <PurchaseDetails>[];
         _notFoundIds = productDetailResponse.notFoundIDs;
-        //_consumables = <String>[];
         _purchasePending = false;
         _loading = false;
       });
@@ -115,36 +78,19 @@ class _IapScreenState extends State<IapScreen> {
         _queryProductError = null;
         _isAvailable = isAvailable;
         _products = productDetailResponse.productDetails;
-        _purchases = <PurchaseDetails>[];
         _notFoundIds = productDetailResponse.notFoundIDs;
-        //_consumables = <String>[];
         _purchasePending = false;
         _loading = false;
       });
       return;
     }
-
-    // final List<String> consumables = await ConsumableStore.load();
     setState(() {
       _isAvailable = isAvailable;
       _products = productDetailResponse.productDetails;
       _notFoundIds = productDetailResponse.notFoundIDs;
-      // _consumables = consumables;
       _purchasePending = false;
       _loading = false;
     });
-  }
-
-  @override
-  void dispose() {
-    // if (Platform.isIOS) {
-    //   final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
-    //       _inAppPurchase
-    //           .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
-    //   iosPlatformAddition.setDelegate(null);
-    // }
-    _subscription.cancel();
-    super.dispose();
   }
 
   @override
@@ -155,8 +101,8 @@ class _IapScreenState extends State<IapScreen> {
         ListView(
           children: <Widget>[
             _buildConnectionCheckTile(),
+            _buildPurchase(),
             _buildProductList(),
-            //_buildConsumableBox(),
             _buildRestoreButton(),
           ],
         ),
@@ -183,13 +129,20 @@ class _IapScreenState extends State<IapScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('IAP'),
-      ),
+      appBar: AppBar(),
       body: SafeArea(
         child: Stack(
           children: stack,
         ),
+      ),
+    );
+  }
+
+  Widget _buildPurchase() {
+    return FutureBuilder(
+      future: IapModel.instance.userActivePurchase(),
+      builder: (context, snapshot) => Card(
+        child: Text(snapshot.hasData ? snapshot.data! : "no purchase"),
       ),
     );
   }
@@ -247,12 +200,14 @@ class _IapScreenState extends State<IapScreen> {
     // We recommend that you use your own server to verify the purchase data.
     final Map<String, PurchaseDetails> purchases =
         Map<String, PurchaseDetails>.fromEntries(
-            _purchases.map((PurchaseDetails purchase) {
+            IapModel.instance.purchases.map((PurchaseDetails purchase) {
       if (purchase.pendingCompletePurchase) {
         _inAppPurchase.completePurchase(purchase);
       }
       return MapEntry<String, PurchaseDetails>(purchase.productID, purchase);
     }));
+
+    //IapModel.instance.availableSubscriptionsByUser();
 
     productList.addAll(_products
         .whereNot((productDetails) => _skipBasePlans.contains((productDetails
@@ -322,12 +277,6 @@ class _IapScreenState extends State<IapScreen> {
                         productDetails: productDetails,
                       );
                     }
-
-                    // if (productDetails.id == _kConsumableId) {
-                    //   _inAppPurchase.buyConsumable(
-                    //       purchaseParam: purchaseParam,
-                    //       autoConsume: _kAutoConsume);
-                    // } else {
                     _inAppPurchase.buyNonConsumable(
                         purchaseParam: purchaseParam);
                     // }
@@ -343,44 +292,6 @@ class _IapScreenState extends State<IapScreen> {
             children: <Widget>[productHeader, const Divider()] +
                 productList.nonNulls.toList()));
   }
-
-  // Card _buildConsumableBox() {
-  //   if (_loading) {
-  //     return const Card(
-  //         child: ListTile(
-  //             leading: CircularProgressIndicator(),
-  //             title: Text('Fetching consumables...')));
-  //   }
-  //   if (!_isAvailable || _notFoundIds.contains(_kConsumableId)) {
-  //     return const Card();
-  //   }
-  //   const ListTile consumableHeader =
-  //       ListTile(title: Text('Purchased consumables'));
-  //   final List<Widget> tokens = _consumables.map((String id) {
-  //     return GridTile(
-  //       child: IconButton(
-  //         icon: const Icon(
-  //           Icons.stars,
-  //           size: 42.0,
-  //           color: Colors.orange,
-  //         ),
-  //         splashColor: Colors.yellowAccent,
-  //         onPressed: null // () => consume(id),
-  //       ),
-  //     );
-  //   }).toList();
-  //   return Card(
-  //       child: Column(children: <Widget>[
-  //     consumableHeader,
-  //     const Divider(),
-  //     GridView.count(
-  //       crossAxisCount: 5,
-  //       shrinkWrap: true,
-  //       padding: const EdgeInsets.all(16.0),
-  //       children: tokens,
-  //     )
-  //   ]));
-  // }
 
   Widget _buildRestoreButton() {
     if (_loading) {
@@ -405,35 +316,10 @@ class _IapScreenState extends State<IapScreen> {
     );
   }
 
-  // Future<void> consume(String id) async {
-  //   await ConsumableStore.consume(id);
-  //   final List<String> consumables = await ConsumableStore.load();
-  //   setState(() {
-  //     _consumables = consumables;
-  //   });
-  // }
-
   void showPendingUI() {
     setState(() {
       _purchasePending = true;
     });
-  }
-
-  Future<void> deliverProduct(PurchaseDetails purchaseDetails) async {
-    // IMPORTANT!! Always verify purchase details before delivering the product.
-    // if (purchaseDetails.productID == _kConsumableId) {
-    //   // await ConsumableStore.save(purchaseDetails.purchaseID!);
-    //   // final List<String> consumables = await ConsumableStore.load();
-    //   setState(() {
-    //     _purchasePending = false;
-    //     // _consumables = consumables;
-    //   });
-    // } else {
-    setState(() {
-      _purchases.add(purchaseDetails);
-      _purchasePending = false;
-    });
-    // }
   }
 
   void handleError(IAPError error) {
@@ -441,62 +327,6 @@ class _IapScreenState extends State<IapScreen> {
       _purchasePending = false;
     });
   }
-
-  Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
-    // IMPORTANT!! Always verify a purchase before delivering the product.
-    // For the purpose of an example, we directly return true.
-    return Future<bool>.value(true);
-  }
-
-  void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
-    // handle invalid purchase here if  _verifyPurchase` failed.
-  }
-
-  Future<void> _listenToPurchaseUpdated(
-      List<PurchaseDetails> purchaseDetailsList) async {
-    for (final PurchaseDetails purchaseDetails in purchaseDetailsList) {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        showPendingUI();
-      } else {
-        if (purchaseDetails.status == PurchaseStatus.error) {
-          handleError(purchaseDetails.error!);
-        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-            purchaseDetails.status == PurchaseStatus.restored) {
-          final bool valid = await _verifyPurchase(purchaseDetails);
-          if (valid) {
-            unawaited(deliverProduct(purchaseDetails));
-          } else {
-            _handleInvalidPurchase(purchaseDetails);
-            return;
-          }
-        }
-        // if (Platform.isAndroid) {
-        //   if (!_kAutoConsume && purchaseDetails.productID == _kConsumableId) {
-        //     final InAppPurchaseAndroidPlatformAddition androidAddition =
-        //         _inAppPurchase.getPlatformAddition<
-        //             InAppPurchaseAndroidPlatformAddition>();
-        //     await androidAddition.consumePurchase(purchaseDetails);
-        //   }
-        // }
-        if (purchaseDetails.pendingCompletePurchase) {
-          await _inAppPurchase.completePurchase(purchaseDetails);
-        }
-      }
-    }
-  }
-
-  // Future<void> confirmPriceChange(BuildContext context) async {
-  //   // Price changes for Android are not handled by the application, but are
-  //   // instead handled by the Play Store. See
-  //   // https://developer.android.com/google/play/billing/price-changes for more
-  //   // information on price changes on Android.
-  //   if (Platform.isIOS) {
-  //     final InAppPurchaseStoreKitPlatformAddition iapStoreKitPlatformAddition =
-  //         _inAppPurchase
-  //             .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
-  //     await iapStoreKitPlatformAddition.showPriceConsentIfNeeded();
-  //   }
-  // }
 
   GooglePlayPurchaseDetails? _getOldSubscription(
       ProductDetails productDetails, Map<String, PurchaseDetails> purchases) {
@@ -520,21 +350,3 @@ class _IapScreenState extends State<IapScreen> {
     return oldSubscription;
   }
 }
-
-/// Example implementation of the
-/// [`SKPaymentQueueDelegate`](https://developer.apple.com/documentation/storekit/skpaymentqueuedelegate?language=objc).
-///
-/// The payment queue delegate can be implementated to provide information
-/// needed to complete transactions.
-// class ExamplePaymentQueueDelegate implements SKPaymentQueueDelegateWrapper {
-//   @override
-//   bool shouldContinueTransaction(
-//       SKPaymentTransactionWrapper transaction, SKStorefrontWrapper storefront) {
-//     return true;
-//   }
-
-//   @override
-//   bool shouldShowPriceConsent() {
-//     return false;
-//   }
-// }
