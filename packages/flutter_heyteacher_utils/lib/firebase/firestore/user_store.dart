@@ -38,12 +38,13 @@ class UserStore extends Store<UserData, UserData> {
 class UserData extends FirestoreData {
   Locale? locale;
   ThemeMode? themeMode;
+  String? purchaseToken; // readOnly
 
   @override
   String get id => Auth.instance().uid ?? "guest";
 
   @protected
-  UserData({this.locale, this.themeMode});
+  UserData({this.locale, this.themeMode, this.purchaseToken});
 
   factory UserData.fromFirestore(Map<String, dynamic> map) {
     return UserData(
@@ -52,13 +53,15 @@ class UserData extends FirestoreData {
           "light" => ThemeMode.light,
           "dark" => ThemeMode.dark,
           _ => ThemeMode.system
-        });
+        },
+        purchaseToken: map["purchaseToken"]);
   }
 
   @override
   Map<String, dynamic> toFirestore(List<String>? fields) => {
         if (fields?.contains("locale") ?? true) "locale": locale?.languageCode,
         if (fields?.contains("themeMode") ?? true) "themeMode": themeMode?.name,
+        //purchaseToken cannot be update by user
       };
 
   @override
