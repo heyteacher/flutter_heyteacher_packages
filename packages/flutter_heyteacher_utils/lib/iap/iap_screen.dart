@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/iap/iap_model.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -11,10 +9,6 @@ import 'package:logging/logging.dart';
 
 const String _indoorSubscriptionId = 'indoor';
 const String _outdoorIndoorSubscriptionId = 'outdoor_indoor';
-const List<String> _skipBasePlans = [
-  "outdoor-indoor-quarter-auto",
-  "outdoor-indoor-montly-auto"
-];
 const List<String> _kProductIds = <String>[
   _indoorSubscriptionId,
   _outdoorIndoorSubscriptionId,
@@ -207,14 +201,7 @@ class _IapScreenState extends State<IapScreen> {
       return MapEntry<String, PurchaseDetails>(purchase.productID, purchase);
     }));
 
-    //IapModel.instance.availableSubscriptionsByUser();
-
     productList.addAll(_products
-        .whereNot((productDetails) => _skipBasePlans.contains((productDetails
-                as GooglePlayProductDetails)
-            .productDetails
-            .subscriptionOfferDetails?[productDetails.subscriptionIndex ?? 0]
-            .basePlanId))
         .map(
       (ProductDetails productDetails) {
         final PurchaseDetails? previousPurchase = purchases[productDetails.id];
