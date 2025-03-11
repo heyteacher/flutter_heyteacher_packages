@@ -143,4 +143,73 @@ class FlutterHeyteacherUtilsLocalizationsEn extends FlutterHeyteacherUtilsLocali
 
   @override
   String get subscriptions => 'Subscriptions';
+
+  @override
+  String get yourPlan => 'Your plan';
+
+  @override
+  String get noPlan => 'No plan';
+
+  @override
+  String get noActivePlan => 'No active plan';
+
+  @override
+  String get withoutRenew => 'Without renew';
+
+  @override
+  String get autoRenew => 'Auto renew';
+
+  @override
+  String get offer => 'Offer';
+
+  @override
+  String expiryDateTime(DateTime date, DateTime time) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+    final intl.DateFormat timeDateFormat = intl.DateFormat.Hm(localeName);
+    final String timeString = timeDateFormat.format(time);
+
+    return 'Expiry Time: $dateString $timeString';
+  }
+
+  @override
+  String periodDuration(String periodDuration) {
+    String _temp0 = intl.Intl.selectLogic(
+      periodDuration,
+      {
+        'weekly': 'Weekly',
+        'every2Weeks': 'Every 2 weeks',
+        'every3Weeks': 'Every 3 weeks',
+        'every4Weeks': 'Every 4 weeks',
+        'monthly': 'Monthly',
+        'every2Months': 'Every 2 month',
+        'every3Months': 'Quarterly',
+        'every4Months': 'Every 4 months',
+        'every6Months': 'Half yearly',
+        'every8Months': 'Every 8 months',
+        'yearly': 'Yearly',
+        'other': 'Unknow',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionPurchaseState(String subscriptionPurchaseState) {
+    String _temp0 = intl.Intl.selectLogic(
+      subscriptionPurchaseState,
+      {
+        'pending': 'Pending',
+        'active': 'Active',
+        'paused': 'Paused',
+        'inGracePeriod': 'In grace period',
+        'onHold': 'On hold',
+        'canceled': 'Cancelled',
+        'expired': 'Expired',
+        'pendingPurchaseCanceled': 'Pending purchase cancelled',
+        'other': 'Unspecified',
+      },
+    );
+    return '$_temp0';
+  }
 }

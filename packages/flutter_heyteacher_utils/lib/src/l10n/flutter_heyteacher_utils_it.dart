@@ -134,7 +134,7 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
   String get encryptionPassphraseIsEmptySetIt => 'La Password di Criptazione non è valorizzata, impostala';
 
   @override
-  String get missingEncryptionSecretKeyImportIt => 'La Chiave Secreta di Criptazione non presente, importala';
+  String get missingEncryptionSecretKeyImportIt => 'La Chiave Secreta di Criptazione no n presente, importala';
 
   @override
   String get errorOnEncryptionCheckPassphrase => 'Errore durante la criptazione, controlla la Password di Criptazione';
@@ -143,5 +143,74 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
   String get errorOnDecryptionCheckPassphrase => 'Errore durante la decriptazione, controlla la Password di Criptazione';
 
   @override
-  String get subscriptions => 'Sottoscrizioni';
+  String get subscriptions => 'Abbonamenti';
+
+  @override
+  String get yourPlan => 'Il tuo piano';
+
+  @override
+  String get noPlan => 'Nessun piano';
+
+  @override
+  String get noActivePlan => 'Nessun piano attivo';
+
+  @override
+  String get withoutRenew => 'Senza rinnovo';
+
+  @override
+  String get autoRenew => 'Rinnovo automatico';
+
+  @override
+  String get offer => 'Offerta';
+
+  @override
+  String expiryDateTime(DateTime date, DateTime time) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.yMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+    final intl.DateFormat timeDateFormat = intl.DateFormat.Hm(localeName);
+    final String timeString = timeDateFormat.format(time);
+
+    return 'Scadenza: $dateString $timeString';
+  }
+
+  @override
+  String periodDuration(String periodDuration) {
+    String _temp0 = intl.Intl.selectLogic(
+      periodDuration,
+      {
+        'weekly': 'Settimanale',
+        'every2Weeks': 'Bisettimanale',
+        'every3Weeks': 'Ogni 3 settimane',
+        'every4Weeks': 'Ogni 4 settimane',
+        'monthly': 'Mensile',
+        'every2Months': 'Bimensile',
+        'every3Months': 'Trimestrale',
+        'every4Months': 'Quadrimestrale',
+        'every6Months': 'Semestrale',
+        'every8Months': 'Ogni 8 mesi',
+        'yearly': 'Annuale',
+        'other': 'Sconosciuto',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subscriptionPurchaseState(String subscriptionPurchaseState) {
+    String _temp0 = intl.Intl.selectLogic(
+      subscriptionPurchaseState,
+      {
+        'pending': 'In attesa',
+        'active': 'Attivo',
+        'paused': 'In pausa',
+        'inGracePeriod': 'Proroga',
+        'onHold': 'In sospeso',
+        'canceled': 'Cancellato',
+        'expired': 'Scaduto',
+        'pendingPurchaseCanceled': 'Acquisto pendente cancellato',
+        'other': 'Non specificato',
+      },
+    );
+    return '$_temp0';
+  }
 }

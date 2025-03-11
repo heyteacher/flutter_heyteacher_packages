@@ -29,8 +29,17 @@
     "confirm": "Conferma",
     "areYouSureToConfirmTheAction": "Sei sicuro di confermare l'azione?",
     "encryptionPassphraseIsEmptySetIt": "La Password di Criptazione non è valorizzata, impostala",
-    "missingEncryptionSecretKeyImportIt": "La Chiave Secreta di Criptazione non presente, importala",
+    "missingEncryptionSecretKeyImportIt": "La Chiave Secreta di Criptazione no n presente, importala",
     "errorOnEncryptionCheckPassphrase": "Errore durante la criptazione, controlla la Password di Criptazione",
     "errorOnDecryptionCheckPassphrase": "Errore durante la decriptazione, controlla la Password di Criptazione",
-    "subscriptions": "Sottoscrizioni"
+    "subscriptions": "Abbonamenti",
+    "yourPlan": "Il tuo piano",
+    "expiryDateTime": "Scadenza: {date} {time}",
+    "noPlan": "Nessun piano",
+    "noActivePlan": "Nessun piano attivo",
+    "withoutRenew": "Senza rinnovo",
+    "autoRenew": "Rinnovo automatico",
+    "offer": "Offerta",
+    "periodDuration": "{periodDuration, select,  weekly{Settimanale} every2Weeks{Bisettimanale} every3Weeks{Ogni 3 settimane} every4Weeks{Ogni 4 settimane} monthly{Mensile} every2Months{Bimensile} every3Months{Trimestrale} every4Months{Quadrimestrale} every6Months{Semestrale} every8Months{Ogni 8 mesi} yearly{Annuale} other{Sconosciuto}}",
+    "subscriptionPurchaseState": "{subscriptionPurchaseState, select, pending{In attesa} active{Attivo} paused{In pausa} inGracePeriod{Proroga} onHold{In sospeso} canceled{Cancellato} expired{Scaduto} pendingPurchaseCanceled{Acquisto pendente cancellato}  other{Non specificato}}"
 }

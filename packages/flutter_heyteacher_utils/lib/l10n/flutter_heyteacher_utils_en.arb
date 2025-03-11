@@ -75,6 +75,42 @@
   "errorOnDecryptionCheckPassphrase": "Error on decryption, check the Encryption Passphrase",
   "@errorOnDecryptionCheckPassphrase": {},
   "subscriptions": "Subscriptions",
-  "@subscriptions": {}
-
+  "@subscriptions": {},
+  "yourPlan": "Your plan",
+  "@yourPlan": {},
+  "noPlan": "No plan",
+  "@noPlan": {},
+  "noActivePlan": "No active plan",
+  "@noActivePlan": {},
+  "withoutRenew": "Without renew",
+  "@withoutRenew": {},
+  "autoRenew": "Auto renew",
+  "@autoRenew": {},
+  "offer": "Offer",
+  "@offer": {},
+  "expiryDateTime": "Expiry Time: {date} {time}",
+  "@expiryDateTime": {
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMd"
+      },
+      "time": {
+        "type": "DateTime",
+        "format": "Hm"
+      }
+    }
+  },
+  "periodDuration": "{periodDuration, select,  weekly{Weekly} every2Weeks{Every 2 weeks} every3Weeks{Every 3 weeks} every4Weeks{Every 4 weeks} monthly{Monthly} every2Months{Every 2 month} every3Months{Quarterly} every4Months{Every 4 months} every6Months{Half yearly} every8Months{Every 8 months} yearly{Yearly} other{Unknow}}",
+  "@periodDuration": {
+    "placeholders": {
+      "periodDuration": {}
+    }
+  },
+  "subscriptionPurchaseState": "{subscriptionPurchaseState, select,  pending{Pending} active{Active} paused{Paused} inGracePeriod{In grace period} onHold{On hold} canceled{Cancelled} expired{Expired} pendingPurchaseCanceled{Pending purchase cancelled}  other{Unspecified}}",
+  "@subscriptionPurchaseState": {
+    "placeholders": {
+      "subscriptionPurchaseState": {}
+    }
+  }
 }

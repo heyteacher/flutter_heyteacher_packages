@@ -262,6 +262,60 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Subscriptions'**
   String get subscriptions;
+
+  /// No description provided for @yourPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan'**
+  String get yourPlan;
+
+  /// No description provided for @noPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'No plan'**
+  String get noPlan;
+
+  /// No description provided for @noActivePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'No active plan'**
+  String get noActivePlan;
+
+  /// No description provided for @withoutRenew.
+  ///
+  /// In en, this message translates to:
+  /// **'Without renew'**
+  String get withoutRenew;
+
+  /// No description provided for @autoRenew.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto renew'**
+  String get autoRenew;
+
+  /// No description provided for @offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer'**
+  String get offer;
+
+  /// No description provided for @expiryDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry Time: {date} {time}'**
+  String expiryDateTime(DateTime date, DateTime time);
+
+  /// No description provided for @periodDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'{periodDuration, select,  weekly{Weekly} every2Weeks{Every 2 weeks} every3Weeks{Every 3 weeks} every4Weeks{Every 4 weeks} monthly{Monthly} every2Months{Every 2 month} every3Months{Quarterly} every4Months{Every 4 months} every6Months{Half yearly} every8Months{Every 8 months} yearly{Yearly} other{Unknow}}'**
+  String periodDuration(String periodDuration);
+
+  /// No description provided for @subscriptionPurchaseState.
+  ///
+  /// In en, this message translates to:
+  /// **'{subscriptionPurchaseState, select,  pending{Pending} active{Active} paused{Paused} inGracePeriod{In grace period} onHold{On hold} canceled{Cancelled} expired{Expired} pendingPurchaseCanceled{Pending purchase cancelled}  other{Unspecified}}'**
+  String subscriptionPurchaseState(String subscriptionPurchaseState);
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {
