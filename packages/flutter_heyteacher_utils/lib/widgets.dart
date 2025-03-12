@@ -38,19 +38,19 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
     Future<String?> Function(ObjectParamType?)? cancelCallback,
     ObjectParamType? param,
     String? title,
-    String? content}) async {
+    required String content}) async {
   final log = Logger("dialogBuilder");
 
-  title = title ?? FlutterHeyteacherUtilsLocalizations.of(context)!.confirm;
-  content = content ??
-      FlutterHeyteacherUtilsLocalizations.of(context)!
-          .areYouSureToConfirmTheAction;
+  //title = title ?? FlutterHeyteacherUtilsLocalizations.of(context)!.confirm;
+  // content = content ??
+  //     FlutterHeyteacherUtilsLocalizations.of(context)!
+  //         .areYouSureToConfirmTheAction;
   final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title!),
-          content: Text(content!),
+          title: title!= null? Text(title):null,
+          content: Text(content),
           actions: <Widget>[
             IconButton(
               key: ValueKey("ib_dialog_no"),
