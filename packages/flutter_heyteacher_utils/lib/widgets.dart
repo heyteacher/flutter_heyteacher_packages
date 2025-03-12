@@ -23,24 +23,26 @@ void showSnackBar(
                     : ThemeHepler.instance().greenTextColor,
                 content: Text(message,
                     style: TextStyle(
-                        color:
-                            error
-                    ? ThemeHepler.instance().theme.colorScheme.error
-                    : ThemeHepler.instance().theme.colorScheme.onPrimary))),
+                        color: error
+                            ? ThemeHepler.instance().theme.colorScheme.error
+                            : ThemeHepler.instance()
+                                .theme
+                                .colorScheme
+                                .onPrimary))),
           )
         : null;
 
-Future<void> showConfirmDialog<ObjectParamType>(
+Future<void> showConfirmCancelDialog<ObjectParamType>(
     {required BuildContext context,
-    required Future<String?> Function(ObjectParamType?) confirmCallback,
+    Future<String?> Function(ObjectParamType?)? confirmCallback,
     Future<String?> Function(ObjectParamType?)? cancelCallback,
     ObjectParamType? param,
     String? title,
-    String? confirmQuestion}) async {
+    String? content}) async {
   final log = Logger("dialogBuilder");
 
   title = title ?? FlutterHeyteacherUtilsLocalizations.of(context)!.confirm;
-  confirmQuestion = confirmQuestion ??
+  content = content ??
       FlutterHeyteacherUtilsLocalizations.of(context)!
           .areYouSureToConfirmTheAction;
   final bool? confirm = await showDialog<bool>(
@@ -48,7 +50,7 @@ Future<void> showConfirmDialog<ObjectParamType>(
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title!),
-          content: Text(confirmQuestion!),
+          content: Text(content!),
           actions: <Widget>[
             IconButton(
               key: ValueKey("ib_dialog_no"),
@@ -58,35 +60,34 @@ Future<void> showConfirmDialog<ObjectParamType>(
                 Navigator.of(context).pop(false);
               },
             ),
-            IconButton(
-              key: ValueKey("ib_dialog_yes"),
-              icon: Icon(Icons.check),
-              onPressed: () async {
-                Navigator.of(context).pop(true);
-              },
-            ),
+            if (confirmCallback != null)
+              IconButton(
+                key: ValueKey("ib_dialog_yes"),
+                icon: Icon(Icons.check),
+                onPressed: () async {
+                  Navigator.of(context).pop(true);
+                },
+              ),
           ],
         );
       });
-  if (confirm != null) {
-    if (confirm) {
-      String? message;
-      bool error = false;
-      try {
-        message = await confirmCallback(param);
-      } catch (e, s) {
-        error = true;
-        message = e.toString();
-        log.severe("${confirmCallback.toString()}: error", e, s);
-        rethrow;
-      } finally {
-        if (context.mounted && message != null) {
-          showSnackBar(context: context, message: message, error: error);
-        }
+  if (confirmCallback != null && confirm != null && confirm) {
+    String? message;
+    bool error = false;
+    try {
+      message = await confirmCallback(param);
+    } catch (e, s) {
+      error = true;
+      message = e.toString();
+      log.severe("${confirmCallback.toString()}: error", e, s);
+      rethrow;
+    } finally {
+      if (context.mounted && message != null) {
+        showSnackBar(context: context, message: message, error: error);
       }
-    } else {
-      if (cancelCallback != null) cancelCallback(param);
     }
+  } else {
+    if (cancelCallback != null) cancelCallback(param);
   }
 }
 
