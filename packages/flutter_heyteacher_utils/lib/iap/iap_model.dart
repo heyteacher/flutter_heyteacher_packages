@@ -27,10 +27,16 @@ class IapModel {
     _refreshFn = refreshFn;
   }
 
-  Stream<SubscriptionPurchaseData?> subscriptionPurchaseStream =
-      SubscriptionPurchaseStore.instance()
-          .stream
-          .map((querySnapshot) => querySnapshot.docs.firstOrNull?.data());
+  // remeber: stream must be a funtion or getter in order to reinitialize
+  // when condition changes. 
+  // In these case, stream will be initialized only when user is auth.
+  // Previously the fiels stream remain null after user login
+  Stream<SubscriptionPurchaseData?>? get subscriptionPurchaseStream =>
+      Auth.instance().autenticated
+          ? SubscriptionPurchaseStore.instance()
+              .stream
+              .map((querySnapshot) => querySnapshot.docs.firstOrNull?.data())
+          : null;
 
   static IapModel? _instance;
   static IapModel get instance => _instance ??= IapModel._();
@@ -57,14 +63,14 @@ class IapModel {
 
   Future<bool> iapIsAvailable() => _inAppPurchase.isAvailable();
 
-
   Future<SubscriptionPurchaseData?> userSubscriptionPurchase() async {
-      UserData? userData =
-          await UserStore.instance().getOrNull(Auth.instance().uid ?? "guest");
-      if (userData == null) {
-        return null;
-      }
-      return SubscriptionPurchaseStore.instance().getOrNull(userData.purchaseToken);
+    UserData? userData =
+        await UserStore.instance().getOrNull(Auth.instance().uid ?? "guest");
+    if (userData == null) {
+      return null;
+    }
+    return SubscriptionPurchaseStore.instance()
+        .getOrNull(userData.purchaseToken);
   }
 
   Future<SubscriptionsProductDetails> subscriptionsProductDetails() async {
