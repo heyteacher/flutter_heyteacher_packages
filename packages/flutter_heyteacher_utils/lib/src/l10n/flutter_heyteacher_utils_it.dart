@@ -149,7 +149,7 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
   String get yourPlan => 'Il tuo piano';
 
   @override
-  String get noPlan => 'Nessun piano';
+  String get noPlanPurchased => 'Nessun piano acquistato';
 
   @override
   String get noActivePlan => 'Nessun piano attivo';

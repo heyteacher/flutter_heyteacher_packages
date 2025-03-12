@@ -148,7 +148,7 @@ class FlutterHeyteacherUtilsLocalizationsEn extends FlutterHeyteacherUtilsLocali
   String get yourPlan => 'Your plan';
 
   @override
-  String get noPlan => 'No plan';
+  String get noPlanPurchased => 'No plan purchased';
 
   @override
   String get noActivePlan => 'No active plan';

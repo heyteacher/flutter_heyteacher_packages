@@ -35,7 +35,7 @@
     "subscriptions": "Abbonamenti",
     "yourPlan": "Il tuo piano",
     "expiryDateTime": "Scadenza: {date} {time}",
-    "noPlan": "Nessun piano",
+    "noPlanPurchased": "Nessun piano acquistato",
     "noActivePlan": "Nessun piano attivo",
     "withoutRenew": "Senza rinnovo",
     "autoRenew": "Rinnovo automatico",

@@ -269,11 +269,11 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// **'Your plan'**
   String get yourPlan;
 
-  /// No description provided for @noPlan.
+  /// No description provided for @noPlanPurchased.
   ///
   /// In en, this message translates to:
-  /// **'No plan'**
-  String get noPlan;
+  /// **'No plan purchased'**
+  String get noPlanPurchased;
 
   /// No description provided for @noActivePlan.
   ///
