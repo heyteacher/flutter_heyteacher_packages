@@ -19,7 +19,8 @@ class E2EE {
 
   String get _secretKeyKey => "${Auth.instance().uid!}_secretKey";
 
-  Future<bool> get secretKeyStored async => (await _secureStorage).containsKey(key: _secretKeyKey); 
+  Future<bool> get secretKeyStored async =>
+      (await _secureStorage).containsKey(key: _secretKeyKey);
 
   // singleton
   static E2EE? _instance;
@@ -100,7 +101,8 @@ class E2EE {
     FlutterSecureStorage secureStorage = await _secureStorage;
 
     // raise exception if key not found in secure storage
-    if (secretKey == null && !await secureStorage.containsKey(key: _secretKeyKey)) {
+    if (secretKey == null &&
+        !await secureStorage.containsKey(key: _secretKeyKey)) {
       _log.severe("decrypt: missing secret key");
       throw MissingEncryptionSecretKeyException();
     }
@@ -142,8 +144,14 @@ class E2EE {
   }
 
   Future<String> exportSecretJwkJson() async {
-    // read the secret key from secure storage
-    final secretKey = await _readSecretKey();
+    AesGcmSecretKey secretKey;
+    if (!await secretKeyStored) {
+      // if secret key isn't already generated, generate it
+      secretKey = await _generateSecretKey();
+    } else {
+      // read the secret key from secure storage
+      secretKey = await _readSecretKey();
+    }
     // save into storage
     final secretJwk = await secretKey.exportJsonWebKey();
     // encode json the jwk
@@ -262,7 +270,7 @@ class ErrorOnEncryptException {
     } else {
       return "Error on encryption, check passphrase";
     }
-  }  
+  }
 }
 
 class ErrorOnDecryptException {
@@ -274,9 +282,8 @@ class ErrorOnDecryptException {
     } else {
       return "Error on decryption, check passphrase";
     }
-  }  
+  }
 }
-
 
 class AADEmptyException implements Exception {
   @override
