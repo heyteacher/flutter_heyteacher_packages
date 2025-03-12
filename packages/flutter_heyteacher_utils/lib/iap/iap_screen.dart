@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/iap/iap_model.dart';
 import 'package:flutter_heyteacher_utils/iap/iap_plan.dart';
 import 'package:flutter_heyteacher_utils/iap/subscription_purchase_store.dart';
@@ -292,66 +294,71 @@ class SubscriptionPurchaseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: FutureBuilder<SubscriptionPurchaseData?>(
-            future: IapModel.instance.userSubscriptionPurchase(),
-            builder: (_, futureSnapshot) => StreamBuilder<
-                    SubscriptionPurchaseData?>(
-                stream: IapModel.instance.subscriptionPurchaseStream,
-                builder: (_, streamSnapshot) {
-                  final subscriptionPurchaseData =
-                      streamSnapshot.data ?? futureSnapshot.data;
-                  // snapshot.hasError
-                  // ? ErrorView(snapshot.error, snapshot.stackTrace)
-                  // :
-                  return subscriptionPurchaseData != null
-                      ? ListTile(
-                          leading: Badge(
-                              textColor: Theme.of(context).primaryColor,
-                              backgroundColor: subscriptionPurchaseData
-                                  .purchase.subscriptionPurchaseState.color,
-                              padding: EdgeInsets.all(8.0),
-                              label: Text(
-                                  FlutterHeyteacherUtilsLocalizations.of(
-                                          context)!
-                                      .subscriptionPurchaseState(
+        child: StreamBuilder<User?>(
+          stream: Auth.instance().stateChangesStream,
+          builder: (_, snapshot) {
+            return FutureBuilder<SubscriptionPurchaseData?>(
+                future: IapModel.instance.userSubscriptionPurchase(),
+                builder: (_, futureSnapshot) => StreamBuilder<
+                        SubscriptionPurchaseData?>(
+                    stream: IapModel.instance.subscriptionPurchaseStream,
+                    builder: (_, streamSnapshot) {
+                      final subscriptionPurchaseData =
+                          streamSnapshot.data ?? futureSnapshot.data;
+                      // snapshot.hasError
+                      // ? ErrorView(snapshot.error, snapshot.stackTrace)
+                      // :
+                      return subscriptionPurchaseData != null
+                          ? ListTile(
+                              leading: Badge(
+                                  textColor: Theme.of(context).primaryColor,
+                                  backgroundColor: subscriptionPurchaseData
+                                      .purchase.subscriptionPurchaseState.color,
+                                  padding: EdgeInsets.all(8.0),
+                                  label: Text(
+                                      FlutterHeyteacherUtilsLocalizations.of(
+                                              context)!
+                                          .subscriptionPurchaseState(
+                                              subscriptionPurchaseData
+                                                  .purchase
+                                                  .subscriptionPurchaseState
+                                                  .name))),
+                              title: Text(
+                                  "${FlutterHeyteacherUtilsLocalizations.of(context)!.yourPlan}:"
+                                  " ${iapPlanMap[subscriptionPurchaseData.purchase.productId]?.title}"),
+                              subtitle: Text(
+                                  FlutterHeyteacherUtilsLocalizations.of(context)!
+                                      .expiryDateTime(
                                           subscriptionPurchaseData
-                                              .purchase
-                                              .subscriptionPurchaseState
-                                              .name))),
-                          title: Text(
-                              "${FlutterHeyteacherUtilsLocalizations.of(context)!.yourPlan}:"
-                              " ${iapPlanMap[subscriptionPurchaseData.purchase.productId]?.title}"),
-                          subtitle: Text(
-                              FlutterHeyteacherUtilsLocalizations.of(context)!
-                                  .expiryDateTime(
-                                      subscriptionPurchaseData
-                                          .purchase.expiryTime
-                                          .toLocal(),
-                                      subscriptionPurchaseData
-                                          .purchase.expiryTime
-                                          .toLocal())),
-                          trailing: showGoToIap
-                              ? Icon(Icons.keyboard_arrow_right)
-                              : null,
-                          onTap: showGoToIap
-                              ? () {
-                                  GoRouter.of(context).go("/settings/iap");
-                                }
-                              : null,
-                        )
-                      : ListTile(
-                          title: Text(
-                              FlutterHeyteacherUtilsLocalizations.of(context)!
-                                  .noPlan),
-                          trailing: showGoToIap
-                              ? Icon(Icons.keyboard_arrow_right)
-                              : null,
-                          onTap: showGoToIap
-                              ? () {
-                                  GoRouter.of(context).go("/settings/iap");
-                                }
-                              : null,
-                        );
-                })));
+                                              .purchase.expiryTime
+                                              .toLocal(),
+                                          subscriptionPurchaseData
+                                              .purchase.expiryTime
+                                              .toLocal())),
+                              trailing: showGoToIap
+                                  ? Icon(Icons.keyboard_arrow_right)
+                                  : null,
+                              onTap: showGoToIap
+                                  ? () {
+                                      GoRouter.of(context).go("/settings/iap");
+                                    }
+                                  : null,
+                            )
+                          : ListTile(
+                              title: Text(
+                                  FlutterHeyteacherUtilsLocalizations.of(context)!
+                                      .noPlanPurchased),
+                              trailing: showGoToIap
+                                  ? Icon(Icons.keyboard_arrow_right)
+                                  : null,
+                              onTap: showGoToIap
+                                  ? () {
+                                      GoRouter.of(context).go("/settings/iap");
+                                    }
+                                  : null,
+                            );
+                    }));
+          }
+        ));
   }
 }
