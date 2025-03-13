@@ -49,7 +49,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: title!= null? Text(title):null,
+          title: title != null ? Text(title) : null,
           content: Text(content),
           actions: <Widget>[
             IconButton(
@@ -128,7 +128,7 @@ class ErrorView extends StatelessWidget {
                         textAlign: TextAlign.center,
                         FlutterHeyteacherUtilsLocalizations.of(context)!
                             .userNotAutenticated,
-                        style: _errorStyle(context)),
+                        style: _errorStyleContent(context)),
                   ),
                 ),
                 Expanded(
@@ -147,29 +147,17 @@ class ErrorView extends StatelessWidget {
                           })),
                 ),
               ])
-            : Column(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                          FlutterHeyteacherUtilsLocalizations.of(context)!
-                              .errorOnRetrieveData,
-                          style: _errorStyle(context)),
-                    ),
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child:
-                          Text(error.toString(), style: _errorStyle(context)),
-                    ),
-                  ),
-                ],
+            : Expanded(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(error.toString(),
+                      textAlign: TextAlign.center,
+                      style: _errorStyleContent(context)),
+                ),
               ),
       );
 
-  TextStyle _errorStyle(context) => Theme.of(context)
+  TextStyle _errorStyleContent(context) => Theme.of(context)
       .textTheme
       .headlineMedium!
       .copyWith(color: Theme.of(context).colorScheme.onError);
