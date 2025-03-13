@@ -5,6 +5,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
 import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
+import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:logging/logging.dart';
@@ -73,6 +74,11 @@ abstract class BleModel {
     _isDisconnectingStreamSubscription = null;
   }
 
+  static Future<Biometrics?> loadBiometrics() async {
+      biometrics ??= await BleModel.userData?.getBiometrics();
+      return biometrics;
+  }
+
   /// Initialize [BleType] model, loading [BleType] device and [Biometrics] from user store.
   ///
   /// if [BleType] devices found, try to connect yielding [deviceStatusStream].
@@ -88,10 +94,17 @@ abstract class BleModel {
           ? await BleUserStore.instance().get(Auth.instance().uid!)
           : null;
       // loading biometrics
-      biometrics ??= await BleModel.userData?.getBiometrics();
+      await loadBiometrics();
     } on DocumentNotFoundException {
       _log.fine("init: user not found in store");
+    } on AADEmptyException {
+      _log.fine("init: E2EE password empty");
+    } on MissingEncryptionSecretKeyException {
+      _log.fine("init: E2EE missingkey ");
+    } catch (e, s) {
+      _log.severe("init: error ", e, s);
     }
+
     ({String? id, String? name})? userDevice = userData?.devices?[bleType];
     _log.fine("init: ${bleType.name} remote user devices $userDevice");
     if (userDevice?.id?.trim() != "") {
