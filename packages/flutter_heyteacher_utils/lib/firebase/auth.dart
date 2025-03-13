@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
+import 'package:flutter_heyteacher_utils/context_helper.dart';
+import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:logging/logging.dart';
 
 class Auth {
@@ -53,4 +55,8 @@ class Auth {
 
 class UserNotAuthenticatedException {
   UserNotAuthenticatedException();
+  
+  @override
+  String toString() => FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
+                    .userNotAutenticated;
 }
