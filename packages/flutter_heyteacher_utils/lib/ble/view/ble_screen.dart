@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/ble/model/heart_rate_ble_model.dart';
+import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
@@ -41,11 +43,12 @@ class _BleOnViewState extends State<BleOnView> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-         appBar: AppBar(
+        appBar: AppBar(
           title: Text(
               FlutterHeyteacherUtilsLocalizations.of(context)!.bleAntPlus,
               textAlign: TextAlign.center),
-        ),       body: SafeArea(
+        ),
+        body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 80.0),
             child: Column(
@@ -65,7 +68,8 @@ class _BleOnViewState extends State<BleOnView> {
                         else
                           Card(
                             child: BleDeviceConnectedListTile(
-                              bleModel: BleModelFactory.instance(bleType: bleType),
+                              bleModel:
+                                  BleModelFactory.instance(bleType: bleType),
                             ),
                           ),
                       ..._buildScanResultTiles(context),
@@ -86,7 +90,8 @@ class _BleOnViewState extends State<BleOnView> {
                   builder: (context, snapshot) {
                     return !(snapshot.data?.connected ?? false)
                         ? Padding(
-                            padding: const EdgeInsets.only(top: 64.0, left:4, right: 4),
+                            padding: const EdgeInsets.only(
+                                top: 64.0, left: 4, right: 4),
                             child: SizedBox(
                               height: 80,
                               width: 80,
@@ -222,12 +227,18 @@ class _HeartRateDeviceConnectedListTileState
   }
 
   void _initBiometrics() async {
-    Biometrics? biometrics = BleModel.biometrics;
-    gender = biometrics?.gender;
-    birthDate = biometrics?.birthDate;
-    restBpm = biometrics?.restBpm;
-    _hrTrainingZones = widget.heartRateBleModel.hrTrainingZones;
-    if (mounted) setState(() {});
+    try {
+      Biometrics? biometrics = await BleModel.loadBiometrics();
+      gender = biometrics?.gender;
+      birthDate = biometrics?.birthDate;
+      restBpm = biometrics?.restBpm;
+      _hrTrainingZones = widget.heartRateBleModel.hrTrainingZones;
+      if (mounted) setState(() {});
+    } catch (e) {
+      if (mounted) {
+        showSnackBar(context: context, message: e.toString(), error: true);
+      }
+    }
   }
 
   void _updateBiometrics([VoidCallback? preUpdateCallback]) {
@@ -423,11 +434,21 @@ class BleDeviceConnectedListTile extends StatefulWidget {
 class _BleDeviceConnectedListTileState
     extends State<BleDeviceConnectedListTile> {
   void _refresh() => mounted ? setState(() {}) : null;
-
+  StreamSubscription? _authSubscriptions;
   @override
   void initState() {
     super.initState();
     widget.bleModel.init(_refresh);
+    _authSubscriptions?.cancel();
+    _authSubscriptions = Auth.instance()
+        .stateChangesStream
+        .listen((user) => widget.bleModel.init(_refresh));
+  }
+
+  @override
+  void dispose() {
+    _authSubscriptions?.cancel();
+    super.dispose();
   }
 
   @override
