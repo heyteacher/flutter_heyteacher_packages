@@ -213,4 +213,7 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
     );
     return '$_temp0';
   }
+
+  @override
+  String get manage => 'Gestisci';
 }

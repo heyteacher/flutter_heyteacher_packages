@@ -112,5 +112,7 @@
     "placeholders": {
       "subscriptionPurchaseState": {}
     }
-  }
+  },
+  "manage": "Manage",
+  "@manage": {}
 }

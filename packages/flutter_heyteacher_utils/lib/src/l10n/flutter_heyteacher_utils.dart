@@ -316,6 +316,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'{subscriptionPurchaseState, select,  pending{Pending} active{Active} paused{Paused} inGracePeriod{In grace period} onHold{On hold} canceled{Cancelled} expired{Expired} pendingPurchaseCanceled{Pending purchase cancelled}  other{Unspecified}}'**
   String subscriptionPurchaseState(String subscriptionPurchaseState);
+
+  /// No description provided for @manage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get manage;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {

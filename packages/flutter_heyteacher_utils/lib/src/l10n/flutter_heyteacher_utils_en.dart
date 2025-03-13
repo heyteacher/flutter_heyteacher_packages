@@ -212,4 +212,7 @@ class FlutterHeyteacherUtilsLocalizationsEn extends FlutterHeyteacherUtilsLocali
     );
     return '$_temp0';
   }
+
+  @override
+  String get manage => 'Manage';
 }
