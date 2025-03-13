@@ -75,8 +75,8 @@ abstract class BleModel {
   }
 
   static Future<Biometrics?> loadBiometrics() async {
-      biometrics ??= await BleModel.userData?.getBiometrics();
-      return biometrics;
+    biometrics = await BleModel.userData?.getBiometrics();
+    return biometrics;
   }
 
   /// Initialize [BleType] model, loading [BleType] device and [Biometrics] from user store.
@@ -93,8 +93,10 @@ abstract class BleModel {
       userData ??= Auth.instance().autenticated
           ? await BleUserStore.instance().get(Auth.instance().uid!)
           : null;
-      // loading biometrics
-      await loadBiometrics();
+      // loading biometrics if null and heart rate instance
+      if (biometrics == null  && bleType == BleType.heartRate) {
+        await loadBiometrics();
+      }
     } on DocumentNotFoundException {
       _log.fine("init: user not found in store");
     } on AADEmptyException {
