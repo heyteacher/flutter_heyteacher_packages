@@ -268,7 +268,7 @@ class E2EEValue {
   }
 }
 
-class ErrorOnEncryptException {
+class ErrorOnEncryptException implements Exception {
   @override
   String toString() {
     if (ContextHelper.context != null) {
@@ -280,7 +280,7 @@ class ErrorOnEncryptException {
   }
 }
 
-class ErrorOnDecryptException {
+class ErrorOnDecryptException implements Exception {
   @override
   String toString() {
     if (ContextHelper.context != null) {

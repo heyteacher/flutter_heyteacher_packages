@@ -22,9 +22,9 @@ class Auth {
     // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth and configure provider
     if (mockedFirebaseAuth == null) {
       _googleProvider = GoogleProvider(
-        clientId:
-            FirebaseRemoteConfig.instance.getString("authGoogleClientId"));
-     FirebaseUIAuth.configureProviders([_googleProvider!]);
+          clientId:
+              FirebaseRemoteConfig.instance.getString("authGoogleClientId"));
+      FirebaseUIAuth.configureProviders([_googleProvider!]);
     }
     _firebaseAuth = mockedFirebaseAuth ?? FirebaseAuth.instance;
   }
@@ -53,10 +53,11 @@ class Auth {
   Stream<User?> get stateChangesStream => _firebaseAuth.authStateChanges();
 }
 
-class UserNotAuthenticatedException {
+class UserNotAuthenticatedException implements Exception {
   UserNotAuthenticatedException();
-  
+
   @override
-  String toString() => FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
-                    .userNotAutenticated;
+  String toString() =>
+      FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
+          .userNotAutenticated;
 }

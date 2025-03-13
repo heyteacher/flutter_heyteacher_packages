@@ -796,7 +796,7 @@ abstract class Store<LightDataType extends FirestoreData,
       : throw UserNotAuthenticatedException();
 }
 
-class TooManyAggregateFieldsException {
+class TooManyAggregateFieldsException implements Exception {
   String collection;
 
   int count;
@@ -886,7 +886,7 @@ class InvalidFieldsUpdate {
   String toString() => "try to update $path with empty fields";
 }
 
-class DocumentNotFoundException {
+class DocumentNotFoundException implements Exception {
   String path;
   DocumentNotFoundException(this.path);
 
@@ -894,13 +894,13 @@ class DocumentNotFoundException {
   String toString() => "document not found at $path";
 }
 
-class InvalidFirestoreDataTypeException {
+class InvalidFirestoreDataTypeException implements Exception {
   @override
   String toString() => "type <T> cannot by 'dynamic'. "
       "Set correct type <T> calling registerFromFirestoreFactory<T>";
 }
 
-class DetailsFromFirestoreFactoryNullException {
+class DetailsFromFirestoreFactoryNullException implements Exception {
   Type lightDataType, detailsDataType;
   DetailsFromFirestoreFactoryNullException(
       this.lightDataType, this.detailsDataType);
@@ -910,7 +910,7 @@ class DetailsFromFirestoreFactoryNullException {
       "and <LightDataType> $lightDataType != <DetailsDataType> $detailsDataType";
 }
 
-class ParentDataNullException {
+class ParentDataNullException implements Exception {
   Type detailsDataType;
 
   ParentDataNullException(this.detailsDataType);
