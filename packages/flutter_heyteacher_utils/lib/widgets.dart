@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
@@ -39,25 +40,31 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
     ObjectParamType? param,
     String? title,
     required String content}) async {
-  final log = Logger("dialogBuilder");
+  final log = Logger("showConfirmCancelDialog");
 
-  //title = title ?? FlutterHeyteacherUtilsLocalizations.of(context)!.confirm;
-  // content = content ??
-  //     FlutterHeyteacherUtilsLocalizations.of(context)!
-  //         .areYouSureToConfirmTheAction;
   final bool? confirm = await showDialog<bool>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
-          title: title != null ? Text(title) : null,
-          content: Text(content),
+          title: title != null
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(textAlign: TextAlign.center, title),
+                )
+              : null,
+          content: Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Text(textAlign: TextAlign.center, content)),
           actions: <Widget>[
             IconButton(
               key: ValueKey("ib_dialog_no"),
               icon: Icon(Icons.close,
                   color: Theme.of(context).colorScheme.onError),
               onPressed: () {
-                Navigator.of(context).pop(false);
+                // // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context).pop(false);
+                });
               },
             ),
             if (confirmCallback != null)
@@ -65,7 +72,10 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
                 key: ValueKey("ib_dialog_yes"),
                 icon: Icon(Icons.check),
                 onPressed: () async {
-                  Navigator.of(context).pop(true);
+                  // // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    Navigator.of(context).pop(true);
+                  });
                 },
               ),
           ],
