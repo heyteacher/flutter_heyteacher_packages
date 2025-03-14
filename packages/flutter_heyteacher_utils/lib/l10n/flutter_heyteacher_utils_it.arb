@@ -42,5 +42,9 @@
     "offer": "Offerta",
     "periodDuration": "{periodDuration, select,  weekly{Settimanale} every2Weeks{Bisettimanale} every3Weeks{Ogni 3 settimane} every4Weeks{Ogni 4 settimane} monthly{Mensile} every2Months{Bimensile} every3Months{Trimestrale} every4Months{Quadrimestrale} every6Months{Semestrale} every8Months{Ogni 8 mesi} yearly{Annuale} other{Sconosciuto}}",
     "subscriptionPurchaseState": "{subscriptionPurchaseState, select, pending{In attesa} active{Attivo} paused{In pausa} inGracePeriod{Proroga} onHold{In sospeso} canceled{Cancellato} expired{Scaduto} pendingPurchaseCanceled{Acquisto pendente cancellato}  other{Non specificato}}",
-    "manage": "Gestisci"
+    "manage": "Gestisci",
+    "id": "Id: ",
+    "version": "Versione: ",
+    "support": "Supporto",
+    "askSupportFor": "Chiedi supporto per: "
 }

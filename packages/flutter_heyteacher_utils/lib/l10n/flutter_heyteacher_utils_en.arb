@@ -114,5 +114,13 @@
     }
   },
   "manage": "Manage",
-  "@manage": {}
+  "@manage": {},
+  "id": "Id: ",
+  "@id": {},
+  "version": "Version: ",
+  "@version": {},
+  "support": "Support",
+  "@support": {},
+  "askSupportFor": "Ask support for: ",
+  "@askSupportFor": {}
 }

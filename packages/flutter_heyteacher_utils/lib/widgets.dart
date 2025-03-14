@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
@@ -171,4 +172,40 @@ class ErrorView extends StatelessWidget {
       .textTheme
       .headlineMedium!
       .copyWith(color: Theme.of(context).colorScheme.onError);
+}
+
+class DevicePackageInfoListTile extends StatelessWidget {
+  const DevicePackageInfoListTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      key: ValueKey("lt_version"),
+      leading: Icon(
+        Icons.smartphone,
+        size: Theme.of(context).textTheme.displayMedium!.fontSize,
+      ),
+      title: FutureBuilder(
+        future: deviceInfo(),
+        builder: (_, deviceSnapshot) => Text(
+            "${FlutterHeyteacherUtilsLocalizations.of(context)!.id}"
+            "$identifierInfo-${deviceSnapshot.data}"),
+      ),
+      subtitle: FutureBuilder<String>(
+        future: packageVersion(),
+        builder: (_, snapshot) => Text(snapshot.data != null
+            ? "${FlutterHeyteacherUtilsLocalizations.of(context)!.version}"
+                "${snapshot.data}"
+            : ""),
+      ),
+      trailing: TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: ThemeHepler.instance().theme.colorScheme.primary,
+            foregroundColor: ThemeHepler.instance().theme.colorScheme.onPrimary,
+          ),
+          onPressed: askSupport,
+          child:
+              Text(FlutterHeyteacherUtilsLocalizations.of(context)!.support)),
+    );
+  }
 }

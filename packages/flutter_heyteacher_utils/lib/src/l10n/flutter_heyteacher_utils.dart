@@ -322,6 +322,30 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Manage'**
   String get manage;
+
+  /// No description provided for @id.
+  ///
+  /// In en, this message translates to:
+  /// **'Id: '**
+  String get id;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version: '**
+  String get version;
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get support;
+
+  /// No description provided for @askSupportFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask support for: '**
+  String get askSupportFor;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {
