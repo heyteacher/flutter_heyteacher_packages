@@ -51,14 +51,14 @@ class RoutingHelper {
 class ScaffoldWithNavBar extends StatelessWidget {
   static final _log = Logger("ScaffoldWithNavBar");
 
-  final Function? onTapInitialLocation;
+  final Function onTapInitialLocation;
 
   /// Constructs an [ScaffoldWithNavBar].
   const ScaffoldWithNavBar(
       {required this.navigationShell,
       Key? key,
       required this.bottomNavigationBarItem,
-      this.onTapInitialLocation})
+      required this.onTapInitialLocation})
       : super(key: key ?? const ValueKey<String>('ScaffoldWithNavBar'));
 
   /// The navigation shell and container for the branch Navigators.
@@ -84,9 +84,8 @@ class ScaffoldWithNavBar extends StatelessWidget {
         // Navigate to the current location of the branch at the provided index
         // when tapping an item in the BottomNavigationBar.
         onTap: (int index) {
-          final bool initialLocation = onTapInitialLocation != null? onTapInitialLocation!(index): false;
-          _log.fine(
-              "go(index, initialLocation: initialLocation)");
+          final bool initialLocation = onTapInitialLocation(index);
+          _log.fine("go(index, initialLocation: $initialLocation)");
           return navigationShell.goBranch(index,
               initialLocation: initialLocation);
         },
