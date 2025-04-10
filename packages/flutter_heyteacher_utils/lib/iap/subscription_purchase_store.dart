@@ -14,7 +14,7 @@ class SubscriptionPurchaseStore
       : super(
             collection: "subscription_purchases",
             userProfile: false,
-            orderByFields: {"startTime": Order.desc},
+            orderByFields: {"startTime": OrderDirection.desc},
             fromFirestoreFactory: SubscriptionPurchaseData.fromFirestore);
 
   // singleton
