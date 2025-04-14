@@ -30,7 +30,7 @@ void main() {
   auth.signInWithEmailAndPassword(email: userEmail, password: userEmail);
 
   // initialize Auth with MockFirebaseAuth
-  Auth.instance(firebaseAuth: auth);
+  Auth.instance(mockedFirebaseAuth: auth);
   E2EE.instance.setAAD("aadValue");
 
   group('encrypt decryp message:', () {
