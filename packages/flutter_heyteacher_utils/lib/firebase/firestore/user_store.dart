@@ -6,6 +6,8 @@ import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 import 'package:intl/intl.dart';
 
+/// The User Store implementation to manage [UserData] storec in `/users/[uid]/`
+/// Firestore collection.
 class UserStore extends Store<UserData, UserData> {
   UserStore._({super.firebaseFirestore})
       : super(
@@ -22,6 +24,10 @@ class UserStore extends Store<UserData, UserData> {
       StreamController<UserData>.broadcast();
   Stream<UserData> get onUserUpdated => _userUpdatedStreamController.stream;
 
+  /// Update the user data.
+  /// 
+  /// If user isn't authenticated, doesn't update and doesn't raise Exception 
+  /// but yield in [_userUpdatedStreamController] the documents.
   @override
   Future<void> update(UserData document,
       {required List<String> fields, String? id, WriteBatch? batch}) async {
@@ -35,11 +41,19 @@ class UserStore extends Store<UserData, UserData> {
   }
 }
 
+/// the User [FirestoreData] implementation.
 class UserData extends FirestoreData {
+
+  /// the user locale
   Locale? locale;
+
+  /// the user [ThemeMode] 
   ThemeMode? themeMode;
+
+  /// The user purchaseToken of subscription
   String? purchaseToken; // readOnly
 
+  /// The user identifier supplyed by Auth if authenticated otherwise `guest`.
   @override
   String get id => Auth.instance().uid ?? "guest";
 
