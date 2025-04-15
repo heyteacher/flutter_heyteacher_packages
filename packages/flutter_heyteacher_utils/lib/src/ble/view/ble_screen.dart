@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
-import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
-import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
+import 'package:flutter_heyteacher_utils/src/ble/data/ble_user_data.dart';
+import 'package:flutter_heyteacher_utils/src/ble/model/ble_model.dart';
+import 'package:flutter_heyteacher_utils/src/ble/model/ble_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:flutter_heyteacher_utils/ble/model/heart_rate_ble_model.dart';
+import 'package:flutter_heyteacher_utils/src/ble/model/heart_rate_ble_model.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
@@ -14,7 +14,7 @@ import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logging/logging.dart';
-import 'package:flutter_heyteacher_utils/ble/view/ble_scan_result_tile.dart';
+import 'package:flutter_heyteacher_utils/src/ble/view/ble_scan_result_tile.dart';
 
 class BLEScreen extends StatelessWidget {
   const BLEScreen({super.key});

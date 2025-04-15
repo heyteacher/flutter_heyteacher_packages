@@ -1,6 +1,6 @@
-import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
-import 'package:flutter_heyteacher_utils/ble/model/ble_model.dart';
-import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
+import 'package:flutter_heyteacher_utils/src/ble/data/ble_user_data.dart';
+import 'package:flutter_heyteacher_utils/src/ble/model/ble_model.dart';
+import 'package:flutter_heyteacher_utils/src/ble/store/ble_user_store.dart';
 
 class HeartRateBleModel extends BleModel {
   @override

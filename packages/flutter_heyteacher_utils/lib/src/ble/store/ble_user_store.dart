@@ -1,4 +1,4 @@
-import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
+import 'package:flutter_heyteacher_utils/src/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 
 class BleUserStore extends Store<BleUserData, BleUserData> {

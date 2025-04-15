@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:flutter_heyteacher_utils/ble/data/ble_user_data.dart';
-import 'package:flutter_heyteacher_utils/ble/model/ble_model_factory.dart';
-import 'package:flutter_heyteacher_utils/ble/store/ble_user_store.dart';
+import 'package:flutter_heyteacher_utils/src/ble/data/ble_user_data.dart';
+import 'package:flutter_heyteacher_utils/src/ble/model/ble_model_factory.dart';
+import 'package:flutter_heyteacher_utils/src/ble/store/ble_user_store.dart';
 import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
 import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:logging/logging.dart';
-import 'package:flutter_heyteacher_utils/ble/ble_device_helper.dart';
+import 'package:flutter_heyteacher_utils/src/ble/ble_device_helper.dart';
 import 'package:flutter_heyteacher_utils/firebase/auth.dart';
 
 abstract class BleModel {
