@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flutter_heyteacher_utils/chart/view/chart_view.dart';
+import 'package:flutter_heyteacher_utils/src/charts/chart_view.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';

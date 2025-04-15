@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/chart/view/chart_view.dart';
+import 'package:flutter_heyteacher_utils/src/charts/chart_view.dart';
 
 class BarChartDataItem extends ChartDataItem {
   final num? y1;
