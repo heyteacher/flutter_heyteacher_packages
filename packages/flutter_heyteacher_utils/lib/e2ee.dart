@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

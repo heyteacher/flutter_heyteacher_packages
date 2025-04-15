@@ -3,8 +3,8 @@ import 'dart:ui';
 
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
-import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/store.dart';
 import 'package:flutter_heyteacher_utils/src/iap/google_play_purchase_details_ext.dart';
 import 'package:flutter_heyteacher_utils/src/iap/subscription_purchase_store.dart';
 import 'package:flutter_heyteacher_utils/src/iap/subscription_store.dart';

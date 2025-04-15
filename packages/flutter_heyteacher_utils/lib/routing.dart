@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';

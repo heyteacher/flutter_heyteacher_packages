@@ -5,7 +5,7 @@ import 'package:flutter_heyteacher_utils/context_helper.dart';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/e2ee.dart';
-import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
+import 'package:flutter_heyteacher_utils/store.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

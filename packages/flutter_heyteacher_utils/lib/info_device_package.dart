@@ -1,7 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
+import 'package:flutter_heyteacher_utils/store.dart';
 
 class SubscriptionStore extends Store<SubscriptionData, SubscriptionData> {
   SubscriptionStore._({super.firebaseFirestore})

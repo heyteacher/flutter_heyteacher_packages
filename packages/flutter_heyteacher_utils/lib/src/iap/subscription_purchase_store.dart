@@ -1,9 +1,8 @@
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
-import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
-import 'package:flutter_heyteacher_utils/firebase/firestore/store_filters.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/store.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'google_play_purchase_details_ext.dart';

@@ -1,7 +1,7 @@
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_heyteacher_utils/e2ee.dart';
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

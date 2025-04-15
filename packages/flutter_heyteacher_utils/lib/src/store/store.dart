@@ -208,8 +208,8 @@ import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/e2ee.dart';
-import './store_filters.dart';
-import '../auth.dart';
+import 'package:flutter_heyteacher_utils/firebase.dart';
+import 'package:flutter_heyteacher_utils/store.dart';
 import 'package:logging/logging.dart';
 
 /// Order enumeration.

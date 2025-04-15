@@ -7,7 +7,7 @@ import 'package:flutter_heyteacher_utils/src/ble/model/ble_model_factory.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_heyteacher_utils/src/ble/model/heart_rate_ble_model.dart';
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';

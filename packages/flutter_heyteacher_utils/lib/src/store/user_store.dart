@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
-import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/store.dart';
 import 'package:intl/intl.dart';
 
 /// The User Store implementation to manage [UserData] storec in `/users/[uid]/`

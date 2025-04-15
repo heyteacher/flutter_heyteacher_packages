@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_heyteacher_utils/firebase/auth.dart';
-import 'package:flutter_heyteacher_utils/firebase/firestore/user_store.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/store.dart';
 
 class ThemeHepler {
   final ({
