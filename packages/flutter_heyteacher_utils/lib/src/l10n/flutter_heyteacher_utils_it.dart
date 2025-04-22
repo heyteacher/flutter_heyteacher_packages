@@ -21,7 +21,7 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
   String get timeoutOnRetrieveData => 'Timeout durante in caricamento dei dati';
 
   @override
-  String get bleAntPlus => 'Ble Ant+ ';
+  String get bleAntPlus => 'Ble Ant+';
 
   @override
   String get bleAntPlusDevices => 'Dispositivi Bluetooth Low Emission Ant+';
@@ -131,10 +131,10 @@ class FlutterHeyteacherUtilsLocalizationsIt extends FlutterHeyteacherUtilsLocali
   String get areYouSureToConfirmTheAction => 'Sei sicuro di confermare l\'azione?';
 
   @override
-  String get encryptionPassphraseIsEmptySetIt => 'La Password di Criptazione non è valorizzata, impostala';
+  String get encryptionPassphraseIsEmptySetIt => 'Password di Criptazione non valorizzata, impostala';
 
   @override
-  String get missingEncryptionSecretKeyImportIt => 'La Chiave Secreta di Criptazione no n presente, importala';
+  String get missingEncryptionSecretKeyImportIt => 'Chiave Secreta di Criptazione non presente, importala';
 
   @override
   String get errorOnEncryptionCheckPassphrase => 'Errore durante la criptazione, controlla la Password di Criptazione';
