@@ -158,13 +158,17 @@ class ErrorView extends StatelessWidget {
                           })),
                 ),
               ])
-            : Expanded(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(error.toString(),
-                      textAlign: TextAlign.center,
-                      style: _errorStyleContent(context)),
-                ),
+            : Column(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(error.toString(),
+                          textAlign: TextAlign.center,
+                          style: _errorStyleContent(context)),
+                    ),
+                  ),
+                ],
               ),
       );
 
@@ -187,9 +191,9 @@ class DevicePackageInfoListTile extends StatelessWidget {
       ),
       title: FutureBuilder(
         future: deviceInfo(),
-        builder: (_, deviceSnapshot) => Text(
-            "${FlutterHeyteacherUtilsLocalizations.of(context)!.id}"
-            "$identifierInfo-${deviceSnapshot.data}"),
+        builder: (_, deviceSnapshot) =>
+            Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.id}"
+                "$identifierInfo-${deviceSnapshot.data}"),
       ),
       subtitle: FutureBuilder<String>(
         future: packageVersion(),
