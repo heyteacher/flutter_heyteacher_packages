@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:clock/clock.dart';
 import 'package:intl/intl.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
@@ -43,7 +44,7 @@ void main(List<String> arguments) async {
   }
   // update build number with current date in 9-digit format YYMMddHHm (android build number limited to 2100000000)
   _setVersion(version, build,
-      buildNumberDateFormat.format(DateTime.now()).substring(0, 9));
+      buildNumberDateFormat.format(clock.now()).substring(0, 9));
   // update version in yaml
   String newVersion =
       "${version![0]}.${version[1]}.${version[2]}+${version[3]}";

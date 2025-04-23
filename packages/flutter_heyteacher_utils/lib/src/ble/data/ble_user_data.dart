@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 
@@ -27,7 +28,7 @@ class BleUserData extends UserData {
           biometrics != null
       ? ((bpm - biometrics.restBpm) /
               (biometrics.gender.heartRateCoeff -
-                  ((DateTime.now()).difference(biometrics.birthDate).inDays /
+                  ((clock.now()).difference(biometrics.birthDate).inDays /
                           365)
                       .floor() -
                   biometrics.restBpm) *

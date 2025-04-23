@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter_heyteacher_utils/src/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/src/ble/model/ble_model.dart';
 import 'package:flutter_heyteacher_utils/src/ble/store/ble_user_store.dart';
@@ -22,7 +23,7 @@ class HeartRateBleModel extends BleModel {
 
   Iterable<({HRTrainingZone hrTrainingZone, num? max, num? min})>?
       get hrTrainingZones => BleModel.userData?.hrTrainingZones(
-          dateTime: DateTime.now(), biometrics: BleModel.biometrics);
+          dateTime: clock.now(), biometrics: BleModel.biometrics);
 
   static num? intensity(num? bpm) =>
       BleModel.userData?.intensity(bpm, biometrics: BleModel.biometrics);

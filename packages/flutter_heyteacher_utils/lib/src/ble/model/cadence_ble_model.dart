@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter_heyteacher_utils/src/ble/data/ble_user_data.dart';
 import 'package:flutter_heyteacher_utils/src/ble/model/ble_model.dart';
 import 'package:logging/logging.dart';
@@ -24,7 +25,7 @@ class CadenceBleModel extends BleModel {
 
   @override
   void onData(List<int> event) {
-    DateTime crankRevolutionsTimestamp = DateTime.now();
+    DateTime crankRevolutionsTimestamp = clock.now();
     // invalid record
     if (event.length < 2) return;
     int crankRevolutionsCounter = event[1];
@@ -44,7 +45,7 @@ class CadenceBleModel extends BleModel {
     // keep only last minute record
     _crankRevolutionRecords = _crankRevolutionRecords
         .where((element) =>
-            DateTime.now().difference(element.timestamp).inSeconds < 10)
+            clock.now().difference(element.timestamp).inSeconds < 10)
         .toList();
     // skip first five records
     if (_crankRevolutionRecords.length < 5) {

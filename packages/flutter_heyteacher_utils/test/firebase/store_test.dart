@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
@@ -338,7 +339,7 @@ class BaseTrackData extends FirestoreData {
   DateTime startTime;
   DateTime? stopTime;
   num? get duration =>
-      (stopTime ?? DateTime.now()).difference(startTime).inMilliseconds;
+      (stopTime ?? clock.now()).difference(startTime).inMilliseconds;
   num? distance;
 
   @override
