@@ -146,7 +146,7 @@ class ErrorView extends StatelessWidget {
                   child: Align(
                       alignment: Alignment.topCenter,
                       child: IconButton(
-                          key: ValueKey("ic_login_logout"),
+                          key: ValueKey("ic_login"),
                           icon: Icon(Icons.login,
                               size: Theme.of(context)
                                   .textTheme
