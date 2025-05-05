@@ -10,7 +10,7 @@ import 'package:flutter_heyteacher_utils/store.dart';
 import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter_heyteacher_utils/src/ble/ble_device_helper.dart';
-import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/firebase.dart';
 
 abstract class BleModel {
   static final Logger _log = Logger("BleModel");
