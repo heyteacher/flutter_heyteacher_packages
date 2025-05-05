@@ -3,10 +3,10 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
-import 'package:logging/logging.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
 
 void showSnackBar(
         {required BuildContext? context,
