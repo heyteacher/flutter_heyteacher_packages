@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
-import 'package:flutter_heyteacher_utils/store.dart';
 
 class ThemeHepler {
   final ({
@@ -32,12 +30,6 @@ class ThemeHepler {
   final StreamController<dynamic> _themeStreamController =
       StreamController<dynamic>.broadcast();
   Stream<dynamic> get themeStream => _themeStreamController.stream;
-
-  void setThemeMode(ThemeMode newThemeMode) {
-    _themeMode = newThemeMode;
-    UserStore.instance()
-        .update(UserData(themeMode: _themeMode), fields: ["themeMode"]);
-  }
 
   Color get blueTextColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
@@ -113,22 +105,18 @@ class ThemeHepler {
       : _initialLightColorScheme = initialLightColorScheme,
         _initialDarkColorScheme = initialDarkColorScheme,
         _themeMode = ThemeMode.system {
-    // load from store user the theme mode
-    Auth.instance().autenticated
-        ? UserStore.instance().getOrNull(Auth.instance().uid!).then((user) {
-            _themeMode = user?.themeMode ?? ThemeMode.system;
-            // if store user theme mode isn't the default, notify to UI the changee
-            if (_themeMode != ThemeMode.system) {
-              _themeStreamController.sink.add(null);
-            }
-          })
-        : _themeMode = ThemeMode.system;
-    // initializa dark and light theme
+    // initialize dark and light theme
     darkTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
     lightTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialLightColorScheme);
   }
+
+  void setThemeMode(ThemeMode themeMode) {
+    _themeMode = themeMode;
+    _themeStreamController.sink.add(null);
+  }
+
 
   void setDefault() {
     darkTheme = _themeData(
