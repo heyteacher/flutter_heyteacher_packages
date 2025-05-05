@@ -1,0 +1,54 @@
+# Uncomment the line if you want fastlane to automatically update itself
+#update_fastlane
+
+desc "fl _increment_flutter_build_number\n\tincrement flutter build number"
+lane :_increment_flutter_build_number do
+  Dir.chdir("../") do
+    sh("dart run flutter_heyteacher_utils:version build")
+  end
+end
+
+desc "fl docweb\n\trun local webserver on generated doc"
+lane :docweb do
+  Dir.chdir("../") do
+    # run local webserver
+    sh("dart pub global run dhttpd --path doc/api &")
+  end
+end
+
+desc "fl doc\n\tgenerate doc and run webserver"
+lane :doc do
+  Dir.chdir("../") do
+    # generate doc
+    sh("dart doc")
+    # run local webserver
+    docweb
+  end
+end
+
+desc "fl test\n\tRun tests"
+lane :test do
+  Dir.chdir("../") do
+    sh("flutter test")
+  end
+end
+
+desc "fl release version:mayor|minor|patch [suffix:<nmenonic_tag_suffix>]\n\trelease e version tagging in git"
+lane :release do |options|
+  _increment_flutter_build_number
+   test
+   tag = ""
+   Dir.chdir("../") do
+    tag = sh("dart run flutter_heyteacher_utils:version #{options[:version]}")
+    # append tag suffix if founr
+    if options[:suffix] != ""
+      tag = "#{tag}_#{options[:suffix]}"
+    end
+  end
+  # commit bump and push remote
+  git_commit(path: "pubspec.yaml", message: "Version Bump #{tag}")
+  push_to_git_remote
+  # add tag and puth remote
+  add_git_tag(tag: tag)
+  push_git_tags(tag: tag)
+end
