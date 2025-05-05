@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_utils/src/iap/iap_model.dart';
 import 'package:flutter_heyteacher_utils/src/iap/iap_plan.dart';
 import 'package:flutter_heyteacher_utils/src/iap/subscription_purchase_store.dart';
