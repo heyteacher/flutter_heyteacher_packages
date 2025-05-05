@@ -13,7 +13,8 @@ import 'package:mockito/mockito.dart';
 import 'widgets_test.mocks.dart';
 
 // --- Mock Localization Delegate ---
-class MockFlutterHeyteacherUtilsLocalizations extends FlutterHeyteacherUtilsLocalizations {
+class MockFlutterHeyteacherUtilsLocalizations
+    extends FlutterHeyteacherUtilsLocalizations {
   MockFlutterHeyteacherUtilsLocalizations() : super('en'); // Default locale
 
   @override
@@ -25,147 +26,48 @@ class MockFlutterHeyteacherUtilsLocalizations extends FlutterHeyteacherUtilsLoca
   @override
   String get support => "Support (Mock)";
 
-  static const LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> delegate =
-      _MockLocalizationsDelegate();
+  static const LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations>
+      delegate = _MockLocalizationsDelegate();
 
   static FlutterHeyteacherUtilsLocalizations of(BuildContext context) {
     return Localizations.of<FlutterHeyteacherUtilsLocalizations>(
             context, FlutterHeyteacherUtilsLocalizations) ??
         MockFlutterHeyteacherUtilsLocalizations(); // Fallback
   }
-  
-  @override
-  String get age => throw UnimplementedError();
-  
+
   @override
   String get areYouSureToConfirmTheAction => throw UnimplementedError();
-  
+
   @override
   String get askSupportFor => throw UnimplementedError();
-  
-  @override
-  String get autoRenew => throw UnimplementedError();
-  
-  @override
-  String get bleAntPlus => throw UnimplementedError();
-  
-  @override
-  String get bleAntPlusDevices => throw UnimplementedError();
-  
-  @override
-  String bleTypeDevice(String bleType) {
-    throw UnimplementedError();
-  }
-  
-  @override
-  String bluetoothAdapterState(String bluetoothAdapterState) {
-    throw UnimplementedError();
-  }
-  
-  @override
-  String get bluetoothAdapterStateIs => throw UnimplementedError();
-  
-  @override
-  String get bpm => throw UnimplementedError();
-  
+
   @override
   String get confirm => throw UnimplementedError();
-  
-  @override
-  String deviceIsNotBleTypesDevice(Object bleTypes) {
-    throw UnimplementedError();
-  }
-  
+
   @override
   String get encryptionPassphraseIsEmptySetIt => throw UnimplementedError();
-  
+
   @override
   String get errorOnDecryptionCheckPassphrase => throw UnimplementedError();
-  
+
   @override
   String get errorOnEncryptionCheckPassphrase => throw UnimplementedError();
-  
+
   @override
   String get errorOnRetrieveData => throw UnimplementedError();
-  
-  @override
-  String expiryDateTime(DateTime date, DateTime time) {
-    throw UnimplementedError();
-  }
-  
-  @override
-  String get gender => throw UnimplementedError();
-  
-  @override
-  String genderValue(String gender) {
-    throw UnimplementedError();
-  }
-  
-  @override
-  String get manage => throw UnimplementedError();
-  
-  @override
-  String get maxBpm => throw UnimplementedError();
-  
-  @override
-  String get maxRpm => throw UnimplementedError();
-  
-  @override
-  String get minBpm => throw UnimplementedError();
-  
+
   @override
   String get missingEncryptionSecretKeyImportIt => throw UnimplementedError();
-  
-  @override
-  String get noActivePlan => throw UnimplementedError();
-  
-  @override
-  String get noPlanPurchased => throw UnimplementedError();
-  
+
   @override
   String get notAuthenticated => throw UnimplementedError();
-  
-  @override
-  String get offer => throw UnimplementedError();
-  
-  @override
-  String periodDuration(String periodDuration) {
-    throw UnimplementedError();
-  }
-  
-  @override
-  String get restBpm => throw UnimplementedError();
-  
-  @override
-  String get rpm => throw UnimplementedError();
-  
-  @override
-  String subscriptionPurchaseState(String subscriptionPurchaseState) {
-    throw UnimplementedError();
-  }
-  
-  @override
-  String get subscriptions => throw UnimplementedError();
-  
+
   @override
   String get timeoutOnRetrieveData => throw UnimplementedError();
-  
-  @override
-  String get trainingZone => throw UnimplementedError();
-  
-  @override
-  String trainingZoneValue(String trainingZone) {
-    throw UnimplementedError();
-  }
-  
-  @override
-  String get withoutRenew => throw UnimplementedError();
-  
-  @override
-  String get yourPlan => throw UnimplementedError();
 }
 
-class _MockLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {
+class _MockLocalizationsDelegate
+    extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {
   const _MockLocalizationsDelegate();
 
   @override
@@ -217,11 +119,15 @@ void main() {
     mockGoRouter = MockGoRouter();
   });
 
-  testWidgets('ErrorView displays generic error message correctly', (tester) async {
+  testWidgets('ErrorView displays generic error message correctly',
+      (tester) async {
     final testError = Exception("Something went wrong!");
     final testStackTrace = StackTrace.current;
 
-    await pumpErrorView(tester, error: testError, stackTrace: testStackTrace, mockGoRouter: mockGoRouter);
+    await pumpErrorView(tester,
+        error: testError,
+        stackTrace: testStackTrace,
+        mockGoRouter: mockGoRouter);
 
     // Verify the generic error message is displayed
     expect(find.text(testError.toString()), findsOneWidget);
@@ -231,11 +137,15 @@ void main() {
     expect(find.byKey(ValueKey("ic_login_logout")), findsNothing);
 
     // Verify Expanded widgets are present (implicitly tested by finding content)
-    expect(find.byType(Expanded), findsOneWidget); // The single Expanded wrapping the error text
+    expect(find.byType(Expanded),
+        findsOneWidget); // The single Expanded wrapping the error text
   });
 
-  testWidgets('ErrorView displays "User not authenticated" message for null error', (tester) async {
-    await pumpErrorView(tester, error: null, stackTrace: null, mockGoRouter: mockGoRouter);
+  testWidgets(
+      'ErrorView displays "User not authenticated" message for null error',
+      (tester) async {
+    await pumpErrorView(tester,
+        error: null, stackTrace: null, mockGoRouter: mockGoRouter);
 
     // Verify the "User not authenticated" message is displayed
     expect(find.text("User not authenticated (Mock)"), findsOneWidget);
@@ -248,10 +158,13 @@ void main() {
     expect(find.textContaining("Exception"), findsNothing);
 
     // Verify Expanded widgets are present
-    expect(find.byType(Expanded), findsNWidgets(2)); // Two Expanded widgets in this case
+    expect(find.byType(Expanded),
+        findsNWidgets(2)); // Two Expanded widgets in this case
   });
 
-  testWidgets('ErrorView displays "User not authenticated" message for permission-denied error', (tester) async {
+  testWidgets(
+      'ErrorView displays "User not authenticated" message for permission-denied error',
+      (tester) async {
     final permissionDeniedError = FirebaseException(
       plugin: 'test',
       code: 'permission-denied',
@@ -259,7 +172,10 @@ void main() {
     );
     final testStackTrace = StackTrace.current;
 
-    await pumpErrorView(tester, error: permissionDeniedError, stackTrace: testStackTrace, mockGoRouter: mockGoRouter);
+    await pumpErrorView(tester,
+        error: permissionDeniedError,
+        stackTrace: testStackTrace,
+        mockGoRouter: mockGoRouter);
 
     // Verify the "User not authenticated" message is displayed
     expect(find.text("User not authenticated (Mock)"), findsOneWidget);
@@ -275,13 +191,12 @@ void main() {
     expect(find.byType(Expanded), findsNWidgets(2));
   });
 
-  testWidgets('ErrorView navigates to auth-sign-in on login button press', (tester) async {
-    
-    when(mockGoRouter.pushNamed(any))
-          .thenAnswer((_) async => true);
+  testWidgets('ErrorView navigates to auth-sign-in on login button press',
+      (tester) async {
+    when(mockGoRouter.pushNamed(any)).thenAnswer((_) async => true);
 
-    
-    await pumpErrorView(tester, error: null, stackTrace: null, mockGoRouter: mockGoRouter);
+    await pumpErrorView(tester,
+        error: null, stackTrace: null, mockGoRouter: mockGoRouter);
 
     // Find the login button
     final loginButtonFinder = find.byKey(ValueKey("ic_login"));
@@ -295,23 +210,34 @@ void main() {
     verify(mockGoRouter.pushNamed("auth-sign-in")).called(1);
   });
 
-   testWidgets('ErrorView applies correct style to error messages', (tester) async {
+  testWidgets('ErrorView applies correct style to error messages',
+      (tester) async {
     final testError = Exception("Style Test Error");
-    await pumpErrorView(tester, error: testError, stackTrace: StackTrace.current, mockGoRouter: mockGoRouter);
+    await pumpErrorView(tester,
+        error: testError,
+        stackTrace: StackTrace.current,
+        mockGoRouter: mockGoRouter);
 
     final textWidget = tester.widget<Text>(find.text(testError.toString()));
-    final context = tester.element(find.text(testError.toString())); // Get context
+    final context =
+        tester.element(find.text(testError.toString())); // Get context
 
     // Check if the style matches the expected style from the widget
     expect(textWidget.style?.color, Theme.of(context).colorScheme.onError);
-    expect(textWidget.style?.fontSize, Theme.of(context).textTheme.headlineMedium?.fontSize);
+    expect(textWidget.style?.fontSize,
+        Theme.of(context).textTheme.headlineMedium?.fontSize);
 
     // Test the style for the "not authenticated" case
-    await pumpErrorView(tester, error: null, stackTrace: null, mockGoRouter: mockGoRouter);
-    final authTextWidget = tester.widget<Text>(find.text("User not authenticated (Mock)"));
-    final authContext = tester.element(find.text("User not authenticated (Mock)"));
+    await pumpErrorView(tester,
+        error: null, stackTrace: null, mockGoRouter: mockGoRouter);
+    final authTextWidget =
+        tester.widget<Text>(find.text("User not authenticated (Mock)"));
+    final authContext =
+        tester.element(find.text("User not authenticated (Mock)"));
 
-    expect(authTextWidget.style?.color, Theme.of(authContext).colorScheme.onError);
-    expect(authTextWidget.style?.fontSize, Theme.of(authContext).textTheme.headlineMedium?.fontSize);
+    expect(
+        authTextWidget.style?.color, Theme.of(authContext).colorScheme.onError);
+    expect(authTextWidget.style?.fontSize,
+        Theme.of(authContext).textTheme.headlineMedium?.fontSize);
   });
 }

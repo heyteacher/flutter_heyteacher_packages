@@ -8,60 +8,6 @@
   "@errorOnRetrieveData": {},
   "timeoutOnRetrieveData": "Timeout on retieve data",
   "@timeoutOnRetrieveData": {},
-  "bleAntPlus": "Ble Ant+ ",
-  "@bleAntPlus": {},
-  "bleAntPlusDevices": "Bluetooth Low Emission Ant+ Devices",
-  "@bleAntPlusDevices": {},
-  "age": "age",
-  "@age": {},
-  "restBpm": "rest bpm",
-  "@restBpm": {},
-  "gender": "gender",
-  "@gender": {},
-  "genderValue": "{gender, select, male{Male} female{Female} other{Other}}",
-  "@genderValue": {
-    "placeholders": {
-      "gender": {}
-    }
-  },
-  "trainingZoneValue": "{trainingZone, select, z0{Z0 Rest} z1{Z1 Warm Up} z2{Z2 Fat Burn} z3{Z3 Aerobic} z4{Z4 Anaerobic} z5{Z5 V02 Max} z6{Z6 Death}  other{}}",
-  "@trainingZoneValue": {
-    "placeholders": {
-      "trainingZone": {}
-    }
-  },
-  "trainingZone": "Training Zone",
-  "@trainingZone": {},
-  "bpm": "BPM",
-  "@bpm": {},
-  "maxRpm": "Max RPM",
-  "@maxRpm": {},
-  "minBpm": "Min Bpm",
-  "@minBpm": {},
-  "rpm": "RPM",
-  "@rpm": {},
-  "maxBpm": "Max BPM",
-  "@maxBpm": {},
-  "bleTypeDevice": "{bleType, select, cadence{Cadence Device} heartRate{Heart Rate Device} cyclingPower{Power Meter} other{Unknown}}",
-  "@bleTypeDevice": {
-    "placeholders": {
-      "bleType": {}
-    }
-  },
-  "bluetoothAdapterStateIs": "Bluetooth adapter state is ",
-  "@bluetoothAdapterStateIs": {},
-  "bluetoothAdapterState": "{bluetoothAdapterState, select, unavailable{Unavailable} unauthorized{Unauthorized} turningOn{Turning On} on{On} turningOff{Turning Off} off{Off} other{Unknow}}",
-  "@bluetoothAdapterState": {
-    "placeholders": {
-      "bluetoothAdapterState": {}
-    }
-  },
-  "deviceIsNotBleTypesDevice": "device is not {bleTypes} device",
-  "@deviceIsNotBleTypesDevice": {
-    "placeholders": {
-      "bleTypes": {}
-    }
-  },
   "confirm": "Confirm",
   "@confirm": {},
   "areYouSureToConfirmTheAction": "Are you sure to confirm the action?",
@@ -74,47 +20,6 @@
   "@errorOnEncryptionCheckPassphrase": {},
   "errorOnDecryptionCheckPassphrase": "Error on decryption, check the Encryption Passphrase",
   "@errorOnDecryptionCheckPassphrase": {},
-  "subscriptions": "Subscriptions",
-  "@subscriptions": {},
-  "yourPlan": "Your plan",
-  "@yourPlan": {},
-  "noPlanPurchased": "No plan purchased",
-  "@noPlanPurchased": {},
-  "noActivePlan": "No active plan",
-  "@noActivePlan": {},
-  "withoutRenew": "Without renew",
-  "@withoutRenew": {},
-  "autoRenew": "Auto renew",
-  "@autoRenew": {},
-  "offer": "Offer",
-  "@offer": {},
-  "expiryDateTime": "Expiry Time: {date} {time}",
-  "@expiryDateTime": {
-    "placeholders": {
-      "date": {
-        "type": "DateTime",
-        "format": "yMd"
-      },
-      "time": {
-        "type": "DateTime",
-        "format": "Hm"
-      }
-    }
-  },
-  "periodDuration": "{periodDuration, select,  weekly{Weekly} every2Weeks{Every 2 weeks} every3Weeks{Every 3 weeks} every4Weeks{Every 4 weeks} monthly{Monthly} every2Months{Every 2 month} every3Months{Quarterly} every4Months{Every 4 months} every6Months{Half yearly} every8Months{Every 8 months} yearly{Yearly} other{Unknow}}",
-  "@periodDuration": {
-    "placeholders": {
-      "periodDuration": {}
-    }
-  },
-  "subscriptionPurchaseState": "{subscriptionPurchaseState, select,  pending{Pending} active{Active} paused{Paused} inGracePeriod{In grace period} onHold{On hold} canceled{Cancelled} expired{Expired} pendingPurchaseCanceled{Pending purchase cancelled}  other{Unspecified}}",
-  "@subscriptionPurchaseState": {
-    "placeholders": {
-      "subscriptionPurchaseState": {}
-    }
-  },
-  "manage": "Manage",
-  "@manage": {},
   "id": "Id: ",
   "@id": {},
   "version": "Version: ",

@@ -11,9 +11,6 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/to/develop-packages).
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
 This package collects common commands, classes, widgets used in my projects, 
 in order to mantain a unique and autoritative version of implementation 
 avoiding the `copy-and-paste` pattern.
@@ -27,26 +24,18 @@ TODO: List what your package can do. Maybe include images, gifs, or videos.
 * formats utils
 * platform, date and shared preferenses helpers
 * routing utils to bild app routes
-* ble utils
-* chart utils build on `FlChart` library
 * localization utils
-* TTS utils
 * End 2 End Encryption (E2EE)
-* Generics Firestore implementation
 * Theme helper
-* FL Chart utilities
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
 ```
-dart pub add flutter_heytecher_utils
+dart pub add flutter_heyteacher_utils
 ```
 or 
 ```
-flutter pub add flutter_heytecher_utils
+flutter pub add flutter_heyatecher_utils
 ```
 
 ## Usage
@@ -197,43 +186,6 @@ You can configure you `vscode` to execute the command with `build` in order to a
   FlutterHeyteacherUtilsLocalizations.of(context)!.userNotAutenticated
   ```
   
-## BLE Ant+ (Bluetooth Low Emission)
-
-### `THR` Target Heart Rate
-
-* `MHR` Max Heart Rate Equation
-  ```
-  MHR = 220 - Age
-  ```
-
-* `THR` Target Heart Rate Formula (Basic)
-  ```
-  THR = MHR * %Intensity
-  ```
-
-* `THR` Target Heart Rate Formula (Karvonen Formula)
-  ```
-   THR = [(MHR - RHR) x %Intensity] + RHR
-   THR = [(220 - Age - RHR) x %Intensity] + RHR
-  ```
-
-* `%Intensity` (Karvonen Formula)
-  ```
-   THR = [(MHR - RHR) x %Intensity] + RHR
-   THR - RHR = [(MHR - RHR) x %Intensity] 
-   THR - RHR = (220 - Age - RHR) x %Intensity 
-   %Intensity = (THR - RHR / (220 - Age - RHR)) * 100 
-  ```
-### Heart Rate Zones
-
-| Zones | Description    | Min Intensity | Max Intensity |
-| ----- | -------------- | ------------- | ------------- |
-| Z1    | Warn Up Zone   | 50%           | 60%           |
-| Z2    | Fat Burn Zone  | 60%           | 70%           |
-| Z3    | Aerobic Zone   | 70%           | 80%           |
-| Z4    | Anaerobic Zone | 80%           | 90%           |
-| Z5    | VO2 Max Zone   | 90%           | 100%          |
-
 
 ## End 2 End Encryption (E2EE) 
 
@@ -243,17 +195,3 @@ compiler webwrypto library before first run of `flutter test`
 flutter pub run webcrypto:setup
 ```
 
-## Google Play Subcriptions
-
-### Setup
-
-* add `in_app_purchase` package
-  ```bash
-  flutter pub add in_app_purchase
-  ```
-
-* run locally then release in `Google Play`
-  ```bash
-  fl release version:patch
-  fl playstore track:alpha
-  ```
