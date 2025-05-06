@@ -60,7 +60,7 @@ dart run flutter_heyteacher_utils:version mayor|minor|patch|build|show|show-buil
 
 You can configure you `vscode` to execute the command with `build` in order to automatically update build version every run/debug execution of your code:
 
-* create/modify `vscode/tasks.json` in the root of your project 
+* create/modify `.vscode/tasks.json` in the root of your project 
   
   ```json
   {
