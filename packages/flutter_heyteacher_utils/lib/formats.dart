@@ -8,6 +8,8 @@ final DateFormat dateFormatter = DateFormat("dd/MM/yyyy");
 
 final DateFormat timeWithSecondsFormatter = DateFormat("HH:mm:ss");
 
+final DateFormat dateTimeWithSecondsFormatter = DateFormat("dd/MM/yyyy HH:mm:ss");
+
 final NumberFormat intFormatter = NumberFormat("0");
 
 final NumberFormat doubleFormatter = NumberFormat("0.0");
