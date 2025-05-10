@@ -52,7 +52,7 @@ class ThemeHepler {
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.orange.shade700
           : Colors.orange.shade300;
-  Color get cyanTextColor =>
+  Color get purpleTextColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.purple.shade700
           : Colors.purple.shade300;
