@@ -31,19 +31,32 @@ class ThemeHepler {
       StreamController<dynamic>.broadcast();
   Stream<dynamic> get themeStream => _themeStreamController.stream;
 
+  Color get redTextColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+          ? Colors.red.shade700
+          : Colors.red.shade300;
   Color get blueTextColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.blue.shade700
           : Colors.blue.shade300;
+  Color get yellowTextColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+          ? Colors.yellow.shade700
+          : Colors.yellow.shade300;
+
+ Color get greenTextColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+          ? Colors.green.shade700
+          : Colors.green.shade300;
   Color get orangeTextColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.orange.shade700
           : Colors.orange.shade300;
-  Color get greenTextColor =>
+  Color get cyanTextColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.green.shade700
-          : Colors.green.shade300;
-
+          ? Colors.purple.shade700
+          : Colors.purple.shade300;
+ 
   static ThemeHepler? _instance;
   static ThemeHepler instance(
           {({
