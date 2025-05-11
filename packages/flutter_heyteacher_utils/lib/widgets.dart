@@ -20,13 +20,13 @@ void showSnackBar(
                         FirebaseRemoteConfig.instance
                             .getInt("snackBarDurationInSeconds")),
                 backgroundColor: error
-                    ? ThemeHepler.instance().theme.colorScheme.onError
-                    : ThemeHepler.instance().greenTextColor,
+                    ? ThemeModel.instance().theme.colorScheme.onError
+                    : ThemeModel.instance().greenTextColor,
                 content: Text(message,
                     style: TextStyle(
                         color: error
-                            ? ThemeHepler.instance().theme.colorScheme.error
-                            : ThemeHepler.instance()
+                            ? ThemeModel.instance().theme.colorScheme.error
+                            : ThemeModel.instance()
                                 .theme
                                 .colorScheme
                                 .onPrimary))),

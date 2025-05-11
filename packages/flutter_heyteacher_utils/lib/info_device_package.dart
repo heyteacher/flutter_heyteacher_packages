@@ -34,8 +34,8 @@ class DevicePackageInfoListTile extends StatelessWidget {
       ),
       trailing: TextButton(
           style: TextButton.styleFrom(
-            backgroundColor: ThemeHepler.instance().theme.colorScheme.primary,
-            foregroundColor: ThemeHepler.instance().theme.colorScheme.onPrimary,
+            backgroundColor: ThemeModel.instance().theme.colorScheme.primary,
+            foregroundColor: ThemeModel.instance().theme.colorScheme.onPrimary,
           ),
           onPressed: _askSupport,
           child:

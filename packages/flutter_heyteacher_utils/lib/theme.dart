@@ -32,17 +32,17 @@ class _ThemeListTileState extends State<ThemeListTile> {
                 icon: Icon(Icons.light_mode)),
           ],
           selected: <ThemeMode>{
-            ThemeHepler.instance().themeMode
+            ThemeModel.instance().themeMode
           },
           onSelectionChanged: (Set<ThemeMode> newSelection) async {
-            await ThemeHepler.instance().setThemeMode(newSelection.first);
+            await ThemeModel.instance().setThemeMode(newSelection.first);
             setState(() {});
           }),
     );
   }
 }
 
-class ThemeHepler {
+class ThemeModel {
   final ({
     Color primary,
     Color disabled,
@@ -99,8 +99,8 @@ class ThemeHepler {
           ? Colors.purple.shade700
           : Colors.purple.shade300;
 
-  static ThemeHepler? _instance;
-  static ThemeHepler instance(
+  static ThemeModel? _instance;
+  static ThemeModel instance(
           {({
             Color primary,
             Color disabled,
@@ -127,7 +127,7 @@ class ThemeHepler {
             Color onSurfaceVariant,
             Color surfaceContainer,
           })? initialLightColorScheme}) =>
-      _instance ??= ThemeHepler._(
+      _instance ??= ThemeModel._(
           initialDarkColorScheme: initialDarkColorScheme ??
               (
                 primary: Colors.white,
@@ -156,7 +156,7 @@ class ThemeHepler {
                 surfaceContainer: Colors.white.withValues(alpha: 0.6),
                 onSurfaceVariant: Colors.black
               ));
-  ThemeHepler._(
+  ThemeModel._(
       {required ({
         Color primary,
         Color disabled,
