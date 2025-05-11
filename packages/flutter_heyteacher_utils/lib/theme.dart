@@ -2,6 +2,45 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class ThemeListTile extends StatefulWidget {
+  const ThemeListTile({super.key});
+
+  @override
+  State<ThemeListTile> createState() => _ThemeListTileState();
+}
+
+class _ThemeListTileState extends State<ThemeListTile> {
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.contrast),
+      trailing: SegmentedButton<ThemeMode>(
+          segments: <ButtonSegment<ThemeMode>>[
+            ButtonSegment<ThemeMode>(
+                value: ThemeMode.system,
+                label: Text(ThemeMode.system.name),
+                icon: Icon(Icons.contrast)),
+            ButtonSegment<ThemeMode>(
+                value: ThemeMode.dark,
+                label: Text(ThemeMode.dark.name),
+                icon: Icon(Icons.dark_mode)),
+            ButtonSegment<ThemeMode>(
+                value: ThemeMode.light,
+                label: Text(ThemeMode.light.name),
+                icon: Icon(Icons.light_mode)),
+          ],
+          selected: <ThemeMode>{
+            ThemeHepler.instance().themeMode
+          },
+          onSelectionChanged: (Set<ThemeMode> newSelection) async {
+            await ThemeHepler.instance().setThemeMode(newSelection.first);
+            setState(() {});
+          }),
+    );
+  }
+}
 
 class ThemeHepler {
   final ({
@@ -25,6 +64,9 @@ class ThemeHepler {
           : darkTheme;
 
   ThemeMode _themeMode;
+
+  /// get current theme mode
+  /// if not set, return [ThemeMode.system]
   ThemeMode get themeMode => _themeMode;
 
   final StreamController<dynamic> _themeStreamController =
@@ -44,7 +86,7 @@ class ThemeHepler {
           ? Colors.yellow.shade700
           : Colors.yellow.shade300;
 
- Color get greenTextColor =>
+  Color get greenTextColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.green.shade700
           : Colors.green.shade300;
@@ -56,7 +98,7 @@ class ThemeHepler {
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.purple.shade700
           : Colors.purple.shade300;
- 
+
   static ThemeHepler? _instance;
   static ThemeHepler instance(
           {({
@@ -86,8 +128,34 @@ class ThemeHepler {
             Color surfaceContainer,
           })? initialLightColorScheme}) =>
       _instance ??= ThemeHepler._(
-          initialDarkColorScheme: initialDarkColorScheme!,
-          initialLightColorScheme: initialLightColorScheme!);
+          initialDarkColorScheme: initialDarkColorScheme ??
+              (
+                primary: Colors.white,
+                disabled: Colors.white38,
+                onPrimary: Colors.black,
+                secondary: Colors.white70,
+                onSecondary: Colors.grey.shade900,
+                error: Colors.white,
+                onError: Colors.redAccent,
+                surface: Colors.grey.shade900,
+                onSurface: Colors.white70,
+                surfaceContainer: Colors.black.withValues(alpha: 0.8),
+                onSurfaceVariant: Colors.white
+              ),
+          initialLightColorScheme: initialLightColorScheme ??
+              (
+                primary: Colors.black,
+                disabled: Colors.grey.shade700,
+                onPrimary: Colors.white,
+                secondary: Colors.grey.shade900,
+                onSecondary: Colors.white70,
+                error: Colors.white,
+                onError: Colors.redAccent,
+                surface: Colors.white70,
+                onSurface: Colors.grey.shade900,
+                surfaceContainer: Colors.white.withValues(alpha: 0.6),
+                onSurfaceVariant: Colors.black
+              ));
   ThemeHepler._(
       {required ({
         Color primary,
@@ -123,13 +191,22 @@ class ThemeHepler {
         themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
     lightTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialLightColorScheme);
+
+    SharedPreferencesAsync().getString('themeMode').then((themeModeName) {
+      _themeMode = themeModeName == null
+          ? ThemeMode.values
+              .firstWhere((element) => element.name == themeModeName)
+          : ThemeMode.system;
+    });
   }
 
-  void setThemeMode(ThemeMode themeMode) {
+  /// set [themeMode] to [ThemeMode.system], [ThemeMode.light] or [ThemeMode.dark]
+  /// and save it to [SharedPreferences]
+  Future<void> setThemeMode(ThemeMode themeMode) async {
     _themeMode = themeMode;
+    await SharedPreferencesAsync().setString('themeMode', themeMode.name);
     _themeStreamController.sink.add(null);
   }
-
 
   void setDefault() {
     darkTheme = _themeData(
