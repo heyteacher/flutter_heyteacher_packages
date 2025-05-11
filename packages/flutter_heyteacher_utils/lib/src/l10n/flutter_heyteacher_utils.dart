@@ -5,8 +5,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'flutter_heyteacher_utils_de.dart';
 import 'flutter_heyteacher_utils_en.dart';
+import 'flutter_heyteacher_utils_es.dart';
+import 'flutter_heyteacher_utils_fr.dart';
 import 'flutter_heyteacher_utils_it.dart';
+import 'flutter_heyteacher_utils_pt.dart';
 
 // ignore_for_file: type=lint
 
@@ -91,8 +95,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('de'),
     Locale('en'),
-    Locale('it')
+    Locale('es'),
+    Locale('fr'),
+    Locale('it'),
+    Locale('pt')
   ];
 
   /// No description provided for @userNotAutenticated.
@@ -189,7 +197,7 @@ class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'it'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'es', 'fr', 'it', 'pt'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_FlutterHeyteacherUtilsLocalizationsDelegate old) => false;
@@ -200,8 +208,12 @@ FlutterHeyteacherUtilsLocalizations lookupFlutterHeyteacherUtilsLocalizations(Lo
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'de': return FlutterHeyteacherUtilsLocalizationsDe();
     case 'en': return FlutterHeyteacherUtilsLocalizationsEn();
+    case 'es': return FlutterHeyteacherUtilsLocalizationsEs();
+    case 'fr': return FlutterHeyteacherUtilsLocalizationsFr();
     case 'it': return FlutterHeyteacherUtilsLocalizationsIt();
+    case 'pt': return FlutterHeyteacherUtilsLocalizationsPt();
   }
 
   throw FlutterError(
