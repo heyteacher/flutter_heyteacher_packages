@@ -5,6 +5,7 @@ import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The [Locale] list tile widget.
+/// 
 /// This widget is used to select the locale supported by the app.
 class LocaleListTile extends StatefulWidget {
   const LocaleListTile({super.key});
@@ -17,7 +18,7 @@ class _LocaleListTileState extends State<LocaleListTile> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        key: ValueKey("lt_locale"),
+        key: ValueKey("lt_fhu_locale"),
         title: SegmentedButton<Locale>(
             segments: <ButtonSegment<Locale>>[
               for (Locale locale
@@ -37,14 +38,14 @@ class _LocaleListTileState extends State<LocaleListTile> {
   }
 }
 
-/// The [LocaleModel] class is used to manage the app's supporded locale.
+/// The [Locale] model class is used to manage the app's supporded locale.
 /// 
 /// The locale is saved in the [SharedPreferencesAsync] on key `fhu_locale`.
 /// Locale changes are yield on [localeStream].
 class LocaleModel {
   Locale? _locale;
 
-  static const  _sharedPreferencesLocaleKey = 'fhu_locale';
+  static const  _sharedPreferencesLocaleKey = 'fhuLocale';
 
   static LocaleModel? _instance;
   static LocaleModel get instance => _instance ??= LocaleModel._();
