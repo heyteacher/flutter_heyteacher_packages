@@ -21,7 +21,7 @@ void showSnackBar(
                             .getInt("snackBarDurationInSeconds")),
                 backgroundColor: error
                     ? ThemeModel.instance().theme.colorScheme.onError
-                    : ThemeModel.instance().greenTextColor,
+                    : ThemeModel.instance().greenColor,
                 content: Text(message,
                     style: TextStyle(
                         color: error
