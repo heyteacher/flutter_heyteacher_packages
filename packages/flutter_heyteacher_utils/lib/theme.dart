@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// [ThemeMode] list tile widget.
+///
+/// This widget is used to select the theme mode.
 class ThemeListTile extends StatefulWidget {
   const ThemeListTile({super.key});
 
@@ -42,6 +45,11 @@ class _ThemeListTileState extends State<ThemeListTile> {
   }
 }
 
+/// The [ThemeMode] class is used to manage the app's theme.
+///
+/// The theme is saved in the [SharedPreferencesAsync] on key `fhuThemeMode`.
+/// Theme changes are yield on [themeStream].
+/// The theme is set to [ThemeMode.system] by default.
 class ThemeModel {
   final ({
     Color primary,
@@ -58,10 +66,14 @@ class ThemeModel {
   }) _initialDarkColorScheme, _initialLightColorScheme;
 
   ThemeData darkTheme = ThemeData.dark(), lightTheme = ThemeData.light();
+
+  /// get current theme
   ThemeData get theme =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? lightTheme
           : darkTheme;
+
+  static const _sharedPreferencesThemeModeKey = 'fhuThemeMode';
 
   ThemeMode _themeMode;
 
@@ -73,29 +85,38 @@ class ThemeModel {
       StreamController<dynamic>.broadcast();
   Stream<dynamic> get themeStream => _themeStreamController.stream;
 
-  Color get redTextColor =>
+  /// get the red color based on the current theme mode
+  Color get redColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.red.shade700
           : Colors.red.shade300;
-  Color get blueTextColor =>
+
+  /// get the blue color based on the current theme mode
+  Color get blueColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.blue.shade700
           : Colors.blue.shade300;
-  Color get yellowTextColor =>
+
+  /// get the grey color based on the current theme mode
+  Color get yellowColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.yellow.shade700
           : Colors.yellow.shade300;
 
-  Color get greenTextColor =>
+  /// get the green color based on the current theme mode
+  Color get greenColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.green.shade700
           : Colors.green.shade300;
-  Color get orangeTextColor =>
+
+  /// get the orange color based on the current theme mode
+  Color get orangeColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.orange.shade700
           : Colors.orange.shade300;
 
-  Color get purpleTextColor =>
+  /// get the purple color based on the current theme mode
+  Color get purpleColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.purple.shade700
           : Colors.purple.shade300;
@@ -198,7 +219,9 @@ class ThemeModel {
     lightTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialLightColorScheme);
 
-    SharedPreferencesAsync().getString('themeMode').then((themeModeName) {
+    SharedPreferencesAsync()
+        .getString(_sharedPreferencesThemeModeKey)
+        .then((themeModeName) {
       _themeMode = ThemeMode.values
               .where((element) => element.name == themeModeName)
               .firstOrNull ??
@@ -211,10 +234,12 @@ class ThemeModel {
   /// and save it to [SharedPreferences]
   Future<void> setThemeMode(ThemeMode themeMode) async {
     _themeMode = themeMode;
-    await SharedPreferencesAsync().setString('themeMode', themeMode.name);
+    await SharedPreferencesAsync()
+        .setString(_sharedPreferencesThemeModeKey, themeMode.name);
     _themeStreamController.sink.add(null);
   }
 
+  /// set the theme to default values
   void setDefault() {
     darkTheme = _themeData(
         themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
@@ -223,6 +248,10 @@ class ThemeModel {
     _themeStreamController.sink.add(null);
   }
 
+  /// update the theme with new values
+  /// [primary], [disabled], [onPrimary], [secondary], [onSecondary],
+  /// [error], [onError], [onSurface], [surface], [onSurfaceVariant],
+  /// [surfaceContainer] are used to update the theme
   void update({
     ({Color light, Color dark})? primary,
     ({Color light, Color dark})? disabled,
@@ -281,20 +310,24 @@ class ThemeModel {
     _themeStreamController.sink.add(null);
   }
 
+  /// get the theme foreground color
   Color? themeForegroundColor(Color? color, {ThemeMode? themeMode}) =>
       (themeMode ?? _themeMode) == ThemeMode.light
           ? Color.lerp(color, Colors.black, 0.7)
           : Color.lerp(color, Colors.white, 0.7);
 
+  /// get the theme background color
   Color? themeBackgroundColor(Color? color, {ThemeMode? themeMode}) =>
       (themeMode ?? _themeMode) == ThemeMode.light
           ? Color.lerp(color, Colors.white, 0.5)
           : Color.lerp(color, Colors.black, 0.5);
 
+  /// get the theme background color
   ({Color light, Color dark}) backgroundColor(Color color) => (
         light: themeBackgroundColor(color, themeMode: ThemeMode.light)!,
         dark: themeBackgroundColor(color, themeMode: ThemeMode.dark)!
       );
+
   ThemeData _themeData(
       {required ThemeMode themeMode,
       required ({
