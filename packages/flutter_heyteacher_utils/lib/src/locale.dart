@@ -13,8 +13,8 @@ class LocaleModel {
   LocaleModel._() {
     SharedPreferencesAsync().getString('locale').then((localeName) {
       _locale = FlutterHeyteacherUtilsLocalizations.supportedLocales
-          .firstWhere((locale) => locale.languageCode == localeName);
-      if (_locale == null) {
+          .where((locale) => locale.languageCode == localeName).firstOrNull;
+      if (_locale != null) {
         _localeStreamController.sink.add(_locale!);
       }
     });
@@ -64,9 +64,8 @@ class _LocaleListTileState extends State<LocaleListTile> {
               LocaleModel.instance.locale ?? Localizations.localeOf(context)
             },
             onSelectionChanged: (Set<Locale> newSelection) async {
-              setState(() {
               LocaleModel.instance.locale = newSelection.first;
-              });
+              setState(() {});
             }));
   }
 }
