@@ -23,12 +23,12 @@ class _LocaleListTileState extends State<LocaleListTile> {
         leading: const Icon(Icons.language),
         key: ValueKey("lt_fhu_locale"),
         title: Wrap(
-          alignment: WrapAlignment.spaceEvenly,
+          alignment: WrapAlignment.center,
           spacing: 2,
           children: [
             ...FlutterHeyteacherUtilsLocalizations.supportedLocales
                 .map<Widget>((locale) => ChoiceChip(
-                      label: Text(locale.languageCode),
+                      label: Text(locale.languageCode.toUpperCase()),
                       selected: locale ==
                           (LocaleModel.instance.locale ??
                               Localizations.localeOf(context)),
