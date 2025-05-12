@@ -29,6 +29,7 @@ class _LocaleListTileState extends State<LocaleListTile> {
             ...FlutterHeyteacherUtilsLocalizations.supportedLocales
                 .map<Widget>((locale) => ChoiceChip(
                       label: Text(locale.languageCode.toUpperCase()),
+                      showCheckmark: false,
                       selected: locale ==
                           (LocaleModel.instance.locale ??
                               Localizations.localeOf(context)),
