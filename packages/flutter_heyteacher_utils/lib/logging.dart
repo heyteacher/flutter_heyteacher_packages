@@ -16,10 +16,11 @@ Future<void> configureLogging() async {
           ? 500
           : FirebaseRemoteConfig.instance.getInt("loggerRootLevelValue"));
   // get version
-  final version = await packageVersion;
+  final version = await InfoDevicePackageModel.instance.packageVersion;
   // get device info
-  final String device = await deviceInfo;
-  // get uid from firebase auth truncated first 5 chars
+  final String device = await InfoDevicePackageModel.instance.deviceInfo;
+  // get identifier info
+  final identifierInfo = InfoDevicePackageModel.instance.identifierInfo;
   Logger.root.onRecord.listen((record) {
     // format error and stack trace
     final String error = record.error != null ? "\n${record.error}" : "";
