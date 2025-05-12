@@ -1,3 +1,5 @@
+library;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,30 @@ import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
+
+///  A [StreamBuilder] initialized with a [FutureBuilder].
+/// 
+/// Get asynchronously output the [future] then listen the [stream]. 
+class FutureStreamBuilder<T> extends FutureBuilder<T> {
+
+  ///  the [stream]
+  final Stream<T> stream;
+
+  const FutureStreamBuilder(
+      {super.key,
+      required super.future,
+      required this.stream,
+      required super.builder});
+
+  @override
+  AsyncWidgetBuilder<T> get builder =>
+      (context, futureSnapshot) => futureSnapshot.hasData
+          ? StreamBuilder(
+              stream: stream,
+              initialData: futureSnapshot.data,
+              builder: super.builder)
+          : super.builder(context, futureSnapshot);
+}
 
 void showSnackBar(
         {required BuildContext? context,
@@ -176,4 +202,3 @@ class ErrorView extends StatelessWidget {
       .headlineMedium!
       .copyWith(color: Theme.of(context).colorScheme.onError);
 }
-
