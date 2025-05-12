@@ -94,12 +94,18 @@ class ThemeModel {
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.orange.shade700
           : Colors.orange.shade300;
+
   Color get purpleTextColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
           ? Colors.purple.shade700
           : Colors.purple.shade300;
 
   static ThemeModel? _instance;
+
+  /// singleton instance of [ThemeModel]
+  /// [initialDarkColorScheme] and [initialLightColorScheme] are used to
+  /// initialize the dark and light theme
+  /// if not set, default values are used.
   static ThemeModel instance(
           {({
             Color primary,
@@ -193,10 +199,11 @@ class ThemeModel {
         themeMode: ThemeMode.dark, colorScheme: _initialLightColorScheme);
 
     SharedPreferencesAsync().getString('themeMode').then((themeModeName) {
-      _themeMode = themeModeName == null
-          ? ThemeMode.values
-              .firstWhere((element) => element.name == themeModeName)
-          : ThemeMode.system;
+      _themeMode = ThemeMode.values
+              .where((element) => element.name == themeModeName)
+              .firstOrNull ??
+          ThemeMode.system;
+      _themeStreamController.sink.add(null);
     });
   }
 
