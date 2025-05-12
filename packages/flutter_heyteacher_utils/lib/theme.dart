@@ -21,30 +21,39 @@ class _ThemeListTileState extends State<ThemeListTile> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.contrast),
-      trailing: SegmentedButton<ThemeMode>(
-          segments: <ButtonSegment<ThemeMode>>[
-            ButtonSegment<ThemeMode>(
-                value: ThemeMode.system,
-                label: Text(ThemeMode.system.name),
-                icon: Icon(Icons.contrast)),
-            ButtonSegment<ThemeMode>(
-                value: ThemeMode.dark,
-                label: Text(ThemeMode.dark.name),
-                icon: Icon(Icons.dark_mode)),
-            ButtonSegment<ThemeMode>(
-                value: ThemeMode.light,
-                label: Text(ThemeMode.light.name),
-                icon: Icon(Icons.light_mode)),
-          ],
-          selected: <ThemeMode>{
-            ThemeModel.instance().themeMode
-          },
-          onSelectionChanged: (Set<ThemeMode> newSelection) async {
-            await ThemeModel.instance().setThemeMode(newSelection.first);
-            setState(() {});
-          }),
+      title: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 2,
+        children: [
+          ChoiceChip(
+              selected: ThemeMode.system == ThemeModel.instance().themeMode,
+              label: Text(ThemeMode.system.name),
+              avatar: Icon(Icons.smartphone),
+              showCheckmark: false,
+              onSelected: (bool selected) =>
+                  _onSelected(selected ? ThemeMode.system : null)),
+          ChoiceChip(
+              selected: ThemeMode.dark == ThemeModel.instance().themeMode,
+              label: Text(ThemeMode.dark.name),
+              avatar: Icon(Icons.dark_mode),
+              showCheckmark: false,
+              onSelected: (bool selected) =>
+                  _onSelected(selected ? ThemeMode.dark : null)),
+          ChoiceChip(
+              selected: ThemeMode.light == ThemeModel.instance().themeMode,
+              label: Text(ThemeMode.light.name),
+              avatar: Icon(Icons.light_mode),
+              showCheckmark: false,
+              onSelected: (bool selected) =>
+                  _onSelected(selected ? ThemeMode.light : null)),
+        ],
+      ),
     );
   }
+
+  _onSelected(ThemeMode? newSelection) => setState(() {
+        ThemeModel.instance().setThemeMode(newSelection ?? ThemeMode.system);
+      });
 }
 
 /// The [ThemeMode] class is used to manage the app's theme.
