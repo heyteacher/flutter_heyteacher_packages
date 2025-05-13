@@ -1,4 +1,10 @@
-// somewhere else in your project
+/// Provides a global way to access a [BuildContext] from anywhere in the application.
+///
+/// This is primarily useful for accessing services that typically require a context,
+/// such as localization or `ScaffoldMessenger`, from non-widget parts of the codebase
+/// (e.g., business logic classes).
+library;
+
 import 'package:flutter/material.dart';
 
 /// Context helper for get [BuildContext] outside widget, for example getting

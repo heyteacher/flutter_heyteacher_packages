@@ -1,8 +1,20 @@
+/// Configures and activates Firebase App Check for the application.
+///
+/// Firebase App Check helps protect backend resources from abuse, such as billing
+/// fraud or phishing, by ensuring that incoming requests originate from authentic
+/// app instances. This library sets up App Check with appropriate providers
+/// for web, Android, and Apple platforms.
+library;
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter/foundation.dart';
 
+/// Initializes and activates Firebase App Check with platform-specific providers.
+///
+/// - For web, it uses `ReCaptchaV3Provider` with a site key fetched from Firebase Remote Config.
+/// - For Android, it uses `AndroidProvider.playIntegrity` in release mode and `AndroidProvider.debug` in debug mode.
+/// - For Apple platforms (iOS/macOS), it uses `AppleProvider.appAttest`.
 Future<void> configureAppCheck() async {
   final log = Logger("configureAppCheck");
   AndroidProvider androidProvider = kDebugMode ? AndroidProvider.debug: AndroidProvider.playIntegrity;

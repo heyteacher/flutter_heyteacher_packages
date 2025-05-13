@@ -1,3 +1,12 @@
+
+/// Provides routing utilities for Flutter applications using `go_router`.
+///
+/// This library includes:
+/// - [GoAuthRoute]: A helper class to easily set up authentication-related routes
+///   (sign-in, sign-out) compatible with `firebase_ui_auth`.
+/// - [ScaffoldWithNavBar]: A reusable scaffold widget that integrates with
+///   `go_router`'s `StatefulShellRoute` to provide a common UI structure
+///   with a bottom navigation bar.
 library;
 
 import 'package:flutter/material.dart';

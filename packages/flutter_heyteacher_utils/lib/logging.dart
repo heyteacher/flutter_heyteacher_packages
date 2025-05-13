@@ -1,3 +1,13 @@
+/// Configures and initializes the application's logging system.
+///
+/// This library sets up a global logger that:
+/// - Outputs detailed logs to the console when in debug mode (`kDebugMode`).
+/// - Sends structured log events to Firebase Analytics.
+/// - Dynamically sets the root logger level based on Firebase Remote Config
+///   (or defaults to a verbose level in debug mode).
+/// - Enriches log messages with application version, device information, and a unique identifier.
+library;
+
 import 'dart:math';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'formats.dart';
@@ -6,6 +16,14 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
+/// Configures the root logger for the application.
+///
+/// Sets the logger's level based on `kDebugMode` and Firebase Remote Config.
+/// It then attaches a listener that processes log records to:
+/// 1. Print formatted logs to the console if `kDebugMode` is true.
+/// 2. Send structured log events to Firebase Analytics, including version,
+///    device info, level, message, error (if any), stack trace (if any), and a user identifier.
+///    Message, error, and stack trace are truncated to 100 characters for Firebase.
 Future<void> configureLogging() async {
   // logging configuration, if debug mode force level ALL
   Logger.root.level = Level(

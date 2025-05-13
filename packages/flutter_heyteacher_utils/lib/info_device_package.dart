@@ -1,3 +1,11 @@
+/// Provides utilities for retrieving device and application package information,
+/// and a widget to display this information along with a support request option.
+///
+/// This library includes:
+/// - [DevicePackageInfoListTile]: A [ListTile] widget that displays formatted
+///   device and package version information, and a button to initiate a support email.
+/// - [InfoDevicePackageModel]: A singleton class that fetches detailed device
+///   information (OS, model, browser) and package information (version, build number).
 library;
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -12,6 +20,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// A widget that displays device and package information in a list tile format.
 ///
+/// It asynchronously fetches and shows the device identifier, device details (model, OS version),
+/// and the application's version and build number.
+/// It also includes a "Support" button that opens the default email client
 /// It shows the device type, version, and a button to ask for support.
 class DevicePackageInfoListTile extends StatelessWidget {
   const DevicePackageInfoListTile({super.key});
@@ -47,6 +58,12 @@ class DevicePackageInfoListTile extends StatelessWidget {
   }
 }
 
+/// Constructs and launches a "mailto" URI to allow users to ask for support.
+///
+/// The email is pre-filled with:
+/// - A subject line indicating the app name.
+/// - A body containing the user's identifier, device information, and app version,
+///   formatted for easy support.
 void _askSupport() async {
   final packageInfoPlatform = await PackageInfo.fromPlatform();
   final version = await InfoDevicePackageModel.instance.packageVersion;
@@ -67,12 +84,25 @@ void _askSupport() async {
   launchUrl(uri);
 }
 
+/// A singleton model class responsible for fetching and providing
+/// device-specific information and application package details.
+///
+/// Access the singleton instance via `InfoDevicePackageModel.instance`.
 class InfoDevicePackageModel {
   static InfoDevicePackageModel? _instance;
+
+  /// Provides the singleton instance of [InfoDevicePackageModel].
   static InfoDevicePackageModel get instance =>
       _instance ??= InfoDevicePackageModel._();
+
+  /// Private constructor for the singleton.
   InfoDevicePackageModel._();
 
+  /// Asynchronously retrieves detailed information about the current device.
+  ///
+  /// For web, it returns browser name and user agent.
+  /// For mobile (Android/iOS), it returns model, OS version, and SDK/system version.
+  /// For other platforms, it returns the platform name.
   Future<String> get deviceInfo async {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     if (kIsWeb) {
@@ -100,11 +130,18 @@ class InfoDevicePackageModel {
     }
   }
 
+  /// Asynchronously retrieves the application's package version and build number.
+  ///
+  /// Formats it as "version+buildNumber".
   Future<String> get packageVersion async {
     final packageInfoPlatform = await PackageInfo.fromPlatform();
     return "${packageInfoPlatform.version}+${packageInfoPlatform.buildNumber}";
   }
 
+  /// Gets a user identifier string.
+  ///
+  /// It returns the first 5 characters of the authenticated user's UID if available,
+  /// otherwise defaults to "guest".
   String get identifierInfo =>
       (Auth.instance().uid?.substring(0, 5)) ?? "guest";
 }

@@ -17,4 +17,4 @@
 /// for `mayor`, `minor`, `patch`, and `build` commands unless `--dry-run` is specified.
 library;
 
-export '../lib/version.dart' show main;
+export 'src/version.dart' show main;

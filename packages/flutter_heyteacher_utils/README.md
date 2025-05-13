@@ -1,32 +1,34 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-This package collects common commands, classes, widgets used in my projects, 
-in order to mantain a unique and autoritative version of implementation 
-avoiding the `copy-and-paste` pattern.
+A collection of common utilities (classes, helpers widgets, functions, etc..) 
+that are used in [flutter] `heyteacher` apps, in order to mantain a unique
+and autoritative version of implementation avoiding the `copy-and-paste` 
+pattern, and decoupling dependencies like firebase.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-* firebase package configuration
-* command line `version` for upgrade `pubsec.yaml` package version using semver notation (`mayor`, `minor`, `patch` and `build`)
-* formats utils
-* platform, date and shared preferenses helpers
-* routing utils to bild app routes
-* localization utils
-* End 2 End Encryption (E2EE)
-* Theme helper
+* [firebase] library which exports common Firebase-related utiliti
+  formats utils
+* [e2ee] provides End-to-End Encryption (E2EE) capabilities using AES-GCM.
+* [info_device_package] provides utilities for retrieving device and application
+  package information, and a widget to display this information along with a 
+  support request option.
+* [logging] configures and initializes the application's logging system.
+* [routing] provides routing utilities for Flutter applications using 
+*  `go_router`.
+* [localization]
+* [theme] manages application-wide theming, including theme selection UI,
+  theme persistence, and dynamic theme updates
+* [widgets] a collection of reusable Flutter widgets and utility functions
+* [formats] provides a collection of pre-configured formatters for dates, times, 
+  numbers, and durations 
+* [date_helpers] provides extension methods on [DateTime] to determine its 
+  relation to the current day (e.g., today, yesterday, tomorrow)..
+* [platform_helper] provides utility methods and properties to easily determine 
+  the current operating platform (e.g., mobile, web, desktop).
+* [context_helper] provides a global way to access a [BuildContext] from 
+  anywhere in the application.
+* [version] a command-line utility to manage the version string in `pubspec.yaml`
+* [color_to_int32_extension] provides an extension on [Color] to convert it to a
+  32-bit integer representation
 
 ## Getting started
 
@@ -40,7 +42,7 @@ flutter pub add flutter_heyatecher_utils
 
 ## Usage
 
-### version command
+### command-line utility `version`
 
 From the root of your project, run:
 
@@ -48,9 +50,11 @@ From the root of your project, run:
 dart run flutter_heyteacher_utils:version mayor|minor|patch|build|show|show-build [--dry-run]
 ```
 
-* `mayor`,`minor`, `patch` increment the version in your `pubsec.yaml`. `--dry-run` show how the version will be changed without modify `pubsec.yaml`
+* `mayor`,`minor`, `patch` increment the version in your `pubsec.yaml`.
+  `--dry-run` show how the version will be changed without modify `pubsec.yaml`
 
-* `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on the current time. 
+* `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on 
+  the current time. 
   
 * `dry-run` show how the version will be changed without modify `pubsec.yaml`
 
@@ -58,7 +62,8 @@ dart run flutter_heyteacher_utils:version mayor|minor|patch|build|show|show-buil
 
 * `show-build` print only the build version from `pubsec.yaml`
 
-You can configure you `vscode` to execute the command with `build` in order to automatically update build version every run/debug execution of your code:
+You can configure you `vscode` to execute the command with `build` in order to 
+automatically update build version every run/debug execution of your code:
 
 * create/modify `.vscode/tasks.json` in the root of your project 
   
@@ -115,7 +120,7 @@ You can configure you `vscode` to execute the command with `build` in order to a
   ```
 * in root project creat `l10n.yaml`
   ```yaml
-  arb-dir: lib/l10n
+  arb-dir: lib/src/l10n
   template-arb-file: flutter_heyteacher_utils_en.arb
   output-localization-file: flutter_heyteacher_utils.dart
   output-class: FlutterHeyteacherUtilsLocalizations
@@ -132,7 +137,8 @@ You can configure you `vscode` to execute the command with `build` in order to a
 
 * insert in `flutter_heyteacher_utils_en.arb` the translation
 
-* commit `desiredFileName.txt` the file containing localized strings to be translated, this file should be always empty
+* commit `desiredFileName.txt` the file containing localized strings to be 
+  translated, this file should be always empty
   ```bash
   git add desiredFileName.txt
   git commit -m "localized strings to be translated, this file should be always empty"
@@ -186,7 +192,6 @@ You can configure you `vscode` to execute the command with `build` in order to a
   FlutterHeyteacherUtilsLocalizations.of(context)!.userNotAutenticated
   ```
   
-
 ## End 2 End Encryption (E2EE) 
 
 compiler webwrypto library before first run of `flutter test`
@@ -194,4 +199,3 @@ compiler webwrypto library before first run of `flutter test`
 ```bash
 flutter pub run webcrypto:setup
 ```
-

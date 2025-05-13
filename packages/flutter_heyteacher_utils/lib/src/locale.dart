@@ -1,12 +1,10 @@
-library;
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart';
+import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart'; // Assuming SharedPreferencesAsync is defined here or re-exported
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// The [Locale] list tile widget.
+/// A [ListTile] widget that allows users to select the application's [Locale].
 ///
 /// This widget is used to select the locale supported by the app.
 class LocaleListTile extends StatefulWidget {
@@ -45,21 +43,29 @@ class _LocaleListTileState extends State<LocaleListTile> {
   }
 }
 
-/// The [Locale] model class is used to manage the app's supporded locale.
+/// Manages the application's selected [Locale] for localization.
 ///
-/// The locale is saved in the [SharedPreferencesAsync] on key `fhu_locale`.
-/// Locale changes are yield on [localeStream].
+/// This class follows a singleton pattern, accessible via `LocaleModel.instance`.
+///
+/// Key functionalities:
+/// - Persists the selected [Locale] (by its language code) using [SharedPreferences]
+///   (via a hypothetical `SharedPreferencesAsync`).
+/// - Exposes a [localeStream] to notify listeners of locale changes.
+/// - Allows setting and getting the current application locale.
+///
+/// The locale is stored under the key `_sharedPreferencesLocaleKey` in shared preferences.
+/// If no locale is explicitly set or loaded, it defaults to the system's locale or the first supported locale.
 class LocaleModel {
   Locale? _locale;
 
+  /// The key used to store the selected locale's language code in [SharedPreferences].
   static const _sharedPreferencesLocaleKey = 'fhuLocale';
 
   static LocaleModel? _instance;
+  /// Provides the singleton instance of [LocaleModel].
   static LocaleModel get instance => _instance ??= LocaleModel._();
-
-  /// Private constructor to prevent instantiation
-  /// of the class from outside.
-  /// This constructor loads the saved locale from [SharedPreferencesAsync]
+  /// Private constructor for the singleton.
+  /// Initializes the model by attempting to load the persisted locale from [SharedPreferencesAsync].
   LocaleModel._() {
     // Load the saved locale from SharedPreferences
     SharedPreferencesAsync()
@@ -74,15 +80,20 @@ class LocaleModel {
     });
   }
 
+  /// A stream controller to broadcast locale changes.
   final StreamController<Locale> _localeStreamController =
       StreamController<Locale>.broadcast();
 
-  /// stream yield [Locale] changes
+  /// A stream that emits the new [Locale] whenever it changes.
+  ///
+  /// Widgets can listen to this stream to rebuild when the application's locale is updated.
   Stream<Locale> get localeStream => _localeStreamController.stream;
 
-  /// get the current [Locale]
+  /// Gets the current application [Locale].
+  ///
+  /// This might be `null` initially or if the persisted locale is invalid,
+  /// in which case the application might fall back to `Localizations.localeOf(context)`.
   Locale? get locale => _locale;
-
   /// set the [Locale] and save it to SharedPreferences.
   ///
   /// If [newLocale] is null, remove the saved locale from SharedPreferences

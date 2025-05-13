@@ -1,9 +1,11 @@
-/// The Authentication utility based on [FirebaseAuth] and [GoogleProvider].
+/// Provides authentication services using Firebase Authentication.
 ///
-/// Provider the current user authenticated info (`uid`, `display name`).
-/// 
-/// Can be instantiated with a `mocked` Firebase Auth useful for tests and
-/// E2E tests.
+/// This library offers a singleton `Auth` class to manage user sign-in,
+/// sign-out, and access to current user information (like UID and display name).
+/// It integrates with `firebase_ui_auth` and `firebase_ui_oauth_google` for
+/// Google Sign-In capabilities.
+///
+/// It supports initialization with a mocked [FirebaseAuth] instance for testing purposes.
 library;
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +16,12 @@ import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:logging/logging.dart';
 
+/// Manages user authentication state and operations via Firebase.
+///
+/// This class is a singleton, accessible via `Auth.instance()`.
+/// It provides methods for signing out, accessing the current [User] object,
+/// checking authentication status, and listening to authentication state changes.
+/// It can be initialized with a real or mocked [FirebaseAuth] instance.
 class Auth {
   final log = Logger("Auth");
   late final FirebaseAuth _firebaseAuth;
@@ -22,15 +30,19 @@ class Auth {
   // singleton
   static Auth? _instance;
 
-  /// Gets an instance of [Auth].
-  /// 
+  /// Provides the singleton instance of the [Auth] manager.
+  ///
   /// If [mockedFirebaseAuth] is not null, initialize with the mocked Firebase
-  /// Auth and doesn't instantiate the Google Provider
+  /// Auth, and the Google Sign-In provider will not be configured.
+  /// This is useful for testing environments.
   static Auth instance({FirebaseAuth? mockedFirebaseAuth}) {
     _instance ??= Auth._(mockedFirebaseAuth: mockedFirebaseAuth);
     return _instance!;
   }
 
+  /// Private constructor for the singleton.
+  /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth] or the default [FirebaseAuth.instance].
+  /// Configures [GoogleProvider] if not using a mocked instance.
   Auth._({FirebaseAuth? mockedFirebaseAuth}) {
     // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth 
     //and configure provider
@@ -43,7 +55,10 @@ class Auth {
     _firebaseAuth = mockedFirebaseAuth ?? FirebaseAuth.instance;
   }
 
-  /// Manage the signout from [FirebaseAuth] and [GoogleProvider].
+  /// Signs out the current user from Firebase Authentication.
+  ///
+  /// If a [GoogleProvider] was configured, it also attempts to sign out
+  /// from the Google provider.
   Future<void> signOut() async {
     final log = Logger("signOut");
     try {
@@ -55,30 +70,35 @@ class Auth {
     }
   }
 
-  /// Gets the current user authenticated.
+  /// Gets the currently authenticated Firebase [User].
   ///
-  /// Return null if not authenthenticated
+  /// Returns `null` if no user is currently signed in.
   User? get user => _firebaseAuth.currentUser;
 
-  /// Returns if the user is authenticated.
+  /// Returns `true` if a user is currently authenticated, `false` otherwise.
   bool get autenticated => user != null;
 
-  /// Returns if the user is not authenticated.
+  /// Returns `true` if no user is currently authenticated, `false` otherwise.
   bool get notAutenticated => !autenticated;
 
-  /// Returns if the `displayName` is not authenticated.
+  /// Gets the display name of the currently authenticated user.
+  ///
+  /// Returns `null` if no user is signed in or if the user has no display name.
   String? get displayName => user?.displayName;
 
-  /// Returns if the `uid` is not authenticated.
+  /// Gets the unique ID (UID) of the currently authenticated user.
+  ///
+  /// Returns `null` if no user is signed in.
   String? get uid => user?.uid;
 
-  /// Returns the stream of user state changes
+  /// A stream that emits the [User] object when the authentication state changes.
+  ///
+  /// Emits `null` when the user signs out.
   Stream<User?> get stateChangesStream => _firebaseAuth.authStateChanges();
 }
 
-
-/// Exception raised when autentication is required but user isn't 
-/// authenticated.
+/// Exception thrown when an operation requiring authentication is attempted
+/// but no user is currently signed in.
 class UserNotAuthenticatedException implements Exception {
   UserNotAuthenticatedException();
 

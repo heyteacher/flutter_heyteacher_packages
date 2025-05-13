@@ -1,3 +1,19 @@
+/// A collection of reusable Flutter widgets and utility functions, 
+/// likely intended to streamline UI development within the Flutter application.
+/// 
+/// * [FutureStreamBuilder] builder: cleverly combines a [FutureBuilder] with 
+///   a [StreamBuilder].
+///
+/// * [showSnackBar] function: displays a SnackBar 
+///
+/// * [showConfirmCancelDialog] function: displays a 
+///    standard `AlertDialog` to ask the user for confirmation or cancellation 
+///    of an action.
+///
+/// * [ProgressIndicatorView] widget: displays a [CircularProgressIndicator] 
+///    centered on the screen.
+///
+/// * [ErrorView] widget: displays different error states to the user.
 library;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,12 +25,19 @@ import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
-///  A [StreamBuilder] initialized with a [FutureBuilder].
+/// A [StreamBuilder] initialized with a [FutureBuilder].
 /// 
-/// Get asynchronously output the [future] then listen the [stream]. 
+/// It first waits for the [future] (an asynchronous operation that completes 
+/// once) to provide an initial piece of data. Once that future completes 
+/// successfully and has data, it then uses that data as the initialData for an 
+/// inner [StreamBuilder]. This StreamBuilder then listens to the provided 
+/// [stream] for ongoing updates.
+/// 
+/// Useful when you need to fetch an initial state (e.g., from a database or 
+/// API) and then subscribe to real-time updates for that same data.
 class FutureStreamBuilder<T> extends FutureBuilder<T> {
 
-  ///  the [stream]
+  ///  the [stream] parameter of [StreamBuilder]
   final Stream<T> stream;
 
   const FutureStreamBuilder(
@@ -33,6 +56,12 @@ class FutureStreamBuilder<T> extends FutureBuilder<T> {
           : super.builder(context, futureSnapshot);
 }
 
+/// Easily display a [SnackBar] (a brief message shown at the bottom of the 
+/// screen).
+/// 
+/// It takes the [BuildContext], the [message] to display, an optional 
+/// [duration] (in seconds), and a boolean [error] flag to show message in 
+/// red as an error (othersise in green for succes message)
 void showSnackBar(
         {required BuildContext? context,
         required String message,
@@ -59,6 +88,13 @@ void showSnackBar(
           )
         : null;
 
+/// Displays a standard [AlertDialog] to ask the user for confirmation or 
+/// cancellation of an action.
+/// 
+/// It takes the [BuildContext], a [confirmCallback] (executed if the user 
+/// confirms) and [cancelCallback] (executed if the user cancels), a [param] 
+/// of type [ObjectParamType] passed to callbacks, the [title] and the [content]
+/// of dialog. 
 Future<void> showConfirmCancelDialog<ObjectParamType>(
     {required BuildContext context,
     Future<String?> Function(ObjectParamType?)? confirmCallback,
@@ -87,7 +123,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
               icon: Icon(Icons.close,
                   color: Theme.of(context).colorScheme.onError),
               onPressed: () {
-                // // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+                // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
                 SchedulerBinding.instance.addPostFrameCallback((_) {
                   Navigator.of(context).pop(false);
                 });
@@ -98,7 +134,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
                 key: ValueKey("ib_dialog_yes"),
                 icon: Icon(Icons.check),
                 onPressed: () async {
-                  // // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+                  // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
                   SchedulerBinding.instance.addPostFrameCallback((_) {
                     Navigator.of(context).pop(true);
                   });
@@ -127,6 +163,10 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
   }
 }
 
+/// Displays a CircularProgressIndicator centered on the screen.
+/// 
+/// Typically used to indicate that some background processing or data loading 
+/// is happening.
 class ProgressIndicatorView extends StatelessWidget {
   const ProgressIndicatorView({
     super.key,
@@ -140,6 +180,12 @@ class ProgressIndicatorView extends StatelessWidget {
       );
 }
 
+/// Displays different error states to the user.
+///
+///  It takes [error] and [stackTrace] raised by [Exception].
+/// 
+/// If the exception is a [FirebaseException] with [FirebaseException.code] 
+/// `permission-denied` it shows a login button to navigate on auth screen.
 class ErrorView extends StatelessWidget {
   static final _log = Logger("ErrorView");
 
