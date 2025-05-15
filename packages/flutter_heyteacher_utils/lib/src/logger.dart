@@ -30,8 +30,8 @@ class LogEntry {
   final Level level;
   final String message;
   final String loggerName;
-  final Object? error;
-  final StackTrace? stackTrace;
+  final String? error;
+  final String? stackTrace;
 
   LogEntry(
       {required this.time,
@@ -249,6 +249,15 @@ class LoggerModel {
           .toList() ??
       [];
 
+  Future<String> get logs2Text async => (await LoggerModel.instance().logs)
+      .reversed
+      .map((logEntry) => '${timeWithSecondsFormatter.format(logEntry.time)} - '
+          '[${logEntry.level.name}] - ${logEntry.loggerName} - '
+          '${logEntry.message}'
+          '${logEntry.error != null ? ' - ${logEntry.error}' : ''}'
+          '${logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''}')
+      .join('\n');
+
   ///
 
   /// Provides the singleton instance of [LoggerModel].
@@ -360,8 +369,8 @@ class LoggerModel {
         level: record.level,
         message: record.message,
         loggerName: record.loggerName,
-        error: record.error,
-        stackTrace: record.stackTrace);
+        error: record.error?.toString(),
+        stackTrace: record.stackTrace?.toString());
 
     // Maintain a maximum of 1000 logs in memory.
     if (logs.length >= 1000) logs.removeLast();

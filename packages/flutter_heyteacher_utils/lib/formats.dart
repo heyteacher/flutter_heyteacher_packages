@@ -8,8 +8,12 @@ library;
 
 import 'package:intl/intl.dart';
 
-/// Formatter for date and time, suitable for Firestore keys (e.g., "yyyyMMdd_HHmmss").
-final DateFormat firestorKeyDateTimeFormatter = DateFormat("yyyyMMdd_HHmmss");
+/// Formatter for date and time, suitable for machine keys (e.g., "yyyyMMdd_HHmmss").
+final DateFormat machineDateTimeFormatter = DateFormat("yyyyMMdd_HHmmss");
+
+final DateFormat machineDateFormatter = DateFormat("yyyyMMdd");
+
+final DateFormat machineTimeFormatter = DateFormat("HHmmss");
 
 /// Formatter for date and time (e.g., "dd/MM/yyyy HH:mm").
 final DateFormat dateTimeFormatter = DateFormat("dd/MM/yyyy HH:mm");

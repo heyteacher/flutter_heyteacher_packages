@@ -8,12 +8,18 @@
 ///   information (OS, model, browser) and package information (version, build number).
 library;
 
+import 'dart:math';
+
+import 'package:clock/clock.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
+import 'package:flutter_heyteacher_utils/formats.dart';
+import 'package:flutter_heyteacher_utils/logger.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/storage.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -52,6 +58,7 @@ class DevicePackageInfoListTile extends StatelessWidget {
             foregroundColor: ThemeModel.instance().theme.colorScheme.onPrimary,
           ),
           onPressed: _askSupport,
+          // TODO localization with Ask Support
           child:
               Text(FlutterHeyteacherUtilsLocalizations.of(context)!.support)),
     );
@@ -65,15 +72,25 @@ class DevicePackageInfoListTile extends StatelessWidget {
 /// - A body containing the user's identifier, device information, and app version,
 ///   formatted for easy support.
 void _askSupport() async {
+  final i10n = FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!; 
   final packageInfoPlatform = await PackageInfo.fromPlatform();
   final version = await InfoDevicePackageModel.instance.packageVersion;
   final device = await InfoDevicePackageModel.instance.deviceInfo;
+  final identifierInfo = InfoDevicePackageModel.instance.identifierInfo;
+  final machineDate = machineDateFormatter.format(clock.now());
+  final machineTime = machineTimeFormatter.format(clock.now());
+  final randomId =  Random().nextInt(1000000000).toString().padLeft(10, '0');
+  final logFilename = 'applogs/$machineDate/$machineTime-$identifierInfo-$randomId.log';
+  await StorageModel.instance
+      .uploadString(logFilename, await LoggerModel.instance().logs2Text);
   final subject =
-      "${FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!.askSupportFor}"
+      "${i10n.askSupportFor}"
       "${packageInfoPlatform.appName}";
   final body = "------------------------------------\n"
-      "Identifier:\t${InfoDevicePackageModel.instance.identifierInfo}-$device\n"
+      "Identifier:\t$identifierInfo\n"
+      "Device:\t$device\n"
       "Version:\t$version\n"
+      "Logs:\t$logFilename\n"
       "------------------------------------\n"
       "\n";
   final uri = Uri(

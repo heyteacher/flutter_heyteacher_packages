@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Formatters', () {
     test('firestorKeyDateTimeFormatter has correct pattern', () {
-      expect(firestorKeyDateTimeFormatter.pattern, "yyyyMMdd_HHmmss");
+      expect(machineDateTimeFormatter.pattern, "yyyyMMdd_HHmmss");
     });
 
     test('dateTimeFormatter has correct pattern', () {
