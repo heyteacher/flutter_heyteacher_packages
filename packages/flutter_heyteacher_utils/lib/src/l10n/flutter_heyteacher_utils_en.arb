@@ -29,5 +29,11 @@
   "askSupportFor": "Ask support for: ",
   "@askSupportFor": {},
   "logging": "Logging",
-  "@logging": {}
+  "@logging": {},
+  "nMinutes": "{minutes, plural, =1{one minute} other{{minutes} minutes}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {}
+    }
+  }
 }

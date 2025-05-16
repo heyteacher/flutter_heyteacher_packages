@@ -31,5 +31,12 @@
   "askSupport": "Support anfordern",
   "@askSupport": {},
   "logging": "Protokollierung",
-  "@logging": {}
+  "@logging": {},
+  "nMinutes": "{minutes, plural, =1{{minutes} Minuten} other{{minutes} Minuten}} ",
+  "@nMinutes": {
+    "description": "Anzahl der Minuten, Platzhalter {n} wird durch die tatsächliche Zahl ersetzt",
+    "placeholders": {
+      "minutes": {}
+    }
+  }
 }

@@ -14,5 +14,12 @@
     "version": "Versione: ",
     "askSupportFor": "Chiedi supporto per: ",
     "askSupport": "Chiedi supporto",
-    "logging": "Registrazione"
+    "logging": "Registrazione",
+    "nMinutes": "{minutes, plural, =1{{minutes} minuto} other{{minutes} minutes}}",
+    "@nMinutes": {
+        "description": "Indicates the number of minutes, parameter n is the number of minutes.",
+        "placeholders": {
+            "minutes": {}
+        }
+    }
 }

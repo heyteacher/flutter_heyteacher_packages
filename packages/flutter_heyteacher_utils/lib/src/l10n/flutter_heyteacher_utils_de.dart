@@ -52,4 +52,15 @@ class FlutterHeyteacherUtilsLocalizationsDe extends FlutterHeyteacherUtilsLocali
 
   @override
   String get logging => 'Protokollierung';
+
+  @override
+  String nMinutes(num minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes Minuten',
+      one: '$minutes Minuten',
+    );
+    return '$_temp0 ';
+  }
 }

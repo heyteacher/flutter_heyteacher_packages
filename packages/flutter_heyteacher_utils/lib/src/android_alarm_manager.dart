@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
+import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,9 +63,10 @@ enum AlarmManagerIntervalKeys {
 /// to select and persist the interval for the Android Alarm Manager.
 class AlarmManagerIntervalListTile extends StatefulWidget {
   final AndroidAlarmManagerModel _androidAlarmManagerModel;
+  final String label;
 
   const AlarmManagerIntervalListTile(this._androidAlarmManagerModel,
-      {super.key});
+      {required this.label, super.key});
 
   @override
   State<AlarmManagerIntervalListTile> createState() =>
@@ -86,7 +88,7 @@ class _AlarmManagerIntervalListTileState
           DropdownMenu<AlarmManagerIntervalKeys>(
             enableSearch: false,
             enableFilter: false,
-            label: Text('Alarm Manager Interval'),
+            label: Text(widget.label),
             trailingIcon: const Icon(Icons.filter_list),
             // Updates shared preferences `androidAlarmManagerIntervalInMinutes`
             onSelected: (alarmManagerIntervalInMinutes) async {
@@ -110,7 +112,8 @@ class _AlarmManagerIntervalListTileState
                 .map((alarmManagerIntervalInMinutes) =>
                     DropdownMenuEntry<AlarmManagerIntervalKeys>(
                       value: alarmManagerIntervalInMinutes,
-                      label: '${alarmManagerIntervalInMinutes.minutes} minutes',
+                      label: FlutterHeyteacherUtilsLocalizations.of(context)!
+                          .nMinutes(alarmManagerIntervalInMinutes.minutes),
                     ))
                 .toList(),
           ),
@@ -134,6 +137,7 @@ abstract class AndroidAlarmManagerModel {
   final _log = Logger('AndroidAlarmManagerModel');
   static const int _alarmID = 0;
   final _sharedPreferences = SharedPreferencesAsync();
+
   /// Initializes the Android Alarm Manager.
   ///
   /// This function is called when the app is started
@@ -146,13 +150,13 @@ abstract class AndroidAlarmManagerModel {
   /// The alarm is set to run even if the device is in doze mode.
   ///
   /// Parameters:
-  /// - [allowWhileIdle]: Whether the alarm should be allowed to run when the 
+  /// - [allowWhileIdle]: Whether the alarm should be allowed to run when the
   ///   device is in Doze mode. Defaults to `true`.
-  /// - [wakeup]: Whether the alarm should wake up the device. 
+  /// - [wakeup]: Whether the alarm should wake up the device.
   ///   Defaults to `true`.
-  /// - [rescheduleOnReboot]: Whether the alarm should be rescheduled after a 
+  /// - [rescheduleOnReboot]: Whether the alarm should be rescheduled after a
   ///   device reboot. Defaults to `true`.
-  /// - [exact]: Whether the alarm should be exact. If `false`, the alarm might 
+  /// - [exact]: Whether the alarm should be exact. If `false`, the alarm might
   ///   be delayed by the OS. Defaults to `true`.
   Future<void> initialize(
       {bool allowWhileIdle = true,

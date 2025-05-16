@@ -192,6 +192,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Logging'**
   String get logging;
+
+  /// No description provided for @nMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =1{one minute} other{{minutes} minutes}}'**
+  String nMinutes(num minutes);
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {

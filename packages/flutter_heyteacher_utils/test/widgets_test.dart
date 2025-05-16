@@ -67,6 +67,11 @@ class MockFlutterHeyteacherUtilsLocalizations
   
   @override
   String get logging => 'Logging';
+  
+  @override
+  String nMinutes(num minutes) {
+    return '$minutes minutes';
+  }
 }
 
 class _MockLocalizationsDelegate

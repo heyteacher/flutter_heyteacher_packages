@@ -31,5 +31,12 @@
   "askSupport": "Demander de l'aide",
   "@askSupport": {},
   "logging": "Journalisation",
-  "@logging": {}
+  "@logging": {},
+  "nMinutes": "{minutes, plural, =1{{minutes} minute} other{{minutes} minutes}}",
+  "@nMinutes": {
+    "description": "Indicates a duration in minutes",
+    "placeholders": {
+      "minutes": {}
+    }
+  }
 }
