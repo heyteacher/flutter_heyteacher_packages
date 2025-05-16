@@ -10,7 +10,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:logging/logging.dart';
 
-enum RemoteConfig {
+enum RemoteConfigKeys {
   remoteConfigFetchTimeoutInMilliseconds,
   remoteConfigMinimumFetchIntervalInMinutes
 }
@@ -35,8 +35,8 @@ class RemoteConfigModel {
 
     defaultParameters ??= {};
     defaultParameters.addAll({
-      RemoteConfig.remoteConfigFetchTimeoutInMilliseconds.name: 60000,
-      RemoteConfig.remoteConfigMinimumFetchIntervalInMinutes.name: 60,
+      RemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name: 60000,
+      RemoteConfigKeys.remoteConfigMinimumFetchIntervalInMinutes.name: 60,
     });
 
     // firebase remote config
@@ -44,10 +44,10 @@ class RemoteConfigModel {
     _remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: Duration(
           milliseconds: _remoteConfig.getInt(
-              RemoteConfig.remoteConfigFetchTimeoutInMilliseconds.name)),
+              RemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name)),
       minimumFetchInterval: Duration(
           minutes: _remoteConfig.getInt(
-              RemoteConfig.remoteConfigMinimumFetchIntervalInMinutes.name)),
+              RemoteConfigKeys.remoteConfigMinimumFetchIntervalInMinutes.name)),
     ));
     if (PlatformHelper.isMobile) {
       _remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
