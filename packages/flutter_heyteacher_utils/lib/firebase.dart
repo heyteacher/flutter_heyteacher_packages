@@ -8,7 +8,7 @@
 /// - Remote Config configuration ([configureRemoteConfig])
 library;
 
-export 'src/firebase/app_check.dart' show configureAppCheck;
+export 'src/firebase/app_check.dart' show AppCheckModel;
 export 'src/firebase/auth.dart' show AuthModel, UserNotAuthenticatedException;
-export 'src/firebase/crashlytics.dart' show configureCrashlytics;
+export 'src/firebase/crashlytics.dart' show CrashlyticsModel;
 export 'src/firebase/remote_config.dart' show  RemoteConfigModel;

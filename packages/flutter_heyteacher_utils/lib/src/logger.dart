@@ -275,7 +275,14 @@ class LoggerModel {
   ///
   /// This should be called when the logger model is no longer needed to prevent memory leaks.
   dispose() {
+    _log.info('dispose: remove shared properties $_sharedPreferencesLogsKey');
+    _sharedPreferences.remove(_sharedPreferencesLogsKey);
+    _log.info('dispose: cancel logger subscription');
     _loggerSubscription?.cancel();
+    _log.info('dispose: close stream controller');
+    _streamController.close();
+    _instance = null;
+    _alreadyConfigured = false;
   }
 
   /// Private constructor for the singleton pattern.
@@ -293,7 +300,7 @@ class LoggerModel {
   /// 2. Send structured log events to Firebase Analytics, including version,
   ///    device info, level, message, error (if any), stack trace (if any), and a user identifier.
   ///    Message, error, and stack trace are truncated to 100 characters for Firebase.
-  configure() async {
+  initialize() async {
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured) {

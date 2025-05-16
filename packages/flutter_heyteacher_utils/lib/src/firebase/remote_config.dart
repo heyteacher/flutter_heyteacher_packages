@@ -20,7 +20,6 @@ class RemoteConfigModel {
 
   static RemoteConfigModel? _instance;
   RemoteConfigModel._();
-
   /// Provides the singleton instance of [RemoteConfigModel].
   static RemoteConfigModel get instance => _instance ??= RemoteConfigModel._();
 
@@ -30,7 +29,7 @@ class RemoteConfigModel {
   /// - Configures `RemoteConfigSettings` based on these defaults.
   /// - For mobile platforms, listens for configuration updates and activates them.
   /// - Fetches and activates the latest configuration from the Firebase backend.
-  Future<void> configure({Map<String, dynamic>? defaultParameters}) async {
+  Future<void> initialize({Map<String, dynamic>? defaultParameters}) async {
     final log = Logger("configureRemoteConfig");
 
     defaultParameters ??= {};
