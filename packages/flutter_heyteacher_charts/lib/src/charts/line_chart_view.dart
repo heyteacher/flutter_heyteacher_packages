@@ -100,7 +100,7 @@ class LineChartView extends ChartView {
   Widget _leftTitleWidgets(double value, TitleMeta meta) => Padding(
         padding: const EdgeInsets.only(right: 5),
         child: Text(formatterAxisY(ChartDataItem(x: 0, y: value)),
-            style: ThemeHepler.instance().theme.textTheme.bodySmall!
+            style: ThemeModel.instance().theme.textTheme.bodySmall!
             //.copyWith(color: ThemeHepler.instance().greenTextColor)
             ,
             textAlign: TextAlign.right),
@@ -115,11 +115,11 @@ class LineChartView extends ChartView {
           quarterTurns: 3,
           child: Text(
             formatterAxisX(ChartDataItem(x: value, y: 0)),
-            style: ThemeHepler.instance()
+            style: ThemeModel.instance()
                 .theme
                 .textTheme
                 .bodySmall!
-                .copyWith(color: ThemeHepler.instance().orangeTextColor),
+                .copyWith(color: ThemeModel.instance().orangeColor),
           ),
         ),
       ));
@@ -128,28 +128,28 @@ class LineChartView extends ChartView {
         show: true,
         border: Border(
           bottom: BorderSide(
-              color: ThemeHepler.instance()
+              color: ThemeModel.instance()
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: 0.5),
               width: 1),
           left: BorderSide(
-              color: ThemeHepler.instance()
+              color: ThemeModel.instance()
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: 0.5),
               width: 1),
           right: BorderSide(
-              color: ThemeHepler.instance()
+              color: ThemeModel.instance()
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: 0),
               width: 1),
           top: BorderSide(
-              color: ThemeHepler.instance()
+              color: ThemeModel.instance()
                   .theme
                   .colorScheme
                   .onSurface
@@ -161,7 +161,7 @@ class LineChartView extends ChartView {
   LineChartBarData get _lineChartBarData => LineChartBarData(
       isCurved: true,
       //curveSmoothness: 0,
-      color: ThemeHepler.instance()
+      color: ThemeModel.instance()
           .theme
           .colorScheme
           .onSurface /*.withOpacity(0.5)*/,
@@ -220,7 +220,7 @@ class LineChartView extends ChartView {
                   x: e.max.toDouble(),
                   color: e.color.withValues(alpha: 0.4),
                   label: VerticalLineLabel(
-                      style: TextStyle(color: ThemeHepler.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: ThemeModel.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
                       alignment: Alignment.topRight,
                       show: true,
                       labelResolver: (_) => "")),
