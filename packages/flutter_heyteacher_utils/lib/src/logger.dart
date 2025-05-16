@@ -15,6 +15,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
+import 'package:flutter_heyteacher_utils/localizations.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -86,7 +87,7 @@ class LoggerListTile extends StatelessWidget {
       leading: Icon(
         Icons.list,
       ),
-      title: Text('Logging'),
+      title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
       onTap: () {
         // Navigates to the logger screen using GoRouter.
         GoRouter.of(context).go('$_pathPrefix/${LoggingRouter.path}');
@@ -133,8 +134,8 @@ class _LoggerScreenState extends State<LoggerScreen> {
   /// Builds the UI for the logger screen.
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        // TODO localization
-        title: Text('Logging'),
+        title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
+            .logging),
         actions: [
           _buildLevelFilter(),
         ],
@@ -143,30 +144,33 @@ class _LoggerScreenState extends State<LoggerScreen> {
           future: LoggerModel.instance().logs,
           stream: LoggerModel.instance().stream,
           // Displays each log message as a Text widget in a ListView.
-          builder: (_, snapshot) => ListView(
-              children: snapshot.data
-                      ?.where((logEntry) =>
-                          _filterLevel == null ||
-                          logEntry.level == _filterLevel)
-                      .map(
-                        // Displays each log entry as a Card with details.
-                        (logEntry) => Card(
-                          color: _backgroundColor(logEntry.level),
-                          child: ListTile(
-                            leading: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(timeWithSecondsFormatter
-                                      .format(logEntry.time))
-                                ]),
-                            title: Text(logEntry.loggerName),
-                            subtitle: Text(logEntry.message),
-                            isThreeLine: true,
+          builder: (_, snapshot) => Padding(
+            padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+            child: ListView(
+                children: snapshot.data
+                        ?.where((logEntry) =>
+                            _filterLevel == null ||
+                            logEntry.level == _filterLevel)
+                        .map(
+                          // Displays each log entry as a Card with details.
+                          (logEntry) => Card(
+                            color: _backgroundColor(logEntry.level),
+                            child: ListTile(
+                              leading: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(timeWithSecondsFormatter
+                                        .format(logEntry.time))
+                                  ]),
+                              title: Text(logEntry.loggerName),
+                              subtitle: Text(logEntry.message),
+                              isThreeLine: true,
+                            ),
                           ),
-                        ),
-                      )
-                      .toList() ??
-                  [])));
+                        )
+                        .toList() ??
+                    []),
+          )));
 
   /// Builds the dropdown menu for filtering log levels.
   Widget _buildLevelFilter() {

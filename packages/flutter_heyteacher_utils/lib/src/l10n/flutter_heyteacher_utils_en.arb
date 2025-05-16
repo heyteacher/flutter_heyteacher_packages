@@ -24,8 +24,10 @@
   "@id": {},
   "version": "Version: ",
   "@version": {},
-  "support": "Support",
-  "@support": {},
+  "askSupport": "Ask Support",
+  "@askSupport": {},
   "askSupportFor": "Ask support for: ",
-  "@askSupportFor": {}
+  "@askSupportFor": {},
+  "logging": "Logging",
+  "@logging": {}
 }

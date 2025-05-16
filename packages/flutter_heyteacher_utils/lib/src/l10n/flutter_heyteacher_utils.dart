@@ -175,17 +175,23 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// **'Version: '**
   String get version;
 
-  /// No description provided for @support.
+  /// No description provided for @askSupport.
   ///
   /// In en, this message translates to:
-  /// **'Support'**
-  String get support;
+  /// **'Ask Support'**
+  String get askSupport;
 
   /// No description provided for @askSupportFor.
   ///
   /// In en, this message translates to:
   /// **'Ask support for: '**
   String get askSupportFor;
+
+  /// No description provided for @logging.
+  ///
+  /// In en, this message translates to:
+  /// **'Logging'**
+  String get logging;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {

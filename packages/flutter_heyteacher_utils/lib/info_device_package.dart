@@ -58,10 +58,9 @@ class DevicePackageInfoListTile extends StatelessWidget {
             foregroundColor: ThemeModel.instance().theme.colorScheme.onPrimary,
           ),
           onPressed: _askSupport,
-          // TODO localization with Ask Support
           child:
-              Text(FlutterHeyteacherUtilsLocalizations.of(context)!.support)),
-    );
+              Text(FlutterHeyteacherUtilsLocalizations.of(context)!.askSupport)
+    ));
   }
 }
 

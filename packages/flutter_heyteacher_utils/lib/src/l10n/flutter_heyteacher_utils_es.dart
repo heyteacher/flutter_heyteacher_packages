@@ -45,8 +45,11 @@ class FlutterHeyteacherUtilsLocalizationsEs extends FlutterHeyteacherUtilsLocali
   String get version => 'Versión: ';
 
   @override
-  String get support => 'Soporte';
+  String get askSupport => 'Pedir soporte';
 
   @override
   String get askSupportFor => 'Pedir soporte para: ';
+
+  @override
+  String get logging => 'Registro';
 }

@@ -27,5 +27,9 @@
   "support": "Soporte",
   "@support": {},
   "askSupportFor": "Pedir soporte para: ",
-  "@askSupportFor": {}
+  "@askSupportFor": {},
+  "askSupport": "Pedir soporte",
+  "@askSupport": {},
+  "logging": "Registro",
+  "@logging": {}
 }

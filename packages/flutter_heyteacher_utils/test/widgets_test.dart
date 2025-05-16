@@ -24,7 +24,7 @@ class MockFlutterHeyteacherUtilsLocalizations
   @override
   String get version => "Version: (Mock)";
   @override
-  String get support => "Support (Mock)";
+  String get askSupport => "Support (Mock)";
 
   static const LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations>
       delegate = _MockLocalizationsDelegate();
@@ -64,6 +64,9 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String get timeoutOnRetrieveData => throw UnimplementedError();
+  
+  @override
+  String get logging => 'Logging';
 }
 
 class _MockLocalizationsDelegate

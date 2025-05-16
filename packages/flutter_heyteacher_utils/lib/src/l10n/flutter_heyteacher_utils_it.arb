@@ -12,6 +12,7 @@
     "errorOnDecryptionCheckPassphrase": "Errore durante la decriptazione, controlla la Password di Criptazione",
     "id": "Id: ",
     "version": "Versione: ",
-    "support": "Supporto",
-    "askSupportFor": "Chiedi supporto per: "
+    "askSupportFor": "Chiedi supporto per: ",
+    "askSupport": "Chiedi supporto",
+    "logging": "Registrazione"
 }
