@@ -37,11 +37,11 @@ class E2EE {
 
   /// Key used in secure storage for the Additional Authenticated Data (AAD).
   /// Uniquely identifies the AAD for the current authenticated user.
-  String get _aadKey => "${Auth.instance().uid!}_aad";
+  String get _aadKey => "${AuthModel.instance().uid!}_aad";
 
   /// Key used in secure storage for the user's secret encryption key (in JWK format).
   /// Uniquely identifies the secret key for the current authenticated user.
-  String get _secretKeyKey => "${Auth.instance().uid!}_secretKey";
+  String get _secretKeyKey => "${AuthModel.instance().uid!}_secretKey";
 
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
@@ -86,7 +86,7 @@ class E2EE {
   /// Throws [UserNotAuthenticatedException], [AADEmptyException], or [ErrorOnEncryptException] on failure.
   Future<E2EEValue> encrypt(String value, {AesGcmSecretKey? secretKey}) async {
     // cannot encrypt if not auth
-    if (Auth.instance().notAutenticated) {
+    if (AuthModel.instance().notAutenticated) {
       _log.severe("encrypt: user not authenticated");
       throw UserNotAuthenticatedException();
     }
@@ -134,7 +134,7 @@ class E2EE {
   Future<String> decrypt(E2EEValue encrypted,
       {AesGcmSecretKey? secretKey}) async {
     // cannot encrypt if not auth
-    if (Auth.instance().notAutenticated) {
+    if (AuthModel.instance().notAutenticated) {
       _log.severe("decrypt: user not authenticated");
       throw UserNotAuthenticatedException();
     }
@@ -175,7 +175,7 @@ class E2EE {
   /// Requires the user to be authenticated.
   Future<void> setAAD(String aadValue) async {
     // cannot encrypt if not auth
-    if (Auth.instance().notAutenticated) {
+    if (AuthModel.instance().notAutenticated) {
       _log.severe("setAAD: user not authenticated");
       throw UserNotAuthenticatedException();
     }
@@ -188,7 +188,7 @@ class E2EE {
   /// Returns `null` if the user is not authenticated or if no AAD is set.
   Future<String?> getAAD() async {
     // cannot encrypt if not auth
-    if (Auth.instance().notAutenticated) {
+    if (AuthModel.instance().notAutenticated) {
       return null;
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
@@ -244,7 +244,7 @@ class E2EE {
   /// Requires the user to be authenticated.
   Future<AesGcmSecretKey> _generateSecretKey() async {
     // cannot encrypt if not auth
-    if (Auth.instance().notAutenticated) {
+    if (AuthModel.instance().notAutenticated) {
       _log.severe("_generateSecretKey: user not authenticated");
       throw UserNotAuthenticatedException();
     }
@@ -268,7 +268,7 @@ class E2EE {
   /// Requires the user to be authenticated.
   Future<AesGcmSecretKey> _readSecretKey() async {
     // cannot encrypt if not auth
-    if (Auth.instance().notAutenticated) {
+    if (AuthModel.instance().notAutenticated) {
       _log.severe("_readSecretKey: user not authenticated");
       throw UserNotAuthenticatedException();
     }
@@ -287,7 +287,7 @@ class E2EE {
   /// Requires the user to be authenticated.
   Future<AesGcmSecretKey> _readMasterSecretKey() async {
     // cannot encrypt if not auth
-    if (Auth.instance().notAutenticated) {
+    if (AuthModel.instance().notAutenticated) {
       _log.severe("_readMasterSecretKey: user not authenticated");
       throw UserNotAuthenticatedException();
     }

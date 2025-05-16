@@ -22,28 +22,28 @@ import 'package:logging/logging.dart';
 /// It provides methods for signing out, accessing the current [User] object,
 /// checking authentication status, and listening to authentication state changes.
 /// It can be initialized with a real or mocked [FirebaseAuth] instance.
-class Auth {
-  final log = Logger("Auth");
+class AuthModel {
+  final log = Logger("AuthModel");
   late final FirebaseAuth _firebaseAuth;
   GoogleProvider? _googleProvider;
 
   // singleton
-  static Auth? _instance;
+  static AuthModel? _instance;
 
-  /// Provides the singleton instance of the [Auth] manager.
+  /// Provides the singleton instance of the [AuthModel] manager.
   ///
   /// If [mockedFirebaseAuth] is not null, initialize with the mocked Firebase
   /// Auth, and the Google Sign-In provider will not be configured.
   /// This is useful for testing environments.
-  static Auth instance({FirebaseAuth? mockedFirebaseAuth}) {
-    _instance ??= Auth._(mockedFirebaseAuth: mockedFirebaseAuth);
+  static AuthModel instance({FirebaseAuth? mockedFirebaseAuth}) {
+    _instance ??= AuthModel._(mockedFirebaseAuth: mockedFirebaseAuth);
     return _instance!;
   }
 
   /// Private constructor for the singleton.
   /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth] or the default [FirebaseAuth.instance].
   /// Configures [GoogleProvider] if not using a mocked instance.
-  Auth._({FirebaseAuth? mockedFirebaseAuth}) {
+  AuthModel._({FirebaseAuth? mockedFirebaseAuth}) {
     // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth 
     //and configure provider
     if (mockedFirebaseAuth == null) {

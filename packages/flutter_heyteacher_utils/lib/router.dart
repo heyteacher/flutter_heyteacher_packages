@@ -53,7 +53,7 @@ class GoAuthRoute {
             name: "auth-sign-out",
             path: 'sign-out',
             redirect: (context, state) async {
-              await Auth.instance().signOut();
+              await AuthModel.instance().signOut();
               return signedOutRoutePath;
             },
           ),

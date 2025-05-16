@@ -160,5 +160,5 @@ class InfoDevicePackageModel {
   /// It returns the first 5 characters of the authenticated user's UID if available,
   /// otherwise defaults to "guest".
   String get identifierInfo =>
-      (Auth.instance().uid?.substring(0, 5)) ?? "guest";
+      (AuthModel.instance().uid?.substring(0, 5)) ?? "guest";
 }
