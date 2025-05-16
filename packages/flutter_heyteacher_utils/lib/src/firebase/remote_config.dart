@@ -33,13 +33,14 @@ class RemoteConfigModel {
   Future<void> configure({Map<String, dynamic>? defaultParameters}) async {
     final log = Logger("configureRemoteConfig");
 
-    (defaultParameters ?? {}).addAll({
+    defaultParameters ??= {};
+    defaultParameters.addAll({
       RemoteConfig.remoteConfigFetchTimeoutInMilliseconds.name: 60000,
       RemoteConfig.remoteConfigMinimumFetchIntervalInMinutes.name: 60,
     });
 
     // firebase remote config
-    await _remoteConfig.setDefaults(defaultParameters!);
+    await _remoteConfig.setDefaults(defaultParameters);
     _remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: Duration(
           milliseconds: _remoteConfig.getInt(
