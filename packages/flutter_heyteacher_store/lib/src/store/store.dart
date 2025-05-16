@@ -392,7 +392,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Initializes the aggregate stream when user i authenticathed.
   void initAggregatesStream() {
     _aggregatesSubscription?.cancel();
-    _aggregatesSubscription = Auth.instance()
+    _aggregatesSubscription = AuthModel.instance()
         .stateChangesStream
         .where((user) => user != null)
         .listen(((_) => notifyAggregatesChanges()));
@@ -757,7 +757,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// If already initialized, do nothing. Otherwise load all documents and
   /// update the group by counter.
   void _initGroupByCounter() async {
-    if (Auth.instance().notAutenticated) {
+    if (AuthModel.instance().notAutenticated) {
       _log.fine("_initGroupByCounter: user not authenticate, do nothing");
       return;
     }
@@ -908,7 +908,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// if [_userProfile] is `true` and user not authenticated, throws
   /// [UserNotAuthenticatedException]
   void _checkAuthenticated() {
-    if (_userProfile && Auth.instance().notAutenticated) {
+    if (_userProfile && AuthModel.instance().notAutenticated) {
       throw UserNotAuthenticatedException();
     }
   }
@@ -968,8 +968,8 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Gets the uid of authenticated user.
   ///
   /// If user isn't authenticathed, throw [UserNotAuthenticatedException]
-  String get _uid => Auth.instance().autenticated
-      ? Auth.instance().uid!
+  String get _uid => AuthModel.instance().autenticated
+      ? AuthModel.instance().uid!
       : throw UserNotAuthenticatedException();
 }
 

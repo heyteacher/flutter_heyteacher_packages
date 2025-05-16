@@ -31,7 +31,7 @@ void main() {
     auth.signInWithEmailAndPassword(email: userEmail, password: userEmail);
 
     // initialize Auth with MockFirebaseAuth
-    Auth.instance(mockedFirebaseAuth: auth);
+    AuthModel.instance(mockedFirebaseAuth: auth);
 
     // set AAD
     E2EE.instance.setAAD("aadValue");

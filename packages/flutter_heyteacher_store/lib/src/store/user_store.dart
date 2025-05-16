@@ -31,7 +31,7 @@ class UserStore extends Store<UserData, UserData> {
   @override
   Future<void> update(UserData document,
       {required List<String> fields, String? id, WriteBatch? batch}) async {
-    if (Auth.instance().autenticated) {
+    if (AuthModel.instance().autenticated) {
       await super.update(document, fields: fields, id: id, batch: batch);
       _userUpdatedStreamController.sink.add(await get(id ??= document.id));
     // anyway, yield user to stream controller  
@@ -55,7 +55,7 @@ class UserData extends FirestoreData {
 
   /// The user identifier supplyed by Auth if authenticated otherwise `guest`.
   @override
-  String get id => Auth.instance().uid ?? "guest";
+  String get id => AuthModel.instance().uid ?? "guest";
 
   @protected
   UserData({this.locale, this.themeMode, this.purchaseToken});
