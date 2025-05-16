@@ -1,5 +1,5 @@
 /// Provides utilities for managing background tasks using `android_alarm_manager_plus`.
-library android_alarm_manager;
+library;
 
 import 'dart:async';
 
@@ -9,19 +9,25 @@ import 'package:logging/logging.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Keys used for storing Android Alarm Manager related settings in SharedPreferences.
+/// Keys used for storing Android Alarm Manager related settings in
+/// SharedPreferences.
 enum AlarmManagerSharedPreferencesKeys {
   /// Indicates whether the alarm manager needs to be initialized.
   toBeInitialized,
+
   /// The interval in minutes for the Android Alarm Manager.
   androidAlarmManagerIntervalInMinutes,
 }
 
-/// Keys used for fetching Android Alarm Manager related configurations from Firebase Remote Config.
+/// Keys used for fetching Android Alarm Manager related configurations from
+/// Firebase Remote Config.
 enum AlarmManagerRemoteConfigKeys {
-  /// The interval in minutes for the Android Alarm Manager, fetched from Remote Config.
+  /// The interval in minutes for the Android Alarm Manager, fetched from
+  /// Remote Config.
   androidAlarmManagerIntervalInMinutes,
-  /// The distance filter in meters, potentially used by the alarm callback, fetched from Remote Config.
+
+  /// The distance filter in meters, potentially used by the alarm callback,
+  /// fetched from Remote Config.
   androidAlarmManagerDistanceFilterInMeters,
 }
 
@@ -29,19 +35,25 @@ enum AlarmManagerRemoteConfigKeys {
 enum AlarmManagerIntervalKeys {
   /// 1 minute interval.
   oneMinute(1),
+
   /// 2 minutes interval.
   twoMinutes(2),
+
   /// 5 minutes interval.
   fiveMinutes(5),
+
   /// 10 minutes interval.
   tenMinutes(10),
+
   /// 15 minutes interval.
   fifteenMinutes(15),
+
   /// 30 minutes interval.
   thirtyMinutes(30);
 
   /// The duration of the interval in minutes.
   final int minutes;
+
   /// Creates an [AlarmManagerIntervalKeys] with the given [minutes].
   const AlarmManagerIntervalKeys(this.minutes);
 }
@@ -51,9 +63,8 @@ enum AlarmManagerIntervalKeys {
 class AlarmManagerIntervalListTile extends StatefulWidget {
   final AndroidAlarmManagerModel _androidAlarmManagerModel;
 
-  const AlarmManagerIntervalListTile(this._androidAlarmManagerModel, {super.key});
-
-
+  const AlarmManagerIntervalListTile(this._androidAlarmManagerModel,
+      {super.key});
 
   @override
   State<AlarmManagerIntervalListTile> createState() =>
@@ -69,27 +80,22 @@ class _AlarmManagerIntervalListTileState
   Widget build(context) {
     return ListTile(
       leading: const Icon(Icons.alarm),
-      //title: Text('Alarm Manager Interval'),
       title: Padding(
         padding: const EdgeInsets.only(right: 10.0),
         child: Wrap(alignment: WrapAlignment.end, children: [
           DropdownMenu<AlarmManagerIntervalKeys>(
             enableSearch: false,
             enableFilter: false,
-
-            //width: 135,
-            //inputDecorationTheme: InputDecorationTheme(isDense: true),
             label: Text('Alarm Manager Interval'),
-            //textStyle: Theme.of(context).textTheme.labelSmall,
             trailingIcon: const Icon(Icons.filter_list),
-            // Updates the _filterLevel and rebuilds the UI when a new level is selected.
+            // Updates shared preferences `androidAlarmManagerIntervalInMinutes`
             onSelected: (alarmManagerIntervalInMinutes) async {
               setState(() {});
               await SharedPreferencesAsync().setInt(
                   AlarmManagerSharedPreferencesKeys
                       .androidAlarmManagerIntervalInMinutes.name,
                   alarmManagerIntervalInMinutes!.minutes);
-            widget._androidAlarmManagerModel.initialize();
+              widget._androidAlarmManagerModel.initialize();
             },
             initialSelection: AlarmManagerIntervalKeys.values.firstWhere(
               (e) =>
@@ -100,7 +106,6 @@ class _AlarmManagerIntervalListTileState
                       .toInt(),
               orElse: () => AlarmManagerIntervalKeys.oneMinute,
             ),
-
             dropdownMenuEntries: AlarmManagerIntervalKeys.values
                 .map((alarmManagerIntervalInMinutes) =>
                     DropdownMenuEntry<AlarmManagerIntervalKeys>(
@@ -123,26 +128,32 @@ abstract class AndroidAlarmManagerModel {
   /// This function must be a top-level or static function.
   VoidCallback get entryPointCallback;
 
+  @protected
+  String get alarmLockSharedPreferencesKey => '${runtimeType}Lock';
+
   final _log = Logger('AndroidAlarmManagerModel');
   static const int _alarmID = 0;
   final _sharedPreferences = SharedPreferencesAsync();
-
   /// Initializes the Android Alarm Manager.
   ///
   /// This function is called when the app is started
   /// to initialize the Android Alarm Manager.
   /// It initializes the Android Alarm Manager and sets up a periodic alarm
-  /// to check if the car is connected to the Android Auto Bluetooth.
+  /// for execute [entryPointCallback].
   /// The alarm is set to run every
   /// [AlarmManagerRemoteConfigKeys.androidAlarmManagerIntervalInMinutes] minutes.
   /// The alarm is set to run in the background even if the app is not running.
   /// The alarm is set to run even if the device is in doze mode.
   ///
   /// Parameters:
-  /// - [allowWhileIdle]: Whether the alarm should be allowed to run when the device is in Doze mode. Defaults to `true`.
-  /// - [wakeup]: Whether the alarm should wake up the device. Defaults to `true`.
-  /// - [rescheduleOnReboot]: Whether the alarm should be rescheduled after a device reboot. Defaults to `true`.
-  /// - [exact]: Whether the alarm should be exact. If `false`, the alarm might be delayed by the OS. Defaults to `true`.
+  /// - [allowWhileIdle]: Whether the alarm should be allowed to run when the 
+  ///   device is in Doze mode. Defaults to `true`.
+  /// - [wakeup]: Whether the alarm should wake up the device. 
+  ///   Defaults to `true`.
+  /// - [rescheduleOnReboot]: Whether the alarm should be rescheduled after a 
+  ///   device reboot. Defaults to `true`.
+  /// - [exact]: Whether the alarm should be exact. If `false`, the alarm might 
+  ///   be delayed by the OS. Defaults to `true`.
   Future<void> initialize(
       {bool allowWhileIdle = true,
       bool wakeup = true,
@@ -154,10 +165,10 @@ abstract class AndroidAlarmManagerModel {
     _log.info('AndroidAlarmManager periodic cancelled: $cancelled');
 
     _log.info('initialize sharedPreferences toBeInitialized to true and '
-        'checkCarBluetoothLock to false');
+        '$alarmLockSharedPreferencesKey to false');
     await _sharedPreferences.setBool(
         AlarmManagerSharedPreferencesKeys.toBeInitialized.name, true);
-    _sharedPreferences.setBool('${entryPointCallback}Lock', false);
+    _sharedPreferences.setBool(alarmLockSharedPreferencesKey, false);
     // setup alarm android manager interval in minutes
     var androidAlarmManagerIntervalInMinutes = await _sharedPreferences.getInt(
             AlarmManagerSharedPreferencesKeys

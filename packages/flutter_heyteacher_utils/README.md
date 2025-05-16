@@ -17,6 +17,8 @@ pattern, and decoupling dependencies like firebase.
 * [localization]
 * [theme] manages application-wide theming, including theme selection UI,
   theme persistence, and dynamic theme updates
+* [android_alarm_manager.dart] provides utilities for managing background tasks 
+  using `android_alarm_manager_plus`.
 * [widgets] a collection of reusable Flutter widgets and utility functions
 * [formats] provides a collection of pre-configured formatters for dates, times, 
   numbers, and durations 
