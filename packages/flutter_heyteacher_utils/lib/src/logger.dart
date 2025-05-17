@@ -300,7 +300,7 @@ class LoggerModel {
   /// 2. Send structured log events to Firebase Analytics, including version,
   ///    device info, level, message, error (if any), stack trace (if any), and a user identifier.
   ///    Message, error, and stack trace are truncated to 100 characters for Firebase.
-  initialize() async {
+  initialize({bool reset = false}) async {
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured) {
@@ -308,6 +308,11 @@ class LoggerModel {
       return;
     }
     _alreadyConfigured = true;
+
+    if (reset) {
+    _log.info('initialize(reset: $reset): remove shared properties $_sharedPreferencesLogsKey');
+    _sharedPreferences.remove(_sharedPreferencesLogsKey);
+    }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
     Logger.root.level = Level(
