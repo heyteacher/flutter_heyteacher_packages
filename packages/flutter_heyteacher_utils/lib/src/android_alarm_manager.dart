@@ -3,9 +3,9 @@ library;
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
-import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,11 +25,11 @@ enum AlarmManagerSharedPreferencesKeys {
 enum AlarmManagerRemoteConfigKeys {
   /// The interval in minutes for the Android Alarm Manager, fetched from
   /// Remote Config.
-  androidAlarmManagerIntervalInMinutes,
+  intervalInMinutes,
 
   /// The distance filter in meters, potentially used by the alarm callback,
   /// fetched from Remote Config.
-  androidAlarmManagerDistanceFilterInMeters,
+  distanceFilterInMeters,
 }
 
 /// Defines preset intervals for the Android Alarm Manager.
@@ -79,48 +79,48 @@ class _AlarmManagerIntervalListTileState
   /// When a new interval is selected, it's saved to SharedPreferences and the
   /// [AndroidAlarmManagerModel] is re-initialized.
   @override
-  Widget build(context) {
-    return ListTile(
+  Widget build(context) => ListTile(
       leading: const Icon(Icons.alarm),
-      title: Padding(
+      title: Text(widget.label),
+      subtitle: Padding(
         padding: const EdgeInsets.only(right: 10.0),
-        child: Wrap(alignment: WrapAlignment.end, children: [
-          DropdownMenu<AlarmManagerIntervalKeys>(
-            enableSearch: false,
-            enableFilter: false,
-            label: Text(widget.label),
-            trailingIcon: const Icon(Icons.filter_list),
-            // Updates shared preferences `androidAlarmManagerIntervalInMinutes`
-            onSelected: (alarmManagerIntervalInMinutes) async {
-              setState(() {});
-              await SharedPreferencesAsync().setInt(
-                  AlarmManagerSharedPreferencesKeys
-                      .androidAlarmManagerIntervalInMinutes.name,
-                  alarmManagerIntervalInMinutes!.minutes);
-              widget._androidAlarmManagerModel.initialize();
-            },
-            initialSelection: AlarmManagerIntervalKeys.values.firstWhere(
-              (e) =>
-                  e.minutes ==
-                  RemoteConfigModel.instance
-                      .getDouble(AlarmManagerRemoteConfigKeys
-                          .androidAlarmManagerIntervalInMinutes.name)
-                      .toInt(),
-              orElse: () => AlarmManagerIntervalKeys.oneMinute,
-            ),
-            dropdownMenuEntries: AlarmManagerIntervalKeys.values
-                .map((alarmManagerIntervalInMinutes) =>
-                    DropdownMenuEntry<AlarmManagerIntervalKeys>(
-                      value: alarmManagerIntervalInMinutes,
-                      label: FlutterHeyteacherUtilsLocalizations.of(context)!
-                          .nMinutes(alarmManagerIntervalInMinutes.minutes),
-                    ))
-                .toList(),
-          ),
-        ]),
-      ),
-    );
-  }
+        child: FutureBuilder<int?>(
+          future: SharedPreferencesAsync().getInt(
+              AlarmManagerSharedPreferencesKeys
+                  .androidAlarmManagerIntervalInMinutes.name),
+          builder: (_, futureSnapshot) =>
+              Wrap(alignment: WrapAlignment.center, spacing: 2, children: [
+            ...AlarmManagerIntervalKeys.values.map(
+                (alarmManagerIntervalInMinutes) => ChoiceChip(
+                    selected: alarmManagerIntervalInMinutes.minutes ==
+                        (futureSnapshot.data ??
+                            (!kDebugMode &&
+                                    RemoteConfigModel.instance.getInt(
+                                            AlarmManagerRemoteConfigKeys
+                                                .intervalInMinutes.name) >
+                                        0
+                                ? RemoteConfigModel.instance.getInt(
+                                    AlarmManagerRemoteConfigKeys
+                                        .intervalInMinutes.name)
+                                : 1)),
+                    label:
+                        Text(alarmManagerIntervalInMinutes.minutes.toString()),
+                    showCheckmark: false,
+                    onSelected: (bool selected) => setState(() {
+                          selected
+                              ? SharedPreferencesAsync()
+                                  .setInt(
+                                      AlarmManagerSharedPreferencesKeys
+                                          .androidAlarmManagerIntervalInMinutes
+                                          .name,
+                                      alarmManagerIntervalInMinutes.minutes)
+                                  .then((_) => widget._androidAlarmManagerModel
+                                      .initialize())
+                              : null;
+                        }))),
+          ]),
+        ),
+      ));
 }
 
 /// Abstract class defining the contract for an Android Alarm Manager model.
@@ -145,7 +145,7 @@ abstract class AndroidAlarmManagerModel {
   /// It initializes the Android Alarm Manager and sets up a periodic alarm
   /// for execute [entryPointCallback].
   /// The alarm is set to run every
-  /// [AlarmManagerRemoteConfigKeys.androidAlarmManagerIntervalInMinutes] minutes.
+  /// [AlarmManagerRemoteConfigKeys.intervalInMinutes] minutes.
   /// The alarm is set to run in the background even if the app is not running.
   /// The alarm is set to run even if the device is in doze mode.
   ///
@@ -178,8 +178,7 @@ abstract class AndroidAlarmManagerModel {
             AlarmManagerSharedPreferencesKeys
                 .androidAlarmManagerIntervalInMinutes.name) ??
         RemoteConfigModel.instance
-            .getDouble(AlarmManagerRemoteConfigKeys
-                .androidAlarmManagerIntervalInMinutes.name)
+            .getDouble(AlarmManagerRemoteConfigKeys.intervalInMinutes.name)
             .toInt();
     androidAlarmManagerIntervalInMinutes =
         androidAlarmManagerIntervalInMinutes > 0
