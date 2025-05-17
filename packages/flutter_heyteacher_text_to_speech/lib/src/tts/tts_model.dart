@@ -22,9 +22,9 @@ class TtsModel {
     _textToSpeech.awaitSpeakCompletion(true);
     // on authentication user
     _stateChangesStreamSubscription?.cancel();
-    _stateChangesStreamSubscription = Auth.instance().stateChangesStream.listen(
-        (_) async => _changeLanguage(Auth.instance().autenticated
-            ? (await UserStore.instance().getOrNull(Auth.instance().uid))
+    _stateChangesStreamSubscription = AuthModel.instance().stateChangesStream.listen(
+        (_) async => _changeLanguage(AuthModel.instance().autenticated
+            ? (await UserStore.instance().getOrNull(AuthModel.instance().uid))
                 ?.locale
                 ?.languageCode
             : null));
