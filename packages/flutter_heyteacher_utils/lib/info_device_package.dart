@@ -8,6 +8,7 @@
 ///   information (OS, model, browser) and package information (version, build number).
 library;
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:clock/clock.dart';
@@ -36,31 +37,32 @@ class DevicePackageInfoListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      key: ValueKey("lt_fhu_version"),
-      leading: Icon(
-        Icons.smartphone,
-      ),
-      title: FutureBuilder(
-        future: InfoDevicePackageModel.instance.deviceInfo,
-        builder: (_, deviceSnapshot) =>
-            Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.id}"
-                "${deviceSnapshot.data}-${deviceSnapshot.data}"),
-      ),
-      subtitle: FutureBuilder<String>(
-        future: InfoDevicePackageModel.instance.packageVersion,
-        builder: (_, devicePackageSnapshot) =>
-            Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.version}"
-                "${devicePackageSnapshot.data}"),
-      ),
-      trailing: TextButton(
-          style: TextButton.styleFrom(
-            backgroundColor: ThemeModel.instance().theme.colorScheme.primary,
-            foregroundColor: ThemeModel.instance().theme.colorScheme.onPrimary,
-          ),
-          onPressed: _askSupport,
-          child:
-              Text(FlutterHeyteacherUtilsLocalizations.of(context)!.askSupport)
-    ));
+        key: ValueKey("lt_fhu_version"),
+        leading: IconButton(
+          icon: Icon(Icons.smartphone),
+          onPressed: InfoDevicePackageModel.instance._incrementTapCounter,
+        ),
+        title: FutureBuilder(
+          future: InfoDevicePackageModel.instance.deviceInfo,
+          builder: (_, deviceSnapshot) =>
+              Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.id}"
+                  "${deviceSnapshot.data}-${deviceSnapshot.data}"),
+        ),
+        subtitle: FutureBuilder<String>(
+          future: InfoDevicePackageModel.instance.packageVersion,
+          builder: (_, devicePackageSnapshot) =>
+              Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.version}"
+                  "${devicePackageSnapshot.data}"),
+        ),
+        trailing: TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: ThemeModel.instance().theme.colorScheme.primary,
+              foregroundColor:
+                  ThemeModel.instance().theme.colorScheme.onPrimary,
+            ),
+            onPressed: _askSupport,
+            child: Text(
+                FlutterHeyteacherUtilsLocalizations.of(context)!.askSupport)));
   }
 }
 
@@ -71,19 +73,19 @@ class DevicePackageInfoListTile extends StatelessWidget {
 /// - A body containing the user's identifier, device information, and app version,
 ///   formatted for easy support.
 void _askSupport() async {
-  final i10n = FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!; 
+  final i10n = FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!;
   final packageInfoPlatform = await PackageInfo.fromPlatform();
   final version = await InfoDevicePackageModel.instance.packageVersion;
   final device = await InfoDevicePackageModel.instance.deviceInfo;
   final identifierInfo = InfoDevicePackageModel.instance.identifierInfo;
   final machineDate = machineDateFormatter.format(clock.now());
   final machineTime = machineTimeFormatter.format(clock.now());
-  final randomId =  Random().nextInt(1000000000).toString().padLeft(10, '0');
-  final logFilename = 'applogs/$machineDate/$machineTime-$identifierInfo-$randomId.log';
+  final randomId = Random().nextInt(1000000000).toString().padLeft(10, '0');
+  final logFilename =
+      'applogs/$machineDate/$machineTime-$identifierInfo-$randomId.log';
   await StorageModel.instance
       .uploadString(logFilename, await LoggerModel.instance().logs2Text);
-  final subject =
-      "${i10n.askSupportFor}"
+  final subject = "${i10n.askSupportFor}"
       "${packageInfoPlatform.appName}";
   final body = "------------------------------------\n"
       "Identifier:\t$identifierInfo\n"
@@ -111,8 +113,36 @@ class InfoDevicePackageModel {
   static InfoDevicePackageModel get instance =>
       _instance ??= InfoDevicePackageModel._();
 
+  StreamSubscription? _streamSubscription;
+
   /// Private constructor for the singleton.
-  InfoDevicePackageModel._();
+  InfoDevicePackageModel._() {
+    _streamSubscription =
+        Stream.periodic(Duration(seconds: 5)).listen((_) => _tapCounter = 0);
+  }
+
+  dispose() {
+    _streamSubscription?.cancel();
+    _tapCounterReachedStreamController.close();
+  }
+
+  /// The current tap counter value.
+  ///
+  int _tapCounter = 0;
+
+  /// A stream controller to broadcast the tap counter.
+  final StreamController<bool> _tapCounterReachedStreamController =
+      StreamController<bool>.broadcast();
+
+  /// A stream that emits an event whenever tap counter changes.
+  ///
+  /// Widgets can listen to this stream to rebuild when the theme is updated.
+  /// The emitted value is typically `null` and serves as a notification.
+  Stream<bool> get tapCounterReachedStream => _tapCounterReachedStreamController.stream;
+
+  /// Increments the tap counter and broadcasts the new value.
+  void _incrementTapCounter() =>
+      _tapCounterReachedStreamController.sink.add((++_tapCounter) >= 5);
 
   /// Asynchronously retrieves detailed information about the current device.
   ///
