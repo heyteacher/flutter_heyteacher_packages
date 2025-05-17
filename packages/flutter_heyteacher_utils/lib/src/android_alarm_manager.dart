@@ -138,6 +138,15 @@ abstract class AndroidAlarmManagerModel {
   static const int _alarmID = 0;
   final _sharedPreferences = SharedPreferencesAsync();
 
+  static int get remoteConfigIntervalInMinutes => kDebugMode
+      ? 1
+      : RemoteConfigModel.instance
+                  .getInt(AlarmManagerRemoteConfigKeys.intervalInMinutes.name) >
+              0
+          ? RemoteConfigModel.instance
+              .getInt(AlarmManagerRemoteConfigKeys.intervalInMinutes.name)
+          : AlarmManagerIntervalKeys.fifteenMinutes.minutes;
+
   /// Initializes the Android Alarm Manager.
   ///
   /// This function is called when the app is started
@@ -177,13 +186,7 @@ abstract class AndroidAlarmManagerModel {
     var androidAlarmManagerIntervalInMinutes = await _sharedPreferences.getInt(
             AlarmManagerSharedPreferencesKeys
                 .androidAlarmManagerIntervalInMinutes.name) ??
-        RemoteConfigModel.instance
-            .getDouble(AlarmManagerRemoteConfigKeys.intervalInMinutes.name)
-            .toInt();
-    androidAlarmManagerIntervalInMinutes =
-        androidAlarmManagerIntervalInMinutes > 0
-            ? androidAlarmManagerIntervalInMinutes
-            : AlarmManagerIntervalKeys.thirtyMinutes.minutes;
+        remoteConfigIntervalInMinutes;
     // start the periodic alarm
     final started = await AndroidAlarmManager.periodic(
         Duration(minutes: androidAlarmManagerIntervalInMinutes),
