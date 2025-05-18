@@ -22,10 +22,10 @@ class ThemeCard extends StatefulWidget {
   const ThemeCard({super.key});
 
   @override
-  State<ThemeCard> createState() => ThemeCardState();
+  State<ThemeCard> createState() => ThemeCardState<ThemeCard>();
 }
 
-class ThemeCardState extends State<ThemeCard> {
+class ThemeCardState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Card(
         child: ListTile(
