@@ -34,6 +34,11 @@ dependencies:
   clock: ^1.1.1 
   firebase_storage: ^12.4.5
   android_alarm_manager_plus: ^4.0.7
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^6.0.6
+  flutter_heyteacher_text_to_speech:
+    git: https://github.com/heyteacher/flutter_heyteacher_text_to_speech.git
+
 
 dev_dependencies:
   flutter_test:
