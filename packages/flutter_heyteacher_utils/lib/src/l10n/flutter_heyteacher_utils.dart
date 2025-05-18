@@ -103,6 +103,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
     Locale('pt')
   ];
 
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
   /// No description provided for @userNotAutenticated.
   ///
   /// In en, this message translates to:
@@ -198,6 +204,42 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'{minutes, plural, =1{one minute} other{{minutes} minutes}}'**
   String nMinutes(num minutes);
+
+  /// No description provided for @areYouSureToChangeEncryptionPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase'**
+  String get areYouSureToChangeEncryptionPassphrase;
+
+  /// No description provided for @areYouSureToImportEncryptionSecretKey.
+  ///
+  /// In en, this message translates to:
+  /// **'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?'**
+  String get areYouSureToImportEncryptionSecretKey;
+
+  /// No description provided for @encryptionSecretKeyImported.
+  ///
+  /// In en, this message translates to:
+  /// **'Encryption Secret Key imported'**
+  String get encryptionSecretKeyImported;
+
+  /// No description provided for @encryptionPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Encryption Passphrase'**
+  String get encryptionPassphrase;
+
+  /// No description provided for @encryptionSecretKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Encryption Secret Key'**
+  String get encryptionSecretKey;
+
+  /// No description provided for @scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device'**
+  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {

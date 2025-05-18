@@ -2,13 +2,15 @@
 ///
 /// This allows for a single import to access various Firebase functionalities
 /// configured for the application, such as:
-/// - App Check configuration ([configureAppCheck])
-/// - Authentication services ([Auth], [UserNotAuthenticatedException])
-/// - Crashlytics configuration ([configureCrashlytics])
-/// - Remote Config configuration ([configureRemoteConfig])
+/// - App Check configuration ([AppCheckModel])
+/// - Authentication services ([AuthModel], [UserNotAuthenticatedException], 
+///   [AccountCard])
+/// - Crashlytics configuration ([CrashlyticsModel])
+/// - Remote Config configuration ([RemoteConfigModel])
 library;
 
 export 'src/firebase/app_check.dart' show AppCheckModel;
-export 'src/firebase/auth.dart' show AuthModel, UserNotAuthenticatedException;
+export 'src/firebase/auth.dart'
+    show AuthModel, UserNotAuthenticatedException, AccountCard;
 export 'src/firebase/crashlytics.dart' show CrashlyticsModel;
-export 'src/firebase/remote_config.dart' show  RemoteConfigModel;
+export 'src/firebase/remote_config.dart' show RemoteConfigModel;

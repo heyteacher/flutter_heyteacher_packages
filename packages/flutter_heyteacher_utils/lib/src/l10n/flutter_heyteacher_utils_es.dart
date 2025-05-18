@@ -9,6 +9,9 @@ class FlutterHeyteacherUtilsLocalizationsEs extends FlutterHeyteacherUtilsLocali
   FlutterHeyteacherUtilsLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
+  String get account => 'Account';
+
+  @override
   String get userNotAutenticated => 'Usuario no autenticado';
 
   @override
@@ -63,4 +66,22 @@ class FlutterHeyteacherUtilsLocalizationsEs extends FlutterHeyteacherUtilsLocali
     );
     return '$_temp0';
   }
+
+  @override
+  String get areYouSureToChangeEncryptionPassphrase => 'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
+
+  @override
+  String get areYouSureToImportEncryptionSecretKey => 'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
+
+  @override
+  String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
+
+  @override
+  String get encryptionPassphrase => 'Encryption Passphrase';
+
+  @override
+  String get encryptionSecretKey => 'Encryption Secret Key';
+
+  @override
+  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase => 'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
 }

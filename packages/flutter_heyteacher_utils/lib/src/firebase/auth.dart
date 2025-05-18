@@ -12,9 +12,56 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
+
+
+
+class AccountCard extends StatelessWidget {
+  const AccountCard({super.key});
+
+  @override
+  Widget build(BuildContext context) => Card(
+        child: StreamBuilder<dynamic>(
+            stream: AuthModel.instance().stateChangesStream,
+            builder: (_, snapshot) {
+              return ListTile(
+                key: ValueKey("lt_account"),
+                leading: Icon(
+                  Icons.person,
+                  color: AuthModel.instance().autenticated
+                      ? Theme.of(context).iconTheme.color
+                      : Theme.of(context).disabledColor,
+                  size: Theme.of(context).textTheme.displayMedium!.fontSize,
+                ),
+                title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.account),
+                subtitle: AuthModel.instance().autenticated
+                    ? Text(AuthModel.instance().displayName ?? "")
+                    : Text(FlutterHeyteacherUtilsLocalizations.of(context)!
+                        .userNotAutenticated),
+                trailing: IconButton(
+                    key: ValueKey("ic_login_logout"),
+                    icon: Icon(AuthModel.instance().autenticated
+                        ? Icons.logout
+                        : Icons.login),
+                    color: AuthModel.instance().autenticated
+                        ? Theme.of(context).colorScheme.onError
+                        : Theme.of(context).iconTheme.color,
+                    onPressed: () async {
+                      if (AuthModel.instance().autenticated) {
+                        GoRouter.of(context).pushNamed("auth-sign-out");
+                      } else {
+                        GoRouter.of(context).pushNamed("auth-sign-in");
+                      }
+                    }),
+              );
+            }),
+      );
+}
+
 
 /// Manages user authentication state and operations via Firebase.
 ///

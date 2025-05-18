@@ -1,1 +1,51 @@
-{}
+{
+  "de": [
+    "account",
+    "areYouSureToChangeEncryptionPassphrase",
+    "areYouSureToImportEncryptionSecretKey",
+    "encryptionSecretKeyImported",
+    "encryptionPassphrase",
+    "encryptionSecretKey",
+    "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase"
+  ],
+
+  "es": [
+    "account",
+    "areYouSureToChangeEncryptionPassphrase",
+    "areYouSureToImportEncryptionSecretKey",
+    "encryptionSecretKeyImported",
+    "encryptionPassphrase",
+    "encryptionSecretKey",
+    "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase"
+  ],
+
+  "fr": [
+    "account",
+    "areYouSureToChangeEncryptionPassphrase",
+    "areYouSureToImportEncryptionSecretKey",
+    "encryptionSecretKeyImported",
+    "encryptionPassphrase",
+    "encryptionSecretKey",
+    "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase"
+  ],
+
+  "it": [
+    "account",
+    "areYouSureToChangeEncryptionPassphrase",
+    "areYouSureToImportEncryptionSecretKey",
+    "encryptionSecretKeyImported",
+    "encryptionPassphrase",
+    "encryptionSecretKey",
+    "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase"
+  ],
+
+  "pt": [
+    "account",
+    "areYouSureToChangeEncryptionPassphrase",
+    "areYouSureToImportEncryptionSecretKey",
+    "encryptionSecretKeyImported",
+    "encryptionPassphrase",
+    "encryptionSecretKey",
+    "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase"
+  ]
+}

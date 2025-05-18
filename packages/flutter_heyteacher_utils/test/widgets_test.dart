@@ -72,6 +72,27 @@ class MockFlutterHeyteacherUtilsLocalizations
   String nMinutes(num minutes) {
     return '$minutes minutes';
   }
+
+  @override
+  String get account => "Account";
+  
+  @override
+  String get areYouSureToChangeEncryptionPassphrase => 'areYouSureToChangeEncryptionPassphrase';
+  
+  @override
+  String get areYouSureToImportEncryptionSecretKey => '';
+  
+  @override
+  String get encryptionPassphrase => '';
+  
+  @override
+  String get encryptionSecretKey => '';
+  
+  @override
+  String get encryptionSecretKeyImported => '';
+  
+  @override
+  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase => '';
 }
 
 class _MockLocalizationsDelegate
