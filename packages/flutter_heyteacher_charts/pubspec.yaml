@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
 
   flutter_heyteacher_utils:
-    path: ../flutter_heyteacher_utils
+    git: https://github.com/heyteacher/flutter_heyteacher_utils.git
 
 dev_dependencies:
   flutter_test:
