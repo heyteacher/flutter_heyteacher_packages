@@ -25,9 +25,6 @@ import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-
-
 /// A widget that displays device and package information in a list tile format.
 ///
 /// It asynchronously fetches and shows the device identifier, device details (model, OS version),
@@ -38,35 +35,36 @@ class DevicePackageInfoCard extends StatelessWidget {
   const DevicePackageInfoCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ListTile(
-        key: ValueKey("lt_fhu_version"),
-        leading: IconButton(
-          icon: Icon(Icons.smartphone),
-          onPressed: InfoDevicePackageModel.instance._incrementTapCounter,
-        ),
-        title: FutureBuilder(
-          future: InfoDevicePackageModel.instance.deviceInfo,
-          builder: (_, deviceSnapshot) =>
-              Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.id}"
-                  "${deviceSnapshot.data}-${deviceSnapshot.data}"),
-        ),
-        subtitle: FutureBuilder<String>(
-          future: InfoDevicePackageModel.instance.packageVersion,
-          builder: (_, devicePackageSnapshot) =>
-              Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.version}"
-                  "${devicePackageSnapshot.data}"),
-        ),
-        trailing: TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: ThemeModel.instance().theme.colorScheme.primary,
-              foregroundColor:
-                  ThemeModel.instance().theme.colorScheme.onPrimary,
+  Widget build(BuildContext context) => Card(
+        child: ListTile(
+            key: ValueKey("lt_fhu_version"),
+            leading: IconButton(
+              icon: Icon(Icons.smartphone),
+              onPressed: InfoDevicePackageModel.instance._incrementTapCounter,
             ),
-            onPressed: _askSupport,
-            child: Text(
-                FlutterHeyteacherUtilsLocalizations.of(context)!.askSupport)));
-  }
+            title: FutureBuilder(
+              future: InfoDevicePackageModel.instance.deviceInfo,
+              builder: (_, deviceSnapshot) =>
+                  Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.id}"
+                      "${deviceSnapshot.data}-${deviceSnapshot.data}"),
+            ),
+            subtitle: FutureBuilder<String>(
+              future: InfoDevicePackageModel.instance.packageVersion,
+              builder: (_, devicePackageSnapshot) => Text(
+                  "${FlutterHeyteacherUtilsLocalizations.of(context)!.version}"
+                  "${devicePackageSnapshot.data}"),
+            ),
+            trailing: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor:
+                      ThemeModel.instance().theme.colorScheme.primary,
+                  foregroundColor:
+                      ThemeModel.instance().theme.colorScheme.onPrimary,
+                ),
+                onPressed: _askSupport,
+                child: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
+                    .askSupport))),
+      );
 }
 
 /// Constructs and launches a "mailto" URI to allow users to ask for support.
@@ -141,7 +139,8 @@ class InfoDevicePackageModel {
   ///
   /// Widgets can listen to this stream to rebuild when the theme is updated.
   /// The emitted value is typically `null` and serves as a notification.
-  Stream<bool> get tapCounterReachedStream => _tapCounterReachedStreamController.stream;
+  Stream<bool> get tapCounterReachedStream =>
+      _tapCounterReachedStreamController.stream;
 
   /// Increments the tap counter and broadcasts the new value.
   void _incrementTapCounter() =>
