@@ -12,10 +12,10 @@ class LocaleCard extends StatefulWidget {
   const LocaleCard({super.key});
 
   @override
-  State<LocaleCard> createState() => LocaleCardState();
+  State<LocaleCard> createState() => LocaleCardState<LocaleCard>();
 }
 
-class LocaleCardState extends State<LocaleCard> {
+class LocaleCardState<T extends StatefulWidget> extends State<T> {
   @protected
   onTextToSpeechPressed() => TtsModel.instance.speak(
       'Hello World, this is a test. Current locale is ${LocaleModel.instance.locale?.languageCode}');
