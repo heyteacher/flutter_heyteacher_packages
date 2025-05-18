@@ -69,33 +69,42 @@ class LogEntry {
       };
 }
 
-/// A [StatelessWidget] that displays a [ListTile] for navigating to the [LoggerScreen].
-class LoggerListTile extends StatelessWidget {
+class LoggerCard extends StatelessWidget {
   /// The prefix for the route path to the logger screen.
   final String _pathPrefix;
 
-  /// Creates a [LoggerListTile].
+  /// Creates a [LoggerCard].
   /// Requires a [_pathPrefix] to construct the navigation route.
-  const LoggerListTile(this._pathPrefix, {super.key});
+  const LoggerCard(this._pathPrefix, {super.key});
 
   @override
-
-  /// Builds the [ListTile] widget.
-  ListTile build(BuildContext context) {
-    return ListTile(
-      key: ValueKey("lt_fhu_logger"),
-      leading: Icon(
-        Icons.list,
-      ),
-      title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
-      onTap: () {
-        // Navigates to the logger screen using GoRouter.
-        GoRouter.of(context).go('$_pathPrefix/${LoggingRouter.path}');
-      },
-      trailing: Icon(Icons.keyboard_arrow_right),
-    );
-  }
+  StreamBuilder<bool> build(context) => StreamBuilder<bool>(
+      stream: InfoDevicePackageModel.instance.tapCounterReachedStream,
+      builder: (_, tapCounterReachedSnapshot) {
+        return Visibility(
+          visible: kDebugMode || (tapCounterReachedSnapshot.data ?? false),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              child: ListTile(
+                key: ValueKey("lt_fhu_logger"),
+                leading: Icon(
+                  Icons.list,
+                ),
+                title: Text(
+                    FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
+                onTap: () {
+                  // Navigates to the logger screen using GoRouter.
+                  GoRouter.of(context).go('$_pathPrefix/${LoggingRouter.path}');
+                },
+                trailing: Icon(Icons.keyboard_arrow_right),
+              ),
+            ),
+          ),
+        );
+      });
 }
+
 
 /// Defines the routing for the logger screen.
 class LoggingRouter {
@@ -134,8 +143,7 @@ class _LoggerScreenState extends State<LoggerScreen> {
   /// Builds the UI for the logger screen.
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-            .logging),
+        title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
         actions: [
           _buildLevelFilter(),
         ],
@@ -145,32 +153,33 @@ class _LoggerScreenState extends State<LoggerScreen> {
           stream: LoggerModel.instance().stream,
           // Displays each log message as a Text widget in a ListView.
           builder: (_, snapshot) => Padding(
-            padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-            child: ListView(
-                children: snapshot.data
-                        ?.where((logEntry) =>
-                            _filterLevel == null ||
-                            logEntry.level == _filterLevel)
-                        .map(
-                          // Displays each log entry as a Card with details.
-                          (logEntry) => Card(
-                            color: _backgroundColor(logEntry.level),
-                            child: ListTile(
-                              leading: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(timeWithSecondsFormatter
-                                        .format(logEntry.time))
-                                  ]),
-                              title: Text(logEntry.loggerName),
-                              subtitle: Text(logEntry.message),
-                              isThreeLine: true,
-                            ),
-                          ),
-                        )
-                        .toList() ??
-                    []),
-          )));
+                padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+                child: ListView(
+                    children: snapshot.data
+                            ?.where((logEntry) =>
+                                _filterLevel == null ||
+                                logEntry.level == _filterLevel)
+                            .map(
+                              // Displays each log entry as a Card with details.
+                              (logEntry) => Card(
+                                color: _backgroundColor(logEntry.level),
+                                child: ListTile(
+                                  leading: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(timeWithSecondsFormatter
+                                            .format(logEntry.time))
+                                      ]),
+                                  title: Text(logEntry.loggerName),
+                                  subtitle: Text(logEntry.message),
+                                  isThreeLine: true,
+                                ),
+                              ),
+                            )
+                            .toList() ??
+                        []),
+              )));
 
   /// Builds the dropdown menu for filtering log levels.
   Widget _buildLevelFilter() {
@@ -310,8 +319,9 @@ class LoggerModel {
     _alreadyConfigured = true;
 
     if (reset) {
-    _log.info('initialize(reset: $reset): remove shared properties $_sharedPreferencesLogsKey');
-    _sharedPreferences.remove(_sharedPreferencesLogsKey);
+      _log.info(
+          'initialize(reset: $reset): remove shared properties $_sharedPreferencesLogsKey');
+      _sharedPreferences.remove(_sharedPreferencesLogsKey);
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.

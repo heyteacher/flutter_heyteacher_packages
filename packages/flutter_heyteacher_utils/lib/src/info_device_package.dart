@@ -2,7 +2,7 @@
 /// and a widget to display this information along with a support request option.
 ///
 /// This library includes:
-/// - [DevicePackageInfoListTile]: A [ListTile] widget that displays formatted
+/// - [DevicePackageInfoCard]: A [ListTile] widget that displays formatted
 ///   device and package version information, and a button to initiate a support email.
 /// - [InfoDevicePackageModel]: A singleton class that fetches detailed device
 ///   information (OS, model, browser) and package information (version, build number).
@@ -26,24 +26,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-class DevicePackageInfoCard extends StatelessWidget {
-  const DevicePackageInfoCard({super.key});
-
-  @override
-  StreamBuilder<bool> build(buildContext) => StreamBuilder<bool>(
-      stream: InfoDevicePackageModel.instance.tapCounterReachedStream,
-      builder: (_, tapCounterReachedSnapshot) {
-        return Visibility(
-          visible: kDebugMode || (tapCounterReachedSnapshot.data ?? false),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              child: LoggerListTile('/settings'),
-            ),
-          ),
-        );
-      });
-}
 
 
 /// A widget that displays device and package information in a list tile format.
@@ -52,8 +34,8 @@ class DevicePackageInfoCard extends StatelessWidget {
 /// and the application's version and build number.
 /// It also includes a "Support" button that opens the default email client
 /// It shows the device type, version, and a button to ask for support.
-class DevicePackageInfoListTile extends StatelessWidget {
-  const DevicePackageInfoListTile({super.key});
+class DevicePackageInfoCard extends StatelessWidget {
+  const DevicePackageInfoCard({super.key});
 
   @override
   Widget build(BuildContext context) {
