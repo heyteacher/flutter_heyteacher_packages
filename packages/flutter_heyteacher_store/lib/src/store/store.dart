@@ -431,8 +431,9 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   /// Returns the stream on [Store.query]
-  Stream<QuerySnapshot<LightDataType>> get stream =>
-      query(applyOrderBy: true).snapshots();
+  Stream<Iterable<LightDataType>> get stream =>
+      query(applyOrderBy: true).snapshots().map((querySnapshot) =>
+              querySnapshot.docs.map((document) => document.data()));
 
   /// Returns `true` if collection is empty based on [Store.storeFilter] defined.
   Future<bool> empty() async {
