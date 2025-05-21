@@ -135,38 +135,38 @@ class ThemeModel {
   /// Gets a red color that adapts to the current theme (light/dark).
   Color get redColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.red.shade700
-          : Colors.red.shade300;
+          ? Colors.red.shade800
+          : Colors.red.shade200;
 
   /// Gets a blue color that adapts to the current theme (light/dark).
   Color get blueColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.blue.shade700
-          : Colors.blue.shade300;
+          ? Colors.blue.shade800
+          : Colors.blue.shade200;
 
   /// Gets a yellow color that adapts to the current theme (light/dark).
   Color get yellowColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.yellow.shade700
-          : Colors.yellow.shade300;
+          ? Colors.yellow.shade800
+          : Colors.yellow.shade200;
 
   /// Gets a green color that adapts to the current theme (light/dark).
   Color get greenColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.green.shade700
-          : Colors.green.shade300;
+          ? Colors.green.shade800
+          : Colors.green.shade200;
 
   /// Gets an orange color that adapts to the current theme (light/dark).
   Color get orangeColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.orange.shade700
-          : Colors.orange.shade300;
+          ? Colors.orange.shade800
+          : Colors.orange.shade200;
 
   /// get the purple color based on the current theme mode
   Color get purpleColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.purple.shade700
-          : Colors.purple.shade300;
+          ? Colors.purple.shade800
+          : Colors.purple.shade200;
 
   static ThemeModel? _instance;
 
@@ -228,7 +228,7 @@ class ThemeModel {
                 secondary: Colors.grey.shade900,
                 onSecondary: Colors.white70,
                 error: Colors.white,
-                onError: Colors.redAccent,
+                onError: Colors.red,
                 surface: Colors.white70,
                 onSurface: Colors.grey.shade900,
                 surfaceContainer: Colors.white.withValues(alpha: 0.6),

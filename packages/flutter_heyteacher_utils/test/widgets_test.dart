@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart'; // For FirebaseException
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart'; // Import the file containing ErrorView
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';

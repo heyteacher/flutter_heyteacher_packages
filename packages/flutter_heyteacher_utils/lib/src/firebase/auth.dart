@@ -14,7 +14,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
-import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 

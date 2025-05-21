@@ -20,7 +20,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
-import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';

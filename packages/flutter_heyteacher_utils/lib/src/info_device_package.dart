@@ -19,7 +19,7 @@ import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/logger.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
-import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/storage.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
