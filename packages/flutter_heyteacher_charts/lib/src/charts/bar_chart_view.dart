@@ -9,7 +9,7 @@ class BarChartDataItem extends ChartDataItem {
   BarChartDataItem({required this.fromY, required super.x, required super.y, super.yColor, this.y1});
 
   @override
-  toString() => "x: $x, fromY: $fromY, y: $y,  y1: $y1";
+  toString() => 'x: $x, fromY: $fromY, y: $y,  y1: $y1';
 
 }
 

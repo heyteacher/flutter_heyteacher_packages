@@ -9,7 +9,7 @@ class ChartDataItem {
   const ChartDataItem({required this.x, required this.y, this.yColor});
 
   @override
-  toString() => "x: $x, y: $y";
+  toString() => 'x: $x, y: $y';
 }
 
 abstract class ChartView extends StatelessWidget {

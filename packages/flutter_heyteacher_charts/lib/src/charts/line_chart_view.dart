@@ -223,7 +223,7 @@ class LineChartView extends ChartView {
                       style: TextStyle(color: ThemeModel.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
                       alignment: Alignment.topRight,
                       show: true,
-                      labelResolver: (_) => "")),
+                      labelResolver: (_) => '')),
             ) ??
             [],
         // draw a extra vertical line
