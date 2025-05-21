@@ -206,6 +206,7 @@ class _LoggerScreenState extends State<LoggerScreen> {
         Level.SEVERE,
         Level.WARNING,
         Level.INFO,
+        Level.FINE,
       ]
           .map<DropdownMenuEntry<Level?>>((level) => DropdownMenuEntry<Level?>(
                 value: level,
