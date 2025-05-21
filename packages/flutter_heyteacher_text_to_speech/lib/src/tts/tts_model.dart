@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
