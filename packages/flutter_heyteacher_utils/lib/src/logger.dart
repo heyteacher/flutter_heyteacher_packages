@@ -15,7 +15,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
-import 'package:flutter_heyteacher_utils/localizations.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -104,7 +104,6 @@ class LoggerCard extends StatelessWidget {
         );
       });
 }
-
 
 /// Defines the routing for the logger screen.
 class LoggingRouter {
@@ -277,8 +276,10 @@ class LoggerModel {
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
-  static LoggerModel instance({bool initialize = false}) =>
-      initialize ? LoggerModel._() : _instance ??= LoggerModel._();
+  static LoggerModel instance({bool initialize = false, bool reset = false}) =>
+      initialize
+          ? LoggerModel._(reset: reset)
+          : _instance ??= LoggerModel._(reset: reset);
 
   /// Disposes of the [LoggerModel] by canceling the logger subscription.
   ///
@@ -296,7 +297,11 @@ class LoggerModel {
 
   /// Private constructor for the singleton pattern.
   /// Initializes the logger configuration.
-  LoggerModel._();
+  LoggerModel._({bool reset = false}) {
+    if (reset) {
+      _sharedPreferences.remove(_sharedPreferencesLogsKey);
+    }
+  }
 
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;
