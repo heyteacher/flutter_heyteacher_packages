@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 class UserStore extends Store<UserData, UserData> {
   UserStore._({super.firebaseFirestore})
       : super(
-            collection: "",
+            collection: '',
             userProfile: true,
             fromFirestoreFactory: UserData.fromFirestore);
 
@@ -55,29 +55,29 @@ class UserData extends FirestoreData {
 
   /// The user identifier supplyed by Auth if authenticated otherwise `guest`.
   @override
-  String get id => AuthModel.instance().uid ?? "guest";
+  String get id => AuthModel.instance().uid ?? 'guest';
 
   @protected
   UserData({this.locale, this.themeMode, this.purchaseToken});
 
   factory UserData.fromFirestore(Map<String, dynamic> map) {
     return UserData(
-        locale: Locale(map["locale"] ?? Intl.getCurrentLocale()),
-        themeMode: switch (map["themeMode"]) {
-          "light" => ThemeMode.light,
-          "dark" => ThemeMode.dark,
+        locale: Locale(map['locale'] ?? Intl.getCurrentLocale()),
+        themeMode: switch (map['themeMode']) {
+          'light' => ThemeMode.light,
+          'dark' => ThemeMode.dark,
           _ => ThemeMode.system
         },
-        purchaseToken: map["purchaseToken"]);
+        purchaseToken: map['purchaseToken']);
   }
 
   @override
   Map<String, dynamic> toFirestore(List<String>? fields) => {
-        if (fields?.contains("locale") ?? true) "locale": locale?.languageCode,
-        if (fields?.contains("themeMode") ?? true) "themeMode": themeMode?.name,
+        if (fields?.contains('locale') ?? true) 'locale': locale?.languageCode,
+        if (fields?.contains('themeMode') ?? true) 'themeMode': themeMode?.name,
         //purchaseToken cannot be update by user
       };
 
   @override
-  String toString() => "locale: $locale themeMode $themeMode";
+  String toString() => 'locale: $locale themeMode $themeMode';
 }

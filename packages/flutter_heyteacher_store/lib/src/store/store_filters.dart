@@ -34,25 +34,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Operators used in [ValueStoreFilter]
 enum Operator {
   /// If field value is equal to value
-  isEqualTo("="),
+  isEqualTo('='),
 
   /// If field value isn't equal to value
-  isNotEqualTo("<>"),
+  isNotEqualTo('<>'),
 
   /// If field value is less than field
-  isLessThan("<"),
+  isLessThan('<'),
 
   /// If field value is less then or equal to value
-  isLessThanOrEqualTo("<="),
+  isLessThanOrEqualTo('<='),
 
   /// If field value is greater than field
-  isGreaterThan(">"),
+  isGreaterThan('>'),
 
   /// If field value is greater then or equal to value
-  isGreaterThanOrEqualTo(">="),
+  isGreaterThanOrEqualTo('>='),
 
   /// If field array value contains the value
-  arrayContains("in");
+  arrayContains('in');
 
   final String printable;
   const Operator(this.printable);
@@ -61,13 +61,13 @@ enum Operator {
 /// Operators used in [IterableValueStoreFilter]
 enum IterableOperator {
   /// If field value is contained into the iterable values
-  arrayContainsAny("in any"),
+  arrayContainsAny('in any'),
 
   /// If field value is is into iterable values
-  whereIn("in"),
+  whereIn('in'),
 
   /// If field value isn't into the iterable values
-  whereNotIn("not in");
+  whereNotIn('not in');
 
   final String printable;
   const IterableOperator(this.printable);
@@ -121,7 +121,7 @@ class ValueStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() {
-    return "$field ${operator.printable} $value";
+    return '$field ${operator.printable} $value';
   }
 }
 
@@ -156,7 +156,7 @@ class IterableValueStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() {
-    return "$field ${iterableOperator.printable} $values";
+    return '$field ${iterableOperator.printable} $values';
   }
 }
 
@@ -389,9 +389,9 @@ class LogicalStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() {
-    return "("
-        "$filter1 "
-        "${logicalOperator.name} $filter2"
+    return '('
+        '$filter1 '
+        '${logicalOperator.name} $filter2'
         "${filter3 != null ? logicalOperator.name : ""} ${filter3 ?? ""}"
         "${filter4 != null ? logicalOperator.name : ""} ${filter4 ?? ""}"
         "${filter5!= null ? logicalOperator.name : ""} ${filter5 ?? ""}"
