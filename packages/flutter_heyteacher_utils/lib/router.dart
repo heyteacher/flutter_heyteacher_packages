@@ -40,11 +40,11 @@ class GoAuthRoute {
                     actions: [
                       AuthStateChangeAction<UserCreated>(
                           (context, userCreated) {
-                        _log.fine("auth/sign-in (user created)");
+                        _log.info("auth/sign-in (user created)");
                         GoRouter.of(context).pop();
                       }),
                       AuthStateChangeAction<SignedIn>((context, state) {
-                        _log.fine("auth/sign-in");
+                        _log.info("auth/sign-in");
                         GoRouter.of(context).pop();
                       }),
                     ],

@@ -32,7 +32,7 @@ class AppCheckModel {
     // in debug mode, uncomment for test permission denied error in firesotre forcing playIntegrity
     //AndroidProvider androidProvider = AndroidProvider.playIntegrity;
 
-    log.fine("androidProvider $androidProvider");
+    log.info("androidProvider $androidProvider");
 
     await FirebaseAppCheck.instance.activate(
       // You can also use 6a `ReCaptchaEnterpriseProvider` provider instance as an
