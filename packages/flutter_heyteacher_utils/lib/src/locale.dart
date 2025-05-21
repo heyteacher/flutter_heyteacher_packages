@@ -28,7 +28,7 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
             trailing: IconButton(
                 alignment: Alignment.topRight,
                 icon: Icon(Icons.volume_up),
-                onPressed: () => onTextToSpeechPressed),
+                onPressed: onTextToSpeechPressed),
             title: Wrap(
               alignment: WrapAlignment.center,
               spacing: 2,
