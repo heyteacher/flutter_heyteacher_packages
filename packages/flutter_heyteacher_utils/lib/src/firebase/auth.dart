@@ -29,7 +29,7 @@ class AccountCard extends StatelessWidget {
             stream: AuthModel.instance().stateChangesStream,
             builder: (_, snapshot) {
               return ListTile(
-                key: ValueKey("lt_account"),
+                key: const ValueKey('lt_account'),
                 leading: Icon(
                   Icons.person,
                   color: AuthModel.instance().autenticated
@@ -39,11 +39,11 @@ class AccountCard extends StatelessWidget {
                 ),
                 title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.account),
                 subtitle: AuthModel.instance().autenticated
-                    ? Text(AuthModel.instance().displayName ?? "")
+                    ? Text(AuthModel.instance().displayName ?? '')
                     : Text(FlutterHeyteacherUtilsLocalizations.of(context)!
                         .userNotAutenticated),
                 trailing: IconButton(
-                    key: ValueKey("ic_login_logout"),
+                    key: const ValueKey('ic_login_logout'),
                     icon: Icon(AuthModel.instance().autenticated
                         ? Icons.logout
                         : Icons.login),
@@ -52,9 +52,9 @@ class AccountCard extends StatelessWidget {
                         : Theme.of(context).iconTheme.color,
                     onPressed: () async {
                       if (AuthModel.instance().autenticated) {
-                        GoRouter.of(context).pushNamed("auth-sign-out");
+                        GoRouter.of(context).pushNamed('auth-sign-out');
                       } else {
-                        GoRouter.of(context).pushNamed("auth-sign-in");
+                        GoRouter.of(context).pushNamed('auth-sign-in');
                       }
                     }),
               );
@@ -70,7 +70,7 @@ class AccountCard extends StatelessWidget {
 /// checking authentication status, and listening to authentication state changes.
 /// It can be initialized with a real or mocked [FirebaseAuth] instance.
 class AuthModel {
-  final log = Logger("AuthModel");
+  final log = Logger('AuthModel');
   late final FirebaseAuth _firebaseAuth;
   GoogleProvider? _googleProvider;
 
@@ -96,7 +96,7 @@ class AuthModel {
     if (mockedFirebaseAuth == null) {
       _googleProvider = GoogleProvider(
           clientId:
-              FirebaseRemoteConfig.instance.getString("authGoogleClientId"));
+              FirebaseRemoteConfig.instance.getString('authGoogleClientId'));
       FirebaseUIAuth.configureProviders([_googleProvider!]);
     }
     _firebaseAuth = mockedFirebaseAuth ?? FirebaseAuth.instance;
@@ -107,13 +107,13 @@ class AuthModel {
   /// If a [GoogleProvider] was configured, it also attempts to sign out
   /// from the Google provider.
   Future<void> signOut() async {
-    final log = Logger("signOut");
+    final log = Logger('signOut');
     try {
       await _firebaseAuth.signOut();
       _googleProvider?.logOutProvider();
-      log.info("sign out");
+      log.info('sign out');
     } catch (e, s) {
-      log.severe("signOut: failed", e, s);
+      log.severe('signOut: failed', e, s);
     }
   }
 

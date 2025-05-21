@@ -30,7 +30,7 @@ class RemoteConfigModel {
   /// - For mobile platforms, listens for configuration updates and activates them.
   /// - Fetches and activates the latest configuration from the Firebase backend.
   Future<void> initialize({Map<String, dynamic>? defaultParameters}) async {
-    final log = Logger("configureRemoteConfig");
+    final log = Logger('configureRemoteConfig');
 
     defaultParameters ??= {};
     defaultParameters.addAll({
@@ -50,7 +50,7 @@ class RemoteConfigModel {
     ));
     if (PlatformHelper.isMobile) {
       _remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
-        log.config("activate remote config updated keys: ${event.updatedKeys}");
+        log.config('activate remote config updated keys: ${event.updatedKeys}');
         _remoteConfig.activate();
       });
     }

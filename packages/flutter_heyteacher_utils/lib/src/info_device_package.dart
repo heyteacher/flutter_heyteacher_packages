@@ -37,22 +37,22 @@ class DevicePackageInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
         child: ListTile(
-            key: ValueKey("lt_fhu_version"),
+            key: const ValueKey('lt_fhu_version'),
             leading: IconButton(
-              icon: Icon(Icons.smartphone),
+              icon: const Icon(Icons.smartphone),
               onPressed: InfoDevicePackageModel.instance._incrementTapCounter,
             ),
             title: FutureBuilder(
               future: InfoDevicePackageModel.instance.deviceInfo,
               builder: (_, deviceSnapshot) =>
-                  Text("${FlutterHeyteacherUtilsLocalizations.of(context)!.id}"
-                      "${deviceSnapshot.data}-${deviceSnapshot.data}"),
+                  Text('${FlutterHeyteacherUtilsLocalizations.of(context)!.id}'
+                      '${deviceSnapshot.data}-${deviceSnapshot.data}'),
             ),
             subtitle: FutureBuilder<String>(
               future: InfoDevicePackageModel.instance.packageVersion,
               builder: (_, devicePackageSnapshot) => Text(
-                  "${FlutterHeyteacherUtilsLocalizations.of(context)!.version}"
-                  "${devicePackageSnapshot.data}"),
+                  '${FlutterHeyteacherUtilsLocalizations.of(context)!.version}'
+                  '${devicePackageSnapshot.data}'),
             ),
             trailing: TextButton(
                 style: TextButton.styleFrom(
@@ -86,19 +86,19 @@ void _askSupport() async {
       'applogs/$machineDate/$machineTime-$identifierInfo-$randomId.log';
   await StorageModel.instance
       .uploadString(logFilename, await LoggerModel.instance().logs2Text);
-  final subject = "${i10n.askSupportFor}"
-      "${packageInfoPlatform.appName}";
-  final body = "------------------------------------\n"
-      "Identifier:\t$identifierInfo\n"
-      "Device:\t$device\n"
-      "Version:\t$version\n"
-      "Logs:\t$logFilename\n"
-      "------------------------------------\n"
-      "\n";
+  final subject = '${i10n.askSupportFor}'
+      '${packageInfoPlatform.appName}';
+  final body = '------------------------------------\n'
+      'Identifier:\t$identifierInfo\n'
+      'Device:\t$device\n'
+      'Version:\t$version\n'
+      'Logs:\t$logFilename\n'
+      '------------------------------------\n'
+      '\n';
   final uri = Uri(
-    scheme: "mailto",
-    path: "heyteacher70@gmail.com",
-    query: "subject=$subject&body=${Uri.encodeFull(body)}",
+    scheme: 'mailto',
+    path: 'heyteacher70@gmail.com',
+    query: 'subject=$subject&body=${Uri.encodeFull(body)}',
   );
   launchUrl(uri);
 }
@@ -119,7 +119,7 @@ class InfoDevicePackageModel {
   /// Private constructor for the singleton.
   InfoDevicePackageModel._() {
     _streamSubscription =
-        Stream.periodic(Duration(seconds: 5)).listen((_) => _tapCounter = 0);
+        Stream.periodic(const Duration(seconds: 5)).listen((_) => _tapCounter = 0);
   }
 
   dispose() {
@@ -155,21 +155,21 @@ class InfoDevicePackageModel {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     if (kIsWeb) {
       final webDeviceInfo = await deviceInfoPlugin.webBrowserInfo;
-      return "w-${webDeviceInfo.browserName}-ua-${webDeviceInfo.userAgent}";
+      return 'w-${webDeviceInfo.browserName}-ua-${webDeviceInfo.userAgent}';
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         {
           final androidDeviceInfo = await deviceInfoPlugin.androidInfo;
-          return "a-${androidDeviceInfo.model}-"
-              "sdk-${androidDeviceInfo.version.sdkInt}-"
-              "${androidDeviceInfo.version.release}";
+          return 'a-${androidDeviceInfo.model}-'
+              'sdk-${androidDeviceInfo.version.sdkInt}-'
+              '${androidDeviceInfo.version.release}';
         }
       case TargetPlatform.iOS:
         {
           final iosDeviceInfo = await deviceInfoPlugin.iosInfo;
-          return "i-${iosDeviceInfo.model}-"
-              "sysver-${iosDeviceInfo.systemVersion}";
+          return 'i-${iosDeviceInfo.model}-'
+              'sysver-${iosDeviceInfo.systemVersion}';
         }
       default:
         {
@@ -183,7 +183,7 @@ class InfoDevicePackageModel {
   /// Formats it as "version+buildNumber".
   Future<String> get packageVersion async {
     final packageInfoPlatform = await PackageInfo.fromPlatform();
-    return "${packageInfoPlatform.version}+${packageInfoPlatform.buildNumber}";
+    return '${packageInfoPlatform.version}+${packageInfoPlatform.buildNumber}';
   }
 
   /// Gets a user identifier string.
@@ -191,5 +191,5 @@ class InfoDevicePackageModel {
   /// It returns the first 5 characters of the authenticated user's UID if available,
   /// otherwise defaults to "guest".
   String get identifierInfo =>
-      (AuthModel.instance().uid?.substring(0, 5)) ?? "guest";
+      (AuthModel.instance().uid?.substring(0, 5)) ?? 'guest';
 }

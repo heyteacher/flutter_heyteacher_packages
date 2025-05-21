@@ -49,7 +49,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
       builder: (_, snapshot) => Card(
         child: ListTile(
               focusNode: widget.encryptionPassphraseFocusNode,
-              leading: Icon(Icons.password),
+              leading: const Icon(Icons.password),
               title: TextField(
                   enabled: AuthModel.instance().autenticated,
                   onChanged: (value) async =>
@@ -75,7 +75,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
                       ),
                       labelText: FlutterHeyteacherUtilsLocalizations.of(context)!
                           .encryptionPassphrase),
-                  controller: TextEditingController(text: snapshot.data ?? "")),
+                  controller: TextEditingController(text: snapshot.data ?? '')),
             ),
       ));
 
@@ -136,10 +136,10 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                           content:
                               FlutterHeyteacherUtilsLocalizations.of(context)!
                                   .userNotAutenticated),
-                  icon: Icon(Icons.qr_code)),
+                  icon: const Icon(Icons.qr_code)),
               IconButton(
                   onPressed: () => _showQrCodeScanner(),
-                  icon: Icon(Icons.qr_code_scanner)),
+                  icon: const Icon(Icons.qr_code_scanner)),
             ]),
           ),
         ),
@@ -170,7 +170,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                         ),
                         actions: <Widget>[
                           IconButton(
-                            key: ValueKey("ib_dialog_no"),
+                            key: const ValueKey('ib_dialog_no'),
                             icon: Icon(Icons.close,
                                 color: Theme.of(context).colorScheme.onError),
                             onPressed: () {
@@ -179,7 +179,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                           )
                         ],
                       )
-                    : ProgressIndicatorView(),
+                    : const ProgressIndicatorView(),
           );
         });
     setState(() {});
@@ -234,15 +234,15 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
 /// storage in `FlutterSecureStorage`, import/export), and the use of
 /// Additional Authenticated Data (AAD).
 class E2EE {
-  final _log = Logger("E2EE");
+  final _log = Logger('E2EE');
 
   /// Key used in secure storage for the Additional Authenticated Data (AAD).
   /// Uniquely identifies the AAD for the current authenticated user.
-  String get _aadKey => "${AuthModel.instance().uid!}_aad";
+  String get _aadKey => '${AuthModel.instance().uid!}_aad';
 
   /// Key used in secure storage for the user's secret encryption key (in JWK format).
   /// Uniquely identifies the secret key for the current authenticated user.
-  String get _secretKeyKey => "${AuthModel.instance().uid!}_secretKey";
+  String get _secretKeyKey => '${AuthModel.instance().uid!}_secretKey';
 
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
@@ -262,7 +262,7 @@ class E2EE {
   /// Configures Android-specific options for encrypted shared preferences.
   Future<FlutterSecureStorage> get _secureStorage async {
     if (_secureStorageInstance != null) return _secureStorageInstance!;
-    String appName = "appName";
+    String appName = 'appName';
     if (PlatformHelper.isMobile) {
       appName = (await PackageInfo.fromPlatform()).appName;
     }
@@ -288,12 +288,12 @@ class E2EE {
   Future<E2EEValue> encrypt(String value, {AesGcmSecretKey? secretKey}) async {
     // cannot encrypt if not auth
     if (AuthModel.instance().notAutenticated) {
-      _log.severe("encrypt: user not authenticated");
+      _log.severe('encrypt: user not authenticated');
       throw UserNotAuthenticatedException();
     }
-    String aad = await getAAD() ?? "";
+    String aad = await getAAD() ?? '';
     if (aad.isEmpty) {
-      _log.severe("encrypt: aad is empty");
+      _log.severe('encrypt: aad is empty');
       throw AADEmptyException();
     }
     final FlutterSecureStorage secureStorage = await _secureStorage;
@@ -321,7 +321,7 @@ class E2EE {
       // return string encoded with the initial vector
       return E2EEValue(value: encryptedBytes, iv: iv);
     } catch (e, s) {
-      _log.severe("encrypt: error", e, s);
+      _log.severe('encrypt: error', e, s);
       throw ErrorOnEncryptException();
     }
   }
@@ -336,12 +336,12 @@ class E2EE {
       {AesGcmSecretKey? secretKey}) async {
     // cannot encrypt if not auth
     if (AuthModel.instance().notAutenticated) {
-      _log.severe("decrypt: user not authenticated");
+      _log.severe('decrypt: user not authenticated');
       throw UserNotAuthenticatedException();
     }
-    String aad = await getAAD() ?? "";
+    String aad = await getAAD() ?? '';
     if (aad.isEmpty) {
-      _log.severe("decrypt: aad is empty");
+      _log.severe('decrypt: aad is empty');
       throw AADEmptyException();
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
@@ -349,7 +349,7 @@ class E2EE {
     // raise exception if key not found in secure storage
     if (secretKey == null &&
         !await secureStorage.containsKey(key: _secretKeyKey)) {
-      _log.severe("decrypt: missing secret key");
+      _log.severe('decrypt: missing secret key');
       throw MissingEncryptionSecretKeyException();
     }
     // aad bytes
@@ -365,7 +365,7 @@ class E2EE {
       final decrypted = utf8.decode(decryptedBytes);
       return decrypted;
     } catch (e, s) {
-      _log.severe("decrypt: error", e, s);
+      _log.severe('decrypt: error', e, s);
       throw ErrorOnDecryptException();
     }
   }
@@ -377,7 +377,7 @@ class E2EE {
   Future<void> setAAD(String aadValue) async {
     // cannot encrypt if not auth
     if (AuthModel.instance().notAutenticated) {
-      _log.severe("setAAD: user not authenticated");
+      _log.severe('setAAD: user not authenticated');
       throw UserNotAuthenticatedException();
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
@@ -446,7 +446,7 @@ class E2EE {
   Future<AesGcmSecretKey> _generateSecretKey() async {
     // cannot encrypt if not auth
     if (AuthModel.instance().notAutenticated) {
-      _log.severe("_generateSecretKey: user not authenticated");
+      _log.severe('_generateSecretKey: user not authenticated');
       throw UserNotAuthenticatedException();
     }
     final FlutterSecureStorage secureStorage = await _secureStorage;
@@ -458,7 +458,7 @@ class E2EE {
     final secretJwkJson = jsonEncode(secretJwk);
     // write the jwk json into storage
     secureStorage.write(key: _secretKeyKey, value: secretJwkJson);
-    _log.fine("_generateSecretKey: new key generated stored in secureStorage");
+    _log.fine('_generateSecretKey: new key generated stored in secureStorage');
     // secret key in secure storage, load it
     return secretKey;
   }
@@ -470,7 +470,7 @@ class E2EE {
   Future<AesGcmSecretKey> _readSecretKey() async {
     // cannot encrypt if not auth
     if (AuthModel.instance().notAutenticated) {
-      _log.severe("_readSecretKey: user not authenticated");
+      _log.severe('_readSecretKey: user not authenticated');
       throw UserNotAuthenticatedException();
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
@@ -489,12 +489,12 @@ class E2EE {
   Future<AesGcmSecretKey> _readMasterSecretKey() async {
     // cannot encrypt if not auth
     if (AuthModel.instance().notAutenticated) {
-      _log.severe("_readMasterSecretKey: user not authenticated");
+      _log.severe('_readMasterSecretKey: user not authenticated');
       throw UserNotAuthenticatedException();
     }
     // decode the json jwk
     return await _readSecretKeyFromJwkJson(
-        FirebaseRemoteConfig.instance.getString("masterSecretKeyJwk"));
+        FirebaseRemoteConfig.instance.getString('masterSecretKeyJwk'));
   }
 
   /// Imports an [AesGcmSecretKey] from its JWK (JSON Web Key) JSON representation.
@@ -572,7 +572,7 @@ class ErrorOnEncryptException implements Exception {
       return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
           .errorOnEncryptionCheckPassphrase;
     } else {
-      return "Error on encryption, check passphrase";
+      return 'Error on encryption, check passphrase';
     }
   }
 }
@@ -587,7 +587,7 @@ class ErrorOnDecryptException implements Exception {
       return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
           .errorOnDecryptionCheckPassphrase;
     } else {
-      return "Error on decryption, check passphrase";
+      return 'Error on decryption, check passphrase';
     }
   }
 }
@@ -601,7 +601,7 @@ class AADEmptyException implements Exception {
       return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
           .encryptionPassphraseIsEmptySetIt;
     } else {
-      return "Encryption Passphrase is empty, set it";
+      return 'Encryption Passphrase is empty, set it';
     }
   }
 }
@@ -615,7 +615,7 @@ class MissingEncryptionSecretKeyException implements Exception {
       return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
           .missingEncryptionSecretKeyImportIt;
     } else {
-      return "Missing Encryption Secret Key, import it";
+      return 'Missing Encryption Secret Key, import it';
     }
   }
 }

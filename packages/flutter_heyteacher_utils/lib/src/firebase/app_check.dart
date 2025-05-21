@@ -12,7 +12,7 @@ import 'package:logging/logging.dart';
 import 'package:flutter/foundation.dart';
 
 class AppCheckModel {
-  final log = Logger("AppCheckModel");
+  final log = Logger('AppCheckModel');
 
   static AppCheckModel? _instance;
   AppCheckModel._();
@@ -32,13 +32,13 @@ class AppCheckModel {
     // in debug mode, uncomment for test permission denied error in firesotre forcing playIntegrity
     //AndroidProvider androidProvider = AndroidProvider.playIntegrity;
 
-    log.info("androidProvider $androidProvider");
+    log.info('androidProvider $androidProvider');
 
     await FirebaseAppCheck.instance.activate(
       // You can also use 6a `ReCaptchaEnterpriseProvider` provider instance as an
       // argument for `webProvider`
       webProvider: ReCaptchaV3Provider(FirebaseRemoteConfig.instance
-          .getString("appCheckReCaptchaV3SiteKey")),
+          .getString('appCheckReCaptchaV3SiteKey')),
       // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
       // your preferred provider. Choose from:
       // 1. Debug provider

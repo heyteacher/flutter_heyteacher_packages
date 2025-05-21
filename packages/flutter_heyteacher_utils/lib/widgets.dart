@@ -73,7 +73,7 @@ void showSnackBar(
                 duration: Duration(
                     seconds: duration ??
                         FirebaseRemoteConfig.instance
-                            .getInt("snackBarDurationInSeconds")),
+                            .getInt('snackBarDurationInSeconds')),
                 backgroundColor: error
                     ? ThemeModel.instance().theme.colorScheme.onError
                     : ThemeModel.instance().greenColor,
@@ -102,7 +102,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
     ObjectParamType? param,
     String? title,
     required String content}) async {
-  final log = Logger("showConfirmCancelDialog");
+  final log = Logger('showConfirmCancelDialog');
 
   final bool? confirm = await showDialog<bool>(
       context: context,
@@ -119,7 +119,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
               child: Text(textAlign: TextAlign.center, content)),
           actions: <Widget>[
             IconButton(
-              key: ValueKey("ib_dialog_no"),
+              key: const ValueKey('ib_dialog_no'),
               icon: Icon(Icons.close,
                   color: Theme.of(context).colorScheme.onError),
               onPressed: () {
@@ -131,8 +131,8 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
             ),
             if (confirmCallback != null)
               IconButton(
-                key: ValueKey("ib_dialog_yes"),
-                icon: Icon(Icons.check),
+                key: const ValueKey('ib_dialog_yes'),
+                icon: const Icon(Icons.check),
                 onPressed: () async {
                   // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
                   SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -151,7 +151,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
     } catch (e, s) {
       error = true;
       message = e.toString();
-      log.severe("${confirmCallback.toString()}: error", e, s);
+      log.severe('${confirmCallback.toString()}: error', e, s);
       rethrow;
     } finally {
       if (context.mounted && message != null) {
@@ -173,7 +173,7 @@ class ProgressIndicatorView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Center(
+  Widget build(BuildContext context) => const Center(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [CircularProgressIndicator()]),
@@ -187,13 +187,13 @@ class ProgressIndicatorView extends StatelessWidget {
 /// If the exception is a [FirebaseException] with [FirebaseException.code] 
 /// `permission-denied` it shows a login button to navigate on auth screen.
 class ErrorView extends StatelessWidget {
-  static final _log = Logger("ErrorView");
+  static final _log = Logger('ErrorView');
 
   final Object? error;
   final StackTrace? stackTrace;
 
   ErrorView(this.error, this.stackTrace, {super.key}) {
-    _log.severe("error", error, stackTrace);
+    _log.severe('error', error, stackTrace);
   }
 
   @override
@@ -201,7 +201,7 @@ class ErrorView extends StatelessWidget {
         appBar: AppBar(),
         body: error == null ||
                 (error is FirebaseException &&
-                    (error as FirebaseException).code == "permission-denied")
+                    (error as FirebaseException).code == 'permission-denied')
             ? Column(children: [
                 Expanded(
                   child: Align(
@@ -217,7 +217,7 @@ class ErrorView extends StatelessWidget {
                   child: Align(
                       alignment: Alignment.topCenter,
                       child: IconButton(
-                          key: ValueKey("ic_login"),
+                          key: const ValueKey('ic_login'),
                           icon: Icon(Icons.login,
                               size: Theme.of(context)
                                   .textTheme
@@ -225,7 +225,7 @@ class ErrorView extends StatelessWidget {
                                   .fontSize),
                           color: Theme.of(context).iconTheme.color,
                           onPressed: () async {
-                            GoRouter.of(context).pushNamed("auth-sign-in");
+                            GoRouter.of(context).pushNamed('auth-sign-in');
                           })),
                 ),
               ])

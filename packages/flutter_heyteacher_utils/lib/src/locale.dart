@@ -23,11 +23,11 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Card(
         child: ListTile(
-            key: ValueKey("lt_fhu_locale"),
+            key: const ValueKey('lt_fhu_locale'),
             leading: const Icon(Icons.language),
             trailing: IconButton(
                 alignment: Alignment.topRight,
-                icon: Icon(Icons.volume_up),
+                icon: const Icon(Icons.volume_up),
                 onPressed: onTextToSpeechPressed),
             title: Wrap(
               alignment: WrapAlignment.center,

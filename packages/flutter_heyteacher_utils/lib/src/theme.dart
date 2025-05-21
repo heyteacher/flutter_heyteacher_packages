@@ -29,7 +29,7 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Card(
         child: ListTile(
-          leading: Icon(Icons.contrast),
+          leading: const Icon(Icons.contrast),
           title: Wrap(
             alignment: WrapAlignment.center,
             spacing: 2,
@@ -37,21 +37,21 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
               ChoiceChip(
                   selected: ThemeMode.system == ThemeModel.instance().themeMode,
                   label: Text(ThemeMode.system.name),
-                  avatar: Icon(Icons.smartphone),
+                  avatar: const Icon(Icons.smartphone),
                   showCheckmark: false,
                   onSelected: (bool selected) =>
                       onSelected(selected ? ThemeMode.system : null)),
               ChoiceChip(
                   selected: ThemeMode.dark == ThemeModel.instance().themeMode,
                   label: Text(ThemeMode.dark.name),
-                  avatar: Icon(Icons.dark_mode),
+                  avatar: const Icon(Icons.dark_mode),
                   showCheckmark: false,
                   onSelected: (bool selected) =>
                       onSelected(selected ? ThemeMode.dark : null)),
               ChoiceChip(
                   selected: ThemeMode.light == ThemeModel.instance().themeMode,
                   label: Text(ThemeMode.light.name),
-                  avatar: Icon(Icons.light_mode),
+                  avatar: const Icon(Icons.light_mode),
                   showCheckmark: false,
                   onSelected: (bool selected) =>
                       onSelected(selected ? ThemeMode.light : null)),
@@ -461,7 +461,7 @@ class ThemeModel {
           onSurfaceVariant: onSurfaceVariant,
         ),
         badgeTheme: BadgeThemeData(backgroundColor: onError, textColor: error),
-        appBarTheme: AppBarTheme(iconTheme: IconThemeData(size: 40)),
+        appBarTheme: const AppBarTheme(iconTheme: IconThemeData(size: 40)),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           elevation: 0,
           selectedItemColor: onSurfaceVariant,
@@ -469,18 +469,18 @@ class ThemeModel {
           backgroundColor: Colors.transparent,
         ),
         cardTheme: CardTheme(elevation: 50, color: surfaceContainer),
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
             displayLarge: TextStyle(
           fontSize: 120,
         )),
-        snackBarTheme: SnackBarThemeData(
+        snackBarTheme: const SnackBarThemeData(
           //contentTextStyle: TextStyle(color: surface),
           insetPadding: EdgeInsets.all(20.0),
           elevation: 20,
           //backgroundColor: surface
         ),
         bottomSheetTheme:
-            BottomSheetThemeData(backgroundColor: Colors.transparent)
+            const BottomSheetThemeData(backgroundColor: Colors.transparent)
         /* dark theme settings */
         );
   }

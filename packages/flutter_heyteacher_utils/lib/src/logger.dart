@@ -43,29 +43,29 @@ class LogEntry {
       this.stackTrace});
 
   factory LogEntry.fromJson(Map<String, dynamic> map) => LogEntry(
-      time: DateTime.parse(map["time"]),
-      level: switch (map["level"] as String) {
-        "SEVERE" => Level.SEVERE,
-        "WARNING" => Level.WARNING,
-        "INFO" => Level.INFO,
-        "CONFIG" => Level.CONFIG,
-        "FINE" => Level.FINE,
-        "FINER" => Level.FINER,
-        "FINEST" => Level.FINEST,
+      time: DateTime.parse(map['time']),
+      level: switch (map['level'] as String) {
+        'SEVERE' => Level.SEVERE,
+        'WARNING' => Level.WARNING,
+        'INFO' => Level.INFO,
+        'CONFIG' => Level.CONFIG,
+        'FINE' => Level.FINE,
+        'FINER' => Level.FINER,
+        'FINEST' => Level.FINEST,
         _ => Level.SHOUT
       },
-      message: map["message"],
-      loggerName: map["loggerName"],
-      error: map["error"],
-      stackTrace: map["stackTrace"]);
+      message: map['message'],
+      loggerName: map['loggerName'],
+      error: map['error'],
+      stackTrace: map['stackTrace']);
 
   Map<String, dynamic> toJson() => {
-        "time": time.toIso8601String(),
-        "level": level.name,
-        "loggerName": loggerName,
-        "message": message,
-        "error": error,
-        "stackTrace": stackTrace,
+        'time': time.toIso8601String(),
+        'level': level.name,
+        'loggerName': loggerName,
+        'message': message,
+        'error': error,
+        'stackTrace': stackTrace,
       };
 }
 
@@ -87,8 +87,8 @@ class LoggerCard extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Card(
               child: ListTile(
-                key: ValueKey("lt_fhu_logger"),
-                leading: Icon(
+                key: const ValueKey('lt_fhu_logger'),
+                leading: const Icon(
                   Icons.list,
                 ),
                 title: Text(
@@ -97,7 +97,7 @@ class LoggerCard extends StatelessWidget {
                   // Navigates to the logger screen using GoRouter.
                   GoRouter.of(context).go('$_pathPrefix/${LoggingRouter.path}');
                 },
-                trailing: Icon(Icons.keyboard_arrow_right),
+                trailing: const Icon(Icons.keyboard_arrow_right),
               ),
             ),
           ),
@@ -113,7 +113,7 @@ class LoggingRouter {
   /// Builds a [GoRoute] for the logger screen.
   static GoRoute builder() => GoRoute(
       path: path,
-      builder: (BuildContext context, GoRouterState state) => LoggerScreen());
+      builder: (BuildContext context, GoRouterState state) => const LoggerScreen());
 }
 
 ///
@@ -333,11 +333,11 @@ class LoggerModel {
     // Set the root logger's level based on debug mode and Firebase Remote Config.
     Logger.root.level = Level(
         kDebugMode
-            ? "FINE"
-            : FirebaseRemoteConfig.instance.getString("loggerRootLevelName"),
+            ? 'FINE'
+            : FirebaseRemoteConfig.instance.getString('loggerRootLevelName'),
         kDebugMode
             ? 500
-            : FirebaseRemoteConfig.instance.getInt("loggerRootLevelValue"));
+            : FirebaseRemoteConfig.instance.getInt('loggerRootLevelValue'));
 
     // Asynchronously fetch package version and device information.
     final version = await InfoDevicePackageModel.instance.packageVersion;
@@ -348,9 +348,9 @@ class LoggerModel {
     // Listen to records from the root logger.
     _loggerSubscription = Logger.root.onRecord.listen((record) {
       // Format error and stack trace for potential inclusion in messages.
-      final String error = record.error != null ? "\n${record.error}" : "";
+      final String error = record.error != null ? '\n${record.error}' : '';
       final String stackTrace =
-          record.stackTrace != null ? "\n${record.stackTrace}" : "";
+          record.stackTrace != null ? '\n${record.stackTrace}' : '';
       // Add the raw LogRecord to the beginning of the list.
       _addLog(record);
 
@@ -369,24 +369,24 @@ class LoggerModel {
 
       // Send the log event to Firebase Analytics.
       // Message, error, and stacktrace are limited to 100 characters for Firebase.
-      FirebaseAnalytics.instance.logEvent(name: "logger", parameters: {
-        "time": record.time.toLocal().toIso8601String(),
-        "version": version,
-        "device": deviceInfo,
-        "level": record.level.name,
-        "kDebugMode": kDebugMode.toString(),
-        "name": record.loggerName,
-        "message":
+      FirebaseAnalytics.instance.logEvent(name: 'logger', parameters: {
+        'time': record.time.toLocal().toIso8601String(),
+        'version': version,
+        'device': deviceInfo,
+        'level': record.level.name,
+        'kDebugMode': kDebugMode.toString(),
+        'name': record.loggerName,
+        'message':
             // Truncate message to 100 characters for Firebase.
             record.message.substring(0, min(record.message.length, 100)),
         if (record.error != null)
           // Truncate error to 100 characters for Firebase.
-          "error": error.substring(0, min(error.length, 100)).trim(),
+          'error': error.substring(0, min(error.length, 100)).trim(),
         if (record.stackTrace != null)
           // Truncate stack trace to 100 characters for Firebase.
-          "stackTrace":
+          'stackTrace':
               stackTrace.substring(0, min(stackTrace.length, 100)).trim(),
-        "uid": identifierInfo
+        'uid': identifierInfo
       });
     });
   }
