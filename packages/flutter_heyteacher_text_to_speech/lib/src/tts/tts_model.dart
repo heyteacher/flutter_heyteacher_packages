@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 class TtsModel {
-  static final _log = Logger("TtsModel");
+  static final _log = Logger('TtsModel');
 
   late FlutterTts _textToSpeech;
 
@@ -33,7 +33,7 @@ class TtsModel {
   }
 
   Future<void> speak(String text, {double speechRate = 1}) async {
-    _log.info("speak({speechRate:$speechRate}): $text");
+    _log.info('speak({speechRate:$speechRate}): $text');
     await _textToSpeech.setSpeechRate(speechRate);
     _textToSpeech.speak(text);
   }
