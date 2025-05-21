@@ -33,7 +33,7 @@ class TtsModel {
   }
 
   Future<void> speak(String text, {double speechRate = 1}) async {
-    _log.fine("speak({speechRate:$speechRate}): $text");
+    _log.info("speak({speechRate:$speechRate}): $text");
     await _textToSpeech.setSpeechRate(speechRate);
     _textToSpeech.speak(text);
   }
