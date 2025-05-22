@@ -319,7 +319,7 @@ abstract class Store<LightDataType extends FirestoreData,
   Stream<AggregateQuerySnapshot> get aggregateStream =>
       _aggregateStreamController.stream;
 
-  final Map<String, ({DateTime lastUpdated, DetailsDataType detailsData})>
+  static final Map<String, ({DateTime lastUpdated, dynamic detailsData})>
       _detailedDataCache = {};
 
   /// The store constructor.
