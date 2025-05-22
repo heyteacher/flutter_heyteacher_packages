@@ -18,6 +18,8 @@ dependencies:
   logging: ^1.3.0
   webcrypto: ^0.5.8
   clock: ^1.1.1
+  shared_preferences: ^2.5.3
+  
 
 dev_dependencies:
   flutter_test:

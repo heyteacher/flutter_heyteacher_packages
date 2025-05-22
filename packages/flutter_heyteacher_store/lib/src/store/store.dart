@@ -203,7 +203,7 @@
 library;
 
 import 'dart:async';
-import 'package:clock/clock.dart';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -212,6 +212,7 @@ import 'package:flutter_heyteacher_store/src/store/store_filters.dart';
 import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Order enumeration.
 ///
@@ -285,6 +286,9 @@ abstract class Store<LightDataType extends FirestoreData,
   /// contains the state of group by selected, used to filter results
   GroupByResult? groupBySelected;
 
+  /// if cache is enabled
+  bool cache;
+
   /// The map of group by fields with the function which estract the value
   /// to group by.
   final Map<String, String Function(DetailsDataType)?>? _groupByFields;
@@ -319,8 +323,7 @@ abstract class Store<LightDataType extends FirestoreData,
   Stream<AggregateQuerySnapshot> get aggregateStream =>
       _aggregateStreamController.stream;
 
-  static final Map<String, ({DateTime lastUpdated, dynamic detailsData})>
-      _detailedDataCache = {};
+  final SharedPreferencesAsync _sharedPreferences = SharedPreferencesAsync();
 
   /// The store constructor.
   ///
@@ -344,6 +347,7 @@ abstract class Store<LightDataType extends FirestoreData,
       this.orderByFields,
       this.aggregateFields,
       this.storeFilter,
+      this.cache = true,
       Map<String, String Function(DetailsDataType)?>? groupByFields,
       FirebaseFirestore? firebaseFirestore})
       : _userProfile = userProfile,
@@ -464,26 +468,33 @@ abstract class Store<LightDataType extends FirestoreData,
         .map((e) => e.data());
   }
 
-  DetailsDataType? _getCached(String id) {
-    if (_detailedDataCache.containsKey(id)) {
+  Future<DetailsDataType?> _getCached(String id) async {
+    if (!cache) return null;
+    _log.finest('_getCached($_detailsCollectionPathLog/$id)');
+    if (await _sharedPreferences.containsKey(id)) {
       _log.finest('_getCached($_detailsCollectionPathLog/$id) HIT');
-      return _detailedDataCache[id]!.detailsData;
+      return  FirestoreData.fromFirestoreFactory<DetailsDataType>(jsonDecode((await _sharedPreferences.getString('$_detailsCollectionPath/$id'))!));
     }
     _log.finest('_getCached($_detailsCollectionPathLog/$id) MISS');
-    return _detailedDataCache[id]?.detailsData;
+    return null;
   }
 
-  void _updateCache(String id, DetailsDataType detailsData) {
+  Future<void> _updateCache(String id, DetailsDataType detailsData) async {
+    if (!cache) return;
     _log.finest('_updateCache($_detailsCollectionPathLog/$id)');
-    _detailedDataCache[id] =
-        (lastUpdated: clock.now(), detailsData: detailsData);
+    await _sharedPreferences.setString('$_detailsCollectionPath/$id', jsonEncode(detailsData.toFirestore(null)));
   }
 
+  Future<void> _removeCache(String id) async {
+    if (!cache) return;
+    await _sharedPreferences.remove('$_detailsCollectionPath/$id');
+  }
+  
 
   /// Returns `true` if exists a document identified by [id].
   Future<bool> exists(String id) async {
     _log.finest('exists($_detailsCollectionPathLog/$id)');
-    final cached = _getCached(id);
+    final cached = await _getCached(id);
     if (cached != null) return true;
     try {
       await get(id);
@@ -498,7 +509,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// [DocumentNotFoundException] is throw if document doesn't exist.
   Future<DetailsDataType> get(String id) async {
     _log.finest('get($_detailsCollectionPathLog/$id)');
-    final cached = _getCached(id);
+    final cached = await _getCached(id);
     if (cached != null) return cached;
 
     _checkAuthenticated();
@@ -536,7 +547,7 @@ abstract class Store<LightDataType extends FirestoreData,
     _log.finest('getOrNull($_detailsCollectionPathLog/$id)');
     if (id == null) return null;
     //
-    final cached = _getCached(id);
+    final cached = await _getCached(id);
     if (cached != null) return cached;
     try {
       return get(id);
@@ -577,7 +588,7 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
-      _detailedDataCache.remove(id);
+      _removeCache(id);
       notifyAggregatesChanges();
     }
   }
@@ -592,7 +603,7 @@ abstract class Store<LightDataType extends FirestoreData,
     for (var i = 0; i < ids.length; i++) {
       // need await operation in order batch commit will by executed as last operation
       await delete(ids[i], batch: batch);
-      _detailedDataCache.remove(ids[i]);
+      _removeCache(ids[i]);
     }
     await batch.commit();
     notifyAggregatesChanges();
