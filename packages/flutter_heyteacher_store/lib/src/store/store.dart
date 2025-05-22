@@ -476,10 +476,10 @@ abstract class Store<LightDataType extends FirestoreData,
 
   DetailsDataType? _getCached(String id) {
     if (_detailedDataCache.containsKey(id)) {
-      _log.finest('_getCached($_detailsCollectionPathLog/$id) hit');
+      _log.finest('_getCached($_detailsCollectionPathLog/$id) HIT');
       return _detailedDataCache[id]!.detailsData;
     }
-    _log.finest('_getCached($_detailsCollectionPathLog/$id) miss');
+    _log.finest('_getCached($_detailsCollectionPathLog/$id) MISS');
     return _detailedDataCache[id]?.detailsData;
   }
 
@@ -493,10 +493,10 @@ abstract class Store<LightDataType extends FirestoreData,
   ///
   /// [DocumentNotFoundException] is throw if document doesn't exist.
   Future<DetailsDataType> get(String id) async {
+    _log.finest('get($_detailsCollectionPathLog/$id)');
     final cached = _getCached(id);
     if (cached != null) return cached;
 
-    _log.finest('get($_detailsCollectionPathLog/$id)');
     _checkAuthenticated();
 
     DocumentSnapshot<DetailsDataType>? detailsDocumentSnapshot =
@@ -510,8 +510,8 @@ abstract class Store<LightDataType extends FirestoreData,
             await _collectionReference.doc(id).get();
         // populate parent data fields
         if (documentSnapshot.exists) {
-          _updateCache(id, details);
           details.setParentData(documentSnapshot.data()!);
+          _updateCache(id, details);
           return details;
         } else {
           throw DocumentNotFoundException('$_collectionPathLog/$id');
