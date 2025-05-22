@@ -467,6 +467,8 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns `true` if exists a document identified by [id].
   Future<bool> exists(String id) async {
     _log.finest('exists($_detailsCollectionPathLog/$id)');
+    final cached = _getCached(id);
+    if (cached != null) return true;
     _checkAuthenticated();
     bool ret = (await _detailsCollectionReference.doc(id).get()).exists;
     return ret;
@@ -712,8 +714,7 @@ abstract class Store<LightDataType extends FirestoreData,
     for (var i = 0; i < documents.length; i++) {
       // need await operation in order batch commit will by executed as last operation
       await update(documents[i], fields: fields, id: ids?[i], batch: batch);
-     _updateCache(ids?[i] ?? documents[i].id, documents[i]);
-
+      _updateCache(ids?[i] ?? documents[i].id, documents[i]);
     }
     await batch.commit();
     notifyAggregatesChanges();
