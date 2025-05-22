@@ -333,10 +333,10 @@ class LoggerModel {
     // Set the root logger's level based on debug mode and Firebase Remote Config.
     Logger.root.level = Level(
         kDebugMode
-            ? 'FINE'
+            ? FirebaseRemoteConfig.instance.getString('loggerDebugRootLevelName')
             : FirebaseRemoteConfig.instance.getString('loggerRootLevelName'),
         kDebugMode
-            ? 500
+            ? FirebaseRemoteConfig.instance.getInt('loggerDebugRootLevelValue')
             : FirebaseRemoteConfig.instance.getInt('loggerRootLevelValue'));
 
     // Asynchronously fetch package version and device information.
