@@ -470,10 +470,11 @@ abstract class Store<LightDataType extends FirestoreData,
 
   Future<DetailsDataType?> _getCached(String id) async {
     if (!cache) return null;
-    _log.finest('_getCached($_detailsCollectionPathLog/$id)');
     if (await _sharedPreferences.containsKey('$_detailsCollectionPath/$id')) {
       _log.finest('_getCached($_detailsCollectionPathLog/$id) HIT');
-      return  FirestoreData.fromFirestoreFactory<DetailsDataType>(jsonDecode((await _sharedPreferences.getString('$_detailsCollectionPath/$id'))!));
+      return FirestoreData.fromFirestoreFactory<DetailsDataType>(jsonDecode(
+          (await _sharedPreferences
+              .getString('$_detailsCollectionPath/$id'))!));
     }
     _log.finest('_getCached($_detailsCollectionPathLog/$id) MISS');
     return null;
@@ -482,7 +483,8 @@ abstract class Store<LightDataType extends FirestoreData,
   Future<void> _updateCache(String id, DetailsDataType detailsData) async {
     if (!cache) return;
     _log.finest('_updateCache($_detailsCollectionPathLog/$id)');
-    await _sharedPreferences.setString('$_detailsCollectionPath/$id', jsonEncode(detailsData.toFirestore(null)));
+    await _sharedPreferences.setString('$_detailsCollectionPath/$id',
+        jsonEncode(detailsData.toFirestore(null)));
   }
 
   Future<void> _removeCache(String id) async {
@@ -490,7 +492,6 @@ abstract class Store<LightDataType extends FirestoreData,
     _log.finest('_removeCache($_detailsCollectionPathLog/$id)');
     await _sharedPreferences.remove('$_detailsCollectionPath/$id');
   }
-  
 
   /// Returns `true` if exists a document identified by [id].
   Future<bool> exists(String id) async {
