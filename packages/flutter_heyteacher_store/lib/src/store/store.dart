@@ -464,16 +464,6 @@ abstract class Store<LightDataType extends FirestoreData,
         .map((e) => e.data());
   }
 
-  /// Returns `true` if exists a document identified by [id].
-  Future<bool> exists(String id) async {
-    _log.finest('exists($_detailsCollectionPathLog/$id)');
-    final cached = _getCached(id);
-    if (cached != null) return true;
-    _checkAuthenticated();
-    bool ret = (await _detailsCollectionReference.doc(id).get()).exists;
-    return ret;
-  }
-
   DetailsDataType? _getCached(String id) {
     if (_detailedDataCache.containsKey(id)) {
       _log.finest('_getCached($_detailsCollectionPathLog/$id) HIT');
@@ -487,6 +477,20 @@ abstract class Store<LightDataType extends FirestoreData,
     _log.finest('_updateCache($_detailsCollectionPathLog/$id)');
     _detailedDataCache[id] =
         (lastUpdated: clock.now(), detailsData: detailsData);
+  }
+
+
+  /// Returns `true` if exists a document identified by [id].
+  Future<bool> exists(String id) async {
+    _log.finest('exists($_detailsCollectionPathLog/$id)');
+    final cached = _getCached(id);
+    if (cached != null) return true;
+    try {
+      await get(id);
+      return true;
+    } on DocumentNotFoundException {
+      return false;
+    }
   }
 
   /// Returns the [DetailsDataType ] document identified by [id].
@@ -534,8 +538,11 @@ abstract class Store<LightDataType extends FirestoreData,
     //
     final cached = _getCached(id);
     if (cached != null) return cached;
-    _checkAuthenticated();
-    return await exists(id) ? get(id) : null;
+    try {
+      return get(id);
+    } on DocumentNotFoundException {
+      return null;
+    }
   }
 
   /// Delete document identified by [id].
