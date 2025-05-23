@@ -21,7 +21,7 @@
 /// * manage aggregate field via [Store.aggregateFields] and notify aggregate value changes via [Store.aggregateStream]
 ///
 /// * cache [DetailsDataType] object in [SharedPreferencesAsync]
-/// 
+///
 /// # Usage
 ///
 /// * Import the library in your code
@@ -357,14 +357,18 @@ abstract class Store<LightDataType extends FirestoreData,
       bool offlineEnabled = true,
       Map<String, String Function(DetailsDataType)?>? groupByFields,
       FirebaseFirestore? firebaseFirestore})
-      : _offlineEnabled = offlineEnabled, _cacheEnabled = cacheEnabled, _userProfile = userProfile,
+      : _offlineEnabled = offlineEnabled,
+        _cacheEnabled = cacheEnabled,
+        _userProfile = userProfile,
         _collection = collection,
         _groupByFields = groupByFields,
         _separatedDetailsCollection = LightDataType != DetailsDataType {
     _firestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
-    // enable persistence for offline access
-    _firestore.settings = Settings(persistenceEnabled: _offlineEnabled);
+    if (_firestore.runtimeType.toString() != 'FakeFirebaseFirestore') {
+      // enable persistence for offline access
+      _firestore.settings = Settings(persistenceEnabled: _offlineEnabled);
+    }
     _log.finest('Store: $_collectionPathLog '
         'userProfile $_userProfile  '
         'separatedDetailsCollection $_separatedDetailsCollection '
