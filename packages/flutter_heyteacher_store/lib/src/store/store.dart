@@ -288,8 +288,11 @@ abstract class Store<LightDataType extends FirestoreData,
   /// contains the state of group by selected, used to filter results
   GroupByResult? groupBySelected;
 
-  /// if cache is enabled
-  bool cache;
+  /// if `True` the cache is enabled
+  final bool _cacheEnabled;
+
+  /// if `True`  offline is enabled
+  final bool _offlineEnabled;
 
   /// The map of group by fields with the function which estract the value
   /// to group by.
@@ -338,7 +341,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// - [aggregateFields]: the aggregate fields
   /// - [storeFilter]: the filters applied to [query]
   /// - [groupByFields]: the group by filters
-  /// - [cache]: `True` if cache is enabled
+  /// - [cacheEnabled]: `True` if cache is enabled
   @protected
   Store(
       {required String collection,
@@ -350,20 +353,26 @@ abstract class Store<LightDataType extends FirestoreData,
       this.orderByFields,
       this.aggregateFields,
       this.storeFilter,
-      this.cache = true,
+      bool cacheEnabled = true,
+      bool offlineEnabled = true,
       Map<String, String Function(DetailsDataType)?>? groupByFields,
       FirebaseFirestore? firebaseFirestore})
-      : _userProfile = userProfile,
+      : _offlineEnabled = offlineEnabled, _cacheEnabled = cacheEnabled, _userProfile = userProfile,
         _collection = collection,
         _groupByFields = groupByFields,
         _separatedDetailsCollection = LightDataType != DetailsDataType {
     _firestore = firebaseFirestore ?? FirebaseFirestore.instance;
+
+    // enable persistence for offline access
+    _firestore.settings = Settings(persistenceEnabled: _offlineEnabled);
     _log.finest('Store: $_collectionPathLog '
         'userProfile $_userProfile  '
         'separatedDetailsCollection $_separatedDetailsCollection '
         'orderByFields $orderByFields '
         'aggregateFields $aggregateFields '
-        'groupByFields ${_groupByUserField()}');
+        'groupByFields ${_groupByUserField()}'
+        'cacheEnabled $_cacheEnabled '
+        'offlineEnabled $_offlineEnabled');
 
     _log.finest('Store: register fromFireStoreFactory');
     FirestoreData.registerFromFirestoreFactory<LightDataType>(
@@ -399,7 +408,7 @@ abstract class Store<LightDataType extends FirestoreData,
       }
     }
     // clear cache
-    if (cache) {
+    if (_cacheEnabled) {
       _log.finest('clear StoreCache-$runtimeType');
       _sharedPreferences.getAll().then((all) {
         for (var key in all.keys) {
@@ -496,7 +505,7 @@ abstract class Store<LightDataType extends FirestoreData,
       'StoreCache-$runtimeType-$_detailsCollectionPath-$id';
 
   Future<DetailsDataType?> _getCached(String id) async {
-    if (!cache) return null;
+    if (!_cacheEnabled) return null;
     final key = _cacheKey(id);
     await _dumpCache();
     if (await _sharedPreferences.containsKey(key)) {
@@ -509,7 +518,7 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   Future<void> _updateCache(String id, DetailsDataType detailsData) async {
-    if (!cache) return;
+    if (!_cacheEnabled) return;
     final key = _cacheKey(id);
     _log.finest('_updateCache($key)');
     await _sharedPreferences.setString(
@@ -518,7 +527,7 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   Future<void> _removeCache(String id) async {
-    if (!cache) return;
+    if (!_cacheEnabled) return;
     final key = _cacheKey(id);
     _log.finest('_removeCache($key)');
     await _sharedPreferences.remove(key);
