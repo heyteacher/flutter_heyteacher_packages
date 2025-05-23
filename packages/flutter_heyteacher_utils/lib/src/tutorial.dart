@@ -43,7 +43,7 @@ class TutorialModel {
     }
     _screens[screenName]!.add(TutorialItem(
         globalKey: globalKey,
-        color: Colors.black.withValues(alpha: 0.4),
+        color: Colors.black.withValues(alpha: 0.2),
         borderRadius: const Radius.circular(15.0),
         shapeFocus: ShapeFocus.roundedSquare,
         child: TutorialItemContent(
@@ -100,12 +100,13 @@ class TutorialItemContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     return Center(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
+        height: height * 0.8,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+          padding: EdgeInsets.symmetric(horizontal: width * 0.1, vertical: height * 0.3),
           child: Column(
             children: [
               Text(
@@ -124,9 +125,9 @@ class TutorialItemContent extends StatelessWidget {
                   TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor:
-                          ThemeModel.instance().theme.colorScheme.primary,
-                      foregroundColor:
                           ThemeModel.instance().theme.colorScheme.onPrimary,
+                      foregroundColor:
+                          ThemeModel.instance().theme.colorScheme.primary,
                     ),
                     onPressed: () => Tutorial.skipAll(context),
                     child: Text(
