@@ -43,7 +43,7 @@ class TutorialModel {
     }
     _screens[screenName]!.add(TutorialItem(
         globalKey: globalKey,
-        color: Colors.black.withValues(alpha: 0.2),
+        color: Colors.black.withValues(alpha: 0.8),
         borderRadius: const Radius.circular(15.0),
         shapeFocus: ShapeFocus.roundedSquare,
         child: TutorialItemContent(
@@ -104,9 +104,9 @@ class TutorialItemContent extends StatelessWidget {
 
     return Center(
       child: SizedBox(
-        height: height * 0.8,
+        height: height * 0.9,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.1, vertical: height * 0.3),
+          padding: EdgeInsets.symmetric(horizontal: width * 0.1, vertical: height * 0.5),
           child: Column(
             children: [
               Text(
