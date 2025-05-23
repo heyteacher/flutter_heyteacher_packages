@@ -395,6 +395,11 @@ abstract class Store<LightDataType extends FirestoreData,
             collection: _collection, count: aggregateFields!.length);
       }
     }
+    // reset cache
+    if (cache) {
+      _log.finest('Store: reset cache');
+      _sharedPreferences.clear();
+    }
   }
 
   /// Initializes the aggregate stream when user i authenticathed.
