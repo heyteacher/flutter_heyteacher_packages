@@ -8,6 +8,8 @@ import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 
 void main() {
 
@@ -16,9 +18,9 @@ void main() {
       userDisplayName = 'Test User';
 
   setUp(() async {
+    SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
     WidgetsFlutterBinding.ensureInitialized();
     FlutterSecureStorage.setMockInitialValues({});
-
     // mock authentication
     MockFirebaseAuth auth = MockFirebaseAuth(
         mockUser: MockUser(
@@ -353,6 +355,7 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
       : super(
             collection: 'tracks',
             userProfile: true,
+            cacheEnabled: false,
             orderByFields: {'startTime': OrderDirection.desc},
             aggregateFields: ['distance', 'duration'],
             fromFirestoreFactory: BaseTrackData.fromFirestore,
