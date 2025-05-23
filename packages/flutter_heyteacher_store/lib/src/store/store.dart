@@ -20,6 +20,8 @@
 ///
 /// * manage aggregate field via [Store.aggregateFields] and notify aggregate value changes via [Store.aggregateStream]
 ///
+/// * cache [DetailsDataType] object in [SharedPreferencesAsync]
+/// 
 /// # Usage
 ///
 /// * Import the library in your code
@@ -336,6 +338,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// - [aggregateFields]: the aggregate fields
   /// - [storeFilter]: the filters applied to [query]
   /// - [groupByFields]: the group by filters
+  /// - [cache]: `True` if cache is enabled
   @protected
   Store(
       {required String collection,
