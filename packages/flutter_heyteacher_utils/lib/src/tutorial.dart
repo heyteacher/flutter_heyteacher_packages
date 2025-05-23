@@ -1,7 +1,7 @@
 /// Provides classes for creating and managing in-app tutorials.
 
 /// This library includes [TutorialModel] for managing tutorial flows.
-/// A tutorial is identify by the `screenMame` which is associated. 
+/// A tutorial is identify by the `screenMame` which is associated.
 
 /// [TutorialModel.addItem] add a item to the tutorial of a screen.
 /// [TutorialModel.start] show the tutoria per the specified screen.
@@ -9,7 +9,9 @@ library;
 
 import 'package:app_tutorial/app_tutorial.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/src/theme.dart';
 import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// A singleton class responsible for managing and displaying in-app tutorials.
 ///
@@ -41,7 +43,7 @@ class TutorialModel {
     }
     _screens[screenName]!.add(TutorialItem(
         globalKey: globalKey,
-        color: Colors.black.withValues(alpha: 0.6),
+        color: Colors.black.withValues(alpha: 0.4),
         borderRadius: const Radius.circular(15.0),
         shapeFocus: ShapeFocus.roundedSquare,
         child: TutorialItemContent(
@@ -57,15 +59,24 @@ class TutorialModel {
   void start(
     BuildContext context,
     String screenName,
-  ) =>
-      Future.delayed(const Duration(microseconds: 200)).then((value) {
-        if (context.mounted) {
-          Tutorial.showTutorial(context, _screens[screenName]!,
-              onTutorialComplete: () {
-            _log.info('Tutorial completed');
-          });
-        }
-      });
+  ) async {
+    await Future.delayed(const Duration(microseconds: 200));
+    if (context.mounted) {
+      if ((await SharedPreferencesAsync()
+              .getBool('$screenName-tutorial-completed') ??
+          false)) {
+        return;
+      }
+      if (context.mounted) {
+        Tutorial.showTutorial(context, _screens[screenName]!,
+            onTutorialComplete: () {
+          _log.info('Tutorial completed');
+          SharedPreferencesAsync()
+              .setBool('$screenName-tutorial-completed', true);
+        });
+      }
+    }
+  }
 }
 
 /// A widget that defines the content displayed within a single tutorial item.
@@ -82,6 +93,7 @@ class TutorialItemContent extends StatelessWidget {
 
   /// The title text for the tutorial item.
   final String title;
+
   /// The main content/description for the tutorial item.
   final String content;
 
@@ -91,37 +103,49 @@ class TutorialItemContent extends StatelessWidget {
 
     return Center(
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.6,
+        height: MediaQuery.of(context).size.height * 0.8,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.1),
           child: Column(
             children: [
               Text(
                 title,
-                style: const TextStyle(color: Colors.white),
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 10.0),
               Text(
                 content,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               const Spacer(),
               Row(
                 children: [
                   TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor:
+                          ThemeModel.instance().theme.colorScheme.primary,
+                      foregroundColor:
+                          ThemeModel.instance().theme.colorScheme.onPrimary,
+                    ),
                     onPressed: () => Tutorial.skipAll(context),
-                    child: const Text(
+                    child: Text(
                       'Skip onboarding',
-                      style: TextStyle(color: Colors.white),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                   const Spacer(),
-                  const TextButton(
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor:
+                          ThemeModel.instance().theme.colorScheme.primary,
+                      foregroundColor:
+                          ThemeModel.instance().theme.colorScheme.onPrimary,
+                    ),
                     onPressed: null,
                     child: Text(
                       'Next',
-                      style: TextStyle(color: Colors.white),
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                 ],
