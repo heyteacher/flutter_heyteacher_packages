@@ -43,8 +43,7 @@ void main() {
     // initialize
     final TrackStore trackStore =
         TrackStore.instance(firebaseFirestore: firestore);
-    UserStore.instance(firebaseFirestore: firestore);
-
+  
     await trackStore.set(TrackData(
         startTime: DateTime.parse('2024-02-27 13:27:56'),
         stopTime: DateTime.parse('2024-02-27 14:27:56'),
@@ -63,26 +62,6 @@ void main() {
       stopTime: DateTime.parse('2023-09-12 20:15:22'),
       distance: 30000,
     ));
-  });
-
-  group('user get update group:', () {
-    test('should be present', () async {
-      final UserStore userStore = UserStore.instance();
-      expect(await userStore.exists(userId), true,
-          reason: "user $userId does't exists");
-      UserData userData = await userStore.get(userId);
-      expect(userData.locale, Locale(Intl.getCurrentLocale()),
-          reason: 'language code is set to ${userData.locale?.languageCode}');
-    });
-    test('update language code', () async {
-      final UserStore userStore = UserStore.instance();
-      UserData userData = await userStore.get(userId);
-      userData.locale = const Locale('it');
-      await userStore.update(userData, fields: ['locale']);
-      userData = await userStore.get(userId);
-      expect(userData.locale, const Locale('it'),
-          reason: 'language code wrong: ${userData.locale}');
-    });
   });
 
   group('track list, filter group:', () {

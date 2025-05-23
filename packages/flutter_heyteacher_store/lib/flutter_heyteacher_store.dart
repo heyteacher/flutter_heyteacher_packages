@@ -1,6 +1,5 @@
 export 'src/store/store.dart'
     show Store, OrderDirection, FirestoreData, GroupByResult,DocumentNotFoundException;
-export 'src/store/user_store.dart' show UserStore, UserData;
 export 'src/store/store_filters.dart'
     show
         Operator,
