@@ -395,10 +395,17 @@ abstract class Store<LightDataType extends FirestoreData,
             collection: _collection, count: aggregateFields!.length);
       }
     }
-    // reset cache
+    // clear cache
     if (cache) {
-      _log.finest('Store: reset cache');
-      _sharedPreferences.clear();
+      _log.finest('clear StoreCache-$runtimeType');
+      _sharedPreferences.getAll().then((all) {
+        for (var key in all.keys) {
+          if (key.startsWith('StoreCache-$runtimeType')) {
+            _sharedPreferences.remove(key);
+            _log.finest('remove $key');
+          }
+        }
+      });
     }
   }
 
@@ -473,12 +480,22 @@ abstract class Store<LightDataType extends FirestoreData,
         .map((e) => e.data());
   }
 
+  Future<void> _dumpCache() async {
+    final all = await _sharedPreferences.getAll();
+    for (var key in all.keys) {
+      if (key.startsWith('StoreCache-$runtimeType')) {
+        _log.finest('_dumpCache $key: ${all[key]}');
+      }
+    }
+  }
+
   String _cacheKey(String id) =>
       'StoreCache-$runtimeType-$_detailsCollectionPath-$id';
 
   Future<DetailsDataType?> _getCached(String id) async {
     if (!cache) return null;
     final key = _cacheKey(id);
+    await _dumpCache();
     if (await _sharedPreferences.containsKey(key)) {
       _log.finest('_getCached($key) HIT');
       return FirestoreData.fromFirestoreFactory<DetailsDataType>(
@@ -494,6 +511,7 @@ abstract class Store<LightDataType extends FirestoreData,
     _log.finest('_updateCache($key)');
     await _sharedPreferences.setString(
         key, jsonEncode(detailsData.toFirestore(null)));
+    await _dumpCache();
   }
 
   Future<void> _removeCache(String id) async {
@@ -501,6 +519,7 @@ abstract class Store<LightDataType extends FirestoreData,
     final key = _cacheKey(id);
     _log.finest('_removeCache($key)');
     await _sharedPreferences.remove(key);
+    await _dumpCache();
   }
 
   /// Returns `true` if exists a document identified by [id].
@@ -538,13 +557,13 @@ abstract class Store<LightDataType extends FirestoreData,
         // populate parent data fields
         if (documentSnapshot.exists) {
           details.setParentData(documentSnapshot.data()!);
-          _updateCache(id, details);
+          await _updateCache(id, details);
           return details;
         } else {
           throw DocumentNotFoundException('$_collectionPathLog/$id');
         }
       } else {
-        _updateCache(id, details);
+        await _updateCache(id, details);
         return details;
       }
     } else {
@@ -600,7 +619,7 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
-      _removeCache(id);
+      await _removeCache(id);
       notifyAggregatesChanges();
     }
   }
@@ -615,7 +634,7 @@ abstract class Store<LightDataType extends FirestoreData,
     for (var i = 0; i < ids.length; i++) {
       // need await operation in order batch commit will by executed as last operation
       await delete(ids[i], batch: batch);
-      _removeCache(ids[i]);
+      await _removeCache(ids[i]);
     }
     await batch.commit();
     notifyAggregatesChanges();
@@ -660,7 +679,7 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
-      _updateCache(id, detailsData);
+      await _updateCache(id, detailsData);
       notifyAggregatesChanges();
     }
   }
@@ -674,7 +693,7 @@ abstract class Store<LightDataType extends FirestoreData,
     for (var i = 0; i < documents.length; i++) {
       // need await operation in order batch commit will by executed as last operation
       await set(documents[i], id: ids?[i], batch: batch);
-      _updateCache(ids?[i] ?? documents[i].id, documents[i]);
+      await _updateCache(ids?[i] ?? documents[i].id, documents[i]);
     }
     await batch.commit();
     notifyAggregatesChanges();
@@ -728,7 +747,7 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
-      _updateCache(id, document);
+      await _updateCache(id, document);
       notifyAggregatesChanges();
     }
   }
@@ -744,7 +763,7 @@ abstract class Store<LightDataType extends FirestoreData,
     for (var i = 0; i < documents.length; i++) {
       // need await operation in order batch commit will by executed as last operation
       await update(documents[i], fields: fields, id: ids?[i], batch: batch);
-      _updateCache(ids?[i] ?? documents[i].id, documents[i]);
+      await _updateCache(ids?[i] ?? documents[i].id, documents[i]);
     }
     await batch.commit();
     notifyAggregatesChanges();
