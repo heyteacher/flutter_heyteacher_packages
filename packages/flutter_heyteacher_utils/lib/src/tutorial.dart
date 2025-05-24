@@ -9,7 +9,7 @@ library;
 
 import 'package:app_tutorial/app_tutorial.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/src/theme.dart';
+import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +37,8 @@ class TutorialModel {
       {required String screenName,
       required GlobalKey globalKey,
       required String title,
-      required String content}) {
+      required String content,
+      TutorialContentAlignment alignment = TutorialContentAlignment.center}) {
     if (!_screens.containsKey(screenName)) {
       _screens[screenName] = [];
     }
@@ -49,6 +50,7 @@ class TutorialModel {
         child: TutorialItemContent(
           title: title,
           content: content,
+          alignment: alignment,
         )));
   }
 
@@ -79,17 +81,46 @@ class TutorialModel {
   }
 }
 
+enum TutorialContentAlignment {
+  top,
+  middleTop,
+  center,
+  middleBottom,
+  bottom,
+}
+
 /// A widget that defines the content displayed within a single tutorial item.
 ///
 /// It typically includes a [title] and [content] text, along with
 /// "Skip onboarding" and "Next" buttons.
 class TutorialItemContent extends StatelessWidget {
   /// Creates a [TutorialItemContent] widget.
-  const TutorialItemContent({
+  TutorialItemContent({
     super.key,
     required this.title,
     required this.content,
-  });
+    this.alignment = TutorialContentAlignment.center,
+  }) {
+    assert(title.isNotEmpty, 'Title cannot be empty');
+    assert(content.isNotEmpty, 'Content cannot be empty');
+    switch (alignment) {
+      case TutorialContentAlignment.top:
+        _topFlex = 1;
+        _bottomFlex = 3;
+      case TutorialContentAlignment.middleTop:
+        _topFlex = 1;
+        _bottomFlex = 2;
+      case TutorialContentAlignment.center:
+        _topFlex = 1;
+        _bottomFlex = 1;
+      case TutorialContentAlignment.middleBottom:
+        _topFlex = 2;
+        _bottomFlex = 1;
+      case TutorialContentAlignment.bottom:
+        _topFlex = 3;
+        _bottomFlex = 1;
+    }
+  }
 
   /// The title text for the tutorial item.
   final String title;
@@ -97,64 +128,96 @@ class TutorialItemContent extends StatelessWidget {
   /// The main content/description for the tutorial item.
   final String content;
 
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+  /// The alignment of the content within the tutorial item.
+  ///
+  /// Defaults to [TutorialContentAlignment.center].
+  final TutorialContentAlignment alignment;
 
-    return Center(
-      child: SizedBox(
-        height: height * 0.9,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.1, vertical: height * 0.5),
-          child: Column(
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              const SizedBox(height: 10.0),
-              Text(
-                content,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const Spacer(),
-              Row(
+  late final int _topFlex, _bottomFlex;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Column(
+          children: [
+            Expanded(
+              child: Column(
                 children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor:
-                          ThemeModel.instance().theme.colorScheme.onPrimary,
-                      foregroundColor:
-                          ThemeModel.instance().theme.colorScheme.primary,
-                    ),
-                    onPressed: () => Tutorial.skipAll(context),
-                    child: Text(
-                      'Skip onboarding',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                  Expanded(
+                    flex: _topFlex,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Text(
+                          title,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ),
                     ),
                   ),
-                  const Spacer(),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor:
-                          ThemeModel.instance().theme.colorScheme.primary,
-                      foregroundColor:
-                          ThemeModel.instance().theme.colorScheme.onPrimary,
-                    ),
-                    onPressed: null,
-                    child: Text(
-                      'Next',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                  Expanded(
+                    flex: _bottomFlex,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            content,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: ThemeModel.instance()
+                                    .theme
+                                    .colorScheme
+                                    .primary,
+                              ),
+                              onPressed: () => Tutorial.skipAll(context),
+                              child: Text(
+                                'Skip onboarding',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
+                              ),
+                            ),
+                            const Spacer(),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: ThemeModel.instance()
+                                    .theme
+                                    .colorScheme
+                                    .primary,
+                              ),
+                              onPressed: null,
+                              child: Text(
+                                'Next',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
-      ),
-    );
-  }
+      );
 }

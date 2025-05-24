@@ -2,4 +2,4 @@
 /// This library includes [TutorialModel] for managing tutorial flows.
 library;
 
-export 'src/tutorial.dart' show TutorialModel;
+export 'src/tutorial.dart' show TutorialModel, TutorialContentAlignment;
