@@ -141,11 +141,7 @@ class AuthModel {
   /// Emits `null` when the user signs out.
   Stream<User?> get stateChangesStream => _firebaseAuth
       .authStateChanges()
-      .distinct((user1, user2) => user1 == null && user2 == null
-          ? true
-          : user1 == null || user2 == null
-              ? false
-              : user1.uid == user2.uid);
+      .distinct((user1, user2) => user1?.uid == user2?.uid);
 }
 
 /// Exception thrown when an operation requiring authentication is attempted
