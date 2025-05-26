@@ -508,14 +508,16 @@ abstract class Store<LightDataType extends FirestoreData,
   String _cacheKey(String id) =>
       'StoreCache-$runtimeType-$_detailsCollectionPath-$id';
 
+
   Future<DetailsDataType?> _getCached(String id) async {
     if (!_cacheEnabled) return null;
     final key = _cacheKey(id);
-    await _dumpCache();
-    if (await _sharedPreferences.containsKey(key)) {
-      _log.finest('_getCached($key) HIT');
-      return FirestoreData.fromFirestoreFactory<DetailsDataType>(
-          jsonDecode((await _sharedPreferences.getString(key))!));
+    //await _dumpCache();
+    if (await _sharedPreferences.containsKey(key) ) {
+       final jsonEncoded = await _sharedPreferences.getString(key);
+      _log.finest('_getCached($key) HIT value not null: ${jsonEncoded != null}');
+      return jsonEncoded != null ? FirestoreData.fromFirestoreFactory<DetailsDataType>(
+          jsonDecode(jsonEncoded)): null;
     }
     _log.finest('_getCached($key) MISS');
     return null;
