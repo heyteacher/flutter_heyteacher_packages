@@ -18,8 +18,6 @@ import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
-
-
 class AccountCard extends StatelessWidget {
   const AccountCard({super.key});
 
@@ -37,7 +35,8 @@ class AccountCard extends StatelessWidget {
                       : Theme.of(context).disabledColor,
                   size: Theme.of(context).textTheme.displayMedium!.fontSize,
                 ),
-                title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.account),
+                title: Text(
+                    FlutterHeyteacherUtilsLocalizations.of(context)!.account),
                 subtitle: AuthModel.instance().autenticated
                     ? Text(AuthModel.instance().displayName ?? '')
                     : Text(FlutterHeyteacherUtilsLocalizations.of(context)!
@@ -61,7 +60,6 @@ class AccountCard extends StatelessWidget {
             }),
       );
 }
-
 
 /// Manages user authentication state and operations via Firebase.
 ///
@@ -91,7 +89,7 @@ class AuthModel {
   /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth] or the default [FirebaseAuth.instance].
   /// Configures [GoogleProvider] if not using a mocked instance.
   AuthModel._({FirebaseAuth? mockedFirebaseAuth}) {
-    // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth 
+    // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth
     //and configure provider
     if (mockedFirebaseAuth == null) {
       _googleProvider = GoogleProvider(
@@ -141,7 +139,13 @@ class AuthModel {
   /// A stream that emits the [User] object when the authentication state changes.
   ///
   /// Emits `null` when the user signs out.
-  Stream<User?> get stateChangesStream => _firebaseAuth.authStateChanges();
+  Stream<User?> get stateChangesStream => _firebaseAuth
+      .authStateChanges()
+      .distinct((user1, user2) => user1 == null && user2 == null
+          ? true
+          : user1 == null || user2 == null
+              ? false
+              : user1.uid == user2.uid);
 }
 
 /// Exception thrown when an operation requiring authentication is attempted
