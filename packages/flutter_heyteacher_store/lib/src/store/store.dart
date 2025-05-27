@@ -269,31 +269,22 @@ class StoreCache<DetailsDataType> {
   final Map<String, DetailsDataType?> _cache = {};
 
   Future<DetailsDataType?> get(String id) async {
-    final lock = Lock();
-    return lock.synchronized(() async {
-      if (_cache.containsKey(id)) {
-        _log.finest('[$runtimeType-$hashCode].get($id) HIT lock $lock.hashCode');
-        return _cache[id];
-      }
-      _log.finest('[$runtimeType-$hashCode].get($id) MISS  lock $lock.hashCode');
-      return null;
-    });
+    if (_cache.containsKey(id)) {
+      _log.finest('[$runtimeType-$hashCode].get($id) HIT');
+      return _cache[id];
+    }
+    _log.finest('[$runtimeType-$hashCode].get($id) MISS');
+    return null;
   }
 
-  Future<void> update(String id, DetailsDataType detailsData) async {
-    final lock = Lock();
-    return lock.synchronized(() async {
-      _cache[id] = detailsData;
-      _log.finest('[$runtimeType-$hashCode].update($id) lock $lock.hashCode');
-    });
+  void update(String id, DetailsDataType detailsData) {
+    _cache[id] = detailsData;
+    _log.finest('[$runtimeType-$hashCode].update($id)');
   }
 
-  Future<void> remove(String id) async {
-    final lock = Lock();
-    return lock.synchronized(() async {
+  void remove(String id) {
     _cache.remove(id);
-    _log.finest('[$runtimeType-$hashCode].remove($id) lock $lock.hashCode');
-    });
+    _log.finest('[$runtimeType-$hashCode].remove($id)');
   }
 }
 
@@ -522,51 +513,63 @@ abstract class Store<LightDataType extends FirestoreData,
 
   /// Returns `true` if exists a document identified by [id].
   Future<bool> exists(String id) async {
-    _log.finest('exists($_detailsCollectionPathLog/$id)');
-    final cached = _storeCache?.get(id);
-    if (cached != null) return true;
-    try {
-      await get(id);
-      return true;
-    } on DocumentNotFoundException {
-      return false;
-    }
+    final lock = Lock();
+    return lock.synchronized(() async {
+      _log.finest('exists($_detailsCollectionPathLog/$id)');
+      final cached = _storeCache?.get(id);
+      if (cached != null) return true;
+      try {
+        await get(id);
+        return true;
+      } on DocumentNotFoundException {
+        return false;
+      }
+    });
+  }
+
+  /// Returns `true` if doesn't exists a document identified by [id].
+  Future<bool> notExists(String? id) async {
+    _log.finest('notExists($_detailsCollectionPathLog/$id)');
+    return id != null && !(await exists(id));
   }
 
   /// Returns the [DetailsDataType ] document identified by [id].
   ///
   /// [DocumentNotFoundException] is throw if document doesn't exist.
   Future<DetailsDataType> get(String id) async {
-    _log.finest('get($_detailsCollectionPathLog/$id)');
-    final cached = await _storeCache?.get(id);
-    if (cached != null) return cached;
+    final lock = Lock();
+    return lock.synchronized(() async {
+      _log.finest('get($_detailsCollectionPathLog/$id)');
+      final cached = await _storeCache?.get(id);
+      if (cached != null) return cached;
 
-    _checkAuthenticated();
+      _checkAuthenticated();
 
-    DocumentSnapshot<DetailsDataType>? detailsDocumentSnapshot =
-        await _detailsCollectionReference.doc(id).get();
-    // check if exists
-    if (detailsDocumentSnapshot.exists) {
-      DetailsDataType details = detailsDocumentSnapshot.data()!;
-      if (_separatedDetailsCollection) {
-        _log.finest('get($_collectionPathLog/$id)');
-        DocumentSnapshot<LightDataType> documentSnapshot =
-            await _collectionReference.doc(id).get();
-        // populate parent data fields
-        if (documentSnapshot.exists) {
-          details.setParentData(documentSnapshot.data()!);
+      DocumentSnapshot<DetailsDataType>? detailsDocumentSnapshot =
+          await _detailsCollectionReference.doc(id).get();
+      // check if exists
+      if (detailsDocumentSnapshot.exists) {
+        DetailsDataType details = detailsDocumentSnapshot.data()!;
+        if (_separatedDetailsCollection) {
+          _log.finest('get($_collectionPathLog/$id)');
+          DocumentSnapshot<LightDataType> documentSnapshot =
+              await _collectionReference.doc(id).get();
+          // populate parent data fields
+          if (documentSnapshot.exists) {
+            details.setParentData(documentSnapshot.data()!);
+            _storeCache?.update(id, details);
+            return details;
+          } else {
+            throw DocumentNotFoundException('$_collectionPathLog/$id');
+          }
+        } else {
           _storeCache?.update(id, details);
           return details;
-        } else {
-          throw DocumentNotFoundException('$_collectionPathLog/$id');
         }
       } else {
-        _storeCache?.update(id, details);
-        return details;
+        throw DocumentNotFoundException('$_collectionPathLog/$id');
       }
-    } else {
-      throw DocumentNotFoundException('$_collectionPathLog/$id');
-    }
+    });
   }
 
   /// Returns the [DetailsDataType ] document identified by [id].
@@ -574,15 +577,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns null if document doesn't exist.
   Future<DetailsDataType?> getOrNull(String? id) async {
     _log.finest('getOrNull($_detailsCollectionPathLog/$id)');
-    if (id == null) return null;
-    //
-    final cached = _storeCache?.get(id);
-    if (cached != null) return cached;
-    try {
-      return get(id);
-    } on DocumentNotFoundException {
-      return null;
-    }
+    return await notExists(id) ? null: get(id!);
   }
 
   /// Delete document identified by [id].
