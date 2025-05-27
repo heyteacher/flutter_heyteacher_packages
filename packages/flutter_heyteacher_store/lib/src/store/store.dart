@@ -267,17 +267,12 @@ class StoreCache<LightDataType extends FirestoreData,
     DetailsDataType extends FirestoreData> {
   final _log = Logger('StoreCache');
 
-  StreamSubscription<Iterable<LightDataType>>? _streamSubscription;
+  StreamSubscription? _streamSubscription;
 
-  StoreCache(Stream<Iterable<LightDataType>> lightDataListStream) {
-      _streamSubscription?.cancel();
-      _streamSubscription = lightDataListStream.listen((lightDataList) {
-          for (var lightData in lightDataList) {
-          if (exists(lightData.id)) {
-          _log.finest('listen: invalidate cache for ${lightData.id}');
-            remove(lightData.id);
-          }
-     }});
+  StoreCache() {
+    _streamSubscription?.cancel();
+    _streamSubscription = Stream.periodic(const Duration(seconds: 60))
+        .listen((_) => _cache.clear());
   }
 
   dispose() {
@@ -286,7 +281,6 @@ class StoreCache<LightDataType extends FirestoreData,
   }
 
   final Map<String, DetailsDataType?> _cache = {};
-  
 
   bool exists(String id) => _cache.containsKey(id);
 
@@ -458,7 +452,7 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     // clear cache
     if (_cacheEnabled) {
-      _storeCache = StoreCache<LightDataType, DetailsDataType>(stream);
+      _storeCache = StoreCache<LightDataType, DetailsDataType>();
     }
   }
 
@@ -564,7 +558,6 @@ abstract class Store<LightDataType extends FirestoreData,
       _log.finest('get($_detailsCollectionPathLog/$id)');
 
       if (_storeCache?.exists(id) ?? false) {
-       
         final cached = await _storeCache?.get(id);
         if (cached != null) {
           return cached;
