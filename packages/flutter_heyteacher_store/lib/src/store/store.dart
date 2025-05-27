@@ -269,7 +269,7 @@ class StoreCache<DetailsDataType> {
   final Map<String, DetailsDataType?> _cache = {};
 
   Future<DetailsDataType?> get(String id) async {
-    return synchronized(() {
+    return synchronized(() async {
       if (_cache.containsKey(id)) {
         _log.finest('[$runtimeType-$hashCode].get($id) HIT');
         return _cache[id];
@@ -280,14 +280,14 @@ class StoreCache<DetailsDataType> {
   }
 
   Future<void> update(String id, DetailsDataType detailsData) async {
-    return synchronized(() {
+    return synchronized(() async {
       _cache[id] = detailsData;
       _log.finest('[$runtimeType-$hashCode].update($id)');
     });
   }
 
   Future<void> remove(String id) async {
-    return synchronized(() {
+    return synchronized(() async {
     _cache.remove(id);
     _log.finest('[$runtimeType-$hashCode].remove($id)');
     });
