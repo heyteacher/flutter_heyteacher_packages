@@ -264,17 +264,17 @@ class GroupByResult {
 }
 
 class StoreCache<DetailsDataType> {
-  final _log = Logger('StoreCache<${DetailsDataType.runtimeType}>');
+  final _log = Logger('StoreCache');
 
   final Map<String, DetailsDataType?> _cache = {};
 
   Future<DetailsDataType?> get(String id) async {
     return synchronized(() {
       if (_cache.containsKey(id)) {
-        _log.finest('[$hashCode].get($id) HIT');
+        _log.finest('[$runtimeType-$hashCode].get($id) HIT');
         return _cache[id];
       }
-      _log.finest('[$hashCode].get($id) MISS');
+      _log.finest('[$runtimeType-$hashCode].get($id) MISS');
       return null;
     });
   }
@@ -282,7 +282,7 @@ class StoreCache<DetailsDataType> {
   Future<void> update(String id, DetailsDataType detailsData) async {
     return synchronized(() {
       _cache[id] = detailsData;
-      _log.finest('[$hashCode].update($id)');
+      _log.finest('[$runtimeType-$hashCode].update($id)');
     });
   }
 
