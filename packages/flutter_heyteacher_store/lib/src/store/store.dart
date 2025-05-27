@@ -214,7 +214,7 @@ import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:synchronized/extension.dart';
+import 'package:synchronized/synchronized.dart';
 
 /// Order enumeration.
 ///
@@ -269,27 +269,30 @@ class StoreCache<DetailsDataType> {
   final Map<String, DetailsDataType?> _cache = {};
 
   Future<DetailsDataType?> get(String id) async {
-    return synchronized(() async {
+    final lock = Lock();
+    return lock.synchronized(() async {
       if (_cache.containsKey(id)) {
-        _log.finest('[$runtimeType-$hashCode].get($id) HIT');
+        _log.finest('[$runtimeType-$hashCode].get($id) HIT lock $lock.hashCode');
         return _cache[id];
       }
-      _log.finest('[$runtimeType-$hashCode].get($id) MISS');
+      _log.finest('[$runtimeType-$hashCode].get($id) MISS  lock $lock.hashCode');
       return null;
     });
   }
 
   Future<void> update(String id, DetailsDataType detailsData) async {
-    return synchronized(() async {
+    final lock = Lock();
+    return lock.synchronized(() async {
       _cache[id] = detailsData;
-      _log.finest('[$runtimeType-$hashCode].update($id)');
+      _log.finest('[$runtimeType-$hashCode].update($id) lock $lock.hashCode');
     });
   }
 
   Future<void> remove(String id) async {
-    return synchronized(() async {
+    final lock = Lock();
+    return lock.synchronized(() async {
     _cache.remove(id);
-    _log.finest('[$runtimeType-$hashCode].remove($id)');
+    _log.finest('[$runtimeType-$hashCode].remove($id) lock $lock.hashCode');
     });
   }
 }
