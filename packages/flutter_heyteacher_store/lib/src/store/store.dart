@@ -500,23 +500,23 @@ abstract class Store<LightDataType extends FirestoreData,
   DetailsDataType? _getCached(String id) {
     if (!_cacheEnabled) return null;
     if (_cache.containsKey(id)) {
-      _log.finest('_getCached($id) HIT');
+      _log.finest('[$runtimeType-$hashCode]_getCached($id) HIT');
       return _cache[id];
     }
-    _log.finest('_getCached($id) MISS');
+    _log.finest('[$runtimeType-$hashCode]_getCached($id) MISS');
     return null;
   }
 
   void _updateCache(String id, DetailsDataType detailsData) {
     if (!_cacheEnabled) return;
-    _log.finest('_updateCache($id)');
     _cache[id] = detailsData;
+    _log.finest('[$runtimeType-$hashCode]_updateCache($id)');
   }
 
   void _removeCache(String id) {
     if (!_cacheEnabled) return;
-    _log.finest('_removeCache($id)');
     _cache.remove(id);
+    _log.finest('[$runtimeType-$hashCode]_removeCache($id)');
   }
 
   /// Returns `true` if exists a document identified by [id].
