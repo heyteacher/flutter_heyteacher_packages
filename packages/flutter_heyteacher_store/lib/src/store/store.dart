@@ -368,7 +368,7 @@ abstract class Store<LightDataType extends FirestoreData,
       // enable persistence for offline access
       _firestore.settings = Settings(persistenceEnabled: _offlineEnabled);
     }
-    _log.finest('Store: $_collectionPathLog '
+    _log.finest('$runtimeType: $_collectionPathLog '
         'userProfile $_userProfile  '
         'separatedDetailsCollection $_separatedDetailsCollection '
         'orderByFields $orderByFields '
