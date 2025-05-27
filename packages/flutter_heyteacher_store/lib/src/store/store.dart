@@ -263,13 +263,35 @@ class GroupByResult {
   }
 }
 
-class StoreCache<DetailsDataType> {
+class StoreCache<LightDataType extends FirestoreData,
+    DetailsDataType extends FirestoreData> {
   final _log = Logger('StoreCache');
 
+  StreamSubscription<Iterable<LightDataType>>? _streamSubscription;
+
+  StoreCache(Stream<Iterable<LightDataType>> lightDataListStream) {
+      _streamSubscription?.cancel();
+      _streamSubscription = lightDataListStream.listen((lightDataList) {
+          for (var lightData in lightDataList) {
+          if (exists(lightData.id)) {
+          _log.finest('listen: invalidate cache for ${lightData.id}');
+            remove(lightData.id);
+          }
+     }});
+  }
+
+  dispose() {
+    _log.finest('StoreCache: dispose');
+    _streamSubscription?.cancel();
+  }
+
   final Map<String, DetailsDataType?> _cache = {};
+  
+
+  bool exists(String id) => _cache.containsKey(id);
 
   Future<DetailsDataType?> get(String id) async {
-    if (_cache.containsKey(id)) {
+    if (exists(id)) {
       _log.finest('[$runtimeType-$hashCode].get($id) HIT');
       return _cache[id];
     }
@@ -277,7 +299,7 @@ class StoreCache<DetailsDataType> {
     return null;
   }
 
-  void update(String id, DetailsDataType detailsData) {
+  void update(String id, DetailsDataType? detailsData) {
     _cache[id] = detailsData;
     _log.finest('[$runtimeType-$hashCode].update($id)');
   }
@@ -436,7 +458,7 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     // clear cache
     if (_cacheEnabled) {
-      _storeCache = StoreCache<DetailsDataType>();
+      _storeCache = StoreCache<LightDataType, DetailsDataType>(stream);
     }
   }
 
@@ -540,8 +562,17 @@ abstract class Store<LightDataType extends FirestoreData,
     final lock = Lock();
     return lock.synchronized(() async {
       _log.finest('get($_detailsCollectionPathLog/$id)');
-      final cached = await _storeCache?.get(id);
-      if (cached != null) return cached;
+
+      if (_storeCache?.exists(id) ?? false) {
+       
+        final cached = await _storeCache?.get(id);
+        if (cached != null) {
+          return cached;
+        } else {
+          // document cached but null
+          throw DocumentNotFoundException('$_detailsCollectionPathLog/$id');
+        }
+      }
 
       _checkAuthenticated();
 
@@ -560,6 +591,7 @@ abstract class Store<LightDataType extends FirestoreData,
             _storeCache?.update(id, details);
             return details;
           } else {
+            _storeCache?.update(id, null);
             throw DocumentNotFoundException('$_collectionPathLog/$id');
           }
         } else {
@@ -577,7 +609,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns null if document doesn't exist.
   Future<DetailsDataType?> getOrNull(String? id) async {
     _log.finest('getOrNull($_detailsCollectionPathLog/$id)');
-    return await notExists(id) ? null: get(id!);
+    return await notExists(id) ? null : get(id!);
   }
 
   /// Delete document identified by [id].
@@ -829,7 +861,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns if _initGroupByCounter is already running.
   static bool _initGroupByCounterAlreadyRunning = false;
 
-  StoreCache<DetailsDataType>? _storeCache;
+  StoreCache<LightDataType, DetailsDataType>? _storeCache;
 
   /// Initialize the group by counter.
   ///
