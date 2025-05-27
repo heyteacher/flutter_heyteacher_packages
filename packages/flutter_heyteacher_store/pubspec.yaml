@@ -19,6 +19,7 @@ dependencies:
   webcrypto: ^0.5.8
   clock: ^1.1.1
   shared_preferences: ^2.5.3
+  synchronized: ^3.3.1
   
 
 dev_dependencies:
