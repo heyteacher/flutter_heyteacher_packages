@@ -101,7 +101,7 @@ class LineChartView extends ChartView {
         padding: const EdgeInsets.only(right: 5),
         child: Text(formatterAxisY(ChartDataItem(x: 0, y: value)),
             style: ThemeModel.instance().theme.textTheme.bodySmall!
-            //.copyWith(color: ThemeHepler.instance().greenTextColor)
+            .copyWith(color: colorY)
             ,
             textAlign: TextAlign.right),
       );
@@ -119,7 +119,7 @@ class LineChartView extends ChartView {
                 .theme
                 .textTheme
                 .bodySmall!
-                .copyWith(color: ThemeModel.instance().orangeColor),
+                .copyWith(color: colorX),
           ),
         ),
       ));
@@ -161,10 +161,7 @@ class LineChartView extends ChartView {
   LineChartBarData get _lineChartBarData => LineChartBarData(
       isCurved: true,
       //curveSmoothness: 0,
-      color: ThemeModel.instance()
-          .theme
-          .colorScheme
-          .onSurface /*.withOpacity(0.5)*/,
+      color: colorY,
       barWidth: 1,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
