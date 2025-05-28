@@ -36,7 +36,7 @@ void main() {
     AuthModel.instance(mockedFirebaseAuth: auth);
 
     // set AAD
-    E2EE.instance.setAAD('aadValue');
+    E2EE.instance.setAAD(aadValue: 'aadValue');
 
     // mock firestore with mock authentication
     FakeFirebaseFirestore firestore =
