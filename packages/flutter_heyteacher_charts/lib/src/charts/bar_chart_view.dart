@@ -4,14 +4,16 @@ import 'chart_view.dart';
 
 class BarChartDataItem extends ChartDataItem {
   final num? y1;
+  final num? y2; 
   final num fromY;
 
-  BarChartDataItem({required this.fromY, required super.x, required super.y, super.yColor, this.y1});
+  BarChartDataItem({required this.fromY, required super.x, required super.y, super.yColor, this.y1, this.y2});
 
   @override
-  toString() => 'x: $x, fromY: $fromY, y: $y,  y1: $y1';
+  toString() => 'x: $x, fromY: $fromY, y: $y,  y1: $y1,  y2: $y2';
 
 }
+
 
 class BarChartView extends ChartView {
   final bool horizontal;
