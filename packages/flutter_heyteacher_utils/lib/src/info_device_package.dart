@@ -61,46 +61,10 @@ class DevicePackageInfoCard extends StatelessWidget {
                   foregroundColor:
                       ThemeModel.instance().theme.colorScheme.onPrimary,
                 ),
-                onPressed: _askSupport,
+                onPressed: InfoDevicePackageModel.instance._askSupport,
                 child: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
                     .askSupport))),
       );
-}
-
-/// Constructs and launches a "mailto" URI to allow users to ask for support.
-///
-/// The email is pre-filled with:
-/// - A subject line indicating the app name.
-/// - A body containing the user's identifier, device information, and app version,
-///   formatted for easy support.
-void _askSupport() async {
-  final i10n = FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!;
-  final packageInfoPlatform = await PackageInfo.fromPlatform();
-  final version = await InfoDevicePackageModel.instance.packageVersion;
-  final device = await InfoDevicePackageModel.instance.deviceInfo;
-  final identifierInfo = InfoDevicePackageModel.instance.identifierInfo;
-  final machineDate = machineDateFormatter.format(clock.now());
-  final machineTime = machineTimeFormatter.format(clock.now());
-  final randomId = Random().nextInt(1000000000).toString().padLeft(10, '0');
-  final logFilename =
-      'applogs/$machineDate/$machineTime-$identifierInfo-$randomId.log';
-  await StorageModel.instance
-      .uploadString(logFilename, await LoggerModel.instance().logs2Text);
-  final subject = '${i10n.askSupportFor}'
-      '${packageInfoPlatform.appName}';
-  final body = '------------------------------------\n'
-      'Identifier:\t$identifierInfo\n'
-      'Device:\t$device\n'
-      'Version:\t$version\n'
-      'Logs:\t$logFilename\n'
-      '------------------------------------\n'
-      '\n';
-  final uri = Uri(
-    scheme: 'mailto',
-    path: 'heyteacher70@gmail.com',
-    query: 'subject=$subject&body=${Uri.encodeFull(body)}',
-  );
-  launchUrl(uri);
 }
 
 /// A singleton model class responsible for fetching and providing
@@ -118,8 +82,8 @@ class InfoDevicePackageModel {
 
   /// Private constructor for the singleton.
   InfoDevicePackageModel._() {
-    _streamSubscription =
-        Stream.periodic(const Duration(seconds: 5)).listen((_) => _tapCounter = 0);
+    _streamSubscription = Stream.periodic(const Duration(seconds: 5))
+        .listen((_) => _tapCounter = 0);
   }
 
   dispose() {
@@ -192,4 +156,47 @@ class InfoDevicePackageModel {
   /// otherwise defaults to "guest".
   String get identifierInfo =>
       (AuthModel.instance().uid?.substring(0, 5)) ?? 'guest';
+
+  /// uploads the logs to Firebase Storage and returns the log filename
+  Future<String> storeLogs() async {
+    final machineDate = machineDateFormatter.format(clock.now());
+    final machineTime = machineTimeFormatter.format(clock.now());
+    final randomId = Random().nextInt(1000000000).toString().padLeft(10, '0');
+    final logFilename =
+        'applogs/$machineDate/$machineTime-${InfoDevicePackageModel.instance.identifierInfo}-$randomId.log';
+    StorageModel.instance
+        .uploadString(logFilename, await LoggerModel.instance().logs2Text);
+    return logFilename;
+  }
+
+  /// Constructs and launches a "mailto" URI to allow users to ask for support.
+  ///
+  /// The email is pre-filled with:
+  /// - A subject line indicating the app name.
+  /// - A body containing the user's identifier, device information, and app version,
+  ///   formatted for easy support.
+  void _askSupport() async {
+    final i10n =
+        FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!;
+    final packageInfoPlatform = await PackageInfo.fromPlatform();
+    final version = await InfoDevicePackageModel.instance.packageVersion;
+    final device = await InfoDevicePackageModel.instance.deviceInfo;
+    final identifierInfo = InfoDevicePackageModel.instance.identifierInfo;
+    final logFilename = await storeLogs();
+    final subject = '${i10n.askSupportFor}'
+        '${packageInfoPlatform.appName}';
+    final body = '------------------------------------\n'
+        'Identifier:\t$identifierInfo\n'
+        'Device:\t$device\n'
+        'Version:\t$version\n'
+        'Logs:\t$logFilename\n'
+        '------------------------------------\n'
+        '\n';
+    final uri = Uri(
+      scheme: 'mailto',
+      path: 'heyteacher70@gmail.com',
+      query: 'subject=$subject&body=${Uri.encodeFull(body)}',
+    );
+    launchUrl(uri);
+  }
 }
