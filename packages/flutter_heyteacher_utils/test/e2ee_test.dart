@@ -31,7 +31,7 @@ void main() {
 
   // initialize Auth with MockFirebaseAuth
   AuthModel.instance(mockedFirebaseAuth: auth);
-  E2EE.instance.setAAD('aadValue');
+  E2EE.instance.setAAD(aadValue: 'aadValue');
 
   group('encrypt decryp message:', () {
     test('encrypted decrypted empty message return same', () async {

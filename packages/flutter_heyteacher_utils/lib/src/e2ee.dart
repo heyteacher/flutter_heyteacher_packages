@@ -14,7 +14,9 @@ library;
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:webcrypto/webcrypto.dart';
 
-
 class E2EEPassphraseCard extends StatefulWidget {
   final FocusNode encryptionPassphraseFocusNode;
   const E2EEPassphraseCard(this.encryptionPassphraseFocusNode, {super.key});
@@ -46,38 +47,42 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
   @override
   Widget build(BuildContext context) => FutureBuilder(
       future: E2EE.instance.getAAD(),
-      builder: (_, snapshot) => Card(
-        child: ListTile(
+      builder: (_, aadSnapshot) => Card(
+            child: ListTile(
               focusNode: widget.encryptionPassphraseFocusNode,
               leading: const Icon(Icons.password),
-              title: TextField(
-                  enabled: AuthModel.instance().autenticated,
-                  onChanged: (value) async =>
-                      await _setPassphrase(value, oldValue: snapshot.data),
-                  obscureText: !_passphraseVisibility &&
-                      (snapshot.data?.isNotEmpty ?? false),
-                  decoration: InputDecoration(
-                      isDense: true,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).colorScheme.onSurface),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(_passphraseVisibility
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () => setState(
-                            () => _passphraseVisibility = !_passphraseVisibility),
-                      ),
-                      labelText: FlutterHeyteacherUtilsLocalizations.of(context)!
-                          .encryptionPassphrase),
-                  controller: TextEditingController(text: snapshot.data ?? '')),
+              title: StreamBuilder<User?>(
+                  stream: AuthModel.instance().stateChangesStream,
+                  builder: (_, userSnapshot) => TextField(
+                      enabled: userSnapshot.hasData,
+                      onChanged: (value) async => await _setPassphrase(value,
+                          oldValue: aadSnapshot.data),
+                      obscureText: !_passphraseVisibility &&
+                          (aadSnapshot.data?.isNotEmpty ?? false),
+                      decoration: InputDecoration(
+                          isDense: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onSurface),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(_passphraseVisibility
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () => setState(() =>
+                                _passphraseVisibility = !_passphraseVisibility),
+                          ),
+                          labelText:
+                              FlutterHeyteacherUtilsLocalizations.of(context)!
+                                  .encryptionPassphrase),
+                      controller:
+                          TextEditingController(text: aadSnapshot.data ?? ''))),
             ),
-      ));
+          ));
 
   Future<void> _setPassphrase(String value, {String? oldValue}) async {
     // first time, show a warning on change encryption password and
@@ -86,7 +91,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
       showConfirmCancelDialog(
           context: context,
           confirmCallback: (_) async {
-            await E2EE.instance.setAAD(value);
+            await E2EE.instance.setAAD(aadValue: value);
             _warningAlreadyShowed = true;
             return null;
           },
@@ -97,7 +102,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
           content: FlutterHeyteacherUtilsLocalizations.of(context)!
               .areYouSureToChangeEncryptionPassphrase);
     } else {
-      await E2EE.instance.setAAD(value);
+      await E2EE.instance.setAAD(aadValue: value);
     }
   }
 }
@@ -124,8 +129,8 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
             ),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
-              child: Text(
-                  FlutterHeyteacherUtilsLocalizations.of(context)!.encryptionSecretKey),
+              child: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
+                  .encryptionSecretKey),
             ),
             trailing: Wrap(children: [
               IconButton(
@@ -187,8 +192,9 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
 
   void _showQrCodeScanner() async {
     // get localized confirm question message before async invocation
-    final confirmQuestionMessage = FlutterHeyteacherUtilsLocalizations.of(context)!
-        .areYouSureToImportEncryptionSecretKey;
+    final confirmQuestionMessage =
+        FlutterHeyteacherUtilsLocalizations.of(context)!
+            .areYouSureToImportEncryptionSecretKey;
     widget.encryptionPassphraseFocusNode.unfocus();
     if (AuthModel.instance().notAutenticated) {
       showConfirmCancelDialog(
@@ -215,8 +221,9 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
         content: confirmQuestionMessage,
         confirmCallback: (_) async {
           // get localized success message before async invocation
-          final successMessage = FlutterHeyteacherUtilsLocalizations.of(context)!
-              .encryptionSecretKeyImported;
+          final successMessage =
+              FlutterHeyteacherUtilsLocalizations.of(context)!
+                  .encryptionSecretKeyImported;
           await E2EE.instance.importSecretJwkJson(secretJwkJson!);
           setState(() {});
           return successMessage;
@@ -225,7 +232,6 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
     }
   }
 }
-
 
 /// Manages End-to-End Encryption (E2EE) operations for the application.
 ///
@@ -258,6 +264,7 @@ class E2EE {
   E2EE._();
 
   FlutterSecureStorage? _secureStorageInstance;
+
   /// Lazily initializes and returns the [FlutterSecureStorage] instance.
   /// Configures Android-specific options for encrypted shared preferences.
   Future<FlutterSecureStorage> get _secureStorage async {
@@ -374,14 +381,18 @@ class E2EE {
   ///
   /// The [aadValue] (typically a user-provided passphrase) is stored securely.
   /// Requires the user to be authenticated.
-  Future<void> setAAD(String aadValue) async {
+  /// 
+  /// If [generate] is true, a random AAD value is generated instead of using 
+  /// the provided [aadValue].
+  Future<void> setAAD({String? aadValue, bool generate = false}) async {
     // cannot encrypt if not auth
     if (AuthModel.instance().notAutenticated) {
       _log.severe('setAAD: user not authenticated');
       throw UserNotAuthenticatedException();
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
-    secureStorage.write(key: _aadKey, value: aadValue);
+    secureStorage.write(
+        key: _aadKey, value: generate ? _generateAADValue() : aadValue);
   }
 
   /// Retrieves the Additional Authenticated Data (AAD) for the current user.
@@ -437,6 +448,13 @@ class E2EE {
     // write the jwk json into storage
     final FlutterSecureStorage secureStorage = await _secureStorage;
     await secureStorage.write(key: _secretKeyKey, value: secretJwkJson);
+  }
+
+  String _generateAADValue() {
+    var r = Random();
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    return List.generate(5, (index) => chars[r.nextInt(chars.length)]).join();
   }
 
   /// Generates a new AES-GCM secret key (256-bit), stores it securely in JWK format,
