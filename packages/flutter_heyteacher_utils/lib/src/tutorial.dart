@@ -52,6 +52,8 @@ class TutorialModel {
         )));
   }
 
+  bool _started = false;
+
   /// Starts the tutorial for the specified [screenName].
   ///
   /// The tutorial will be displayed after a short delay to ensure the UI is ready.
@@ -60,21 +62,20 @@ class TutorialModel {
     BuildContext context,
     String screenName,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    if ((await SharedPreferencesAsync()
+                .getBool('$screenName-tutorial-completed') ??
+            false) ||
+        _started) {
+      return;
+    }
+    _started = true;
     if (context.mounted) {
-      if ((await SharedPreferencesAsync()
-              .getBool('$screenName-tutorial-completed') ??
-          false)) {
-        return;
-      }
-      if (context.mounted) {
-        Tutorial.showTutorial(context, _screens[screenName]!,
-            onTutorialComplete: () {
-          _log.info('Tutorial completed');
-          SharedPreferencesAsync()
-              .setBool('$screenName-tutorial-completed', true);
-        });
-      }
+      Tutorial.showTutorial(context, _screens[screenName]!,
+          onTutorialComplete: () {
+        _log.info('Tutorial completed');
+        SharedPreferencesAsync()
+            .setBool('$screenName-tutorial-completed', true);
+      });
     }
   }
 }
@@ -167,10 +168,8 @@ class TutorialItemContent extends StatelessWidget {
                     children: [
                       TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor: ThemeModel.instance()
-                              .theme
-                              .colorScheme
-                              .primary,
+                          backgroundColor:
+                              ThemeModel.instance().theme.colorScheme.primary,
                         ),
                         onPressed: () => Tutorial.skipAll(context),
                         child: Text(
@@ -179,18 +178,15 @@ class TutorialItemContent extends StatelessWidget {
                               .textTheme
                               .titleSmall
                               ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onPrimary),
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                         ),
                       ),
                       const Spacer(),
                       TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor: ThemeModel.instance()
-                              .theme
-                              .colorScheme
-                              .primary,
+                          backgroundColor:
+                              ThemeModel.instance().theme.colorScheme.primary,
                         ),
                         onPressed: null,
                         child: Text(
@@ -199,9 +195,8 @@ class TutorialItemContent extends StatelessWidget {
                               .textTheme
                               .titleSmall
                               ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onPrimary),
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                         ),
                       )
                     ],
