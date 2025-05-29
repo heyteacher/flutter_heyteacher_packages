@@ -45,8 +45,6 @@ class TutorialModel {
     _screens[screenName]!.add(TutorialItem(
         globalKey: globalKey,
         color: Colors.black.withValues(alpha: 0.8),
-        borderRadius: const Radius.circular(15.0),
-        shapeFocus: ShapeFocus.roundedSquare,
         child: TutorialItemContent(
           title: title,
           content: content,
@@ -62,7 +60,7 @@ class TutorialModel {
     BuildContext context,
     String screenName,
   ) async {
-    await Future.delayed(const Duration(microseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 200));
     if (context.mounted) {
       if ((await SharedPreferencesAsync()
               .getBool('$screenName-tutorial-completed') ??
@@ -141,78 +139,72 @@ class TutorialItemContent extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+              flex: _topFlex,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: _bottomFlex,
               child: Column(
                 children: [
-                  Expanded(
-                    flex: _topFlex,
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
-                        child: Text(
-                          title,
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      content,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
-                  Expanded(
-                    flex: _bottomFlex,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            content,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
+                  Row(
+                    children: [
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: ThemeModel.instance()
+                              .theme
+                              .colorScheme
+                              .primary,
                         ),
-                        Row(
-                          children: [
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor: ThemeModel.instance()
-                                    .theme
-                                    .colorScheme
-                                    .primary,
-                              ),
-                              onPressed: () => Tutorial.skipAll(context),
-                              child: Text(
-                                'Skip onboarding',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary),
-                              ),
-                            ),
-                            const Spacer(),
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor: ThemeModel.instance()
-                                    .theme
-                                    .colorScheme
-                                    .primary,
-                              ),
-                              onPressed: null,
-                              child: Text(
-                                'Next',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary),
-                              ),
-                            )
-                          ],
+                        onPressed: () => Tutorial.skipAll(context),
+                        child: Text(
+                          'Skip onboarding',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimary),
                         ),
-                      ],
-                    ),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: ThemeModel.instance()
+                              .theme
+                              .colorScheme
+                              .primary,
+                        ),
+                        onPressed: null,
+                        child: Text(
+                          'Next',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimary),
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),
