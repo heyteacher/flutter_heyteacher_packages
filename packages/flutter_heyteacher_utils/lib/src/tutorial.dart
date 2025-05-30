@@ -8,6 +8,7 @@
 library;
 
 import 'package:app_tutorial/app_tutorial.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:logging/logging.dart';
@@ -62,7 +63,7 @@ class TutorialModel {
     BuildContext context,
     String screenName,
   ) async {
-    if ((await SharedPreferencesAsync()
+    if (!kDebugMode || (await SharedPreferencesAsync()
                 .getBool('$screenName-tutorial-completed') ??
             false) ||
         _started) {
