@@ -63,7 +63,7 @@ class TutorialModel {
     BuildContext context,
     String screenName,
   ) async {
-    if (!kDebugMode || (await SharedPreferencesAsync()
+    if (kDebugMode || (await SharedPreferencesAsync()
                 .getBool('$screenName-tutorial-completed') ??
             false) ||
         _started) {
