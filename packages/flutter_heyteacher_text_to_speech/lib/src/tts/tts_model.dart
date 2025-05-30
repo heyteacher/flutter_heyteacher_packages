@@ -32,9 +32,8 @@ class TtsModel {
     _onUserUpdateStreamSubscription?.cancel();
   }
 
-  Future<void> speak(String text, {double speechRate = 1}) async {
-    _log.info('speak({speechRate:$speechRate}): $text');
-    await _textToSpeech.setSpeechRate(speechRate);
+  Future<void> speak(String text) async {
+    _log.info('speak: $text');
     _textToSpeech.speak(text);
   }
 
