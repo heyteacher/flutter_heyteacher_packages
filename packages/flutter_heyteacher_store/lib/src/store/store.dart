@@ -454,10 +454,12 @@ abstract class Store<LightDataType extends FirestoreData,
     if (_cacheEnabled) {
       _storeCache = StoreCache<LightDataType, DetailsDataType>();
     }
+
+    _initAggregatesStream();
   }
 
   /// Initializes the aggregate stream when user i authenticathed.
-  void initAggregatesStream() {
+  void _initAggregatesStream() {
     _aggregatesSubscription?.cancel();
     _aggregatesSubscription = AuthModel.instance()
         .stateChangesStream
