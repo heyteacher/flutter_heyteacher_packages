@@ -468,7 +468,7 @@ class ThemeModel {
           unselectedItemColor: disabled,
           backgroundColor: Colors.transparent,
         ),
-        cardTheme: CardTheme(elevation: 50, color: surfaceContainer),
+        cardTheme: CardThemeData(elevation: 50, color: surfaceContainer),
         textTheme: const TextTheme(
             displayLarge: TextStyle(
           fontSize: 120,
