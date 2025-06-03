@@ -454,17 +454,6 @@ abstract class Store<LightDataType extends FirestoreData,
     if (_cacheEnabled) {
       _storeCache = StoreCache<LightDataType, DetailsDataType>();
     }
-
-    _initAggregatesStream();
-  }
-
-  /// Initializes the aggregate stream when user i authenticathed.
-  void _initAggregatesStream() {
-    _aggregatesSubscription?.cancel();
-    _aggregatesSubscription = AuthModel.instance()
-        .stateChangesStream
-        .where((user) => user != null)
-        .listen(((_) => notifyAggregatesChanges()));
   }
 
   /// On dispose, cancel the subscriptions.
@@ -809,15 +798,15 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   /// Yields an aggregation result based on [aggregateFields].
-  Future<void> notifyAggregatesChanges() async {
+  Future<AggregateQuerySnapshot?> get aggregates async {
     _checkAuthenticated();
-    if (aggregateFields == null || aggregateFields!.isEmpty) return;
+    if (aggregateFields == null || aggregateFields!.isEmpty) return null;
     List<AggregateField?> aggregateParams = [
       for (var i = 0; i < 29; i++)
         aggregateFields!.length > i ? sum(aggregateFields![i]) : null
     ];
-    _log.finest('notifyAggregatesChanges: notify');
-    _aggregateStreamController.sink.add(await query()
+    _log.finest('aggregates: not null');
+    return query()
         .aggregate(
           count(),
           aggregateParams[0],
@@ -850,7 +839,17 @@ abstract class Store<LightDataType extends FirestoreData,
           aggregateParams[27],
           aggregateParams[28],
         )
-        .get());
+        .get();
+  }
+
+
+  /// Yields an aggregation result based on [aggregateFields].
+  @protected
+  Future<void> notifyAggregatesChanges() async {
+    final aggregatesValue = await aggregates;
+    if (aggregatesValue != null) {
+      _aggregateStreamController.sink.add(aggregatesValue);
+    }
   }
 
   /// Returns if _initGroupByCounter is already running.
