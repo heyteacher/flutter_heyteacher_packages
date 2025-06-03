@@ -5,7 +5,8 @@ import 'flutter_heyteacher_utils.dart';
 // ignore_for_file: type=lint
 
 /// The translations for Spanish Castilian (`es`).
-class FlutterHeyteacherUtilsLocalizationsEs extends FlutterHeyteacherUtilsLocalizations {
+class FlutterHeyteacherUtilsLocalizationsEs
+    extends FlutterHeyteacherUtilsLocalizations {
   FlutterHeyteacherUtilsLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
@@ -21,25 +22,31 @@ class FlutterHeyteacherUtilsLocalizationsEs extends FlutterHeyteacherUtilsLocali
   String get errorOnRetrieveData => 'Error al recuperar datos';
 
   @override
-  String get timeoutOnRetrieveData => 'Tiempo de espera agotado al recuperar datos';
+  String get timeoutOnRetrieveData =>
+      'Tiempo de espera agotado al recuperar datos';
 
   @override
   String get confirm => 'Confirmar';
 
   @override
-  String get areYouSureToConfirmTheAction => '¿Estás seguro de confirmar la acción?';
+  String get areYouSureToConfirmTheAction =>
+      '¿Estás seguro de confirmar la acción?';
 
   @override
-  String get encryptionPassphraseIsEmptySetIt => 'La frase de contraseña de cifrado está vacía, configúrala';
+  String get encryptionPassphraseIsEmptySetIt =>
+      'La frase de contraseña de cifrado está vacía, configúrala';
 
   @override
-  String get missingEncryptionSecretKeyImportIt => 'Falta la clave secreta de cifrado, impórtala';
+  String get missingEncryptionSecretKeyImportIt =>
+      'Falta la clave secreta de cifrado, impórtala';
 
   @override
-  String get errorOnEncryptionCheckPassphrase => 'Error en el cifrado, verifica la frase de contraseña de cifrado';
+  String get errorOnEncryptionCheckPassphrase =>
+      'Error en el cifrado, verifica la frase de contraseña de cifrado';
 
   @override
-  String get errorOnDecryptionCheckPassphrase => 'Error en el descifrado, verifica la frase de contraseña de cifrado';
+  String get errorOnDecryptionCheckPassphrase =>
+      'Error en el descifrado, verifica la frase de contraseña de cifrado';
 
   @override
   String get id => 'Id: ';
@@ -68,10 +75,12 @@ class FlutterHeyteacherUtilsLocalizationsEs extends FlutterHeyteacherUtilsLocali
   }
 
   @override
-  String get areYouSureToChangeEncryptionPassphrase => 'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
+  String get areYouSureToChangeEncryptionPassphrase =>
+      'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
 
   @override
-  String get areYouSureToImportEncryptionSecretKey => 'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
+  String get areYouSureToImportEncryptionSecretKey =>
+      'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
 
   @override
   String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
@@ -83,5 +92,6 @@ class FlutterHeyteacherUtilsLocalizationsEs extends FlutterHeyteacherUtilsLocali
   String get encryptionSecretKey => 'Encryption Secret Key';
 
   @override
-  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase => 'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
+  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
+      'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
 }

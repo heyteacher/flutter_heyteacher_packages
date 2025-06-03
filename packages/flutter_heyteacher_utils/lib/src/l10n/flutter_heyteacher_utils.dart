@@ -66,15 +66,18 @@ import 'flutter_heyteacher_utils_pt.dart';
 /// be consistent with the languages listed in the FlutterHeyteacherUtilsLocalizations.supportedLocales
 /// property.
 abstract class FlutterHeyteacherUtilsLocalizations {
-  FlutterHeyteacherUtilsLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  FlutterHeyteacherUtilsLocalizations(String locale)
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
   static FlutterHeyteacherUtilsLocalizations? of(BuildContext context) {
-    return Localizations.of<FlutterHeyteacherUtilsLocalizations>(context, FlutterHeyteacherUtilsLocalizations);
+    return Localizations.of<FlutterHeyteacherUtilsLocalizations>(
+        context, FlutterHeyteacherUtilsLocalizations);
   }
 
-  static const LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> delegate = _FlutterHeyteacherUtilsLocalizationsDelegate();
+  static const LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations>
+      delegate = _FlutterHeyteacherUtilsLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -86,7 +89,8 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -239,41 +243,55 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device'**
-  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase;
+  String
+      get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase;
 }
 
-class _FlutterHeyteacherUtilsLocalizationsDelegate extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {
+class _FlutterHeyteacherUtilsLocalizationsDelegate
+    extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {
   const _FlutterHeyteacherUtilsLocalizationsDelegate();
 
   @override
   Future<FlutterHeyteacherUtilsLocalizations> load(Locale locale) {
-    return SynchronousFuture<FlutterHeyteacherUtilsLocalizations>(lookupFlutterHeyteacherUtilsLocalizations(locale));
+    return SynchronousFuture<FlutterHeyteacherUtilsLocalizations>(
+        lookupFlutterHeyteacherUtilsLocalizations(locale));
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en', 'es', 'fr', 'it', 'pt'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>[
+        'de',
+        'en',
+        'es',
+        'fr',
+        'it',
+        'pt'
+      ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_FlutterHeyteacherUtilsLocalizationsDelegate old) => false;
 }
 
-FlutterHeyteacherUtilsLocalizations lookupFlutterHeyteacherUtilsLocalizations(Locale locale) {
-
-
+FlutterHeyteacherUtilsLocalizations lookupFlutterHeyteacherUtilsLocalizations(
+    Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'de': return FlutterHeyteacherUtilsLocalizationsDe();
-    case 'en': return FlutterHeyteacherUtilsLocalizationsEn();
-    case 'es': return FlutterHeyteacherUtilsLocalizationsEs();
-    case 'fr': return FlutterHeyteacherUtilsLocalizationsFr();
-    case 'it': return FlutterHeyteacherUtilsLocalizationsIt();
-    case 'pt': return FlutterHeyteacherUtilsLocalizationsPt();
+    case 'de':
+      return FlutterHeyteacherUtilsLocalizationsDe();
+    case 'en':
+      return FlutterHeyteacherUtilsLocalizationsEn();
+    case 'es':
+      return FlutterHeyteacherUtilsLocalizationsEs();
+    case 'fr':
+      return FlutterHeyteacherUtilsLocalizationsFr();
+    case 'it':
+      return FlutterHeyteacherUtilsLocalizationsIt();
+    case 'pt':
+      return FlutterHeyteacherUtilsLocalizationsPt();
   }
 
   throw FlutterError(
-    'FlutterHeyteacherUtilsLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
-  );
+      'FlutterHeyteacherUtilsLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }

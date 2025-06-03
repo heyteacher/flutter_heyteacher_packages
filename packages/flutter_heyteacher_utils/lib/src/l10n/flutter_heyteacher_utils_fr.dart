@@ -5,7 +5,8 @@ import 'flutter_heyteacher_utils.dart';
 // ignore_for_file: type=lint
 
 /// The translations for French (`fr`).
-class FlutterHeyteacherUtilsLocalizationsFr extends FlutterHeyteacherUtilsLocalizations {
+class FlutterHeyteacherUtilsLocalizationsFr
+    extends FlutterHeyteacherUtilsLocalizations {
   FlutterHeyteacherUtilsLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
@@ -18,28 +19,35 @@ class FlutterHeyteacherUtilsLocalizationsFr extends FlutterHeyteacherUtilsLocali
   String get notAuthenticated => 'Non Authentifié';
 
   @override
-  String get errorOnRetrieveData => 'Erreur lors de la récupération des données';
+  String get errorOnRetrieveData =>
+      'Erreur lors de la récupération des données';
 
   @override
-  String get timeoutOnRetrieveData => 'Délai d\'attente dépassé lors de la récupération des données';
+  String get timeoutOnRetrieveData =>
+      'Délai d\'attente dépassé lors de la récupération des données';
 
   @override
   String get confirm => 'Confirmer';
 
   @override
-  String get areYouSureToConfirmTheAction => 'Êtes-vous sûr de vouloir confirmer l\'action ?';
+  String get areYouSureToConfirmTheAction =>
+      'Êtes-vous sûr de vouloir confirmer l\'action ?';
 
   @override
-  String get encryptionPassphraseIsEmptySetIt => 'La phrase de passe de chiffrement est vide, veuillez la définir';
+  String get encryptionPassphraseIsEmptySetIt =>
+      'La phrase de passe de chiffrement est vide, veuillez la définir';
 
   @override
-  String get missingEncryptionSecretKeyImportIt => 'Clé secrète de chiffrement manquante, veuillez l\'importer';
+  String get missingEncryptionSecretKeyImportIt =>
+      'Clé secrète de chiffrement manquante, veuillez l\'importer';
 
   @override
-  String get errorOnEncryptionCheckPassphrase => 'Erreur de chiffrement, vérifiez la phrase de passe de chiffrement';
+  String get errorOnEncryptionCheckPassphrase =>
+      'Erreur de chiffrement, vérifiez la phrase de passe de chiffrement';
 
   @override
-  String get errorOnDecryptionCheckPassphrase => 'Erreur de déchiffrement, vérifiez la phrase de passe de chiffrement';
+  String get errorOnDecryptionCheckPassphrase =>
+      'Erreur de déchiffrement, vérifiez la phrase de passe de chiffrement';
 
   @override
   String get id => 'Id : ';
@@ -68,10 +76,12 @@ class FlutterHeyteacherUtilsLocalizationsFr extends FlutterHeyteacherUtilsLocali
   }
 
   @override
-  String get areYouSureToChangeEncryptionPassphrase => 'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
+  String get areYouSureToChangeEncryptionPassphrase =>
+      'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
 
   @override
-  String get areYouSureToImportEncryptionSecretKey => 'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
+  String get areYouSureToImportEncryptionSecretKey =>
+      'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
 
   @override
   String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
@@ -83,5 +93,6 @@ class FlutterHeyteacherUtilsLocalizationsFr extends FlutterHeyteacherUtilsLocali
   String get encryptionSecretKey => 'Encryption Secret Key';
 
   @override
-  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase => 'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
+  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
+      'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
 }
