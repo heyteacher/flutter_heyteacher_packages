@@ -367,7 +367,8 @@ abstract class Store<LightDataType extends FirestoreData,
 
   /// The aggregate stream where aggregate changes are notified
   Stream<AggregateQuerySnapshot> get aggregateStream =>
-      _aggregateStreamController.stream;
+      _aggregateStreamController.stream.where(
+          (aggregateQuerySnapshot) => aggregateQuerySnapshot.count != null);
 
   /// The store constructor.
   ///
@@ -842,9 +843,7 @@ abstract class Store<LightDataType extends FirestoreData,
         .get();
   }
 
-
   /// Yields an aggregation result based on [aggregateFields].
-  @protected
   Future<void> notifyAggregatesChanges() async {
     final aggregatesValue = await aggregates;
     if (aggregatesValue != null) {
