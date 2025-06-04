@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // For FirebaseException
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/src/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart'; // Import the file containing ErrorView
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -64,10 +65,10 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String get timeoutOnRetrieveData => throw UnimplementedError();
-  
+
   @override
   String get logging => 'Logging';
-  
+
   @override
   String nMinutes(num minutes) {
     return '$minutes minutes';
@@ -75,24 +76,27 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String get account => 'Account';
-  
+
   @override
-  String get areYouSureToChangeEncryptionPassphrase => 'areYouSureToChangeEncryptionPassphrase';
-  
+  String get areYouSureToChangeEncryptionPassphrase =>
+      'areYouSureToChangeEncryptionPassphrase';
+
   @override
   String get areYouSureToImportEncryptionSecretKey => '';
-  
+
   @override
   String get encryptionPassphrase => '';
-  
+
   @override
   String get encryptionSecretKey => '';
-  
+
   @override
   String get encryptionSecretKeyImported => '';
-  
+
   @override
-  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase => '';
+  String
+      get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
+          '';
 }
 
 class _MockLocalizationsDelegate
@@ -252,7 +256,8 @@ void main() {
         tester.element(find.text(testError.toString())); // Get context
 
     // Check if the style matches the expected style from the widget
-    expect(textWidget.style?.color, Theme.of(context).colorScheme.onError);
+    expect(textWidget.style?.color,
+        ThemeModel.instance().theme.colorScheme.onError);
     expect(textWidget.style?.fontSize,
         Theme.of(context).textTheme.headlineMedium?.fontSize);
 

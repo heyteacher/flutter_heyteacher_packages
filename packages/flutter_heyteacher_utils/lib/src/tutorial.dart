@@ -10,6 +10,7 @@ library;
 import 'package:app_tutorial/app_tutorial.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -169,7 +170,7 @@ class TutorialItemContent extends StatelessWidget {
                       TextButton(
                         style: TextButton.styleFrom(
                           backgroundColor:
-                              Theme.of(context).colorScheme.primary,
+                              ThemeModel.instance().theme.colorScheme.primary,
                         ),
                         onPressed: () => Tutorial.skipAll(context),
                         child: Text(
@@ -179,14 +180,14 @@ class TutorialItemContent extends StatelessWidget {
                               .titleSmall
                               ?.copyWith(
                                   color:
-                                      Theme.of(context).colorScheme.onPrimary),
+                                      ThemeModel.instance().theme.colorScheme.onPrimary),
                         ),
                       ),
                       const Spacer(),
                       TextButton(
                         style: TextButton.styleFrom(
                           backgroundColor:
-                              Theme.of(context).colorScheme.primary,
+                              ThemeModel.instance().theme.colorScheme.primary,
                         ),
                         onPressed: null,
                         child: Text(
@@ -196,7 +197,7 @@ class TutorialItemContent extends StatelessWidget {
                               .titleSmall
                               ?.copyWith(
                                   color:
-                                      Theme.of(context).colorScheme.onPrimary),
+                                      ThemeModel.instance().theme.colorScheme.onPrimary),
                         ),
                       )
                     ],

@@ -75,12 +75,12 @@ void showSnackBar(
                         FirebaseRemoteConfig.instance
                             .getInt('snackBarDurationInSeconds')),
                 backgroundColor: error
-                    ? Theme.of(context).colorScheme.onError
+                    ? ThemeModel.instance().theme.colorScheme.onError
                     : ThemeModel.instance().greenColor,
                 content: Text(message,
                     style: TextStyle(
                         color: error
-                            ? Theme.of(context).colorScheme.error
+                            ? ThemeModel.instance().theme.colorScheme.error
                             : ThemeModel.instance()
                                 .theme
                                 .colorScheme
@@ -121,7 +121,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
             IconButton(
               key: const ValueKey('ib_dialog_no'),
               icon: Icon(Icons.close,
-                  color: Theme.of(context).colorScheme.onError),
+                  color: ThemeModel.instance().theme.colorScheme.onError),
               onPressed: () {
                 // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
                 SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -246,5 +246,5 @@ class ErrorView extends StatelessWidget {
   TextStyle _errorStyleContent(context) => Theme.of(context)
       .textTheme
       .headlineMedium!
-      .copyWith(color: Theme.of(context).colorScheme.onError);
+      .copyWith(color: ThemeModel.instance().theme.colorScheme.onError);
 }
