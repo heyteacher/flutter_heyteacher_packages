@@ -1,6 +1,6 @@
 name: flutter_heyteacher_utils
 description: "A heyteacher flutter package which implements common utilies"
-version: 1.15.5+250603193
+version: 1.15.6+250604123
 publish_to: none
 
 environment:
@@ -39,6 +39,7 @@ dependencies:
   flutter_heyteacher_text_to_speech:
     git: https://github.com/heyteacher/flutter_heyteacher_text_to_speech.git
   app_tutorial: ^1.0.6
+  shared_preferences_platform_interface: ^2.4.1
 
 
 dev_dependencies:
