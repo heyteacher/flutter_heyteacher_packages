@@ -21,7 +21,6 @@ import 'package:flutter_heyteacher_utils/logger.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/storage.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -57,9 +56,9 @@ class DevicePackageInfoCard extends StatelessWidget {
             trailing: TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor:
-                      ThemeModel.instance().theme.colorScheme.primary,
+                      Theme.of(context).colorScheme.primary,
                   foregroundColor:
-                      ThemeModel.instance().theme.colorScheme.onPrimary,
+                      Theme.of(context).colorScheme.onPrimary,
                 ),
                 onPressed: InfoDevicePackageModel.instance._askSupport,
                 child: Text(FlutterHeyteacherUtilsLocalizations.of(context)!

@@ -10,7 +10,6 @@ library;
 import 'package:app_tutorial/app_tutorial.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -170,7 +169,7 @@ class TutorialItemContent extends StatelessWidget {
                       TextButton(
                         style: TextButton.styleFrom(
                           backgroundColor:
-                              ThemeModel.instance().theme.colorScheme.primary,
+                              Theme.of(context).colorScheme.primary,
                         ),
                         onPressed: () => Tutorial.skipAll(context),
                         child: Text(
@@ -187,7 +186,7 @@ class TutorialItemContent extends StatelessWidget {
                       TextButton(
                         style: TextButton.styleFrom(
                           backgroundColor:
-                              ThemeModel.instance().theme.colorScheme.primary,
+                              Theme.of(context).colorScheme.primary,
                         ),
                         onPressed: null,
                         child: Text(

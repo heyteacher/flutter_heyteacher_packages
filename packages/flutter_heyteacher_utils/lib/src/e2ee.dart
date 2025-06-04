@@ -125,7 +125,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
               secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
               color: secretKeySnapshot.data ?? false
                   ? ThemeModel.instance().greenColor
-                  : ThemeModel.instance().theme.colorScheme.onError,
+                  : Theme.of(context).colorScheme.onError,
             ),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
