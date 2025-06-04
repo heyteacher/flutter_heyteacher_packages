@@ -123,14 +123,14 @@ class ThemeModel {
   ThemeMode get themeMode => _themeMode;
 
   /// A stream controller to broadcast theme changes.
-  final StreamController<ThemeMode> _themeStreamController =
-      StreamController<ThemeMode>.broadcast();
+  final StreamController<ThemeData> _themeStreamController =
+      StreamController<ThemeData>.broadcast();
 
   /// A stream that emits an event whenever the theme changes.
   ///
   /// Widgets can listen to this stream to rebuild when the theme is updated.
   /// The emitted value is typically `null` and serves as a notification.
-  Stream<ThemeMode> get themeStream => _themeStreamController.stream.distinct();
+  Stream<ThemeData> get themeStream => _themeStreamController.stream.distinct();
 
   /// Gets a red color that adapts to the current theme (light/dark).
   Color get redColor =>
@@ -284,7 +284,7 @@ class ThemeModel {
               .where((element) => element.name == themeModeName)
               .firstOrNull ??
           ThemeMode.system;
-      _themeStreamController.sink.add(_themeMode);
+      _themeStreamController.sink.add(theme);
     });
   }
 
@@ -296,7 +296,7 @@ class ThemeModel {
     _themeMode = themeMode;
     await SharedPreferencesAsync()
         .setString(_sharedPreferencesThemeModeKey, themeMode.name);
-    _themeStreamController.sink.add(_themeMode);
+    _themeStreamController.sink.add(theme);
   }
 
   /// Resets the light and dark themes to their initial default color schemes.
@@ -309,7 +309,7 @@ class ThemeModel {
         themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
     lightTheme = _themeData(
         themeMode: ThemeMode.light, colorScheme: _initialLightColorScheme);
-    _themeStreamController.sink.add(_themeMode);
+    _themeStreamController.sink.add(theme);
   }
 
   /// update the theme with new values
@@ -371,7 +371,7 @@ class ThemeModel {
         _themeData(themeMode: ThemeMode.light, colorScheme: lightColorScheme);
     darkTheme =
         _themeData(themeMode: ThemeMode.dark, colorScheme: darkColorScheme);
-    _themeStreamController.sink.add(_themeMode);
+    _themeStreamController.sink.add(theme);
   }
 
   /// Calculates a suitable foreground color based on a given [color] and [themeMode].
