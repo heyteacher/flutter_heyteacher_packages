@@ -98,7 +98,7 @@ class LocaleModel {
   /// A stream that emits the new [Locale] whenever it changes.
   ///
   /// Widgets can listen to this stream to rebuild when the application's locale is updated.
-  Stream<Locale> get localeStream => _localeStreamController.stream;
+  Stream<Locale> get localeStream => _localeStreamController.stream.distinct();
 
   /// Gets the current application [Locale].
   ///
