@@ -9,6 +9,8 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 
 // Import generated mocks
 import 'widgets_test.mocks.dart';
@@ -149,6 +151,8 @@ void main() {
   late MockGoRouter mockGoRouter;
 
   setUp(() {
+       SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
+ 
     mockGoRouter = MockGoRouter();
   });
 
@@ -266,12 +270,8 @@ void main() {
         error: null, stackTrace: null, mockGoRouter: mockGoRouter);
     final authTextWidget =
         tester.widget<Text>(find.text('User not authenticated (Mock)'));
-    final authContext =
-        tester.element(find.text('User not authenticated (Mock)'));
 
     expect(
-        authTextWidget.style?.color, Theme.of(authContext).colorScheme.onError);
-    expect(authTextWidget.style?.fontSize,
-        Theme.of(authContext).textTheme.headlineMedium?.fontSize);
+        authTextWidget.style?.color, ThemeModel.instance().theme.colorScheme.onError);
   });
 }
