@@ -37,9 +37,10 @@ dependencies:
   qr_flutter: ^4.1.0
   mobile_scanner: ^6.0.6
   flutter_heyteacher_text_to_speech:
-    git: https://github.com/heyteacher/flutter_heyteacher_text_to_speech.git
+    path: ../flutter_heyteacher_text_to_speech
   app_tutorial: ^1.0.6
   shared_preferences_platform_interface: ^2.4.1
+  path_provider: ^2.1.5
 
 
 dev_dependencies:
