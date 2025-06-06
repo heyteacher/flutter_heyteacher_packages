@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
+import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
 import '../formats.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -177,12 +178,21 @@ class _LoggerScreenState extends State<LoggerScreen> {
                                         Text(logEntry.level.name,
                                             style: TextStyle(
                                                 color: _backgroundColor(
-                                                    logEntry.level)
-                                                        ?.withValues(alpha: 0.8))),
+                                                        logEntry.level)
+                                                    ?.withValues(alpha: 0.8))),
                                       ]),
                                   title: Text(logEntry.loggerName),
                                   subtitle: Text(logEntry.message),
                                   isThreeLine: true,
+                                  trailing: logEntry.error != null
+                                      ? IconButton(
+                                          icon: const Icon(Icons.info),
+                                          onPressed: () => showConfirmCancelDialog(
+                                              context: context,
+                                              content: '${logEntry.error}\n\n'
+                                                  '${logEntry.stackTrace ?? ''}'),
+                                        )
+                                      : null,
                                 ),
                               ),
                             )
