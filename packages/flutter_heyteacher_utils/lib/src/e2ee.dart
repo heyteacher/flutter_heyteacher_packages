@@ -476,7 +476,7 @@ class E2EE {
     final secretJwkJson = jsonEncode(secretJwk);
     // write the jwk json into storage
     secureStorage.write(key: _secretKeyKey, value: secretJwkJson);
-    _log.fine('_generateSecretKey: new key generated stored in secureStorage');
+    _log.info('_generateSecretKey: new key generated stored in secureStorage');
     // secret key in secure storage, load it
     return secretKey;
   }
@@ -519,7 +519,7 @@ class E2EE {
   Future<AesGcmSecretKey> _readSecretKeyFromJwkJson(
       String secretJwkJson) async {
     final secretJwk = jsonDecode(secretJwkJson);
-    _log.fine("_readSecretKeyFromJwkJson: secret key alg ${secretJwk["alg"]}");
+    _log.finest("_readSecretKeyFromJwkJson: secret key alg ${secretJwk["alg"]}");
     // import the jwk into secret key
     return await AesGcmSecretKey.importJsonWebKey(secretJwk);
   }
