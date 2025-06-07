@@ -155,49 +155,51 @@ class _LoggerScreenState extends State<LoggerScreen> {
         ],
       ),
       body: FutureBuilder<List<LogEntry>>(
-          future: LoggerModel.instance().logs,
+          future: LoggerModel.instance()._logs(filterLevel: _filterLevel),
           // Displays each log message as a Text widget in a ListView.
           builder: (_, snapshot) => Padding(
                 padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-                child: ListView(
-                    children: snapshot.data
-                            ?.where((logEntry) =>
-                                _filterLevel == null ||
-                                logEntry.level == _filterLevel)
-                            .map(
-                              // Displays each log entry as a Card with details.
-                              (logEntry) => Card(
-                                color: _backgroundColor(logEntry.level),
-                                child: ListTile(
-                                  leading: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(timeWithSecondsFormatter
-                                            .format(logEntry.time)),
-                                        Text(logEntry.level.name,
-                                            style: TextStyle(
-                                                color: _backgroundColor(
-                                                        logEntry.level)
-                                                    ?.withValues(alpha: 0.8))),
-                                      ]),
-                                  title: Text(logEntry.loggerName),
-                                  subtitle: Text(logEntry.message),
-                                  isThreeLine: true,
-                                  trailing: logEntry.error != null
-                                      ? IconButton(
-                                          icon: const Icon(Icons.info),
-                                          onPressed: () => showConfirmCancelDialog(
-                                              context: context,
-                                              content: '${logEntry.error}\n\n'
-                                                  '${logEntry.stackTrace ?? ''}'),
-                                        )
-                                      : null,
-                                ),
-                              ),
-                            )
-                            .toList() ??
-                        []),
+                child: snapshot.hasError // show error view
+                    ? ErrorView(snapshot.error, snapshot.stackTrace)
+                    : !snapshot.hasData // show progress indicator
+                        ? const ProgressIndicatorView()
+                        : ListView(
+                            children: snapshot.data!
+                                .map(
+                                  (logEntry) => Card(
+                                    color: _backgroundColor(logEntry.level),
+                                    child: ListTile(
+                                      leading: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(timeWithSecondsFormatter
+                                                .format(logEntry.time)),
+                                            Text(logEntry.level.name,
+                                                style: TextStyle(
+                                                    color: _backgroundColor(
+                                                            logEntry.level)
+                                                        ?.withValues(
+                                                            alpha: 0.8))),
+                                          ]),
+                                      title: Text(logEntry.loggerName),
+                                      subtitle: Text(logEntry.message),
+                                      isThreeLine: true,
+                                      trailing: logEntry.error != null
+                                          ? IconButton(
+                                              icon: const Icon(Icons.info),
+                                              onPressed: () =>
+                                                  showConfirmCancelDialog(
+                                                      context: context,
+                                                      content:
+                                                          '${logEntry.error}\n\n'
+                                                          '${logEntry.stackTrace ?? ''}'),
+                                            )
+                                          : null,
+                                    ),
+                                  ),
+                                )
+                                .toList()),
               )));
 
   /// Builds the dropdown menu for filtering log levels.
@@ -278,24 +280,48 @@ class LoggerModel {
   /// decodes them into [LogEntry] objects, and returns a list of these entries.
   /// It does not follow links and lists files only in the top-level directory.
   /// The log entries are sorted by their time in ascending order.
-  Future<List<LogEntry>> get logs async {
-    final tmpLogDir = await _tmpLogsDir;
+  Future<List<LogEntry>> _logs({Level? filterLevel}) async {
     final List<LogEntry> logEntries = [];
-    await for (var file
-        in tmpLogDir.list(recursive: false, followLinks: false)) {
-      if (file is File && file.path.endsWith('.json')) {
-        logEntries.add(
-          LogEntry.fromJson(
-            jsonDecode(await file.readAsString()),
-          ),
-        );
+    for (var file in await _logFiles) {
+      final logEntry = _fromJson(file);
+      if (filterLevel == null || logEntry.level == filterLevel) {
+        if (kDebugMode) {
+          print('loaded ${logEntry.time}');
+        }
+        logEntries.add(logEntry);
       }
     }
     return logEntries;
   }
 
+  Future<List<FileSystemEntity>> get _logFiles async =>
+      ((await _tmpLogsDir).list(recursive: false, followLinks: false))
+          .where((file) => file is File && file.path.endsWith('.json')).toList();
+
+  LogEntry _fromJson(FileSystemEntity file) {
+    String jsonString = '';
+    try {
+      jsonString = (file as File).readAsStringSync();
+      return LogEntry.fromJson(jsonDecode(jsonString) as Map<String, dynamic>);
+    } on Exception catch (e, s) {
+      file.delete();
+      if (kDebugMode) {
+        print('Error reading log file: ${file.path} content $jsonString');
+      }
+      // If an error occurs while reading the file, return a LogEntry with the error.
+      return LogEntry(
+        time: DateTime.now(),
+        level: Level.SEVERE,
+        message: 'Error reading log file: ${file.path}',
+        loggerName: 'LoggerModel',
+        error: e.toString(),
+        stackTrace: s.toString(),
+      );
+    }
+  }
+
   /// Returns a string representation of the logs, formatted for display.
-  Future<String> get logs2Text async => (await logs)
+  Future<String> get logs2Text async => (await _logs())
       .map((logEntry) => '${timeWithSecondsFormatter.format(logEntry.time)} - '
           '[${logEntry.level.name}] - ${logEntry.loggerName} - '
           '${logEntry.message}'
@@ -307,16 +333,13 @@ class LoggerModel {
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
-  static LoggerModel instance({bool initialize = false, bool reset = false}) =>
-      initialize
-          ? LoggerModel._(reset: reset)
-          : _instance ??= LoggerModel._(reset: reset);
+  static LoggerModel instance({bool initialize = false}) =>
+      initialize ? LoggerModel._() : _instance ??= LoggerModel._();
 
   /// Disposes of the [LoggerModel] by canceling the logger subscription.
   ///
   /// This should be called when the logger model is no longer needed to prevent memory leaks.
   dispose() {
-    _log.info('dispose: cancel logger subscription');
     _loggerSubscription?.cancel();
     _instance = null;
     _alreadyConfigured = false;
@@ -325,11 +348,7 @@ class LoggerModel {
   /// Private constructor for the singleton pattern.
   /// Initializes the logger configuration.
   /// If [reset] is true, it clears the temporary log directory.
-  LoggerModel._({bool reset = false}) {
-    if (reset) {
-      initialize(reset: reset);
-    }
-  }
+  LoggerModel._();
 
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;
@@ -355,13 +374,7 @@ class LoggerModel {
 
     // if reset is true, delete all logs in the temporary directory
     if (reset) {
-      final tmpLogDir = await _tmpLogsDir;
-      await for (var file
-          in tmpLogDir.list(recursive: false, followLinks: false)) {
-        if (file is File && file.path.endsWith('.json')) {
-          await file.delete();
-        }
-      }
+      (await _logFiles).forEach(_deleteFile);
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
@@ -441,5 +454,14 @@ class LoggerModel {
     final file = File(
         '${tmpLogDir.path}/${record.time.toLocal().toIso8601String().replaceAll(':', '-')}.json');
     await file.writeAsString(jsonEncode(logEntry));
+  }
+
+  void _deleteFile(FileSystemEntity element) {
+    if (element is File) {
+      element.delete();
+      if (kDebugMode){
+        print('file ${element.path} deleted');
+      }
+    }
   }
 }
