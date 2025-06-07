@@ -73,7 +73,7 @@ class TutorialModel {
     if (context.mounted) {
       Tutorial.showTutorial(context, _screens[screenName]!,
           onTutorialComplete: () {
-        _log.info('Tutorial completed');
+        _log.finest('Tutorial completed');
         SharedPreferencesAsync()
             .setBool('$screenName-tutorial-completed', true);
       });
