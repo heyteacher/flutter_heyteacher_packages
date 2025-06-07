@@ -1,16 +1,16 @@
-/// A collection of reusable Flutter widgets and utility functions, 
+/// A collection of reusable Flutter widgets and utility functions,
 /// likely intended to streamline UI development within the Flutter application.
-/// 
-/// * [FutureStreamBuilder] builder: cleverly combines a [FutureBuilder] with 
+///
+/// * [FutureStreamBuilder] builder: cleverly combines a [FutureBuilder] with
 ///   a [StreamBuilder].
 ///
-/// * [showSnackBar] function: displays a SnackBar 
+/// * [showSnackBar] function: displays a SnackBar
 ///
-/// * [showConfirmCancelDialog] function: displays a 
-///    standard `AlertDialog` to ask the user for confirmation or cancellation 
+/// * [showConfirmCancelDialog] function: displays a
+///    standard `AlertDialog` to ask the user for confirmation or cancellation
 ///    of an action.
 ///
-/// * [ProgressIndicatorView] widget: displays a [CircularProgressIndicator] 
+/// * [ProgressIndicatorView] widget: displays a [CircularProgressIndicator]
 ///    centered on the screen.
 ///
 /// * [ErrorView] widget: displays different error states to the user.
@@ -26,17 +26,16 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
 /// A [StreamBuilder] initialized with a [FutureBuilder].
-/// 
-/// It first waits for the [future] (an asynchronous operation that completes 
-/// once) to provide an initial piece of data. Once that future completes 
-/// successfully and has data, it then uses that data as the initialData for an 
-/// inner [StreamBuilder]. This StreamBuilder then listens to the provided 
+///
+/// It first waits for the [future] (an asynchronous operation that completes
+/// once) to provide an initial piece of data. Once that future completes
+/// successfully and has data, it then uses that data as the initialData for an
+/// inner [StreamBuilder]. This StreamBuilder then listens to the provided
 /// [stream] for ongoing updates.
-/// 
-/// Useful when you need to fetch an initial state (e.g., from a database or 
+///
+/// Useful when you need to fetch an initial state (e.g., from a database or
 /// API) and then subscribe to real-time updates for that same data.
 class FutureStreamBuilder<T> extends FutureBuilder<T> {
-
   ///  the [stream] parameter of [StreamBuilder]
   final Stream<T> stream;
 
@@ -56,11 +55,11 @@ class FutureStreamBuilder<T> extends FutureBuilder<T> {
           : super.builder(context, futureSnapshot);
 }
 
-/// Easily display a [SnackBar] (a brief message shown at the bottom of the 
+/// Easily display a [SnackBar] (a brief message shown at the bottom of the
 /// screen).
-/// 
-/// It takes the [BuildContext], the [message] to display, an optional 
-/// [duration] (in seconds), and a boolean [error] flag to show message in 
+///
+/// It takes the [BuildContext], the [message] to display, an optional
+/// [duration] (in seconds), and a boolean [error] flag to show message in
 /// red as an error (othersise in green for succes message)
 void showSnackBar(
         {required BuildContext? context,
@@ -88,13 +87,13 @@ void showSnackBar(
           )
         : null;
 
-/// Displays a standard [AlertDialog] to ask the user for confirmation or 
+/// Displays a standard [AlertDialog] to ask the user for confirmation or
 /// cancellation of an action.
-/// 
-/// It takes the [BuildContext], a [confirmCallback] (executed if the user 
-/// confirms) and [cancelCallback] (executed if the user cancels), a [param] 
+///
+/// It takes the [BuildContext], a [confirmCallback] (executed if the user
+/// confirms) and [cancelCallback] (executed if the user cancels), a [param]
 /// of type [ObjectParamType] passed to callbacks, the [title] and the [content]
-/// of dialog. 
+/// of dialog.
 Future<void> showConfirmCancelDialog<ObjectParamType>(
     {required BuildContext context,
     Future<String?> Function(ObjectParamType?)? confirmCallback,
@@ -164,27 +163,49 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
 }
 
 /// Displays a CircularProgressIndicator centered on the screen.
-/// 
-/// Typically used to indicate that some background processing or data loading 
+///
+/// Typically used to indicate that some background processing or data loading
 /// is happening.
-class ProgressIndicatorView extends StatelessWidget {
+class ProgressIndicatorView extends StatefulWidget {
+  final Duration timeout;
   const ProgressIndicatorView({
     super.key,
+    this.timeout = const Duration(seconds: 5),
   });
 
   @override
-  Widget build(BuildContext context) => const Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [CircularProgressIndicator()]),
+  State<ProgressIndicatorView> createState() => _ProgressIndicatorViewState();
+}
+
+class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
+  bool _timeoutReached = false;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(widget.timeout,
+        () => mounted ? setState(() => _timeoutReached = true) : null);
+  }
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          _timeoutReached
+              ? Text('no data', style: _noDataStyleContent(context))
+              : const CircularProgressIndicator()
+        ]),
       );
+
+  TextStyle _noDataStyleContent(context) => Theme.of(context)
+      .textTheme
+      .headlineMedium!
+      .copyWith(color: ThemeModel.instance().orangeColor);
 }
 
 /// Displays different error states to the user.
 ///
 ///  It takes [error] and [stackTrace] raised by [Exception].
-/// 
-/// If the exception is a [FirebaseException] with [FirebaseException.code] 
+///
+/// If the exception is a [FirebaseException] with [FirebaseException.code]
 /// `permission-denied` it shows a login button to navigate on auth screen.
 class ErrorView extends StatelessWidget {
   static final _log = Logger('ErrorView');

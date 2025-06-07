@@ -12,6 +12,7 @@ library;
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
@@ -19,12 +20,12 @@ import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../formats.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
+import 'package:path_provider/path_provider.dart';
 
 class LogEntry {
   final DateTime time;
@@ -60,7 +61,7 @@ class LogEntry {
       stackTrace: map['stackTrace']);
 
   Map<String, dynamic> toJson() => {
-        'time': time.toIso8601String(),
+        'time': time.toLocal().toIso8601String(),
         'level': level.name,
         'loggerName': loggerName,
         'message': message,
@@ -80,40 +81,39 @@ class LoggerCard extends StatelessWidget {
   @override
   StreamBuilder<bool> build(context) => StreamBuilder<bool>(
       stream: InfoDevicePackageModel.instance.tapCounterReachedStream,
-      builder: (_, tapCounterReachedSnapshot) {
-        return Visibility(
-          visible: kDebugMode || (tapCounterReachedSnapshot.data ?? false),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              child: ListTile(
-                key: const ValueKey('lt_fhu_logger'),
-                leading: const Icon(
-                  Icons.list,
+      builder: (_, tapCounterReachedSnapshot) => Visibility(
+            visible: kDebugMode || (tapCounterReachedSnapshot.data ?? false),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                child: ListTile(
+                  key: const ValueKey('lt_fhu_logger'),
+                  leading: const Icon(
+                    Icons.list,
+                  ),
+                  title: Text(
+                      FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
+                  onTap: () {
+                    // Navigates to the logger screen using GoRouter.
+                    GoRouter.of(context)
+                        .go('$_pathPrefix/${LoggingRouter.path}');
+                  },
+                  trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
-                title: Text(
-                    FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
-                onTap: () {
-                  // Navigates to the logger screen using GoRouter.
-                  GoRouter.of(context).go('$_pathPrefix/${LoggingRouter.path}');
-                },
-                trailing: const Icon(Icons.keyboard_arrow_right),
               ),
             ),
-          ),
-        );
-      });
+          ));
 }
 
 /// Defines the routing for the logger screen.
 class LoggingRouter {
-  /// The path segment for the logger screen.
-  static const path = 'logging';
+  static const String path = 'logging';
 
   /// Builds a [GoRoute] for the logger screen.
   static GoRoute builder() => GoRoute(
       path: path,
-      builder: (BuildContext context, GoRouterState state) => const LoggerScreen());
+      builder: (BuildContext context, GoRouterState state) =>
+          const LoggerScreen());
 }
 
 ///
@@ -137,84 +137,106 @@ class _LoggerScreenState extends State<LoggerScreen> {
   /// The currently selected [Level] to filter logs by. If null, no filter is applied.
   Level? _filterLevel;
 
-  @override
-
   /// Builds the UI for the logger screen.
+  @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
         actions: [
-          _buildLevelFilter(),
+          _buildLevelFilterDropdown(),
+          // add refresh button to reload logs
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              // Rebuilds the UI to refresh the logs.
+              setState(() {});
+            },
+          )
         ],
       ),
-      body: FutureStreamBuilder<List<LogEntry>>(
-          future: LoggerModel.instance().logs,
-          stream: LoggerModel.instance().stream,
+      body: FutureBuilder<List<LogEntry>>(
+          future: LoggerModel.instance()._logs(filterLevel: _filterLevel),
           // Displays each log message as a Text widget in a ListView.
           builder: (_, snapshot) => Padding(
                 padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-                child: ListView(
-                    children: snapshot.data
-                            ?.where((logEntry) =>
-                                _filterLevel == null ||
-                                logEntry.level == _filterLevel)
-                            .map(
-                              // Displays each log entry as a Card with details.
-                              (logEntry) => Card(
-                                color: _backgroundColor(logEntry.level),
-                                child: ListTile(
-                                  leading: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(timeWithSecondsFormatter
-                                            .format(logEntry.time))
-                                      ]),
-                                  title: Text(logEntry.loggerName),
-                                  subtitle: Text(logEntry.message),
-                                  isThreeLine: true,
-                                ),
-                              ),
-                            )
-                            .toList() ??
-                        []),
+                child: snapshot.hasError // show error view
+                    ? ErrorView(snapshot.error, snapshot.stackTrace)
+                    : !snapshot.hasData // show progress indicator
+                        ? const ProgressIndicatorView()
+                        : ListView(
+                            children: snapshot.data!
+                                .map(
+                                  (logEntry) => Card(
+                                    color: _backgroundColor(logEntry.level),
+                                    child: ListTile(
+                                      leading: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(timeWithSecondsFormatter
+                                                .format(logEntry.time)),
+                                            Text(logEntry.level.name,
+                                                style: TextStyle(
+                                                    color: _backgroundColor(
+                                                            logEntry.level)
+                                                        ?.withValues(
+                                                            alpha: 0.8))),
+                                          ]),
+                                      title: Text(logEntry.loggerName),
+                                      subtitle: Text(logEntry.message),
+                                      isThreeLine: true,
+                                      trailing: logEntry.error != null
+                                          ? IconButton(
+                                              icon: const Icon(Icons.info),
+                                              onPressed: () =>
+                                                  showConfirmCancelDialog(
+                                                      context: context,
+                                                      content:
+                                                          '${logEntry.error}\n\n'
+                                                          '${logEntry.stackTrace ?? ''}'),
+                                            )
+                                          : null,
+                                    ),
+                                  ),
+                                )
+                                .toList()),
               )));
 
   /// Builds the dropdown menu for filtering log levels.
-  Widget _buildLevelFilter() {
-    return DropdownMenu<Level?>(
-      enableSearch: false,
-      enableFilter: false,
-      inputDecorationTheme: InputDecorationTheme(
-        isDense: true,
-        contentPadding: const EdgeInsets.only(left: 20),
-        constraints: BoxConstraints.tight(const Size.fromHeight(40)),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+  Widget _buildLevelFilterDropdown() => DropdownMenu<Level?>(
+        enableSearch: false,
+        enableFilter: false,
+        inputDecorationTheme: InputDecorationTheme(
+          isDense: true,
+          contentPadding: const EdgeInsets.only(left: 20),
+          constraints: BoxConstraints.tight(const Size.fromHeight(40)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
-      ),
-      label: Text('Log Level', style: Theme.of(context).textTheme.labelSmall),
-      textStyle: Theme.of(context).textTheme.labelSmall,
-      trailingIcon: const Icon(Icons.filter_list),
-      // Updates the _filterLevel and rebuilds the UI when a new level is selected.
-      onSelected: (level) {
-        _filterLevel = level;
-        setState(() {});
-      },
-      dropdownMenuEntries: [
-        null,
-        Level.SEVERE,
-        Level.WARNING,
-        Level.INFO,
-        Level.FINE,
-      ]
-          .map<DropdownMenuEntry<Level?>>((level) => DropdownMenuEntry<Level?>(
-                value: level,
-                label: level?.name ?? '',
-              ))
-          .toList(),
-    );
-  }
+        label: Text('Log Level', style: Theme.of(context).textTheme.labelSmall),
+        textStyle: Theme.of(context).textTheme.labelSmall,
+        trailingIcon: const Icon(Icons.filter_list),
+        // Updates the _filterLevel and rebuilds the UI when a new level is selected.
+        onSelected: (level) => setState(() => _filterLevel = level),
+        dropdownMenuEntries: [
+          null,
+          Level.SHOUT,
+          Level.SEVERE,
+          Level.WARNING,
+          Level.CONFIG,
+          Level.INFO,
+          Level.FINE,
+          Level.FINER,
+          Level.FINEST,
+        ]
+            .map<DropdownMenuEntry<Level?>>(
+                (level) => DropdownMenuEntry<Level?>(
+                      value: level,
+                      label: level?.name ?? '',
+                    ))
+            .toList(),
+      );
 
   /// Determines the background color for a log entry based on its [Level].
   Color? _backgroundColor(Level level) => switch (level) {
@@ -222,10 +244,10 @@ class _LoggerScreenState extends State<LoggerScreen> {
         Level.SEVERE => ThemeModel.instance().redColor.withValues(alpha: 0.4),
         Level.WARNING =>
           ThemeModel.instance().orangeColor.withValues(alpha: 0.4),
-        Level.INFO => ThemeModel.instance().blueColor.withValues(alpha: 0.4),
-        Level.CONFIG => ThemeModel.instance().blueColor.withValues(alpha: 0.4),
-        _ =>
-          ThemeModel.instance().theme.colorScheme.surface.withValues(alpha: 0.4)
+        Level.CONFIG =>
+          ThemeModel.instance().yellowColor.withValues(alpha: 0.4),
+        Level.INFO => ThemeModel.instance().greenColor.withValues(alpha: 0.4),
+        _ => ThemeModel.instance().blueColor.withValues(alpha: 0.4)
       };
 }
 
@@ -233,8 +255,7 @@ class _LoggerScreenState extends State<LoggerScreen> {
 ///
 /// This class is a singleton and is responsible for:
 /// - Configuring the root logger's level.
-/// - Listening to log records.
-/// - Storing a list of recent log records.
+/// - Storing log records in temporary files in JSON format.
 /// - Sending log records to Firebase Analytics.
 class LoggerModel {
   final _log = Logger('LoggerModel');
@@ -242,28 +263,65 @@ class LoggerModel {
   /// The singleton instance of [LoggerModel].
   static LoggerModel? _instance;
 
-  final _sharedPreferences = SharedPreferencesAsync();
-
-  static const _sharedPreferencesLogsKey = 'flutter_heyteacher_utils_logs';
-
-  /// A stream controller to broadcast locale changes.
-  final StreamController<List<LogEntry>> _streamController =
-      StreamController<List<LogEntry>>.broadcast();
-
   /// The subscription to the root logger's `onRecord` stream.
   StreamSubscription<LogRecord>? _loggerSubscription;
 
-  /// Gets the list of stored [LogEntry] objects.
-  Stream<List<LogEntry>> get stream => _streamController.stream;
+  /// Returns the temporary directory for logs.
+  Future<Directory> get _tmpLogsDir async {
+    final tmpLogsDir =
+        Directory('${(await getTemporaryDirectory()).path}/logs');
+    // Check if the temporary logs directory exists, if not, create it.
+    return (await tmpLogsDir.exists()) ? tmpLogsDir : tmpLogsDir.create();
+  }
 
-  Future<List<LogEntry>> get logs async =>
-      (await _sharedPreferences.getStringList(_sharedPreferencesLogsKey))
-          ?.map((logEntry) => LogEntry.fromJson(jsonDecode(logEntry)))
-          .toList() ??
-      [];
+  /// Returns a list of log entries from the temporary log directory.
+  ///
+  /// This method reads all JSON files in the temporary log directory,
+  /// decodes them into [LogEntry] objects, and returns a list of these entries.
+  /// It does not follow links and lists files only in the top-level directory.
+  /// The log entries are sorted by their time in ascending order.
+  Future<List<LogEntry>> _logs({Level? filterLevel}) async {
+    final List<LogEntry> logEntries = [];
+    for (var file in await _logFiles) {
+      final logEntry = _fromJson(file);
+      if (filterLevel == null || logEntry.level == filterLevel) {
+        if (kDebugMode) {
+          print('loaded ${logEntry.time}');
+        }
+        logEntries.add(logEntry);
+      }
+    }
+    return logEntries;
+  }
 
-  Future<String> get logs2Text async => (await LoggerModel.instance().logs)
-      .reversed
+  Future<List<FileSystemEntity>> get _logFiles async =>
+      ((await _tmpLogsDir).list(recursive: false, followLinks: false))
+          .where((file) => file is File && file.path.endsWith('.json')).toList();
+
+  LogEntry _fromJson(FileSystemEntity file) {
+    String jsonString = '';
+    try {
+      jsonString = (file as File).readAsStringSync();
+      return LogEntry.fromJson(jsonDecode(jsonString) as Map<String, dynamic>);
+    } on Exception catch (e, s) {
+      file.delete();
+      if (kDebugMode) {
+        print('Error reading log file: ${file.path} content $jsonString');
+      }
+      // If an error occurs while reading the file, return a LogEntry with the error.
+      return LogEntry(
+        time: DateTime.now(),
+        level: Level.SEVERE,
+        message: 'Error reading log file: ${file.path}',
+        loggerName: 'LoggerModel',
+        error: e.toString(),
+        stackTrace: s.toString(),
+      );
+    }
+  }
+
+  /// Returns a string representation of the logs, formatted for display.
+  Future<String> get logs2Text async => (await _logs())
       .map((logEntry) => '${timeWithSecondsFormatter.format(logEntry.time)} - '
           '[${logEntry.level.name}] - ${logEntry.loggerName} - '
           '${logEntry.message}'
@@ -271,38 +329,26 @@ class LoggerModel {
           '${logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''}')
       .join('\n');
 
-  ///
-
   /// Provides the singleton instance of [LoggerModel].
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
-  static LoggerModel instance({bool initialize = false, bool reset = false}) =>
-      initialize
-          ? LoggerModel._(reset: reset)
-          : _instance ??= LoggerModel._(reset: reset);
+  static LoggerModel instance({bool initialize = false}) =>
+      initialize ? LoggerModel._() : _instance ??= LoggerModel._();
 
   /// Disposes of the [LoggerModel] by canceling the logger subscription.
   ///
   /// This should be called when the logger model is no longer needed to prevent memory leaks.
   dispose() {
-    _log.info('dispose: remove shared properties $_sharedPreferencesLogsKey');
-    _sharedPreferences.remove(_sharedPreferencesLogsKey);
-    _log.info('dispose: cancel logger subscription');
     _loggerSubscription?.cancel();
-    _log.info('dispose: close stream controller');
-    _streamController.close();
     _instance = null;
     _alreadyConfigured = false;
   }
 
   /// Private constructor for the singleton pattern.
   /// Initializes the logger configuration.
-  LoggerModel._({bool reset = false}) {
-    if (reset) {
-      _sharedPreferences.remove(_sharedPreferencesLogsKey);
-    }
-  }
+  /// If [reset] is true, it clears the temporary log directory.
+  LoggerModel._();
 
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;
@@ -315,6 +361,8 @@ class LoggerModel {
   /// 2. Send structured log events to Firebase Analytics, including version,
   ///    device info, level, message, error (if any), stack trace (if any), and a user identifier.
   ///    Message, error, and stack trace are truncated to 100 characters for Firebase.
+  ///
+  /// If [reset] is true, it clears the temporary log directory.
   initialize({bool reset = false}) async {
     // already configured, do nothing
     // Prevents re-configuration if already done.
@@ -324,16 +372,16 @@ class LoggerModel {
     }
     _alreadyConfigured = true;
 
+    // if reset is true, delete all logs in the temporary directory
     if (reset) {
-      _log.info(
-          'initialize(reset: $reset): remove shared properties $_sharedPreferencesLogsKey');
-      _sharedPreferences.remove(_sharedPreferencesLogsKey);
+      (await _logFiles).forEach(_deleteFile);
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
     Logger.root.level = Level(
         kDebugMode
-            ? FirebaseRemoteConfig.instance.getString('loggerDebugRootLevelName')
+            ? FirebaseRemoteConfig.instance
+                .getString('loggerDebugRootLevelName')
             : FirebaseRemoteConfig.instance.getString('loggerRootLevelName'),
         kDebugMode
             ? FirebaseRemoteConfig.instance.getInt('loggerDebugRootLevelValue')
@@ -392,10 +440,7 @@ class LoggerModel {
   }
 
   Future<void> _addLog(LogRecord record) async {
-    List<String> logs =
-        await _sharedPreferences.getStringList(_sharedPreferencesLogsKey) ?? [];
-
-    // Add the raw LogRecord to the beginning of the list.
+    // Create a LogEntry from the LogRecord.
     final logEntry = LogEntry(
         time: record.time,
         level: record.level,
@@ -404,17 +449,19 @@ class LoggerModel {
         error: record.error?.toString(),
         stackTrace: record.stackTrace?.toString());
 
-    // Maintain a maximum of 1000 logs in memory.
-    if (logs.length >= 1000) logs.removeLast();
+    // write the log entry to logs temporary directory as a JSON file
+    final tmpLogDir = await _tmpLogsDir;
+    final file = File(
+        '${tmpLogDir.path}/${record.time.toLocal().toIso8601String().replaceAll(':', '-')}.json');
+    await file.writeAsString(jsonEncode(logEntry));
+  }
 
-    // update logs in shared preferences
-    await _sharedPreferences.setStringList(
-        _sharedPreferencesLogsKey, [jsonEncode(logEntry), ...logs]);
-
-    // yield logs updated to the stream
-    _streamController.sink.add([
-      logEntry,
-      ...logs.map((logEntry) => LogEntry.fromJson(jsonDecode(logEntry)))
-    ]);
+  void _deleteFile(FileSystemEntity element) {
+    if (element is File) {
+      element.delete();
+      if (kDebugMode){
+        print('file ${element.path} deleted');
+      }
+    }
   }
 }
