@@ -33,7 +33,7 @@ class TtsModel {
   }
 
   Future<void> speak(String text) async {
-    _log.info('speak: $text');
+    _log.finest('speak: $text');
     _textToSpeech.speak(text);
   }
 
