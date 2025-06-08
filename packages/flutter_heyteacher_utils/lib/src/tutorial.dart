@@ -8,9 +8,7 @@
 library;
 
 import 'package:app_tutorial/app_tutorial.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,7 +61,7 @@ class TutorialModel {
     BuildContext context,
     String screenName,
   ) async {
-    if (kDebugMode || (await SharedPreferencesAsync()
+    if ((await SharedPreferencesAsync()
                 .getBool('$screenName-tutorial-completed') ??
             false) ||
         _started) {
@@ -165,43 +163,43 @@ class TutorialItemContent extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
-                  Row(
-                    children: [
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor:
-                              ThemeModel.instance().theme.colorScheme.primary,
-                        ),
-                        onPressed: () => Tutorial.skipAll(context),
-                        child: Text(
-                          'Skip onboarding',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
-                              ?.copyWith(
-                                  color:
-                                      ThemeModel.instance().theme.colorScheme.onPrimary),
-                        ),
-                      ),
-                      const Spacer(),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor:
-                              ThemeModel.instance().theme.colorScheme.primary,
-                        ),
-                        onPressed: null,
-                        child: Text(
-                          'Next',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
-                              ?.copyWith(
-                                  color:
-                                      ThemeModel.instance().theme.colorScheme.onPrimary),
-                        ),
-                      )
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     TextButton(
+                  //       style: TextButton.styleFrom(
+                  //         backgroundColor:
+                  //             ThemeModel.instance().theme.colorScheme.primary,
+                  //       ),
+                  //       onPressed: () => Tutorial.skipAll(context),
+                  //       child: Text(
+                  //         'Skip onboarding',
+                  //         style: Theme.of(context)
+                  //             .textTheme
+                  //             .titleSmall
+                  //             ?.copyWith(
+                  //                 color:
+                  //                     ThemeModel.instance().theme.colorScheme.onPrimary),
+                  //       ),
+                  //     ),
+                  //     const Spacer(),
+                  //     TextButton(
+                  //       style: TextButton.styleFrom(
+                  //         backgroundColor:
+                  //             ThemeModel.instance().theme.colorScheme.primary,
+                  //       ),
+                  //       onPressed: null,
+                  //       child: Text(
+                  //         'Next',
+                  //         style: Theme.of(context)
+                  //             .textTheme
+                  //             .titleSmall
+                  //             ?.copyWith(
+                  //                 color:
+                  //                     ThemeModel.instance().theme.colorScheme.onPrimary),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
                 ],
               ),
             ),
