@@ -274,16 +274,19 @@ class ErrorView extends StatelessWidget {
 class GenericsDropDownMenu<T> extends StatelessWidget {
   final String label;
   final T? initialSelection;
-  final int flex;
   final void Function(T?) onSelected;
   final List<({String label, T value})> values;
-
+  final int flex;
+  final bool isDense;
+  final double height;
   const GenericsDropDownMenu({
     required this.label,
     required this.onSelected,
     required this.values,
     this.initialSelection,
     this.flex = 1,
+    this.isDense = false,
+    this.height = 45,
     super.key,
   });
 
@@ -305,7 +308,8 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
                 DropdownMenuEntry<T?>(label: record.label, value: record.value))
           ],
           inputDecorationTheme: InputDecorationTheme(
-            constraints: BoxConstraints.tight(const Size.fromHeight(45)),
+            isDense: isDense,
+            constraints: BoxConstraints.tight(Size.fromHeight(height)),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
             ),
