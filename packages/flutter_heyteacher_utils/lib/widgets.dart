@@ -278,6 +278,7 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
   final List<({String label, T value})> values;
   final bool isDense;
   final double height;
+  final double width;
   const GenericsDropDownMenu({
     required this.label,
     required this.onSelected,
@@ -285,6 +286,7 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
     this.initialSelection,
     this.isDense = false,
     this.height = 45,
+    this.width = 145,
     super.key,
   });
 
@@ -292,6 +294,7 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(top: 2.0),
         child: DropdownMenu<T?>(
+          width: width,
           enableSearch: false,
           label: Text(label, style: Theme.of(context).textTheme.labelSmall),
           textStyle: Theme.of(context).textTheme.labelSmall,
