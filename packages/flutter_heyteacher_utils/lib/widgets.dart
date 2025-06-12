@@ -276,7 +276,6 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
   final T? initialSelection;
   final void Function(T?) onSelected;
   final List<({String label, T value})> values;
-  final int flex;
   final bool isDense;
   final double height;
   const GenericsDropDownMenu({
@@ -284,17 +283,14 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
     required this.onSelected,
     required this.values,
     this.initialSelection,
-    this.flex = 1,
     this.isDense = false,
     this.height = 45,
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) => Expanded(
-      flex: flex,
-      child: Padding(
-        padding: const EdgeInsets.only(top:2.0),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 2.0),
         child: DropdownMenu<T?>(
           enableSearch: false,
           label: Text(label, style: Theme.of(context).textTheme.labelSmall),
@@ -315,5 +311,5 @@ class GenericsDropDownMenu<T> extends StatelessWidget {
             ),
           ),
         ),
-      ));
+      );
 }
