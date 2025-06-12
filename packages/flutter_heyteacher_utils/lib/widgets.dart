@@ -269,3 +269,47 @@ class ErrorView extends StatelessWidget {
       .headlineMedium!
       .copyWith(color: ThemeModel.instance().theme.colorScheme.onError);
 }
+
+/// a Generics implementation of [DropdownMenu].
+class GenericsDropDownMenu<T> extends StatelessWidget {
+  final String label;
+  final void Function(T? value) onSelected;
+  final List<({T value, String label})> values;
+  final T? initialSelection;
+  final int flex;
+
+  const GenericsDropDownMenu({
+    required this.label,
+    required this.onSelected,
+    required this.values,
+    this.initialSelection,
+    this.flex = 1,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: flex,
+      child: DropdownMenu<T?>(
+        enableSearch: false,
+        label: Text(label, style: Theme.of(context).textTheme.labelSmall),
+        textStyle: Theme.of(context).textTheme.labelSmall,
+        initialSelection: initialSelection,
+        trailingIcon: const Icon(Icons.filter_list),
+        onSelected: onSelected,
+        dropdownMenuEntries: [
+          DropdownMenuEntry<T?>(value: null, label: ''),
+          ...values.map((record) =>
+              DropdownMenuEntry<T?>(value: record.value, label: record.label))
+        ],
+        inputDecorationTheme: InputDecorationTheme(
+          constraints: BoxConstraints.tight(const Size.fromHeight(48)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
+  }
+}
