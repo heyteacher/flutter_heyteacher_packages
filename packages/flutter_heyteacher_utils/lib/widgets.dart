@@ -271,55 +271,136 @@ class ErrorView extends StatelessWidget {
 }
 
 /// a Generics implementation of [DropdownMenu].
-class GenericsDropDownMenu<T> extends StatelessWidget {
-  final String label;
-  final T? initialSelection;
+class GenericsDropDownMenu<T> extends StatefulWidget {
+  final String _label;
   final void Function(T?) onSelected;
   final List<({String label, T value})> values;
+  final T? initialSelection;
+  final bool enableFilter;
   final bool enableSearch;
+  final void Function(String)? addCallback;
   final bool isDense;
   final double height;
-  final double width;  
-  final SearchCallback<T?>? searchCallback;
+  final double width;
+  final double menuHeight;
 
   const GenericsDropDownMenu({
-    required this.label,
+    super.key,
+    required String label,
     required this.onSelected,
     required this.values,
-    this.enableSearch = false,
-    this.searchCallback,
     this.initialSelection,
+    this.enableFilter = true,
+    this.enableSearch = false,
+    this.addCallback,
     this.isDense = false,
     this.height = 45,
     this.width = 145,
-    super.key,
-  });
+    this.menuHeight = 300,
+  }) : _label = label;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 2.0),
-        child: DropdownMenu<T?>(
-          width: width,
-          enableSearch: enableSearch,
-          requestFocusOnTap: enableSearch,
-          searchCallback: searchCallback,
-          label: Text(label, style: Theme.of(context).textTheme.labelSmall),
-          textStyle: Theme.of(context).textTheme.labelSmall,
-          initialSelection: initialSelection,
-          trailingIcon: const Icon(Icons.filter_list),
-          onSelected: onSelected,
-          dropdownMenuEntries: [
-            DropdownMenuEntry<T?>(value: null, label: ''),
-            ...values.map((record) =>
-                DropdownMenuEntry<T?>(label: record.label, value: record.value))
-          ],
-          inputDecorationTheme: InputDecorationTheme(
-            isDense: isDense,
-            constraints: BoxConstraints.tight(Size.fromHeight(height)),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
+  State<GenericsDropDownMenu<T>> createState() =>
+      _GenericsDropDownMenuState<T>();
+}
+
+class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
+  bool _enableAddTag = false;
+  String? _filter;
+  String? _querySearch;
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  Widget build(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 2.0),
+            child: DropdownMenu<T?>(
+              focusNode: _focusNode,
+              label: Text(widget._label,
+                  style: Theme.of(context).textTheme.labelSmall),
+              initialSelection: widget.initialSelection,
+              onSelected: _preOnSelected,
+              enableSearch: widget.enableSearch,
+              searchCallback: widget.enableSearch? _searchCallback: null,
+              requestFocusOnTap: widget.enableFilter ||
+                  widget.enableSearch,
+              enableFilter: widget.enableFilter,
+              filterCallback: widget.enableFilter? _filterCallback: null,
+              trailingIcon: const Icon(Icons.filter_list),
+              textStyle: Theme.of(context).textTheme.labelSmall,
+              width: widget.width,
+              menuHeight: widget.menuHeight,
+              dropdownMenuEntries: [
+                DropdownMenuEntry<T?>(value: null, label: ''),
+                ...widget.values.map((record) => DropdownMenuEntry<T?>(
+                    label: record.label, value: record.value))
+              ],
+              inputDecorationTheme: InputDecorationTheme(
+                isDense: widget.isDense,
+                constraints:
+                    BoxConstraints.tight(Size.fromHeight(widget.height)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ),
-        ),
+          if (widget.addCallback != null && _enableAddTag)
+            IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add)),
+        ],
       );
+
+  void _preAddCallback() async {
+    if (_filter != null || _querySearch != null) {
+      _focusNode.unfocus();
+      widget.addCallback?.call((_filter ?? _querySearch)!);
+    }
+  }
+
+  void _preOnSelected(T? value) {
+    _focusNode.unfocus();
+    widget.onSelected(value);
+  }
+
+  List<DropdownMenuEntry<T?>> _filterCallback(
+      List<DropdownMenuEntry<T?>> entries, String filter) {
+    _filter = filter;
+    final filteredEntries = entries
+        .where((entry) =>
+            entry.value != null &&
+            entry.value!
+                .toString()
+                .toLowerCase()
+                .contains(_filter!.toLowerCase()))
+        .toList();
+    if ((_filter?.isNotEmpty ?? false) && filteredEntries.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+            _enableAddTag = true;
+          }));
+    }
+    return filteredEntries;
+  }
+    
+  int? _searchCallback(List<DropdownMenuEntry<T?>> entries, String query) {
+    _querySearch = query;
+    for (var i = 0; i < entries.length; i++) {
+      final entry = entries[i];
+      if (entry.value != null &&
+          (_querySearch?.isNotEmpty ?? false) &&
+          entry.value!.toString().toLowerCase().contains(_querySearch!.toLowerCase())) {
+        if (mounted) {
+          _enableAddTag = false;
+        }
+        return i;
+      }
+    }
+    if (_querySearch?.isNotEmpty ?? false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+            _enableAddTag = true;
+          }));
+    }
+    return null;
+  }
 }
