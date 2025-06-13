@@ -215,9 +215,9 @@ class ThemeModel {
                 onSecondary: Colors.grey.shade900,
                 error: Colors.white,
                 onError: Colors.redAccent,
-                surface: Colors.grey.shade900,
+                surface: Colors.black.withValues(alpha: 0.8),
                 onSurface: Colors.white70,
-                surfaceContainer: Colors.black.withValues(alpha: 0.8),
+                surfaceContainer: Colors.grey.shade900,
                 onSurfaceVariant: Colors.white
               ),
           initialLightColorScheme: initialLightColorScheme ??
@@ -229,9 +229,9 @@ class ThemeModel {
                 onSecondary: Colors.white70,
                 error: Colors.white,
                 onError: Colors.red,
-                surface: Colors.white70,
+                surface: Colors.white.withValues(alpha: 0.6),
                 onSurface: Colors.grey.shade900,
-                surfaceContainer: Colors.white.withValues(alpha: 0.6),
+                surfaceContainer: Colors.white70,
                 onSurfaceVariant: Colors.black
               ));
 
