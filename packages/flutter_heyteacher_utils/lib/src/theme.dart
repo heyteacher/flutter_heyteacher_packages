@@ -229,9 +229,9 @@ class ThemeModel {
                 onSecondary: Colors.white70,
                 error: Colors.white,
                 onError: Colors.red,
-                surface: Colors.white.withValues(alpha: 0.6),
+                surface: Colors.white.withValues(alpha: 0.8),
                 onSurface: Colors.grey.shade900,
-                surfaceContainer: Colors.white70,
+                surfaceContainer: Colors.grey.shade300,
                 onSurfaceVariant: Colors.black
               ));
 
@@ -468,7 +468,7 @@ class ThemeModel {
           unselectedItemColor: disabled,
           backgroundColor: Colors.transparent,
         ),
-        cardTheme: CardThemeData(elevation: 50, color: surfaceContainer),
+        cardTheme: CardThemeData(elevation: 0, color: surfaceContainer),
         textTheme: const TextTheme(
             displayLarge: TextStyle(
           fontSize: 120,
