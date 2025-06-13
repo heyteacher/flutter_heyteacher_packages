@@ -281,7 +281,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
   final void Function(String)? addCallback;
   final bool isDense;
   final double height;
-  final double width;
+  final double? width;
   final double menuHeight;
 
   const GenericsDropDownMenu({
@@ -295,7 +295,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
     this.addCallback,
     this.isDense = false,
     this.height = 45,
-    this.width = 145,
+    this.width,
     this.menuHeight = 300,
   }) : _label = label;
 
@@ -311,51 +311,49 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   final FocusNode _focusNode = FocusNode();
 
   @override
-  Widget build(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 2.0),
-            child: DropdownMenu<T?>(
-              focusNode: _focusNode,
-              label: Text(widget._label,
-                  style: Theme.of(context).textTheme.labelSmall),
-              initialSelection: widget.initialSelection,
-              onSelected: _preOnSelected,
-              enableSearch: widget.enableSearch,
-              searchCallback: widget.enableSearch? _searchCallback: null,
-              requestFocusOnTap: widget.enableFilter ||
-                  widget.enableSearch,
-              enableFilter: widget.enableFilter,
-              filterCallback: widget.enableFilter? _filterCallback: null,
-              trailingIcon: const Icon(Icons.filter_list),
-              textStyle: Theme.of(context).textTheme.labelSmall,
-              width: widget.width,
-              menuHeight: widget.menuHeight,
-              dropdownMenuEntries: [
-                DropdownMenuEntry<T?>(value: null, label: ''),
-                ...widget.values.map((record) => DropdownMenuEntry<T?>(
-                    label: record.label, value: record.value))
-              ],
-              inputDecorationTheme: InputDecorationTheme(
-                isDense: widget.isDense,
-                constraints:
-                    BoxConstraints.tight(Size.fromHeight(widget.height)),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 2.0),
+        child: DropdownMenu<T?>(
+          focusNode: _focusNode,
+          label: Text(widget._label,
+              style: Theme.of(context).textTheme.labelSmall),
+          initialSelection: widget.initialSelection,
+          onSelected: _preOnSelected,
+          enableSearch: widget.enableSearch,
+          searchCallback: widget.enableSearch ? _searchCallback : null,
+          requestFocusOnTap: widget.enableFilter || widget.enableSearch,
+          enableFilter: widget.enableFilter,
+          filterCallback: widget.enableFilter ? _filterCallback : null,
+          leadingIcon: widget.addCallback != null && _enableAddTag
+              ? IconButton(
+                  onPressed: _preAddCallback, icon: const Icon(Icons.add))
+              : null,
+          trailingIcon: const Icon(Icons.filter_list),
+          textStyle: Theme.of(context).textTheme.labelSmall,
+          width: widget.width,
+          menuHeight: widget.menuHeight,
+          dropdownMenuEntries: [
+            DropdownMenuEntry<T?>(value: null, label: ''),
+            ...widget.values.map((record) =>
+                DropdownMenuEntry<T?>(label: record.label, value: record.value))
+          ],
+          inputDecorationTheme: InputDecorationTheme(
+            isDense: widget.isDense,
+            constraints: BoxConstraints.tight(Size.fromHeight(widget.height)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
-          if (widget.addCallback != null && _enableAddTag)
-            IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add)),
-        ],
+        ),
       );
 
   void _preAddCallback() async {
     if (_filter != null || _querySearch != null) {
       _focusNode.unfocus();
       widget.addCallback?.call((_filter ?? _querySearch)!);
+      setState(() {
+        _enableAddTag = false;
+      });
     }
   }
 
@@ -375,21 +373,23 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
                 .toLowerCase()
                 .contains(_filter!.toLowerCase()))
         .toList();
-    if ((_filter?.isNotEmpty ?? false) && filteredEntries.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
-            _enableAddTag = true;
-          }));
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+          _enableAddTag =
+              (_filter?.isNotEmpty ?? false) && filteredEntries.isEmpty;
+        }));
     return filteredEntries;
   }
-    
+
   int? _searchCallback(List<DropdownMenuEntry<T?>> entries, String query) {
     _querySearch = query;
     for (var i = 0; i < entries.length; i++) {
       final entry = entries[i];
       if (entry.value != null &&
           (_querySearch?.isNotEmpty ?? false) &&
-          entry.value!.toString().toLowerCase().contains(_querySearch!.toLowerCase())) {
+          entry.value!
+              .toString()
+              .toLowerCase()
+              .contains(_querySearch!.toLowerCase())) {
         if (mounted) {
           _enableAddTag = false;
         }
