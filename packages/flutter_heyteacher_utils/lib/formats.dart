@@ -22,6 +22,9 @@ final DateFormat dateTimeFormatter = DateFormat('dd/MM/yyyy HH:mm');
 final DateFormat dateFormatter = DateFormat('dd/MM/yyyy');
 
 /// Formatter for time with seconds (e.g., "HH:mm:ss").
+final DateFormat timeFormatter = DateFormat('HH:mm');
+
+/// Formatter for time with seconds (e.g., "HH:mm:ss").
 final DateFormat timeWithSecondsFormatter = DateFormat('HH:mm:ss');
 
 /// Formatter for date and time with seconds (e.g., "dd/MM/yyyy HH:mm:ss").
