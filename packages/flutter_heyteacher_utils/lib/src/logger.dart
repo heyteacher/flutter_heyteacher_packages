@@ -372,6 +372,10 @@ class LoggerModel {
     }
     _alreadyConfigured = true;
 
+    FlutterError.onError = (FlutterErrorDetails details) {
+      _log.severe('FlutterError', details.exception, details.stack);
+    };
+
     // if reset is true, delete all logs in the temporary directory
     if (reset) {
       (await _logFiles).forEach(_deleteFile);
