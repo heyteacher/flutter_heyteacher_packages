@@ -273,12 +273,13 @@ class ErrorView extends StatelessWidget {
 /// a Generics implementation of [DropdownMenu].
 class GenericsDropDownMenu<T> extends StatefulWidget {
   final String _label;
-  final void Function(T?) onSelected;
+  final void Function(T?, {int? index}) onSelected;
   final List<({String label, T value})> values;
   final T? initialSelection;
   final bool enableFilter;
   final bool enableSearch;
-  final void Function(String)? addCallback;
+  final void Function(String, {int? index})? addCallback;
+  final int? index;
   final bool isDense;
   final double height;
   final double? width;
@@ -293,6 +294,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
     this.enableFilter = true,
     this.enableSearch = false,
     this.addCallback,
+    this.index,
     this.isDense = false,
     this.height = 45,
     this.width,
@@ -312,12 +314,12 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 8.0, left: 4.0, right: 4.0, bottom: 4.0),
+        padding: const EdgeInsets.only(top: 8.0, left: 4.0, right: 4.0, bottom: 4),
         child: DropdownMenu<T?>(
           focusNode: _focusNode,
           label: Text(widget._label,
               style: Theme.of(context).textTheme.labelSmall),
-          initialSelection: widget.initialSelection,
+          initialSelection: widget.initialSelection, 
           onSelected: _preOnSelected,
           enableSearch: widget.enableSearch,
           searchCallback: widget.enableSearch ? _searchCallback : null,
@@ -349,8 +351,9 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
 
   void _preAddCallback() async {
     if (_filter != null || _querySearch != null) {
+      final newValue = _filter ?? _querySearch;
+      widget.addCallback?.call(newValue!,index: widget.index);
       _focusNode.unfocus();
-      widget.addCallback?.call((_filter ?? _querySearch)!);
       setState(() {
         _enableAddTag = false;
       });
@@ -358,8 +361,8 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   }
 
   void _preOnSelected(T? value) {
+    widget.onSelected(value, index: widget.index);
     _focusNode.unfocus();
-    widget.onSelected(value);
   }
 
   List<DropdownMenuEntry<T?>> _filterCallback(
