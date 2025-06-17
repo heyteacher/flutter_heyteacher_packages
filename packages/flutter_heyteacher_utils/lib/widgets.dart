@@ -190,7 +190,7 @@ class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
   Widget build(BuildContext context) => Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           _timeoutReached
-              ? Text('no data', style: _noDataStyleContent(context))
+              ? Text('', style: _noDataStyleContent(context))
               : const CircularProgressIndicator()
         ]),
       );
