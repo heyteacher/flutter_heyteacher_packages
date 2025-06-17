@@ -114,7 +114,7 @@ class ValueStoreFilter implements StoreFilter {
       Operator.isGreaterThan => Filter(field, isGreaterThan: value),
       Operator.isGreaterThanOrEqualTo =>
         Filter(field, isGreaterThanOrEqualTo: value),
-      Operator.arrayContains => Filter(field, isEqualTo: value),
+      Operator.arrayContains => Filter(field, arrayContains: value),
     };
   }
 
