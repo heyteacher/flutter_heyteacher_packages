@@ -531,6 +531,11 @@ abstract class Store<LightDataType extends FirestoreData,
         return true;
       } on DocumentNotFoundException {
         return false;
+      } on FirebaseException catch (e) {
+        if (e.code == 'unavailable') {
+          return false;
+        }
+        rethrow;
       }
     });
   }
