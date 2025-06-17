@@ -314,7 +314,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 8.0, left: 4.0, right: 4.0, bottom: 4),
+        padding: const EdgeInsets.only(top: 8.0, left: 1.0, right: 1.0, bottom: 4),
         child: DropdownMenu<T?>(
           focusNode: _focusNode,
           label: Text(widget._label,
