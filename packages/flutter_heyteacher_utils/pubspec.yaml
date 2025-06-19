@@ -14,6 +14,7 @@ dependencies:
   firebase_app_check: ^0.3.1+7
   firebase_auth: ^5.3.4
   firebase_crashlytics: ^4.2.0
+  firebase_messaging: ^15.2.7
   firebase_remote_config: ^5.2.0
   firebase_ui_auth: ^1.16.0
   firebase_ui_oauth_google: ^1.4.0
@@ -33,7 +34,6 @@ dependencies:
   url_launcher: ^6.3.1
   clock: ^1.1.1 
   firebase_storage: ^12.4.5
-  android_alarm_manager_plus: ^4.0.7
   qr_flutter: ^4.1.0
   mobile_scanner: ^6.0.6
   flutter_heyteacher_text_to_speech:
