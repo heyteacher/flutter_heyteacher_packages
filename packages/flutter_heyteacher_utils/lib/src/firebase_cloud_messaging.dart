@@ -63,7 +63,9 @@ enum IntervalKeys {
 abstract class FirebaseCloudMessagingModel {
   /// The callback function to be executed when the alarm triggers.
   /// This function must be a top-level or static function.
-  VoidCallback get entryPointCallback;
+  BackgroundMessageHandler entryPointCallback;
+
+  FirebaseCloudMessagingModel({required this.entryPointCallback});
 
   @protected
   String get lockSharedPreferencesKey => '${runtimeType}Lock';
@@ -110,7 +112,7 @@ abstract class FirebaseCloudMessagingModel {
     //   _log.info('onMessage: $remoteMessage');
     //   entryPointCallback.call();
     // });
-    FirebaseMessaging.onBackgroundMessage((_) async => entryPointCallback.call());
+    FirebaseMessaging.onBackgroundMessage(entryPointCallback);
 
     _log.info('initialize: set sharedPreferences toBeInitialized to true and '
         '$lockSharedPreferencesKey to false');
