@@ -367,7 +367,7 @@ class LoggerModel {
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured) {
-      _log.warning('already configured');
+      _log.finest('already configured');
       return;
     }
     _alreadyConfigured = true;
