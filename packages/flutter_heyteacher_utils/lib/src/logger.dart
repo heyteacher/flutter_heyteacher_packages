@@ -378,7 +378,7 @@ class LoggerModel {
 
     // if reset is true, delete all logs in the temporary directory
     if (reset) {
-      (await _logFiles).forEach(_deleteFile);
+      await resetLogs();
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
@@ -441,6 +441,10 @@ class LoggerModel {
         'uid': identifierInfo
       });
     });
+  }
+
+  Future<void> resetLogs() async {
+    (await _logFiles).forEach(_deleteFile);
   }
 
   Future<void> _addLog(LogRecord record) async {
