@@ -14,6 +14,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
@@ -296,7 +297,8 @@ class LoggerModel {
 
   Future<List<FileSystemEntity>> get _logFiles async =>
       ((await _tmpLogsDir).list(recursive: false, followLinks: false))
-          .where((file) => file is File && file.path.endsWith('.json')).toList();
+          .where((file) => file is File && file.path.endsWith('.json'))
+          .toList();
 
   LogEntry _fromJson(FileSystemEntity file) {
     String jsonString = '';
@@ -363,7 +365,7 @@ class LoggerModel {
   ///    Message, error, and stack trace are truncated to 100 characters for Firebase.
   ///
   /// If [reset] is true, it clears the temporary log directory.
-  initialize({bool reset = false}) async {
+  initialize({bool reset = true}) async {
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured) {
@@ -378,7 +380,9 @@ class LoggerModel {
 
     // if reset is true, delete all logs in the temporary directory
     if (reset) {
-      await resetLogs();
+      await resetLogs(
+          fromDateTime:
+              DateTime(clock.now().year, clock.now().month, clock.now().day));
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
@@ -443,8 +447,13 @@ class LoggerModel {
     });
   }
 
-  Future<void> resetLogs() async {
-    (await _logFiles).forEach(_deleteFile);
+  Future<void> resetLogs({required DateTime fromDateTime}) async {
+    (await _logFiles)
+        .where((fileSystemEntity) => LogEntry.fromJson(
+                jsonDecode((fileSystemEntity as File).readAsStringSync()))
+            .time
+            .isBefore(fromDateTime))
+        .forEach(_deleteFile);
   }
 
   Future<void> _addLog(LogRecord record) async {
@@ -467,7 +476,7 @@ class LoggerModel {
   void _deleteFile(FileSystemEntity element) {
     if (element is File) {
       element.delete();
-      if (kDebugMode){
+      if (kDebugMode) {
         print('file ${element.path} deleted');
       }
     }
