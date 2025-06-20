@@ -286,9 +286,6 @@ class LoggerModel {
     for (var file in await _logFiles) {
       final logEntry = _fromJson(file);
       if (filterLevel == null || logEntry.level == filterLevel) {
-        if (kDebugMode) {
-          print('loaded ${logEntry.time}');
-        }
         logEntries.add(logEntry);
       }
     }
