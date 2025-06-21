@@ -284,12 +284,14 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
   final double height;
   final double? width;
   final double menuHeight;
+  final List<String> deniedValues;
 
   const GenericsDropDownMenu({
     super.key,
     required String label,
     required this.onSelected,
     required this.values,
+    this.deniedValues = const [],
     this.initialSelection,
     this.enableFilter = true,
     this.enableSearch = false,
@@ -314,12 +316,13 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 8.0, left: 1.0, right: 1.0, bottom: 4),
+        padding:
+            const EdgeInsets.only(top: 8.0, left: 1.0, right: 1.0, bottom: 4),
         child: DropdownMenu<T?>(
           focusNode: _focusNode,
           label: Text(widget._label,
               style: Theme.of(context).textTheme.labelSmall),
-          initialSelection: widget.initialSelection, 
+          initialSelection: widget.initialSelection,
           onSelected: _preOnSelected,
           enableSearch: widget.enableSearch,
           searchCallback: widget.enableSearch ? _searchCallback : null,
@@ -352,7 +355,14 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   void _preAddCallback() async {
     if (_filter != null || _querySearch != null) {
       final newValue = _filter ?? _querySearch;
-      widget.addCallback?.call(newValue!,index: widget.index);
+      if (widget.deniedValues.contains(newValue)) {
+        showSnackBar(
+            context: context,
+            message: 'cannot add denied value $newValue ',
+            error: true);
+      } else {
+        widget.addCallback?.call(newValue!, index: widget.index);
+      }
       _focusNode.unfocus();
       setState(() {
         _enableAddTag = false;
