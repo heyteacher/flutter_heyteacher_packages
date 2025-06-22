@@ -7,7 +7,6 @@
 library;
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:logging/logging.dart';
 
 enum RemoteConfigKeys {
@@ -52,13 +51,10 @@ class RemoteConfigModel {
             minutes: _remoteConfig.getInt(RemoteConfigKeys
                 .remoteConfigMinimumFetchIntervalInMinutes.name)),
       ));
-      if (PlatformHelper.isMobile) {
-        _remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
-          log.config(
-              'activate remote config updated keys: ${event.updatedKeys}');
-          _remoteConfig.activate();
-        });
-      }
+      _remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
+        log.config('activate remote config updated keys: ${event.updatedKeys}');
+        _remoteConfig.activate();
+      });
       await _remoteConfig.fetchAndActivate();
     } catch (e, s) {
       _logger.severe('initialize: error, offline?', e, s);

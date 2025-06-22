@@ -23,7 +23,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
-import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -63,7 +62,10 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
                           isDense: true,
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: ThemeModel.instance().theme.colorScheme.onSurface),
+                                color: ThemeModel.instance()
+                                    .theme
+                                    .colorScheme
+                                    .onSurface),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           border: OutlineInputBorder(
@@ -177,7 +179,10 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                           IconButton(
                             key: const ValueKey('ib_dialog_no'),
                             icon: Icon(Icons.close,
-                                color: ThemeModel.instance().theme.colorScheme.onError),
+                                color: ThemeModel.instance()
+                                    .theme
+                                    .colorScheme
+                                    .onError),
                             onPressed: () {
                               Navigator.of(context).pop(false);
                             },
@@ -270,9 +275,7 @@ class E2EE {
   Future<FlutterSecureStorage> get _secureStorage async {
     if (_secureStorageInstance != null) return _secureStorageInstance!;
     String appName = 'appName';
-    if (PlatformHelper.isMobile) {
-      appName = (await PackageInfo.fromPlatform()).appName;
-    }
+    appName = (await PackageInfo.fromPlatform()).appName;
     _secureStorageInstance =
         FlutterSecureStorage(aOptions: _getAndroidOptions(appName));
     return _secureStorageInstance!;
@@ -381,8 +384,8 @@ class E2EE {
   ///
   /// The [aadValue] (typically a user-provided passphrase) is stored securely.
   /// Requires the user to be authenticated.
-  /// 
-  /// If [generate] is true, a random AAD value is generated instead of using 
+  ///
+  /// If [generate] is true, a random AAD value is generated instead of using
   /// the provided [aadValue].
   Future<void> setAAD({String? aadValue, bool generate = false}) async {
     // cannot encrypt if not auth
@@ -519,7 +522,8 @@ class E2EE {
   Future<AesGcmSecretKey> _readSecretKeyFromJwkJson(
       String secretJwkJson) async {
     final secretJwk = jsonDecode(secretJwkJson);
-    _log.finest("_readSecretKeyFromJwkJson: secret key alg ${secretJwk["alg"]}");
+    _log.finest(
+        "_readSecretKeyFromJwkJson: secret key alg ${secretJwk["alg"]}");
     // import the jwk into secret key
     return await AesGcmSecretKey.importJsonWebKey(secretJwk);
   }
