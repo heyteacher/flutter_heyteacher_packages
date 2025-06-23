@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_heyteacher_utils/context_helper.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 
 /// Manages a sequential workflow of timed tasks.
 ///
@@ -7,7 +9,7 @@ import 'package:flutter/widgets.dart';
 /// each with a specific duration. It handles the state management for playing,
 /// pausing, stopping, and skipping tasks.
 ///
-/// Subclasses must implement the [setTasks] method to define the specific
+/// Subclasses must implement the [initializeTasks] method to define the specific
 /// sequence of tasks for the workflow.
 ///
 /// The workflow's progress can be monitored by listening to the [stream], which
@@ -28,7 +30,7 @@ import 'package:flutter/widgets.dart';
 abstract class TimerWorkflow<T extends TimerTask> {
   /// The list of tasks to be executed in the workflow.
   ///
-  /// This list should be populated by the [setTasks] method in a subclass.
+  /// This list should be populated by the [initializeTasks] method in a subclass.
   @visibleForTesting
   @protected
   List<T> tasks = [];
@@ -62,7 +64,7 @@ abstract class TimerWorkflow<T extends TimerTask> {
   }
 
   /// Abstract method for subclasses to define the list of tasks for the workflow.
-  void setTasks();
+  void initializeTasks();
 
   /// Starts or resumes the workflow.
   ///
@@ -164,4 +166,19 @@ class TimerTask {
     required this.duration,
     this.completed = false,
   });
+}
+
+
+class WorkflowTaskAlreadyInitialized implements Exception {
+ /// Returns a localized error message.
+  @override
+  String toString() {
+    if (ContextHelper.context != null) {
+      return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
+          .errorWorkflowTaskAlreadyInitialized;
+    } else {
+      return 'Error on encryption, check passphrase';
+    }
+  }
+
 }

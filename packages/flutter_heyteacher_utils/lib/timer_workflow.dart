@@ -1,1 +1,2 @@
-export 'src/timer_workflow.dart' show TimerWorkflow, TimerTask;
+export 'src/timer_workflow.dart'
+    show TimerWorkflow, TimerTask, WorkflowTaskAlreadyInitialized;

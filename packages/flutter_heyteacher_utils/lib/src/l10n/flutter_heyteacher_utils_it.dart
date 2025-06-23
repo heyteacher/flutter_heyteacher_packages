@@ -93,4 +93,8 @@ class FlutterHeyteacherUtilsLocalizationsIt
   @override
   String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
       'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
+
+  @override
+  String get errorWorkflowTaskAlreadyInitialized =>
+      'Workflow task already initialized';
 }
