@@ -10,7 +10,7 @@ class FlutterHeyteacherUtilsLocalizationsDe
   FlutterHeyteacherUtilsLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get account => 'Account';
+  String get account => 'Konto';
 
   @override
   String get userNotAutenticated => 'Benutzer nicht authentifiziert';
@@ -76,26 +76,27 @@ class FlutterHeyteacherUtilsLocalizationsDe
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
+      'Sind Sie sicher, dass Sie das Verschlüsselungspasswort ändern möchten?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
+      'Sind Sie sicher, dass Sie den geheimen Verschlüsselungsschlüssel importieren möchten?';
 
   @override
-  String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
+  String get encryptionSecretKeyImported =>
+      'Geheimer Verschlüsselungsschlüssel importiert';
 
   @override
-  String get encryptionPassphrase => 'Encryption Passphrase';
+  String get encryptionPassphrase => 'Verschlüsselungspasswort';
 
   @override
-  String get encryptionSecretKey => 'Encryption Secret Key';
+  String get encryptionSecretKey => 'Geheimer Verschlüsselungsschlüssel';
 
   @override
   String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
+      'Scannen Sie den QR-Code mit einem anderen Gerät oder speichern Sie ihn an einem sicheren Ort. Denken Sie daran, dasselbe Passwort zu verwenden.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
-      'Workflow task already initialized';
+      'Workflow-Aufgabe bereits initialisiert';
 }

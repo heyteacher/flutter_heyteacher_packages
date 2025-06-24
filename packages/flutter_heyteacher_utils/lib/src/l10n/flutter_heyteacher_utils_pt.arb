@@ -34,9 +34,25 @@
   "@logging": {},
   "nMinutes": "{minutes, plural, =1{{minutes} minuto} other{{minutes} minutos}}",
   "@nMinutes": {
-    "description": "Indicates a number of minutes",
+    "description": "Indica um número de minutos",
     "placeholders": {
       "minutes": {}
     }
-  }
+  },
+  "account": "Conta",
+  "@account": {},
+  "areYouSureToChangeEncryptionPassphrase": "Tem certeza que deseja alterar a frase secreta de criptografia?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Tem certeza que deseja importar a chave secreta de criptografia?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Chave secreta de criptografia importada",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Frase secreta de criptografia",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Chave secreta de criptografia",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Escaneie o código QR com outro dispositivo ou armazene em um local seguro. Lembre-se de usar a mesma frase secreta.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "errorWorkflowTaskAlreadyInitialized": "Tarefa de fluxo de trabalho já inicializada",
+  "@errorWorkflowTaskAlreadyInitialized": {}
 }

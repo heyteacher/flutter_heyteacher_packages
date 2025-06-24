@@ -38,5 +38,21 @@
     "placeholders": {
       "minutes": {}
     }
-  }
+  },
+  "account": "Compte",
+  "@account": {},
+  "areYouSureToChangeEncryptionPassphrase": "Êtes-vous sûr de vouloir changer la phrase de passe de chiffrement ?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Êtes-vous sûr de vouloir importer la clé secrète de chiffrement ?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Clé secrète de chiffrement importée",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Phrase de passe de chiffrement",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Clé secrète de chiffrement",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scannez le code QR avec un autre appareil ou stockez-le dans un endroit sûr. N'oubliez pas d'utiliser la même phrase de passe.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "errorWorkflowTaskAlreadyInitialized": "La tâche du flux de travail a déjà été initialisée",
+  "@errorWorkflowTaskAlreadyInitialized": {}
 }

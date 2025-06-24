@@ -10,7 +10,7 @@ class FlutterHeyteacherUtilsLocalizationsFr
   FlutterHeyteacherUtilsLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get account => 'Account';
+  String get account => 'Compte';
 
   @override
   String get userNotAutenticated => 'Utilisateur non authentifié';
@@ -77,26 +77,27 @@ class FlutterHeyteacherUtilsLocalizationsFr
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
+      'Êtes-vous sûr de vouloir changer la phrase de passe de chiffrement ?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
+      'Êtes-vous sûr de vouloir importer la clé secrète de chiffrement ?';
 
   @override
-  String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
+  String get encryptionSecretKeyImported =>
+      'Clé secrète de chiffrement importée';
 
   @override
-  String get encryptionPassphrase => 'Encryption Passphrase';
+  String get encryptionPassphrase => 'Phrase de passe de chiffrement';
 
   @override
-  String get encryptionSecretKey => 'Encryption Secret Key';
+  String get encryptionSecretKey => 'Clé secrète de chiffrement';
 
   @override
   String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
+      'Scannez le code QR avec un autre appareil ou stockez-le dans un endroit sûr. N\'oubliez pas d\'utiliser la même phrase de passe.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
-      'Workflow task already initialized';
+      'La tâche du flux de travail a déjà été initialisée';
 }
