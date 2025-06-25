@@ -136,7 +136,7 @@ abstract class TimerWorkflow<T extends TimerTask> {
             ((timer.tick * 1000)- _completedInMilliseconds - _pausedInMilliseconds)
         : 0;
     int remainingTotalMilliseconds =
-        _totalDurationInMilliseconds - ((timer.tick * 1000) - _pausedInMilliseconds);
+        totalDurationInMilliseconds - ((timer.tick * 1000) - _pausedInMilliseconds);
     if (currentTask == null) {
       // all task completed
       stop();
@@ -166,7 +166,9 @@ abstract class TimerWorkflow<T extends TimerTask> {
 
   void _reopenTask(T task) => task.completed = false;
 
-  int get _totalDurationInMilliseconds =>
+  @visibleForTesting
+  @protected
+  int get totalDurationInMilliseconds =>
       tasks.map((task) => task.duration.inMilliseconds).reduce((a, b) => a + b);
 }
 
@@ -204,7 +206,7 @@ class WorkflowTaskAlreadyInitialized implements Exception {
       return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
           .errorWorkflowTaskAlreadyInitialized;
     } else {
-      return 'Error on encryption, check passphrase';
+      return 'error: workflow task already initialized';
     }
   }
 }
