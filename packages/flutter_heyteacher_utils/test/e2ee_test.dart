@@ -4,6 +4,7 @@ import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 /// End 2 End Encryption tests
 ///
@@ -17,6 +18,7 @@ void main() {
       userDisplayName = 'Test User';
 
   WidgetsFlutterBinding.ensureInitialized();
+  PackageInfoPlusLinuxPlugin.registerWith();
   FlutterSecureStorage.setMockInitialValues({});
   // mock authentication
   MockFirebaseAuth auth = MockFirebaseAuth(
