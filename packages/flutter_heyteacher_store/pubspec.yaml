@@ -1,6 +1,6 @@
 name: flutter_heyteacher_store
 description: "A heyteacher flutter package for genetrics firestore implementation"
-version: 1.11.0+250618072
+version: 1.11.0+250625094
 publish_to: none # Remove this line if you wish to publish to pub.dev
 environment:
   sdk: ^3.6.2
@@ -30,7 +30,7 @@ dev_dependencies:
   fake_cloud_firestore: ^3.1.0
   firebase_auth_mocks: ^0.14.1
   shared_preferences_platform_interface: ^2.4.1 
-
+  package_info_plus: ^8.3.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
