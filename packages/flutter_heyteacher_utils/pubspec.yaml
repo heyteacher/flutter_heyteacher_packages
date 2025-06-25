@@ -1,6 +1,6 @@
 name: flutter_heyteacher_utils
 description: "A heyteacher flutter package which implements common utilies"
-version: 1.18.0+250625112
+version: 1.18.1+250625113
 publish_to: none
 
 environment:
