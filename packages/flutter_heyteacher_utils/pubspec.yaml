@@ -23,7 +23,6 @@ dependencies:
   google_sign_in: ^6.2.2
   intl: ^0.20.2
   logging: ^1.3.0
-  package_info_plus: ^8.1.2
   shared_preferences: ^2.3.3
   yaml_edit: ^2.2.1
   flutter_localizations:
@@ -41,6 +40,7 @@ dependencies:
   app_tutorial: ^1.0.6
   shared_preferences_platform_interface: ^2.4.1
   path_provider: ^2.1.5
+  package_info_plus: ^8.3.0
 
 
 dev_dependencies:
