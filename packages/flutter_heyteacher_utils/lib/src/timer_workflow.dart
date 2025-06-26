@@ -4,7 +4,7 @@ import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 
 /// The workflow states
-enum WorkflowStatus { started, stopped, paused, notSet }
+enum WorkflowStatus { started, stopped, paused }
 
 /// Manages a sequential workflow of timed tasks.
 ///
@@ -37,16 +37,12 @@ abstract class TimerWorkflow<T extends TimerTask> {
   @visibleForTesting
   @protected
   List<T> tasks = [];
-  
+
   String get name;
 
-
   bool _paused = false;
-  int _pausedInMilliseconds = 0;
-  int _completedInMilliseconds = 0;
+  int _currentTaskCompletedInMilliseconds = 0;
   Timer? _timer;
- 
-
 
   TimerWorkflow() {
     initializeTasks();
@@ -108,8 +104,7 @@ abstract class TimerWorkflow<T extends TimerTask> {
     _timer?.cancel();
     _timer = null;
     _paused = false;
-    _pausedInMilliseconds = 0;
-    _completedInMilliseconds = 0;
+    _currentTaskCompletedInMilliseconds = 0;
     tasks.forEach(_reopenTask);
   }
 
@@ -124,7 +119,7 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// Skips the remainder of the current task and moves to the next one.
   void skip() {
     final currentTask = _currentTask;
-    _completedInMilliseconds += currentTask?.duration.inMilliseconds ?? 0;
+    _currentTaskCompletedInMilliseconds = 0;
     currentTask?.completed = true;
   }
 
@@ -133,24 +128,29 @@ abstract class TimerWorkflow<T extends TimerTask> {
     final nextTask = _nextTask;
     int remainingTaskMilliseconds = currentTask != null
         ? currentTask.duration.inMilliseconds -
-            ((timer.tick * 1000)- _completedInMilliseconds - _pausedInMilliseconds)
+            _currentTaskCompletedInMilliseconds
         : 0;
-    int remainingTotalMilliseconds =
-        totalDurationInMilliseconds - ((timer.tick * 1000) - _pausedInMilliseconds);
+    int remainingTotalMilliseconds = totalDurationInMilliseconds -
+        _totalCompletedTaskInMilliseconds -
+        _currentTaskCompletedInMilliseconds;
     if (currentTask == null) {
       // all task completed
       stop();
     } else if (_paused) {
-      // current task not null in pause
-      _pausedInMilliseconds += 1000;
+      // workout paused, return
       return;
     } else if (remainingTaskMilliseconds <= 0) {
-      // current task running and remaining second
-      _completedInMilliseconds += currentTask.duration.inMilliseconds;
+      // current task finished, mask as completed and reset current task counter
+      _currentTaskCompletedInMilliseconds = 0;
       currentTask.completed = true;
+    } else {
+      // current task running and remaining second
+      _currentTaskCompletedInMilliseconds += 1000;
     }
     // yield the current task and the remaining second
     _streamController.sink.add(RunningTask(
+      workflowName: name,
+      status: status,
       current: currentTask,
       next: nextTask,
       remainingTaskMilliseconds: remainingTaskMilliseconds,
@@ -170,6 +170,11 @@ abstract class TimerWorkflow<T extends TimerTask> {
   @protected
   int get totalDurationInMilliseconds =>
       tasks.map((task) => task.duration.inMilliseconds).reduce((a, b) => a + b);
+
+  int get _totalCompletedTaskInMilliseconds => tasks
+      .where((task) => task.completed)
+      .map((task) => task.duration.inMilliseconds)
+      .fold(0, (a, b) => a + b);
 }
 
 /// Represents a single, timed task within a [TimerWorkflow].
@@ -212,13 +217,17 @@ class WorkflowTaskAlreadyInitialized implements Exception {
 }
 
 class RunningTask<T extends TimerTask> {
+  final String workflowName;
+  final WorkflowStatus status;
   final T? current;
   final T? next;
   final int remainingTaskMilliseconds;
   final int remainingTotalMilliseconds;
 
   RunningTask(
-      {required this.current,
+      {required this.workflowName,
+      required this.status,
+      required this.current,
       required this.next,
       required this.remainingTaskMilliseconds,
       required this.remainingTotalMilliseconds});
