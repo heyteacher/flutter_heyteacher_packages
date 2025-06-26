@@ -136,16 +136,15 @@ abstract class TimerWorkflow<T extends TimerTask> {
     if (currentTask == null) {
       // all task completed
       stop();
-    } else if (_paused) {
-      // workout paused, return
-      return;
-    } else if (remainingTaskMilliseconds <= 0) {
-      // current task finished, mask as completed and reset current task counter
-      _currentTaskCompletedInMilliseconds = 0;
-      currentTask.completed = true;
     } else {
-      // current task running and remaining second
-      _currentTaskCompletedInMilliseconds += 1000;
+      if (remainingTaskMilliseconds <= 0) {
+        // current task finished, mask as completed and reset current task counter
+        _currentTaskCompletedInMilliseconds = 0;
+        currentTask.completed = true;
+      } else if (!_paused) {
+        // current task running and remaining second
+        _currentTaskCompletedInMilliseconds += 1000;
+      }
     }
     // yield the current task and the remaining second
     _streamController.sink.add(RunningTask(
