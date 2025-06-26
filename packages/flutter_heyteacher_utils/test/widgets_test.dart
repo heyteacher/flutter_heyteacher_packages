@@ -99,6 +99,9 @@ class MockFlutterHeyteacherUtilsLocalizations
   String
       get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
           '';
+
+  @override
+  String get errorWorkflowTaskAlreadyInitialized => '';
 }
 
 class _MockLocalizationsDelegate
@@ -151,8 +154,9 @@ void main() {
   late MockGoRouter mockGoRouter;
 
   setUp(() {
-       SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
- 
+    SharedPreferencesAsyncPlatform.instance =
+        InMemorySharedPreferencesAsync.empty();
+
     mockGoRouter = MockGoRouter();
   });
 
@@ -271,7 +275,7 @@ void main() {
     final authTextWidget =
         tester.widget<Text>(find.text('User not authenticated (Mock)'));
 
-    expect(
-        authTextWidget.style?.color, ThemeModel.instance().theme.colorScheme.onError);
+    expect(authTextWidget.style?.color,
+        ThemeModel.instance().theme.colorScheme.onError);
   });
 }

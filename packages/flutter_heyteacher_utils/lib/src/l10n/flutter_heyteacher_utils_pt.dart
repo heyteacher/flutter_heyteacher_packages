@@ -10,7 +10,7 @@ class FlutterHeyteacherUtilsLocalizationsPt
   FlutterHeyteacherUtilsLocalizationsPt([String locale = 'pt']) : super(locale);
 
   @override
-  String get account => 'Account';
+  String get account => 'Conta';
 
   @override
   String get userNotAutenticated => 'Usuário não autenticado';
@@ -75,22 +75,27 @@ class FlutterHeyteacherUtilsLocalizationsPt
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
+      'Tem certeza que deseja alterar a frase secreta de criptografia?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
+      'Tem certeza que deseja importar a chave secreta de criptografia?';
 
   @override
-  String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
+  String get encryptionSecretKeyImported =>
+      'Chave secreta de criptografia importada';
 
   @override
-  String get encryptionPassphrase => 'Encryption Passphrase';
+  String get encryptionPassphrase => 'Frase secreta de criptografia';
 
   @override
-  String get encryptionSecretKey => 'Encryption Secret Key';
+  String get encryptionSecretKey => 'Chave secreta de criptografia';
 
   @override
   String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
+      'Escaneie o código QR com outro dispositivo ou armazene em um local seguro. Lembre-se de usar a mesma frase secreta.';
+
+  @override
+  String get errorWorkflowTaskAlreadyInitialized =>
+      'Tarefa de fluxo de trabalho já inicializada';
 }

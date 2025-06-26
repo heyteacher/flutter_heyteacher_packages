@@ -245,6 +245,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// **'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device'**
   String
       get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase;
+
+  /// No description provided for @errorWorkflowTaskAlreadyInitialized.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow task already initialized'**
+  String get errorWorkflowTaskAlreadyInitialized;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate

@@ -38,5 +38,21 @@
     "placeholders": {
       "minutes": {}
     }
-  }
+  },
+  "account": "Konto",
+  "@account": {},
+  "areYouSureToChangeEncryptionPassphrase": "Sind Sie sicher, dass Sie das Verschlüsselungspasswort ändern möchten?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Sind Sie sicher, dass Sie den geheimen Verschlüsselungsschlüssel importieren möchten?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Geheimer Verschlüsselungsschlüssel importiert",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Verschlüsselungspasswort",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Geheimer Verschlüsselungsschlüssel",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scannen Sie den QR-Code mit einem anderen Gerät oder speichern Sie ihn an einem sicheren Ort. Denken Sie daran, dasselbe Passwort zu verwenden.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "errorWorkflowTaskAlreadyInitialized": "Workflow-Aufgabe bereits initialisiert",
+  "@errorWorkflowTaskAlreadyInitialized": {}
 }

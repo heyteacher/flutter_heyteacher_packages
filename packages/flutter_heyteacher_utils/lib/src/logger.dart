@@ -445,12 +445,22 @@ class LoggerModel {
   }
 
   Future<void> resetLogs({required DateTime fromDateTime}) async {
-    (await _logFiles)
-        .where((fileSystemEntity) => LogEntry.fromJson(
+    (await _logFiles).where(
+      (fileSystemEntity) {
+        try {
+          
+        return LogEntry.fromJson(
                 jsonDecode((fileSystemEntity as File).readAsStringSync()))
             .time
-            .isBefore(fromDateTime))
-        .forEach(_deleteFile);
+            .isBefore(fromDateTime);
+        } catch (e,s) {
+          if (kDebugMode) {
+            print('Error reading log file: ${fileSystemEntity.path} content ${(fileSystemEntity as File).readAsStringSync()} error $e stackTrace $s');
+          }
+          return true;
+        } 
+      },
+    ).forEach(_deleteFile);
   }
 
   Future<void> _addLog(LogRecord record) async {

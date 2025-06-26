@@ -75,22 +75,27 @@ class FlutterHeyteacherUtilsLocalizationsIt
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
+      'Sei sicuro di voler cambiare la password di criptazione?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
+      'Sei sicuro di voler importare la chiave segreta di criptazione?';
 
   @override
-  String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
+  String get encryptionSecretKeyImported =>
+      'Chiave segreta di criptazione importata';
 
   @override
-  String get encryptionPassphrase => 'Encryption Passphrase';
+  String get encryptionPassphrase => 'Password di Criptazione';
 
   @override
-  String get encryptionSecretKey => 'Encryption Secret Key';
+  String get encryptionSecretKey => 'Chiave Segreta di Criptazione';
 
   @override
   String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
+      'Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro. Ricorda di usare la stessa password di criptazione.';
+
+  @override
+  String get errorWorkflowTaskAlreadyInitialized =>
+      'Errore: il task del workflow è già stato inizializzato';
 }

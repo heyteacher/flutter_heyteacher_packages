@@ -17,9 +17,17 @@
     "logging": "Registrazione",
     "nMinutes": "{minutes, plural, =1{{minutes} minuto} other{{minutes} minutes}}",
     "@nMinutes": {
-        "description": "Indicates the number of minutes, parameter n is the number of minutes.",
+        "description": "Indica il numero di minuti, il parametro minutes è il numero di minuti.",
         "placeholders": {
             "minutes": {}
         }
-    }
+    },
+    "account": "Account",
+    "areYouSureToChangeEncryptionPassphrase": "Sei sicuro di voler cambiare la password di criptazione?",
+    "areYouSureToImportEncryptionSecretKey": "Sei sicuro di voler importare la chiave segreta di criptazione?",
+    "encryptionSecretKeyImported": "Chiave segreta di criptazione importata",
+    "encryptionPassphrase": "Password di Criptazione",
+    "encryptionSecretKey": "Chiave Segreta di Criptazione",
+    "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro. Ricorda di usare la stessa password di criptazione.",
+    "errorWorkflowTaskAlreadyInitialized": "Errore: il task del workflow è già stato inizializzato"
 }

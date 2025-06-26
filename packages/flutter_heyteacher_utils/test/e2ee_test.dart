@@ -18,6 +18,7 @@ void main() {
       userDisplayName = 'Test User';
 
   WidgetsFlutterBinding.ensureInitialized();
+  PackageInfoPlusLinuxPlugin.registerWith();
   FlutterSecureStorage.setMockInitialValues({});
   PackageInfoPlusLinuxPlugin.registerWith();
   // mock authentication
