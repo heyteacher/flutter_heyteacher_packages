@@ -264,7 +264,7 @@ class GroupByResult {
 }
 
 class StoreCache<DetailsDataType extends FirestoreData> {
-  final _log = Logger('StoreCache');
+  final _logger = Logger('StoreCache');
 
   final Map<String, DetailsDataType?> _cache = {};
 
@@ -272,21 +272,21 @@ class StoreCache<DetailsDataType extends FirestoreData> {
 
   Future<DetailsDataType?> get(String id) async {
     if (exists(id)) {
-      _log.finest('[$runtimeType-$hashCode].get($id) HIT');
+      _logger.finest('[$runtimeType-$hashCode].get($id) HIT');
       return _cache[id];
     }
-    _log.finest('[$runtimeType-$hashCode].get($id) MISS');
+    _logger.finest('[$runtimeType-$hashCode].get($id) MISS');
     return null;
   }
 
   void set(String id, DetailsDataType? detailsData) {
     _cache[id] = detailsData;
-    _log.finest('[$runtimeType-$hashCode].update($id)');
+    _logger.finest('[$runtimeType-$hashCode].update($id)');
   }
 
   void delete(String id) {
     _cache.remove(id);
-    _log.finest('[$runtimeType-$hashCode].remove($id)');
+    _logger.finest('[$runtimeType-$hashCode].remove($id)');
   }
 }
 
@@ -402,18 +402,19 @@ abstract class Store<LightDataType extends FirestoreData,
         'aggregateFields $aggregateFields '
         'groupByFields ${_groupByUserField()}'
         'cacheEnabled $_cacheEnabled '
-        'offlineEnabled $_offlineEnabled');
+        'offlineEnabled $_offlineEnabled',
+        'storeFilter $storeFilter');
 
-    _log.finest('Store: register fromFireStoreFactory');
+    _log.finest('$runtimeType: register fromFireStoreFactory');
     FirestoreData.registerFromFirestoreFactory<LightDataType>(
         fromFirestoreFactory);
     // manage the separated detail collection
     if (_separatedDetailsCollection) {
       this._detailsCollection = '${_collection}_details';
-      _log.finest('Store: detailsCollection $_detailsCollectionPathLog ');
+      _log.finest('$runtimeType: detailsCollection $_detailsCollectionPathLog ');
 
       if (detailsFromFirestoreFactory != null) {
-        _log.finest('Store: register detailsFromFirestoreFactory');
+        _log.finest('$runtimeType: register detailsFromFirestoreFactory');
         FirestoreData.registerFromFirestoreFactory<DetailsDataType>(
             detailsFromFirestoreFactory);
       } else {
@@ -457,7 +458,7 @@ abstract class Store<LightDataType extends FirestoreData,
     Query<LightDataType> retQuery = _collectionReference;
     // apply filter
     if (applyFilterBy && storeFilter != null) {
-      _log.finest('query: storeFilter $storeFilter');
+      _log.finest('$runtimeType.query: storeFilter $storeFilter');
       retQuery = retQuery.where(storeFilter!.toFirestore());
     }
     // apply order by
@@ -482,7 +483,7 @@ abstract class Store<LightDataType extends FirestoreData,
 
   /// Returns `true` if collection is empty based on [Store.storeFilter] defined.
   Future<bool> empty() async {
-    _log.finest('empty($_collectionPathLog,orderByFields: $orderByFields)');
+    _log.finest('$runtimeType.empty($_collectionPathLog,orderByFields: $orderByFields)');
     _checkAuthenticated();
     return ((await query(applyOrderBy: true).count().get()).count ?? 0) == 0;
   }
@@ -490,7 +491,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns `true` if collection is not empty based on [Store.storeFilter]
   /// defined.
   Future<bool> notEmpty() async {
-    _log.finest('notEmpty($_collectionPathLog,orderByFields: $orderByFields)');
+    _log.finest('$runtimeType.notEmpty($_collectionPathLog,orderByFields: $orderByFields)');
     _checkAuthenticated();
     return !await empty();
   }
@@ -498,7 +499,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns the list of [LightDataType] based on [Store.storeFilter] ordered
   /// by [Store.orderByFields] limited to [limit]
   Future<Iterable<LightDataType>> list({int? limit}) async {
-    _log.finest('list($_collectionPathLog,orderByFields: $orderByFields)');
+    _log.finest('$runtimeType.list($_collectionPathLog,orderByFields: $orderByFields)');
     _checkAuthenticated();
     return (await query(applyOrderBy: true, limit: limit).get())
         .docs
@@ -509,7 +510,7 @@ abstract class Store<LightDataType extends FirestoreData,
   Future<bool> exists(String id) async {
     final lock = Lock();
     return lock.synchronized(() async {
-      _log.finest('exists($_detailsCollectionPathLog/$id)');
+      _log.finest('$runtimeType.exists($_detailsCollectionPathLog/$id)');
       final cached = _storeCache?.get(id);
       if (cached != null) return true;
       try {
@@ -528,7 +529,7 @@ abstract class Store<LightDataType extends FirestoreData,
 
   /// Returns `true` if doesn't exists a document identified by [id].
   Future<bool> notExists(String? id) async {
-    _log.finest('notExists($_detailsCollectionPathLog/$id)');
+    _log.finest('$runtimeType.notExists($_detailsCollectionPathLog/$id)');
     return id != null && !(await exists(id));
   }
 
@@ -538,7 +539,7 @@ abstract class Store<LightDataType extends FirestoreData,
   Future<DetailsDataType> get(String id) async {
     final lock = Lock();
     return lock.synchronized(() async {
-      _log.finest('get($_detailsCollectionPathLog/$id)');
+      _log.finest('$runtimeType.get($_detailsCollectionPathLog/$id)');
 
       if (_storeCache?.exists(id) ?? false) {
         final cached = await _storeCache?.get(id);
@@ -558,7 +559,7 @@ abstract class Store<LightDataType extends FirestoreData,
       if (detailsDocumentSnapshot.exists) {
         DetailsDataType details = detailsDocumentSnapshot.data()!;
         if (_separatedDetailsCollection) {
-          _log.finest('get($_collectionPathLog/$id)');
+          _log.finest('$runtimeType.get($_collectionPathLog/$id)');
           DocumentSnapshot<LightDataType> documentSnapshot =
               await _collectionReference.doc(id).get();
           // populate parent data fields
@@ -584,7 +585,7 @@ abstract class Store<LightDataType extends FirestoreData,
   ///
   /// Returns null if document doesn't exist.
   Future<DetailsDataType?> getOrNull(String? id) async {
-    _log.finest('getOrNull($_detailsCollectionPathLog/$id)');
+    _log.finest('$runtimeType.getOrNull($_detailsCollectionPathLog/$id)');
     return await notExists(id) ? null : get(id!);
   }
 
@@ -593,14 +594,14 @@ abstract class Store<LightDataType extends FirestoreData,
   /// If [batch] is not null, apply the `delete` operationto batch that will be
   /// esecuted by [WriteBatch.commit].
   Future<void> delete(String id, {WriteBatch? batch}) async {
-    _log.fine('delete($_detailsCollectionPathLog/$id)');
+    _log.fine('$runtimeType.delete($_detailsCollectionPathLog/$id)');
     _checkAuthenticated();
     if (_groupByFields != null) {
       try {
         await _updateGroupByCounter(await get(id), increment: false);
       } catch (e, s) {
         _log.severe(
-            'delete($_detailsCollectionPathLog/$id) error on _changeGroupBy',
+            '$runtimeType.delete($_detailsCollectionPathLog/$id) error on _changeGroupBy',
             e,
             s);
       }
@@ -611,7 +612,7 @@ abstract class Store<LightDataType extends FirestoreData,
       await _detailsCollectionReference.doc(id).delete();
     }
     if (_separatedDetailsCollection) {
-      _log.fine('delete($_collectionPathLog/$id)');
+      _log.fine('$runtimeType.delete($_collectionPathLog/$id)');
       if (batch != null) {
         batch.delete(_collectionReference.doc(id));
       } else {
@@ -630,7 +631,7 @@ abstract class Store<LightDataType extends FirestoreData,
   Future<void> bulkDelete(
     List<String> ids,
   ) async {
-    _log.fine('bulkDelete($_detailsCollectionPathLog, ids: $ids)');
+    _log.fine('$runtimeType.bulkDelete($_detailsCollectionPathLog, ids: $ids)');
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < ids.length; i++) {
@@ -651,7 +652,7 @@ abstract class Store<LightDataType extends FirestoreData,
   Future<void> set(DetailsDataType detailsData,
       {String? id, WriteBatch? batch}) async {
     id ??= detailsData.id;
-    _log.fine('set($_detailsCollectionPathLog/$id)');
+    _log.fine('$runtimeType.set($_detailsCollectionPathLog/$id)');
     _checkAuthenticated();
     DetailsDataType? oldDetailsData;
     if (_groupByFields != null && await exists(id)) {
@@ -665,7 +666,7 @@ abstract class Store<LightDataType extends FirestoreData,
     if (_separatedDetailsCollection) {
       LightDataType? parentData = detailsData.getParentData() as LightDataType?;
       if (parentData != null) {
-        _log.fine('set($_collectionPathLog/$id)');
+        _log.fine('$runtimeType.set($_collectionPathLog/$id)');
         if (batch != null) {
           batch.set(_collectionReference.doc(id), parentData);
         } else {
@@ -689,7 +690,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Creates (override) massively [documents] identified by list [ids].
   Future<void> bulkSet(List<DetailsDataType> documents,
       {List<String>? ids}) async {
-    _log.fine('bulkSet($_detailsCollectionPathLog)');
+    _log.fine('$runtimeType.bulkSet($_detailsCollectionPathLog)');
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < documents.length; i++) {
@@ -717,7 +718,7 @@ abstract class Store<LightDataType extends FirestoreData,
       throw InvalidFieldsUpdateException('$_detailsCollectionPathLog/$id');
     }
     id ??= document.id;
-    _log.fine('update($_detailsCollectionPathLog/$id, fields: $fields)');
+    _log.fine('$runtimeType.update($_detailsCollectionPathLog/$id, fields: $fields)');
     _checkAuthenticated();
     if (await exists(id)) {
       if (batch != null) {
@@ -730,7 +731,7 @@ abstract class Store<LightDataType extends FirestoreData,
       }
       if (_separatedDetailsCollection) {
         if (document.getParentData() != null) {
-          _log.fine('update($_collectionPathLog/$id)');
+          _log.fine('$runtimeType.update($_collectionPathLog/$id)');
           if (batch != null) {
             batch.update(_collectionReference.doc(id),
                 document.getParentData()!.toFirestore(fields));
@@ -759,7 +760,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Updates only fields specified in [fields].
   Future<void> bulkUpdate(List<DetailsDataType> documents,
       {required List<String> fields, List<String>? ids}) async {
-    _log.fine('bulkUpdate($_detailsCollectionPathLog, $fields)');
+    _log.fine('$runtimeType.bulkUpdate($_detailsCollectionPathLog, $fields)');
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < documents.length; i++) {
@@ -775,7 +776,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// [groupByFieldsOrderDirection].
   Future<Iterable<GroupByResult>?> groupBy(
       {OrderDirection groupByFieldsOrderDirection = OrderDirection.asc}) async {
-    _log.finest('groupBy: collection $_detailsCollectionPathLog');
+    _log.finest('$runtimeType.groupBy: collection $_detailsCollectionPathLog');
     String? groupByUserField = _groupByUserField();
     if (groupByUserField == null) return null;
     _checkAuthenticated();
@@ -798,7 +799,7 @@ abstract class Store<LightDataType extends FirestoreData,
       for (var i = 0; i < 29; i++)
         aggregateFields!.length > i ? sum(aggregateFields![i]) : null
     ];
-    _log.finest('aggregates: not null');
+    _log.finest('$runtimeType.aggregates: not null');
     return query()
         .aggregate(
           count(),
@@ -854,11 +855,11 @@ abstract class Store<LightDataType extends FirestoreData,
   /// update the group by counter.
   void _initGroupByCounter() async {
     if (AuthModel.instance().notAutenticated) {
-      _log.finest('_initGroupByCounter: user not authenticate, do nothing');
+      _log.finest('$runtimeType._initGroupByCounter: user not authenticate, do nothing');
       return;
     }
     if (_initGroupByCounterAlreadyRunning) {
-      _log.finest('_initGroupByCounter: already running, do nothing');
+      _log.finest('$runtimeType._initGroupByCounter: already running, do nothing');
       return;
     } else {
       _initGroupByCounterAlreadyRunning = true;
@@ -869,18 +870,18 @@ abstract class Store<LightDataType extends FirestoreData,
           await _firestore.collection('users').doc(_uid).get();
       if (documentSnapshot.data()?[groupByUserField] != null) {
         _log.finest(
-            '_initGroupByCounter: user $groupByUserField already initialized. Do nothing');
+            '$runtimeType._initGroupByCounter: user $groupByUserField already initialized. Do nothing');
         return;
       }
       _log.finest(
-          '_initGroupByCounter: start scan on $_collection and update $groupByUserField');
+          '$runtimeType._initGroupByCounter: start scan on $_collection and update $groupByUserField');
       for (var lightData in await list()) {
         DetailsDataType detailsData = await get(lightData.id);
         await _updateGroupByCounter(detailsData, increment: true);
       }
     }
     _initGroupByCounterAlreadyRunning = false;
-    _log.finest('_initGroupByCounter: stop scan');
+    _log.finest('$runtimeType._initGroupByCounter: stop scan');
   }
 
   /// Update the group by counter.
@@ -902,7 +903,7 @@ abstract class Store<LightDataType extends FirestoreData,
     await _firestore.runTransaction((Transaction transaction) =>
         _updateGroupByCounterTransaction(transaction, userDocumentReference,
             document, increment, oldDetailsData));
-    _log.finest('_updateGroupByCounter: transaction completed');
+    _log.finest('$runtimeType._updateGroupByCounter: transaction completed');
   }
 
   /// Update the group by counter transaction.
@@ -934,7 +935,7 @@ abstract class Store<LightDataType extends FirestoreData,
       int groupByValue = userDocumentMap[groupByUserValue] ?? 0;
       groupByValue = increment ? groupByValue + 1 : groupByValue - 1;
       _log.finest(
-          '_updateGroupByCounterTransaction: $groupByUserValue new value $groupByValue');
+          '$runtimeType._updateGroupByCounterTransaction: $groupByUserValue new value $groupByValue');
       // increment/decrement group by value based
       userDocumentMap[groupByUserValue] = groupByValue;
       // oldDocument is set, decrement/increment value for old document
@@ -944,7 +945,7 @@ abstract class Store<LightDataType extends FirestoreData,
           oldGroupByValue =
               increment ? oldGroupByValue - 1 : oldGroupByValue + 1;
           _log.finest(
-              '_updateGroupByCounterTransaction: $oldGroupByUserValue (old) new value $oldGroupByValue');
+              '$runtimeType._updateGroupByCounterTransaction: $oldGroupByUserValue (old) new value $oldGroupByValue');
           userDocumentMap[oldGroupByUserValue!] = oldGroupByValue;
         }
       }
