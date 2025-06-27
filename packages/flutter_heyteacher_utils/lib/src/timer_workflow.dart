@@ -123,9 +123,11 @@ abstract class TimerWorkflow<T extends TimerTask> {
     currentTask?.completed = true;
   }
 
-  void _execute(Timer timer) {
+  void _execute(Timer _) {
+    final changed = _currentTaskCompletedInMilliseconds == 0;
     final currentTask = _currentTask;
     final nextTask = _nextTask;
+
     int remainingTaskMilliseconds = currentTask != null
         ? currentTask.duration.inMilliseconds -
             _currentTaskCompletedInMilliseconds
@@ -152,6 +154,7 @@ abstract class TimerWorkflow<T extends TimerTask> {
       status: status,
       current: currentTask,
       next: nextTask,
+      changed: changed,
       remainingTaskMilliseconds: remainingTaskMilliseconds,
       remainingTotalMilliseconds: remainingTotalMilliseconds,
     ));
@@ -165,8 +168,6 @@ abstract class TimerWorkflow<T extends TimerTask> {
 
   void _reopenTask(T task) => task.completed = false;
 
-  @visibleForTesting
-  @protected
   int get totalDurationInMilliseconds =>
       tasks.map((task) => task.duration.inMilliseconds).reduce((a, b) => a + b);
 
@@ -222,12 +223,13 @@ class RunningTask<T extends TimerTask> {
   final T? next;
   final int remainingTaskMilliseconds;
   final int remainingTotalMilliseconds;
-
+  final bool changed;
   RunningTask(
       {required this.workflowName,
       required this.status,
       required this.current,
       required this.next,
+      required this.changed,
       required this.remainingTaskMilliseconds,
       required this.remainingTotalMilliseconds});
 }
