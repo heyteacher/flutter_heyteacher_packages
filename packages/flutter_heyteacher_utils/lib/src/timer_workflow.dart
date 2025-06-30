@@ -182,6 +182,8 @@ abstract class TimerWorkflow<T extends TimerTask> {
       .where((task) => task.completed)
       .map((task) => task.duration.inMilliseconds)
       .fold(0, (a, b) => a + b);
+
+  get taskCount => tasks.length;
 }
 
 /// Represents a single, timed task within a [TimerWorkflow].
