@@ -70,8 +70,12 @@ abstract class TimerWorkflow<T extends TimerTask> {
     _streamController.close();
   }
 
-  /// Abstract method for subclasses to define the list of tasks for the workflow.
-  void initializeTasks();
+  /// method for subclasses to define the list of tasks for the workflow.
+  void initializeTasks() {
+        if (tasks.isNotEmpty) {
+      throw WorkflowTaskAlreadyInitialized();
+    }
+  }
 
   /// The current status of the workflow.
   WorkflowStatus get status => _timer == null
@@ -85,6 +89,9 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// If the workflow is paused, it will resume from where it left off.
   /// If it's stopped or has not started, it will begin from the first task.
   void play() {
+    if (tasks.isEmpty) {
+      throw WorkflowTaskNotInitialized();
+    }
     _paused = false;
     _timer ??= Timer.periodic(const Duration(milliseconds: 1000), _execute);
   }
@@ -214,6 +221,21 @@ class WorkflowTaskAlreadyInitialized implements Exception {
       return 'error: workflow task already initialized';
     }
   }
+}
+
+
+class WorkflowTaskNotInitialized implements Exception {
+  /// Returns a localized error message.
+  @override
+  String toString() {
+    if (ContextHelper.context != null) {
+      return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
+          .errorWorkflowNotInitialized;
+    } else {
+      return 'error: workflow not initialized';
+    }
+  }
+
 }
 
 class RunningTask<T extends TimerTask> {
