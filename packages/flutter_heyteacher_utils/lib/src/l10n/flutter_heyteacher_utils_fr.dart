@@ -100,4 +100,7 @@ class FlutterHeyteacherUtilsLocalizationsFr
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
       'La tâche du flux de travail a déjà été initialisée';
+
+  @override
+  String get errorWorkflowNotInitialized => 'Workflow non initialisé';
 }

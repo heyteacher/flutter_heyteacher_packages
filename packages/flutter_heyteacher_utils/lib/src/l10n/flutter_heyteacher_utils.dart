@@ -251,6 +251,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Workflow task already initialized'**
   String get errorWorkflowTaskAlreadyInitialized;
+
+  /// No description provided for @errorWorkflowNotInitialized.
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow not initialized'**
+  String get errorWorkflowNotInitialized;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate

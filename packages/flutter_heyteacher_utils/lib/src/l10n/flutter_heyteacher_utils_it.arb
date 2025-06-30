@@ -29,5 +29,7 @@
     "encryptionPassphrase": "Password di Criptazione",
     "encryptionSecretKey": "Chiave Segreta di Criptazione",
     "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro. Ricorda di usare la stessa password di criptazione.",
-    "errorWorkflowTaskAlreadyInitialized": "Errore: il task del workflow è già stato inizializzato"
+    "errorWorkflowTaskAlreadyInitialized": "Errore: il task del workflow è già stato inizializzato",
+    "errorWorkflowNotInitialized": "Workflow non inizializzato",
+  "@errorWorkflowNotInitialized": {}
 }

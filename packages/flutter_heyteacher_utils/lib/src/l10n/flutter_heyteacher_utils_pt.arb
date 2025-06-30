@@ -54,5 +54,7 @@
   "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Escaneie o código QR com outro dispositivo ou armazene em um local seguro. Lembre-se de usar a mesma frase secreta.",
   "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
   "errorWorkflowTaskAlreadyInitialized": "Tarefa de fluxo de trabalho já inicializada",
-  "@errorWorkflowTaskAlreadyInitialized": {}
+  "@errorWorkflowTaskAlreadyInitialized": {},
+  "errorWorkflowNotInitialized": "Workflow não inicializado",
+  "@errorWorkflowNotInitialized": {}
 }

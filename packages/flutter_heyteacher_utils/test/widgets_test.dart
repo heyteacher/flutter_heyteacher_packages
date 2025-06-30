@@ -102,6 +102,9 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String get errorWorkflowTaskAlreadyInitialized => '';
+  
+  @override
+  String get errorWorkflowNotInitialized => '';
 }
 
 class _MockLocalizationsDelegate
