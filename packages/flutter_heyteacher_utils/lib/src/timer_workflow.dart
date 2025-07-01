@@ -116,11 +116,14 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// If the workflow is paused, it will resume from where it left off.
   /// If it's stopped or has not started, it will begin from the first task.
   /// Throws a [WorkflowTaskNotInitialized] if the [tasks] list is empty.
-  void play() {
+  void play({({int index, int completedInMilliseconds})? currentState}) {
     if (tasks.isEmpty) {
       throw WorkflowTaskNotInitialized();
     }
     _paused = false;
+    if (currentState != null) {
+      _restore(currentState);
+    }
     _timer ??= Timer.periodic(const Duration(milliseconds: 1000), _execute);
     _execute(null);
   }
@@ -186,7 +189,7 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// - [currentState]: The current state in composed by the `index` and
   ///   `completedInMilliseconds`  of the current task, the first state not
   ///   completed.
-  void restore(({int index, int completedInMilliseconds}) currentState) {
+  void _restore(({int index, int completedInMilliseconds}) currentState) {
     for (var i = 0; i < currentState.index; i++) {
       skip();
     }
