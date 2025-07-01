@@ -10,6 +10,8 @@ class TtsModel {
 
   late FlutterTts _textToSpeech;
 
+  String? _previousText;
+
   StreamSubscription? _onUserUpdateStreamSubscription,
       _stateChangesStreamSubscription;
 
@@ -33,7 +35,12 @@ class TtsModel {
   }
 
   Future<void> speak(String text) async {
-    _log.finest('speak: $text');
+    if (_previousText == text) {
+    _log.finest('speak: ignore text equals to previous text: $text');
+      return;
+    }
+    _previousText = text;
+    _log.finest('speak: text: $text');
     _textToSpeech.speak(text);
   }
 
