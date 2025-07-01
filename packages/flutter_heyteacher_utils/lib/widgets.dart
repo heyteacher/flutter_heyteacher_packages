@@ -313,11 +313,12 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   String? _filter;
   String? _querySearch;
   final FocusNode _focusNode = FocusNode();
+  List<DropdownMenuEntry<T?>>? _lastFilteredEntries;
 
   @override
   Widget build(BuildContext context) => Padding(
         padding:
-            const EdgeInsets.only(top: 8.0, left: 1.0, right: 1.0, bottom: 4),
+            const EdgeInsets.only(top: 4.0, left: 1.0, right: 1.0, bottom: 0),
         child: DropdownMenu<T?>(
           focusNode: _focusNode,
           label: Text(widget._label,
@@ -378,18 +379,21 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   List<DropdownMenuEntry<T?>> _filterCallback(
       List<DropdownMenuEntry<T?>> entries, String filter) {
     _filter = filter;
-    final filteredEntries = entries
+    final filteredEntries = [DropdownMenuEntry<T?>(value: null, label: ''),...entries
         .where((entry) =>
             entry.value != null &&
             entry.value!
                 .toString()
                 .toLowerCase()
-                .contains(_filter!.toLowerCase()))
-        .toList();
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
-          _enableAddTag =
-              (_filter?.isNotEmpty ?? false) && filteredEntries.isEmpty;
-        }));
+                .contains(_filter!.toLowerCase()))];
+    if ((_filter?.isNotEmpty ?? false) &&
+        (_lastFilteredEntries?.length) != filteredEntries.length) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
+            _enableAddTag =
+                (_filter?.isNotEmpty ?? false) && filteredEntries.length == 1;
+          }));
+    }
+    _lastFilteredEntries = filteredEntries;
     return filteredEntries;
   }
 
