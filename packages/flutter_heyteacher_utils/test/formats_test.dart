@@ -47,12 +47,12 @@ void main() {
     });
 
     test('formats zero duration correctly', () {
-      expect(formatDurationTts(0, mockNHours, mockNMinutes), '0 hours 0 minutes');
+      expect(formatDurationTts(0, mockNHours, mockNMinutes), '0 minutes');
     });
 
     test('formats duration less than an hour correctly', () {
       const thirtyMinutesMs = 30 * 60 * 1000;
-      expect(formatDurationTts(thirtyMinutesMs, mockNHours, mockNMinutes), '0 hours 30 minutes');
+      expect(formatDurationTts(thirtyMinutesMs, mockNHours, mockNMinutes), '30 minutes');
     });
 
      test('formats duration with exactly one hour correctly', () {
@@ -72,7 +72,7 @@ void main() {
 
      test('formats duration with only minutes correctly', () {
       const fiveMinutesMs = 5 * 60 * 1000;
-      expect(formatDurationTts(fiveMinutesMs, mockNHours, mockNMinutes), '0 hours 5 minutes');
+      expect(formatDurationTts(fiveMinutesMs, mockNHours, mockNMinutes), '5 minutes');
     });
   });
 
