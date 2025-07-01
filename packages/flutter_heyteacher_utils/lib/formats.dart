@@ -50,8 +50,8 @@ String formatDurationTts(
   if (milliseconds != null) {
     Duration duration = Duration(milliseconds: milliseconds.toInt());
     return ''
-        "${duration.inHours > 0 ? nHours(duration.inHours) : ""} "
-        '${nMinutes(duration.inMinutes - (duration.inHours * 60))}';
+        '${duration.inHours > 0 ? nHours(duration.inHours) : ""} '
+        '${nMinutes(duration.inMinutes - (duration.inHours * 60))}'.trim();
   } else {
     return '';
   }
