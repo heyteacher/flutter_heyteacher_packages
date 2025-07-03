@@ -75,10 +75,10 @@ abstract class FirebaseCloudMessagingModelView {
 
   static int get remoteConfigIntervalInMinutes => kDebugMode
       ? 1
-      : RemoteConfigModel.instance
+      : RemoteConfigModelView.instance
                   .getInt(FCMRemoteConfigKeys.intervalInMinutes.name) >
               0
-          ? RemoteConfigModel.instance
+          ? RemoteConfigModelView.instance
               .getInt(FCMRemoteConfigKeys.intervalInMinutes.name)
           : IntervalKeys.fiveMinutes.minutes;
 
@@ -105,7 +105,7 @@ abstract class FirebaseCloudMessagingModelView {
     _log.info(
       'initialize: User granted permission: ${settings.authorizationStatus}',
     );
-    final topic = RemoteConfigModel.instance.getString(FCMRemoteConfigKeys.fcmTopicName.name);
+    final topic = RemoteConfigModelView.instance.getString(FCMRemoteConfigKeys.fcmTopicName.name);
     await FirebaseMessaging.instance.subscribeToTopic(topic);
     _log.info('initialize: listen topic $topic');
     // FirebaseMessaging.onMessage.listen((remoteMessage) {
