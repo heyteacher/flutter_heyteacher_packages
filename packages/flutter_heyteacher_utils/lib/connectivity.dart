@@ -5,4 +5,4 @@
 /// current network state.
 library;
 
-export 'src/connectivity.dart' show ConnectivityController;
+export 'src/connectivity.dart' show ConnectivityModelView;
