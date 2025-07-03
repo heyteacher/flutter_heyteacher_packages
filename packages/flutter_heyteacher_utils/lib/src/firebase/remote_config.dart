@@ -14,16 +14,16 @@ enum RemoteConfigKeys {
   remoteConfigMinimumFetchIntervalInMinutes
 }
 
-class RemoteConfigModel {
+class RemoteConfigModelView {
   final _logger = Logger('RemoteConfigModel');
 
   final _remoteConfig = FirebaseRemoteConfig.instance;
 
-  static RemoteConfigModel? _instance;
-  RemoteConfigModel._();
+  static RemoteConfigModelView? _instance;
+  RemoteConfigModelView._();
 
-  /// Provides the singleton instance of [RemoteConfigModel].
-  static RemoteConfigModel get instance => _instance ??= RemoteConfigModel._();
+  /// Provides the singleton instance of [RemoteConfigModelView].
+  static RemoteConfigModelView get instance => _instance ??= RemoteConfigModelView._();
 
   /// Initializes Firebase Remote Config with default values and fetch settings.
   ///

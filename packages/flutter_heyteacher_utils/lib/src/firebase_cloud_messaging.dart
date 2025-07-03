@@ -60,12 +60,12 @@ enum IntervalKeys {
 /// Abstract class defining the contract for an Firebase Cloud Messaging model.
 /// Implementations of this class are responsible for providing an entry point
 /// callback and initializing the alarm.
-abstract class FirebaseCloudMessagingModel {
+abstract class FirebaseCloudMessagingModelView {
   /// The callback function to be executed when the alarm triggers.
   /// This function must be a top-level or static function.
   BackgroundMessageHandler entryPointCallback;
 
-  FirebaseCloudMessagingModel({required this.entryPointCallback});
+  FirebaseCloudMessagingModelView({required this.entryPointCallback});
 
   @protected
   String get lockSharedPreferencesKey => '${runtimeType}Lock';
@@ -75,10 +75,10 @@ abstract class FirebaseCloudMessagingModel {
 
   static int get remoteConfigIntervalInMinutes => kDebugMode
       ? 1
-      : RemoteConfigModel.instance
+      : RemoteConfigModelView.instance
                   .getInt(FCMRemoteConfigKeys.intervalInMinutes.name) >
               0
-          ? RemoteConfigModel.instance
+          ? RemoteConfigModelView.instance
               .getInt(FCMRemoteConfigKeys.intervalInMinutes.name)
           : IntervalKeys.fiveMinutes.minutes;
 
@@ -105,7 +105,7 @@ abstract class FirebaseCloudMessagingModel {
     _log.info(
       'initialize: User granted permission: ${settings.authorizationStatus}',
     );
-    final topic = RemoteConfigModel.instance.getString(FCMRemoteConfigKeys.fcmTopicName.name);
+    final topic = RemoteConfigModelView.instance.getString(FCMRemoteConfigKeys.fcmTopicName.name);
     await FirebaseMessaging.instance.subscribeToTopic(topic);
     _log.info('initialize: listen topic $topic');
     // FirebaseMessaging.onMessage.listen((remoteMessage) {

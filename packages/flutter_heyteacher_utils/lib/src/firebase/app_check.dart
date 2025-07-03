@@ -11,14 +11,14 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter/foundation.dart';
 
-class AppCheckModel {
+class AppCheckModelView {
   final log = Logger('AppCheckModel');
 
-  static AppCheckModel? _instance;
-  AppCheckModel._();
+  static AppCheckModelView? _instance;
+  AppCheckModelView._();
 
-  /// Provides the singleton instance of [AppCheckModel].
-  static AppCheckModel get instance => _instance ??= AppCheckModel._();
+  /// Provides the singleton instance of [AppCheckModelView].
+  static AppCheckModelView get instance => _instance ??= AppCheckModelView._();
 
   /// Initializes and activates Firebase App Check with platform-specific providers.
   ///

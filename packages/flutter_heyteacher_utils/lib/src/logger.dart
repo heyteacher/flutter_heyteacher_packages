@@ -6,7 +6,7 @@ library;
 /// - [LoggerScreen]: A dedicated screen to display and filter log messages.
 /// - [LoggerListTile]: A convenient [ListTile] for navigating to the [LoggerScreen].
 /// - [LoggingRouter]: Defines the routing for the logger UI.
-/// - [LoggerModel]: Handles log capture, configuration (including level setting via
+/// - [LoggerModelView]: Handles log capture, configuration (including level setting via
 ///   Firebase Remote Config), in-memory storage, and forwarding of structured logs
 ///   to Firebase Analytics.
 
@@ -81,7 +81,7 @@ class LoggerCard extends StatelessWidget {
 
   @override
   StreamBuilder<bool> build(context) => StreamBuilder<bool>(
-      stream: InfoDevicePackageModel.instance.tapCounterReachedStream,
+      stream: InfoDevicePackageModelView.instance.tapCounterReachedStream,
       builder: (_, tapCounterReachedSnapshot) => Visibility(
             visible: kDebugMode || (tapCounterReachedSnapshot.data ?? false),
             child: Padding(
@@ -156,7 +156,7 @@ class _LoggerScreenState extends State<LoggerScreen> {
         ],
       ),
       body: FutureBuilder<List<LogEntry>>(
-          future: LoggerModel.instance()._logs(filterLevel: _filterLevel),
+          future: LoggerModelView.instance()._logs(filterLevel: _filterLevel),
           // Displays each log message as a Text widget in a ListView.
           builder: (_, snapshot) => Padding(
                 padding: const EdgeInsets.only(left: 4.0, right: 4.0),
@@ -241,14 +241,14 @@ class _LoggerScreenState extends State<LoggerScreen> {
 
   /// Determines the background color for a log entry based on its [Level].
   Color? _backgroundColor(Level level) => switch (level) {
-        Level.SHOUT => ThemeModel.instance().redColor.withValues(alpha: 0.4),
-        Level.SEVERE => ThemeModel.instance().redColor.withValues(alpha: 0.4),
+        Level.SHOUT => ThemeModelView.instance().redColor.withValues(alpha: 0.4),
+        Level.SEVERE => ThemeModelView.instance().redColor.withValues(alpha: 0.4),
         Level.WARNING =>
-          ThemeModel.instance().orangeColor.withValues(alpha: 0.4),
+          ThemeModelView.instance().orangeColor.withValues(alpha: 0.4),
         Level.CONFIG =>
-          ThemeModel.instance().yellowColor.withValues(alpha: 0.4),
-        Level.INFO => ThemeModel.instance().greenColor.withValues(alpha: 0.4),
-        _ => ThemeModel.instance().blueColor.withValues(alpha: 0.4)
+          ThemeModelView.instance().yellowColor.withValues(alpha: 0.4),
+        Level.INFO => ThemeModelView.instance().greenColor.withValues(alpha: 0.4),
+        _ => ThemeModelView.instance().blueColor.withValues(alpha: 0.4)
       };
 }
 
@@ -258,11 +258,11 @@ class _LoggerScreenState extends State<LoggerScreen> {
 /// - Configuring the root logger's level.
 /// - Storing log records in temporary files in JSON format.
 /// - Sending log records to Firebase Analytics.
-class LoggerModel {
+class LoggerModelView {
   final _log = Logger('LoggerModel');
 
-  /// The singleton instance of [LoggerModel].
-  static LoggerModel? _instance;
+  /// The singleton instance of [LoggerModelView].
+  static LoggerModelView? _instance;
 
   /// The subscription to the root logger's `onRecord` stream.
   StreamSubscription<LogRecord>? _loggerSubscription;
@@ -328,14 +328,14 @@ class LoggerModel {
           '${logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''}')
       .join('\n');
 
-  /// Provides the singleton instance of [LoggerModel].
+  /// Provides the singleton instance of [LoggerModelView].
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
-  static LoggerModel instance({bool initialize = false}) =>
-      initialize ? LoggerModel._() : _instance ??= LoggerModel._();
+  static LoggerModelView instance({bool initialize = false}) =>
+      initialize ? LoggerModelView._() : _instance ??= LoggerModelView._();
 
-  /// Disposes of the [LoggerModel] by canceling the logger subscription.
+  /// Disposes of the [LoggerModelView] by canceling the logger subscription.
   ///
   /// This should be called when the logger model is no longer needed to prevent memory leaks.
   dispose() {
@@ -347,7 +347,7 @@ class LoggerModel {
   /// Private constructor for the singleton pattern.
   /// Initializes the logger configuration.
   /// If [reset] is true, it clears the temporary log directory.
-  LoggerModel._();
+  LoggerModelView._();
 
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;
@@ -393,10 +393,10 @@ class LoggerModel {
             : FirebaseRemoteConfig.instance.getInt('loggerRootLevelValue'));
 
     // Asynchronously fetch package version and device information.
-    final version = await InfoDevicePackageModel.instance.packageVersion;
-    final deviceInfo = await InfoDevicePackageModel.instance.deviceInfo;
+    final version = await InfoDevicePackageModelView.instance.packageVersion;
+    final deviceInfo = await InfoDevicePackageModelView.instance.deviceInfo;
     // Get the unique identifier for the device/user.
-    final identifierInfo = InfoDevicePackageModel.instance.identifierInfo;
+    final identifierInfo = InfoDevicePackageModelView.instance.identifierInfo;
 
     // Listen to records from the root logger.
     _loggerSubscription = Logger.root.onRecord.listen((record) {

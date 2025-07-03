@@ -9,19 +9,19 @@ import 'package:logging/logging.dart';
 ///
 /// This class uses the `connectivity_plus` package to provide a stream
 /// of connectivity changes and a method to check the current connectivity state.
-class ConnectivityController {
+class ConnectivityModelView {
   static final _logger = Logger('ConnectivityController');
 
   final Connectivity _connectivity = Connectivity();
   StreamSubscription? _streamSubscription;
 
-  static ConnectivityController? _instance;
+  static ConnectivityModelView? _instance;
 
-  /// The singleton instance of [ConnectivityController].
-  static ConnectivityController get instance =>
-      _instance ??= ConnectivityController._();
+  /// The singleton instance of [ConnectivityModelView].
+  static ConnectivityModelView get instance =>
+      _instance ??= ConnectivityModelView._();
 
-  ConnectivityController._() {
+  ConnectivityModelView._() {
     _streamSubscription = stream.listen((connected) {
       _logger.finest('onConnectivityChanged: $connected');
     });

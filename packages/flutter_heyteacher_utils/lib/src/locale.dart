@@ -17,8 +17,8 @@ class LocaleCard extends StatefulWidget {
 
 class LocaleCardState<T extends StatefulWidget> extends State<T> {
   @protected
-  onTextToSpeechPressed() => TtsModel.instance.speak(
-      'Hello World, this is a test. Current locale is ${LocaleModel.instance.locale?.languageCode}');
+  onTextToSpeechPressed() => TTSModelView.instance.speak(
+      'Hello World, this is a test. Current locale is ${LocaleModelView.instance.locale?.languageCode}');
 
   @override
   Widget build(BuildContext context) => Card(
@@ -38,11 +38,11 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
                           label: Text(locale.languageCode.toUpperCase()),
                           showCheckmark: false,
                           selected: locale ==
-                              (LocaleModel.instance.locale ??
+                              (LocaleModelView.instance.locale ??
                                   Localizations.localeOf(context)),
                           onSelected: (bool selected) {
                             setState(() {
-                              LocaleModel.instance.locale =
+                              LocaleModelView.instance.locale =
                                   selected ? locale : null;
                             });
                           },
@@ -64,20 +64,20 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
 ///
 /// The locale is stored under the key `_sharedPreferencesLocaleKey` in shared preferences.
 /// If no locale is explicitly set or loaded, it defaults to the system's locale or the first supported locale.
-class LocaleModel {
+class LocaleModelView {
   Locale? _locale;
 
   /// The key used to store the selected locale's language code in [SharedPreferences].
   static const _sharedPreferencesLocaleKey = 'fhuLocale';
 
-  static LocaleModel? _instance;
+  static LocaleModelView? _instance;
 
-  /// Provides the singleton instance of [LocaleModel].
-  static LocaleModel get instance => _instance ??= LocaleModel._();
+  /// Provides the singleton instance of [LocaleModelView].
+  static LocaleModelView get instance => _instance ??= LocaleModelView._();
 
   /// Private constructor for the singleton.
   /// Initializes the model by attempting to load the persisted locale from [SharedPreferencesAsync].
-  LocaleModel._() {
+  LocaleModelView._() {
     // Load the saved locale from SharedPreferences
     SharedPreferencesAsync()
         .getString(_sharedPreferencesLocaleKey)

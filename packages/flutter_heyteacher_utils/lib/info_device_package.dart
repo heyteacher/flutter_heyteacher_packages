@@ -7,4 +7,4 @@
 /// - [InfoDevicePackageModel]: A singleton class that fetches detailed device
 ///   information (OS, model, browser) and package information (version, build number).
 library;
-export 'src/info_device_package.dart' show DevicePackageInfoCard, InfoDevicePackageModel;
+export 'src/info_device_package.dart' show DevicePackageInfoCard, InfoDevicePackageModelView;

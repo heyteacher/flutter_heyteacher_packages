@@ -9,8 +9,8 @@
 /// - Remote Config configuration ([RemoteConfigModel])
 library;
 
-export 'src/firebase/app_check.dart' show AppCheckModel;
+export 'src/firebase/app_check.dart' show AppCheckModelView;
 export 'src/firebase/auth.dart'
-    show AuthModel, UserNotAuthenticatedException, AccountCard;
-export 'src/firebase/crashlytics.dart' show CrashlyticsModel;
-export 'src/firebase/remote_config.dart' show RemoteConfigModel;
+    show AuthModelView, UserNotAuthenticatedException, AccountCard;
+export 'src/firebase/crashlytics.dart' show CrashlyticsModelView;
+export 'src/firebase/remote_config.dart' show RemoteConfigModelView;

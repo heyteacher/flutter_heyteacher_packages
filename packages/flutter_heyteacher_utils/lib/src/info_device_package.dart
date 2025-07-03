@@ -4,7 +4,7 @@
 /// This library includes:
 /// - [DevicePackageInfoCard]: A [ListTile] widget that displays formatted
 ///   device and package version information, and a button to initiate a support email.
-/// - [InfoDevicePackageModel]: A singleton class that fetches detailed device
+/// - [InfoDevicePackageModelView]: A singleton class that fetches detailed device
 ///   information (OS, model, browser) and package information (version, build number).
 library;
 
@@ -40,16 +40,16 @@ class DevicePackageInfoCard extends StatelessWidget {
             key: const ValueKey('lt_fhu_version'),
             leading: IconButton(
               icon: const Icon(Icons.smartphone),
-              onPressed: InfoDevicePackageModel.instance._incrementTapCounter,
+              onPressed: InfoDevicePackageModelView.instance._incrementTapCounter,
             ),
             title: FutureBuilder(
-              future: InfoDevicePackageModel.instance.deviceInfo,
+              future: InfoDevicePackageModelView.instance.deviceInfo,
               builder: (_, deviceSnapshot) =>
                   Text('${FlutterHeyteacherUtilsLocalizations.of(context)!.id}'
                       '${deviceSnapshot.data}-${deviceSnapshot.data}'),
             ),
             subtitle: FutureBuilder<String>(
-              future: InfoDevicePackageModel.instance.packageVersion,
+              future: InfoDevicePackageModelView.instance.packageVersion,
               builder: (_, devicePackageSnapshot) => Text(
                   '${FlutterHeyteacherUtilsLocalizations.of(context)!.version}'
                   '${devicePackageSnapshot.data}'),
@@ -57,11 +57,11 @@ class DevicePackageInfoCard extends StatelessWidget {
             trailing: TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor:
-                      ThemeModel.instance().theme.colorScheme.primary,
+                      ThemeModelView.instance().theme.colorScheme.primary,
                   foregroundColor:
-                      ThemeModel.instance().theme.colorScheme.onPrimary,
+                      ThemeModelView.instance().theme.colorScheme.onPrimary,
                 ),
-                onPressed: InfoDevicePackageModel.instance._askSupport,
+                onPressed: InfoDevicePackageModelView.instance._askSupport,
                 child: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
                     .askSupport))),
       );
@@ -71,17 +71,17 @@ class DevicePackageInfoCard extends StatelessWidget {
 /// device-specific information and application package details.
 ///
 /// Access the singleton instance via `InfoDevicePackageModel.instance`.
-class InfoDevicePackageModel {
-  static InfoDevicePackageModel? _instance;
+class InfoDevicePackageModelView {
+  static InfoDevicePackageModelView? _instance;
 
-  /// Provides the singleton instance of [InfoDevicePackageModel].
-  static InfoDevicePackageModel get instance =>
-      _instance ??= InfoDevicePackageModel._();
+  /// Provides the singleton instance of [InfoDevicePackageModelView].
+  static InfoDevicePackageModelView get instance =>
+      _instance ??= InfoDevicePackageModelView._();
 
   StreamSubscription? _streamSubscription;
 
   /// Private constructor for the singleton.
-  InfoDevicePackageModel._() {
+  InfoDevicePackageModelView._() {
     _streamSubscription = Stream.periodic(const Duration(seconds: 5))
         .listen((_) => _tapCounter = 0);
   }
@@ -155,7 +155,7 @@ class InfoDevicePackageModel {
   /// It returns the first 5 characters of the authenticated user's UID if available,
   /// otherwise defaults to "guest".
   String get identifierInfo =>
-      (AuthModel.instance().uid?.substring(0, 5)) ?? 'guest';
+      (AuthModelView.instance().uid?.substring(0, 5)) ?? 'guest';
 
   /// uploads the logs to Firebase Storage and returns the log filename
   Future<String> storeLogs() async {
@@ -163,9 +163,9 @@ class InfoDevicePackageModel {
     final machineTime = machineTimeFormatter.format(clock.now());
     final randomId = Random().nextInt(1000000000).toString().padLeft(10, '0');
     final logFilename =
-        'applogs/$machineDate/$machineTime-${InfoDevicePackageModel.instance.identifierInfo}-$randomId.log';
-    StorageModel.instance
-        .uploadString(logFilename, await LoggerModel.instance().logs2Text);
+        'applogs/$machineDate/$machineTime-${InfoDevicePackageModelView.instance.identifierInfo}-$randomId.log';
+    StorageModelView.instance
+        .uploadString(logFilename, await LoggerModelView.instance().logs2Text);
     return logFilename;
   }
 
@@ -179,9 +179,9 @@ class InfoDevicePackageModel {
     final i10n =
         FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!;
     final packageInfoPlatform = await PackageInfo.fromPlatform();
-    final version = await InfoDevicePackageModel.instance.packageVersion;
-    final device = await InfoDevicePackageModel.instance.deviceInfo;
-    final identifierInfo = InfoDevicePackageModel.instance.identifierInfo;
+    final version = await InfoDevicePackageModelView.instance.packageVersion;
+    final device = await InfoDevicePackageModelView.instance.deviceInfo;
+    final identifierInfo = InfoDevicePackageModelView.instance.identifierInfo;
     final logFilename = await storeLogs();
     final subject = '${i10n.askSupportFor}'
         '${packageInfoPlatform.appName}';

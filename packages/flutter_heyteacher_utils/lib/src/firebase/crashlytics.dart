@@ -8,12 +8,12 @@ library;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
-class CrashlyticsModel {
+class CrashlyticsModelView {
 
-  static CrashlyticsModel? _instance;
-  CrashlyticsModel._();
-  /// Provides the singleton instance of [CrashlyticsModel].
-  static CrashlyticsModel get instance => _instance ??= CrashlyticsModel._();
+  static CrashlyticsModelView? _instance;
+  CrashlyticsModelView._();
+  /// Provides the singleton instance of [CrashlyticsModelView].
+  static CrashlyticsModelView get instance => _instance ??= CrashlyticsModelView._();
 
   /// Configures Firebase Crashlytics to automatically record and report errors.
   ///
