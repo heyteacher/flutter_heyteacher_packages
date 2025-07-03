@@ -48,7 +48,7 @@ class AccountCard extends StatelessWidget {
                         ? Icons.logout
                         : Icons.login),
                     color: AuthModel.instance().autenticated
-                        ? ThemeModel.instance().theme.colorScheme.onError
+                        ? ThemeModelView.instance().theme.colorScheme.onError
                         : Theme.of(context).iconTheme.color,
                     onPressed: () async {
                       if (AuthModel.instance().autenticated) {

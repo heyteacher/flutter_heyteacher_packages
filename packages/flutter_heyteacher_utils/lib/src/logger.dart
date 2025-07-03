@@ -241,14 +241,14 @@ class _LoggerScreenState extends State<LoggerScreen> {
 
   /// Determines the background color for a log entry based on its [Level].
   Color? _backgroundColor(Level level) => switch (level) {
-        Level.SHOUT => ThemeModel.instance().redColor.withValues(alpha: 0.4),
-        Level.SEVERE => ThemeModel.instance().redColor.withValues(alpha: 0.4),
+        Level.SHOUT => ThemeModelView.instance().redColor.withValues(alpha: 0.4),
+        Level.SEVERE => ThemeModelView.instance().redColor.withValues(alpha: 0.4),
         Level.WARNING =>
-          ThemeModel.instance().orangeColor.withValues(alpha: 0.4),
+          ThemeModelView.instance().orangeColor.withValues(alpha: 0.4),
         Level.CONFIG =>
-          ThemeModel.instance().yellowColor.withValues(alpha: 0.4),
-        Level.INFO => ThemeModel.instance().greenColor.withValues(alpha: 0.4),
-        _ => ThemeModel.instance().blueColor.withValues(alpha: 0.4)
+          ThemeModelView.instance().yellowColor.withValues(alpha: 0.4),
+        Level.INFO => ThemeModelView.instance().greenColor.withValues(alpha: 0.4),
+        _ => ThemeModelView.instance().blueColor.withValues(alpha: 0.4)
       };
 }
 

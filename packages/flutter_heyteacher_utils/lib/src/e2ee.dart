@@ -62,7 +62,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
                           isDense: true,
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: ThemeModel.instance()
+                                color: ThemeModelView.instance()
                                     .theme
                                     .colorScheme
                                     .onSurface),
@@ -126,8 +126,8 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
             leading: Icon(
               secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
               color: secretKeySnapshot.data ?? false
-                  ? ThemeModel.instance().greenColor
-                  : ThemeModel.instance().theme.colorScheme.onError,
+                  ? ThemeModelView.instance().greenColor
+                  : ThemeModelView.instance().theme.colorScheme.onError,
             ),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
@@ -179,7 +179,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                           IconButton(
                             key: const ValueKey('ib_dialog_no'),
                             icon: Icon(Icons.close,
-                                color: ThemeModel.instance()
+                                color: ThemeModelView.instance()
                                     .theme
                                     .colorScheme
                                     .onError),

@@ -74,13 +74,13 @@ void showSnackBar(
                         FirebaseRemoteConfig.instance
                             .getInt('snackBarDurationInSeconds')),
                 backgroundColor: error
-                    ? ThemeModel.instance().theme.colorScheme.onError
-                    : ThemeModel.instance().greenColor,
+                    ? ThemeModelView.instance().theme.colorScheme.onError
+                    : ThemeModelView.instance().greenColor,
                 content: Text(message,
                     style: TextStyle(
                         color: error
-                            ? ThemeModel.instance().theme.colorScheme.error
-                            : ThemeModel.instance()
+                            ? ThemeModelView.instance().theme.colorScheme.error
+                            : ThemeModelView.instance()
                                 .theme
                                 .colorScheme
                                 .onPrimary))),
@@ -120,7 +120,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
             IconButton(
               key: const ValueKey('ib_dialog_no'),
               icon: Icon(Icons.close,
-                  color: ThemeModel.instance().theme.colorScheme.onError),
+                  color: ThemeModelView.instance().theme.colorScheme.onError),
               onPressed: () {
                 // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
                 SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -198,7 +198,7 @@ class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
   TextStyle _noDataStyleContent(context) => Theme.of(context)
       .textTheme
       .headlineMedium!
-      .copyWith(color: ThemeModel.instance().orangeColor);
+      .copyWith(color: ThemeModelView.instance().orangeColor);
 }
 
 /// Displays different error states to the user.
@@ -287,7 +287,7 @@ class ErrorView extends StatelessWidget {
   TextStyle _errorStyleContent(context) => Theme.of(context)
       .textTheme
       .headlineMedium!
-      .copyWith(color: ThemeModel.instance().theme.colorScheme.onError);
+      .copyWith(color: ThemeModelView.instance().theme.colorScheme.onError);
 }
 
 /// a Generics implementation of [DropdownMenu].
