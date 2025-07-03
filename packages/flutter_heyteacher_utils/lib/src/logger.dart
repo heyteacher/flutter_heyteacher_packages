@@ -81,7 +81,7 @@ class LoggerCard extends StatelessWidget {
 
   @override
   StreamBuilder<bool> build(context) => StreamBuilder<bool>(
-      stream: InfoDevicePackageModel.instance.tapCounterReachedStream,
+      stream: InfoDevicePackageModelView.instance.tapCounterReachedStream,
       builder: (_, tapCounterReachedSnapshot) => Visibility(
             visible: kDebugMode || (tapCounterReachedSnapshot.data ?? false),
             child: Padding(
@@ -393,10 +393,10 @@ class LoggerModel {
             : FirebaseRemoteConfig.instance.getInt('loggerRootLevelValue'));
 
     // Asynchronously fetch package version and device information.
-    final version = await InfoDevicePackageModel.instance.packageVersion;
-    final deviceInfo = await InfoDevicePackageModel.instance.deviceInfo;
+    final version = await InfoDevicePackageModelView.instance.packageVersion;
+    final deviceInfo = await InfoDevicePackageModelView.instance.deviceInfo;
     // Get the unique identifier for the device/user.
-    final identifierInfo = InfoDevicePackageModel.instance.identifierInfo;
+    final identifierInfo = InfoDevicePackageModelView.instance.identifierInfo;
 
     // Listen to records from the root logger.
     _loggerSubscription = Logger.root.onRecord.listen((record) {
