@@ -22,10 +22,10 @@ class TtsModel {
     _textToSpeech.awaitSpeakCompletion(true);
     // get locale language 
     final languageCode =
-        LocaleModel.instance.locale?.languageCode ?? Intl.getCurrentLocale();
+        LocaleModelView.instance.locale?.languageCode ?? Intl.getCurrentLocale();
     _changeLanguage(languageCode);
     // listen locale languale change  
-    _stateChangesStreamSubscription = LocaleModel.instance.localeStream
+    _stateChangesStreamSubscription = LocaleModelView.instance.localeStream
         .listen((locale) => _changeLanguage(locale.languageCode));
   }
 
