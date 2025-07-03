@@ -60,12 +60,12 @@ enum IntervalKeys {
 /// Abstract class defining the contract for an Firebase Cloud Messaging model.
 /// Implementations of this class are responsible for providing an entry point
 /// callback and initializing the alarm.
-abstract class FirebaseCloudMessagingModel {
+abstract class FirebaseCloudMessagingModelView {
   /// The callback function to be executed when the alarm triggers.
   /// This function must be a top-level or static function.
   BackgroundMessageHandler entryPointCallback;
 
-  FirebaseCloudMessagingModel({required this.entryPointCallback});
+  FirebaseCloudMessagingModelView({required this.entryPointCallback});
 
   @protected
   String get lockSharedPreferencesKey => '${runtimeType}Lock';
