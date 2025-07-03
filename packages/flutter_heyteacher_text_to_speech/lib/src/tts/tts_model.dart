@@ -5,7 +5,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
-class TtsModel {
+class TTSModelView {
   static final _log = Logger('TtsModel');
 
   late FlutterTts _textToSpeech;
@@ -15,9 +15,9 @@ class TtsModel {
   StreamSubscription? _onUserUpdateStreamSubscription,
       _stateChangesStreamSubscription;
 
-  static TtsModel? _instance;
-  static TtsModel get instance => _instance ??= TtsModel._();
-  TtsModel._() {
+  static TTSModelView? _instance;
+  static TTSModelView get instance => _instance ??= TTSModelView._();
+  TTSModelView._() {
     _textToSpeech = FlutterTts();
     _textToSpeech.awaitSpeakCompletion(true);
     // get locale language 
