@@ -854,7 +854,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// If already initialized, do nothing. Otherwise load all documents and
   /// update the group by counter.
   void _initGroupByCounter() async {
-    if (AuthModel.instance().notAutenticated) {
+    if (AuthModelView.instance().notAutenticated) {
       _log.finest('$runtimeType._initGroupByCounter: user not authenticate, do nothing');
       return;
     }
@@ -1006,7 +1006,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// if [_userProfile] is `true` and user not authenticated, throws
   /// [UserNotAuthenticatedException]
   void _checkAuthenticated() {
-    if (_userProfile && AuthModel.instance().notAutenticated) {
+    if (_userProfile && AuthModelView.instance().notAutenticated) {
       throw UserNotAuthenticatedException();
     }
   }
@@ -1066,8 +1066,8 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Gets the uid of authenticated user.
   ///
   /// If user isn't authenticathed, throw [UserNotAuthenticatedException]
-  String get _uid => AuthModel.instance().autenticated
-      ? AuthModel.instance().uid!
+  String get _uid => AuthModelView.instance().autenticated
+      ? AuthModelView.instance().uid!
       : throw UserNotAuthenticatedException();
 }
 
