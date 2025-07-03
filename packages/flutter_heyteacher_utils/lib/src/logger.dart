@@ -6,7 +6,7 @@ library;
 /// - [LoggerScreen]: A dedicated screen to display and filter log messages.
 /// - [LoggerListTile]: A convenient [ListTile] for navigating to the [LoggerScreen].
 /// - [LoggingRouter]: Defines the routing for the logger UI.
-/// - [LoggerModel]: Handles log capture, configuration (including level setting via
+/// - [LoggerModelView]: Handles log capture, configuration (including level setting via
 ///   Firebase Remote Config), in-memory storage, and forwarding of structured logs
 ///   to Firebase Analytics.
 
@@ -156,7 +156,7 @@ class _LoggerScreenState extends State<LoggerScreen> {
         ],
       ),
       body: FutureBuilder<List<LogEntry>>(
-          future: LoggerModel.instance()._logs(filterLevel: _filterLevel),
+          future: LoggerModelView.instance()._logs(filterLevel: _filterLevel),
           // Displays each log message as a Text widget in a ListView.
           builder: (_, snapshot) => Padding(
                 padding: const EdgeInsets.only(left: 4.0, right: 4.0),
@@ -258,11 +258,11 @@ class _LoggerScreenState extends State<LoggerScreen> {
 /// - Configuring the root logger's level.
 /// - Storing log records in temporary files in JSON format.
 /// - Sending log records to Firebase Analytics.
-class LoggerModel {
+class LoggerModelView {
   final _log = Logger('LoggerModel');
 
-  /// The singleton instance of [LoggerModel].
-  static LoggerModel? _instance;
+  /// The singleton instance of [LoggerModelView].
+  static LoggerModelView? _instance;
 
   /// The subscription to the root logger's `onRecord` stream.
   StreamSubscription<LogRecord>? _loggerSubscription;
@@ -328,14 +328,14 @@ class LoggerModel {
           '${logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''}')
       .join('\n');
 
-  /// Provides the singleton instance of [LoggerModel].
+  /// Provides the singleton instance of [LoggerModelView].
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
-  static LoggerModel instance({bool initialize = false}) =>
-      initialize ? LoggerModel._() : _instance ??= LoggerModel._();
+  static LoggerModelView instance({bool initialize = false}) =>
+      initialize ? LoggerModelView._() : _instance ??= LoggerModelView._();
 
-  /// Disposes of the [LoggerModel] by canceling the logger subscription.
+  /// Disposes of the [LoggerModelView] by canceling the logger subscription.
   ///
   /// This should be called when the logger model is no longer needed to prevent memory leaks.
   dispose() {
@@ -347,7 +347,7 @@ class LoggerModel {
   /// Private constructor for the singleton pattern.
   /// Initializes the logger configuration.
   /// If [reset] is true, it clears the temporary log directory.
-  LoggerModel._();
+  LoggerModelView._();
 
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;

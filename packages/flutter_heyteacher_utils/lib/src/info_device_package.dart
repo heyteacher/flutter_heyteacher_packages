@@ -165,7 +165,7 @@ class InfoDevicePackageModelView {
     final logFilename =
         'applogs/$machineDate/$machineTime-${InfoDevicePackageModelView.instance.identifierInfo}-$randomId.log';
     StorageModel.instance
-        .uploadString(logFilename, await LoggerModel.instance().logs2Text);
+        .uploadString(logFilename, await LoggerModelView.instance().logs2Text);
     return logFilename;
   }
 
