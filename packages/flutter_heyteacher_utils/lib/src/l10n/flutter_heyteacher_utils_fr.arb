@@ -56,5 +56,7 @@
   "errorWorkflowTaskAlreadyInitialized": "La tâche du flux de travail a déjà été initialisée",
   "@errorWorkflowTaskAlreadyInitialized": {},
   "errorWorkflowNotInitialized": "Workflow non initialisé",
-  "@errorWorkflowNotInitialized": {}
+  "@errorWorkflowNotInitialized": {},
+  "contentUnavailableOfflineRetryWhenOnline": "Contenu indisponible hors ligne.\\n\\nVeuillez réessayer lorsque vous êtes connecté à Internet.",
+  "@contentUnavailableOfflineRetryWhenOnline": {}
 }

@@ -105,6 +105,9 @@ class MockFlutterHeyteacherUtilsLocalizations
   
   @override
   String get errorWorkflowNotInitialized => '';
+  
+  @override
+  String get contentUnavailableOfflineRetryWhenOnline => '';
 }
 
 class _MockLocalizationsDelegate

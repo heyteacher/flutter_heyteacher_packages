@@ -219,10 +219,9 @@ class ErrorView extends StatelessWidget {
 
   @override
   Widget build(context) => Scaffold(
-        appBar: AppBar(),
-        body: error == null ||
-                (error is FirebaseException &&
-                    (error as FirebaseException).code == 'permission-denied')
+        appBar: AppBar(
+        ),
+        body: _isFirebaseExceptionCode('permission-denied')
             ? Column(children: [
                 Expanded(
                   child: Align(
@@ -250,19 +249,40 @@ class ErrorView extends StatelessWidget {
                           })),
                 ),
               ])
-            : Column(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(error.toString(),
-                          textAlign: TextAlign.center,
-                          style: _errorStyleContent(context)),
-                    ),
+            : _isFirebaseExceptionCode('unavailable')
+                ? Column(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                              FlutterHeyteacherUtilsLocalizations.of(context)!
+                                  .contentUnavailableOfflineRetryWhenOnline,
+                              textAlign: TextAlign.center,
+                              style: _errorStyleContent(context)),
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(error.toString(),
+                              textAlign: TextAlign.center,
+                              style: _errorStyleContent(context)),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
       );
+
+  bool _isFirebaseExceptionCode(String code) {
+    return error == null ||
+              (error is FirebaseException &&
+                  (error as FirebaseException).code == code);
+  }
 
   TextStyle _errorStyleContent(context) => Theme.of(context)
       .textTheme
@@ -379,13 +399,15 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   List<DropdownMenuEntry<T?>> _filterCallback(
       List<DropdownMenuEntry<T?>> entries, String filter) {
     _filter = filter;
-    final filteredEntries = [DropdownMenuEntry<T?>(value: null, label: ''),...entries
-        .where((entry) =>
-            entry.value != null &&
-            entry.value!
-                .toString()
-                .toLowerCase()
-                .contains(_filter!.toLowerCase()))];
+    final filteredEntries = [
+      DropdownMenuEntry<T?>(value: null, label: ''),
+      ...entries.where((entry) =>
+          entry.value != null &&
+          entry.value!
+              .toString()
+              .toLowerCase()
+              .contains(_filter!.toLowerCase()))
+    ];
     if ((_filter?.isNotEmpty ?? false) &&
         (_lastFilteredEntries?.length) != filteredEntries.length) {
       WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {

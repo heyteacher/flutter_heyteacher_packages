@@ -100,4 +100,8 @@ class FlutterHeyteacherUtilsLocalizationsEn
 
   @override
   String get errorWorkflowNotInitialized => 'Workflow not initialized';
+
+  @override
+  String get contentUnavailableOfflineRetryWhenOnline =>
+      'Content unavailable offline.\n\nRetry when online retry device will be connected';
 }

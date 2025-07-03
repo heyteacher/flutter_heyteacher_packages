@@ -257,6 +257,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Workflow not initialized'**
   String get errorWorkflowNotInitialized;
+
+  /// No description provided for @contentUnavailableOfflineRetryWhenOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Content unavailable offline.\n\nRetry when online retry device will be connected'**
+  String get contentUnavailableOfflineRetryWhenOnline;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate
