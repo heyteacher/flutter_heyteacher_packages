@@ -338,11 +338,11 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   @override
   Widget build(BuildContext context) => Padding(
         padding:
-            const EdgeInsets.only(top: 4.0, left: 1.0, right: 1.0, bottom: 0),
+            const EdgeInsets.only(top: 4.0, left: 1, right: 1.0, bottom: 0),
         child: DropdownMenu<T?>(
           focusNode: _focusNode,
           label: Text(widget._label,
-              style: Theme.of(context).textTheme.labelSmall),
+              style: const TextStyle(fontSize: 11)),
           initialSelection: widget.initialSelection,
           onSelected: _preOnSelected,
           enableSearch: widget.enableSearch,
@@ -354,7 +354,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
               ? IconButton(
                   onPressed: _preAddCallback, icon: const Icon(Icons.add))
               : null,
-          trailingIcon: const Icon(Icons.filter_list),
+          trailingIcon: const Icon(Icons.filter_list,),
           textStyle: Theme.of(context).textTheme.labelSmall,
           width: widget.width,
           menuHeight: widget.menuHeight,
@@ -364,6 +364,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
                 DropdownMenuEntry<T?>(label: record.label, value: record.value))
           ],
           inputDecorationTheme: InputDecorationTheme(
+            contentPadding: const  EdgeInsets.only(left: 8, right: 0),
             isDense: widget.isDense,
             constraints: BoxConstraints.tight(Size.fromHeight(widget.height)),
             border: OutlineInputBorder(
