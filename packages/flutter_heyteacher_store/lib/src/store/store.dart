@@ -395,14 +395,15 @@ abstract class Store<LightDataType extends FirestoreData,
       // enable persistence for offline access
       _firestore.settings = Settings(persistenceEnabled: _offlineEnabled);
     }
-    _log.finest('$runtimeType: $_collectionPathLog '
-        'userProfile $_userProfile  '
-        'separatedDetailsCollection $_separatedDetailsCollection '
-        'orderByFields $orderByFields '
-        'aggregateFields $aggregateFields '
-        'groupByFields ${_groupByUserField()}'
-        'cacheEnabled $_cacheEnabled '
-        'offlineEnabled $_offlineEnabled',
+    _log.finest(
+        '$runtimeType: $_collectionPathLog '
+            'userProfile $_userProfile  '
+            'separatedDetailsCollection $_separatedDetailsCollection '
+            'orderByFields $orderByFields '
+            'aggregateFields $aggregateFields '
+            'groupByFields ${_groupByUserField()}'
+            'cacheEnabled $_cacheEnabled '
+            'offlineEnabled $_offlineEnabled',
         'storeFilter $storeFilter');
 
     _log.finest('$runtimeType: register fromFireStoreFactory');
@@ -411,7 +412,8 @@ abstract class Store<LightDataType extends FirestoreData,
     // manage the separated detail collection
     if (_separatedDetailsCollection) {
       this._detailsCollection = '${_collection}_details';
-      _log.finest('$runtimeType: detailsCollection $_detailsCollectionPathLog ');
+      _log.finest(
+          '$runtimeType: detailsCollection $_detailsCollectionPathLog ');
 
       if (detailsFromFirestoreFactory != null) {
         _log.finest('$runtimeType: register detailsFromFirestoreFactory');
@@ -478,12 +480,15 @@ abstract class Store<LightDataType extends FirestoreData,
 
   /// Returns the stream on [Store.query]
   Stream<Iterable<LightDataType>> get stream =>
-      query(applyOrderBy: true).snapshots().map((querySnapshot) =>
-          querySnapshot.docs.map((document) => document.data()));
+      AuthModelView.instance().notAutenticated
+          ? const Stream.empty()
+          : query(applyOrderBy: true).snapshots().map((querySnapshot) =>
+              querySnapshot.docs.map((document) => document.data()));
 
   /// Returns `true` if collection is empty based on [Store.storeFilter] defined.
   Future<bool> empty() async {
-    _log.finest('$runtimeType.empty($_collectionPathLog,orderByFields: $orderByFields)');
+    _log.finest(
+        '$runtimeType.empty($_collectionPathLog,orderByFields: $orderByFields)');
     _checkAuthenticated();
     return ((await query(applyOrderBy: true).count().get()).count ?? 0) == 0;
   }
@@ -491,7 +496,8 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns `true` if collection is not empty based on [Store.storeFilter]
   /// defined.
   Future<bool> notEmpty() async {
-    _log.finest('$runtimeType.notEmpty($_collectionPathLog,orderByFields: $orderByFields)');
+    _log.finest(
+        '$runtimeType.notEmpty($_collectionPathLog,orderByFields: $orderByFields)');
     _checkAuthenticated();
     return !await empty();
   }
@@ -499,7 +505,8 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns the list of [LightDataType] based on [Store.storeFilter] ordered
   /// by [Store.orderByFields] limited to [limit]
   Future<Iterable<LightDataType>> list({int? limit}) async {
-    _log.finest('$runtimeType.list($_collectionPathLog,orderByFields: $orderByFields)');
+    _log.finest(
+        '$runtimeType.list($_collectionPathLog,orderByFields: $orderByFields)');
     _checkAuthenticated();
     return (await query(applyOrderBy: true, limit: limit).get())
         .docs
@@ -511,8 +518,8 @@ abstract class Store<LightDataType extends FirestoreData,
     final lock = Lock();
     return lock.synchronized(() async {
       _log.finest('$runtimeType.exists($_detailsCollectionPathLog/$id)');
-      final cached = _storeCache?.get(id);
-      if (cached != null) return true;
+      final cached = await _storeCache?.get(id);
+      if (cached  != null) return true;
       try {
         await get(id);
         return true;
@@ -609,6 +616,7 @@ abstract class Store<LightDataType extends FirestoreData,
     if (batch != null) {
       batch.delete(_detailsCollectionReference.doc(id));
     } else {
+      _storeCache?.delete(id);
       await _detailsCollectionReference.doc(id).delete();
     }
     if (_separatedDetailsCollection) {
@@ -622,7 +630,6 @@ abstract class Store<LightDataType extends FirestoreData,
     // if isn't a bulk delete (batch == null), delegate thee caller to notify
     // changes
     if (batch == null) {
-      _storeCache?.delete(id);
       notifyAggregatesChanges();
     }
   }
@@ -718,7 +725,8 @@ abstract class Store<LightDataType extends FirestoreData,
       throw InvalidFieldsUpdateException('$_detailsCollectionPathLog/$id');
     }
     id ??= document.id;
-    _log.fine('$runtimeType.update($_detailsCollectionPathLog/$id, fields: $fields)');
+    _log.fine(
+        '$runtimeType.update($_detailsCollectionPathLog/$id, fields: $fields)');
     _checkAuthenticated();
     if (await exists(id)) {
       if (batch != null) {
@@ -750,7 +758,7 @@ abstract class Store<LightDataType extends FirestoreData,
     }
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
-        _storeCache?.set(id, document);
+      _storeCache?.set(id, document);
       notifyAggregatesChanges();
     }
   }
@@ -838,9 +846,11 @@ abstract class Store<LightDataType extends FirestoreData,
 
   /// Yields an aggregation result based on [aggregateFields].
   Future<void> notifyAggregatesChanges() async {
-    final aggregatesValue = await aggregates;
-    if (aggregatesValue != null) {
-      _aggregateStreamController.sink.add(aggregatesValue);
+    if (AuthModelView.instance().autenticated) {
+      final aggregatesValue = await aggregates;
+      if (aggregatesValue != null) {
+        _aggregateStreamController.sink.add(aggregatesValue);
+      }
     }
   }
 
@@ -855,11 +865,13 @@ abstract class Store<LightDataType extends FirestoreData,
   /// update the group by counter.
   void _initGroupByCounter() async {
     if (AuthModelView.instance().notAutenticated) {
-      _log.finest('$runtimeType._initGroupByCounter: user not authenticate, do nothing');
+      _log.finest(
+          '$runtimeType._initGroupByCounter: user not authenticate, do nothing');
       return;
     }
     if (_initGroupByCounterAlreadyRunning) {
-      _log.finest('$runtimeType._initGroupByCounter: already running, do nothing');
+      _log.finest(
+          '$runtimeType._initGroupByCounter: already running, do nothing');
       return;
     } else {
       _initGroupByCounterAlreadyRunning = true;
