@@ -33,5 +33,13 @@
     "errorWorkflowNotInitialized": "Workflow non inizializzato",
   "@errorWorkflowNotInitialized": {},
   "contentUnavailableOfflineRetryWhenOnline": "Contenuto non disponibile offline.\n\nPer favore, riprova quando sei connesso a Internet.",
-  "@contentUnavailableOfflineRetryWhenOnline": {}
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "deleteUserData": "Elimina dati utente",
+  "@deleteUserData": {
+    "description": "Testo per il pulsante o azione di eliminazione dei dati utente."
+  },
+  "doYouConfirmDeletionUserData": "Confermi l'eliminazione dei dati utente?",
+  "@doYouConfirmDeletionUserData": {
+    "description": "Messaggio di conferma per l'eliminazione dei dati utente."
+  }
 }

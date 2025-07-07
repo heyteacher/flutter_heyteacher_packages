@@ -58,5 +58,13 @@
   "errorWorkflowNotInitialized": "Workflow non initialisé",
   "@errorWorkflowNotInitialized": {},
   "contentUnavailableOfflineRetryWhenOnline": "Contenu indisponible hors ligne.\\n\\nVeuillez réessayer lorsque vous êtes connecté à Internet.",
-  "@contentUnavailableOfflineRetryWhenOnline": {}
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "deleteUserData": "Supprimer les données utilisateur",
+  "@deleteUserData": {
+    "description": "Button or action to delete user data"
+  },
+  "doYouConfirmDeletionUserData": "Confirmez-vous la suppression des données utilisateur ?",
+  "@doYouConfirmDeletionUserData": {
+    "description": "Prompt asking user to confirm deletion of their data"
+  }
 }

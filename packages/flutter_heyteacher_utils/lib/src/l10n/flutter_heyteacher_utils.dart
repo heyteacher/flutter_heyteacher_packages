@@ -263,6 +263,18 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Content unavailable offline.\n\nRetry when online retry device will be connected'**
   String get contentUnavailableOfflineRetryWhenOnline;
+
+  /// No description provided for @deleteUserData.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete User Data'**
+  String get deleteUserData;
+
+  /// No description provided for @doYouConfirmDeletionUserData.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you confirm the telation of your user data?\n Be carefull! this action cannot be undone'**
+  String get doYouConfirmDeletionUserData;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate

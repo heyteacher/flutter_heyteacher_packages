@@ -107,4 +107,11 @@ class FlutterHeyteacherUtilsLocalizationsFr
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
       'Contenu indisponible hors ligne.\\n\\nVeuillez réessayer lorsque vous êtes connecté à Internet.';
+
+  @override
+  String get deleteUserData => 'Supprimer les données utilisateur';
+
+  @override
+  String get doYouConfirmDeletionUserData =>
+      'Confirmez-vous la suppression des données utilisateur ?';
 }

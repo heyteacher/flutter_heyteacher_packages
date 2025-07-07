@@ -58,5 +58,13 @@
   "errorWorkflowNotInitialized": "Workflow não inicializado",
   "@errorWorkflowNotInitialized": {},
   "contentUnavailableOfflineRetryWhenOnline": "Conteúdo indisponível offline.\n\nPor favor, tente novamente quando estiver conectado à internet.",
-  "@contentUnavailableOfflineRetryWhenOnline": {}
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "deleteUserData": "Excluir dados do usuário",
+  "@deleteUserData": {
+    "description": "Botão ou ação para excluir todos os dados do usuário"
+  },
+  "doYouConfirmDeletionUserData": "Você confirma a exclusão dos dados do usuário?",
+  "@doYouConfirmDeletionUserData": {
+    "description": "Pergunta de confirmação para exclusão dos dados do usuário"
+  }
 }

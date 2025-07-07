@@ -55,5 +55,9 @@
   "errorWorkflowNotInitialized": "Workflow not initialized",
   "@errorWorkflowNotInitialized": {},
   "contentUnavailableOfflineRetryWhenOnline": "Content unavailable offline.\n\nRetry when online retry device will be connected",
-  "@contentUnavailableOfflineRetryWhenOnline": {}   
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "deleteUserData": "Delete User Data",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "Do you confirm the telation of your user data?\n Be carefull! this action cannot be undone",
+  "@doYouConfirmDeletionUserData": {} 
 }
