@@ -106,4 +106,11 @@ class FlutterHeyteacherUtilsLocalizationsEs
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
       'Contenido no disponible sin conexión.\n\nPor favor, inténtalo de nuevo cuando estés conectado a Internet.';
+
+  @override
+  String get deleteUserData => 'Eliminar datos de usuario';
+
+  @override
+  String get doYouConfirmDeletionUserData =>
+      '¿Confirma la eliminación de los datos de usuario?';
 }

@@ -8,6 +8,8 @@
 /// It supports initialization with a mocked [FirebaseAuth] instance for testing purposes.
 library;
 
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
@@ -16,11 +18,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
+import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
 class AccountCard extends StatelessWidget {
-  const AccountCard({super.key});
+  final Future<String?> Function(String?) _deleteUserDataCallback;
+  final Future<String?> Function(String?) _createUserDataCallback;
+
+  late final StreamSubscription<User?>? _authStreamSubscription;
+  
+  AccountCard(
+      {super.key,
+      required Future<String?> Function(String?) createUserDataCallback,
+      required Future<String?> Function(String?) deleteUserDataCallback})
+      : _createUserDataCallback = createUserDataCallback,
+        _deleteUserDataCallback = deleteUserDataCallback {
+    _authStreamSubscription = AuthModelView.instance()
+        .stateChangesStream
+        .listen((user) => user != null ? _createUserDataCallback(null) : null);
+  }
+
+  dispose() {
+    _authStreamSubscription?.cancel();
+  }
 
   @override
   Widget build(BuildContext context) => Card(
@@ -42,21 +63,55 @@ class AccountCard extends StatelessWidget {
                     ? Text(AuthModelView.instance().displayName ?? '')
                     : Text(FlutterHeyteacherUtilsLocalizations.of(context)!
                         .userNotAutenticated),
-                trailing: IconButton(
-                    key: const ValueKey('ic_login_logout'),
-                    icon: Icon(AuthModelView.instance().autenticated
-                        ? Icons.logout
-                        : Icons.login),
-                    color: AuthModelView.instance().autenticated
-                        ? ThemeModelView.instance().theme.colorScheme.onError
-                        : Theme.of(context).iconTheme.color,
-                    onPressed: () async {
-                      if (AuthModelView.instance().autenticated) {
-                        GoRouter.of(context).pushNamed('auth-sign-out');
-                      } else {
-                        GoRouter.of(context).pushNamed('auth-sign-in');
-                      }
-                    }),
+                trailing: Wrap(
+                  children: [
+                    if (AuthModelView.instance().autenticated)
+                      IconButton(
+                          key: const ValueKey('ic_delete_data'),
+                          icon: const Icon(Icons.delete),
+                          color: ThemeModelView.instance()
+                              .theme
+                              .colorScheme
+                              .onError,
+                          onPressed: () async {
+                            showConfirmCancelDialog<String>(
+                              context: context,
+                              confirmCallback: (String? _) async {
+                                await _deleteUserDataCallback(null);
+                                if (context.mounted) {
+                                  GoRouter.of(context)
+                                      .pushNamed('auth-sign-out');
+                                }
+                                return null;
+                              },
+                              title: FlutterHeyteacherUtilsLocalizations.of(
+                                      context)!
+                                  .deleteUserData,
+                              content: FlutterHeyteacherUtilsLocalizations.of(
+                                      context)!
+                                  .doYouConfirmDeletionUserData,
+                            );
+                        }),
+                    IconButton(
+                        key: const ValueKey('ic_login_logout'),
+                        icon: Icon(AuthModelView.instance().autenticated
+                            ? Icons.logout
+                            : Icons.login),
+                        color: AuthModelView.instance().autenticated
+                            ? ThemeModelView.instance()
+                                .theme
+                                .colorScheme
+                                .onError
+                            : Theme.of(context).iconTheme.color,
+                        onPressed: () async {
+                          if (AuthModelView.instance().autenticated) {
+                            GoRouter.of(context).pushNamed('auth-sign-out');
+                          } else {
+                            GoRouter.of(context).pushNamed('auth-sign-in');
+                          }
+                        }),
+                  ],
+                ),
               );
             }),
       );

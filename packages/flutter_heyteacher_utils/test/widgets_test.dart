@@ -108,6 +108,12 @@ class MockFlutterHeyteacherUtilsLocalizations
   
   @override
   String get contentUnavailableOfflineRetryWhenOnline => '';
+  
+  @override
+  String get deleteUserData => '';
+  
+  @override
+  String get doYouConfirmDeletionUserData => '';
 }
 
 class _MockLocalizationsDelegate

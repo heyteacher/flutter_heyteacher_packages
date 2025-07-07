@@ -104,4 +104,11 @@ class FlutterHeyteacherUtilsLocalizationsEn
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
       'Content unavailable offline.\n\nRetry when online retry device will be connected';
+
+  @override
+  String get deleteUserData => 'Delete User Data';
+
+  @override
+  String get doYouConfirmDeletionUserData =>
+      'Do you confirm the telation of your user data?\n Be carefull! this action cannot be undone';
 }
