@@ -46,7 +46,7 @@ class DevicePackageInfoCard extends StatelessWidget {
               future: InfoDevicePackageModelView.instance.deviceInfo,
               builder: (_, deviceSnapshot) =>
                   Text('${FlutterHeyteacherUtilsLocalizations.of(context)!.id}'
-                      '${deviceSnapshot.data}-${deviceSnapshot.data}'),
+                      '${deviceSnapshot.data}'),
             ),
             subtitle: FutureBuilder<String>(
               future: InfoDevicePackageModelView.instance.packageVersion,
