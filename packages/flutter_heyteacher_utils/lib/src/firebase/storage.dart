@@ -1,14 +1,14 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:logging/logging.dart';
 
-class StorageModelView {
+class StorageViewModel {
   final log = Logger('StorageModel');
 
-  static StorageModelView? _instance;
-  StorageModelView._();
+  static StorageViewModel? _instance;
+  StorageViewModel._();
 
-  /// Provides the singleton instance of [StorageModelView].
-  static StorageModelView get instance => _instance ??= StorageModelView._();
+  /// Provides the singleton instance of [StorageViewModel].
+  static StorageViewModel get instance => _instance ??= StorageViewModel._();
 
   final _storage = FirebaseStorage.instance;
 

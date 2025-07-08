@@ -4,6 +4,6 @@ library;
 
 export 'src/firebase_cloud_messaging.dart'
     show
-        FirebaseCloudMessagingModelView,
+        FirebaseCloudMessagingViewModel,
         FCMSharedPreferencesKeys,
         FCMRemoteConfigKeys;

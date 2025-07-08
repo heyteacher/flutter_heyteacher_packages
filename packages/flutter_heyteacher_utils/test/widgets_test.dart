@@ -277,7 +277,7 @@ void main() {
 
     // Check if the style matches the expected style from the widget
     expect(textWidget.style?.color,
-        ThemeModelView.instance().theme.colorScheme.onError);
+        ThemeViewModel.instance().theme.colorScheme.onError);
     expect(textWidget.style?.fontSize,
         Theme.of(context).textTheme.headlineMedium?.fontSize);
 
@@ -288,6 +288,6 @@ void main() {
         tester.widget<Text>(find.text('User not authenticated (Mock)'));
 
     expect(authTextWidget.style?.color,
-        ThemeModelView.instance().theme.colorScheme.onError);
+        ThemeViewModel.instance().theme.colorScheme.onError);
   });
 }
