@@ -1,10 +1,10 @@
 /// Provides classes for creating and managing in-app tutorials.
 
-/// This library includes [TutorialModelView] for managing tutorial flows.
+/// This library includes [TutorialViewModel] for managing tutorial flows.
 /// A tutorial is identify by the `screenMame` which is associated.
 
-/// [TutorialModelView.addItem] add a item to the tutorial of a screen.
-/// [TutorialModelView.start] show the tutoria per the specified screen.
+/// [TutorialViewModel.addItem] add a item to the tutorial of a screen.
+/// [TutorialViewModel.start] show the tutoria per the specified screen.
 library;
 
 import 'package:app_tutorial/app_tutorial.dart';
@@ -16,16 +16,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// It allows adding tutorial items associated with specific screen names and
 /// then starting the tutorial sequence for a given screen.
-class TutorialModelView {
+class TutorialViewModel {
   final _log = Logger('TutorialModel');
 
-  static TutorialModelView? _instance;
+  static TutorialViewModel? _instance;
 
   /// Private constructor for the singleton pattern.
-  TutorialModelView._();
+  TutorialViewModel._();
 
-  /// Provides access to the singleton instance of [TutorialModelView].
-  static TutorialModelView get instance => _instance ??= TutorialModelView._();
+  /// Provides access to the singleton instance of [TutorialViewModel].
+  static TutorialViewModel get instance => _instance ??= TutorialViewModel._();
 
   final Map<String, List<TutorialItem>> _screens = {};
 
