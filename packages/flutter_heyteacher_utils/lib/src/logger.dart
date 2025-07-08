@@ -242,28 +242,19 @@ class _LoggerScreenState extends State<LoggerScreen> {
 
   /// Determines the background color for a log entry based on its [Level].
   Color? _backgroundColor(Level level) => switch (level) {
-<<<<<<< HEAD
         Level.SHOUT =>
-          ThemeModelView.instance().redColor.withValues(alpha: 0.4),
+          ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
         Level.SEVERE =>
-          ThemeModelView.instance().redColor.withValues(alpha: 0.4),
-=======
-        Level.SHOUT => ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
-        Level.SEVERE => ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
->>>>>>> 98f8317 (refactor: rename *ModelView to *ViewModel)
+          ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
         Level.WARNING =>
           ThemeViewModel.instance().orangeColor.withValues(alpha: 0.4),
         Level.CONFIG =>
-<<<<<<< HEAD
-          ThemeModelView.instance().yellowColor.withValues(alpha: 0.4),
-        Level.INFO =>
-          ThemeModelView.instance().greenColor.withValues(alpha: 0.4),
-        _ => ThemeModelView.instance().blueColor.withValues(alpha: 0.4)
-=======
+          ThemeViewModel.instance().orangeColor.withValues(alpha: 0.4),
+        Level.CONFIG =>
           ThemeViewModel.instance().yellowColor.withValues(alpha: 0.4),
-        Level.INFO => ThemeViewModel.instance().greenColor.withValues(alpha: 0.4),
+        Level.INFO =>
+          ThemeViewModel.instance().greenColor.withValues(alpha: 0.4),
         _ => ThemeViewModel.instance().blueColor.withValues(alpha: 0.4)
->>>>>>> 98f8317 (refactor: rename *ModelView to *ViewModel)
       };
 }
 

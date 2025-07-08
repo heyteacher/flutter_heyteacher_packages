@@ -206,13 +206,8 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
     final confirmQuestionMessage =
         FlutterHeyteacherUtilsLocalizations.of(context)!
             .areYouSureToImportEncryptionSecretKey;
-<<<<<<< HEAD
     widget._encryptionPassphraseFocusNode.unfocus();
-    if (AuthModelView.instance().notAutenticated) {
-=======
-    widget.encryptionPassphraseFocusNode.unfocus();
     if (AuthViewModel.instance().notAutenticated) {
->>>>>>> 98f8317 (refactor: rename *ModelView to *ViewModel)
       showConfirmCancelDialog(
           context: context,
           content: FlutterHeyteacherUtilsLocalizations.of(context)!
