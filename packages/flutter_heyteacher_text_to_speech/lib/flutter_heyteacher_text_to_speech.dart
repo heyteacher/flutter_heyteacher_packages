@@ -1,2 +1,2 @@
 
-export 'src/tts/tts_model.dart' show TTSModelView;
+export 'src/tts/tts_view_model.dart' show TTSViewModel;

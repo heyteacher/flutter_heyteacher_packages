@@ -5,7 +5,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
-class TTSModelView {
+class TTSViewModel {
   static final _log = Logger('TtsModel');
 
   late FlutterTts _textToSpeech;
@@ -15,17 +15,17 @@ class TTSModelView {
   StreamSubscription? _onUserUpdateStreamSubscription,
       _stateChangesStreamSubscription;
 
-  static TTSModelView? _instance;
-  static TTSModelView get instance => _instance ??= TTSModelView._();
-  TTSModelView._() {
+  static TTSViewModel? _instance;
+  static TTSViewModel get instance => _instance ??= TTSViewModel._();
+  TTSViewModel._() {
     _textToSpeech = FlutterTts();
     _textToSpeech.awaitSpeakCompletion(true);
     // get locale language 
     final languageCode =
-        LocaleModelView.instance.locale?.languageCode ?? Intl.getCurrentLocale();
+        LocaleViewModel.instance.locale?.languageCode ?? Intl.getCurrentLocale();
     _changeLanguage(languageCode);
     // listen locale languale change  
-    _stateChangesStreamSubscription = LocaleModelView.instance.localeStream
+    _stateChangesStreamSubscription = LocaleViewModel.instance.localeStream
         .listen((locale) => _changeLanguage(locale.languageCode));
   }
 
