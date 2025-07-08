@@ -3,7 +3,7 @@
 ///
 /// This library provides:
 /// - [ThemeCard]: A widget for users to select between light, dark, or system default themes.
-/// - [ThemeModelView]: A singleton class responsible for holding the current theme state,
+/// - [ThemeViewModel]: A singleton class responsible for holding the current theme state,
 ///   persisting user preferences, providing theme data, and broadcasting theme changes.
 ///
 library;
@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// A [ListTile] widget that allows users to select the application's [ThemeMode].
 ///
 /// It presents [ChoiceChip] options for system, dark, and light themes.
-/// Changes are propagated through the [ThemeModelView] singleton.
+/// Changes are propagated through the [ThemeViewModel] singleton.
 class ThemeCard extends StatefulWidget {
   const ThemeCard({super.key});
 
@@ -35,21 +35,21 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
             spacing: 2,
             children: [
               ChoiceChip(
-                  selected: ThemeMode.system == ThemeModelView.instance().themeMode,
+                  selected: ThemeMode.system == ThemeViewModel.instance().themeMode,
                   label: Text(ThemeMode.system.name),
                   avatar: const Icon(Icons.smartphone),
                   showCheckmark: false,
                   onSelected: (bool selected) =>
                       onSelected(selected ? ThemeMode.system : null)),
               ChoiceChip(
-                  selected: ThemeMode.dark == ThemeModelView.instance().themeMode,
+                  selected: ThemeMode.dark == ThemeViewModel.instance().themeMode,
                   label: Text(ThemeMode.dark.name),
                   avatar: const Icon(Icons.dark_mode),
                   showCheckmark: false,
                   onSelected: (bool selected) =>
                       onSelected(selected ? ThemeMode.dark : null)),
               ChoiceChip(
-                  selected: ThemeMode.light == ThemeModelView.instance().themeMode,
+                  selected: ThemeMode.light == ThemeViewModel.instance().themeMode,
                   label: Text(ThemeMode.light.name),
                   avatar: const Icon(Icons.light_mode),
                   showCheckmark: false,
@@ -62,12 +62,12 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
 
   /// Called when a [ChoiceChip] is selected.
   ///
-  /// Updates the [ThemeModelView] with the [newSelection]. If [newSelection] is null
+  /// Updates the [ThemeViewModel] with the [newSelection]. If [newSelection] is null
   /// (which can happen if a chip is deselected, though not in this specific UI setup),
   /// it defaults to [ThemeMode.system].
   @protected
   void onSelected(ThemeMode? newSelection) => setState(() {
-        ThemeModelView.instance().setThemeMode(newSelection ?? ThemeMode.system);
+        ThemeViewModel.instance().setThemeMode(newSelection ?? ThemeMode.system);
       });
 }
 
@@ -85,7 +85,7 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
 ///
 /// The theme mode is stored under the key `_sharedPreferencesThemeModeKey` in shared preferences.
 /// The theme is set to [ThemeMode.system] by default.
-class ThemeModelView {
+class ThemeViewModel {
   final ({
     Color primary,
     Color disabled,
@@ -168,17 +168,17 @@ class ThemeModelView {
           ? Colors.purple.shade800
           : Colors.purple.shade200;
 
-  static ThemeModelView? _instance;
+  static ThemeViewModel? _instance;
 
-  /// Provides the singleton instance of [ThemeModelView].
+  /// Provides the singleton instance of [ThemeViewModel].
   ///
-  /// On first call, it initializes the [ThemeModelView] with optional
+  /// On first call, it initializes the [ThemeViewModel] with optional
   /// [initialDarkColorScheme] and [initialLightColorScheme]. If these are not
   /// provided, default color schemes are used.
   ///
   /// Subsequent calls return the existing instance.
   /// This method also triggers the loading of the persisted theme mode.
-  static ThemeModelView instance(
+  static ThemeViewModel instance(
           {({
             Color primary,
             Color disabled,
@@ -205,7 +205,7 @@ class ThemeModelView {
             Color onSurfaceVariant,
             Color surfaceContainer,
           })? initialLightColorScheme}) =>
-      _instance ??= ThemeModelView._(
+      _instance ??= ThemeViewModel._(
           initialDarkColorScheme: initialDarkColorScheme ??
               (
                 primary: Colors.white,
@@ -235,13 +235,13 @@ class ThemeModelView {
                 onSurfaceVariant: Colors.black
               ));
 
-  /// Private constructor for the [ThemeModelView] singleton.
+  /// Private constructor for the [ThemeViewModel] singleton.
   ///
   /// Initializes [_initialLightColorScheme] and [_initialDarkColorScheme],
   /// sets the default [_themeMode] to [ThemeMode.system],
   /// creates the initial [darkTheme] and [lightTheme] based on the provided schemes,
   /// and attempts to load the persisted theme mode from [SharedPreferencesAsync].
-  ThemeModelView._(
+  ThemeViewModel._(
       {required ({
         Color primary,
         Color disabled,

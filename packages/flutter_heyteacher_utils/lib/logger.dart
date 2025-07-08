@@ -11,4 +11,4 @@ library;
 ///   to Firebase Analytics.
 
 export 'src/logger.dart'
-    show LoggerModelView, LoggerScreen, LoggerCard, LoggingRouter;
+    show LoggerViewModel, LoggerScreen, LoggerCard, LoggingRouter;

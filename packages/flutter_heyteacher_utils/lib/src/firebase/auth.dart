@@ -34,7 +34,7 @@ class AccountCard extends StatelessWidget {
       required Future<String?> Function(String?) deleteUserDataCallback})
       : _createUserDataCallback = createUserDataCallback,
         _deleteUserDataCallback = deleteUserDataCallback {
-    _authStreamSubscription = AuthModelView.instance()
+    _authStreamSubscription = AuthViewModel.instance()
         .stateChangesStream
         .listen((user) => user != null ? _createUserDataCallback(null) : null);
   }
@@ -46,30 +46,30 @@ class AccountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
         child: StreamBuilder<dynamic>(
-            stream: AuthModelView.instance().stateChangesStream,
+            stream: AuthViewModel.instance().stateChangesStream,
             builder: (_, snapshot) {
               return ListTile(
                 key: const ValueKey('lt_account'),
                 leading: Icon(
                   Icons.person,
-                  color: AuthModelView.instance().autenticated
+                  color: AuthViewModel.instance().autenticated
                       ? Theme.of(context).iconTheme.color
                       : Theme.of(context).disabledColor,
                   size: Theme.of(context).textTheme.displayMedium!.fontSize,
                 ),
                 title: Text(
                     FlutterHeyteacherUtilsLocalizations.of(context)!.account),
-                subtitle: AuthModelView.instance().autenticated
-                    ? Text(AuthModelView.instance().displayName ?? '')
+                subtitle: AuthViewModel.instance().autenticated
+                    ? Text(AuthViewModel.instance().displayName ?? '')
                     : Text(FlutterHeyteacherUtilsLocalizations.of(context)!
                         .userNotAutenticated),
                 trailing: Wrap(
                   children: [
-                    if (AuthModelView.instance().autenticated)
+                    if (AuthViewModel.instance().autenticated)
                       IconButton(
                           key: const ValueKey('ic_delete_data'),
                           icon: const Icon(Icons.delete),
-                          color: ThemeModelView.instance()
+                          color: ThemeViewModel.instance()
                               .theme
                               .colorScheme
                               .onError,
@@ -94,17 +94,17 @@ class AccountCard extends StatelessWidget {
                         }),
                     IconButton(
                         key: const ValueKey('ic_login_logout'),
-                        icon: Icon(AuthModelView.instance().autenticated
+                        icon: Icon(AuthViewModel.instance().autenticated
                             ? Icons.logout
                             : Icons.login),
-                        color: AuthModelView.instance().autenticated
-                            ? ThemeModelView.instance()
+                        color: AuthViewModel.instance().autenticated
+                            ? ThemeViewModel.instance()
                                 .theme
                                 .colorScheme
                                 .onError
                             : Theme.of(context).iconTheme.color,
                         onPressed: () async {
-                          if (AuthModelView.instance().autenticated) {
+                          if (AuthViewModel.instance().autenticated) {
                             GoRouter.of(context).pushNamed('auth-sign-out');
                           } else {
                             GoRouter.of(context).pushNamed('auth-sign-in');
@@ -123,28 +123,28 @@ class AccountCard extends StatelessWidget {
 /// It provides methods for signing out, accessing the current [User] object,
 /// checking authentication status, and listening to authentication state changes.
 /// It can be initialized with a real or mocked [FirebaseAuth] instance.
-class AuthModelView {
+class AuthViewModel {
   final log = Logger('AuthModel');
   late final FirebaseAuth _firebaseAuth;
   GoogleProvider? _googleProvider;
 
   // singleton
-  static AuthModelView? _instance;
+  static AuthViewModel? _instance;
 
-  /// Provides the singleton instance of the [AuthModelView] manager.
+  /// Provides the singleton instance of the [AuthViewModel] manager.
   ///
   /// If [mockedFirebaseAuth] is not null, initialize with the mocked Firebase
   /// Auth, and the Google Sign-In provider will not be configured.
   /// This is useful for testing environments.
-  static AuthModelView instance({FirebaseAuth? mockedFirebaseAuth}) {
-    _instance ??= AuthModelView._(mockedFirebaseAuth: mockedFirebaseAuth);
+  static AuthViewModel instance({FirebaseAuth? mockedFirebaseAuth}) {
+    _instance ??= AuthViewModel._(mockedFirebaseAuth: mockedFirebaseAuth);
     return _instance!;
   }
 
   /// Private constructor for the singleton.
   /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth] or the default [FirebaseAuth.instance].
   /// Configures [GoogleProvider] if not using a mocked instance.
-  AuthModelView._({FirebaseAuth? mockedFirebaseAuth}) {
+  AuthViewModel._({FirebaseAuth? mockedFirebaseAuth}) {
     // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth
     //and configure provider
     if (mockedFirebaseAuth == null) {

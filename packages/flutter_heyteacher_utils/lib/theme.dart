@@ -8,4 +8,4 @@
 ///
 library;
 
-export 'src/theme.dart' show ThemeCard, ThemeModelView, ThemeCardState;
+export 'src/theme.dart' show ThemeCard, ThemeViewModel, ThemeCardState;
