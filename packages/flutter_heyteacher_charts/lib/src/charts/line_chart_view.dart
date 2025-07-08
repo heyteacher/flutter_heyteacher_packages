@@ -100,7 +100,7 @@ class LineChartView extends ChartView {
   Widget _leftTitleWidgets(double value, TitleMeta meta) => Padding(
         padding: const EdgeInsets.only(right: 5),
         child: Text(formatterAxisY(ChartDataItem(x: 0, y: value)),
-            style: ThemeModelView.instance().theme.textTheme.bodySmall!
+            style: ThemeViewModel.instance().theme.textTheme.bodySmall!
             .copyWith(color: colorY)
             ,
             textAlign: TextAlign.right),
@@ -115,7 +115,7 @@ class LineChartView extends ChartView {
           quarterTurns: 3,
           child: Text(
             formatterAxisX(ChartDataItem(x: value, y: 0)),
-            style: ThemeModelView.instance()
+            style: ThemeViewModel.instance()
                 .theme
                 .textTheme
                 .bodySmall!
@@ -128,28 +128,28 @@ class LineChartView extends ChartView {
         show: true,
         border: Border(
           bottom: BorderSide(
-              color: ThemeModelView.instance()
+              color: ThemeViewModel.instance()
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: 0.5),
               width: 1),
           left: BorderSide(
-              color: ThemeModelView.instance()
+              color: ThemeViewModel.instance()
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: 0.5),
               width: 1),
           right: BorderSide(
-              color: ThemeModelView.instance()
+              color: ThemeViewModel.instance()
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: 0),
               width: 1),
           top: BorderSide(
-              color: ThemeModelView.instance()
+              color: ThemeViewModel.instance()
                   .theme
                   .colorScheme
                   .onSurface
@@ -217,7 +217,7 @@ class LineChartView extends ChartView {
                   x: e.max.toDouble(),
                   color: e.color.withValues(alpha: 0.4),
                   label: VerticalLineLabel(
-                      style: TextStyle(color: ThemeModelView.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: ThemeViewModel.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
                       alignment: Alignment.topRight,
                       show: true,
                       labelResolver: (_) => '')),
