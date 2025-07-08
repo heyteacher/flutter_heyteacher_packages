@@ -18,6 +18,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -241,13 +242,16 @@ class _LoggerScreenState extends State<LoggerScreen> {
 
   /// Determines the background color for a log entry based on its [Level].
   Color? _backgroundColor(Level level) => switch (level) {
-        Level.SHOUT => ThemeModelView.instance().redColor.withValues(alpha: 0.4),
-        Level.SEVERE => ThemeModelView.instance().redColor.withValues(alpha: 0.4),
+        Level.SHOUT =>
+          ThemeModelView.instance().redColor.withValues(alpha: 0.4),
+        Level.SEVERE =>
+          ThemeModelView.instance().redColor.withValues(alpha: 0.4),
         Level.WARNING =>
           ThemeModelView.instance().orangeColor.withValues(alpha: 0.4),
         Level.CONFIG =>
           ThemeModelView.instance().yellowColor.withValues(alpha: 0.4),
-        Level.INFO => ThemeModelView.instance().greenColor.withValues(alpha: 0.4),
+        Level.INFO =>
+          ThemeModelView.instance().greenColor.withValues(alpha: 0.4),
         _ => ThemeModelView.instance().blueColor.withValues(alpha: 0.4)
       };
 }
@@ -384,13 +388,21 @@ class LoggerModelView {
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
     Logger.root.level = Level(
-        kDebugMode
-            ? FirebaseRemoteConfig.instance
-                .getString('loggerDebugRootLevelName')
-            : FirebaseRemoteConfig.instance.getString('loggerRootLevelName'),
-        kDebugMode
-            ? FirebaseRemoteConfig.instance.getInt('loggerDebugRootLevelValue')
-            : FirebaseRemoteConfig.instance.getInt('loggerRootLevelValue'));
+        (FirebaseRemoteConfig.instance.getString('loggerUIDRootLevelFinest') ==
+                AuthModelView.instance().uid)
+            ? 'FINEST'
+            : kDebugMode
+                ? FirebaseRemoteConfig.instance
+                    .getString('loggerDebugRootLevelName')
+                : FirebaseRemoteConfig.instance
+                    .getString('loggerRootLevelName'),
+        (FirebaseRemoteConfig.instance.getString('loggerUIDRootLevelFinest') ==
+                AuthModelView.instance().uid)
+            ? 300
+            : kDebugMode
+                ? FirebaseRemoteConfig.instance
+                    .getInt('loggerDebugRootLevelValue')
+                : FirebaseRemoteConfig.instance.getInt('loggerRootLevelValue'));
 
     // Asynchronously fetch package version and device information.
     final version = await InfoDevicePackageModelView.instance.packageVersion;
@@ -448,17 +460,17 @@ class LoggerModelView {
     (await _logFiles).where(
       (fileSystemEntity) {
         try {
-          
-        return LogEntry.fromJson(
-                jsonDecode((fileSystemEntity as File).readAsStringSync()))
-            .time
-            .isBefore(fromDateTime);
-        } catch (e,s) {
+          return LogEntry.fromJson(
+                  jsonDecode((fileSystemEntity as File).readAsStringSync()))
+              .time
+              .isBefore(fromDateTime);
+        } catch (e, s) {
           if (kDebugMode) {
-            print('Error reading log file: ${fileSystemEntity.path} content ${(fileSystemEntity as File).readAsStringSync()} error $e stackTrace $s');
+            print(
+                'Error reading log file: ${fileSystemEntity.path} content ${(fileSystemEntity as File).readAsStringSync()} error $e stackTrace $s');
           }
           return true;
-        } 
+        }
       },
     ).forEach(_deleteFile);
   }
