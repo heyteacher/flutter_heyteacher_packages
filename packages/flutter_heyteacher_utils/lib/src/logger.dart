@@ -391,7 +391,7 @@ class LoggerViewModel {
     // Set the root logger's level based on debug mode and Firebase Remote Config.
     Logger.root.level = Level(
         (FirebaseRemoteConfig.instance.getString('loggerUIDRootLevelFinest') ==
-                AuthModelView.instance().uid)
+                AuthViewModel.instance().uid)
             ? 'FINEST'
             : kDebugMode
                 ? FirebaseRemoteConfig.instance
@@ -399,7 +399,7 @@ class LoggerViewModel {
                 : FirebaseRemoteConfig.instance
                     .getString('loggerRootLevelName'),
         (FirebaseRemoteConfig.instance.getString('loggerUIDRootLevelFinest') ==
-                AuthModelView.instance().uid)
+                AuthViewModel.instance().uid)
             ? 300
             : kDebugMode
                 ? FirebaseRemoteConfig.instance
