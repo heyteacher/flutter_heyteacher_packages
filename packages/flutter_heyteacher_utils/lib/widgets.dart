@@ -318,7 +318,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
     this.addCallback,
     this.index,
     this.isDense = false,
-    this.height = 45,
+    this.height = 40,
     this.width,
     this.menuHeight = 300,
   }) : _label = label;
@@ -354,7 +354,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
               ? IconButton(
                   onPressed: _preAddCallback, icon: const Icon(Icons.add))
               : null,
-          trailingIcon: const Icon(Icons.filter_list,),
+          trailingIcon: const Icon(Icons.filter_list,applyTextScaling: true),
           textStyle: Theme.of(context).textTheme.labelSmall,
           width: widget.width,
           menuHeight: widget.menuHeight,
