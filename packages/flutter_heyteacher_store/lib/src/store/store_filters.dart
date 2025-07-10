@@ -19,11 +19,11 @@
 /// LogicalStoreFilter(
 ///  logicalOperator: LogicalOperator.and,
 ///   filter1: ValueStoreFilter(
-///    field: "startTime",
+///    field: 'startTime',
 ///    operator: Operator.isGreaterThanOrEqualTo,
 ///    value: DateTime(intFormatter.parse(value).toInt())),
 ///   filter2: ValueStoreFilter(
-///    field: "startTime",
+///    field: 'startTime',
 ///    operator: Operator.isLessThan,
 ///    value: DateTime(intFormatter.parse(value).toInt() + 1)));
 /// ```
@@ -35,22 +35,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 enum Operator {
   /// If field value is equal to value
   isEqualTo('='),
-
   /// If field value isn't equal to value
   isNotEqualTo('<>'),
-
   /// If field value is less than field
   isLessThan('<'),
-
   /// If field value is less then or equal to value
   isLessThanOrEqualTo('<='),
-
   /// If field value is greater than field
   isGreaterThan('>'),
-
   /// If field value is greater then or equal to value
   isGreaterThanOrEqualTo('>='),
-
   /// If field array value contains the value
   arrayContains('in');
 
@@ -62,10 +56,8 @@ enum Operator {
 enum IterableOperator {
   /// If field value is contained into the iterable values
   arrayContainsAny('in any'),
-
   /// If field value is is into iterable values
   whereIn('in'),
-
   /// If field value isn't into the iterable values
   whereNotIn('not in');
 
@@ -77,7 +69,6 @@ enum IterableOperator {
 enum LogicalOperator {
   /// All [StoreFilter] children must be satisfied
   and,
-
   /// At least one [StoreFilter] children is satisfied
   or
 }
@@ -105,8 +96,7 @@ class ValueStoreFilter implements StoreFilter {
 
   /// Converts the value store filter into a Firestore filter
   @override
-  Filter toFirestore() {
-    return switch (operator) {
+  Filter toFirestore() => switch (operator) {
       Operator.isEqualTo => Filter(field, isEqualTo: value),
       Operator.isNotEqualTo => Filter(field, isNotEqualTo: value),
       Operator.isLessThan => Filter(field, isLessThan: value),
@@ -116,14 +106,12 @@ class ValueStoreFilter implements StoreFilter {
         Filter(field, isGreaterThanOrEqualTo: value),
       Operator.arrayContains => Filter(field, arrayContains: value),
     };
-  }
 
   /// Prints the filter in polish notation
   @override
-  String toString() {
-    return '$field ${operator.printable} $value';
+  String toString() => '$field ${operator.printable} $value';
   }
-}
+
 
 /// Compares [field] value to iterable [values] according the [IterableOperator]
 class IterableValueStoreFilter implements StoreFilter {
@@ -144,20 +132,17 @@ class IterableValueStoreFilter implements StoreFilter {
 
   /// Converts the Iterable value store filter into a Firestore filter
   @override
-  Filter toFirestore() {
-    return switch (iterableOperator) {
+  Filter toFirestore() => switch (iterableOperator) {
       IterableOperator.arrayContainsAny =>
         Filter(field, arrayContainsAny: values),
       IterableOperator.whereIn => Filter(field, whereIn: values),
       IterableOperator.whereNotIn => Filter(field, whereNotIn: values),
     };
-  }
+  
 
   /// Prints the filter in polish notation
   @override
-  String toString() {
-    return '$field ${iterableOperator.printable} $values';
-  }
+  String toString() => '$field ${iterableOperator.printable} $values';
 }
 
 /// If [value] is `true`, checks if [field] is null. Otherwise checks [field] is not null.
@@ -173,15 +158,11 @@ class IsNullStoreFilter implements StoreFilter {
 
   /// Converts the is null store filter into a Firestore filter
   @override
-  Filter toFirestore() {
-    return Filter(field, isNull: value);
-  }
+  Filter toFirestore() => Filter(field, isNull: value);
 
   /// Prints the filter in polish notation
   @override
-  String toString() {
-    return "$field is${value ? "" : "Not"}Null";
-  }
+  String toString() => '$field is${value ? '' : 'Not'}Null';
 }
 
 /// Applies [LogicalOperator] to [StoreFilter]. If [LogicalOperator.and] all [StoreFilter] must be satisfied.
@@ -317,108 +298,103 @@ class LogicalStoreFilter implements StoreFilter {
 
   /// Converts the logical store filter into a Firestore filter
   @override
-  Filter toFirestore() {
-    return switch (logicalOperator) {
-      LogicalOperator.and => Filter.and(
-          filter1.toFirestore(),
-          filter2.toFirestore(),
-          filter3?.toFirestore(),
-          filter4?.toFirestore(),
-          filter5?.toFirestore(),
-          filter6?.toFirestore(),
-          filter7?.toFirestore(),
-          filter8?.toFirestore(),
-          filter9?.toFirestore(),
-          filter10?.toFirestore(),
-          filter11?.toFirestore(),
-          filter12?.toFirestore(),
-          filter13?.toFirestore(),
-          filter14?.toFirestore(),
-          filter15?.toFirestore(),
-          filter16?.toFirestore(),
-          filter17?.toFirestore(),
-          filter18?.toFirestore(),
-          filter19?.toFirestore(),
-          filter20?.toFirestore(),
-          filter21?.toFirestore(),
-          filter22?.toFirestore(),
-          filter23?.toFirestore(),
-          filter24?.toFirestore(),
-          filter25?.toFirestore(),
-          filter26?.toFirestore(),
-          filter27?.toFirestore(),
-          filter28?.toFirestore(),
-          filter29?.toFirestore(),
-          filter30?.toFirestore(),
-        ),
-      LogicalOperator.or => Filter.or(
-          filter1.toFirestore(),
-          filter2.toFirestore(),
-          filter3?.toFirestore(),
-          filter4?.toFirestore(),
-          filter5?.toFirestore(),
-          filter6?.toFirestore(),
-          filter7?.toFirestore(),
-          filter8?.toFirestore(),
-          filter9?.toFirestore(),
-          filter10?.toFirestore(),
-          filter11?.toFirestore(),
-          filter12?.toFirestore(),
-          filter13?.toFirestore(),
-          filter14?.toFirestore(),
-          filter15?.toFirestore(),
-          filter16?.toFirestore(),
-          filter17?.toFirestore(),
-          filter18?.toFirestore(),
-          filter19?.toFirestore(),
-          filter20?.toFirestore(),
-          filter21?.toFirestore(),
-          filter22?.toFirestore(),
-          filter23?.toFirestore(),
-          filter24?.toFirestore(),
-          filter25?.toFirestore(),
-          filter26?.toFirestore(),
-          filter27?.toFirestore(),
-          filter28?.toFirestore(),
-          filter29?.toFirestore(),
-          filter30?.toFirestore(),
-        ),
-    };
-  }
+  Filter toFirestore() => switch (logicalOperator) {
+        LogicalOperator.and => Filter.and(
+            filter1.toFirestore(),
+            filter2.toFirestore(),
+            filter3?.toFirestore(),
+            filter4?.toFirestore(),
+            filter5?.toFirestore(),
+            filter6?.toFirestore(),
+            filter7?.toFirestore(),
+            filter8?.toFirestore(),
+            filter9?.toFirestore(),
+            filter10?.toFirestore(),
+            filter11?.toFirestore(),
+            filter12?.toFirestore(),
+            filter13?.toFirestore(),
+            filter14?.toFirestore(),
+            filter15?.toFirestore(),
+            filter16?.toFirestore(),
+            filter17?.toFirestore(),
+            filter18?.toFirestore(),
+            filter19?.toFirestore(),
+            filter20?.toFirestore(),
+            filter21?.toFirestore(),
+            filter22?.toFirestore(),
+            filter23?.toFirestore(),
+            filter24?.toFirestore(),
+            filter25?.toFirestore(),
+            filter26?.toFirestore(),
+            filter27?.toFirestore(),
+            filter28?.toFirestore(),
+            filter29?.toFirestore(),
+            filter30?.toFirestore(),
+          ),
+        LogicalOperator.or => Filter.or(
+            filter1.toFirestore(),
+            filter2.toFirestore(),
+            filter3?.toFirestore(),
+            filter4?.toFirestore(),
+            filter5?.toFirestore(),
+            filter6?.toFirestore(),
+            filter7?.toFirestore(),
+            filter8?.toFirestore(),
+            filter9?.toFirestore(),
+            filter10?.toFirestore(),
+            filter11?.toFirestore(),
+            filter12?.toFirestore(),
+            filter13?.toFirestore(),
+            filter14?.toFirestore(),
+            filter15?.toFirestore(),
+            filter16?.toFirestore(),
+            filter17?.toFirestore(),
+            filter18?.toFirestore(),
+            filter19?.toFirestore(),
+            filter20?.toFirestore(),
+            filter21?.toFirestore(),
+            filter22?.toFirestore(),
+            filter23?.toFirestore(),
+            filter24?.toFirestore(),
+            filter25?.toFirestore(),
+            filter26?.toFirestore(),
+            filter27?.toFirestore(),
+            filter28?.toFirestore(),
+            filter29?.toFirestore(),
+            filter30?.toFirestore(),
+          ),
+      };
 
   /// Prints the filter in polish notation
   @override
-  String toString() {
-    return '('
-        '$filter1 '
-        '${logicalOperator.name} $filter2'
-        "${filter3 != null ? logicalOperator.name : ""} ${filter3 ?? ""}"
-        "${filter4 != null ? logicalOperator.name : ""} ${filter4 ?? ""}"
-        "${filter5!= null ? logicalOperator.name : ""} ${filter5 ?? ""}"
-        "${filter6 != null ? logicalOperator.name : ""} ${filter6 ?? ""}"
-        "${filter7 != null ? logicalOperator.name : ""} ${filter7 ?? ""}"
-        "${filter8 != null ? logicalOperator.name : ""} ${filter8 ?? ""}"
-        "${filter9 != null ? logicalOperator.name : ""} ${filter9 ?? ""}"
-        "${filter10 != null ? logicalOperator.name : ""} ${filter10 ?? ""}"
-        "${filter11 != null ? logicalOperator.name : ""} ${filter11 ?? ""}"
-        "${filter12 != null ? logicalOperator.name : ""} ${filter12 ?? ""}"
-        "${filter13 != null ? logicalOperator.name : ""} ${filter13 ?? ""}"
-        "${filter14 != null ? logicalOperator.name : ""} ${filter14 ?? ""}"
-        "${filter15 != null ? logicalOperator.name : ""} ${filter15 ?? ""}"
-        "${filter16 != null ? logicalOperator.name : ""} ${filter16 ?? ""}"
-        "${filter17 != null ? logicalOperator.name : ""} ${filter17 ?? ""}"
-        "${filter18 != null ? logicalOperator.name : ""} ${filter18 ?? ""}"
-        "${filter19 != null ? logicalOperator.name : ""} ${filter19 ?? ""}"
-        "${filter20 != null ? logicalOperator.name : ""} ${filter20 ?? ""}"
-        "${filter21 != null ? logicalOperator.name : ""} ${filter21 ?? ""}"
-        "${filter22 != null ? logicalOperator.name : ""} ${filter22 ?? ""}"
-        "${filter23 != null ? logicalOperator.name : ""} ${filter23 ?? ""}"
-        "${filter24 != null ? logicalOperator.name : ""} ${filter24 ?? ""}"
-        "${filter25 != null ? logicalOperator.name : ""} ${filter25 ?? ""}"
-        "${filter26 != null ? logicalOperator.name : ""} ${filter26 ?? ""}"
-        "${filter27 != null ? logicalOperator.name : ""} ${filter27 ?? ""}"
-        "${filter28 != null ? logicalOperator.name : ""} ${filter28 ?? ""}"
-        "${filter29 != null ? logicalOperator.name : ""} ${filter29 ?? ""}"
-        "${filter30 != null ? logicalOperator.name : ""} ${filter30 ?? ""})";
-  }
+  String toString() => '('
+      '$filter1 ${logicalOperator.name} ${logicalOperator.name} $filter2'
+      '${filter3 != null ? ' ${logicalOperator.name} ' : ''} ${filter3 ?? ''}'
+      '${filter4 != null ? ' ${logicalOperator.name} ' : ''} ${filter4 ?? ''}'
+      '${filter5 != null ? ' ${logicalOperator.name} ' : ''} ${filter5 ?? ''}'
+      '${filter6 != null ? ' ${logicalOperator.name} ' : ''} ${filter6 ?? ''}'
+      '${filter7 != null ? ' ${logicalOperator.name} ' : ''} ${filter7 ?? ''}'
+      '${filter8 != null ? ' ${logicalOperator.name} ' : ''} ${filter8 ?? ''}'
+      '${filter9 != null ? ' ${logicalOperator.name} ' : ''} ${filter9 ?? ''}'
+      '${filter10 != null ? ' ${logicalOperator.name} ' : ''} ${filter10 ?? ''}'
+      '${filter11 != null ? ' ${logicalOperator.name} ' : ''} ${filter11 ?? ''}'
+      '${filter12 != null ? ' ${logicalOperator.name} ' : ''} ${filter12 ?? ''}'
+      '${filter13 != null ? ' ${logicalOperator.name} ' : ''} ${filter13 ?? ''}'
+      '${filter14 != null ? ' ${logicalOperator.name} ' : ''} ${filter14 ?? ''}'
+      '${filter15 != null ? ' ${logicalOperator.name} ' : ''} ${filter15 ?? ''}'
+      '${filter16 != null ? ' ${logicalOperator.name} ' : ''} ${filter16 ?? ''}'
+      '${filter17 != null ? ' ${logicalOperator.name} ' : ''} ${filter17 ?? ''}'
+      '${filter18 != null ? ' ${logicalOperator.name} ' : ''} ${filter18 ?? ''}'
+      '${filter19 != null ? ' ${logicalOperator.name} ' : ''} ${filter19 ?? ''}'
+      '${filter20 != null ? ' ${logicalOperator.name} ' : ''} ${filter20 ?? ''}'
+      '${filter21 != null ? ' ${logicalOperator.name} ' : ''} ${filter21 ?? ''}'
+      '${filter22 != null ? ' ${logicalOperator.name} ' : ''} ${filter22 ?? ''}'
+      '${filter23 != null ? ' ${logicalOperator.name} ' : ''} ${filter23 ?? ''}'
+      '${filter24 != null ? ' ${logicalOperator.name} ' : ''} ${filter24 ?? ''}'
+      '${filter25 != null ? ' ${logicalOperator.name} ' : ''} ${filter25 ?? ''}'
+      '${filter26 != null ? ' ${logicalOperator.name} ' : ''} ${filter26 ?? ''}'
+      '${filter27 != null ? ' ${logicalOperator.name} ' : ''} ${filter27 ?? ''}'
+      '${filter28 != null ? ' ${logicalOperator.name} ' : ''} ${filter28 ?? ''}'
+      '${filter29 != null ? ' ${logicalOperator.name} ' : ''} ${filter29 ?? ''}'
+      '${filter30 != null ? ' ${logicalOperator.name} ' : ''} ${filter30 ?? ''})';
 }
