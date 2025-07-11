@@ -340,7 +340,7 @@ class LoggerViewModel {
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
-  static LoggerViewModel instance({bool initialize = false}) =>
+  static LoggerViewModel instance({bool initialize = true}) =>
       initialize ? LoggerViewModel._() : _instance ??= LoggerViewModel._();
 
   /// Disposes of the [LoggerViewModel] by canceling the logger subscription.
