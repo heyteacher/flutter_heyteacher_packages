@@ -368,7 +368,7 @@ class LogicalStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() => '('
-      '$filter1 ${logicalOperator.name} ${logicalOperator.name} $filter2'
+      '$filter1 ${logicalOperator.name} $filter2'
       '${filter3 != null ? ' ${logicalOperator.name} ' : ''} ${filter3 ?? ''}'
       '${filter4 != null ? ' ${logicalOperator.name} ' : ''} ${filter4 ?? ''}'
       '${filter5 != null ? ' ${logicalOperator.name} ' : ''} ${filter5 ?? ''}'
