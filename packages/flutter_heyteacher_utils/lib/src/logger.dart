@@ -295,6 +295,8 @@ class LoggerViewModel {
         logEntries.add(logEntry);
       }
     }
+    logEntries.sort(
+        (logEntryA, logEntryB) => logEntryA.time.compareTo(logEntryB.time));
     return logEntries;
   }
 
@@ -368,7 +370,7 @@ class LoggerViewModel {
   ///    Message, error, and stack trace are truncated to 100 characters for Firebase.
   ///
   /// If [reset] is true, it clears the temporary log directory.
-  initialize({bool reset = true}) async {
+  initialize({bool reset = false}) async {
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured) {
