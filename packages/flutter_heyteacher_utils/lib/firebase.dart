@@ -14,3 +14,8 @@ export 'src/firebase/auth.dart'
     show AuthViewModel, UserNotAuthenticatedException, AccountCard;
 export 'src/firebase/crashlytics.dart' show CrashlyticsViewModel;
 export 'src/firebase/remote_config.dart' show RemoteConfigViewModel;
+export 'src/firebase/cloud_messaging.dart'
+    show
+        FirebaseCloudMessagingViewModel,
+        FCMSharedPreferencesKeys,
+        FCMRemoteConfigKeys;
