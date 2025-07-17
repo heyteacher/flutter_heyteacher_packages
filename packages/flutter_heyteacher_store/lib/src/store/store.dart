@@ -456,7 +456,10 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Apply [applyOrderBy], applies filter if [applyFilterBy] and applies
   /// [limit] if not null.
   Query<LightDataType> query(
-      {bool applyOrderBy = false, bool applyFilterBy = true, int? limit}) {
+      {bool applyOrderBy = false,
+      bool applyFilterBy = true,
+      LightDataType? startAfter,
+      int? limit}) {
     Query<LightDataType> retQuery = _collectionReference;
     // apply filter
     if (applyFilterBy && storeFilter != null) {
@@ -471,6 +474,10 @@ abstract class Store<LightDataType extends FirestoreData,
             descending: orderbyField.value == OrderDirection.desc);
       }
     }
+    // apply start after
+    if (startAfter != null) {
+      retQuery = retQuery.startAfter([startAfter]);
+    }
     // apply limit
     if (limit != null && limit > 0) {
       retQuery = retQuery.limit(limit);
@@ -479,11 +486,21 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   /// Returns the stream on [Store.query]
-  Stream<Iterable<LightDataType>> get stream =>
+  Stream<Iterable<LightDataType>> stream(
+          {bool applyOrderBy = false,
+          bool applyFilterBy = true,
+          LightDataType? startAfter,
+          int? limit}) =>
       AuthViewModel.instance().notAutenticated
           ? const Stream.empty()
-          : query(applyOrderBy: true).snapshots().map((querySnapshot) =>
-              querySnapshot.docs.map((document) => document.data()));
+          : query(
+                  applyOrderBy: applyOrderBy,
+                  applyFilterBy: applyFilterBy,
+                  startAfter: startAfter,
+                  limit: limit)
+              .snapshots()
+              .map((querySnapshot) =>
+                  querySnapshot.docs.map((document) => document.data()));
 
   /// Returns `true` if collection is empty based on [Store.storeFilter] defined.
   Future<bool> empty() async {
@@ -519,7 +536,7 @@ abstract class Store<LightDataType extends FirestoreData,
     return lock.synchronized(() async {
       _log.finest('$runtimeType.exists($_detailsCollectionPathLog/$id)');
       final cached = await _storeCache?.get(id);
-      if (cached  != null) return true;
+      if (cached != null) return true;
       try {
         await get(id);
         return true;
