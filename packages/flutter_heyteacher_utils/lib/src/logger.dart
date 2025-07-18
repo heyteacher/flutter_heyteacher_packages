@@ -271,11 +271,6 @@ class LoggerViewModel {
   static LoggerViewModel? _instance;
 
   /// The subscription to the root logger's `onRecord` stream.
-  StreamSubscription<LogRecord>? _loggerSubscription;
-
-  /// Returns the temporary directory for logs.
-  Future<Directory> get _tmpLogsDir async {
-    final tmpLogsDir =
         Directory('${(await getTemporaryDirectory()).path}/logs');
     // Check if the temporary logs directory exists, if not, create it.
     return (await tmpLogsDir.exists()) ? tmpLogsDir : tmpLogsDir.create();
