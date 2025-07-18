@@ -265,7 +265,7 @@ class _LoggerScreenState extends State<LoggerScreen> {
 /// - Storing log records in temporary files in JSON format.
 /// - Sending log records to Firebase Analytics.
 class LoggerViewModel {
-  final _log = Logger('LoggerModel');
+  final _logger = Logger('LoggerViewModel');
 
   /// The singleton instance of [LoggerViewModel].
   static LoggerViewModel? _instance;
@@ -310,19 +310,17 @@ class LoggerViewModel {
     try {
       jsonString = (file as File).readAsStringSync();
       return LogEntry.fromJson(jsonDecode(jsonString) as Map<String, dynamic>);
-    } on Exception catch (e, s) {
+    } on Exception catch (error, stackTrace) {
       file.delete();
-      if (kDebugMode) {
-        print('Error reading log file: ${file.path} content $jsonString');
-      }
+      _logger.severe('(_fromJson): file ${file.path}. Error on parse "$jsonString", deleted',error, stackTrace);
       // If an error occurs while reading the file, return a LogEntry with the error.
       return LogEntry(
         time: DateTime.now(),
         level: Level.SEVERE,
         message: 'Error reading log file: ${file.path}',
         loggerName: 'LoggerModel',
-        error: e.toString(),
-        stackTrace: s.toString(),
+        error: error.toString(),
+        stackTrace: stackTrace.toString(),
       );
     }
   }
@@ -370,24 +368,27 @@ class LoggerViewModel {
   ///    Message, error, and stack trace are truncated to 100 characters for Firebase.
   ///
   /// If [reset] is true, it clears the temporary log directory.
-  initialize({bool reset = false}) async {
+  initialize({bool reset = true}) async {
+    _logger.finest('<initialize>: reset $reset');
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured) {
-      _log.finest('already configured');
+      _logger.finest('(initialize): reset $reset. Already configured');
       return;
     }
     _alreadyConfigured = true;
 
     FlutterError.onError = (FlutterErrorDetails details) {
-      _log.severe('FlutterError', details.exception, details.stack);
+      _logger.severe('(FlutterError.onError)', details.exception, details.stack);
     };
 
-    // if reset is true, delete all logs in the temporary directory
+    // if reset is true, delete all logs in the temporary directory except last day
     if (reset) {
-      await resetLogs(
-          fromDateTime:
-              DateTime(clock.now().year, clock.now().month, clock.now().day));
+      final fromDateTime =
+          DateTime(clock.now().year, clock.now().month, clock.now().day);
+      _logger.finest('(initialize): reset $reset. '
+          'Reset all logs before $fromDateTime');
+      await resetLogs(fromDateTime: fromDateTime);
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
@@ -420,8 +421,8 @@ class LoggerViewModel {
       final String error = record.error != null ? '\n${record.error}' : '';
       final String stackTrace =
           record.stackTrace != null ? '\n${record.stackTrace}' : '';
-      // Add the raw LogRecord to the beginning of the list.
-      _addLog(record);
+      // Addthe raw LogRecord to the beginning of the list.
+      _writeLog(record);
 
       // Print the log message to the console if in debug mode.
       if (kDebugMode) {
@@ -469,17 +470,19 @@ class LoggerViewModel {
               .time
               .isBefore(fromDateTime);
         } catch (e, s) {
-          if (kDebugMode) {
-            print(
-                'Error reading log file: ${fileSystemEntity.path} content ${(fileSystemEntity as File).readAsStringSync()} error $e stackTrace $s');
-          }
+          _logger.severe(
+              '(resetLogs): fromDateTime $fromDateTime. '
+              'Error reading log file: ${fileSystemEntity.path} '
+              'content ${(fileSystemEntity as File).readAsStringSync()}',
+              e,
+              s);
           return true;
         }
       },
     ).forEach(_deleteFile);
   }
 
-  Future<void> _addLog(LogRecord record) async {
+  Future<void> _writeLog(LogRecord record) async {
     // Create a LogEntry from the LogRecord.
     final logEntry = LogEntry(
         time: record.time,
@@ -496,11 +499,12 @@ class LoggerViewModel {
     await file.writeAsString(jsonEncode(logEntry));
   }
 
-  void _deleteFile(FileSystemEntity element) {
-    if (element is File) {
-      element.delete();
+  void _deleteFile(FileSystemEntity file) {
+    _logger.finest('<_deleteFile>: file ${file.path}. Deleted');
+    if (file is File) {
+      file.delete();
       if (kDebugMode) {
-        print('file ${element.path} deleted');
+        _logger.info('(_deleteFile): file ${file.path}. Deleted');
       }
     }
   }
