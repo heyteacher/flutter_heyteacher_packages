@@ -35,12 +35,13 @@ class TTSViewModel {
   }
 
   Future<void> speak(String text) async {
+    _log.finest('<speak>: text \'$text\'');
     if (_previousText == text) {
-    _log.finest('speak: ignore text equals to previous text: $text');
+    _log.finest('(speak): ignore text equals to previous text $text');
       return;
     }
     _previousText = text;
-    _log.finest('speak: text: $text');
+    _log.finest('(speak): text $text');
     _textToSpeech.speak(text);
   }
 
