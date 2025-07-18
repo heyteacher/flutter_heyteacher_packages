@@ -267,11 +267,14 @@ class _LoggerScreenState extends State<LoggerScreen> {
 class LoggerViewModel {
   final _logger = Logger('LoggerViewModel');
 
+  StreamSubscription? _loggerSubscription;
+
   /// The singleton instance of [LoggerViewModel].
   static LoggerViewModel? _instance;
 
+  Future<Directory> get _tmpLogsDir async {
   /// The subscription to the root logger's `onRecord` stream.
-        Directory('${(await getTemporaryDirectory()).path}/logs');
+    final tmpLogsDir =  Directory('${(await getTemporaryDirectory()).path}/logs');
     // Check if the temporary logs directory exists, if not, create it.
     return (await tmpLogsDir.exists()) ? tmpLogsDir : tmpLogsDir.create();
   }
@@ -352,6 +355,7 @@ class LoggerViewModel {
 
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;
+  
 
   /// Configures the root logger for the application.
   ///
