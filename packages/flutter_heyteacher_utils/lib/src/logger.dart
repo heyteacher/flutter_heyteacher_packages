@@ -18,6 +18,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -241,13 +242,18 @@ class _LoggerScreenState extends State<LoggerScreen> {
 
   /// Determines the background color for a log entry based on its [Level].
   Color? _backgroundColor(Level level) => switch (level) {
-        Level.SHOUT => ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
-        Level.SEVERE => ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
+        Level.SHOUT =>
+          ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
+        Level.SEVERE =>
+          ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
         Level.WARNING =>
           ThemeViewModel.instance().orangeColor.withValues(alpha: 0.4),
         Level.CONFIG =>
+          ThemeViewModel.instance().orangeColor.withValues(alpha: 0.4),
+        Level.CONFIG =>
           ThemeViewModel.instance().yellowColor.withValues(alpha: 0.4),
-        Level.INFO => ThemeViewModel.instance().greenColor.withValues(alpha: 0.4),
+        Level.INFO =>
+          ThemeViewModel.instance().greenColor.withValues(alpha: 0.4),
         _ => ThemeViewModel.instance().blueColor.withValues(alpha: 0.4)
       };
 }
@@ -259,17 +265,12 @@ class _LoggerScreenState extends State<LoggerScreen> {
 /// - Storing log records in temporary files in JSON format.
 /// - Sending log records to Firebase Analytics.
 class LoggerViewModel {
-  final _log = Logger('LoggerModel');
+  final _logger = Logger('LoggerViewModel');
 
   /// The singleton instance of [LoggerViewModel].
   static LoggerViewModel? _instance;
 
   /// The subscription to the root logger's `onRecord` stream.
-  StreamSubscription<LogRecord>? _loggerSubscription;
-
-  /// Returns the temporary directory for logs.
-  Future<Directory> get _tmpLogsDir async {
-    final tmpLogsDir =
         Directory('${(await getTemporaryDirectory()).path}/logs');
     // Check if the temporary logs directory exists, if not, create it.
     return (await tmpLogsDir.exists()) ? tmpLogsDir : tmpLogsDir.create();
@@ -289,6 +290,8 @@ class LoggerViewModel {
         logEntries.add(logEntry);
       }
     }
+    logEntries.sort(
+        (logEntryA, logEntryB) => logEntryA.time.compareTo(logEntryB.time));
     return logEntries;
   }
 
@@ -302,19 +305,17 @@ class LoggerViewModel {
     try {
       jsonString = (file as File).readAsStringSync();
       return LogEntry.fromJson(jsonDecode(jsonString) as Map<String, dynamic>);
-    } on Exception catch (e, s) {
+    } on Exception catch (error, stackTrace) {
       file.delete();
-      if (kDebugMode) {
-        print('Error reading log file: ${file.path} content $jsonString');
-      }
+      _logger.severe('(_fromJson): file ${file.path}. Error on parse "$jsonString", deleted',error, stackTrace);
       // If an error occurs while reading the file, return a LogEntry with the error.
       return LogEntry(
         time: DateTime.now(),
         level: Level.SEVERE,
         message: 'Error reading log file: ${file.path}',
         loggerName: 'LoggerModel',
-        error: e.toString(),
-        stackTrace: s.toString(),
+        error: error.toString(),
+        stackTrace: stackTrace.toString(),
       );
     }
   }
@@ -332,7 +333,7 @@ class LoggerViewModel {
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
-  static LoggerViewModel instance({bool initialize = false}) =>
+  static LoggerViewModel instance({bool initialize = true}) =>
       initialize ? LoggerViewModel._() : _instance ??= LoggerViewModel._();
 
   /// Disposes of the [LoggerViewModel] by canceling the logger subscription.
@@ -363,34 +364,45 @@ class LoggerViewModel {
   ///
   /// If [reset] is true, it clears the temporary log directory.
   initialize({bool reset = true}) async {
+    _logger.finest('<initialize>: reset $reset');
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured) {
-      _log.finest('already configured');
+      _logger.finest('(initialize): reset $reset. Already configured');
       return;
     }
     _alreadyConfigured = true;
 
     FlutterError.onError = (FlutterErrorDetails details) {
-      _log.severe('FlutterError', details.exception, details.stack);
+      _logger.severe('(FlutterError.onError)', details.exception, details.stack);
     };
 
-    // if reset is true, delete all logs in the temporary directory
+    // if reset is true, delete all logs in the temporary directory except last day
     if (reset) {
-      await resetLogs(
-          fromDateTime:
-              DateTime(clock.now().year, clock.now().month, clock.now().day));
+      final fromDateTime =
+          DateTime(clock.now().year, clock.now().month, clock.now().day);
+      _logger.finest('(initialize): reset $reset. '
+          'Reset all logs before $fromDateTime');
+      await resetLogs(fromDateTime: fromDateTime);
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
     Logger.root.level = Level(
-        kDebugMode
-            ? FirebaseRemoteConfig.instance
-                .getString('loggerDebugRootLevelName')
-            : FirebaseRemoteConfig.instance.getString('loggerRootLevelName'),
-        kDebugMode
-            ? FirebaseRemoteConfig.instance.getInt('loggerDebugRootLevelValue')
-            : FirebaseRemoteConfig.instance.getInt('loggerRootLevelValue'));
+        (FirebaseRemoteConfig.instance.getString('loggerUIDRootLevelFinest') ==
+                AuthViewModel.instance().uid)
+            ? 'FINEST'
+            : kDebugMode
+                ? FirebaseRemoteConfig.instance
+                    .getString('loggerDebugRootLevelName')
+                : FirebaseRemoteConfig.instance
+                    .getString('loggerRootLevelName'),
+        (FirebaseRemoteConfig.instance.getString('loggerUIDRootLevelFinest') ==
+                AuthViewModel.instance().uid)
+            ? 300
+            : kDebugMode
+                ? FirebaseRemoteConfig.instance
+                    .getInt('loggerDebugRootLevelValue')
+                : FirebaseRemoteConfig.instance.getInt('loggerRootLevelValue'));
 
     // Asynchronously fetch package version and device information.
     final version = await InfoDevicePackageViewModel.instance.packageVersion;
@@ -404,8 +416,8 @@ class LoggerViewModel {
       final String error = record.error != null ? '\n${record.error}' : '';
       final String stackTrace =
           record.stackTrace != null ? '\n${record.stackTrace}' : '';
-      // Add the raw LogRecord to the beginning of the list.
-      _addLog(record);
+      // Addthe raw LogRecord to the beginning of the list.
+      _writeLog(record);
 
       // Print the log message to the console if in debug mode.
       if (kDebugMode) {
@@ -448,22 +460,24 @@ class LoggerViewModel {
     (await _logFiles).where(
       (fileSystemEntity) {
         try {
-          
-        return LogEntry.fromJson(
-                jsonDecode((fileSystemEntity as File).readAsStringSync()))
-            .time
-            .isBefore(fromDateTime);
-        } catch (e,s) {
-          if (kDebugMode) {
-            print('Error reading log file: ${fileSystemEntity.path} content ${(fileSystemEntity as File).readAsStringSync()} error $e stackTrace $s');
-          }
+          return LogEntry.fromJson(
+                  jsonDecode((fileSystemEntity as File).readAsStringSync()))
+              .time
+              .isBefore(fromDateTime);
+        } catch (e, s) {
+          _logger.severe(
+              '(resetLogs): fromDateTime $fromDateTime. '
+              'Error reading log file: ${fileSystemEntity.path} '
+              'content ${(fileSystemEntity as File).readAsStringSync()}',
+              e,
+              s);
           return true;
-        } 
+        }
       },
     ).forEach(_deleteFile);
   }
 
-  Future<void> _addLog(LogRecord record) async {
+  Future<void> _writeLog(LogRecord record) async {
     // Create a LogEntry from the LogRecord.
     final logEntry = LogEntry(
         time: record.time,
@@ -480,11 +494,12 @@ class LoggerViewModel {
     await file.writeAsString(jsonEncode(logEntry));
   }
 
-  void _deleteFile(FileSystemEntity element) {
-    if (element is File) {
-      element.delete();
+  void _deleteFile(FileSystemEntity file) {
+    _logger.finest('<_deleteFile>: file ${file.path}. Deleted');
+    if (file is File) {
+      file.delete();
       if (kDebugMode) {
-        print('file ${element.path} deleted');
+        _logger.info('(_deleteFile): file ${file.path}. Deleted');
       }
     }
   }

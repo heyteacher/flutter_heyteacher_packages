@@ -110,8 +110,14 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
 }
 
 class E2EESecretKeyCard extends StatefulWidget {
-  final FocusNode encryptionPassphraseFocusNode;
-  const E2EESecretKeyCard(this.encryptionPassphraseFocusNode, {super.key});
+  final FocusNode _encryptionPassphraseFocusNode;
+  final VoidCallback _secretKeyImportedCallback;
+  const E2EESecretKeyCard(
+      {required FocusNode encryptionPassphraseFocusNode,
+      required void Function() secretKeyImportedCallback,
+      super.key})
+      : _secretKeyImportedCallback = secretKeyImportedCallback,
+        _encryptionPassphraseFocusNode = encryptionPassphraseFocusNode;
 
   @override
   State<E2EESecretKeyCard> createState() => _E2EESecretKeyCardState();
@@ -154,7 +160,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
 
   void _showQrCode() async {
     // remove focus on encryption passphrase
-    widget.encryptionPassphraseFocusNode.unfocus();
+    widget._encryptionPassphraseFocusNode.unfocus();
     await showDialog(
         useSafeArea: true,
         context: context,
@@ -200,7 +206,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
     final confirmQuestionMessage =
         FlutterHeyteacherUtilsLocalizations.of(context)!
             .areYouSureToImportEncryptionSecretKey;
-    widget.encryptionPassphraseFocusNode.unfocus();
+    widget._encryptionPassphraseFocusNode.unfocus();
     if (AuthViewModel.instance().notAutenticated) {
       showConfirmCancelDialog(
           context: context,
@@ -231,6 +237,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                   .encryptionSecretKeyImported;
           await E2EE.instance.importSecretJwkJson(secretJwkJson!);
           setState(() {});
+          widget._secretKeyImportedCallback();
           return successMessage;
         },
       );
