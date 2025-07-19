@@ -20,7 +20,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 ///  
 /// Exposes `sign-in`and `sign-out` actions.
 class GoAuthRoute {
-  static final _log = Logger('AuthRoute');
+  static final _logger = Logger('AuthRoute');
 
   /// build the [GoRoute] paths for authenrication.
   /// 
@@ -40,11 +40,11 @@ class GoAuthRoute {
                     actions: [
                       AuthStateChangeAction<UserCreated>(
                           (context, userCreated) {
-                        _log.info('auth/sign-in (user created)');
+                        _logger.info('<UserCreated>:');
                         GoRouter.of(context).pop();
                       }),
                       AuthStateChangeAction<SignedIn>((context, state) {
-                        _log.info('auth/sign-in');
+                        _logger.info('<SignedIn>:');
                         GoRouter.of(context).pop();
                       }),
                     ],
@@ -53,6 +53,7 @@ class GoAuthRoute {
             name: 'auth-sign-out',
             path: 'sign-out',
             redirect: (context, state) async {
+              _logger.info('<SignedOut>:');
               await AuthViewModel.instance().signOut();
               return signedOutRoutePath;
             },

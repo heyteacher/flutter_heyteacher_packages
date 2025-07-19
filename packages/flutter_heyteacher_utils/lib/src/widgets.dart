@@ -210,13 +210,13 @@ class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
 /// If the exception is a [FirebaseException] with [FirebaseException.code]
 /// `permission-denied` it shows a login button to navigate on auth screen.
 class ErrorView extends StatelessWidget {
-  static final _log = Logger('ErrorView');
+  static final _logger = Logger('ErrorView');
 
   final Object? error;
   final StackTrace? stackTrace;
 
   ErrorView(this.error, this.stackTrace, {super.key}) {
-    _log.severe('error', error, stackTrace);
+    _logger.severe('<ErrorView>', error, stackTrace);
   }
 
   @override

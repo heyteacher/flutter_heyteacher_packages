@@ -14,7 +14,7 @@ library;
 
 export 'src/e2ee.dart'
     show
-        E2EE,
+        E2EEViewModel,
         E2EEPassphraseCard,
         E2EESecretKeyCard,
         E2EEValue,

@@ -1,4 +1,4 @@
-/// Provides utilities for managing background tasks using 
+/// Provides utilities for managing background tasks using
 /// `Firebase Cloud Messaging`.
 library;
 
@@ -23,8 +23,10 @@ enum FCMRemoteConfigKeys {
   /// The distance filter in meters, potentially used by the alarm callback,
   /// fetched from Remote Config.
   distanceFilterInMeters,
+
   /// the interval in minutes to check car bluetooth status.
   intervalInMinutes,
+
   /// the Firebase Cloud Messaging topic name
   fcmTopicName,
 }
@@ -56,7 +58,6 @@ enum IntervalKeys {
   const IntervalKeys(this.minutes);
 }
 
-
 /// Abstract class defining the contract for an Firebase Cloud Messaging model.
 /// Implementations of this class are responsible for providing an entry point
 /// callback and initializing the alarm.
@@ -70,7 +71,7 @@ abstract class FirebaseCloudMessagingViewModel {
   @protected
   String get lockSharedPreferencesKey => '${runtimeType}Lock';
 
-  final _log = Logger('FirebaseCloudMessagingModel');
+  final _logger = Logger('FirebaseCloudMessagingModel');
   final _sharedPreferences = SharedPreferencesAsync();
 
   static int get remoteConfigIntervalInMinutes => kDebugMode
@@ -87,35 +88,33 @@ abstract class FirebaseCloudMessagingViewModel {
   /// This function is called when the app is started
   /// to initialize the Firebase Cloud Messaging.
   /// It initializes the Firebase Cloud Messaging and sets up a periodic alarm
-  /// for execute [entryPointCallback] every 
+  /// for execute [entryPointCallback] every
   /// [FCMRemoteConfigKeys.intervalInMinutes] minutes.
   /// The callback is set to run in the background even if the app is not running.
   /// The callback is set to run even if the device is in doze mode.
   Future<void> initialize() async {
-    NotificationSettings settings = await FirebaseMessaging.instance
-        .requestPermission(
-          alert: true,
-          announcement: true,
-          badge: true,
-          carPlay: true,
-          criticalAlert: true,
-          provisional: true,
-          sound: true,
-        );
-    _log.info(
-      'initialize: User granted permission: ${settings.authorizationStatus}',
+    _logger.finest('<initialize>:');
+    NotificationSettings settings =
+        await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: true,
+      sound: true,
     );
-    final topic = RemoteConfigViewModel.instance.getString(FCMRemoteConfigKeys.fcmTopicName.name);
+    _logger.info(
+      '(initialize): User granted permission: ${settings.authorizationStatus}',
+    );
+    final topic = RemoteConfigViewModel.instance
+        .getString(FCMRemoteConfigKeys.fcmTopicName.name);
     await FirebaseMessaging.instance.subscribeToTopic(topic);
-    _log.info('initialize: listen topic $topic');
-    // FirebaseMessaging.onMessage.listen((remoteMessage) {
-    //   _log.info('onMessage: $remoteMessage');
-    //   entryPointCallback.call();
-    // });
+    _logger.info('(initialize): listen topic $topic');
     FirebaseMessaging.onBackgroundMessage(entryPointCallback);
-
-    _log.info('initialize: set sharedPreferences toBeInitialized to true and '
-        '$lockSharedPreferencesKey to false');
+    _logger
+        .info('(initialize): set sharedPreferences toBeInitialized to true and '
+            '$lockSharedPreferencesKey to false');
     await _sharedPreferences.setBool(
         FCMSharedPreferencesKeys.toBeInitialized.name, true);
     _sharedPreferences.setBool(lockSharedPreferencesKey, false);
