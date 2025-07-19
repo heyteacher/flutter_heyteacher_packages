@@ -15,7 +15,7 @@ enum RemoteConfigKeys {
 }
 
 class RemoteConfigViewModel {
-  final _logger = Logger('RemoteConfigModel');
+  final _logger = Logger('RemoteConfigViewModel');
 
   final _remoteConfig = FirebaseRemoteConfig.instance;
 
@@ -32,9 +32,8 @@ class RemoteConfigViewModel {
   /// - For mobile platforms, listens for configuration updates and activates them.
   /// - Fetches and activates the latest configuration from the Firebase backend.
   Future<void> initialize({Map<String, dynamic>? defaultParameters}) async {
+    _logger.finest('<initialize>:');
     try {
-      final log = Logger('configureRemoteConfig');
-
       defaultParameters ??= {};
       defaultParameters.addAll({
         RemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name: 60000,
@@ -52,12 +51,12 @@ class RemoteConfigViewModel {
                 .remoteConfigMinimumFetchIntervalInMinutes.name)),
       ));
       _remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
-        log.config('activate remote config updated keys: ${event.updatedKeys}');
+        _logger.config('(initialize): activate remote config updated keys: ${event.updatedKeys}');
         _remoteConfig.activate();
       });
       await _remoteConfig.fetchAndActivate();
-    } catch (e, s) {
-      _logger.severe('initialize: error, offline?', e, s);
+    } catch (error, stackTrace) {
+      _logger.severe('(initialize): error', error, stackTrace);
     }
   }
 

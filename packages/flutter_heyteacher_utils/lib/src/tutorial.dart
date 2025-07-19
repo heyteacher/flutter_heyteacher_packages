@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// It allows adding tutorial items associated with specific screen names and
 /// then starting the tutorial sequence for a given screen.
 class TutorialViewModel {
-  final _log = Logger('TutorialModel');
+  final _logger = Logger('TutorialViewModel');
 
   static TutorialViewModel? _instance;
 
@@ -61,6 +61,7 @@ class TutorialViewModel {
     BuildContext context,
     String screenName,
   ) async {
+    _logger.finest('<start>: screenName $screenName');
     if ((await SharedPreferencesAsync()
                 .getBool('$screenName-tutorial-completed') ??
             false) ||
@@ -71,7 +72,7 @@ class TutorialViewModel {
     if (context.mounted) {
       Tutorial.showTutorial(context, _screens[screenName]!,
           onTutorialComplete: () {
-        _log.finest('Tutorial completed');
+        _logger.finest('(start): screenName $screenName. Tutorial completed');
         SharedPreferencesAsync()
             .setBool('$screenName-tutorial-completed', true);
       });

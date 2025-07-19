@@ -267,11 +267,14 @@ class _LoggerScreenState extends State<LoggerScreen> {
 class LoggerViewModel {
   final _logger = Logger('LoggerViewModel');
 
+  StreamSubscription? _loggerSubscription;
+
   /// The singleton instance of [LoggerViewModel].
   static LoggerViewModel? _instance;
 
+  Future<Directory> get _tmpLogsDir async {
   /// The subscription to the root logger's `onRecord` stream.
-        Directory('${(await getTemporaryDirectory()).path}/logs');
+    final tmpLogsDir =  Directory('${(await getTemporaryDirectory()).path}/logs');
     // Check if the temporary logs directory exists, if not, create it.
     return (await tmpLogsDir.exists()) ? tmpLogsDir : tmpLogsDir.create();
   }
@@ -301,6 +304,7 @@ class LoggerViewModel {
           .toList();
 
   LogEntry _fromJson(FileSystemEntity file) {
+    _logger.finest('<_fromJson>: file ${file.path}');
     String jsonString = '';
     try {
       jsonString = (file as File).readAsStringSync();
@@ -352,6 +356,7 @@ class LoggerViewModel {
 
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;
+  
 
   /// Configures the root logger for the application.
   ///
@@ -383,7 +388,7 @@ class LoggerViewModel {
           DateTime(clock.now().year, clock.now().month, clock.now().day);
       _logger.finest('(initialize): reset $reset. '
           'Reset all logs before $fromDateTime');
-      await resetLogs(fromDateTime: fromDateTime);
+      await resetLogs(toDateTime: fromDateTime);
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote Config.
@@ -456,17 +461,18 @@ class LoggerViewModel {
     });
   }
 
-  Future<void> resetLogs({required DateTime fromDateTime}) async {
+  Future<void> resetLogs({required DateTime toDateTime}) async {
+    _logger.finest('<resetLogs>: toDateTime $toDateTime ');
     (await _logFiles).where(
       (fileSystemEntity) {
         try {
           return LogEntry.fromJson(
                   jsonDecode((fileSystemEntity as File).readAsStringSync()))
               .time
-              .isBefore(fromDateTime);
+              .isBefore(toDateTime);
         } catch (e, s) {
           _logger.severe(
-              '(resetLogs): fromDateTime $fromDateTime. '
+              '(resetLogs): toDateTime $toDateTime. '
               'Error reading log file: ${fileSystemEntity.path} '
               'content ${(fileSystemEntity as File).readAsStringSync()}',
               e,
