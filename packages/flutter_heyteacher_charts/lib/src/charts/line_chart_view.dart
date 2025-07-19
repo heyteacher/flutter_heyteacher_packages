@@ -5,8 +5,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class LineChartView extends ChartView {
-  //static final _log = Logger("LineChartView");
-
   final Iterable<ExtraLineData>? extraHorizontalLines;
   final Iterable<ExtraLineData>? extraVerticalLines;
   final Iterable<RangeAnnotationData>? horizontalRangeAnnotations;
