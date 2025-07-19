@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 class TTSViewModel {
-  static final _log = Logger('TtsModel');
+  static final _logger = Logger('TtsModel');
 
   late FlutterTts _textToSpeech;
 
@@ -35,13 +35,13 @@ class TTSViewModel {
   }
 
   Future<void> speak(String text) async {
-    _log.finest('<speak>: text \'$text\'');
+    _logger.finest('<speak>: text \'$text\'');
     if (_previousTextSpeaked == text) {
-    _log.finest('(speak): ignore text equals to previous text \'$text\'');
+    _logger.finest('(speak): ignore text equals to previous text \'$text\'');
       return;
     }
     _previousTextSpeaked = text;
-    _log.finest('(speak): text \'$text\'');
+    _logger.finest('(speak): text \'$text\'');
     _textToSpeech.speak(text);
   }
 
