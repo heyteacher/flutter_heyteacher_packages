@@ -10,7 +10,7 @@ class TTSViewModel {
 
   late FlutterTts _textToSpeech;
 
-  String? _previousText;
+  String? _previousTextSpeaked;
 
   StreamSubscription? _onUserUpdateStreamSubscription,
       _stateChangesStreamSubscription;
@@ -19,7 +19,7 @@ class TTSViewModel {
   static TTSViewModel get instance => _instance ??= TTSViewModel._();
   TTSViewModel._() {
     _textToSpeech = FlutterTts();
-    _textToSpeech.awaitSpeakCompletion(true);
+    _textToSpeech.awaitSpeakCompletion(false);
     // get locale language 
     final languageCode =
         LocaleViewModel.instance.locale?.languageCode ?? Intl.getCurrentLocale();
@@ -36,12 +36,12 @@ class TTSViewModel {
 
   Future<void> speak(String text) async {
     _log.finest('<speak>: text \'$text\'');
-    if (_previousText == text) {
-    _log.finest('(speak): ignore text equals to previous text $text');
+    if (_previousTextSpeaked == text) {
+    _log.finest('(speak): ignore text equals to previous text \'$text\'');
       return;
     }
-    _previousText = text;
-    _log.finest('(speak): text $text');
+    _previousTextSpeaked = text;
+    _log.finest('(speak): text \'$text\'');
     _textToSpeech.speak(text);
   }
 
