@@ -4,12 +4,12 @@ library;
 ///
 /// Key features include:
 /// - [LoggerScreen]: A dedicated screen to display and filter log messages.
-/// - [LoggerListTile]: A convenient [ListTile] for navigating to the [LoggerScreen].
+/// - [LoggerListTile]: A convenient [ListTile] for navigating to the
+///   [LoggerScreen].
 /// - [LoggingRouter]: Defines the routing for the logger UI.
-/// - [LoggerViewModel]: Handles log capture, configuration (including level setting via
-///   Firebase Remote Config), in-memory storage, and forwarding of structured logs
-///   to Firebase Analytics.
-
+/// - [LoggerViewModel]: Handles log capture, configuration (including level
+///   setting via Firebase Remote Config), in-memory storage, and forwarding of
+///   structured logs to Firebase Analytics.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -138,7 +138,8 @@ class LoggerScreen extends StatefulWidget {
 
 /// The state for the [LoggerScreen] widget.
 class _LoggerScreenState extends State<LoggerScreen> {
-  /// The currently selected [Level] to filter logs by. If null, no filter is applied.
+  /// The currently selected [Level] to filter logs by. If null, no filter is
+  /// applied.
   Level? _filterLevel;
 
   /// Builds the UI for the logger screen.
@@ -221,7 +222,8 @@ class _LoggerScreenState extends State<LoggerScreen> {
         label: Text('Log Level', style: Theme.of(context).textTheme.labelSmall),
         textStyle: Theme.of(context).textTheme.labelSmall,
         trailingIcon: const Icon(Icons.filter_list),
-        // Updates the _filterLevel and rebuilds the UI when a new level is selected.
+        // Updates the _filterLevel and rebuilds the UI when a new level is
+        // selected.
         onSelected: (level) => setState(() => _filterLevel = level),
         dropdownMenuEntries: [
           null,
@@ -285,7 +287,8 @@ class LoggerViewModel {
 
   /// Disposes of the [LoggerViewModel] by canceling the logger subscription.
   ///
-  /// This should be called when the logger model is no longer needed to prevent memory leaks.
+  /// This should be called when the logger model is no longer needed to prevent
+  /// memory leaks.
   dispose() {
     _loggerSubscription?.cancel();
     _alreadyConfigured = false;
@@ -303,11 +306,13 @@ class LoggerViewModel {
   /// Configures the root logger for the application.
   ///
   /// Sets the logger's level based on `kDebugMode` and Firebase Remote Config.
-  /// It then attaches a listener that processes log records to:
+  /// It then attaches  a listener that processes log records to:
   /// 1. Print formatted logs to the console if `kDebugMode` is true.
   /// 2. Send structured log events to Firebase Analytics, including version,
-  ///    device info, level, message, error (if any), stack trace (if any), and a user identifier.
-  ///    Message, error, and stack trace are truncated to 100 characters for Firebase.
+  ///    device info, level, message, error (if any), stack trace (if any), and
+  ///    a user identifier.
+  ///    Message, error, and stack trace are truncated to 100 characters for
+  ///    Firebase.
   ///
   /// If [reset] is true, it clears the temporary log directory.
   initialize({bool reset = true}) async {
@@ -326,7 +331,8 @@ class LoggerViewModel {
           '(FlutterError.onError)', details.exception, details.stack);
     };
 
-    // if reset is true, delete all logs in the temporary directory except last day
+    // if reset is true, delete all logs in the temporary directory except last
+    // day
     if (reset) {
       final toDateTime =
           DateTime(clock.now().year, clock.now().month, clock.now().day);
@@ -338,7 +344,8 @@ class LoggerViewModel {
       resetLogsWorker.close();
     }
 
-    // Set the root logger's level based on debug mode and Firebase Remote Config.
+    // Set the root logger's level based on debug mode and Firebase Remote
+    // Config.
     Logger.root.level = Level(
         (FirebaseRemoteConfig.instance.getString('loggerUIDRootLevelFinest') ==
                 AuthViewModel.instance().uid)
@@ -386,7 +393,8 @@ class LoggerViewModel {
       }
 
       // Send the log event to Firebase Analytics.
-      // Message, error, and stacktrace are limited to 100 characters for Firebase.
+      // Message, error, and stacktrace are limited to 100 characters for
+      // Firebase.
       FirebaseAnalytics.instance.logEvent(name: 'logger', parameters: {
         'time': record.time.toLocal().toIso8601String(),
         'version': version,
@@ -411,11 +419,11 @@ class LoggerViewModel {
 
   /// Returns a string representation of the logs, formatted for display.
   Future<String> get logs2Text async {
-      final logs2TextWorker = Logs2TextWorker();
-      await logs2TextWorker.spawn('Logs2TextWorker');
-      final ret = await logs2TextWorker.execute(null);
-      logs2TextWorker.close();
-      return ret;
+    final logs2TextWorker = Logs2TextWorker();
+    await logs2TextWorker.spawn('Logs2TextWorker');
+    final ret = await logs2TextWorker.execute(null);
+    logs2TextWorker.close();
+    return ret;
   }
 
   /// Returns a list of log entries from the temporary log directory.
@@ -449,7 +457,8 @@ class LoggerViewModel {
           '(_fromJson): file ${file.path}. Error on parse "$jsonString", deleted',
           error,
           stackTrace);
-      // If an error occurs while reading the file, return a LogEntry with the error.
+      // If an error occurs while reading the file, return a LogEntry with the
+      // error.
       return LogEntry(
         time: DateTime.now(),
         level: Level.SEVERE,
@@ -477,9 +486,9 @@ class LoggerViewModel {
 
 /// A background worker that writes a [LogRecord] to a file in JSON format.
 ///
-/// This worker is used to persist log entries to the device's temporary directory.
+/// This worker is used to persist log entries to the device's temporary
+/// directory.
 class WriteLogWorker extends Worker<LogRecord, bool> {
-
   /// Writes a [LogRecord] to a file in JSON format.
   @override
   @protected
@@ -505,12 +514,12 @@ class WriteLogWorker extends Worker<LogRecord, bool> {
   }
 }
 
-/// A background worker that deletes log files older than a specified [DateTime].
+/// A background worker that deletes log files older than a specified
+/// [DateTime].
 ///
-/// This is used to clean up old log files from the temporary directory to manage
-/// storage space.
+/// This is used to clean up old log files from the temporary directory to
+/// manage storage space.
 class ResetLogsWorker extends Worker<DateTime, void> {
-  
   /// Deletes log files older than the provided [toDateTime].
   @override
   @protected
@@ -548,7 +557,6 @@ class ResetLogsWorker extends Worker<DateTime, void> {
 ///
 /// Each log entry is formatted on a new line.
 class Logs2TextWorker extends Worker<dynamic, String> {
-  
   /// Formats all log entries into a single string.
   @override
   @protected
