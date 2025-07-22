@@ -6,3 +6,5 @@ export 'src/charts/line_chart_view.dart'
     show LineChartView, ExtraLineData, RangeAnnotationData;
 
 export 'src/charts/chart_view.dart' show ChartDataItem;
+
+export 'src/charts/chart_view_model.dart' show ChartViewModel;
