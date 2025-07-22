@@ -34,18 +34,23 @@ void main() {
 
   // initialize Auth with MockFirebaseAuth
   AuthViewModel.instance(mockedFirebaseAuth: auth);
-  E2EEViewModel.instance.setAAD(aadValue: 'aadValue');
+  E2EEViewModel.instance(AuthViewModel.instance().uid)
+      .setAAD(aadValue: 'aadValue');
 
   group('encrypt decryp message:', () {
     test('encrypted decrypted empty message return same', () async {
       final originalMessage = '';
-      final encrypted = await E2EEViewModel.instance.encrypt(originalMessage);
+      final encrypted =
+          await E2EEViewModel.instance(AuthViewModel.instance().uid)
+              .encrypt(originalMessage);
 
       expect(encrypted.value.isNotEmpty, true,
           reason: 'encrypted value is empty');
       expect(encrypted.iv.isNotEmpty, true, reason: 'encrypted iv is empty');
 
-      final decryptedMessage = await E2EEViewModel.instance.decrypt(encrypted);
+      final decryptedMessage =
+          await E2EEViewModel.instance(AuthViewModel.instance().uid)
+              .decrypt(encrypted);
       expect(originalMessage, decryptedMessage,
           reason:
               'decrypted message $decryptedMessage differs from original message $originalMessage');
@@ -53,16 +58,21 @@ void main() {
 
     test('encrypted decrypted message return same', () async {
       final originalMessage = 'this is a message';
-      final encrypted = await E2EEViewModel.instance.encrypt(originalMessage);
+      final encrypted =
+          await E2EEViewModel.instance(AuthViewModel.instance().uid)
+              .encrypt(originalMessage);
 
       expect(encrypted.value.isNotEmpty, true,
           reason: 'encrypted value is empty');
       expect(encrypted.iv.isNotEmpty, true, reason: 'encrypted iv is empty');
 
-      final decryptedMessage = await E2EEViewModel.instance.decrypt(encrypted);
+      final decryptedMessage =
+          await E2EEViewModel.instance(AuthViewModel.instance().uid)
+              .decrypt(encrypted);
       expect(originalMessage, decryptedMessage,
           reason:
-              'decrypted message $decryptedMessage differs from original message $originalMessage');
+              'decrypted message $decryptedMessage differs from original '
+              'message $originalMessage');
     });
   });
 }

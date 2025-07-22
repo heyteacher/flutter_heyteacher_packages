@@ -45,7 +45,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
   bool _warningAlreadyShowed = false;
   @override
   Widget build(BuildContext context) => FutureBuilder(
-      future: E2EEViewModel.instance.getAAD(),
+      future: E2EEViewModel.instance(AuthViewModel.instance().uid).getAAD(),
       builder: (_, aadSnapshot) => Card(
             child: ListTile(
               focusNode: widget.encryptionPassphraseFocusNode,
@@ -93,7 +93,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
       showConfirmCancelDialog(
           context: context,
           confirmCallback: (_) async {
-            await E2EEViewModel.instance.setAAD(aadValue: value);
+            await E2EEViewModel.instance(AuthViewModel.instance().uid).setAAD(aadValue: value);
             _warningAlreadyShowed = true;
             return null;
           },
@@ -104,7 +104,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
           content: FlutterHeyteacherUtilsLocalizations.of(context)!
               .areYouSureToChangeEncryptionPassphrase);
     } else {
-      await E2EEViewModel.instance.setAAD(aadValue: value);
+      await E2EEViewModel.instance(AuthViewModel.instance().uid).setAAD(aadValue: value);
     }
   }
 }
@@ -126,7 +126,7 @@ class E2EESecretKeyCard extends StatefulWidget {
 class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
   @override
   Widget build(BuildContext context) => FutureBuilder<bool>(
-        future: E2EEViewModel.instance.secretKeyStored,
+        future: E2EEViewModel.instance(AuthViewModel.instance().uid).secretKeyStored,
         builder: (_, secretKeySnapshot) => Card(
           child: ListTile(
             leading: Icon(
@@ -166,7 +166,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
         context: context,
         builder: (context) {
           return FutureBuilder<String>(
-            future: E2EEViewModel.instance.exportSecretJwkJson(),
+            future: E2EEViewModel.instance(AuthViewModel.instance().uid).exportSecretJwkJson(),
             builder: (_, snapshot) => snapshot.hasData
                 ? AlertDialog(
                     title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
@@ -235,7 +235,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
           final successMessage =
               FlutterHeyteacherUtilsLocalizations.of(context)!
                   .encryptionSecretKeyImported;
-          await E2EEViewModel.instance.importSecretJwkJson(secretJwkJson!);
+          await E2EEViewModel.instance(AuthViewModel.instance().uid!).importSecretJwkJson(secretJwkJson!);
           setState(() {});
           widget._secretKeyImportedCallback();
           return successMessage;
@@ -256,26 +256,29 @@ class E2EEViewModel {
 
   /// Key used in secure storage for the Additional Authenticated Data (AAD).
   /// Uniquely identifies the AAD for the current authenticated user.
-  String get _aadKey => '${AuthViewModel.instance().uid!}_aad';
+  String get _aadKey => '${_uid}_aad';
 
   /// Key used in secure storage for the user's secret encryption key (in JWK format).
   /// Uniquely identifies the secret key for the current authenticated user.
-  String get _secretKeyKey => '${AuthViewModel.instance().uid!}_secretKey';
+  String get _secretKeyKey => '${_uid}_secretKey';
 
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
       (await _secureStorage).containsKey(key: _secretKeyKey);
 
   // Singleton instance
-  static E2EEViewModel? _instance;
+  static final Map<String?,E2EEViewModel?> _instances = {};
+
+  final String? _uid;
 
   /// Provides the singleton instance of the [E2EEViewModel] manager.
-  static E2EEViewModel get instance => _instance ??= E2EEViewModel._();
+  static E2EEViewModel instance(String? uid) => _instances[uid] ??= E2EEViewModel._(uid);
 
   /// Private constructor for the singleton.
-  E2EEViewModel._();
+  E2EEViewModel._(this._uid);
 
   FlutterSecureStorage? _secureStorageInstance;
+  
 
   /// Lazily initializes and returns the [FlutterSecureStorage] instance.
   /// Configures Android-specific options for encrypted shared preferences.
@@ -305,7 +308,7 @@ class E2EEViewModel {
   Future<E2EEValue> encrypt(String value, {AesGcmSecretKey? secretKey}) async {
     _logger.finest('<encrypt>:');
     // cannot encrypt if not auth
-    if (AuthViewModel.instance().notAutenticated) {
+    if (_uid?.isEmpty ?? false) {
       _logger.severe('(encrypt): user not authenticated');
       throw UserNotAuthenticatedException();
     }
@@ -354,7 +357,7 @@ class E2EEViewModel {
       {AesGcmSecretKey? secretKey}) async {
     _logger.finest('<decrypt>:');
     // cannot encrypt if not auth
-    if (AuthViewModel.instance().notAutenticated) {
+    if (_uid?.isEmpty ?? false) {
       _logger.severe('(decrypt): user not authenticated');
       throw UserNotAuthenticatedException();
     }
@@ -399,7 +402,7 @@ class E2EEViewModel {
   Future<void> setAAD({String? aadValue, bool generate = false}) async {
     _logger.finest('<setAAD>:');
     // cannot encrypt if not auth
-    if (AuthViewModel.instance().notAutenticated) {
+    if (_uid?.isEmpty ?? false) {
       _logger.severe('(setAAD): user not authenticated');
       throw UserNotAuthenticatedException();
     }
@@ -414,7 +417,7 @@ class E2EEViewModel {
   Future<String?> getAAD() async {
     _logger.finest('<getAAD>:');
     // cannot encrypt if not auth
-    if (AuthViewModel.instance().notAutenticated) {
+    if (_uid?.isEmpty ?? false) {
       _logger.warning('(getAAD): user not authenticated');
       return null;
     }
@@ -482,7 +485,7 @@ class E2EEViewModel {
   Future<AesGcmSecretKey> _generateSecretKey() async {
     _logger.finest('<_generateSecretKey>:');
     // cannot encrypt if not auth
-    if (AuthViewModel.instance().notAutenticated) {
+    if (_uid?.isEmpty ?? false) {
       _logger.severe('(_generateSecretKey): user not authenticated');
       throw UserNotAuthenticatedException();
     }
@@ -508,7 +511,7 @@ class E2EEViewModel {
   Future<AesGcmSecretKey> _readSecretKey() async {
     _logger.finest('<_readSecretKey>:');
     // cannot encrypt if not auth
-    if (AuthViewModel.instance().notAutenticated) {
+    if (_uid?.isEmpty ?? false) {
       _logger.severe('(_readSecretKey): user not authenticated');
       throw UserNotAuthenticatedException();
     }
@@ -528,7 +531,7 @@ class E2EEViewModel {
   Future<AesGcmSecretKey> _readMasterSecretKey() async {
     _logger.finest('<_readMasterSecretKey>:');
     // cannot encrypt if not auth
-    if (AuthViewModel.instance().notAutenticated) {
+    if (_uid?.isEmpty ?? false) {
       _logger.severe('(_readMasterSecretKey): user not authenticated');
       throw UserNotAuthenticatedException();
     }
