@@ -78,3 +78,6 @@ String formatDuration(num? milliseconds,
     return '';
   }
 }
+
+double differenceInMinute(DateTime sup, DateTime inf) =>
+      (sup.difference(inf).inSeconds / 60);
