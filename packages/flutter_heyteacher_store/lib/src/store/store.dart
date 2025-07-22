@@ -210,7 +210,6 @@ import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_store/src/store/store_filters.dart';
-import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -1174,23 +1173,6 @@ abstract class FirestoreData<T> {
   /// Converts firestore [Timestamp] into [DateTime]
   static DateTime? fromFirestoreTimestamp(Timestamp? timestamp) {
     return timestamp?.toDate();
-  }
-
-  /// Decrypts End-2-End Encryped data from firestore.
-  ///
-  /// [map] contains ecrypted `value` and initial vector `iv`.
-  static Future<String> fromFirestoreE2EE(Map<String, dynamic> map) async {
-    return await E2EEViewModel.instance
-        .decrypt(E2EEValue(value: map['value'], iv: map['iv']));
-  }
-
-  /// Encrypts [value] in End-2-End Dncrypted data to firestore.
-  ///
-  /// Returns a map containing ecrypted `value` and initial vector `iv`.
-
-  static Future<Map<String, dynamic>> toFirestoreE2EE(String value) async {
-    final encrypted = await E2EEViewModel.instance.encrypt(value);
-    return {'value': encrypted.value, 'iv': encrypted.iv};
   }
 }
 
