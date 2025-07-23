@@ -31,8 +31,8 @@ import 'package:flutter/services.dart';
 /// worker.close();
 /// ```
 abstract class Worker<I, O> {
-  late SendPort _commands;
-  late ReceivePort _responses;
+  SendPort? _commands;
+  ReceivePort? _responses;
   final Map<int, Completer<O>> _activeRequests = {};
   int _idCounter = 0;
   bool _closed = false;
@@ -41,8 +41,7 @@ abstract class Worker<I, O> {
   /// Spawns a new isolate and sets up communication channels.
   ///
   /// This must be called before [execute].
-  /// The [debugName] is used for logging and debugging purposes.
-  Future<void> spawn(String debugName) async {
+  Future<void> _spawn() async {
     _debugName = debugName;
     log('<$_debugName.spawn>');
     RootIsolateToken? rootIsolateToken = RootIsolateToken.instance;
@@ -72,7 +71,7 @@ abstract class Worker<I, O> {
         await connection.future;
     _commands = sendPort;
     _responses = receivePort;
-    _responses.listen(_handleResponsesFromIsolate);
+    _responses!.listen(_handleResponsesFromIsolate);
   }
 
   /// Executes a task in the background isolate.
@@ -81,11 +80,14 @@ abstract class Worker<I, O> {
   /// completes with the result.
   /// Throws a [StateError] if the worker is already closed.
   Future<O> execute(I input) async {
+    if (_commands == null) {
+      _spawn();
+    }
     if (_closed) throw StateError('($_debugName.execute): $input. Closed');
     final completer = Completer<O>.sync();
     final id = _idCounter++;
     _activeRequests[id] = completer;
-    _commands.send((id, input));
+    _commands!.send((id, input));
     return await completer.future;
   }
 
@@ -97,8 +99,8 @@ abstract class Worker<I, O> {
     log('<$_debugName.close>:');
     if (!_closed) {
       _closed = true;
-      _commands.send('shutdown');
-      if (_activeRequests.isEmpty) _responses.close();
+      _commands?.send('shutdown');
+      if (_activeRequests.isEmpty) _responses?.close();
       log('<$_debugName.close>: succesfully closed');
     }
   }
@@ -108,6 +110,10 @@ abstract class Worker<I, O> {
   /// Subclasses must override this method to perform the desired work.
   @protected
   Future<O> executeCallback(I input);
+
+  /// the debug name for debug purpose
+  @protected
+  String get debugName;
 
   void _handleResponsesFromIsolate(dynamic message) {
     final (int id, O response) = message as (int, O);
@@ -119,7 +125,7 @@ abstract class Worker<I, O> {
       completer.complete(response);
     }
 
-    if (_closed && _activeRequests.isEmpty) _responses.close();
+    if (_closed && _activeRequests.isEmpty) _responses?.close();
   }
 
   void _handleCommandsToIsolate(

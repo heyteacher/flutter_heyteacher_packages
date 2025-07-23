@@ -324,8 +324,7 @@ class LoggerViewModel {
       return;
     }
     _alreadyConfigured = true;
-    await _writeLogWorker.spawn('WriteLogWorker');
-
+ 
     FlutterError.onError = (FlutterErrorDetails details) {
       _logger.severe(
           '(FlutterError.onError)', details.exception, details.stack);
@@ -339,7 +338,6 @@ class LoggerViewModel {
       _logger.finest('(initialize): reset $reset. '
           'Reset all logs before $toDateTime');
       ResetLogsWorker resetLogsWorker = ResetLogsWorker();
-      await resetLogsWorker.spawn('ResetLogsWorker');
       await resetLogsWorker.execute(toDateTime);
       resetLogsWorker.close();
     }
@@ -420,7 +418,6 @@ class LoggerViewModel {
   /// Returns a string representation of the logs, formatted for display.
   Future<String> get logs2Text async {
     final logs2TextWorker = Logs2TextWorker();
-    await logs2TextWorker.spawn('Logs2TextWorker');
     final ret = await logs2TextWorker.execute(null);
     logs2TextWorker.close();
     return ret;
@@ -491,6 +488,9 @@ class LoggerViewModel {
 class WriteLogWorker extends Worker<LogRecord, bool> {
   /// Writes a [LogRecord] to a file in JSON format.
   @override
+  String get debugName => runtimeType.toString();
+
+  @override
   @protected
   Future<bool> executeCallback(LogRecord record) async {
     try {
@@ -521,6 +521,8 @@ class WriteLogWorker extends Worker<LogRecord, bool> {
 /// manage storage space.
 class ResetLogsWorker extends Worker<DateTime, void> {
   /// Deletes log files older than the provided [toDateTime].
+  @override
+  String get debugName => runtimeType.toString();
   @override
   @protected
   Future<void> executeCallback(DateTime toDateTime) async {
@@ -557,6 +559,9 @@ class ResetLogsWorker extends Worker<DateTime, void> {
 ///
 /// Each log entry is formatted on a new line.
 class Logs2TextWorker extends Worker<dynamic, String> {
+  @override
+  String get debugName => runtimeType.toString();
+
   /// Formats all log entries into a single string.
   @override
   @protected
