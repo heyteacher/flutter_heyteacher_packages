@@ -269,7 +269,7 @@ class _LoggerScreenState extends State<LoggerScreen> {
 /// - Storing log records in temporary files in JSON format.
 /// - Sending log records to Firebase Analytics.
 class LoggerViewModel {
-  final _logger = Logger('LoggerViewModel');
+  Logger? _logger;
   StreamSubscription? _loggerSubscription;
 
   final WriteLogWorker _writeLogWorker = WriteLogWorker();
@@ -324,9 +324,9 @@ class LoggerViewModel {
       return;
     }
     _alreadyConfigured = true;
-
+    _logger = Logger('LoggerViewModel');
     FlutterError.onError = (FlutterErrorDetails details) {
-      _logger.severe(
+      _logger?.severe(
           '(FlutterError.onError)', details.exception, details.stack);
     };
 
@@ -335,12 +335,12 @@ class LoggerViewModel {
     if (reset) {
       final toDateTime =
           DateTime(clock.now().year, clock.now().month, clock.now().day);
-      _logger.finest('(initialize): reset $reset. '
+      _logger?.finest('(initialize): reset $reset. '
           'Reset all logs before $toDateTime');
       ResetLogsWorker resetLogsWorker = ResetLogsWorker();
       final output = await resetLogsWorker.execute(toDateTime);
       if (output.error != null) {
-        _logger.severe(
+        _logger?.severe(
             '(initialize): reset error', output.error, output.stackTrace);
       }
       resetLogsWorker.close();
@@ -379,7 +379,7 @@ class LoggerViewModel {
       // Addthe raw LogRecord to the beginning of the list.
       _writeLogWorker.execute(record).then((output) {
         if (output.error != null) {
-          _logger.severe(
+          _logger?.severe(
               '(_writeLogWorker.execute): ', output.error, output.stackTrace);
         }
 
@@ -426,15 +426,15 @@ class LoggerViewModel {
 
   /// Returns a string representation of the logs, formatted for display.
   Future<String> get logs2Text async {
-    _logger.finest('<logs2Text>: ');
+    _logger?.finest('<logs2Text>: ');
     final logs2TextWorker = Logs2TextWorker();
     final output = await logs2TextWorker.execute(null);
     logs2TextWorker.close();
     if (output.error != null) {
-      _logger.severe('(logs2Text): error', output.error, output.stackTrace);
+      _logger?.severe('(logs2Text): error', output.error, output.stackTrace);
       throw Exception(output.error.toString());
     }
-    return output.output;
+    return output.output!;
   }
 
   /// Returns a list of log entries from the temporary log directory.
@@ -457,14 +457,14 @@ class LoggerViewModel {
   }
 
   LogEntry _fromJson(FileSystemEntity file) {
-    _logger.finest('<_fromJson>: file ${file.path}');
+    _logger?.finest('<_fromJson>: file ${file.path}');
     String jsonString = '';
     try {
       jsonString = (file as File).readAsStringSync();
       return LogEntry.fromJson(jsonDecode(jsonString) as Map<String, dynamic>);
     } on Exception catch (error, stackTrace) {
       file.delete();
-      _logger.severe(
+      _logger?.severe(
           '(_fromJson): file ${file.path}. Error on parse "$jsonString", deleted',
           error,
           stackTrace);
@@ -533,15 +533,15 @@ class WriteLogWorker extends Worker<LogRecord, bool> {
 ///
 /// This is used to clean up old log files from the temporary directory to
 /// manage storage space.
-class ResetLogsWorker extends Worker<DateTime, void> {
+class ResetLogsWorker extends Worker<DateTime, int> {
   /// Deletes log files older than the provided [toDateTime].
   @override
   String get debugName => runtimeType.toString();
   @override
   @protected
-  Future<void> executeCallback(DateTime toDateTime) async {
+  Future<int> executeCallback(DateTime toDateTime) async {
     developer.log('<$runtimeType>: toDateTime $toDateTime ');
-    (await LoggerViewModel.instance()._logFiles).where(
+    final logsToBeDelated = (await LoggerViewModel.instance()._logFiles).where(
       (fileSystemEntity) {
         try {
           return LogEntry.fromJson(
@@ -558,7 +558,9 @@ class ResetLogsWorker extends Worker<DateTime, void> {
           return true;
         }
       },
-    ).forEach(_deleteFile);
+    );
+    logsToBeDelated.forEach(_deleteFile);
+    return logsToBeDelated.length;
   }
 
   void _deleteFile(FileSystemEntity file) {
