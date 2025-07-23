@@ -324,7 +324,7 @@ class LoggerViewModel {
       return;
     }
     _alreadyConfigured = true;
- 
+
     FlutterError.onError = (FlutterErrorDetails details) {
       _logger.severe(
           '(FlutterError.onError)', details.exception, details.stack);
@@ -338,7 +338,11 @@ class LoggerViewModel {
       _logger.finest('(initialize): reset $reset. '
           'Reset all logs before $toDateTime');
       ResetLogsWorker resetLogsWorker = ResetLogsWorker();
-      await resetLogsWorker.execute(toDateTime);
+      final output = await resetLogsWorker.execute(toDateTime);
+      if (output.error != null) {
+        _logger.severe(
+            '(initialize): reset error', output.error, output.stackTrace);
+      }
       resetLogsWorker.close();
     }
 
@@ -373,7 +377,12 @@ class LoggerViewModel {
       final String stackTrace =
           record.stackTrace != null ? '\n${record.stackTrace}' : '';
       // Addthe raw LogRecord to the beginning of the list.
-      _writeLogWorker.execute(record).then((response) {
+      _writeLogWorker.execute(record).then((output) {
+        if (output.error != null) {
+          _logger.severe(
+              '(_writeLogWorker.execute): ', output.error, output.stackTrace);
+        }
+
         //developer.log('WriteLogWorker response: $response');
       });
 
@@ -417,10 +426,15 @@ class LoggerViewModel {
 
   /// Returns a string representation of the logs, formatted for display.
   Future<String> get logs2Text async {
+    _logger.finest('<logs2Text>: ');
     final logs2TextWorker = Logs2TextWorker();
-    final ret = await logs2TextWorker.execute(null);
+    final output = await logs2TextWorker.execute(null);
     logs2TextWorker.close();
-    return ret;
+    if (output.error != null) {
+      _logger.severe('(logs2Text): error', output.error, output.stackTrace);
+      throw Exception(output.error.toString());
+    }
+    return output.output;
   }
 
   /// Returns a list of log entries from the temporary log directory.

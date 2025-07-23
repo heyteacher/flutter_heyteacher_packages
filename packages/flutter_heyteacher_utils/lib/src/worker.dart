@@ -33,17 +33,59 @@ import 'package:flutter/services.dart';
 abstract class Worker<I, O> {
   SendPort? _commands;
   ReceivePort? _responses;
-  final Map<int, Completer<O>> _activeRequests = {};
+  final Map<int, Completer<({O output, Error? error, StackTrace? stackTrace})>>
+      _activeRequests = {};
   int _idCounter = 0;
   bool _closed = false;
-  late String _debugName;
+
+  /// The callback method that is executed in the background isolate.
+  ///
+  /// Subclasses must override this method to perform the desired work.
+  @protected
+  Future<O> executeCallback(I input);
+
+  /// the debug name for debug purpose
+  @protected
+  String get debugName;
+
+  /// Executes a task in the background isolate.
+  ///
+  /// Sends the [input] data to the isolate and returns a [Future] that
+  /// completes with the result.
+  /// Throws a [StateError] if the worker is already closed.
+  Future<({O output, Error? error, StackTrace? stackTrace})> execute(
+      I input) async {
+    if (_commands == null) {
+      _spawn();
+    }
+    if (_closed) throw StateError('($debugName.execute): $input. Closed');
+    final completer =
+        Completer<({O output, Error? error, StackTrace? stackTrace})>.sync();
+    final id = _idCounter++;
+    _activeRequests[id] = completer;
+    _commands!.send((id, input));
+    return await completer.future;
+  }
+
+  /// Shuts down the isolate and closes communication ports.
+  ///
+  /// After calling this, [execute] will throw a [StateError].
+  /// It's safe to call this method multiple times.
+  void close() {
+    log('<$debugName.close>:');
+    if (!_closed) {
+      _closed = true;
+      _commands?.send('shutdown');
+      if (_activeRequests.isEmpty) _responses?.close();
+      log('<$debugName.close>: succesfully closed');
+    }
+  }
 
   /// Spawns a new isolate and sets up communication channels.
   ///
   /// This must be called before [execute].
   Future<void> _spawn() async {
-    _debugName = debugName;
-    log('<$_debugName.spawn>');
+    log('<$debugName.spawn>');
     RootIsolateToken? rootIsolateToken = RootIsolateToken.instance;
     if (rootIsolateToken == null) {
       throw Exception('($runtimeType.spawn): Cannot get the RootIsolateToken');
@@ -61,7 +103,8 @@ abstract class Worker<I, O> {
     // Spawn the isolate.
     try {
       await Isolate.spawn(
-          _startRemoteIsolate, (initPort.sendPort, rootIsolateToken), debugName: debugName);
+          _startRemoteIsolate, (initPort.sendPort, rootIsolateToken),
+          debugName: debugName);
     } on Object {
       initPort.close();
       rethrow;
@@ -74,49 +117,11 @@ abstract class Worker<I, O> {
     _responses!.listen(_handleResponsesFromIsolate);
   }
 
-  /// Executes a task in the background isolate.
-  ///
-  /// Sends the [input] data to the isolate and returns a [Future] that
-  /// completes with the result.
-  /// Throws a [StateError] if the worker is already closed.
-  Future<O> execute(I input) async {
-    if (_commands == null) {
-      _spawn();
-    }
-    if (_closed) throw StateError('($_debugName.execute): $input. Closed');
-    final completer = Completer<O>.sync();
-    final id = _idCounter++;
-    _activeRequests[id] = completer;
-    _commands!.send((id, input));
-    return await completer.future;
-  }
-
-  /// Shuts down the isolate and closes communication ports.
-  ///
-  /// After calling this, [execute] will throw a [StateError].
-  /// It's safe to call this method multiple times.
-  void close() {
-    log('<$_debugName.close>:');
-    if (!_closed) {
-      _closed = true;
-      _commands?.send('shutdown');
-      if (_activeRequests.isEmpty) _responses?.close();
-      log('<$_debugName.close>: succesfully closed');
-    }
-  }
-
-  /// The callback method that is executed in the background isolate.
-  ///
-  /// Subclasses must override this method to perform the desired work.
-  @protected
-  Future<O> executeCallback(I input);
-
-  /// the debug name for debug purpose
-  @protected
-  String get debugName;
-
   void _handleResponsesFromIsolate(dynamic message) {
-    final (int id, O response) = message as (int, O);
+    final (
+      int id,
+      ({O output, Error? error, StackTrace? stackTrace}) response
+    ) = message as (int, ({O output, Error? error, StackTrace? stackTrace}));
     final completer = _activeRequests.remove(id)!;
 
     if (response is RemoteError) {
@@ -141,9 +146,8 @@ abstract class Worker<I, O> {
         final (int id, I input) = message as (int, I);
         sendPort.send((id, await executeCallback(input)));
       } catch (error, stackTrace) {
-        log('($_debugName._handleCommandsToIsolate): '
-              'error $error stackTrace $stackTrace');
-        
+        log('($debugName._handleCommandsToIsolate): error $error '
+            'stackTrace $stackTrace');
       }
     });
   }
