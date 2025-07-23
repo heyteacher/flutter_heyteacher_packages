@@ -453,6 +453,8 @@ abstract class Store<LightDataType extends FirestoreData,
     _aggregatesSubscription?.cancel();
   }
 
+  DocumentSnapshot<LightDataType?>? _startAfterDocument;
+
   /// Return a Query of LightDataType.
   ///
   /// Apply [applyOrderBy], applies filter if [applyFilterBy] and applies
@@ -460,11 +462,12 @@ abstract class Store<LightDataType extends FirestoreData,
   Query<LightDataType> query(
       {bool applyOrderBy = false,
       bool applyFilterBy = true,
-      LightDataType? startAfter,
-      int? limit}) {
+      bool paging = false,
+      int? limit,
+      bool resetPaging = false}) {
     Query<LightDataType> retQuery = _collectionReference;
-    _logger.finest('<$runtimeType.query>: applyOrderBy $applyOrderBy '
-        ' applyFilterBy $applyFilterBy startAfter $startAfter limit $limit');
+    // _logger.finest('<$runtimeType.query>: applyOrderBy $applyOrderBy '
+    //     'applyFilterBy $applyFilterBy limit $limit ${paging ? 'paging' : ''} startAfterDocument ${_startAfterDocument?.data()?.id}');
     // apply filter
     if (applyFilterBy && storeFilter != null) {
       _logger.finest('($runtimeType.query): storeFilter $storeFilter');
@@ -478,9 +481,20 @@ abstract class Store<LightDataType extends FirestoreData,
             descending: orderbyField.value == OrderDirection.desc);
       }
     }
+
     // apply start after
-    if (startAfter != null) {
-      retQuery = retQuery.startAfter([startAfter]);
+    if (paging) {
+      if (resetPaging) {
+        _logger.finest(
+            '($runtimeType.query): resetPaging startAfterDocument null');
+        _startAfterDocument = null;
+      } else {
+        _logger.finest(
+            '($runtimeType.query): paging startAfterDocument ${_startAfterDocument?.data()?.id}');
+        if (_startAfterDocument != null) {
+          retQuery = retQuery.startAfterDocument(_startAfterDocument!);
+        }
+      }
     }
     // apply limit
     if (limit != null && limit > 0) {
@@ -491,20 +505,32 @@ abstract class Store<LightDataType extends FirestoreData,
 
   /// Returns the stream on [Store.query]
   Stream<Iterable<LightDataType>> stream(
-          {bool applyOrderBy = false,
-          bool applyFilterBy = true,
-          LightDataType? startAfter,
-          int? limit}) =>
-      AuthViewModel.instance().notAutenticated
-          ? const Stream.empty()
-          : query(
-                  applyOrderBy: applyOrderBy,
-                  applyFilterBy: applyFilterBy,
-                  startAfter: startAfter,
-                  limit: limit)
-              .snapshots()
-              .map((querySnapshot) =>
-                  querySnapshot.docs.map((document) => document.data()));
+      {bool applyOrderBy = false,
+      bool applyFilterBy = true,
+      bool paging = false,
+      int? limit,
+      bool resetPaging = false}) {
+    // _logger.finest('<$runtimeType.stream>: applyOrderBy $applyOrderBy '
+    //     'applyFilterBy $applyFilterBy limit $limit ${paging ? 'paging' : ''}');
+    return AuthViewModel.instance().notAutenticated
+        ? const Stream.empty()
+        : query(
+                applyOrderBy: applyOrderBy,
+                applyFilterBy: applyFilterBy,
+                paging: paging,
+                resetPaging: resetPaging,
+                limit: limit)
+            .snapshots()
+            .map((querySnapshot) {
+            if (paging && querySnapshot.docs.isNotEmpty) {
+              _startAfterDocument = querySnapshot.docs.last;
+              _logger.finest('($runtimeType.stream): paging '
+                  'first ${querySnapshot.docs.first.id} '
+                  'last ${_startAfterDocument?.id} ');
+            }
+            return querySnapshot.docs.map((document) => document.data());
+          });
+  }
 
   /// Returns `true` if collection is empty based on [Store.storeFilter] defined.
   Future<bool> empty() async {
@@ -952,9 +978,8 @@ abstract class Store<LightDataType extends FirestoreData,
       DetailsDataType document,
       bool increment,
       DetailsDataType? oldDetailsData) async {
-      _logger.finest(
-          '<$runtimeType._updateGroupByCounterTransaction<)>: '
-          'document ${document.id} increment $increment, '
+    _logger.finest('<$runtimeType._updateGroupByCounterTransaction<)>: '
+        'document ${document.id} increment $increment, '
         'oldDetailsData ${oldDetailsData?.id} ');
     // get the user document snapshot
     DocumentSnapshot<Map<String, dynamic>> userDocumentSnapshot =
@@ -979,7 +1004,7 @@ abstract class Store<LightDataType extends FirestoreData,
       groupByValue = increment ? groupByValue + 1 : groupByValue - 1;
       _logger.finest(
           '($runtimeType._updateGroupByCounterTransaction): document ${document.id} increment $increment, '
-        'oldDetailsData ${oldDetailsData?.id}. $groupByUserValue new value $groupByValue');
+          'oldDetailsData ${oldDetailsData?.id}. $groupByUserValue new value $groupByValue');
       // increment/decrement group by value based
       userDocumentMap[groupByUserValue] = groupByValue;
       // oldDocument is set, decrement/increment value for old document
@@ -990,7 +1015,7 @@ abstract class Store<LightDataType extends FirestoreData,
               increment ? oldGroupByValue - 1 : oldGroupByValue + 1;
           _logger.finest(
               '($runtimeType._updateGroupByCounterTransaction): document ${document.id} increment $increment, '
-        'oldDetailsData ${oldDetailsData.id}  $oldGroupByUserValue (old) new value $oldGroupByValue');
+              'oldDetailsData ${oldDetailsData.id}  $oldGroupByUserValue (old) new value $oldGroupByValue');
           userDocumentMap[oldGroupByUserValue!] = oldGroupByValue;
         }
       }
