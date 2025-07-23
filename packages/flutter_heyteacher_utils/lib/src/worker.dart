@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:isolate';
+import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -55,6 +56,7 @@ abstract class Worker<I, O> {
   /// Throws a [StateError] if the worker is already closed.
   Future<({O? output, Error? error, StackTrace? stackTrace})> execute(
       I input) async {
+    //log('flutter (): ${clock.now().toIso8601String()}: flutter () <$debugName.execute>:');
     if (_commands == null) {
       await _spawn();
     }
@@ -72,12 +74,12 @@ abstract class Worker<I, O> {
   /// After calling this, [execute] will throw a [StateError].
   /// It's safe to call this method multiple times.
   void close() {
-    log('<$debugName.close>:');
+    log('flutter (): ${clock.now().toIso8601String()}: flutter () <$debugName.close>:');
     if (!_closed) {
       _closed = true;
       _commands?.send('shutdown');
       if (_activeRequests.isEmpty) _responses?.close();
-      log('<$debugName.close>: succesfully closed');
+      log('flutter (): ${clock.now().toIso8601String()}: <$debugName.close>: succesfully closed');
     }
   }
 
@@ -85,7 +87,7 @@ abstract class Worker<I, O> {
   ///
   /// This must be called before [execute].
   Future<void> _spawn() async {
-    log('<$debugName.spawn>');
+    log('flutter (): ${clock.now().toIso8601String()}: <$debugName.spawn>');
     RootIsolateToken? rootIsolateToken = RootIsolateToken.instance;
     if (rootIsolateToken == null) {
       throw Exception('($runtimeType.spawn): Cannot get the RootIsolateToken');
@@ -147,7 +149,7 @@ abstract class Worker<I, O> {
         sendPort.send((id, (output: await executeCallback(input), error:null, stackTrace:null)));
       } catch (error, stackTrace) {
         sendPort.send((id, (output: null, error:error, stackTrace:stackTrace)));
-        log('($debugName._handleCommandsToIsolate): error $error '
+        log('flutter (): ${clock.now().toIso8601String()}: ($debugName._handleCommandsToIsolate): error $error '
             'stackTrace $stackTrace');
       }
     });
