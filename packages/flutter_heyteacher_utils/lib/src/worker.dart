@@ -33,7 +33,7 @@ import 'package:flutter/services.dart';
 abstract class Worker<I, O> {
   SendPort? _commands;
   ReceivePort? _responses;
-  final Map<int, Completer<({O output, Error? error, StackTrace? stackTrace})>>
+  final Map<int, Completer<({O? output, Error? error, StackTrace? stackTrace})>>
       _activeRequests = {};
   int _idCounter = 0;
   bool _closed = false;
@@ -53,14 +53,14 @@ abstract class Worker<I, O> {
   /// Sends the [input] data to the isolate and returns a [Future] that
   /// completes with the result.
   /// Throws a [StateError] if the worker is already closed.
-  Future<({O output, Error? error, StackTrace? stackTrace})> execute(
+  Future<({O? output, Error? error, StackTrace? stackTrace})> execute(
       I input) async {
     if (_commands == null) {
-      _spawn();
+      await _spawn();
     }
     if (_closed) throw StateError('($debugName.execute): $input. Closed');
     final completer =
-        Completer<({O output, Error? error, StackTrace? stackTrace})>.sync();
+        Completer<({O? output, Error? error, StackTrace? stackTrace})>.sync();
     final id = _idCounter++;
     _activeRequests[id] = completer;
     _commands!.send((id, input));
@@ -120,8 +120,8 @@ abstract class Worker<I, O> {
   void _handleResponsesFromIsolate(dynamic message) {
     final (
       int id,
-      ({O output, Error? error, StackTrace? stackTrace}) response
-    ) = message as (int, ({O output, Error? error, StackTrace? stackTrace}));
+      ({O? output, Error? error, StackTrace? stackTrace}) response
+    ) = message as (int, ({O? output, Error? error, StackTrace? stackTrace}));
     final completer = _activeRequests.remove(id)!;
 
     if (response is RemoteError) {
@@ -142,10 +142,11 @@ abstract class Worker<I, O> {
         receivePort.close();
         return;
       }
-      try {
         final (int id, I input) = message as (int, I);
-        sendPort.send((id, await executeCallback(input)));
+      try {
+        sendPort.send((id, (output: await executeCallback(input), error:null, stackTrace:null)));
       } catch (error, stackTrace) {
+        sendPort.send((id, (output: null, error:error, stackTrace:stackTrace)));
         log('($debugName._handleCommandsToIsolate): error $error '
             'stackTrace $stackTrace');
       }
