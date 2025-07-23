@@ -460,11 +460,10 @@ abstract class Store<LightDataType extends FirestoreData,
   Query<LightDataType> query(
       {bool applyOrderBy = false,
       bool applyFilterBy = true,
-      LightDataType? startAfter,
       int? limit}) {
     Query<LightDataType> retQuery = _collectionReference;
     _logger.finest('<$runtimeType.query>: applyOrderBy $applyOrderBy '
-        ' applyFilterBy $applyFilterBy startAfter $startAfter limit $limit');
+        ' applyFilterBy $applyFilterBy limit $limit');
     // apply filter
     if (applyFilterBy && storeFilter != null) {
       _logger.finest('($runtimeType.query): storeFilter $storeFilter');
@@ -478,10 +477,6 @@ abstract class Store<LightDataType extends FirestoreData,
             descending: orderbyField.value == OrderDirection.desc);
       }
     }
-    // apply start after
-    if (startAfter != null) {
-      retQuery = retQuery.startAfter([startAfter]);
-    }
     // apply limit
     if (limit != null && limit > 0) {
       retQuery = retQuery.limit(limit);
@@ -493,14 +488,12 @@ abstract class Store<LightDataType extends FirestoreData,
   Stream<Iterable<LightDataType>> stream(
           {bool applyOrderBy = false,
           bool applyFilterBy = true,
-          LightDataType? startAfter,
           int? limit}) =>
       AuthViewModel.instance().notAutenticated
           ? const Stream.empty()
           : query(
                   applyOrderBy: applyOrderBy,
                   applyFilterBy: applyFilterBy,
-                  startAfter: startAfter,
                   limit: limit)
               .snapshots()
               .map((querySnapshot) =>
