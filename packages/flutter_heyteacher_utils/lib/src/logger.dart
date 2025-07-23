@@ -371,20 +371,18 @@ class LoggerViewModel {
     // Get the unique identifier for the device/user.
     final identifierInfo = InfoDevicePackageViewModel.instance.identifierInfo;
     // Listen to records from the root logger.
+    await _writeLogWorker.execute(LogRecord(
+        Level.FINEST, 'Logger.root.onRecord.listen', runtimeType.toString()));
     _loggerSubscription = Logger.root.onRecord.listen((record) {
       // Format error and stack trace for potential inclusion in messages.
       final String error = record.error != null ? '\n${record.error}' : '';
       final String stackTrace =
           record.stackTrace != null ? '\n${record.stackTrace}' : '';
       // Addthe raw LogRecord to the beginning of the list.
-      _writeLogWorker.execute(record).then((output) {
-        if (output.error != null) {
-          _logger?.severe(
-              '(_writeLogWorker.execute): ', output.error, output.stackTrace);
-        }
-
-        //developer.log('WriteLogWorker response: $response');
-      });
+      _writeLogWorker.execute(record).then((output) => output.error != null
+          ? _logger?.severe(
+              '(_writeLogWorker.execute): ', output.error, output.stackTrace)
+          : null);
 
       // Print the log message to the console if in debug mode.
       if (kDebugMode) {
