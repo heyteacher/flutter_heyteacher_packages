@@ -2,7 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:logging/logging.dart';
 
 class StorageViewModel {
-  final log = Logger('StorageModel');
+  final log = Logger('StorageViewModel');
 
   static StorageViewModel? _instance;
   StorageViewModel._();

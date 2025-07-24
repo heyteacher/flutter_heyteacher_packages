@@ -71,7 +71,7 @@ abstract class FirebaseCloudMessagingViewModel {
   @protected
   String get lockSharedPreferencesKey => '${runtimeType}Lock';
 
-  final _logger = Logger('FirebaseCloudMessagingModel');
+  final _logger = Logger('FirebaseCloudMessagingViewModel');
   final _sharedPreferences = SharedPreferencesAsync();
 
   static int get remoteConfigIntervalInMinutes => kDebugMode

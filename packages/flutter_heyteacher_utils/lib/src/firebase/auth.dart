@@ -124,7 +124,7 @@ class AccountCard extends StatelessWidget {
 /// checking authentication status, and listening to authentication state changes.
 /// It can be initialized with a real or mocked [FirebaseAuth] instance.
 class AuthViewModel {
-  final log = Logger('AuthModel');
+  final log = Logger('AuthViewModel');
   late final FirebaseAuth _firebaseAuth;
   GoogleProvider? _googleProvider;
 
@@ -161,13 +161,13 @@ class AuthViewModel {
   /// If a [GoogleProvider] was configured, it also attempts to sign out
   /// from the Google provider.
   Future<void> signOut() async {
-    final log = Logger('signOut');
+    final logger = Logger('signOut');
     try {
       await _firebaseAuth.signOut();
       _googleProvider?.logOutProvider();
-      log.info('sign out');
-    } catch (e, s) {
-      log.severe('signOut: failed', e, s);
+      logger.info('sign out');
+    } catch (error, stackTrace) {
+      logger.severe('signOut: failed', error, stackTrace);
     }
   }
 
