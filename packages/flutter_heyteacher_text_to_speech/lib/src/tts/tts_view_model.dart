@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
 class TTSViewModel {
-  static final _logger = Logger('TtsModel');
+  static final _logger = Logger('TTSViewModel');
 
   late FlutterTts _textToSpeech;
 
