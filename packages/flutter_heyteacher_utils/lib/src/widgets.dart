@@ -103,8 +103,8 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
     ObjectParamType? param,
     String? title,
     required String content}) async {
-  final log = Logger('showConfirmCancelDialog');
-
+  final logger = Logger('showConfirmCancelDialog');
+  logger.finest('<showConfirmCancelDialog>: title $title');
   final bool? confirm = await showDialog<bool>(
       context: context,
       builder: (context) {
@@ -145,18 +145,20 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
         );
       });
   if (confirmCallback != null && confirm != null && confirm) {
+    logger.finest('(showConfirmCancelDialog): title $title. Confirm');
     String? message;
-    bool error = false;
+    bool errorRaised = false;
     try {
       message = await confirmCallback(param);
-    } catch (e, s) {
-      error = true;
-      message = e.toString();
-      log.severe('${confirmCallback.toString()}: error', e, s);
+    } catch (error, stackTrace) {
+      errorRaised = true;
+      message = error.toString();
+      logger.severe(
+          '(showConfirmCancelDialog): title $title. error', error, stackTrace);
       rethrow;
     } finally {
       if (context.mounted && message != null) {
-        showSnackBar(context: context, message: message, error: error);
+        showSnackBar(context: context, message: message, error: errorRaised);
       }
     }
   } else {
@@ -172,7 +174,7 @@ class ProgressIndicatorView extends StatefulWidget {
   final Duration timeout;
   const ProgressIndicatorView({
     super.key,
-    this.timeout = const Duration(seconds: 5),
+    this.timeout = const Duration(seconds: 15),
   });
 
   @override
