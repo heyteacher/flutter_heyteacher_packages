@@ -70,9 +70,10 @@ class TutorialViewModel {
     }
     _started = true;
     if (context.mounted) {
+      _logger.info('((start): screenName $screenName. Show tutorial');
       Tutorial.showTutorial(context, _screens[screenName]!,
           onTutorialComplete: () {
-        _logger.finest('(start): screenName $screenName. Tutorial completed');
+        _logger.info('(start): screenName $screenName. Tutorial completed');
         SharedPreferencesAsync()
             .setBool('$screenName-tutorial-completed', true);
       });
