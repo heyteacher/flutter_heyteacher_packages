@@ -518,7 +518,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   /// The current list of data items displayed in the list.
   @protected
-  List<D>? currentDataList;
+  List<D>? dataList;
 
   /// The number of items to fetch in each page. Defaults to 10.
   @protected
@@ -562,7 +562,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   /// Builds the widget for a single item in the list.
   ///
-  /// The [index] is the position of the item in [currentDataList], and the
+  /// The [index] is the position of the item in [dataList], and the
   /// [animation] should be used to animate the item's appearance (e.g.,
   /// inside a [SizeTransition]).
   @protected
@@ -574,7 +574,10 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// the stream subscription starts. It can return `null` or an empty list
   /// if no initial data is available.
   @protected
-  Future<Iterable<D>?> initData();
+  Future<Iterable<D>?> initData() async {
+    return null;
+  }
+
 
   @override
   void initState() {
@@ -587,12 +590,12 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// Fetches initial data, sets up the list, and adds a scroll listener
   /// for pagination.
   Future<void> initPostFrame() async {
-    currentDataList = (await initData())?.toList();
-    if (currentDataList != null) {
+    dataList = (await initData())?.toList();
+    if (dataList != null) {
       setState(() {});
       await Future.delayed(const Duration(seconds: 1));
       if (mounted && _listGlobalKey.currentState != null) {
-        _listGlobalKey.currentState?.insertAllItems(0, currentDataList!.length);
+        _listGlobalKey.currentState?.insertAllItems(0, dataList!.length);
       }
     }
     _checkScollPosition();
@@ -610,9 +613,9 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   @override
   Widget build(BuildContext context) => SliverAnimatedList(
       key: _listGlobalKey,
-      initialItemCount: currentDataList?.length ?? 0,
+      initialItemCount: dataList?.length ?? 0,
       itemBuilder: (context, index, animation) =>
-          currentDataList?. isNotEmpty ?? false
+          dataList?. isNotEmpty ?? false
               ? buildData(index, animation)
               : const SizedBox.shrink());
 
@@ -622,19 +625,19 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       ?.removeItem(index, (context, animation) => buildData(index, animation));
 
   /// Subscribes to the data [stream] and handles list updates.
-  void _listenTracks() {
+  void updateDataList() {
     _listStreamSubscription?.cancel();
     _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
-      if ((currentDataList?.length ?? 0) < newDataList.length) {
+      if ((dataList?.length ?? 0) < newDataList.length) {
         // animate new items added
         _listGlobalKey.currentState
-            ?.insertAllItems(currentDataList?.length ?? 0, newDataList.length);
+            ?.insertAllItems(dataList?.length ?? 0, newDataList.length);
         // add new track (first track start time in after old fist track)
       } else if (newData(newDataList)) {
         // animate new data on top
         _listGlobalKey.currentState?.insertItem(0);
       }
-      currentDataList = newDataList.toList();
+      dataList = newDataList.toList();
       setState(() {});
     });
   }
@@ -643,7 +646,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   void _checkScollPosition() {
     if (scrollController.offset >= scrollController.position.maxScrollExtent) {
       _limit += pageSize;
-      _listenTracks();
+      updateDataList();
     }
   }
 }
