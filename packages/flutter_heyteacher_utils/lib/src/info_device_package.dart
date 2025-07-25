@@ -6,6 +6,8 @@
 ///   device and package version information, and a button to initiate a support email.
 /// - [InfoDevicePackageViewModel]: A singleton class that fetches detailed device
 ///   information (OS, model, browser) and package information (version, build number).
+// ignore_for_file: unused_import
+
 library;
 
 import 'dart:async';
@@ -21,6 +23,7 @@ import 'package:flutter_heyteacher_utils/logger.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/storage.dart';
+import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -165,7 +168,7 @@ class InfoDevicePackageViewModel {
     final logFilename =
         'applogs/$machineDate/$machineTime-${InfoDevicePackageViewModel.instance.identifierInfo}-$randomId.log';
     StorageViewModel.instance
-        .uploadString(logFilename, await LoggerViewModel.instance().logs2Text);
+        .uploadString(logFilename, await LoggerViewModel.instance().logs2Text());
     return logFilename;
   }
 

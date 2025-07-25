@@ -1,4 +1,8 @@
+// ignore_for_file: unused_import
+
 library;
+
+import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 
 /// Provides UI components and a model for viewing and managing application logs.
 ///
@@ -11,4 +15,6 @@ library;
 ///   to Firebase Analytics.
 
 export 'src/logger.dart'
-    show LoggerViewModel, LoggerScreen, LoggerCard, LoggingRouter;
+    show LoggerScreen, LoggerCard, LoggingRouter;
+
+export 'src/logger/logger_view_model.dart' show LoggerViewModel;
