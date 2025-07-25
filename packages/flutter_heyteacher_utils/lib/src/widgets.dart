@@ -506,3 +506,144 @@ class BlinkingTextState extends State<BlinkingText> {
     );
   }
 }
+
+/// An abstract `State` class for creating a paginated `SliverAnimatedList` that
+/// is populated from a `Stream`.
+///
+/// It simplifies the common pattern of displaying a list of data that is fetched
+/// in pages as the user scrolls down. It also handles real-time updates, such
+/// as inserting new items at the top of the list with an animation.
+abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
+    extends State<T> {
+
+  /// The current list of data items displayed in the list.
+  @protected
+  List<D>? currentDataList;
+
+  /// The number of items to fetch in each page. Defaults to 10.
+  @protected
+  int get pageSize => 10;
+
+  /// The current limit for the number of items to fetch from the [stream].
+  ///
+  /// This value is increased by [pageSize] when the user scrolls to the end
+  /// of the list.
+  late int _limit = pageSize;
+
+  /// A global key for the [SliverAnimatedList] to manage its state,
+  /// such as inserting or removing items.
+  final GlobalKey<SliverAnimatedListState> _listGlobalKey =
+      GlobalKey<SliverAnimatedListState>();
+
+  /// The subscription to the data stream.
+  StreamSubscription? _listStreamSubscription;
+
+  /// The [ScrollController] attached to the scroll view containing the list.
+  ///
+  /// This is used to detect when the user has scrolled to the end of the list
+  /// to trigger pagination.
+  @protected
+  ScrollController get scrollController;
+
+  /// The stream of data for the list.
+  ///
+  /// This method is called to get the stream of items to display. The [limit]
+  /// parameter should be used to control the number of items fetched.
+  @protected
+  Stream<Iterable<D>> stream({required int limit});
+
+  /// Determines if the new data list from the stream contains a new item that
+  /// should be prepended to the list.
+  ///
+  /// This is typically used to handle real-time updates where new items
+  /// appear at the top of the list.
+  @protected
+  bool newData(Iterable<D> dataList);
+
+  /// Builds the widget for a single item in the list.
+  ///
+  /// The [index] is the position of the item in [currentDataList], and the
+  /// [animation] should be used to animate the item's appearance (e.g.,
+  /// inside a [SizeTransition]).
+  @protected
+  Widget buildData(int index, Animation<double> animation);
+
+  /// Fetches the initial data for the list.
+  ///
+  /// This method is called once in [initState] to populate the list before
+  /// the stream subscription starts. It can return `null` or an empty list
+  /// if no initial data is available.
+  @protected
+  Future<Iterable<D>?> initData();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => initPostFrame());
+  }
+
+  /// Initializes the state after the first frame is built.
+  ///
+  /// Fetches initial data, sets up the list, and adds a scroll listener
+  /// for pagination.
+  Future<void> initPostFrame() async {
+    currentDataList = (await initData())?.toList();
+    if (currentDataList != null) {
+      setState(() {});
+      await Future.delayed(const Duration(seconds: 1));
+      if (mounted && _listGlobalKey.currentState != null) {
+        _listGlobalKey.currentState?.insertAllItems(0, currentDataList!.length);
+      }
+    }
+    _checkScollPosition();
+    scrollController.addListener(_checkScollPosition);
+  }
+
+
+  @override
+  void dispose() {
+    _listStreamSubscription?.cancel();
+    scrollController.removeListener(_checkScollPosition);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => SliverAnimatedList(
+      key: _listGlobalKey,
+      initialItemCount: currentDataList?.length ?? 0,
+      itemBuilder: (context, index, animation) =>
+          currentDataList?. isNotEmpty ?? false
+              ? buildData(index, animation)
+              : const SizedBox.shrink());
+
+  /// Animates the deletion of an item at the given [index].
+  @protected
+  void animateDeleteData(int index) async => _listGlobalKey.currentState
+      ?.removeItem(index, (context, animation) => buildData(index, animation));
+
+  /// Subscribes to the data [stream] and handles list updates.
+  void _listenTracks() {
+    _listStreamSubscription?.cancel();
+    _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
+      if ((currentDataList?.length ?? 0) < newDataList.length) {
+        // animate new items added
+        _listGlobalKey.currentState
+            ?.insertAllItems(currentDataList?.length ?? 0, newDataList.length);
+        // add new track (first track start time in after old fist track)
+      } else if (newData(newDataList)) {
+        // animate new data on top
+        _listGlobalKey.currentState?.insertItem(0);
+      }
+      currentDataList = newDataList.toList();
+      setState(() {});
+    });
+  }
+
+  /// Checks the scroll position to trigger pagination.
+  void _checkScollPosition() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent) {
+      _limit += pageSize;
+      _listenTracks();
+    }
+  }
+}
