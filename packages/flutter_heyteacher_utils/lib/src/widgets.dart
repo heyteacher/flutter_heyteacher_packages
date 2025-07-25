@@ -574,7 +574,10 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// the stream subscription starts. It can return `null` or an empty list
   /// if no initial data is available.
   @protected
-  Future<Iterable<D>?> initData();
+  Future<Iterable<D>?> initData() async {
+    return null;
+  }
+
 
   @override
   void initState() {
