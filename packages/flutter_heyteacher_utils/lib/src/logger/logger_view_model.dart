@@ -182,7 +182,6 @@ class LoggerViewModel {
     _writeLogRecords(record);
   }
 
-
   /// Returns a string representation of the logs, formatted for display.
   Future<String> logs2Text([Level? level]) async {
     _logger.finest('<logs2Text>: ');
@@ -242,20 +241,21 @@ class LoggerViewModel {
   }
 
   Future<void> _writeLogRecords(LogRecord record) async {
-    developer.log('flutter () <_writeLogRecords>: record ' '$record' '');
+    _logger.finest('<_writeLogRecords>:');
     try {
       if (notSavedLogRecords.length == 1000 ||
           record.level.value >= Level.SEVERE.value) {
         final response = await _writeLogsWorker.execute(notSavedLogRecords);
         if (response.error != null) {
-          developer.log('flutter () (_logRecord): WriteLogsWorker error '
+          _logger.severe('(_logRecord): WriteLogsWorker error '
+              '$record'
               '${response.error} stackTrace ${response.stackTrace}');
         } else {
           notSavedLogRecords.clear();
         }
       }
     } catch (error, stackTrace) {
-      developer.log('flutter () (_writeLogRecords): record '
+      _logger.severe('(_writeLogRecords): record '
           '$record'
           ' error $error stackTrace $stackTrace');
     }
