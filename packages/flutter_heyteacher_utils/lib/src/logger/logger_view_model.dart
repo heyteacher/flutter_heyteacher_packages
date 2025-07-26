@@ -145,16 +145,6 @@ class LoggerViewModel {
         record.stackTrace != null ? '\n${record.stackTrace}' : '';
     notSavedLogRecords.add(record);
     // reached 1K logs or an error is raised, write logs to file
-    if (notSavedLogRecords.length == 1000 ||
-        record.level.value >= Level.SEVERE.value) {
-      final response = await _writeLogsWorker.execute(notSavedLogRecords);
-      if (response.error != null) {
-        developer.log('flutter () (_logRecord): WriteLogsWorker error '
-            '${response.error} stackTrace ${response.stackTrace}');
-      } else {
-        notSavedLogRecords.clear();
-      }
-    }
     // Print the log message to the console if in debug mode.
     if (kDebugMode) {
       print('${timeWithSecondsFormatter.format(record.time)} '
@@ -189,7 +179,9 @@ class LoggerViewModel {
             stackTrace.substring(0, min(stackTrace.length, 100)).trim(),
       'uid': identifierInfo
     });
+    _writeLogRecords(record);
   }
+
 
   /// Returns a string representation of the logs, formatted for display.
   Future<String> logs2Text([Level? level]) async {
@@ -249,6 +241,26 @@ class LoggerViewModel {
         .sublist(0, min(logEntries.length, limit ?? logEntries.length));
   }
 
+  Future<void> _writeLogRecords(LogRecord record) async {
+    developer.log('flutter () <_writeLogRecords>: record ' '$record' '');
+    try {
+      if (notSavedLogRecords.length == 1000 ||
+          record.level.value >= Level.SEVERE.value) {
+        final response = await _writeLogsWorker.execute(notSavedLogRecords);
+        if (response.error != null) {
+          developer.log('flutter () (_logRecord): WriteLogsWorker error '
+              '${response.error} stackTrace ${response.stackTrace}');
+        } else {
+          notSavedLogRecords.clear();
+        }
+      }
+    } catch (error, stackTrace) {
+      developer.log('flutter () (_writeLogRecords): record '
+          '$record'
+          ' error $error stackTrace $stackTrace');
+    }
+  }
+
   List<LogEntry> _fromJson(FileSystemEntity file) {
     _logger.finest('<_fromJson>: file ${file.path}');
     String jsonString = '';
@@ -283,6 +295,7 @@ class LoggerViewModel {
       ];
     }
   }
+
   Future<Directory> get _tmpLogsDir async {
     /// The subscription to the root logger's `onRecord` stream.
     final tmpLogsDir =
@@ -290,6 +303,7 @@ class LoggerViewModel {
     // Check if the temporary logs directory exists, if not, create it.
     return (await tmpLogsDir.exists()) ? tmpLogsDir : tmpLogsDir.create();
   }
+
   Future<List<FileSystemEntity>> _logFiles({required bool descending}) async =>
       (await ((await _tmpLogsDir).list(recursive: false, followLinks: false))
           .where((file) => file is File && file.path.endsWith('.json'))
