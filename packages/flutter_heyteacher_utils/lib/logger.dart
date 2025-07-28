@@ -14,7 +14,7 @@ import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 ///   Firebase Remote Config), in-memory storage, and forwarding of structured logs
 ///   to Firebase Analytics.
 
-export 'src/logger.dart'
+export 'src/logger/logger_view.dart'
     show LoggerScreen, LoggerCard, LoggingRouter;
 
 export 'src/logger/logger_view_model.dart' show LoggerViewModel;

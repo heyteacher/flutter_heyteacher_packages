@@ -14,55 +14,26 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/src/logger/logger_data.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
-import '../formats.dart';
+import '../../formats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
-class LogEntry {
-  final DateTime time;
-  final Level level;
-  final String message;
-  final String loggerName;
-  final String? error;
-  final String? stackTrace;
 
-  LogEntry(
-      {required this.time,
-      required this.level,
-      required this.message,
-      required this.loggerName,
-      this.error,
-      this.stackTrace});
 
-  factory LogEntry.fromJson(Map<String, dynamic> map) => LogEntry(
-      time: DateTime.parse(map['time']),
-      level: switch (map['level'] as String) {
-        'SEVERE' => Level.SEVERE,
-        'WARNING' => Level.WARNING,
-        'INFO' => Level.INFO,
-        'CONFIG' => Level.CONFIG,
-        'FINE' => Level.FINE,
-        'FINER' => Level.FINER,
-        'FINEST' => Level.FINEST,
-        _ => Level.SHOUT
-      },
-      message: map['message'],
-      loggerName: map['loggerName'],
-      error: map['error'],
-      stackTrace: map['stackTrace']);
+/// Defines the routing for the logger screen.
+class LoggingRouter {
+  static const String path = 'logging';
 
-  Map<String, dynamic> toJson() => {
-        'time': time.toLocal().toIso8601String(),
-        'level': level.name,
-        'loggerName': loggerName,
-        'message': message,
-        'error': error,
-        'stackTrace': stackTrace,
-      };
+  /// Builds a [GoRoute] for the logger screen.
+  static GoRoute builder() => GoRoute(
+      path: path,
+      builder: (BuildContext context, GoRouterState state) =>
+          const LoggerScreen());
 }
 
 class LoggerCard extends StatelessWidget {
@@ -100,16 +71,6 @@ class LoggerCard extends StatelessWidget {
           ));
 }
 
-/// Defines the routing for the logger screen.
-class LoggingRouter {
-  static const String path = 'logging';
-
-  /// Builds a [GoRoute] for the logger screen.
-  static GoRoute builder() => GoRoute(
-      path: path,
-      builder: (BuildContext context, GoRouterState state) =>
-          const LoggerScreen());
-}
 
 ///
 /// A [StatelessWidget] that displays a list of log messages.
@@ -132,8 +93,6 @@ class _LoggerScreenState
   /// The currently selected [Level] to filter logs by. If null, no filter is
   /// applied.
   late ScrollController _scrollController;
-
-  Level? _filterLevel;
 
   @override
   void initState() {
@@ -164,10 +123,14 @@ class _LoggerScreenState
       LoggerViewModel.instance()
           .logs(
               notSavedLogRecords: LoggerViewModel.instance().notSavedLogRecords,
-              filterLevel: _filterLevel,
               descending: true,
               limit: limit)
           .asStream();
+
+  @override
+  @protected
+  Stream<void> get updateStream => LoggerViewModel.instance().updateStream;
+
 
   /// Builds the UI for the logger screen.
   @override
@@ -179,9 +142,7 @@ class _LoggerScreenState
           // add refresh button to reload logs
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () {
-              updateDataList();
-            },
+            onPressed: LoggerViewModel.instance().refresh,
           )
         ],
       ),
@@ -207,10 +168,7 @@ class _LoggerScreenState
         trailingIcon: const Icon(Icons.filter_list),
         // Updates the _filterLevel and rebuilds the UI when a new level is
         // selected.
-        onSelected: (level) {
-          _filterLevel = level;
-          updateDataList();
-        },
+        onSelected: LoggerViewModel.instance().updateFilterLevel,
         dropdownMenuEntries: [
           null,
           Level.SHOUT,

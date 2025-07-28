@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
-import 'package:flutter_heyteacher_utils/src/logger.dart';
+import 'package:flutter_heyteacher_utils/src/logger/logger_data.dart';
 import 'package:flutter_heyteacher_utils/worker.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,6 +30,17 @@ class LoggerViewModel {
 
   /// The singleton instance of [LoggerViewModel].
   static LoggerViewModel? _instance;
+
+  /// Flag to ensure configuration happens only once.
+  bool _alreadyConfigured = false;
+
+  final List<LogRecord> notSavedLogRecords = List.empty(growable: true);
+
+  final StreamController<void> _updateStreamController =
+      StreamController<void>.broadcast();
+  Stream<void> get updateStream => _updateStreamController.stream;
+
+  Level? _filterLevel;
 
   /// Provides the singleton instance of [LoggerViewModel].
   ///
@@ -53,11 +64,6 @@ class LoggerViewModel {
   /// Initializes the logger configuration.
   /// If [reset] is true, it clears the temporary log directory.
   LoggerViewModel._();
-
-  /// Flag to ensure configuration happens only once.
-  bool _alreadyConfigured = false;
-
-  final List<LogRecord> notSavedLogRecords = List.empty(growable: true);
 
   /// Configures the root logger for the application.
   ///
@@ -183,7 +189,7 @@ class LoggerViewModel {
   }
 
   /// Returns a string representation of the logs, formatted for display.
-  Future<String> logs2Text([Level? level]) async {
+  Future<String> logs2Text([Level level = Level.ALL]) async {
     _logger.finest('<logs2Text>: ');
     final logs2TextWorker = Logs2TextWorker();
     final output = await logs2TextWorker
@@ -195,6 +201,11 @@ class LoggerViewModel {
     }
     return output.output!;
   }
+
+  bool _filterLog(Level logLevel, Level? filterLevel) =>
+      filterLevel == null ||
+      filterLevel == Level.ALL ||
+      logLevel.value == (filterLevel.value);
 
   /// Returns a list of log entries from the temporary log directory.
   ///
@@ -209,10 +220,10 @@ class LoggerViewModel {
       required bool descending}) async {
     final List<LogEntry> logEntries = [];
 
+    filterLevel ??= _filterLevel;
     // convert not saved log records to log entries filtered by log level
     final notSavedLogEntries = notSavedLogRecords
-        ?.where(
-            (logEntry) => filterLevel == null || logEntry.level == filterLevel)
+        ?.where((logRecord) => _filterLog(logRecord.level, filterLevel))
         .map((logRecord) => LogEntry(
             time: logRecord.time,
             level: logRecord.level,
@@ -225,8 +236,8 @@ class LoggerViewModel {
     // load log files from recent to old
     for (var file in await _logFiles(descending: descending)) {
       // load log entries from file and filter by level and add to log entries
-      final logEntriesToAdd = _fromJson(file).where(
-          (logEntry) => filterLevel == null || logEntry.level == filterLevel);
+      final logEntriesToAdd = _fromJson(file)
+          .where((logEntry) => _filterLog(logEntry.level, filterLevel));
       logEntries.addAll(logEntriesToAdd);
       // if limit is reached, break
       if (limit != null && logEntries.length >= limit) {
@@ -312,6 +323,15 @@ class LoggerViewModel {
         ..sort((fileA, fileB) =>
             (descending ? -1 : 1) *
             fileA.statSync().modified.compareTo(fileB.statSync().modified));
+
+  void updateFilterLevel(Level? level) {
+    _filterLevel = level;
+    _updateStreamController.add(null);
+  }
+
+  void refresh() {
+    _updateStreamController.add(null);
+  }
 }
 
 /// A background worker that writes a [LogRecord] to a file in JSON format.

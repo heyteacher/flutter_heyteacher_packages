@@ -515,7 +515,6 @@ class BlinkingTextState extends State<BlinkingText> {
 /// as inserting new items at the top of the list with an animation.
 abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     extends State<T> {
-
   /// The current list of data items displayed in the list.
   @protected
   List<D>? dataList;
@@ -536,7 +535,9 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       GlobalKey<SliverAnimatedListState>();
 
   /// The subscription to the data stream.
-  StreamSubscription? _listStreamSubscription;
+  StreamSubscription? _listStreamSubscription, _updateStreamSubscription;
+
+  bool _loading = false;
 
   /// The [ScrollController] attached to the scroll view containing the list.
   ///
@@ -551,6 +552,12 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// parameter should be used to control the number of items fetched.
   @protected
   Stream<Iterable<D>> stream({required int limit});
+
+  /// The stream which notify that widget should be updated.
+  ///
+  /// Inform widget that needed to be updated. Tipically a new filter is applied.
+  @protected
+  Stream<void> get updateStream;
 
   /// Determines if the new data list from the stream contains a new item that
   /// should be prepended to the list.
@@ -578,7 +585,6 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     return null;
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -590,34 +596,39 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// Fetches initial data, sets up the list, and adds a scroll listener
   /// for pagination.
   Future<void> initPostFrame() async {
+    setState(() => _loading = true);
     dataList = (await initData())?.toList();
     if (dataList != null) {
-      setState(() {});
+      setState(() => _loading = false);
       await Future.delayed(const Duration(seconds: 1));
       if (mounted && _listGlobalKey.currentState != null) {
         _listGlobalKey.currentState?.insertAllItems(0, dataList!.length);
       }
     }
+    _updateStreamSubscription?.cancel();
+    _updateStreamSubscription = updateStream.listen((_) => updateDataList());
     _checkScollPosition();
     scrollController.addListener(_checkScollPosition);
   }
 
-
   @override
   void dispose() {
     _listStreamSubscription?.cancel();
+    _updateStreamSubscription?.cancel();
     scrollController.removeListener(_checkScollPosition);
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => SliverAnimatedList(
-      key: _listGlobalKey,
-      initialItemCount: dataList?.length ?? 0,
-      itemBuilder: (context, index, animation) =>
-          dataList?. isNotEmpty ?? false
-              ? buildData(index, animation)
-              : const SizedBox.shrink());
+  Widget build(BuildContext context) => _loading
+      ? const SliverFillRemaining(hasScrollBody: false, child: ProgressIndicatorView())
+      : SliverAnimatedList(
+          key: _listGlobalKey,
+          initialItemCount: dataList?.length ?? 0,
+          itemBuilder: (context, index, animation) =>
+              dataList?.isNotEmpty ?? false
+                  ? buildData(index, animation)
+                  : const SizedBox.shrink());
 
   /// Animates the deletion of an item at the given [index].
   @protected
@@ -626,6 +637,9 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   /// Subscribes to the data [stream] and handles list updates.
   void updateDataList() {
+    if (dataList?.isEmpty ?? true) {
+      setState(() => _loading = true);
+    }
     _listStreamSubscription?.cancel();
     _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
       if ((dataList?.length ?? 0) < newDataList.length) {
@@ -638,7 +652,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
         _listGlobalKey.currentState?.insertItem(0);
       }
       dataList = newDataList.toList();
-      setState(() {});
+      setState(() => _loading = false);
     });
   }
 
