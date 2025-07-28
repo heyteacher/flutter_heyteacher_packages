@@ -450,18 +450,23 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
 class BlinkingText extends StatefulWidget {
   final String text;
   final bool animated;
+  final int durationInMs;
   final TextStyle? style;
   final TextAlign? textAlign;
 
   const BlinkingText(this.text,
-      {super.key, this.animated = false, this.style, this.textAlign});
+      {super.key,
+      this.animated = true,
+      this.durationInMs = 500,
+      this.style,
+      this.textAlign});
 
   @override
   BlinkingTextState createState() => BlinkingTextState();
 }
 
 class BlinkingTextState extends State<BlinkingText> {
-  bool _isVisible = true;
+  bool _isVisible = false;
   Timer? _timer;
 
   @override
@@ -469,7 +474,8 @@ class BlinkingTextState extends State<BlinkingText> {
     super.initState();
     // Set a timer to toggle visibility every 500 milliseconds
     _timer?.cancel();
-    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+    _timer = Timer.periodic(
+        Duration(milliseconds: widget.durationInMs), (timer) {
       setState(() => _isVisible = !_isVisible);
     });
   }
@@ -621,7 +627,8 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   @override
   Widget build(BuildContext context) => _loading
-      ? const SliverFillRemaining(hasScrollBody: false, child: ProgressIndicatorView())
+      ? const SliverFillRemaining(
+          hasScrollBody: false, child: ProgressIndicatorView())
       : SliverAnimatedList(
           key: _listGlobalKey,
           initialItemCount: dataList?.length ?? 0,
