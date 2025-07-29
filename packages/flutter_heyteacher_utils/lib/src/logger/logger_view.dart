@@ -111,11 +111,6 @@ class _LoggerScreenState
       LoggerViewModel.instance().logs(descending: true, limit: pageSize);
 
   @override
-  bool newData(Iterable<LogEntry> dataList) =>
-      (dataList.elementAtOrNull(0)?.time ?? DateTime(1900))
-          .isAfter((this.dataList?.elementAtOrNull(0)?.time ?? DateTime(1900)));
-
-  @override
   ScrollController get scrollController => _scrollController;
 
   @override

@@ -474,8 +474,8 @@ class BlinkingTextState extends State<BlinkingText> {
     super.initState();
     // Set a timer to toggle visibility every 500 milliseconds
     _timer?.cancel();
-    _timer = Timer.periodic(
-        Duration(milliseconds: widget.durationInMs), (timer) {
+    _timer =
+        Timer.periodic(Duration(milliseconds: widget.durationInMs), (timer) {
       setState(() => _isVisible = !_isVisible);
     });
   }
@@ -565,14 +565,6 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   @protected
   Stream<void> get updateStream;
 
-  /// Determines if the new data list from the stream contains a new item that
-  /// should be prepended to the list.
-  ///
-  /// This is typically used to handle real-time updates where new items
-  /// appear at the top of the list.
-  @protected
-  bool newData(Iterable<D> dataList);
-
   /// Builds the widget for a single item in the list.
   ///
   /// The [index] is the position of the item in [dataList], and the
@@ -651,12 +643,8 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
       if ((dataList?.length ?? 0) < newDataList.length) {
         // animate new items added
-        _listGlobalKey.currentState
-            ?.insertAllItems(dataList?.length ?? 0, newDataList.length);
+        _listGlobalKey.currentState?.insertAllItems(0, newDataList.length);
         // add new track (first track start time in after old fist track)
-      } else if (newData(newDataList)) {
-        // animate new data on top
-        _listGlobalKey.currentState?.insertItem(0);
       }
       dataList = newDataList.toList();
       setState(() => _loading = false);
