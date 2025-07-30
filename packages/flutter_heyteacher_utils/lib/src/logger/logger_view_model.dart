@@ -133,11 +133,9 @@ class LoggerViewModel {
     final deviceInfo = await InfoDevicePackageViewModel.instance.deviceInfo;
     // Get the unique identifier for the device/user.
     final identifierInfo = InfoDevicePackageViewModel.instance.identifierInfo;
-    // initialize WriteLogsWorker... writing a log
-    await _writeLogRecords(
-        LogRecord(
-            Level.FINEST, '(initialize): init WriteLogsWorker ', _logger.name),
-        );
+    // initialize WriteLogsWorker in order to manage concurrent execution into
+    // a single isolate
+    _writeLogsWorker.initialize();
     // Listen to records from the root logger.
     _loggerSubscription = Logger.root.onRecord.listen((record) => _logRecord(
         record,
@@ -352,6 +350,9 @@ class WriteLogsWorker extends Worker<List<LogRecord>, void> {
   @override
   @protected
   Future<void> executeCallback(List<LogRecord> logRecords) async {
+    if (logRecords.isEmpty) {
+      return;
+    }
     final logEntries = logRecords
         .map((logRecord) => LogEntry(
             time: logRecord.time,

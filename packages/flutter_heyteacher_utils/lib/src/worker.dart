@@ -34,7 +34,8 @@ import 'package:flutter/services.dart';
 abstract class Worker<I, O> {
   SendPort? _commands;
   ReceivePort? _responses;
-  final Map<int, Completer<({O? output, Object? error, StackTrace? stackTrace})>>
+  final Map<int,
+          Completer<({O? output, Object? error, StackTrace? stackTrace})>>
       _activeRequests = {};
   int _idCounter = 0;
   bool _closed = false;
@@ -57,9 +58,7 @@ abstract class Worker<I, O> {
   Future<({O? output, Object? error, StackTrace? stackTrace})> execute(
       I input) async {
     //log('flutter (): ${clock.now().toIso8601String()}: flutter () <$debugName.execute>:');
-    if (_commands == null) {
-      await _spawn();
-    }
+    await initialize();
     if (_closed) throw StateError('($debugName.execute): $input. Closed');
     final completer =
         Completer<({O? output, Object? error, StackTrace? stackTrace})>.sync();
@@ -166,5 +165,11 @@ abstract class Worker<I, O> {
     final receivePort = ReceivePort();
     sendPort.send(receivePort.sendPort);
     _handleCommandsToIsolate(receivePort, sendPort);
+  }
+
+  Future<void> initialize() async {
+    if (_commands == null) {
+      await _spawn();
+    }
   }
 }
