@@ -133,6 +133,11 @@ class LoggerViewModel {
     final deviceInfo = await InfoDevicePackageViewModel.instance.deviceInfo;
     // Get the unique identifier for the device/user.
     final identifierInfo = InfoDevicePackageViewModel.instance.identifierInfo;
+    // initialize WriteLogsWorker... writing a log
+    await _writeLogRecords(
+        LogRecord(
+            Level.FINEST, '(initialize): init WriteLogsWorker ', _logger.name),
+        );
     // Listen to records from the root logger.
     _loggerSubscription = Logger.root.onRecord.listen((record) => _logRecord(
         record,
@@ -185,6 +190,7 @@ class LoggerViewModel {
             stackTrace.substring(0, min(stackTrace.length, 100)).trim(),
       'uid': identifierInfo
     });
+    // write log into file system
     _writeLogRecords(record);
   }
 
@@ -252,7 +258,7 @@ class LoggerViewModel {
   }
 
   Future<void> _writeLogRecords(LogRecord record) async {
-    _logger.finest('<_writeLogRecords>:');
+    //developer.log('flutter () <_writeLogRecords>:');
     try {
       if (notSavedLogRecords.length == 1000 ||
           record.level.value >= Level.SEVERE.value) {
@@ -265,10 +271,10 @@ class LoggerViewModel {
           notSavedLogRecords.clear();
         }
       }
-    } catch (error, stackTrace) {
-      _logger.severe('(_writeLogRecords): record '
-          '$record'
-          ' error $error stackTrace $stackTrace');
+    } catch (error /*, stackTrace*/) {
+      // developer.log('(_writeLogRecords): record '
+      //     '$record'
+      //     ' error $error stackTrace $stackTrace');
     }
   }
 
