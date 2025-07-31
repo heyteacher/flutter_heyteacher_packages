@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 
@@ -52,8 +51,6 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// The list of tasks to be executed in the workflow.
   ///
   /// This list should be populated within the [initializeTasks] method in a subclass.
-  @visibleForTesting
-  @protected
   List<T> tasks = [];
 
   String get name;
