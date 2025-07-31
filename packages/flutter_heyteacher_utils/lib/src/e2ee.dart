@@ -148,7 +148,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                           context: context,
                           content:
                               FlutterHeyteacherUtilsLocalizations.of(context)!
-                                  .userNotAutenticated),
+                                  .userNotAuthenticated),
                   icon: const Icon(Icons.qr_code)),
               IconButton(
                   onPressed: () => _showQrCodeScanner(),
@@ -211,7 +211,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
       showConfirmCancelDialog(
           context: context,
           content: FlutterHeyteacherUtilsLocalizations.of(context)!
-              .userNotAutenticated);
+              .userNotAuthenticated);
       return;
     }
     String? secretJwkJson;

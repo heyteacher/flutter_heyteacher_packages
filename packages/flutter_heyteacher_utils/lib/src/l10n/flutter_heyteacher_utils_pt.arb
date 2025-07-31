@@ -1,7 +1,7 @@
 {
   "@@locale": "pt",
-  "userNotAutenticated": "Usuário não autenticado",
-  "@userNotAutenticated": {},
+  "userNotAuthenticated": "Usuário não autenticado",
+  "@userNotAuthenticated": {},
   "notAuthenticated": "Não Autenticado",
   "@notAuthenticated": {},
   "errorOnRetrieveData": "Erro ao recuperar dados",
@@ -66,5 +66,11 @@
   "doYouConfirmDeletionUserData": "Você confirma a exclusão dos dados do usuário?",
   "@doYouConfirmDeletionUserData": {
     "description": "Pergunta de confirmação para exclusão dos dados do usuário"
-  }
+  },
+  "task": "Tarefa",
+  "@task": {},
+  "description": "Descrição",
+  "@description": {},
+  "tasks": "Tarefas",
+  "@tasks": {}
 }

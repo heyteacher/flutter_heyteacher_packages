@@ -1,7 +1,7 @@
 {
   "@@locale": "de",
-  "userNotAutenticated": "Benutzer nicht authentifiziert",
-  "@userNotAutenticated": {},
+  "userNotAuthenticated": "Benutzer nicht authentifiziert",
+  "@userNotAuthenticated": {},
   "notAuthenticated": "Nicht authentifiziert",
   "@notAuthenticated": {},
   "errorOnRetrieveData": "Fehler beim Abrufen der Daten",
@@ -62,5 +62,11 @@
   "deleteUserData": "Benutzerdaten löschen",
   "@deleteUserData": {},
   "doYouConfirmDeletionUserData": "Möchten Sie das Löschen der Benutzerdaten bestätigen?",
-  "@doYouConfirmDeletionUserData": {}
+  "@doYouConfirmDeletionUserData": {},
+  "task": "Aufgabe",
+  "@task": {},
+  "description": "Beschreibung",
+  "@description": {},
+  "tasks": "Aufgaben",
+  "@tasks": {}
 }

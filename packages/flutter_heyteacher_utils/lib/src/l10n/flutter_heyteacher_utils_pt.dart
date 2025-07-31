@@ -13,7 +13,7 @@ class FlutterHeyteacherUtilsLocalizationsPt
   String get account => 'Conta';
 
   @override
-  String get userNotAutenticated => 'Usuário não autenticado';
+  String get userNotAuthenticated => 'Usuário não autenticado';
 
   @override
   String get notAuthenticated => 'Não Autenticado';
@@ -112,4 +112,13 @@ class FlutterHeyteacherUtilsLocalizationsPt
   @override
   String get doYouConfirmDeletionUserData =>
       'Você confirma a exclusão dos dados do usuário?';
+
+  @override
+  String get task => 'Tarefa';
+
+  @override
+  String get description => 'Descrição';
+
+  @override
+  String get tasks => 'Tarefas';
 }

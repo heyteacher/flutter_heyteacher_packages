@@ -232,7 +232,7 @@ class ErrorView extends StatelessWidget {
                     child: Text(
                         textAlign: TextAlign.center,
                         FlutterHeyteacherUtilsLocalizations.of(context)!
-                            .userNotAutenticated,
+                            .userNotAuthenticated,
                         style: _errorStyleContent(context)),
                   ),
                 ),

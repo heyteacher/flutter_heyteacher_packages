@@ -21,7 +21,7 @@ class MockFlutterHeyteacherUtilsLocalizations
   MockFlutterHeyteacherUtilsLocalizations() : super('en'); // Default locale
 
   @override
-  String get userNotAutenticated => 'User not authenticated (Mock)';
+  String get userNotAuthenticated => 'User not authenticated (Mock)';
   @override
   String get id => 'ID: (Mock)';
   @override
@@ -114,6 +114,15 @@ class MockFlutterHeyteacherUtilsLocalizations
   
   @override
   String get doYouConfirmDeletionUserData => '';
+  
+  @override
+  String get description => '';
+  
+  @override
+  String get task => '';
+  
+  @override
+  String get tasks => '';
 }
 
 class _MockLocalizationsDelegate
@@ -277,7 +286,7 @@ void main() {
 
     // Check if the style matches the expected style from the widget
     expect(textWidget.style?.color,
-        ThemeViewModel.instance().theme.colorScheme.onError);
+        ThemeViewModel.instance().colorScheme.onError);
     expect(textWidget.style?.fontSize,
         Theme.of(context).textTheme.headlineMedium?.fontSize);
 
@@ -288,6 +297,6 @@ void main() {
         tester.widget<Text>(find.text('User not authenticated (Mock)'));
 
     expect(authTextWidget.style?.color,
-        ThemeViewModel.instance().theme.colorScheme.onError);
+        ThemeViewModel.instance().colorScheme.onError);
   });
 }

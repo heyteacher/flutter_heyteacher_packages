@@ -1,7 +1,7 @@
 {
   "@@locale": "fr",
-  "userNotAutenticated": "Utilisateur non authentifié",
-  "@userNotAutenticated": {},
+  "userNotAuthenticated": "Utilisateur non authentifié",
+  "@userNotAuthenticated": {},
   "notAuthenticated": "Non Authentifié",
   "@notAuthenticated": {},
   "errorOnRetrieveData": "Erreur lors de la récupération des données",
@@ -66,5 +66,11 @@
   "doYouConfirmDeletionUserData": "Confirmez-vous la suppression des données utilisateur ?",
   "@doYouConfirmDeletionUserData": {
     "description": "Prompt asking user to confirm deletion of their data"
-  }
+  },
+  "task": "Tâche",
+  "@task": {},
+  "description": "Description",
+  "@description": {},
+  "tasks": "Tâches",
+  "@tasks": {}
 }

@@ -113,11 +113,11 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// **'Account'**
   String get account;
 
-  /// No description provided for @userNotAutenticated.
+  /// No description provided for @userNotAuthenticated.
   ///
   /// In en, this message translates to:
-  /// **'User not autenticated'**
-  String get userNotAutenticated;
+  /// **'User not authenticated'**
+  String get userNotAuthenticated;
 
   /// No description provided for @notAuthenticated.
   ///
@@ -134,7 +134,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @timeoutOnRetrieveData.
   ///
   /// In en, this message translates to:
-  /// **'Timeout on retieve data'**
+  /// **'Timeout on retrieve data'**
   String get timeoutOnRetrieveData;
 
   /// No description provided for @confirm.
@@ -212,13 +212,13 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @areYouSureToChangeEncryptionPassphrase.
   ///
   /// In en, this message translates to:
-  /// **'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase'**
+  /// **'If you change the Encryption Passphrase, you will not be able to access data encrypted with the old passphrase.\n\nAre you sure you want to change the Encryption Passphrase?'**
   String get areYouSureToChangeEncryptionPassphrase;
 
   /// No description provided for @areYouSureToImportEncryptionSecretKey.
   ///
   /// In en, this message translates to:
-  /// **'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?'**
+  /// **'If you import an Encryption Secret Key, the old key will be overridden and data encrypted with the old key will be lost.\n\nAre you sure you want to import the Encryption Secret Key?'**
   String get areYouSureToImportEncryptionSecretKey;
 
   /// No description provided for @encryptionSecretKeyImported.
@@ -242,7 +242,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase.
   ///
   /// In en, this message translates to:
-  /// **'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device'**
+  /// **'Scan the QR code with another device or store it in a secure place.\nThe QR code is encrypted with the Encryption Passphrase.\nYou must set the same Encryption Passphrase on the new device.'**
   String
       get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase;
 
@@ -261,7 +261,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @contentUnavailableOfflineRetryWhenOnline.
   ///
   /// In en, this message translates to:
-  /// **'Content unavailable offline.\n\nRetry when online retry device will be connected'**
+  /// **'Content unavailable offline.\n\nRetry when the device is connected to the internet.'**
   String get contentUnavailableOfflineRetryWhenOnline;
 
   /// No description provided for @deleteUserData.
@@ -273,8 +273,26 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @doYouConfirmDeletionUserData.
   ///
   /// In en, this message translates to:
-  /// **'Do you confirm the telation of your user data?\n Be carefull! this action cannot be undone'**
+  /// **'Do you confirm the deletion of your user data?\nBe careful! This action cannot be undone.'**
   String get doYouConfirmDeletionUserData;
+
+  /// No description provided for @task.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get task;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get tasks;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate

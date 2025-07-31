@@ -1,6 +1,6 @@
 {
     "@@locale": "it",
-    "userNotAutenticated": "Utente non autenticato",
+    "userNotAuthenticated": "Utente non autenticato",
     "notAuthenticated": "Non Autenticato",
     "errorOnRetrieveData": "errore durante il caricamento dei dati",
     "timeoutOnRetrieveData": "Timeout durante in caricamento dei dati",
@@ -41,5 +41,11 @@
   "doYouConfirmDeletionUserData": "Confermi l'eliminazione dei dati utente?",
   "@doYouConfirmDeletionUserData": {
     "description": "Messaggio di conferma per l'eliminazione dei dati utente."
-  }
+  },
+  "task": "Task",
+  "@task": {},
+  "description": "Descrizione",
+  "@description": {},
+  "tasks": "Task",
+  "@tasks": {}
 }

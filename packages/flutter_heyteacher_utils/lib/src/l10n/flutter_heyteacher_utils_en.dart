@@ -13,7 +13,7 @@ class FlutterHeyteacherUtilsLocalizationsEn
   String get account => 'Account';
 
   @override
-  String get userNotAutenticated => 'User not autenticated';
+  String get userNotAuthenticated => 'User not authenticated';
 
   @override
   String get notAuthenticated => 'Not Authenticated';
@@ -22,7 +22,7 @@ class FlutterHeyteacherUtilsLocalizationsEn
   String get errorOnRetrieveData => 'Error on retrieve Data';
 
   @override
-  String get timeoutOnRetrieveData => 'Timeout on retieve data';
+  String get timeoutOnRetrieveData => 'Timeout on retrieve data';
 
   @override
   String get confirm => 'Confirm';
@@ -75,11 +75,11 @@ class FlutterHeyteacherUtilsLocalizationsEn
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'If you change Encryption Passphrase you\'ll not able to access data encrypted with this passphrase.\n\nAre you sure to change Encryption Passphrase';
+      'If you change the Encryption Passphrase, you will not be able to access data encrypted with the old passphrase.\n\nAre you sure you want to change the Encryption Passphrase?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'If you import a Encryption Secret Key, old key is overidden and data encrypted with old key will be lost.\n\nAre you sure import Encryption Secret Key?';
+      'If you import an Encryption Secret Key, the old key will be overridden and data encrypted with the old key will be lost.\n\nAre you sure you want to import the Encryption Secret Key?';
 
   @override
   String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
@@ -92,7 +92,7 @@ class FlutterHeyteacherUtilsLocalizationsEn
 
   @override
   String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scan QR code into another device or store in a secure place.\nThe QR code is encrypted with the Encryptrion Passphrase.\nYou must set the same Encryptrion Passphrase into the new device';
+      'Scan the QR code with another device or store it in a secure place.\nThe QR code is encrypted with the Encryption Passphrase.\nYou must set the same Encryption Passphrase on the new device.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
@@ -103,12 +103,21 @@ class FlutterHeyteacherUtilsLocalizationsEn
 
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
-      'Content unavailable offline.\n\nRetry when online retry device will be connected';
+      'Content unavailable offline.\n\nRetry when the device is connected to the internet.';
 
   @override
   String get deleteUserData => 'Delete User Data';
 
   @override
   String get doYouConfirmDeletionUserData =>
-      'Do you confirm the telation of your user data?\n Be carefull! this action cannot be undone';
+      'Do you confirm the deletion of your user data?\nBe careful! This action cannot be undone.';
+
+  @override
+  String get task => 'Task';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get tasks => 'Tasks';
 }

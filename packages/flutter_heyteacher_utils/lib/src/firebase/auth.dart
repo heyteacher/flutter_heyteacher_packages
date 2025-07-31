@@ -62,7 +62,7 @@ class AccountCard extends StatelessWidget {
                 subtitle: AuthViewModel.instance().autenticated
                     ? Text(AuthViewModel.instance().displayName ?? '')
                     : Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-                        .userNotAutenticated),
+                        .userNotAuthenticated),
                 trailing: Wrap(
                   children: [
                     if (AuthViewModel.instance().autenticated)
@@ -208,5 +208,5 @@ class UserNotAuthenticatedException implements Exception {
   @override
   String toString() =>
       FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
-          .userNotAutenticated;
+          .userNotAuthenticated;
 }
