@@ -215,7 +215,7 @@ class LineChartView extends ChartView {
                   x: e.max.toDouble(),
                   color: e.color.withValues(alpha: 0.4),
                   label: VerticalLineLabel(
-                      style: TextStyle(color: ThemeViewModel.instance().theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: ThemeViewModel.instance().colorScheme.onSurface, fontWeight: FontWeight.bold),
                       alignment: Alignment.topRight,
                       show: true,
                       labelResolver: (_) => '')),
