@@ -165,43 +165,6 @@ class TutorialItemContent extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
-                  // Row(
-                  //   children: [
-                  //     TextButton(
-                  //       style: TextButton.styleFrom(
-                  //         backgroundColor:
-                  //             ThemeModel.instance().theme.colorScheme.primary,
-                  //       ),
-                  //       onPressed: () => Tutorial.skipAll(context),
-                  //       child: Text(
-                  //         'Skip onboarding',
-                  //         style: Theme.of(context)
-                  //             .textTheme
-                  //             .titleSmall
-                  //             ?.copyWith(
-                  //                 color:
-                  //                     ThemeModel.instance().theme.colorScheme.onPrimary),
-                  //       ),
-                  //     ),
-                  //     const Spacer(),
-                  //     TextButton(
-                  //       style: TextButton.styleFrom(
-                  //         backgroundColor:
-                  //             ThemeModel.instance().theme.colorScheme.primary,
-                  //       ),
-                  //       onPressed: null,
-                  //       child: Text(
-                  //         'Next',
-                  //         style: Theme.of(context)
-                  //             .textTheme
-                  //             .titleSmall
-                  //             ?.copyWith(
-                  //                 color:
-                  //                     ThemeModel.instance().theme.colorScheme.onPrimary),
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
                 ],
               ),
             ),
