@@ -133,7 +133,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
               secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
               color: secretKeySnapshot.data ?? false
                   ? ThemeViewModel.instance().greenColor
-                  : ThemeViewModel.instance().theme.colorScheme.onError,
+                  : ThemeViewModel.instance().colorScheme.onError,
             ),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 15.0),

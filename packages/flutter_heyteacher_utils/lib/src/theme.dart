@@ -35,21 +35,24 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
             spacing: 2,
             children: [
               ChoiceChip(
-                  selected: ThemeMode.system == ThemeViewModel.instance().themeMode,
+                  selected:
+                      ThemeMode.system == ThemeViewModel.instance().themeMode,
                   label: Text(ThemeMode.system.name),
                   avatar: const Icon(Icons.smartphone),
                   showCheckmark: false,
                   onSelected: (bool selected) =>
                       onSelected(selected ? ThemeMode.system : null)),
               ChoiceChip(
-                  selected: ThemeMode.dark == ThemeViewModel.instance().themeMode,
+                  selected:
+                      ThemeMode.dark == ThemeViewModel.instance().themeMode,
                   label: Text(ThemeMode.dark.name),
                   avatar: const Icon(Icons.dark_mode),
                   showCheckmark: false,
                   onSelected: (bool selected) =>
                       onSelected(selected ? ThemeMode.dark : null)),
               ChoiceChip(
-                  selected: ThemeMode.light == ThemeViewModel.instance().themeMode,
+                  selected:
+                      ThemeMode.light == ThemeViewModel.instance().themeMode,
                   label: Text(ThemeMode.light.name),
                   avatar: const Icon(Icons.light_mode),
                   showCheckmark: false,
@@ -67,7 +70,8 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
   /// it defaults to [ThemeMode.system].
   @protected
   void onSelected(ThemeMode? newSelection) => setState(() {
-        ThemeViewModel.instance().setThemeMode(newSelection ?? ThemeMode.system);
+        ThemeViewModel.instance()
+            .setThemeMode(newSelection ?? ThemeMode.system);
       });
 }
 
@@ -288,6 +292,8 @@ class ThemeViewModel {
     });
   }
 
+  ColorScheme get colorScheme => theme.colorScheme;
+
   /// Sets the application's [ThemeMode] to the provided [themeMode].
   ///
   /// This new [themeMode] is persisted to [SharedPreferences] (via `SharedPreferencesAsync`)
@@ -460,6 +466,9 @@ class ThemeViewModel {
           surfaceContainer: surfaceContainer,
           onSurfaceVariant: onSurfaceVariant,
         ),
+        tabBarTheme: TabBarThemeData(
+            dividerColor: Colors.transparent,
+            unselectedLabelColor: disabled),
         badgeTheme: BadgeThemeData(backgroundColor: onError, textColor: error),
         appBarTheme: const AppBarTheme(iconTheme: IconThemeData(size: 40)),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(

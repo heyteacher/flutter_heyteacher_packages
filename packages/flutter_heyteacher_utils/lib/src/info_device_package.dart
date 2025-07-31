@@ -60,9 +60,9 @@ class DevicePackageInfoCard extends StatelessWidget {
             trailing: TextButton(
                 style: TextButton.styleFrom(
                   backgroundColor:
-                      ThemeViewModel.instance().theme.colorScheme.primary,
+                      ThemeViewModel.instance().colorScheme.primary,
                   foregroundColor:
-                      ThemeViewModel.instance().theme.colorScheme.onPrimary,
+                      ThemeViewModel.instance().colorScheme.onPrimary,
                 ),
                 onPressed: InfoDevicePackageViewModel.instance._askSupport,
                 child: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
