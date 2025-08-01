@@ -659,3 +659,40 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     }
   }
 }
+
+class FloatingActionTextIconButtom extends StatelessWidget {
+  const FloatingActionTextIconButtom({
+    super.key,
+    this.fabKey,
+    required this.text,
+    required this.icon,
+    required this.onPressed,
+    this.backgroundColor,
+  });
+
+  final Key? fabKey;
+  final String text;
+  final Widget icon;
+  final Color? backgroundColor;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 1.0),
+        child: SizedBox(
+            height: 100,
+            width: 100,
+            child: FloatingActionButton(
+                key: fabKey,
+                // heroTag must be set unique in app for each FloatingActionButton
+                // to avoid warning introduce by go_router
+                heroTag: '${icon}HeroTag',
+                backgroundColor: backgroundColor,
+                onPressed: onPressed,
+                child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    direction: Axis.vertical,
+                    alignment: WrapAlignment.end,
+                    children: [icon, Text(text)]))),
+      );
+}
