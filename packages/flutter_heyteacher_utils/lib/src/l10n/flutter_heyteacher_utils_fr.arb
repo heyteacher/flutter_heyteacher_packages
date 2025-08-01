@@ -72,5 +72,7 @@
   "description": "Description",
   "@description": {},
   "tasks": "Tâches",
-  "@tasks": {}
+  "@tasks": {},
+  "skip": "Sauter",
+  "@skip": {}
 }

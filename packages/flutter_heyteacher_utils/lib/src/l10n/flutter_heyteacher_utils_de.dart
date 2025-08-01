@@ -122,4 +122,7 @@ class FlutterHeyteacherUtilsLocalizationsDe
 
   @override
   String get tasks => 'Aufgaben';
+
+  @override
+  String get skip => 'Überspringen';
 }

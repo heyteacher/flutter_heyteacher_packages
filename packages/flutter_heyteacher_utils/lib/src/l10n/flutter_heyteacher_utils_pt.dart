@@ -121,4 +121,7 @@ class FlutterHeyteacherUtilsLocalizationsPt
 
   @override
   String get tasks => 'Tarefas';
+
+  @override
+  String get skip => 'Pular';
 }

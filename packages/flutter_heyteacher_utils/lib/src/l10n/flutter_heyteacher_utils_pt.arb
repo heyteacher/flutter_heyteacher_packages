@@ -72,5 +72,7 @@
   "description": "Descrição",
   "@description": {},
   "tasks": "Tarefas",
-  "@tasks": {}
+  "@tasks": {},
+  "skip": "Pular",
+  "@skip": {}
 }

@@ -121,4 +121,7 @@ class FlutterHeyteacherUtilsLocalizationsIt
 
   @override
   String get tasks => 'Task';
+
+  @override
+  String get skip => 'Salta';
 }

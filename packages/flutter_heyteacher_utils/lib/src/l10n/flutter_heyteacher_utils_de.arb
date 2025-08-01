@@ -68,5 +68,7 @@
   "description": "Beschreibung",
   "@description": {},
   "tasks": "Aufgaben",
-  "@tasks": {}
+  "@tasks": {},
+  "skip": "Überspringen",
+  "@skip": {}
 }

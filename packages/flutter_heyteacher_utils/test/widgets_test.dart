@@ -123,6 +123,9 @@ class MockFlutterHeyteacherUtilsLocalizations
   
   @override
   String get tasks => '';
+  
+  @override
+  String get skip => '';
 }
 
 class _MockLocalizationsDelegate

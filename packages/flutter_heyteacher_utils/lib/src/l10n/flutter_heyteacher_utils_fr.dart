@@ -123,4 +123,7 @@ class FlutterHeyteacherUtilsLocalizationsFr
 
   @override
   String get tasks => 'Tâches';
+
+  @override
+  String get skip => 'Sauter';
 }
