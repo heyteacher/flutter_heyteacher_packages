@@ -4,23 +4,31 @@ import 'chart_view.dart';
 
 class BarChartDataItem extends ChartDataItem {
   final num? y1;
-  final num? y2; 
+  final num? y2;
   final num fromY;
 
-  BarChartDataItem({required this.fromY, required super.x, required super.y, super.yColor, this.y1, this.y2});
+  BarChartDataItem(
+      {this.fromY = 0,
+      required super.x,
+      required super.y,
+      super.yColor,
+      this.y1,
+      this.y2});
 
   @override
   toString() => 'x: $x, fromY: $fromY, y: $y,  y1: $y1,  y2: $y2';
-
 }
-
 
 class BarChartView extends ChartView {
   final bool horizontal;
+  final double reservedSizeX;
+  final double reservedSizeY;
 
   BarChartView({
     required super.chartDataList,
     required super.title,
+    this.reservedSizeX = 36,
+    this.reservedSizeY = 60,
     this.horizontal = false,
     super.maxX,
     super.minX,
@@ -38,153 +46,140 @@ class BarChartView extends ChartView {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(title),
-        Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Column(
-            children: [
-              AspectRatio(
-                aspectRatio: switch (chartDataList.length) {
-                  0 => 6,
-                  1 => 3,
-                  2 => 2.5,
-                  3 => 2,
-                  _ => 1.3,
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: BarChart(
-                    BarChartData(
-                      alignment: BarChartAlignment.spaceBetween,
-                      rotationQuarterTurns: horizontal ? 1 : 0,
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      titlesData: FlTitlesData(
-                        show: true,
-                        leftTitles: horizontal
-                            ? const AxisTitles()
-                            : _valueAxisTitles(
-                                interval: intervalY,
-                                color: colorY,
-                                formatter: formatterAxisY),
-                        bottomTitles: _titleAxisTitles(),
-                        rightTitles: horizontal
-                            ? _valueAxisTitles(
-                                interval: intervalY,
-                                color: colorY,
-                                formatter: formatterAxisY)
-                            : const AxisTitles(),
-                        topTitles: const AxisTitles(),
-                      ),
-                      gridData: FlGridData(
-                        show: true,
-                        horizontalInterval: intervalY.toDouble(),
-                        drawVerticalLine: false,
-                        getDrawingHorizontalLine: (value) => FlLine(
-                          color: Colors.grey.withValues(alpha: 0.2),
-                          strokeWidth: 1,
+  Widget build(BuildContext context) => Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(title),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: switch (chartDataList.length) {
+                    0 => 6,
+                    1 => 3,
+                    2 => 2.5,
+                    3 => 2,
+                    _ => 1.3,
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: BarChart(
+                      BarChartData(
+                        alignment: BarChartAlignment.spaceBetween,
+                        rotationQuarterTurns: horizontal ? 1 : 0,
+                        borderData: FlBorderData(
+                          show: false,
                         ),
-                      ),
-                      barGroups: chartDataList.indexed.map((e) {
-                        final int index = e.$1;
-                        final BarChartDataItem data = e.$2 as BarChartDataItem;
-                        return BarChartGroupData(x: index, barRods: [
-                          BarChartRodData(
-                            fromY: data.fromY.toDouble(),
-                            toY: data.y.toDouble(),
-                            color: data.yColor,
-                            borderRadius: BorderRadius.zero,
-                            width: 25,
+                        titlesData: FlTitlesData(
+                          show: true,
+                          leftTitles:
+                              horizontal ? _xAxisTitles() : _yAxisTitles(),
+                          bottomTitles: _xAxisTitles(),
+                          rightTitles:
+                              horizontal ? _yAxisTitles() : const AxisTitles(),
+                          topTitles: const AxisTitles(),
+                        ),
+                        gridData: FlGridData(
+                          show: true,
+                          horizontalInterval: intervalY.toDouble(),
+                          drawVerticalLine: false,
+                          getDrawingHorizontalLine: (value) => FlLine(
+                            color: Colors.grey.withValues(alpha: 0.2),
+                            strokeWidth: 1,
                           ),
-                        ], showingTooltipIndicators: [
-                          0
-                        ]);
-                      }).toList(),
-                      barTouchData: BarTouchData(
-                        enabled: true,
-                        handleBuiltInTouches: false,
-                        touchTooltipData: BarTouchTooltipData(
-                            getTooltipColor: (group) => Colors.transparent,
-                            tooltipMargin: 13,
-                            getTooltipItem: (
-                              BarChartGroupData group,
-                              int groupIndex,
-                              BarChartRodData rod,
-                              int rodIndex,
-                            ) =>
-                                BarTooltipItem(
-                                  textAlign: TextAlign.right,
-                                  formatterY(
-                                      chartDataList.elementAt(groupIndex)),
-                                  TextStyle(
-                                    color: rod.color,
-                                    height: 0.9,
-                                  ),
-                                )),
+                        ),
+                        barGroups: chartDataList.indexed.map((e) {
+                          final int index = e.$1;
+                          final BarChartDataItem data =
+                              e.$2 as BarChartDataItem;
+                          return BarChartGroupData(x: index, barRods: [
+                            BarChartRodData(
+                              fromY: data.fromY.toDouble(),
+                              toY: data.y.toDouble(),
+                              color: data.yColor,
+                              borderRadius: BorderRadius.zero,
+                              width: 25,
+                            ),
+                          ], showingTooltipIndicators: [
+                            0
+                          ]);
+                        }).toList(),
+                        barTouchData: BarTouchData(
+                          enabled: true,
+                          handleBuiltInTouches: false,
+                          touchTooltipData: BarTouchTooltipData(
+                              getTooltipColor: (group) => Colors.transparent,
+                              tooltipMargin: 13,
+                              getTooltipItem: (
+                                BarChartGroupData group,
+                                int groupIndex,
+                                BarChartRodData rod,
+                                int rodIndex,
+                              ) =>
+                                  BarTooltipItem(
+                                    textAlign: TextAlign.center,
+                                    formatterY(
+                                        chartDataList.elementAt(groupIndex)),
+                                    TextStyle(
+                                      color: rod.color,
+                                      height: 0.9,
+                                    ),
+                                  )),
+                        ),
+                        maxY: maxY.toDouble(),
+                        minY: minY.toDouble(),
                       ),
-                      maxY: maxY.toDouble(),
-                      minY: minY.toDouble(),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 
-  AxisTitles _titleAxisTitles() {
-    return AxisTitles(
-      sideTitles: SideTitles(
-        showTitles: true,
-        reservedSize: 36,
-        getTitlesWidget: (value, meta) {
-          final index = value.toInt();
-          return SideTitleWidget(
+  AxisTitles _xAxisTitles() => AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          interval: double.maxFinite, // that means no X intervals in bar char
+          reservedSize: reservedSizeX,
+          maxIncluded: false,
+          minIncluded: false,
+          getTitlesWidget: (value, meta) => SideTitleWidget(
             meta: meta,
             child: Text(
-              formatterAxisX(chartDataList.elementAt(index)),
-              style: TextStyle(color: chartDataList.elementAt(index).yColor),
+              formatterAxisX(chartDataList.elementAt(value.toInt())),
+              style: TextStyle(color: colorX),
             ),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        ),
+      );
 
-  AxisTitles _valueAxisTitles(
-      {required num? interval,
-      required Color? color,
-      required String Function(ChartDataItem)? formatter}) {
-    return interval != null && color != null && formatter != null
-        ? AxisTitles(
-            drawBelowEverything: true,
-            sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 60,
-                maxIncluded: false,
-                minIncluded: true,
-                interval: interval.toDouble(),
-                getTitlesWidget: (value, meta) {
-                  final index = value.toInt();
-                  return RotatedBox(
-                    quarterTurns: horizontal ? 3 : 0,
-                    child: SideTitleWidget(
-                      meta: meta,
+  AxisTitles _yAxisTitles() => AxisTitles(
+        drawBelowEverything: true,
+        sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: reservedSizeY,
+            maxIncluded: false,
+            minIncluded: true,
+            interval: intervalY.toDouble(),
+            getTitlesWidget: (value, meta) => RotatedBox(
+                  quarterTurns: horizontal ? 3 : 0,
+                  child: SideTitleWidget(
+                    meta: meta,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          right: horizontal ? 0 : 4.0,
+                          top: horizontal ? 4.0 : 0),
                       child: Text(
-                        formatterAxisY(ChartDataItem(x: 0, y: index)),
-                        style: TextStyle(color: color),
+                        formatterAxisY(ChartDataItem(x: 0, y: value.toInt())),
+                        style: TextStyle(color: colorY),
                       ),
                     ),
-                  );
-                }),
-          )
-        : const AxisTitles();
-  }
+                  ),
+                )),
+      );
 }
