@@ -693,6 +693,9 @@ class FloatingActionTextIconButtom extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     direction: Axis.vertical,
                     alignment: WrapAlignment.end,
-                    children: [icon, Text(text)]))),
+                    children: [icon, Text(text, style: TextStyle(fontSize: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall!
+                                  .fontSize))]))),
       );
 }
