@@ -172,6 +172,12 @@ class ThemeViewModel {
           ? Colors.purple.shade800
           : Colors.purple.shade200;
 
+  /// get the purple color based on the current theme mode
+  Color get deepPurpleColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+          ? Colors.deepPurple.shade800
+          : Colors.deepPurple.shade200;
+
   static ThemeViewModel? _instance;
 
   /// Provides the singleton instance of [ThemeViewModel].
