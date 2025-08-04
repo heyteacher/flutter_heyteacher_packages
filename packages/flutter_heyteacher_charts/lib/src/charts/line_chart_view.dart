@@ -14,18 +14,18 @@ class LineChartView extends ChartView {
       {super.key,
       required super.title,
       required super.chartDataList,
+      required super.formatterX,
+      required super.formatterAxisX,
+      required super.formatterColorAxisX,
       super.maxX,
       super.minX,
       super.minIntervalX,
-      required super.formatterX,
-      super.formatterAxisX,
-      required super.colorX,
+      required super.formatterY,
+      required super.formatterAxisY,
+      required super.formatterColorAxisY,
       super.maxY,
       super.minY,
       super.minIntervalY,
-      required super.colorY,
-      required super.formatterY,
-      super.formatterAxisY,
       this.extraHorizontalLines,
       this.extraVerticalLines,
       this.horizontalRangeAnnotations,
@@ -35,7 +35,7 @@ class LineChartView extends ChartView {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(title),
+        title,
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: AspectRatio(
@@ -97,11 +97,9 @@ class LineChartView extends ChartView {
 
   Widget _leftTitleWidgets(double value, TitleMeta meta) => Padding(
         padding: const EdgeInsets.only(right: 5),
-        child: Text(formatterAxisY(ChartDataItem(x: 0, y: value)),
+        child: Text(formatterAxisY(value),textAlign: TextAlign.right,
             style: ThemeViewModel.instance().theme.textTheme.bodySmall!
-            .copyWith(color: colorY)
-            ,
-            textAlign: TextAlign.right),
+            .copyWith(color: formatterColorAxisY(value))),
       );
 
   Widget _bottomTitleWidgets(double value, TitleMeta meta) => SideTitleWidget(
@@ -112,12 +110,12 @@ class LineChartView extends ChartView {
         child: RotatedBox(
           quarterTurns: 3,
           child: Text(
-            formatterAxisX(ChartDataItem(x: value, y: 0)),
+            formatterAxisX(value.toInt()),
             style: ThemeViewModel.instance()
                 .theme
                 .textTheme
                 .bodySmall!
-                .copyWith(color: colorX),
+                .copyWith(color: formatterColorAxisX(value)),
           ),
         ),
       ));
@@ -159,7 +157,7 @@ class LineChartView extends ChartView {
   LineChartBarData get _lineChartBarData => LineChartBarData(
       isCurved: true,
       //curveSmoothness: 0,
-      color: colorY,
+      color: formatterColorAxisY(chartDataList.first.y.toDouble()),
       barWidth: 1,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),

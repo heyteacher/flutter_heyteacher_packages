@@ -34,14 +34,14 @@ class BarChartView extends ChartView {
     super.minX,
     super.minIntervalX,
     required super.formatterX,
-    super.formatterAxisX,
-    required super.colorX,
+    required super.formatterAxisX,
+    required super.formatterColorAxisX,
     super.maxY,
     super.minY,
     super.minIntervalY,
     required super.formatterY,
-    super.formatterAxisY,
-    required super.colorY,
+    required super.formatterAxisY,
+    required super.formatterColorAxisY,
     super.key,
   });
 
@@ -50,7 +50,7 @@ class BarChartView extends ChartView {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(title),
+            child: title,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 20),
@@ -151,8 +151,8 @@ class BarChartView extends ChartView {
           getTitlesWidget: (value, meta) => SideTitleWidget(
             meta: meta,
             child: Text(
-              formatterAxisX(chartDataList.elementAt(value.toInt())),
-              style: TextStyle(color: colorX),
+              formatterAxisX(value.toInt()),
+              style: TextStyle(color: formatterColorAxisX(value)),
             ),
           ),
         ),
@@ -166,7 +166,7 @@ class BarChartView extends ChartView {
             maxIncluded: false,
             minIncluded: true,
             interval: intervalY.toDouble(),
-            getTitlesWidget: (value, meta) => RotatedBox(
+            getTitlesWidget: (value, TitleMeta meta) => RotatedBox(
                   quarterTurns: horizontal ? 3 : 0,
                   child: SideTitleWidget(
                     meta: meta,
@@ -175,8 +175,8 @@ class BarChartView extends ChartView {
                           right: horizontal ? 0 : 4.0,
                           top: horizontal ? 4.0 : 0),
                       child: Text(
-                        formatterAxisY(ChartDataItem(x: 0, y: value.toInt())),
-                        style: TextStyle(color: colorY),
+                        formatterAxisY(value),
+                        style: TextStyle(color: formatterColorAxisY(value)),
                       ),
                     ),
                   ),
