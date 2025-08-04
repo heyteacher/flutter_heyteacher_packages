@@ -420,7 +420,7 @@ class Logs2TextWorker extends Worker<
               notSavedLogRecords: input.notSavedLogRecords,
               descending: false))
           .map((logEntry) =>
-              '${timeWithSecondsFormatter.format(logEntry.time)} - '
+              '${logEntry.time.toLocal().toIso8601String()} - '
               '[${logEntry.level.name}] - ${logEntry.loggerName} - '
               '${logEntry.message}'
               '${logEntry.error != null ? ' - ${logEntry.error}' : ''}'
