@@ -23,6 +23,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/router.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -248,7 +249,8 @@ class ErrorView extends StatelessWidget {
                                   .fontSize),
                           color: Theme.of(context).iconTheme.color,
                           onPressed: () async {
-                            GoRouter.of(context).pushNamed('auth-sign-in');
+                            GoRouter.of(context)
+                                .pushNamed(AuthRouterName.signIn.name);
                           })),
                 ),
               ])
@@ -693,10 +695,15 @@ class FloatingActionTextIconButtom extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     direction: Axis.vertical,
                     alignment: WrapAlignment.end,
-                    children: [icon, Text(text, style: TextStyle(fontSize: Theme.of(context)
+                    children: [
+                      icon,
+                      Text(text,
+                          style: TextStyle(
+                              fontSize: Theme.of(context)
                                   .textTheme
                                   .labelSmall!
-                                  .fontSize))]))),
+                                  .fontSize))
+                    ]))),
       );
 }
 
@@ -770,4 +777,3 @@ abstract class TableView extends StatelessWidget {
   TextStyle _textStyle(BuildContext context, Color? color) =>
       Theme.of(context).textTheme.labelLarge!.copyWith(color: color);
 }
-

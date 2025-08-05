@@ -15,6 +15,10 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
+enum AuthRouterName {
+  signIn,
+  signOut,
+}
 
 /// Helper to build the [GoRoute] paths for authentication.
 ///  
@@ -26,13 +30,13 @@ class GoAuthRoute {
   /// 
   /// The paths defined are `sign-in`and `sign-out` and pats start for
   /// [signedOutRoutePath] prefix. 
-  static GoRoute builder({required String signedOutRoutePath}) => GoRoute(
+  static GoRoute builder({required String signedOutRoute}) => GoRoute(
         path: 'auth',
         builder: (BuildContext context, GoRouterState state) =>
             const SizedBox.shrink(),
         routes: <RouteBase>[
           GoRoute(
-              name: 'auth-sign-in',
+              name: AuthRouterName.signIn.name,
               path: 'sign-in',
               builder: (BuildContext context, GoRouterState state) =>
                   SignInScreen(
@@ -50,12 +54,12 @@ class GoAuthRoute {
                     ],
                   )),
           GoRoute(
-            name: 'auth-sign-out',
+            name: AuthRouterName.signOut.name,
             path: 'sign-out',
             redirect: (context, state) async {
               _logger.info('<SignedOut>:');
               await AuthViewModel.instance().signOut();
-              return signedOutRoutePath;
+              return signedOutRoute;
             },
           ),
         ],

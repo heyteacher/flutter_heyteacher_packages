@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // For FirebaseException
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/router.dart';
 import 'package:flutter_heyteacher_utils/src/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart'; // Import the file containing ErrorView
 import 'package:flutter_test/flutter_test.dart';
@@ -102,28 +103,28 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String get errorWorkflowTaskAlreadyInitialized => '';
-  
+
   @override
   String get errorWorkflowNotInitialized => '';
-  
+
   @override
   String get contentUnavailableOfflineRetryWhenOnline => '';
-  
+
   @override
   String get deleteUserData => '';
-  
+
   @override
   String get doYouConfirmDeletionUserData => '';
-  
+
   @override
   String get description => '';
-  
+
   @override
   String get task => '';
-  
+
   @override
   String get tasks => '';
-  
+
   @override
   String get skip => '';
 }
@@ -272,7 +273,7 @@ void main() {
     await tester.pumpAndSettle(); // Allow navigation to process
 
     // Verify that GoRouter.pushNamed was called with the correct route name
-    verify(mockGoRouter.pushNamed('auth-sign-in')).called(1);
+    verify(mockGoRouter.pushNamed(AuthRouterName.signIn.name)).called(1);
   });
 
   testWidgets('ErrorView applies correct style to error messages',
@@ -288,8 +289,8 @@ void main() {
         tester.element(find.text(testError.toString())); // Get context
 
     // Check if the style matches the expected style from the widget
-    expect(textWidget.style?.color,
-        ThemeViewModel.instance().colorScheme.onError);
+    expect(
+        textWidget.style?.color, ThemeViewModel.instance().colorScheme.onError);
     expect(textWidget.style?.fontSize,
         Theme.of(context).textTheme.headlineMedium?.fontSize);
 

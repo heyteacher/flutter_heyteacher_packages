@@ -17,6 +17,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/router.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -27,7 +28,7 @@ class AccountCard extends StatelessWidget {
   final Future<String?> Function(String?) _createUserDataCallback;
 
   late final StreamSubscription<User?>? _authStreamSubscription;
-  
+
   AccountCard(
       {super.key,
       required Future<String?> Function(String?) createUserDataCallback,
@@ -80,7 +81,7 @@ class AccountCard extends StatelessWidget {
                                 await _deleteUserDataCallback(null);
                                 if (context.mounted) {
                                   GoRouter.of(context)
-                                      .pushNamed('auth-sign-out');
+                                      .pushNamed(AuthRouterName.signOut.name);
                                 }
                                 return null;
                               },
@@ -91,7 +92,7 @@ class AccountCard extends StatelessWidget {
                                       context)!
                                   .doYouConfirmDeletionUserData,
                             );
-                        }),
+                          }),
                     IconButton(
                         key: const ValueKey('ic_login_logout'),
                         icon: Icon(AuthViewModel.instance().autenticated
@@ -105,9 +106,11 @@ class AccountCard extends StatelessWidget {
                             : Theme.of(context).iconTheme.color,
                         onPressed: () async {
                           if (AuthViewModel.instance().autenticated) {
-                            GoRouter.of(context).pushNamed('auth-sign-out');
+                            GoRouter.of(context)
+                                .pushNamed(AuthRouterName.signOut.name);
                           } else {
-                            GoRouter.of(context).pushNamed('auth-sign-in');
+                            GoRouter.of(context)
+                                .pushNamed(AuthRouterName.signIn.name);
                           }
                         }),
                   ],
