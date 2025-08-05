@@ -699,3 +699,75 @@ class FloatingActionTextIconButtom extends StatelessWidget {
                                   .fontSize))]))),
       );
 }
+
+abstract class TableView extends StatelessWidget {
+  /// An abstract base class for creating views with a table-like layout.
+  ///
+  /// Provides a set of protected helper methods for creating consistently styled
+  /// text widgets and dividers, intended for use within a [Table] or similar layout.
+  const TableView({super.key});
+
+  @protected
+
+  /// Creates a styled [Text] widget for labels within the table.
+  Widget labelText(String text,
+          {textAlign = TextAlign.right, TextStyle? style}) =>
+      Padding(
+        padding: const EdgeInsets.only(right: 4.0, left: 4.0),
+        child: Text(text, textAlign: textAlign, style: style),
+      );
+
+  @protected
+
+  /// Creates a value [Text] widget with a blue color.
+  Widget valueTextBlue(BuildContext context, String text,
+          {textAlign = TextAlign.left}) =>
+      _valueText(context, text,
+          color: ThemeViewModel.instance().blueColor, textAlign: textAlign);
+
+  @protected
+
+  /// Creates a value [Text] widget with an orange color.
+  Widget valueTextOrange(BuildContext context, String text,
+          {textAlign = TextAlign.left}) =>
+      _valueText(context, text,
+          color: ThemeViewModel.instance().orangeColor, textAlign: textAlign);
+
+  @protected
+
+  /// Creates a value [Text] widget with a red color.
+  Widget valueTextRed(BuildContext context, String text,
+          {textAlign = TextAlign.left}) =>
+      _valueText(context, text,
+          color: ThemeViewModel.instance().redColor, textAlign: textAlign);
+
+  @protected
+
+  /// Creates a value [Text] widget with a yellow color.
+  Widget valueTextYellow(BuildContext context, String text,
+          {textAlign = TextAlign.left}) =>
+      _valueText(context, text,
+          color: ThemeViewModel.instance().yellowColor, textAlign: textAlign);
+
+  @protected
+
+  /// Creates a value [Text] widget with a green color.
+  Widget valueTextGreen(BuildContext context, String text,
+          {textAlign = TextAlign.left}) =>
+      _valueText(context, text,
+          color: ThemeViewModel.instance().greenColor, textAlign: textAlign);
+
+  /// A private helper to create a styled [Text] widget for displaying values.
+  Widget _valueText(BuildContext context, String text,
+          {textAlign = TextAlign.left, Color? color}) =>
+      Padding(
+        padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+        child:
+            Text(text, textAlign: textAlign, style: _textStyle(context, color)),
+      );
+
+  /// Returns a [TextStyle] for value widgets, based on the current theme.
+  TextStyle _textStyle(BuildContext context, Color? color) =>
+      Theme.of(context).textTheme.labelLarge!.copyWith(color: color);
+}
+

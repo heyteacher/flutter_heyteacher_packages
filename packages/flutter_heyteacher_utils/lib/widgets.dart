@@ -7,5 +7,6 @@ export 'src/widgets.dart'
         ProgressIndicatorView,
         PagingSliverAnimatedListState,
         FloatingActionTextIconButtom,
+        TableView,
         showConfirmCancelDialog,
         showSnackBar;
