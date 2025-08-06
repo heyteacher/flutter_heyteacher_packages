@@ -43,10 +43,10 @@ abstract class ChartView extends StatelessWidget {
       required this.formatterY,
       required this.formatterAxisY,
       required this.formatterColorAxisY,
-      super.key})  {
+      super.key}) {
     // set intervalX maxX minX
-    maxX ??= chartDataList.map((e) => e.x).max;
-    minX ??= chartDataList.map((e) => e.x).min;
+    maxX ??= chartDataList.isNotEmpty ? chartDataList.map((e) => e.x).max : 0;
+    minX ??= chartDataList.isNotEmpty ? chartDataList.map((e) => e.x).min : 0;
     intervalX = interval(minX, maxX, minInterval: minIntervalX);
     this.minX = ChartView.floorToInterval(minX, intervalX);
     this.maxX = ChartView.ceilToInterval(maxX, intervalX);
@@ -58,6 +58,10 @@ abstract class ChartView extends StatelessWidget {
       intervalY = interval(minY, maxY, minInterval: minIntervalY);
       this.minY = ChartView.floorToInterval(minY, intervalY);
       this.maxY = ChartView.ceilToInterval(maxY, intervalY) + intervalY;
+    } else {
+      this.maxY = 0;
+      this.minY = 0;
+      intervalY = minIntervalY;
     }
   }
 
