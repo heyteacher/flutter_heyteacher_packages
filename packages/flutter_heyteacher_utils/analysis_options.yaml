@@ -10,4 +10,5 @@ linter:
     unnecessary_breaks: true
     use_key_in_widget_constructors: true
     prefer_single_quotes: true
+    hash_and_equals: true
     
