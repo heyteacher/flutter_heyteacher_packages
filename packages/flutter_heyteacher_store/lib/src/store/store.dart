@@ -256,7 +256,7 @@ class GroupByResult {
   int get hashCode {
     var result = 17;
     for (var key in groupByFields.keys) {
-      result = 37 * result + key.hashCode;
+      result = 37 * result + groupByFields[key]!.hashCode;
     }
     return result;
   }
