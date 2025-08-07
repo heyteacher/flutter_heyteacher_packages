@@ -14,6 +14,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/src/animations.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_data.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
