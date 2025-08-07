@@ -647,7 +647,9 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     //     '_loading $_loading');
     _listStreamSubscription?.cancel();
     _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
-      if ((dataList?.length ?? 0) < newDataList.length) {
+      // scroll
+      if ((dataList?.length ?? 0) == newDataList.length - pageSize) {
+        //debugPrint('$runtimeType.updateDataList SCROLL');
         // animate new items added
         // debugPrint(
         //     'PagingSliverAnimatedListState.updateDataList(): $runtimeType '
@@ -656,18 +658,44 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
         _listGlobalKey.currentState
             ?.insertAllItems(dataList?.length ?? 0, newDataList.length);
         if ((dataList?.length ?? 0) > 0) {
+          // if (newDataList.elementAt(0) != dataList?.elementAt(0)) {
+          //   _listGlobalKey.currentState?.insertItem(0);
+          // }
           // after loading new data scroll down a little bit to comunicate new
-          // data to user 
+          // data to user
           Future.delayed(
               const Duration(milliseconds: 500),
               () => scrollController.animateTo(
                     min(scrollController.offset + 200,
-                        scrollController.position.maxScrollExtent),
+                        max(scrollController.position.maxScrollExtent, 0)),
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.fastOutSlowIn,
                   ));
         }
+      } else if ((dataList?.length ?? 0) > newDataList.length) {
+        // remove item
+        if (dataList == null ||
+            dataList!.isEmpty ||
+            newDataList.isEmpty ||
+            newDataList.elementAt(0) != dataList?.elementAt(0)) {
+          //debugPrint('$runtimeType.updateDataList REMOVE');
+          _listGlobalKey.currentState
+              ?.removeItem(0, (context, animation) => buildData(0, animation));
+        }
+      } else if ((dataList?.length ?? 0) < newDataList.length) {
+        //debugPrint('$runtimeType.updateDataList NEW');
+        // add new item
+        _listGlobalKey.currentState?.insertItem(0);
+      } else if ((dataList?.length ?? 0) == newDataList.length) {
+        // add new item
+        if (dataList == null ||
+            dataList!.isEmpty ||
+            newDataList.elementAt(0) != dataList?.elementAt(0)) {
+          //debugPrint('$runtimeType.updateDataList UPDATE');
+          _listGlobalKey.currentState?.insertItem(0);
+        }
       }
+
       dataList = newDataList.toList();
       // first time _loading in true, so we need to wait for the first frame
       // to be built to set it to false
