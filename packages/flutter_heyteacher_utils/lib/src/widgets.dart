@@ -17,6 +17,7 @@
 library;
 
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -545,7 +546,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// The subscription to the data stream.
   StreamSubscription? _listStreamSubscription, _updateStreamSubscription;
 
-  bool _loading = false;
+  bool _loading = true;
 
   /// The [ScrollController] attached to the scroll view containing the list.
   ///
@@ -596,9 +597,11 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// Fetches initial data, sets up the list, and adds a scroll listener
   /// for pagination.
   Future<void> initPostFrame() async {
-    setState(() => _loading = true);
     dataList = (await initData())?.toList();
     if (dataList != null) {
+      // debugPrint(
+      //     'PagingSliverAnimatedListState.initPostFrame(): $runtimeType '
+      //     'dataList from initData not null, set state _loading false');
       setState(() => _loading = false);
       await Future.delayed(const Duration(seconds: 1));
       if (mounted && _listGlobalKey.currentState != null) {
@@ -607,6 +610,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     }
     _updateStreamSubscription?.cancel();
     _updateStreamSubscription = updateStream.listen((_) => updateDataList());
+    updateDataList();
     _checkScollPosition();
     scrollController.addListener(_checkScollPosition);
   }
@@ -638,24 +642,51 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   /// Subscribes to the data [stream] and handles list updates.
   void updateDataList() {
-    if (dataList?.isEmpty ?? true) {
-      setState(() => _loading = true);
-    }
+    // debugPrint(
+    //     'PagingSliverAnimatedListState.updateDataList(): $runtimeType '
+    //     '_loading $_loading');
     _listStreamSubscription?.cancel();
     _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
       if ((dataList?.length ?? 0) < newDataList.length) {
         // animate new items added
-        _listGlobalKey.currentState?.insertAllItems(0, newDataList.length);
-        // add new track (first track start time in after old fist track)
+        // debugPrint(
+        //     'PagingSliverAnimatedListState.updateDataList(): $runtimeType '
+        //     'dataList.length ${dataList?.length} '
+        //     'newDataList.length ${newDataList.length}');
+        _listGlobalKey.currentState
+            ?.insertAllItems(dataList?.length ?? 0, newDataList.length);
+        if ((dataList?.length ?? 0) > 0) {
+          // after loading new data scroll down a little bit to comunicate new
+          // data to user 
+          Future.delayed(
+              const Duration(milliseconds: 500),
+              () => scrollController.animateTo(
+                    min(scrollController.offset + 200,
+                        scrollController.position.maxScrollExtent),
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.fastOutSlowIn,
+                  ));
+        }
       }
       dataList = newDataList.toList();
-      setState(() => _loading = false);
+      // first time _loading in true, so we need to wait for the first frame
+      // to be built to set it to false
+      if (_loading) {
+        // debugPrint(
+        //     'PagingSliverAnimatedListState.updateDataList(): $runtimeType '
+        //     'set state _loading to false');
+        setState(() => _loading = false);
+      }
     });
   }
 
   /// Checks the scroll position to trigger pagination.
   void _checkScollPosition() {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent) {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        (dataList == null || _limit == (dataList!.length))) {
+      // debugPrint(
+      //     'PagingSliverAnimatedListState._checkScollPosition(): $runtimeType '
+      //     '_limit $_limit dataList.length ${dataList?.length}. UPDATE');
       _limit += pageSize;
       updateDataList();
     }
