@@ -393,13 +393,19 @@ abstract class Store<LightDataType extends FirestoreData,
         _separatedDetailsCollection = LightDataType != DetailsDataType {
     _firestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
+        // FirebaseFirestore.instanceFor(
+        //     app: FirebaseFirestore.instance.app, databaseId: 'bkdb');
+
     if (_firestore.runtimeType.toString() != 'FakeFirebaseFirestore') {
       // enable persistence for offline access
-      _firestore.settings = Settings(persistenceEnabled: _offlineEnabled);
+      _firestore.settings = Settings(
+        persistenceEnabled: _offlineEnabled,
+      );
     }
     _logger.finest(
         '<$runtimeType>: $_collectionPathLog '
             'userProfile $_userProfile  '
+            'database ${_firestore.databaseId} '
             'separatedDetailsCollection $_separatedDetailsCollection '
             'orderByFields $orderByFields '
             'aggregateFields $aggregateFields '
@@ -458,9 +464,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Apply [applyOrderBy], applies filter if [applyFilterBy] and applies
   /// [limit] if not null.
   Query<LightDataType> query(
-      {bool applyOrderBy = false,
-      bool applyFilterBy = true,
-      int? limit}) {
+      {bool applyOrderBy = false, bool applyFilterBy = true, int? limit}) {
     Query<LightDataType> retQuery = _collectionReference;
     _logger.finest('<$runtimeType.query>: applyOrderBy $applyOrderBy '
         ' applyFilterBy $applyFilterBy limit $limit');
@@ -486,9 +490,7 @@ abstract class Store<LightDataType extends FirestoreData,
 
   /// Returns the stream on [Store.query]
   Stream<Iterable<LightDataType>> stream(
-          {bool applyOrderBy = false,
-          bool applyFilterBy = true,
-          int? limit}) =>
+          {bool applyOrderBy = false, bool applyFilterBy = true, int? limit}) =>
       AuthViewModel.instance().notAutenticated
           ? const Stream.empty()
           : query(
@@ -945,9 +947,8 @@ abstract class Store<LightDataType extends FirestoreData,
       DetailsDataType document,
       bool increment,
       DetailsDataType? oldDetailsData) async {
-      _logger.finest(
-          '<$runtimeType._updateGroupByCounterTransaction<)>: '
-          'document ${document.id} increment $increment, '
+    _logger.finest('<$runtimeType._updateGroupByCounterTransaction<)>: '
+        'document ${document.id} increment $increment, '
         'oldDetailsData ${oldDetailsData?.id} ');
     // get the user document snapshot
     DocumentSnapshot<Map<String, dynamic>> userDocumentSnapshot =
@@ -972,7 +973,7 @@ abstract class Store<LightDataType extends FirestoreData,
       groupByValue = increment ? groupByValue + 1 : groupByValue - 1;
       _logger.finest(
           '($runtimeType._updateGroupByCounterTransaction): document ${document.id} increment $increment, '
-        'oldDetailsData ${oldDetailsData?.id}. $groupByUserValue new value $groupByValue');
+          'oldDetailsData ${oldDetailsData?.id}. $groupByUserValue new value $groupByValue');
       // increment/decrement group by value based
       userDocumentMap[groupByUserValue] = groupByValue;
       // oldDocument is set, decrement/increment value for old document
@@ -983,7 +984,7 @@ abstract class Store<LightDataType extends FirestoreData,
               increment ? oldGroupByValue - 1 : oldGroupByValue + 1;
           _logger.finest(
               '($runtimeType._updateGroupByCounterTransaction): document ${document.id} increment $increment, '
-        'oldDetailsData ${oldDetailsData.id}  $oldGroupByUserValue (old) new value $oldGroupByValue');
+              'oldDetailsData ${oldDetailsData.id}  $oldGroupByUserValue (old) new value $oldGroupByValue');
           userDocumentMap[oldGroupByUserValue!] = oldGroupByValue;
         }
       }
