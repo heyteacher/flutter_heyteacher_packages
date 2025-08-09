@@ -193,11 +193,15 @@ class LoggerViewModel {
   }
 
   /// Returns a string representation of the logs, formatted for display.
-  Future<String> logs2Text([Level level = Level.ALL]) async {
+  Future<String> logs2Text(
+      {DateTime? startTime, Level level = Level.ALL}) async {
     _logger.finest('<logs2Text>: ');
     final logs2TextWorker = Logs2TextWorker();
-    final output = await logs2TextWorker
-        .execute((filterLevel: level, notSavedLogRecords: notSavedLogRecords));
+    final output = await logs2TextWorker.execute((
+      startTime: startTime,
+      filterLevel: level,
+      notSavedLogRecords: notSavedLogRecords
+    ));
     logs2TextWorker.close();
     if (output.error != null) {
       _logger.severe('(logs2Text): error', output.error, output.stackTrace);
@@ -206,10 +210,28 @@ class LoggerViewModel {
     return output.output!;
   }
 
-  bool _filterLog(Level logLevel, Level? filterLevel) =>
-      filterLevel == null ||
-      filterLevel == Level.ALL ||
-      logLevel.value == (filterLevel.value);
+  /// Filters a log record based on its level and timestamp.
+  ///
+  /// Returns `true` if the log record should be included, `false` otherwise.
+  ///
+  /// - [logLevel]: The level of the log record.
+  /// - [filterLevel]: The minimum level to be included. If `null` or `Level.ALL`,
+  ///   all levels are included.
+  /// - [logTime]: The timestamp of the log record.
+  /// - [filterStartTime]: The start time for filtering. Only logs at or after
+  ///   this time will be included. If `null`, no time-based filtering is done.
+  bool _filterLog(
+      {required Level logLevel,
+      required Level? filterLevel,
+      required DateTime logTime,
+      required DateTime? filterStartTime}) {
+    final levelMatch = filterLevel == null ||
+        filterLevel == Level.ALL ||
+        logLevel.value >= filterLevel.value;
+    final timeMatch =
+        filterStartTime == null || !logTime.isBefore(filterStartTime);
+    return levelMatch && timeMatch;
+  }
 
   /// Returns a list of log entries from the temporary log directory.
   ///
@@ -217,17 +239,23 @@ class LoggerViewModel {
   /// decodes them into [LogEntry] objects, and returns a list of these entries.
   /// It does not follow links and lists files only in the top-level directory.
   /// The log entries are sorted by their time in ascending order.
-  Future<List<LogEntry>> logs(
-      {Level? filterLevel,
-      List<LogRecord>? notSavedLogRecords,
-      int? limit,
-      required bool descending}) async {
+  Future<List<LogEntry>> logs({
+    DateTime? startTime,
+    Level? filterLevel,
+    List<LogRecord>? notSavedLogRecords,
+    int? limit,
+    required bool descending,
+  }) async {
     final List<LogEntry> logEntries = [];
 
     filterLevel ??= _filterLevel;
     // convert not saved log records to log entries filtered by log level
     final notSavedLogEntries = notSavedLogRecords
-        ?.where((logRecord) => _filterLog(logRecord.level, filterLevel))
+        ?.where((logRecord) => _filterLog(
+            logLevel: logRecord.level,
+            filterLevel: filterLevel,
+            logTime: logRecord.time,
+            filterStartTime: startTime))
         .map((logRecord) => LogEntry(
             time: logRecord.time,
             level: logRecord.level,
@@ -241,7 +269,13 @@ class LoggerViewModel {
     for (var file in await _logFiles(descending: descending)) {
       // load log entries from file and filter by level and add to log entries
       final logEntriesToAdd = _fromJson(file)
-          .where((logEntry) => _filterLog(logEntry.level, filterLevel));
+          .where((logEntry) => _filterLog(
+              logLevel: logEntry.level,
+              filterLevel: filterLevel,
+              logTime: logEntry.time,
+              filterStartTime: startTime))
+          .toList();
+      // add));
       logEntries.addAll(logEntriesToAdd);
       // if limit is reached, break
       if (limit != null && logEntries.length >= limit) {
@@ -403,7 +437,12 @@ class ResetLogsWorker extends Worker<DateTime, int> {
 ///
 /// Each log entry is formatted on a new line.
 class Logs2TextWorker extends Worker<
-    ({Level? filterLevel, List<LogRecord> notSavedLogRecords}), String> {
+    ({
+      DateTime? startTime,
+      Level? filterLevel,
+      List<LogRecord> notSavedLogRecords
+    }),
+    String> {
   @override
   String get debugName => runtimeType.toString();
 
@@ -412,15 +451,16 @@ class Logs2TextWorker extends Worker<
   @protected
   Future<String> executeCallback(
           ({
+            DateTime? startTime,
             Level? filterLevel,
             List<LogRecord> notSavedLogRecords
           }) input) async =>
       (await LoggerViewModel.instance().logs(
+              startTime: input.startTime,
               filterLevel: input.filterLevel,
               notSavedLogRecords: input.notSavedLogRecords,
               descending: false))
-          .map((logEntry) =>
-              '${logEntry.time.toLocal().toIso8601String()} - '
+          .map((logEntry) => '${logEntry.time.toLocal().toIso8601String()} - '
               '[${logEntry.level.name}] - ${logEntry.loggerName} - '
               '${logEntry.message}'
               '${logEntry.error != null ? ' - ${logEntry.error}' : ''}'

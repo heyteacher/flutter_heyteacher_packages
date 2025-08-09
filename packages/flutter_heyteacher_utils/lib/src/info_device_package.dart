@@ -43,7 +43,8 @@ class DevicePackageInfoCard extends StatelessWidget {
             key: const ValueKey('lt_fhu_version'),
             leading: IconButton(
               icon: const Icon(Icons.smartphone),
-              onPressed: InfoDevicePackageViewModel.instance._incrementTapCounter,
+              onPressed:
+                  InfoDevicePackageViewModel.instance._incrementTapCounter,
             ),
             title: FutureBuilder(
               future: InfoDevicePackageViewModel.instance.deviceInfo,
@@ -161,14 +162,19 @@ class InfoDevicePackageViewModel {
       (AuthViewModel.instance().uid?.substring(0, 5)) ?? 'guest';
 
   /// uploads the logs to Firebase Storage and returns the log filename
-  Future<String> storeLogs() async {
+  Future<String> storeLogs({DateTime? startTime}) async {
     final machineDate = machineDateFormatter.format(clock.now());
-    final machineTime = machineTimeFormatter.format(clock.now());
-    final randomId = Random().nextInt(1000000000).toString().padLeft(10, '0');
+
+    final machineStartDateTime =
+        machineDateTimeFormatter.format(startTime ?? clock.now());
+    final machineStopTime = machineTimeFormatter.format(clock.now());
     final logFilename =
-        'applogs/$machineDate/$machineTime-${InfoDevicePackageViewModel.instance.identifierInfo}-$randomId.log';
-    StorageViewModel.instance
-        .uploadString(logFilename, await LoggerViewModel.instance().logs2Text());
+        'applogs/$machineDate/$machineStartDateTime-$machineStopTime'
+        '-${InfoDevicePackageViewModel.instance.identifierInfo}.log';
+    StorageViewModel.instance.uploadString(
+        logFilename,
+        await LoggerViewModel.instance().logs2Text(
+            startTime: startTime?.subtract(const Duration(seconds: 10))));
     return logFilename;
   }
 
