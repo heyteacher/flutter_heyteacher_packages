@@ -105,7 +105,7 @@ abstract class FirebaseCloudMessagingViewModel {
       sound: true,
     );
     _logger.info(
-      '(initialize): User granted permission: ${settings.authorizationStatus}',
+      '(initialize): User granted permission ${settings.authorizationStatus}',
     );
     final topic = RemoteConfigViewModel.instance
         .getString(FCMRemoteConfigKeys.fcmTopicName.name);
