@@ -552,7 +552,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns `true` if doesn't exists a document identified by [id].
   Future<bool> notExists(String? id) async {
     _logger.finest('<$runtimeType.notExists>:  $_detailsCollectionPathLog/$id');
-    return id != null && !(await exists(id));
+    return id == null || !(await exists(id));
   }
 
   /// Returns the [DetailsDataType ] document identified by [id].
