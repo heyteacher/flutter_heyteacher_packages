@@ -396,7 +396,8 @@ abstract class Store<LightDataType extends FirestoreData,
         // FirebaseFirestore.instanceFor(
         //     app: FirebaseFirestore.instance.app, databaseId: 'bkdb');
 
-    if (_firestore.runtimeType.toString() != 'FakeFirebaseFirestore') {
+    final fakeFirestore = _firestore.runtimeType.toString() == 'FakeFirebaseFirestore';
+    if (!fakeFirestore) {
       // enable persistence for offline access
       _firestore.settings = Settings(
         persistenceEnabled: _offlineEnabled,
@@ -405,7 +406,7 @@ abstract class Store<LightDataType extends FirestoreData,
     _logger.finest(
         '<$runtimeType>: $_collectionPathLog '
             'userProfile $_userProfile  '
-            'database ${_firestore.databaseId} '
+            'database ${fakeFirestore?'fake':_firestore.databaseId} '
             'separatedDetailsCollection $_separatedDetailsCollection '
             'orderByFields $orderByFields '
             'aggregateFields $aggregateFields '
