@@ -1,6 +1,6 @@
 name: flutter_heyteacher_text_to_speech
 description: "A heyteacher flutter package for text-to-speech"
-version: 1.21.0+250807111
+version: 1.21.1+250814010
 publish_to: none # Remove this line if you wish to publish to pub.dev
 
 environment:
