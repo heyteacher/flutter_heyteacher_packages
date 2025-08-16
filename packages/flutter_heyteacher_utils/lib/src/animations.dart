@@ -134,14 +134,14 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       final changedIndexes =
           _compare(oldList: dataList ?? [], newList: newDataList.toList());
       for (var changedIndex in changedIndexes) {
-            _listGlobalKey.currentState?.insertItem(changedIndex);
+        _listGlobalKey.currentState?.insertItem(changedIndex);
       }
       // add new item at the end of list, scrollo down e litte bit
       if (changedIndexes.isNotEmpty &&
           (dataList?.length ?? 0) > 0 &&
           changedIndexes.last >= (dataList?.length ?? 0)) {
         Future.delayed(
-            const Duration(milliseconds: 100),
+            const Duration(milliseconds: 500),
             () => scrollController.animateTo(
                   min(scrollController.offset + 200,
                       max(scrollController.position.maxScrollExtent, 0)),
@@ -175,9 +175,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   Iterable<int> _compare(
           {required List<D> oldList, required List<D> newList}) =>
-      newList.indexed
-            .where((e) => !oldList.contains(e.$2))
-            .map((e) => e.$1);
+      newList.indexed.where((e) => !oldList.contains(e.$2)).map((e) => e.$1);
 }
 
 class BlinkingText extends StatefulWidget {
