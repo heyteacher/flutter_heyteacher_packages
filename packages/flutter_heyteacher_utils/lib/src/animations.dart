@@ -129,60 +129,26 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   /// Subscribes to the data [stream] and handles list updates.
   void updateDataList() {
-    // debugPrint(
-    //     'PagingSliverAnimatedListState.updateDataList(): $runtimeType '
-    //     '_loading $_loading');
     _listStreamSubscription?.cancel();
     _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
-      // scroll
-      if ((dataList?.length ?? 0) == newDataList.length - pageSize) {
-        //debugPrint('$runtimeType.updateDataList SCROLL');
-        // animate new items added
-        // debugPrint(
-        //     'PagingSliverAnimatedListState.updateDataList(): $runtimeType '
-        //     'dataList.length ${dataList?.length} '
-        //     'newDataList.length ${newDataList.length}');
-        _listGlobalKey.currentState
-            ?.insertAllItems(dataList?.length ?? 0, newDataList.length);
-        if ((dataList?.length ?? 0) > 0) {
-          // if (newDataList.elementAt(0) != dataList?.elementAt(0)) {
-          //   _listGlobalKey.currentState?.insertItem(0);
-          // }
-          // after loading new data scroll down a little bit to comunicate new
-          // data to user
-          Future.delayed(
-              const Duration(milliseconds: 500),
-              () => scrollController.animateTo(
-                    min(scrollController.offset + 200,
-                        max(scrollController.position.maxScrollExtent, 0)),
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.fastOutSlowIn,
-                  ));
-        }
-      } else if ((dataList?.length ?? 0) > newDataList.length) {
-        // remove item
-        if (dataList == null ||
-            dataList!.isEmpty ||
-            newDataList.isEmpty ||
-            newDataList.elementAt(0) != dataList?.elementAt(0)) {
-          //debugPrint('$runtimeType.updateDataList REMOVE');
-          _listGlobalKey.currentState
-              ?.removeItem(0, (context, animation) => buildData(0, animation));
-        }
-      } else if ((dataList?.length ?? 0) < newDataList.length) {
-        //debugPrint('$runtimeType.updateDataList NEW');
-        // add new item
-        _listGlobalKey.currentState?.insertItem(0);
-      } else if ((dataList?.length ?? 0) == newDataList.length) {
-        // add new item
-        if (dataList == null ||
-            dataList!.isEmpty ||
-            newDataList.elementAt(0) != dataList?.elementAt(0)) {
-          //debugPrint('$runtimeType.updateDataList UPDATE');
-          _listGlobalKey.currentState?.insertItem(0);
-        }
+      final changedIndexes =
+          _compare(oldList: dataList ?? [], newList: newDataList.toList());
+      for (var changedIndex in changedIndexes) {
+        _listGlobalKey.currentState?.insertItem(changedIndex);
       }
-
+      // add new item at the end of list, scrollo down e litte bit
+      if (changedIndexes.isNotEmpty &&
+          (dataList?.length ?? 0) > 0 &&
+          changedIndexes.last >= (dataList?.length ?? 0)) {
+        Future.delayed(
+            const Duration(milliseconds: 500),
+            () => scrollController.animateTo(
+                  min(scrollController.offset + 200,
+                      max(scrollController.position.maxScrollExtent, 0)),
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.fastOutSlowIn,
+                ));
+      }
       dataList = newDataList.toList();
       // first time _loading in true, so we need to wait for the first frame
       // to be built to set it to false
@@ -206,6 +172,10 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       updateDataList();
     }
   }
+
+  Iterable<int> _compare(
+          {required List<D> oldList, required List<D> newList}) =>
+      newList.indexed.where((e) => !oldList.contains(e.$2)).map((e) => e.$1);
 }
 
 class BlinkingText extends StatefulWidget {
