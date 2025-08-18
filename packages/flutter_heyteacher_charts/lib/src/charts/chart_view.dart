@@ -21,12 +21,14 @@ abstract class ChartView extends StatelessWidget {
   final String Function(ChartDataItem) formatterX;
   final String Function(int) formatterAxisX;
   final Color Function(double) formatterColorAxisX;
+  final Widget? axisNameWidgetX;
   late final num minY;
   late final num maxY;
   late final int intervalY;
   final String Function(ChartDataItem) formatterY;
   final String Function(double) formatterAxisY;
   final Color Function(double) formatterColorAxisY;
+  final Widget? axisNameWidgetY;
 
   ChartView(
       {required this.chartDataList,
@@ -37,12 +39,14 @@ abstract class ChartView extends StatelessWidget {
       required this.formatterX,
       required this.formatterAxisX,
       required this.formatterColorAxisX,
+      this.axisNameWidgetX,
       num? maxY,
       num? minY,
       int minIntervalY = 1,
       required this.formatterY,
       required this.formatterAxisY,
       required this.formatterColorAxisY,
+      this.axisNameWidgetY,
       super.key}) {
     // set intervalX maxX minX
     maxX ??= chartDataList.isNotEmpty ? chartDataList.map((e) => e.x).max : 0;

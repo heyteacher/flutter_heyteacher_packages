@@ -23,9 +23,11 @@ class LineChartView extends ChartView {
       required super.formatterY,
       required super.formatterAxisY,
       required super.formatterColorAxisY,
+      super.axisNameWidgetX,
       super.maxY,
       super.minY,
       super.minIntervalY,
+      super.axisNameWidgetY,
       this.extraHorizontalLines,
       this.extraVerticalLines,
       this.horizontalRangeAnnotations,
@@ -72,6 +74,10 @@ class LineChartView extends ChartView {
 
   FlTitlesData get _titlesData => FlTitlesData(
         bottomTitles: AxisTitles(
+          axisNameWidget: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: axisNameWidgetX,
+          ),
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 60,
@@ -86,6 +92,10 @@ class LineChartView extends ChartView {
           sideTitles: SideTitles(showTitles: false),
         ),
         leftTitles: AxisTitles(
+          axisNameWidget: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: axisNameWidgetY,
+          ),
           sideTitles: SideTitles(
             getTitlesWidget: _leftTitleWidgets,
             showTitles: true,

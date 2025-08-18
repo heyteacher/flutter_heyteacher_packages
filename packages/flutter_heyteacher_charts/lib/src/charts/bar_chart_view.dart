@@ -36,12 +36,14 @@ class BarChartView extends ChartView {
     required super.formatterX,
     required super.formatterAxisX,
     required super.formatterColorAxisX,
+    super.axisNameWidgetX,
     super.maxY,
     super.minY,
     super.minIntervalY,
     required super.formatterY,
     required super.formatterAxisY,
     required super.formatterColorAxisY,
+    super.axisNameWidgetY,
     super.key,
   });
 
@@ -53,7 +55,7 @@ class BarChartView extends ChartView {
             child: title,
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 20),
+            padding: const EdgeInsets.only(right: 20, bottom: 20),
             child: Column(
               children: [
                 AspectRatio(
@@ -139,6 +141,7 @@ class BarChartView extends ChartView {
       );
 
   AxisTitles _xAxisTitles() => AxisTitles(
+        axisNameWidget: axisNameWidgetX,
         sideTitles: SideTitles(
           showTitles: true,
           interval: double.maxFinite, // that means no X intervals in bar char
@@ -156,6 +159,7 @@ class BarChartView extends ChartView {
       );
 
   AxisTitles _yAxisTitles() => AxisTitles(
+        axisNameWidget: axisNameWidgetY,
         drawBelowEverything: true,
         sideTitles: SideTitles(
             showTitles: true,
