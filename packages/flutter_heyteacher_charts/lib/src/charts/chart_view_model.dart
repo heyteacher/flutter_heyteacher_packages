@@ -1,7 +1,5 @@
-
-
 import 'package:collection/collection.dart';
-import 'package:flutter_heyteacher_charts/flutter_heyteacher_charts.dart';
+import 'package:flutter_heyteacher_charts/src/charts/chart_data.dart';
 
 class ChartViewModel {
   

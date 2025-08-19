@@ -1,35 +1,15 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_charts/src/charts/chart_data.dart';
 import 'chart_view.dart';
 
-class BarChartDataItem extends ChartDataItem {
-  final num? y1;
-  final num? y2;
-  final num fromY;
-
-  BarChartDataItem(
-      {this.fromY = 0,
-      required super.x,
-      required super.y,
-      super.yColor,
-      this.y1,
-      this.y2});
-
-  @override
-  toString() => 'x: $x, fromY: $fromY, y: $y,  y1: $y1,  y2: $y2';
-}
-
 class BarChartView extends ChartView {
-  final bool horizontal;
-  final double reservedSizeX;
-  final double reservedSizeY;
-
   BarChartView({
     required super.chartDataList,
     required super.title,
-    this.reservedSizeX = 36,
-    this.reservedSizeY = 60,
-    this.horizontal = false,
+    super.reservedSizeX,
+    super.reservedSizeY,
+    super.rotate,
     super.maxX,
     super.minX,
     super.minIntervalX,
@@ -70,19 +50,11 @@ class BarChartView extends ChartView {
                   child: BarChart(
                     BarChartData(
                       alignment: BarChartAlignment.spaceBetween,
-                      rotationQuarterTurns: horizontal ? 1 : 0,
+                      rotationQuarterTurns: rotate ? 1 : 0,
                       borderData: FlBorderData(
                         show: false,
                       ),
-                      titlesData: FlTitlesData(
-                        show: true,
-                        leftTitles:
-                            horizontal ? _xAxisTitles() : _yAxisTitles(),
-                        bottomTitles: _xAxisTitles(),
-                        rightTitles:
-                            horizontal ? _yAxisTitles() : const AxisTitles(),
-                        topTitles: const AxisTitles(),
-                      ),
+                      titlesData: titlesData,
                       gridData: FlGridData(
                         show: true,
                         horizontalInterval: intervalY.toDouble(),
@@ -138,49 +110,5 @@ class BarChartView extends ChartView {
             ),
           ),
         ],
-      );
-
-  AxisTitles _xAxisTitles() => AxisTitles(
-        axisNameWidget: axisNameWidgetX,
-        sideTitles: SideTitles(
-          showTitles: true,
-          interval: double.maxFinite, // that means no X intervals in bar char
-          reservedSize: reservedSizeX,
-          maxIncluded: false,
-          minIncluded: false,
-          getTitlesWidget: (value, meta) => SideTitleWidget(
-            meta: meta,
-            child: Text(
-              formatterAxisX(value.toInt()),
-              style: TextStyle(color: formatterColorAxisX(value)),
-            ),
-          ),
-        ),
-      );
-
-  AxisTitles _yAxisTitles() => AxisTitles(
-        axisNameWidget: axisNameWidgetY,
-        drawBelowEverything: true,
-        sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: reservedSizeY,
-            maxIncluded: false,
-            minIncluded: true,
-            interval: intervalY.toDouble(),
-            getTitlesWidget: (value, TitleMeta meta) => RotatedBox(
-                  quarterTurns: horizontal ? 3 : 0,
-                  child: SideTitleWidget(
-                    meta: meta,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          right: horizontal ? 0 : 4.0,
-                          top: horizontal ? 4.0 : 0),
-                      child: Text(
-                        formatterAxisY(value),
-                        style: TextStyle(color: formatterColorAxisY(value)),
-                      ),
-                    ),
-                  ),
-                )),
       );
 }

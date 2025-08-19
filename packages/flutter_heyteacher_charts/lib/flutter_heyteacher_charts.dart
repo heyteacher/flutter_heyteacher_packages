@@ -1,10 +1,6 @@
-
-
-export 'src/charts/bar_chart_view.dart' show BarChartView, BarChartDataItem;
-
-export 'src/charts/line_chart_view.dart'
-    show LineChartView, ExtraLineData, RangeAnnotationData;
-
-export 'src/charts/chart_view.dart' show ChartDataItem;
-
+export 'src/charts/chart_data.dart'
+    show ChartDataItem, ExtraLineData, RangeAnnotationData, BarChartDataItem;
 export 'src/charts/chart_view_model.dart' show ChartViewModel;
+export 'src/charts/bar_chart_view.dart' show BarChartView;
+export 'src/charts/line_chart_view.dart' show LineChartView;
+export 'src/charts/scatter_chart_view.dart' show ScatterChartView;
