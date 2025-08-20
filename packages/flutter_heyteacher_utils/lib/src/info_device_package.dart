@@ -163,11 +163,11 @@ class InfoDevicePackageViewModel {
 
   /// uploads the logs to Firebase Storage and returns the log filename
   Future<String> storeLogs({DateTime? startTime}) async {
-    final machineDate = machineDateFormatter.format(clock.now());
+    final machineDate = FormatterHelper.machineDateFormat(clock.now());
 
     final machineStartDateTime =
-        machineDateTimeFormatter.format(startTime ?? clock.now());
-    final machineStopTime = machineTimeFormatter.format(clock.now());
+        FormatterHelper.machineDateTimeFormat(startTime ?? clock.now());
+    final machineStopTime = FormatterHelper.machineTimeFormat(clock.now());
     final logFilename =
         'applogs/$machineDate/$machineStartDateTime-$machineStopTime'
         '-${InfoDevicePackageViewModel.instance.identifierInfo}.log';

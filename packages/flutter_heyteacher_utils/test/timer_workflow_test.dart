@@ -71,7 +71,7 @@ void main() {
     // get uid from firebase auth
     // print in standard output
     if (kDebugMode) {
-      print('${timeWithSecondsFormatter.format(record.time)} '
+      print('${FormatterHelper.timeWithSecondsFormat(record.time)} '
           '- ${record.level.name} '
           '- ${record.loggerName} '
           '- ${record.message} '

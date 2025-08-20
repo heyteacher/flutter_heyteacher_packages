@@ -156,7 +156,7 @@ class LoggerViewModel {
     // reached 1K logs or an error is raised, write logs to file
     // Print the log message to the console if in debug mode.
     if (kDebugMode) {
-      print('${timeWithSecondsFormatter.format(record.time)} '
+      print('${FormatterHelper.timeWithSecondsFormat(record.time)} '
           '- version $version '
           '- $deviceInfo '
           '- ${record.level.name} '
@@ -397,7 +397,7 @@ class WriteLogsWorker extends Worker<List<LogRecord>, void> {
             stackTrace: logRecord.stackTrace?.toString()))
         .toList();
     final tmpLogDir = await LoggerViewModel.instance()._tmpLogsDir;
-    final filename = machineDateTimeFormatter.format(clock.now().toLocal());
+    final filename = FormatterHelper.machineDateTimeFormat(clock.now().toLocal());
     final file = File('${tmpLogDir.path}/$filename.json');
     // write the log entry to logs temporary directory as a JSON file
     await file.writeAsString(jsonEncode(logEntries));

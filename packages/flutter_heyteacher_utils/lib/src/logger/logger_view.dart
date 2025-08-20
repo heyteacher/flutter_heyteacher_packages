@@ -194,7 +194,7 @@ class LogEntryCard extends StatelessWidget {
         child: ListTile(
           leading:
               Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(timeWithSecondsFormatter.format(logEntry.time)),
+            Text(FormatterHelper.timeWithSecondsFormat(logEntry.time)),
             Text(logEntry.level.name,
                 style: TextStyle(
                     color: _backgroundColor(logEntry.level)
