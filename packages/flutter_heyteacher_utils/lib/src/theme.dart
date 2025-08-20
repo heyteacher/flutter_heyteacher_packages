@@ -139,44 +139,44 @@ class ThemeViewModel {
   /// Gets a red color that adapts to the current theme (light/dark).
   Color get redColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.red.shade800
-          : Colors.red.shade200;
+          ? Colors.red.shade700
+          : Colors.red.shade300;
 
   /// Gets a blue color that adapts to the current theme (light/dark).
   Color get blueColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.blue.shade800
-          : Colors.blue.shade200;
+          ? Colors.blue.shade700
+          : Colors.blue.shade300;
 
   /// Gets a yellow color that adapts to the current theme (light/dark).
   Color get yellowColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.yellow.shade800
-          : Colors.yellow.shade200;
+          ? Colors.yellow.shade700
+          : Colors.yellow.shade300;
 
   /// Gets a green color that adapts to the current theme (light/dark).
   Color get greenColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.green.shade800
-          : Colors.green.shade200;
+          ? Colors.green.shade700
+          : Colors.green.shade300;
 
   /// Gets an orange color that adapts to the current theme (light/dark).
   Color get orangeColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.orange.shade800
-          : Colors.orange.shade200;
+          ? Colors.orange.shade700
+          : Colors.orange.shade300;
 
   /// get the purple color based on the current theme mode
   Color get purpleColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.purple.shade800
-          : Colors.purple.shade200;
+          ? Colors.purple.shade700
+          : Colors.purple.shade300;
 
   /// get the purple color based on the current theme mode
   Color get deepPurpleColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.deepPurple.shade800
-          : Colors.deepPurple.shade200;
+          ? Colors.deepPurple.shade700
+          : Colors.deepPurple.shade300;
 
   static ThemeViewModel? _instance;
 

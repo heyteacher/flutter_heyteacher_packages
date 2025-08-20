@@ -71,9 +71,7 @@ class AccountCard extends StatelessWidget {
                           key: const ValueKey('ic_delete_data'),
                           icon: const Icon(Icons.delete),
                           color: ThemeViewModel.instance()
-                              .theme
-                              .colorScheme
-                              .onError,
+                              .redColor,
                           onPressed: () async {
                             showConfirmCancelDialog<String>(
                               context: context,
@@ -100,9 +98,7 @@ class AccountCard extends StatelessWidget {
                             : Icons.login),
                         color: AuthViewModel.instance().autenticated
                             ? ThemeViewModel.instance()
-                                .theme
-                                .colorScheme
-                                .onError
+                                .redColor
                             : Theme.of(context).iconTheme.color,
                         onPressed: () async {
                           if (AuthViewModel.instance().autenticated) {

@@ -123,7 +123,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
             IconButton(
               key: const ValueKey('ib_dialog_no'),
               icon: Icon(Icons.close,
-                  color: ThemeViewModel.instance().colorScheme.onError),
+                  color: ThemeViewModel.instance().redColor),
               onPressed: () {
                 // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
                 SchedulerBinding.instance.addPostFrameCallback((_) {

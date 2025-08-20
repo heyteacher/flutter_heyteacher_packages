@@ -133,7 +133,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
               secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
               color: secretKeySnapshot.data ?? false
                   ? ThemeViewModel.instance().greenColor
-                  : ThemeViewModel.instance().colorScheme.onError,
+                  : ThemeViewModel.instance().redColor,
             ),
             title: Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
@@ -186,9 +186,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                             key: const ValueKey('ib_dialog_no'),
                             icon: Icon(Icons.close,
                                 color: ThemeViewModel.instance()
-                                    .theme
-                                    .colorScheme
-                                    .onError),
+                                    .redColor),
                             onPressed: () {
                               Navigator.of(context).pop(false);
                             },
