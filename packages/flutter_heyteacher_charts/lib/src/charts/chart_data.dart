@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ChartDataItem {
@@ -7,7 +9,7 @@ class ChartDataItem {
   const ChartDataItem({required this.x, required this.y, this.yColor});
 
   @override
-  toString() => 'x: $x, y: $y';
+  toString() => 'x $x y $y';
 }
 
 class BarChartDataItem extends ChartDataItem {
@@ -24,7 +26,29 @@ class BarChartDataItem extends ChartDataItem {
       this.y2});
 
   @override
-  toString() => 'x: $x, fromY: $fromY, y: $y,  y1: $y1,  y2: $y2';
+  toString() => 'x $x fromY $fromY y $y y1 $y1 y2 $y2';
+}
+
+class CandlestickDataItem extends ChartDataItem {
+  final num yPrec;
+  final num yHigh;
+  final num yLow;
+
+  CandlestickDataItem({
+    required super.x,
+    required super.y,
+    required this.yPrec,
+    required this.yHigh,
+    required this.yLow,
+  });
+
+  bool get isUp => yPrec < y;
+
+  num get minY => min(y,yLow);
+  num get maxY => max(y,yHigh);
+
+  @override
+  toString() => 'x $x y $y  yPrec $yPrec yHigh: $yHigh yLow: $yLow';
 }
 
 class ExtraLineData {

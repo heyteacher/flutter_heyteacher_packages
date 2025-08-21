@@ -116,7 +116,7 @@ abstract class ChartView extends StatelessWidget {
             showTitles: true,
             reservedSize: reservedSizeY,
             maxIncluded: false,
-            minIncluded: true,
+            minIncluded: false,
             interval: intervalY.toDouble(),
             getTitlesWidget: (value, TitleMeta meta) =>
                 leftTitleWidgets(value, meta)),
@@ -295,13 +295,13 @@ abstract class ChartView extends StatelessWidget {
   @protected
   double interval(num minValue, num maxValue,
           {double minInterval = 5, int occurences = 10}) =>
-      max(
+      (max(
           ((maxValue - minValue) /
                   occurences // the interval to have <occurrences> in axies
                   /
                   minInterval) *
               minInterval,
-          minInterval); // if inverval is less than multiplier, use multiplier
+          minInterval) * 10).round() / 10; // if inverval is less than multiplier, use multiplier
 
   @protected
   static int roundToInterval(num value, num interval) =>
@@ -309,9 +309,9 @@ abstract class ChartView extends StatelessWidget {
 
   @protected
   static double ceilToInterval(num value, num interval) =>
-      interval != 0 ? ((value / interval).ceil() * interval).toDouble() : 0;
+      interval != 0 ? ((value / interval).ceil() * interval).ceilToDouble() : 0;
 
   @protected
   static double floorToInterval(num value, num interval) =>
-      interval != 0 ? ((value / interval).floor() * interval).toDouble() : 0;
+      interval != 0 ? ((value / interval).floor() * interval).floorToDouble() : 0;
 }
