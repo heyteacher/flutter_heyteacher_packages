@@ -23,6 +23,9 @@ class FormatterHelper {
   /// Formatter for date only (e.g., "dd/MM/yyyy").
   static final DateFormat _dateFormatter = DateFormat('dd/MM/yyyy');
 
+ /// Formatter for date only (e.g., "dd/MM").
+  static final DateFormat _ddMMFormatter = DateFormat('dd/MM');
+
   /// Formatter for time with seconds (e.g., "HH:mm:ss").
   static final DateFormat _timeFormatter = DateFormat('HH:mm');
 
@@ -53,6 +56,10 @@ class FormatterHelper {
 
   static String dateFormat(DateTime? dateTime) =>
       dateTime != null ? _dateFormatter.format(dateTime) : '';
+
+  static String ddMMFormat(DateTime? dateTime) =>
+      dateTime != null ? _ddMMFormatter.format(dateTime) : '';
+
 
   static String timeFormat(DateTime? dateTime) =>
       dateTime != null ? _timeFormatter.format(dateTime) : '';
@@ -118,4 +125,5 @@ class FormatterHelper {
 
   static double differenceInMinute(DateTime sup, DateTime inf) =>
       (sup.difference(inf).inSeconds / 60);
+
 }
