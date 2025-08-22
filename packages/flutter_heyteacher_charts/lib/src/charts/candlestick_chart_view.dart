@@ -6,6 +6,8 @@ import 'package:flutter_heyteacher_charts/src/charts/chart_view.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 
 class CandlestickChartView extends ChartView {
+  final List<TextSpan>? Function(int index)? getTooltipItems;
+
   CandlestickChartView(
       {super.key,
       required super.title,
@@ -25,7 +27,8 @@ class CandlestickChartView extends ChartView {
       super.minIntervalY,
       super.axisNameWidgetY,
       super.horizontalRangeAnnotations,
-      super.verticalRangeAnnotations});
+      super.verticalRangeAnnotations,
+      this.getTooltipItems});
 
   @override
   Widget build(BuildContext context) => Column(
@@ -55,6 +58,9 @@ class CandlestickChartView extends ChartView {
         maxY: _maxY,
         titlesData: titlesData,
         borderData: borderData,
+        candlestickTouchData: CandlestickTouchData(
+            touchTooltipData:
+                CandlestickTouchTooltipData(getTooltipItems: _getTooltipItems, fitInsideHorizontally: true, fitInsideVertically: true)),
         touchedPointIndicator: AxisSpotIndicator(
           painter: AxisLinesIndicatorPainter(
             verticalLineProvider: (x) => VerticalLine(
@@ -108,4 +114,10 @@ class CandlestickChartView extends ChartView {
         (minYValue - (interval - (minYValue % intervalY))).floorToDouble();
     return ret;
   }
+
+  CandlestickTooltipItem? _getTooltipItems(FlCandlestickPainter painter,
+          CandlestickSpot touchedSpot, int spotIndex) =>
+      getTooltipItems == null
+          ? null
+          : CandlestickTooltipItem('', children: getTooltipItems!(spotIndex));
 }
