@@ -4,13 +4,12 @@ import 'package:flutter_heyteacher_charts/src/charts/chart_view.dart';
 
 class ScatterChartView extends ChartView {
   static const Color color = Colors.grey;
-  static const radius = 2.0;
+  static const radius = 4.0;
 
   ScatterChartView({
     super.key,
     required super.title,
     required super.chartDataList,
-    required super.formatterX,
     required super.formatterAxisX,
     required super.formatterColorAxisX,
     super.reservedSizeX,
@@ -18,7 +17,6 @@ class ScatterChartView extends ChartView {
     super.minX,
     super.minIntervalX,
     super.axisNameWidgetX,
-    required super.formatterY,
     required super.formatterAxisY,
     required super.formatterColorAxisY,
     super.reservedSizeY,

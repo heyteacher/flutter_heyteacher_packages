@@ -10,7 +10,6 @@ class CandlestickChartView extends ChartView {
       {super.key,
       required super.title,
       required super.chartDataList,
-      required super.formatterX,
       required super.formatterAxisX,
       required super.formatterColorAxisX,
       super.reservedSizeX,
@@ -18,7 +17,6 @@ class CandlestickChartView extends ChartView {
       super.minX,
       super.minIntervalX,
       super.axisNameWidgetX,
-      required super.formatterY,
       required super.formatterAxisY,
       required super.formatterColorAxisY,
       super.reservedSizeY,
@@ -26,88 +24,59 @@ class CandlestickChartView extends ChartView {
       super.minY,
       super.minIntervalY,
       super.axisNameWidgetY,
-      super.extraHorizontalLines,
-      super.extraVerticalLines,
       super.horizontalRangeAnnotations,
       super.verticalRangeAnnotations});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        title,
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: CandlestickChart(
-              CandlestickChartData(
-                candlestickSpots: _candlestickSpots,
-                gridData: const FlGridData(
-                  show: false,
-                ),
-                rangeAnnotations: RangeAnnotations(
-                    verticalRangeAnnotations: verticalRangeAnnotations,
-                    horizontalRangeAnnotations: horizontalRangeAnnotations),
-                minY: _minY(),
-                maxY: _maxY(),
-                titlesData: titlesData,
-                borderData: borderData,
-                touchedPointIndicator: AxisSpotIndicator(
-                  painter: AxisLinesIndicatorPainter(
-                    verticalLineProvider: (x) {
-                      final data = chartDataList.elementAt(x.toInt())
-                          as CandlestickDataItem;
-                      return VerticalLine(
-                        x: x,
-                        color: (data.isUp
-                                ? ThemeViewModel.instance().greenColor
-                                : ThemeViewModel.instance().redColor)
-                            .withValues(alpha: 0.5),
-                        strokeWidth: 1,
-                      );
-                    },
-                    horizontalLineProvider: (y) => HorizontalLine(
-                      y: y,
-                      label: HorizontalLineLabel(
-                          show: true,
-                          style: TextStyle(
-                            color: ThemeViewModel.instance().yellowColor,
-                          ),
-                          labelResolver: (hLine) => hLine.y.toInt().toString(),
-                          alignment: Alignment.topLeft),
-                      color: ThemeViewModel.instance().yellowColor.withValues(
-                            alpha: 0.8,
-                          ),
-                      strokeWidth: 1,
-                    ),
-                  ),
-                ),
+  Widget build(BuildContext context) => Column(
+        children: [
+          title,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: CandlestickChart(
+                _candleStickChartData,
               ),
             ),
           ),
+        ],
+      );
+
+  CandlestickChartData get _candleStickChartData => CandlestickChartData(
+        candlestickSpots: _candlestickSpots,
+        gridData: const FlGridData(
+          show: false,
         ),
-      ],
-    );
-  }
-
-  double _maxY() {
-    final maxYValue =
-        chartDataList.map((e) => (e as CandlestickDataItem).maxY).max.floor();
-    final interval = intervalY.floor();
-    final ret =
-        (maxYValue + (interval - (maxYValue % interval))).floorToDouble();
-    return ret;
-  }
-
-  double _minY() {
-    final minYValue =
-        chartDataList.map((e) => (e as CandlestickDataItem).minY).min.floor();
-    final interval = intervalY.floor();
-    final ret =
-        (minYValue - (interval - (minYValue % intervalY))).floorToDouble();
-    return ret;
-  }
+        rangeAnnotations: RangeAnnotations(
+            verticalRangeAnnotations: verticalRangeAnnotations,
+            horizontalRangeAnnotations: horizontalRangeAnnotations),
+        minY: _minY,
+        maxY: _maxY,
+        titlesData: titlesData,
+        borderData: borderData,
+        touchedPointIndicator: AxisSpotIndicator(
+          painter: AxisLinesIndicatorPainter(
+            verticalLineProvider: (x) => VerticalLine(
+              x: x,
+              color: ThemeViewModel.instance().colorScheme.onSurface,
+              strokeWidth: 1,
+            ),
+            horizontalLineProvider: (y) => HorizontalLine(
+              y: y,
+              label: HorizontalLineLabel(
+                  show: true,
+                  style: TextStyle(
+                    color: ThemeViewModel.instance().yellowColor,
+                  ),
+                  labelResolver: (hLine) => hLine.y.toInt().toString(),
+                  alignment: Alignment.topLeft),
+              color: ThemeViewModel.instance().colorScheme.onSurface,
+              strokeWidth: 1,
+            ),
+          ),
+        ),
+      );
 
   List<CandlestickSpot> get _candlestickSpots => chartDataList
       .toList()
@@ -121,4 +90,22 @@ class CandlestickChartView extends ChartView {
             close: entry.value.y.toDouble(),
           ))
       .toList();
+
+  double get _maxY {
+    final maxYValue =
+        chartDataList.map((e) => (e as CandlestickDataItem).maxY).max.floor();
+    final interval = intervalY.floor();
+    final ret =
+        (maxYValue + (interval - (maxYValue % interval))).floorToDouble();
+    return ret;
+  }
+
+  double get _minY {
+    final minYValue =
+        chartDataList.map((e) => (e as CandlestickDataItem).minY).min.floor();
+    final interval = intervalY.floor();
+    final ret =
+        (minYValue - (interval - (minYValue % intervalY))).floorToDouble();
+    return ret;
+  }
 }

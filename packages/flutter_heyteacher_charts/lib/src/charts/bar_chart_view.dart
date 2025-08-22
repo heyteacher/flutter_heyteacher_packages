@@ -13,7 +13,6 @@ class BarChartView extends ChartView {
     super.maxX,
     super.minX,
     super.minIntervalX,
-    required super.formatterX,
     required super.formatterAxisX,
     required super.formatterColorAxisX,
     super.axisNameWidgetX,
@@ -93,8 +92,9 @@ class BarChartView extends ChartView {
                             ) =>
                                 BarTooltipItem(
                                   textAlign: TextAlign.center,
-                                  formatterY(
-                                      chartDataList.elementAt(groupIndex)),
+                                  formatterY?.call(chartDataList
+                                          .elementAt(groupIndex)) ??
+                                      '',
                                   TextStyle(
                                     color: rod.color,
                                     height: 0.9,
