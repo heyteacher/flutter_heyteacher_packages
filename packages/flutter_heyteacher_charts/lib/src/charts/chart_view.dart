@@ -19,6 +19,7 @@ abstract class ChartView extends StatelessWidget {
   late final double minY;
   late final double maxY;
   late final double intervalY;
+  final bool showRightTitles;
   final String Function(ChartDataItem)? formatterY;
   final String Function(double) formatterAxisY;
   final Color Function(double) formatterColorAxisY;
@@ -33,7 +34,7 @@ abstract class ChartView extends StatelessWidget {
 
   ChartView(
       {required this.chartDataList,
-      required this.title,
+      this.title = const Text(''),
       double? maxX,
       double? minX,
       double minIntervalX = 1,
@@ -41,6 +42,7 @@ abstract class ChartView extends StatelessWidget {
       required this.formatterAxisX,
       required this.formatterColorAxisX,
       this.axisNameWidgetX,
+      this.showRightTitles = false,
       double? maxY,
       double? minY,
       double minIntervalY = 1,
@@ -88,7 +90,8 @@ abstract class ChartView extends StatelessWidget {
         topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        rightTitles: rotate ? yAxisTitles() : const AxisTitles(),
+        rightTitles:
+            showRightTitles || rotate ? yAxisTitles() : const AxisTitles(),
         bottomTitles: xAxisTitles(),
         leftTitles: rotate ? const AxisTitles() : yAxisTitles(),
       );
@@ -180,7 +183,7 @@ abstract class ChartView extends StatelessWidget {
                   .theme
                   .colorScheme
                   .onSurface
-                  .withValues(alpha: 0),
+                  .withValues(alpha: showRightTitles ? 0.5 : 0),
               width: 1),
           top: BorderSide(
               color: ThemeViewModel.instance()
@@ -296,12 +299,15 @@ abstract class ChartView extends StatelessWidget {
   double interval(num minValue, num maxValue,
           {double minInterval = 5, int occurences = 10}) =>
       (max(
-          ((maxValue - minValue) /
-                  occurences // the interval to have <occurrences> in axies
-                  /
+                  ((maxValue - minValue) /
+                          occurences // the interval to have <occurrences> in axies
+                          /
+                          minInterval) *
+                      minInterval,
                   minInterval) *
-              minInterval,
-          minInterval) * 10).round() / 10; // if inverval is less than multiplier, use multiplier
+              10)
+          .round() /
+      10; // if inverval is less than multiplier, use multiplier
 
   @protected
   static int roundToInterval(num value, num interval) =>
@@ -312,6 +318,7 @@ abstract class ChartView extends StatelessWidget {
       interval != 0 ? ((value / interval).ceil() * interval).ceilToDouble() : 0;
 
   @protected
-  static double floorToInterval(num value, num interval) =>
-      interval != 0 ? ((value / interval).floor() * interval).floorToDouble() : 0;
+  static double floorToInterval(num value, num interval) => interval != 0
+      ? ((value / interval).floor() * interval).floorToDouble()
+      : 0;
 }

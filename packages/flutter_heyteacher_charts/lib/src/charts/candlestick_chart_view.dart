@@ -10,7 +10,7 @@ class CandlestickChartView extends ChartView {
 
   CandlestickChartView(
       {super.key,
-      required super.title,
+      super.title,
       required super.chartDataList,
       required super.formatterAxisX,
       required super.formatterColorAxisX,
@@ -19,6 +19,7 @@ class CandlestickChartView extends ChartView {
       super.minX,
       super.minIntervalX,
       super.axisNameWidgetX,
+      super.showRightTitles,
       required super.formatterAxisY,
       required super.formatterColorAxisY,
       super.reservedSizeY,
@@ -37,7 +38,7 @@ class CandlestickChartView extends ChartView {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),
             child: AspectRatio(
-              aspectRatio: 1,
+              aspectRatio: 2.5,
               child: CandlestickChart(
                 _candleStickChartData,
               ),
