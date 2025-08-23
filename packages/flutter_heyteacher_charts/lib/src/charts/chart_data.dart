@@ -44,8 +44,8 @@ class CandlestickDataItem extends ChartDataItem {
 
   bool get isUp => yPrec < y;
 
-  num get minY => min(y,yLow);
-  num get maxY => max(y,yHigh);
+  num get minY => min(y, min(yLow, yHigh));
+  num get maxY => max(y, max(yLow, yHigh));
 
   @override
   toString() => 'x $x y $y  yPrec $yPrec yHigh: $yHigh yLow: $yLow';
