@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:logging/logging.dart';
 
-class LogEntry {
+class LogEntry extends Equatable {
   final DateTime time;
   final Level level;
   final String message;
@@ -8,13 +9,17 @@ class LogEntry {
   final String? error;
   final String? stackTrace;
 
-  LogEntry(                                                                                                              
+  const LogEntry(
       {required this.time,
       required this.level,
       required this.message,
       required this.loggerName,
       this.error,
       this.stackTrace});
+
+  @override
+  List<Object?> get props =>
+      [time, level, message, loggerName, error, stackTrace];
 
   factory LogEntry.fromJson(Map<String, dynamic> map) => LogEntry(
       time: DateTime.parse(map['time']),
