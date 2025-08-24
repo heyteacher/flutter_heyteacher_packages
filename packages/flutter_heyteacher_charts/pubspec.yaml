@@ -9,7 +9,8 @@ environment:
 
 dependencies:
   collection:
-  fl_chart: 
+  fl_chart:
+  equatable:  
   flutter:
     sdk: flutter
 

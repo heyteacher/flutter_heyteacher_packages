@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 class ChartDataItem {
@@ -51,22 +52,30 @@ class CandlestickDataItem extends ChartDataItem {
   toString() => 'x $x y $y  yPrec $yPrec yHigh: $yHigh yLow: $yLow';
 }
 
-class ExtraLineData {
+class ExtraLineData extends Equatable {
   final num value;
   final String label;
   final Color color;
-  ExtraLineData(
+  
+  const ExtraLineData(
       {required this.value, required this.color, required this.label});
+
+  @override
+  List<Object?> get props => [value, color, label];
 }
 
-class RangeAnnotationData {
+class RangeAnnotationData extends Equatable {
   final num min, max, value;
   final String label;
   final Color color;
-  RangeAnnotationData(
+
+  const RangeAnnotationData(
       {required this.min,
       required this.max,
       required this.value,
       required this.label,
       required this.color});
+
+  @override
+  List<Object?> get props => [min, max, value, color, label];
 }
