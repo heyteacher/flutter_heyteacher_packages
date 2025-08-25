@@ -3,6 +3,7 @@ library;
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
 /// A singleton controller for monitoring network connectivity status.
@@ -20,6 +21,11 @@ class ConnectivityViewModel {
   /// The singleton instance of [ConnectivityViewModel].
   static ConnectivityViewModel get instance =>
       _instance ??= ConnectivityViewModel._();
+
+  @visibleForTesting
+  static set instance(ConnectivityViewModel instance) => _instance = instance;
+
+  /// Disposes the singleton instance of [ConnectivityViewModel)
 
   ConnectivityViewModel._() {
     _streamSubscription = stream.listen((connected) {

@@ -12,11 +12,12 @@
 /// - Custom exceptions for specific E2EE-related errors.
 library;
 
-export 'src/e2ee.dart'
+export 'src/e2ee/e2ee.dart'
     show
         E2EEViewModel,
         E2EEPassphraseCard,
         E2EESecretKeyCard,
-        E2EEValue,
         AADEmptyException,
         MissingEncryptionSecretKeyException;
+
+export 'src/e2ee/e2ee_data.dart' show E2EEValue;

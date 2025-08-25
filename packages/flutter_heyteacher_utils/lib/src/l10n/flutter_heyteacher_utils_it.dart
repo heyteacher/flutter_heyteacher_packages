@@ -92,7 +92,8 @@ class FlutterHeyteacherUtilsLocalizationsIt
   String get encryptionSecretKey => 'Chiave Segreta di Criptazione';
 
   @override
-  String get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
+  String
+  get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
       'Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro. Ricorda di usare la stessa password di criptazione.';
 
   @override

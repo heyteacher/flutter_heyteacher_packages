@@ -67,17 +67,19 @@ import 'flutter_heyteacher_utils_pt.dart';
 /// property.
 abstract class FlutterHeyteacherUtilsLocalizations {
   FlutterHeyteacherUtilsLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
   static FlutterHeyteacherUtilsLocalizations? of(BuildContext context) {
     return Localizations.of<FlutterHeyteacherUtilsLocalizations>(
-        context, FlutterHeyteacherUtilsLocalizations);
+      context,
+      FlutterHeyteacherUtilsLocalizations,
+    );
   }
 
   static const LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations>
-      delegate = _FlutterHeyteacherUtilsLocalizationsDelegate();
+  delegate = _FlutterHeyteacherUtilsLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -91,11 +93,11 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
@@ -104,7 +106,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
     Locale('es'),
     Locale('fr'),
     Locale('it'),
-    Locale('pt')
+    Locale('pt'),
   ];
 
   /// No description provided for @account.
@@ -244,7 +246,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Scan the QR code with another device or store it in a secure place.\nThe QR code is encrypted with the Encryption Passphrase.\nYou must set the same Encryption Passphrase on the new device.'**
   String
-      get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase;
+  get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase;
 
   /// No description provided for @errorWorkflowTaskAlreadyInitialized.
   ///
@@ -308,25 +310,27 @@ class _FlutterHeyteacherUtilsLocalizationsDelegate
   @override
   Future<FlutterHeyteacherUtilsLocalizations> load(Locale locale) {
     return SynchronousFuture<FlutterHeyteacherUtilsLocalizations>(
-        lookupFlutterHeyteacherUtilsLocalizations(locale));
+      lookupFlutterHeyteacherUtilsLocalizations(locale),
+    );
   }
 
   @override
   bool isSupported(Locale locale) => <String>[
-        'de',
-        'en',
-        'es',
-        'fr',
-        'it',
-        'pt'
-      ].contains(locale.languageCode);
+    'de',
+    'en',
+    'es',
+    'fr',
+    'it',
+    'pt',
+  ].contains(locale.languageCode);
 
   @override
   bool shouldReload(_FlutterHeyteacherUtilsLocalizationsDelegate old) => false;
 }
 
 FlutterHeyteacherUtilsLocalizations lookupFlutterHeyteacherUtilsLocalizations(
-    Locale locale) {
+  Locale locale,
+) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'de':
@@ -344,8 +348,9 @@ FlutterHeyteacherUtilsLocalizations lookupFlutterHeyteacherUtilsLocalizations(
   }
 
   throw FlutterError(
-      'FlutterHeyteacherUtilsLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'FlutterHeyteacherUtilsLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

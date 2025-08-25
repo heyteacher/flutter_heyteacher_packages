@@ -23,7 +23,7 @@ class FormatterHelper {
   /// Formatter for date only (e.g., "dd/MM/yyyy").
   static final DateFormat _dateFormatter = DateFormat('dd/MM/yyyy');
 
- /// Formatter for date only (e.g., "dd/MM").
+  /// Formatter for date only (e.g., "dd/MM").
   static final DateFormat _ddMMFormatter = DateFormat('dd/MM');
 
   /// Formatter for time with seconds (e.g., "HH:mm:ss").
@@ -60,7 +60,6 @@ class FormatterHelper {
   static String ddMMFormat(DateTime? dateTime) =>
       dateTime != null ? _ddMMFormatter.format(dateTime) : '';
 
-
   static String timeFormat(DateTime? dateTime) =>
       dateTime != null ? _timeFormatter.format(dateTime) : '';
 
@@ -78,6 +77,10 @@ class FormatterHelper {
   static String doubleFormat(num? num) =>
       num != null ? _doubleFormatter.format(num) : '';
 
+  static int dateTimeToJson(DateTime value) => value.millisecondsSinceEpoch;
+
+  static DateTime dateTimeFromJson(int value) =>
+      DateTime.fromMillisecondsSinceEpoch(value);
 
   /// Formats a duration in milliseconds into a human-readable string suitable for Text-to-Speech (TTS).
   ///
@@ -125,5 +128,4 @@ class FormatterHelper {
 
   static double differenceInMinute(DateTime sup, DateTime inf) =>
       (sup.difference(inf).inSeconds / 60);
-
 }
