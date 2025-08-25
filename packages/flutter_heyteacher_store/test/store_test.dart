@@ -2,16 +2,22 @@ import 'package:clock/clock.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/connectivity.dart';
 import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
+import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:mockito/annotations.dart';
 
+import 'store_test.mocks.dart';
+
+@GenerateNiceMocks([MockSpec<ConnectivityViewModel>()]) 
 void main() {
 
   const String userId = 'testuid',
@@ -19,6 +25,11 @@ void main() {
       userDisplayName = 'Test User';
 
   setUp(() async {
+    
+    MockConnectivityViewModel connectivityViewModel = MockConnectivityViewModel();
+    when(connectivityViewModel.connected).thenAnswer((_) async => true);
+    ConnectivityViewModel.instance = connectivityViewModel;
+
     SharedPreferencesAsyncPlatform.instance = InMemorySharedPreferencesAsync.empty();
     WidgetsFlutterBinding.ensureInitialized();
     FlutterSecureStorage.setMockInitialValues({});
@@ -242,6 +253,8 @@ void main() {
               field: 'startTime',
               operator: Operator.isLessThan,
               value: DateTime(2025)));
+      final list = await trackStore.list();
+      expect(list.length,2, reason: 'list length after filter wrong');
       trackStore.notifyAggregatesChanges();
       final aggregate = await trackStore.aggregateStream.first;
       expect(aggregate.count, 2, reason: 'aggregate count wrong');
