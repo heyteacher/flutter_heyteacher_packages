@@ -13,7 +13,6 @@
 library;
 
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/src/e2ee/e2ee_data.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -457,7 +457,7 @@ class E2EEViewModel {
   Future<void> importSecretJwkJson(String e2eeValueJson) async {
     _logger.finest('<importSecretJwkJson>:');
     // deserialize E2EEValue from json
-    final e2eeValue = E2EEValue.fromMap(jsonDecode(e2eeValueJson));
+    final e2eeValue = E2EEValue.fromJson(jsonDecode(e2eeValueJson));
     // decrypt E2EEValue using Master Secret Key (and passphrase)
     final secretJwkJson =
         await decrypt(e2eeValue, secretKey: await _readMasterSecretKey());
@@ -559,52 +559,6 @@ class E2EEViewModel {
   }
 }
 
-/// Represents an encrypted value along with its Initialization Vector (IV).
-///
-/// Used to package the ciphertext and IV together, as both are needed for decryption.
-/// Provides methods for JSON serialization/deserialization, including GZip compression
-/// and Base64 encoding for efficient storage or transmission.
-class E2EEValue {
-  /// The encrypted data (ciphertext).
-  Uint8List value;
-
-  /// The Initialization Vector used during encryption.
-  Uint8List iv;
-
-  /// Creates an [E2EEValue].
-  E2EEValue({required this.value, required this.iv});
-
-  /// Creates an [E2EEValue] from a map (typically from JSON deserialization).
-  ///
-  /// Assumes the 'value' and 'iv' fields in the map are Base64 encoded and GZipped.
-  E2EEValue.fromMap(Map<String, dynamic> map)
-      : value = Uint8List.fromList(_unzip(map['value'])?.cast<int>() ?? []),
-        iv = Uint8List.fromList(_unzip(map['iv'])?.cast<int>() ?? []);
-
-  /// Converts the [E2EEValue] to a JSON-compatible map.
-  ///
-  /// The 'value' and 'iv' are GZipped and Base64 encoded.
-  Map<String, dynamic> toJson() => {
-        'value': _zip(value),
-        'iv': _zip(iv),
-      };
-  static String? _zip(dynamic object) {
-    if (object == null) return null;
-    final jsonEncodeValue = jsonEncode(object);
-    final utf8Encoded = utf8.encode(jsonEncodeValue);
-    final gzipEncoded = gzip.encode(utf8Encoded);
-    final base64Encoded = base64.encode(gzipEncoded);
-    return base64Encoded;
-  }
-
-  static dynamic _unzip(String? base64Encoded) {
-    if (base64Encoded == null) return null;
-    final base64Decoded = base64.decode(base64Encoded);
-    final gzipDecoded = gzip.decode(base64Decoded);
-    final uft8Decoded = utf8.decode(gzipDecoded);
-    return jsonDecode(uft8Decoded);
-  }
-}
 
 /// Exception thrown when an error occurs during the encryption process.
 /// Often indicates an issue with the AAD (passphrase) or the secret key.
