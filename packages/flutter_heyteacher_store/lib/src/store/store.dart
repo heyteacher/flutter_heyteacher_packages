@@ -147,7 +147,7 @@
 ///   factory TrackData.fromFirestore(Map<String, dynamic> map) {
 ///     List<LocationData> locations = [];
 ///     for (var location in jsonDecode(map["locations"])) {
-///       locations.add(LocationData.fromMap(location));
+///       locations.add(LocationData.fromJson(location));
 ///     }
 ///     return TrackData(
 ///         startTime: FirestoreData.fromFirestoreTimestamp(map['startTime'])!,
@@ -210,6 +210,7 @@ import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_store/src/store/store_filters.dart';
+import 'package:flutter_heyteacher_utils/connectivity.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -863,7 +864,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Yields an aggregation result based on [aggregateFields].
   Future<void> notifyAggregatesChanges() async {
     _logger.finest('<$runtimeType.notifyAggregatesChanges>:');
-    if (AuthViewModel.instance().autenticated) {
+    if (AuthViewModel.instance().autenticated && await ConnectivityViewModel.instance.connected) {
       final aggregatesValue = await aggregates;
       if (aggregatesValue != null) {
         _aggregateStreamController.sink.add(aggregatesValue);
