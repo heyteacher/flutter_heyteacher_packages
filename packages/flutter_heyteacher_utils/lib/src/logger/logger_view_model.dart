@@ -97,7 +97,7 @@ class LoggerViewModel {
     if (reset) {
       final toDateTime =
           DateTime(clock.now().year, clock.now().month, clock.now().day);
-      _logger.finest('(initialize): reset $reset. '
+      developer.log('(initialize): reset $reset. '
           'Reset all logs before $toDateTime');
       ResetLogsWorker resetLogsWorker = ResetLogsWorker();
       resetLogsWorker.execute(toDateTime).then((output) {
@@ -311,7 +311,7 @@ class LoggerViewModel {
   }
 
   List<LogEntry> _fromJson(FileSystemEntity file) {
-    _logger.finest('<_fromJson>: file ${file.path}');
+    developer.log('<LoggerViewModel._fromJson>: file ${file.path}');
     String jsonString = '';
     try {
       jsonString = (file as File).readAsStringSync();
