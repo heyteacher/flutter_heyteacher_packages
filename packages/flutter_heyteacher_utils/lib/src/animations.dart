@@ -149,6 +149,13 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
                   curve: Curves.fastOutSlowIn,
                 ));
       }
+      // for each item not in old data list, animate delete
+      if (dataList != null) {
+        dataList!
+          .where((item) => !newDataList.contains(item))
+          .map((item) => dataList!.indexOf(item)).forEach(animateDeleteData);
+      }
+
       dataList = newDataList.toList();
       // first time _loading in true, so we need to wait for the first frame
       // to be built to set it to false
