@@ -9,11 +9,14 @@ library;
 import 'package:intl/intl.dart';
 
 class FormatterHelper {
+  static const _machineDateTimeFormatPattern = 'yyyyMMdd_HHmmss';
+ 
   /// Formatter for date and time, suitable for machine keys (e.g., "yyyyMMdd_HHmmss").
-  static final DateFormat _machineDateTimeFormatter =
-      DateFormat('yyyyMMdd_HHmmss');
+  static final DateFormat _machineDateTimeFormatter = DateFormat(
+    _machineDateTimeFormatPattern,
+  );
 
-  static final DateFormat _machineDateFormatter = DateFormat('yyyyMMdd');
+  static final DateFormat _machineDateFormatter = DateFormat('yyyyMdd');
 
   static final DateFormat _machineTimeFormatter = DateFormat('HHmmss');
 
@@ -33,8 +36,9 @@ class FormatterHelper {
   static final DateFormat _timeWithSecondsFormatter = DateFormat('HH:mm:ss');
 
   /// Formatter for date and time with seconds (e.g., "dd/MM/yyyy HH:mm:ss").
-  static final DateFormat _dateTimeWithSecondsFormatter =
-      DateFormat('dd/MM/yyyy HH:mm:ss');
+  static final DateFormat _dateTimeWithSecondsFormatter = DateFormat(
+    'dd/MM/yyyy HH:mm:ss',
+  );
 
   /// Formatter for integers (e.g., "0").
   static final NumberFormat _intFormatter = NumberFormat('0');
@@ -45,6 +49,15 @@ class FormatterHelper {
   static String machineDateTimeFormat(DateTime? dateTime) =>
       dateTime != null ? _machineDateTimeFormatter.format(dateTime) : '';
 
+  static DateTime machineDateTimeParse(String? value) =>
+    _dateTimeWithSecondsFormatter.parse(
+      '${value!.substring(6, 8)}/'
+      '${value.substring(4, 6)}/'
+      '${value.substring(0, 4)} '
+      '${value.substring(9, 11)}:'
+      '${value.substring(11, 13)}:'
+      '${value.substring(13, 15)}');
+  
   static String machineDateFormat(DateTime? dateTime) =>
       dateTime != null ? _machineDateFormatter.format(dateTime) : '';
 
@@ -92,7 +105,10 @@ class FormatterHelper {
   /// - [nMinutes]: A function that takes an integer (number of minutes) and returns a localized string for minutes.
   /// Returns an empty string if [milliseconds] is null.
   static String formatDurationTts(
-      num? milliseconds, Function(int) nHours, Function(int) nMinutes) {
+    num? milliseconds,
+    Function(int) nHours,
+    Function(int) nMinutes,
+  ) {
     if (milliseconds != null) {
       Duration duration = Duration(milliseconds: milliseconds.toInt());
       return ''
@@ -112,8 +128,11 @@ class FormatterHelper {
   ///   If `false` and the duration is less than one hour, hours are omitted (e.g., "mm:ss").
   ///   Defaults to `true`.
   /// Returns an empty string if [milliseconds] is null.
-  static String formatDuration(num? milliseconds,
-      {bool showSeconds = false, bool showHoursIfZero = true}) {
+  static String formatDuration(
+    num? milliseconds, {
+    bool showSeconds = false,
+    bool showHoursIfZero = true,
+  }) {
     if (milliseconds != null) {
       Duration duration = Duration(milliseconds: milliseconds.toInt());
       NumberFormat numberFormat = NumberFormat('00');
