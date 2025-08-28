@@ -16,7 +16,7 @@ class FormatterHelper {
     _machineDateTimeFormatPattern,
   );
 
-  static final DateFormat _machineDateFormatter = DateFormat('yyyyMdd');
+  static final DateFormat _machineDateFormatter = DateFormat('yyyyMMdd');
 
   static final DateFormat _machineTimeFormatter = DateFormat('HHmmss');
 
