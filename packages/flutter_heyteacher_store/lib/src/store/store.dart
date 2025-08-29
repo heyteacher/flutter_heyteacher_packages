@@ -394,10 +394,11 @@ abstract class Store<LightDataType extends FirestoreData,
         _separatedDetailsCollection = LightDataType != DetailsDataType {
     _firestore = firebaseFirestore ?? FirebaseFirestore.instance;
 
-        // FirebaseFirestore.instanceFor(
-        //     app: FirebaseFirestore.instance.app, databaseId: 'bkdb');
+    // FirebaseFirestore.instanceFor(
+    //     app: FirebaseFirestore.instance.app, databaseId: 'bkdb');
 
-    final fakeFirestore = _firestore.runtimeType.toString() == 'FakeFirebaseFirestore';
+    final fakeFirestore =
+        _firestore.runtimeType.toString() == 'FakeFirebaseFirestore';
     if (!fakeFirestore) {
       // enable persistence for offline access
       _firestore.settings = Settings(
@@ -407,7 +408,7 @@ abstract class Store<LightDataType extends FirestoreData,
     _logger.finest(
         '<$runtimeType>: $_collectionPathLog '
             'userProfile $_userProfile  '
-            'database ${fakeFirestore?'fake':_firestore.databaseId} '
+            'database ${fakeFirestore ? 'fake' : _firestore.databaseId} '
             'separatedDetailsCollection $_separatedDetailsCollection '
             'orderByFields $orderByFields '
             'aggregateFields $aggregateFields '
@@ -585,7 +586,7 @@ abstract class Store<LightDataType extends FirestoreData,
               await _collectionReference.doc(id).get();
           // populate parent data fields
           if (documentSnapshot.exists) {
-            details.setParentData(documentSnapshot.data()!);
+            details = details.setParentData(documentSnapshot.data()!);
             _storeCache?.set(id, details);
             return details;
           } else {
@@ -864,7 +865,8 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Yields an aggregation result based on [aggregateFields].
   Future<void> notifyAggregatesChanges() async {
     _logger.finest('<$runtimeType.notifyAggregatesChanges>:');
-    if (AuthViewModel.instance().autenticated && await ConnectivityViewModel.instance.connected) {
+    if (AuthViewModel.instance().autenticated &&
+        await ConnectivityViewModel.instance.connected) {
       final aggregatesValue = await aggregates;
       if (aggregatesValue != null) {
         _aggregateStreamController.sink.add(aggregatesValue);
@@ -1118,6 +1120,8 @@ abstract class FirestoreData<T> {
   /// The id getter.
   String get id;
 
+  const FirestoreData();
+
   /// global map wich contains al fromFirestoreFactory for type `T`
   static final Map<Type, Function(Map<String, dynamic> map)>
       _registeredFromFirestoreFactory = {};
@@ -1154,9 +1158,10 @@ abstract class FirestoreData<T> {
   /// Sets the parent data.
   ///
   /// Used in [Store] to set the data of `LightDataType` object.
-  void setParentData(FirestoreData parentData) {}
+  T setParentData(FirestoreData parentData) => fromFirestoreFactory({});
 
   /// Returns the map of object used to save into firestore.
+  ///
   ///
   /// if [fields] is set, map contains only field defined in.
   Map<String, dynamic> toFirestore(List<String>? fields);
