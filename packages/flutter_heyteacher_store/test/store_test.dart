@@ -315,11 +315,12 @@ class TrackData extends BaseTrackData {
       };
 
   @override
-  void setParentData(FirestoreData parentData) {
+  BaseTrackData setParentData(FirestoreData parentData) {
     BaseTrackData baseTrackData = parentData as BaseTrackData;
     startTime = baseTrackData.startTime;
     distance = baseTrackData.distance;
     stopTime = baseTrackData.stopTime;
+    return baseTrackData;
   }
 
   @override
