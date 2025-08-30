@@ -14,8 +14,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 import 'package:mockito/annotations.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
 
 import 'store_test.mocks.dart';
+part 'store_test.g.dart';
 
 @GenerateNiceMocks([MockSpec<ConnectivityViewModel>()]) 
 void main() {
@@ -128,8 +130,7 @@ void main() {
   group('track update group:', () {
     test('update', () async {
       final TrackStore trackStore = TrackStore.instance();
-      TrackData trackData = await trackStore.get('20230712_171522');
-      trackData.avgRpm = 80;
+      TrackData trackData = (await trackStore.get('20230712_171522')).copyWith.avgRpm(80);
       await trackStore.update(trackData, fields: ['avgRpm']);
       trackData = await trackStore.get('20230712_171522');
       expect(trackData.avgRpm, 80, reason: 'avgRpm wrong');
@@ -290,11 +291,13 @@ void main() {
   });
 }
 
-class TrackData extends BaseTrackData {
-  E2EEValue? avgBpm;
-  num? avgRpm;
 
-  TrackData(
+@CopyWith()
+class TrackData extends BaseTrackData {
+  final E2EEValue? avgBpm;
+  final num? avgRpm;
+
+  const TrackData(
       {required super.startTime,
       super.stopTime,
       super.distance,
@@ -315,13 +318,11 @@ class TrackData extends BaseTrackData {
       };
 
   @override
-  BaseTrackData setParentData(FirestoreData parentData) {
-    BaseTrackData baseTrackData = parentData as BaseTrackData;
-    startTime = baseTrackData.startTime;
-    distance = baseTrackData.distance;
-    stopTime = baseTrackData.stopTime;
-    return baseTrackData;
-  }
+  TrackData setParentData(FirestoreData parentData) => copyWith(
+    startTime: (parentData as BaseTrackData).startTime,
+    distance: parentData.distance,
+    stopTime: parentData.stopTime,
+    );
 
   @override
   FirestoreData getParentData() {
@@ -330,21 +331,25 @@ class TrackData extends BaseTrackData {
   }
 }
 
+
+@CopyWith()
 class BaseTrackData extends FirestoreData {
   static final DateFormat keyDateTimeFormatter = DateFormat('yyyyMMdd_HHmmss');
 
-  DateTime startTime;
-  DateTime? stopTime;
+  final DateTime startTime;
+  final DateTime? stopTime;
+  final num? distance;
+
+  const BaseTrackData({required this.startTime, this.stopTime, this.distance});
+
   num? get duration =>
       (stopTime ?? clock.now()).difference(startTime).inMilliseconds;
-  num? distance;
 
   @override
   String get id => keyDateTimeFormatter.format(startTime.toLocal());
 
   bool get live => stopTime == null;
 
-  BaseTrackData({required this.startTime, this.stopTime, this.distance});
 
   factory BaseTrackData.fromFirestore(Map<String, dynamic> map) {
     return BaseTrackData(
