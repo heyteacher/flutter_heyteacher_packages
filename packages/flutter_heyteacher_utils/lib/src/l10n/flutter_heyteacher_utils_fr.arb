@@ -74,5 +74,6 @@
   "tasks": "Tâches",
   "@tasks": {},
   "skip": "Sauter",
-  "@skip": {}
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Appareil hors ligne. Demandez de l'aide lorsque l'appareil est connecté à Internet."
 }

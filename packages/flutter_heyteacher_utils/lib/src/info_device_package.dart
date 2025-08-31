@@ -20,10 +20,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/logger.dart';
+import 'package:flutter_heyteacher_utils/src/connectivity.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/storage.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
+import 'package:flutter_heyteacher_utils/src/widgets.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,36 +41,39 @@ class DevicePackageInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-        child: ListTile(
-            key: const ValueKey('lt_fhu_version'),
-            leading: IconButton(
-              icon: const Icon(Icons.smartphone),
-              onPressed:
-                  InfoDevicePackageViewModel.instance._incrementTapCounter,
-            ),
-            title: FutureBuilder(
-              future: InfoDevicePackageViewModel.instance.deviceInfo,
-              builder: (_, deviceSnapshot) =>
-                  Text('${FlutterHeyteacherUtilsLocalizations.of(context)!.id}'
-                      '${deviceSnapshot.data}'),
-            ),
-            subtitle: FutureBuilder<String>(
-              future: InfoDevicePackageViewModel.instance.packageVersion,
-              builder: (_, devicePackageSnapshot) => Text(
-                  '${FlutterHeyteacherUtilsLocalizations.of(context)!.version}'
-                  '${devicePackageSnapshot.data}'),
-            ),
-            trailing: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor:
-                      ThemeViewModel.instance().colorScheme.primary,
-                  foregroundColor:
-                      ThemeViewModel.instance().colorScheme.onPrimary,
-                ),
-                onPressed: InfoDevicePackageViewModel.instance._askSupport,
-                child: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-                    .askSupport))),
-      );
+    child: ListTile(
+      key: const ValueKey('lt_fhu_version'),
+      leading: IconButton(
+        icon: const Icon(Icons.smartphone),
+        onPressed: InfoDevicePackageViewModel.instance._incrementTapCounter,
+      ),
+      title: FutureBuilder(
+        future: InfoDevicePackageViewModel.instance.deviceInfo,
+        builder: (_, deviceSnapshot) => Text(
+          '${FlutterHeyteacherUtilsLocalizations.of(context)!.id}'
+          '${deviceSnapshot.data}',
+        ),
+      ),
+      subtitle: FutureBuilder<String>(
+        future: InfoDevicePackageViewModel.instance.packageVersion,
+        builder: (_, devicePackageSnapshot) => Text(
+          '${FlutterHeyteacherUtilsLocalizations.of(context)!.version}'
+          '${devicePackageSnapshot.data}',
+        ),
+      ),
+      trailing: TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: ThemeViewModel.instance().colorScheme.primary,
+          foregroundColor: ThemeViewModel.instance().colorScheme.onPrimary,
+        ),
+        onPressed: () =>
+            InfoDevicePackageViewModel.instance._askSupport(context),
+        child: Text(
+          FlutterHeyteacherUtilsLocalizations.of(context)!.askSupport,
+        ),
+      ),
+    ),
+  );
 }
 
 /// A singleton model class responsible for fetching and providing
@@ -86,8 +91,9 @@ class InfoDevicePackageViewModel {
 
   /// Private constructor for the singleton.
   InfoDevicePackageViewModel._() {
-    _streamSubscription = Stream.periodic(const Duration(seconds: 5))
-        .listen((_) => _tapCounter = 0);
+    _streamSubscription = Stream.periodic(
+      const Duration(seconds: 5),
+    ).listen((_) => _tapCounter = 0);
   }
 
   dispose() {
@@ -163,18 +169,27 @@ class InfoDevicePackageViewModel {
 
   /// uploads the logs to Firebase Storage and returns the log filename
   Future<String> storeLogs({DateTime? startTime}) async {
+    if (await ConnectivityViewModel.instance.notConnected) {
+      // await connection
+      await ConnectivityViewModel.instance.stream
+          .where((connected) => connected)
+          .first;
+    }
     final machineDate = FormatterHelper.machineDateFormat(clock.now());
 
-    final machineStartDateTime =
-        FormatterHelper.machineDateTimeFormat(startTime ?? clock.now());
+    final machineStartDateTime = FormatterHelper.machineDateTimeFormat(
+      startTime ?? clock.now(),
+    );
     final machineStopTime = FormatterHelper.machineTimeFormat(clock.now());
     final logFilename =
         'applogs/$machineDate/$machineStartDateTime-$machineStopTime'
         '-${InfoDevicePackageViewModel.instance.identifierInfo}.log';
     StorageViewModel.instance.uploadString(
-        logFilename,
-        await LoggerViewModel.instance().logs2Text(
-            startTime: startTime?.subtract(const Duration(seconds: 10))));
+      logFilename,
+      await LoggerViewModel.instance().logs2Text(
+        startTime: startTime?.subtract(const Duration(seconds: 10)),
+      ),
+    );
     return logFilename;
   }
 
@@ -184,17 +199,26 @@ class InfoDevicePackageViewModel {
   /// - A subject line indicating the app name.
   /// - A body containing the user's identifier, device information, and app version,
   ///   formatted for easy support.
-  void _askSupport() async {
-    final i10n =
-        FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!;
+  void _askSupport(BuildContext context) async {
+    final i10n = FlutterHeyteacherUtilsLocalizations.of(context)!;
+    if (await ConnectivityViewModel.instance.notConnected && context.mounted) {
+      showSnackBar(
+        context: context,
+        message: i10n.deviceOfflineAskSupportWhenOnline,
+        error: true,
+      );
+      return;
+    }
+    final logFilename = await storeLogs();
     final packageInfoPlatform = await PackageInfo.fromPlatform();
     final version = await InfoDevicePackageViewModel.instance.packageVersion;
     final device = await InfoDevicePackageViewModel.instance.deviceInfo;
     final identifierInfo = InfoDevicePackageViewModel.instance.identifierInfo;
-    final logFilename = await storeLogs();
-    final subject = '${i10n.askSupportFor}'
+    final subject =
+        '${i10n.askSupportFor}'
         '${packageInfoPlatform.appName}';
-    final body = '------------------------------------\n'
+    final body =
+        '------------------------------------\n'
         'Identifier:\t$identifierInfo\n'
         'Device:\t$device\n'
         'Version:\t$version\n'

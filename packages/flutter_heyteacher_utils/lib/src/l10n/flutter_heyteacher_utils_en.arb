@@ -67,5 +67,7 @@
   "tasks": "Tasks",
   "@tasks": {},
   "skip": "Skip",
-  "@skip": {}
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Device offline. Ask support when the device is connected to the internet.",
+  "@deviceOfflineAskSupportWhenOnline": {}
 }

@@ -70,5 +70,6 @@
   "tasks": "Aufgaben",
   "@tasks": {},
   "skip": "Überspringen",
-  "@skip": {}
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Gerät offline. Bitten Sie um Unterstützung, wenn das Gerät mit dem Internet verbunden ist."
 }

@@ -127,4 +127,8 @@ class FlutterHeyteacherUtilsLocalizationsFr
 
   @override
   String get skip => 'Sauter';
+
+  @override
+  String get deviceOfflineAskSupportWhenOnline =>
+      'Appareil hors ligne. Demandez de l\'aide lorsque l\'appareil est connecté à Internet.';
 }

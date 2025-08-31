@@ -74,5 +74,6 @@
   "tasks": "Tarefas",
   "@tasks": {},
   "skip": "Pular",
-  "@skip": {}
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo offline. Peça suporte quando o dispositivo estiver conectado à internet."
 }

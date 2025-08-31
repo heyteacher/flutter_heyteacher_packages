@@ -124,4 +124,8 @@ class FlutterHeyteacherUtilsLocalizationsEn
 
   @override
   String get skip => 'Skip';
+
+  @override
+  String get deviceOfflineAskSupportWhenOnline =>
+      'Device offline. Ask support when the device is connected to the internet.';
 }

@@ -126,4 +126,8 @@ class FlutterHeyteacherUtilsLocalizationsEs
 
   @override
   String get skip => 'Saltar';
+
+  @override
+  String get deviceOfflineAskSupportWhenOnline =>
+      'Dispositivo sin conexión. Pida soporte cuando el dispositivo esté conectado a internet.';
 }
