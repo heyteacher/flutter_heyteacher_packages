@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class FormatterHelper {
   static const _machineDateTimeFormatPattern = 'yyyyMMdd_HHmmss';
- 
+
   /// Formatter for date and time, suitable for machine keys (e.g., "yyyyMMdd_HHmmss").
   static final DateFormat _machineDateTimeFormatter = DateFormat(
     _machineDateTimeFormatPattern,
@@ -46,49 +46,70 @@ class FormatterHelper {
   /// Formatter for doubles with one decimal place (e.g., "0.0").
   static final NumberFormat _doubleFormatter = NumberFormat('0.0');
 
-  static String machineDateTimeFormat(DateTime? dateTime) =>
-      dateTime != null ? _machineDateTimeFormatter.format(dateTime) : '';
+  static String machineDateTimeFormat(
+    DateTime? dateTime, {
+    String defaultValue = '',
+  }) => dateTime != null
+      ? _machineDateTimeFormatter.format(dateTime)
+      : defaultValue;
 
   static DateTime machineDateTimeParse(String? value) =>
-    _dateTimeWithSecondsFormatter.parse(
-      '${value!.substring(6, 8)}/'
-      '${value.substring(4, 6)}/'
-      '${value.substring(0, 4)} '
-      '${value.substring(9, 11)}:'
-      '${value.substring(11, 13)}:'
-      '${value.substring(13, 15)}');
-  
-  static String machineDateFormat(DateTime? dateTime) =>
-      dateTime != null ? _machineDateFormatter.format(dateTime) : '';
+      _dateTimeWithSecondsFormatter.parse(
+        '${value!.substring(6, 8)}/'
+        '${value.substring(4, 6)}/'
+        '${value.substring(0, 4)} '
+        '${value.substring(9, 11)}:'
+        '${value.substring(11, 13)}:'
+        '${value.substring(13, 15)}',
+      );
 
-  static String machineTimeFormat(DateTime? dateTime) =>
-      dateTime != null ? _machineTimeFormatter.format(dateTime) : '';
+  static String machineDateFormat(
+    DateTime? dateTime, {
+    String defaultValue = '',
+  }) =>
+      dateTime != null ? _machineDateFormatter.format(dateTime) : defaultValue;
 
-  static String dateTimeFormat(DateTime? dateTime) =>
-      dateTime != null ? _dateTimeFormatter.format(dateTime) : '';
+  static String machineTimeFormat(
+    DateTime? dateTime, {
+    String defaultValue = '',
+  }) =>
+      dateTime != null ? _machineTimeFormatter.format(dateTime) : defaultValue;
 
-  static String dateFormat(DateTime? dateTime) =>
-      dateTime != null ? _dateFormatter.format(dateTime) : '';
+  static String dateTimeFormat(
+    DateTime? dateTime, {
+    String defaultValue = '',
+  }) => dateTime != null ? _dateTimeFormatter.format(dateTime) : defaultValue;
 
-  static String ddMMFormat(DateTime? dateTime) =>
-      dateTime != null ? _ddMMFormatter.format(dateTime) : '';
+  static String dateFormat(DateTime? dateTime, {String defaultValue = ''}) =>
+      dateTime != null ? _dateFormatter.format(dateTime) : defaultValue;
 
-  static String timeFormat(DateTime? dateTime) =>
-      dateTime != null ? _timeFormatter.format(dateTime) : '';
+  static String ddMMFormat(DateTime? dateTime, {String defaultValue = ''}) =>
+      dateTime != null ? _ddMMFormatter.format(dateTime) : defaultValue;
 
-  static String timeWithSecondsFormat(DateTime? dateTime) =>
-      dateTime != null ? _timeWithSecondsFormatter.format(dateTime) : '';
+  static String timeFormat(DateTime? dateTime, {String defaultValue = ''}) =>
+      dateTime != null ? _timeFormatter.format(dateTime) : defaultValue;
 
-  static String dateTimeWithSecondsFormat(DateTime? dateTime) =>
-      dateTime != null ? _dateTimeWithSecondsFormatter.format(dateTime) : '';
+  static String timeWithSecondsFormat(
+    DateTime? dateTime, {
+    String defaultValue = '',
+  }) => dateTime != null
+      ? _timeWithSecondsFormatter.format(dateTime)
+      : defaultValue;
 
-  static String intFormat(num? num) =>
-      num != null ? _intFormatter.format(num) : '';
+  static String dateTimeWithSecondsFormat(
+    DateTime? dateTime, {
+    String defaultValue = '',
+  }) => dateTime != null
+      ? _dateTimeWithSecondsFormatter.format(dateTime)
+      : defaultValue;
+
+  static String intFormat(num? num, {String defaultValue = ''}) =>
+      num != null ? _intFormatter.format(num) : defaultValue;
 
   static num intParse(String string) => _intFormatter.parse(string);
 
-  static String doubleFormat(num? num) =>
-      num != null ? _doubleFormatter.format(num) : '';
+  static String doubleFormat(num? num, {String defaultValue = ''}) =>
+      num != null ? _doubleFormatter.format(num) : defaultValue;
 
   static int dateTimeToJson(DateTime value) => value.millisecondsSinceEpoch;
 
