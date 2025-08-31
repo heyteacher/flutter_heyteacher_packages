@@ -53,15 +53,15 @@ class FormatterHelper {
       ? _machineDateTimeFormatter.format(dateTime)
       : defaultValue;
 
-  static DateTime machineDateTimeParse(String? value) =>
+  static DateTime? machineDateTimeParse(String? value) => value != null?
       _dateTimeWithSecondsFormatter.parse(
-        '${value!.substring(6, 8)}/'
+        '${value.substring(6, 8)}/'
         '${value.substring(4, 6)}/'
         '${value.substring(0, 4)} '
         '${value.substring(9, 11)}:'
         '${value.substring(11, 13)}:'
         '${value.substring(13, 15)}',
-      );
+      ): null;
 
   static String machineDateFormat(
     DateTime? dateTime, {
