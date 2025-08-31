@@ -127,6 +127,9 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String get skip => '';
+  
+  @override
+  String get deviceOfflineAskSupportWhenOnline => '';
 }
 
 class _MockLocalizationsDelegate
