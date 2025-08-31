@@ -125,4 +125,8 @@ class FlutterHeyteacherUtilsLocalizationsPt
 
   @override
   String get skip => 'Pular';
+
+  @override
+  String get deviceOfflineAskSupportWhenOnline =>
+      'Dispositivo offline. Peça suporte quando o dispositivo estiver conectado à internet.';
 }

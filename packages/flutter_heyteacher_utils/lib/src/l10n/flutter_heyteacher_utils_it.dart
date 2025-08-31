@@ -125,4 +125,8 @@ class FlutterHeyteacherUtilsLocalizationsIt
 
   @override
   String get skip => 'Salta';
+
+  @override
+  String get deviceOfflineAskSupportWhenOnline =>
+      'Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a Internet.';
 }

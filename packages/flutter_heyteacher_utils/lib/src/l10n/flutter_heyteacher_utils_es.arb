@@ -70,5 +70,6 @@
   "tasks": "Tareas",
   "@tasks": {},
   "skip": "Saltar",
-  "@skip": {}
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo sin conexión. Pida soporte cuando el dispositivo esté conectado a internet."
 }
