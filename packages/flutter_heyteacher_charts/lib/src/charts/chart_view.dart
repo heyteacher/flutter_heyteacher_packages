@@ -8,7 +8,8 @@ import 'package:flutter_heyteacher_utils/theme.dart';
 
 abstract class ChartView extends StatelessWidget {
   final Widget title;
-  final Iterable<ChartDataItem> chartDataList;
+  final Iterable<Iterable<ChartDataItem>> chartDataLists;
+  final double aspectRatio;
   late final double minX;
   late final double maxX;
   late final double intervalX;
@@ -20,9 +21,9 @@ abstract class ChartView extends StatelessWidget {
   late final double maxY;
   late final double intervalY;
   final bool showRightTitles;
-  final String Function(ChartDataItem)? formatterY;
-  final String Function(double) formatterAxisY;
-  final Color Function(double) formatterColorAxisY;
+  final String Function(int, ChartDataItem)? formatterY;
+  final String Function(int, double) formatterAxisY;
+  final Color Function(int, double) formatterColorAxisY;
   final Widget? axisNameWidgetY;
   final Iterable<RangeAnnotationData>? _horizontalRangeAnnotations;
   final Iterable<RangeAnnotationData>? _verticalRangeAnnotations;
@@ -31,9 +32,15 @@ abstract class ChartView extends StatelessWidget {
   final bool rotate;
   final double reservedSizeX;
   final double reservedSizeY;
-
+  final Iterable<bool?>? isCurvedList;
+  final Iterable<bool?>? isStepLineChartList;
+  final Iterable<({int fromIndex, int toIndex, Color color})?>?
+      betweenBarsDataList;
+  final Iterable<({double cutoff, Color color})?>? aboveBarDataList;
+  final Iterable<({double cutoff, Color color})?>? belowBarDataList;
   ChartView(
-      {required this.chartDataList,
+      {required this.chartDataLists,
+      this.aspectRatio = 1,
       this.title = const Text(''),
       double? maxX,
       double? minX,
@@ -57,6 +64,11 @@ abstract class ChartView extends StatelessWidget {
       this.reservedSizeX = 45,
       this.reservedSizeY = 40,
       this.rotate = false,
+      this.betweenBarsDataList,
+      this.aboveBarDataList,
+      this.belowBarDataList,
+      this.isCurvedList,
+      this.isStepLineChartList,
       super.key})
       : _verticalRangeAnnotations = verticalRangeAnnotations,
         _horizontalRangeAnnotations = horizontalRangeAnnotations {
@@ -84,6 +96,9 @@ abstract class ChartView extends StatelessWidget {
       intervalY = minIntervalY;
     }
   }
+
+  @protected
+  Iterable<ChartDataItem> get chartDataList => chartDataLists.first;
 
   @protected
   FlTitlesData get titlesData => FlTitlesData(
@@ -134,8 +149,8 @@ abstract class ChartView extends StatelessWidget {
             padding:
                 EdgeInsets.only(right: rotate ? 0 : 4.0, top: rotate ? 4.0 : 0),
             child: Text(
-              formatterAxisY(value),
-              style: TextStyle(color: formatterColorAxisY(value)),
+              formatterAxisY(0, value),
+              style: TextStyle(color: formatterColorAxisY(0, value)),
             ),
           ),
         ),
@@ -308,6 +323,56 @@ abstract class ChartView extends StatelessWidget {
               10)
           .round() /
       10; // if inverval is less than multiplier, use multiplier
+
+  @protected
+  List<BetweenBarsData> get betweenBarsData =>
+      betweenBarsDataList
+          ?.map((betweenBarsData) => betweenBarsData != null
+              ? BetweenBarsData(
+                  fromIndex: betweenBarsData.fromIndex,
+                  toIndex: betweenBarsData.toIndex,
+                  color: betweenBarsData.color,
+                )
+              : null)
+          .nonNulls
+          .toList() ??
+      const [];
+
+  @protected
+  BarAreaData aboveBarData(int index) {
+    return (aboveBarDataList?.length ?? 0) > index &&
+            aboveBarDataList!.elementAt(index) != null
+        ? BarAreaData(
+            show: true,
+            color: aboveBarDataList!.elementAt(index)!.color,
+            cutOffY: aboveBarDataList!.elementAt(index)!.cutoff,
+            applyCutOffY: true,
+          )
+        : BarAreaData(show: false);
+  }
+
+  @protected
+  BarAreaData belowBarData(int index) {
+    return (belowBarDataList?.length ?? 0) > index &&
+            belowBarDataList!.elementAt(index) != null
+        ? BarAreaData(
+            show: true,
+            color: belowBarDataList!.elementAt(index)!.color,
+            cutOffY: belowBarDataList!.elementAt(index)!.cutoff,
+            applyCutOffY: true,
+          )
+        : BarAreaData(show: false);
+  }
+
+  @protected
+  bool isCurved(int index) => (isCurvedList?.length ?? 0) > index
+      ? isCurvedList?.elementAt(index) ?? true
+      : true;
+
+  @protected
+  bool isStepLineChart(int index) => (isStepLineChartList?.length ?? 0) > index
+      ? isStepLineChartList?.elementAt(index) ?? false
+      : true;
 
   @protected
   static int roundToInterval(num value, num interval) =>

@@ -1,13 +1,14 @@
+import 'package:collection/collection.dart';
+
 import 'chart_view.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class LineChartView extends ChartView {
-
   LineChartView(
       {super.key,
-      required super.title,
-      required super.chartDataList,
+      super.title,
+      required super.chartDataLists,
       required super.formatterAxisX,
       required super.formatterColorAxisX,
       super.reservedSizeX,
@@ -25,24 +26,30 @@ class LineChartView extends ChartView {
       super.extraHorizontalLines,
       super.extraVerticalLines,
       super.horizontalRangeAnnotations,
-      super.verticalRangeAnnotations});
+      super.verticalRangeAnnotations,
+      super.betweenBarsDataList,
+      super.aboveBarDataList,
+      super.belowBarDataList,
+      super.aspectRatio,
+      super.isCurvedList,
+      super.isStepLineChartList,
+      super.showRightTitles});
 
   @override
   Widget build(BuildContext context) => Column(
-      children: [
-        title,
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: AspectRatio(
-            aspectRatio: 1.5,
-            child: LineChart(
-              _lineChartData,
+        children: [
+          title,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: AspectRatio(
+              aspectRatio: aspectRatio,
+              child: LineChart(
+                _lineChartData,
+              ),
             ),
-          ),
-        )
-      ],
-    );
-  
+          )
+        ],
+      );
 
   LineChartData get _lineChartData => LineChartData(
         lineTouchData: const LineTouchData(
@@ -56,24 +63,25 @@ class LineChartView extends ChartView {
         gridData: const FlGridData(show: false),
         titlesData: titlesData,
         borderData: borderData,
-        lineBarsData: [
-          _lineChartBarData,
-        ],
+        lineBarsData: chartDataLists.mapIndexed(_lineChartBarData).toList(),
         minX: minX.toDouble(),
         maxX: maxX.toDouble(),
         minY: minY.toDouble(),
         maxY: maxY.toDouble(),
+        betweenBarsData: betweenBarsData,
       );
 
-  LineChartBarData get _lineChartBarData => LineChartBarData(
-      isCurved: true,
-      //curveSmoothness: 0,
-      color: formatterColorAxisY(chartDataList.first.y.toDouble()),
+  LineChartBarData _lineChartBarData(int index, _) => LineChartBarData(
+      isCurved: isCurved(index),
+      isStepLineChart: isStepLineChart(index),
+      color: formatterColorAxisY(index, chartDataList.first.y.toDouble()),
       barWidth: 1,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
-      belowBarData: BarAreaData(show: false),
-      spots: chartDataList
+      belowBarData: belowBarData(index),
+      aboveBarData: aboveBarData(index),
+      spots: chartDataLists
+          .elementAt(index)
           .map(
             (e) => FlSpot(e.x.toDouble(), e.y.toDouble()),
           )
