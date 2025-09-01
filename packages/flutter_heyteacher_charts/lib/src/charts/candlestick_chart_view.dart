@@ -11,7 +11,7 @@ class CandlestickChartView extends ChartView {
   CandlestickChartView(
       {super.key,
       super.title,
-      required super.chartDataList,
+      required super.chartDataLists,
       required super.formatterAxisX,
       required super.formatterColorAxisX,
       super.reservedSizeX,
@@ -29,6 +29,7 @@ class CandlestickChartView extends ChartView {
       super.axisNameWidgetY,
       super.horizontalRangeAnnotations,
       super.verticalRangeAnnotations,
+      super.aspectRatio,
       this.getTooltipItems});
 
   @override
@@ -38,7 +39,7 @@ class CandlestickChartView extends ChartView {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),
             child: AspectRatio(
-              aspectRatio: 2.5,
+              aspectRatio: aspectRatio,
               child: CandlestickChart(
                 _candleStickChartData,
               ),
@@ -60,8 +61,10 @@ class CandlestickChartView extends ChartView {
         titlesData: titlesData,
         borderData: borderData,
         candlestickTouchData: CandlestickTouchData(
-            touchTooltipData:
-                CandlestickTouchTooltipData(getTooltipItems: _getTooltipItems, fitInsideHorizontally: true, fitInsideVertically: true)),
+            touchTooltipData: CandlestickTouchTooltipData(
+                getTooltipItems: _getTooltipItems,
+                fitInsideHorizontally: true,
+                fitInsideVertically: true)),
         touchedPointIndicator: AxisSpotIndicator(
           painter: AxisLinesIndicatorPainter(
             verticalLineProvider: (x) => VerticalLine(

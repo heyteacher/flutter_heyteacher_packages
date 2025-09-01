@@ -5,7 +5,7 @@ import 'chart_view.dart';
 
 class BarChartView extends ChartView {
   BarChartView({
-    required super.chartDataList,
+    required super.chartDataLists,
     required super.title,
     super.reservedSizeX,
     super.reservedSizeY,
@@ -92,8 +92,10 @@ class BarChartView extends ChartView {
                             ) =>
                                 BarTooltipItem(
                                   textAlign: TextAlign.center,
-                                  formatterY?.call(chartDataList
-                                          .elementAt(groupIndex)) ??
+                                  formatterY?.call(
+                                          0,
+                                          chartDataList
+                                              .elementAt(groupIndex)) ??
                                       '',
                                   TextStyle(
                                     color: rod.color,

@@ -9,7 +9,7 @@ class ScatterChartView extends ChartView {
   ScatterChartView({
     super.key,
     required super.title,
-    required super.chartDataList,
+    required super.chartDataLists,
     required super.formatterAxisX,
     required super.formatterColorAxisX,
     super.reservedSizeX,
@@ -24,13 +24,14 @@ class ScatterChartView extends ChartView {
     super.minY,
     super.minIntervalY,
     super.axisNameWidgetY,
+    super.aspectRatio
   });
 
   @override
   Widget build(BuildContext context) => Column(children: [
         title,
         AspectRatio(
-          aspectRatio: 1,
+          aspectRatio: aspectRatio,
           child: ScatterChart(
             ScatterChartData(
               scatterSpots: chartDataList
