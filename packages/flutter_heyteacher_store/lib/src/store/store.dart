@@ -598,7 +598,7 @@ abstract class Store<LightDataType extends FirestoreData,
           return details;
         }
       } else {
-        throw DocumentNotFoundException('$_collectionPathLog/$id');
+        throw DocumentNotFoundException('$_detailsCollectionPathLog/$id');
       }
     });
   }
