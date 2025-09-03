@@ -63,6 +63,9 @@ class FlutterHeyteacherUtilsLocalizationsIt
   String get logging => 'Registrazione';
 
   @override
+  String get loggingLevel => 'Livello di registrazione';
+
+  @override
   String nMinutes(num minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,

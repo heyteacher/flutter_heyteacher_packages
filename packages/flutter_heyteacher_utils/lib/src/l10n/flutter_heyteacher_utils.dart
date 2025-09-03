@@ -205,6 +205,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// **'Logging'**
   String get logging;
 
+  /// No description provided for @loggingLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Logging Level'**
+  String get loggingLevel;
+
   /// No description provided for @nMinutes.
   ///
   /// In en, this message translates to:

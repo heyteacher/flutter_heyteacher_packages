@@ -32,6 +32,8 @@
   "@askSupportFor": {},
   "logging": "Logging",
   "@logging": {},
+  "loggingLevel": "Logging Level",
+  "@loggingLevel": {},
   "nMinutes": "{minutes, plural, =1{one minute} other{{minutes} minutes}}",
   "@nMinutes": {
     "placeholders": {

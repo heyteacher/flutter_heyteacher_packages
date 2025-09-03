@@ -32,6 +32,8 @@
   "@askSupport": {},
   "logging": "Journalisation",
   "@logging": {},
+  "loggingLevel": "Niveau de journalisation",
+  "@loggingLevel": {},
   "nMinutes": "{minutes, plural, =1{{minutes} minute} other{{minutes} minutes}}",
   "@nMinutes": {
     "description": "Indicates a duration in minutes",

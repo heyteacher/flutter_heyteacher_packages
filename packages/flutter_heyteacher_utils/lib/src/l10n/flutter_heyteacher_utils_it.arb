@@ -15,6 +15,7 @@
   "askSupportFor": "Chiedi supporto per: ",
   "askSupport": "Chiedi supporto",
   "logging": "Registrazione",
+  "loggingLevel": "Livello di registrazione",
   "nMinutes": "{minutes, plural, =1{{minutes} minuto} other{{minutes} minutes}}",
   "@nMinutes": {
     "description": "Indica il numero di minuti, il parametro minutes è il numero di minuti.",

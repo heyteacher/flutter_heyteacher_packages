@@ -130,6 +130,9 @@ class MockFlutterHeyteacherUtilsLocalizations
   
   @override
   String get deviceOfflineAskSupportWhenOnline => '';
+  
+  @override
+  String get loggingLevel => '';
 }
 
 class _MockLocalizationsDelegate

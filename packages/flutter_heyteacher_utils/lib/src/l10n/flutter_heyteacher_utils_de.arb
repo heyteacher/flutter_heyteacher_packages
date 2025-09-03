@@ -31,6 +31,7 @@
   "askSupport": "Support anfordern",
   "@askSupport": {},
   "logging": "Protokollierung",
+  "loggingLevel": "Protokollierungsebene",
   "@logging": {},
   "nMinutes": "{minutes, plural, =1{{minutes} Minuten} other{{minutes} Minuten}} ",
   "@nMinutes": {

@@ -32,6 +32,8 @@
   "@askSupport": {},
   "logging": "Registro",
   "@logging": {},
+  "loggingLevel": "Nivel de registro",
+  "@loggingLevel": {},
   "nMinutes": "{minutes, plural, =1{{minutes} minuto} other{{minutes} minutos}}",
   "@nMinutes": {
     "description": "Indica la cantidad de minutos, con pluralización.",

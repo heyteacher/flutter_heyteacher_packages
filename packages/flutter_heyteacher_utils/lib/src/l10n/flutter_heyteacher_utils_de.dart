@@ -64,6 +64,9 @@ class FlutterHeyteacherUtilsLocalizationsDe
   String get logging => 'Protokollierung';
 
   @override
+  String get loggingLevel => 'Protokollierungsebene';
+
+  @override
   String nMinutes(num minutes) {
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
