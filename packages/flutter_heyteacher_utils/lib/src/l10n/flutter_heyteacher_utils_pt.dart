@@ -132,4 +132,9 @@ class FlutterHeyteacherUtilsLocalizationsPt
   @override
   String get deviceOfflineAskSupportWhenOnline =>
       'Dispositivo offline. Peça suporte quando o dispositivo estiver conectado à internet.';
+
+  @override
+  String defaultValue(Object defaultValue) {
+    return 'Valor padrão: $defaultValue';
+  }
 }

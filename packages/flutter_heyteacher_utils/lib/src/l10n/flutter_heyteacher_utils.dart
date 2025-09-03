@@ -313,6 +313,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Device offline. Ask support when the device is connected to the internet.'**
   String get deviceOfflineAskSupportWhenOnline;
+
+  /// No description provided for @defaultValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Default: {defaultValue}'**
+  String defaultValue(Object defaultValue);
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate

@@ -51,5 +51,11 @@
   "@tasks": {},
   "skip": "Salta",
   "@skip": {},
-  "deviceOfflineAskSupportWhenOnline": "Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a Internet."
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a Internet.",
+  "defaultValue": "Valore di default: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  }
 }

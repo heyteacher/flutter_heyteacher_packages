@@ -72,5 +72,11 @@
   "@tasks": {},
   "skip": "Überspringen",
   "@skip": {},
-  "deviceOfflineAskSupportWhenOnline": "Gerät offline. Bitten Sie um Unterstützung, wenn das Gerät mit dem Internet verbunden ist."
+  "deviceOfflineAskSupportWhenOnline": "Gerät offline. Bitten Sie um Unterstützung, wenn das Gerät mit dem Internet verbunden ist.",
+  "defaultValue": "Standard: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  }
 }

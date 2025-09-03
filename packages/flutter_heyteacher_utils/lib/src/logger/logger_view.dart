@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/src/animations.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_data.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
@@ -53,9 +54,7 @@ class LoggerCard extends StatelessWidget {
         child: ListTile(
           key: const ValueKey('lt_fhu_logger'),
           leading: const Icon(Icons.list),
-          title: Text(
-            FlutterHeyteacherUtilsLocalizations.of(context)!.logging,
-          ),
+          title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
           onTap: () {
             // Navigates to the logger screen using GoRouter.
             GoRouter.of(context).go('$_pathPrefix/${LoggingRouter.path}');
@@ -245,12 +244,17 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
       title: Text(
         FlutterHeyteacherUtilsLocalizations.of(context)!.loggingLevel,
       ),
+      subtitle: Text(
+        FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
+          RemoteConfigViewModel.instance.getString(
+            LoggerRemoteConfigKeys.levelName,
+          ),
+        ),
+      ),
       trailing: FutureBuilder(
         future: LoggerViewModel.instance().level,
         builder: (context, asyncSnapshot) => GenericsDropDownMenu<Level>(
-          label: FlutterHeyteacherUtilsLocalizations.of(
-            context,
-          )!.loggingLevel,
+          label: FlutterHeyteacherUtilsLocalizations.of(context)!.loggingLevel,
           onSelected: LoggerViewModel.instance().setLevel,
           values: Level.LEVELS
               .map((level) => (label: level.name, value: level))

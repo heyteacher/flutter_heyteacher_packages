@@ -77,5 +77,11 @@
   "@tasks": {},
   "skip": "Sauter",
   "@skip": {},
-  "deviceOfflineAskSupportWhenOnline": "Appareil hors ligne. Demandez de l'aide lorsque l'appareil est connecté à Internet."
+  "deviceOfflineAskSupportWhenOnline": "Appareil hors ligne. Demandez de l'aide lorsque l'appareil est connecté à Internet.",
+  "defaultValue": "Valeur par défaut : {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  }
 }

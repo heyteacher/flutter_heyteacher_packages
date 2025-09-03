@@ -73,5 +73,11 @@
   "@tasks": {},
   "skip": "Saltar",
   "@skip": {},
-  "deviceOfflineAskSupportWhenOnline": "Dispositivo sin conexión. Pida soporte cuando el dispositivo esté conectado a internet."
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo sin conexión. Pida soporte cuando el dispositivo esté conectado a internet.",
+  "defaultValue": "Valor por defecto: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  }
 }

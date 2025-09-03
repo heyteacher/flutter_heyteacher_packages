@@ -71,5 +71,11 @@
   "skip": "Skip",
   "@skip": {},
   "deviceOfflineAskSupportWhenOnline": "Device offline. Ask support when the device is connected to the internet.",
-  "@deviceOfflineAskSupportWhenOnline": {}
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "defaultValue": "Default: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  }
 }
