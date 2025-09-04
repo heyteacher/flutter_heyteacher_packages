@@ -79,5 +79,11 @@
     "placeholders": {
       "defaultValue": {}
     }
+  },
+  "nSeconds": "{nSeconds, plural, =0{} other{{nSeconds} seg}}",
+  "@nSeconds": {
+    "placeholders": {
+      "nSeconds": {}
+    }
   }
 }

@@ -255,6 +255,7 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
         future: LoggerViewModel.instance().level,
         builder: (context, asyncSnapshot) => GenericsDropDownMenu<Level>(
           label: FlutterHeyteacherUtilsLocalizations.of(context)!.loggingLevel,
+          width: MediaQuery.of(context).size.width / 4,
           onSelected: LoggerViewModel.instance().setLevel,
           values: Level.LEVELS
               .map((level) => (label: level.name, value: level))

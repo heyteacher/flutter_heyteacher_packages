@@ -139,4 +139,16 @@ class FlutterHeyteacherUtilsLocalizationsFr
   String defaultValue(Object defaultValue) {
     return 'Valeur par défaut : $defaultValue';
   }
+
+  @override
+  String nSeconds(num nSeconds) {
+    String _temp0 = intl.Intl.pluralLogic(
+      nSeconds,
+      locale: localeName,
+      other: '$nSeconds sec',
+      one: '1 sec',
+      zero: '0 sec',
+    );
+    return '$_temp0';
+  }
 }

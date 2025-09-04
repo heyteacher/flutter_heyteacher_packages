@@ -319,6 +319,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Default: {defaultValue}'**
   String defaultValue(Object defaultValue);
+
+  /// No description provided for @nSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{nSeconds, plural, =0{0 sec} =1{1 sec} other{{nSeconds} secs}}'**
+  String nSeconds(num nSeconds);
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate

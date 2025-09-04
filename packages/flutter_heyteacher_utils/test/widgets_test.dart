@@ -138,6 +138,9 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String defaultValue(Object defaultValue) => '';
+
+  @override
+  String nSeconds(num nSeconds) => '';
 }
 
 class _MockLocalizationsDelegate

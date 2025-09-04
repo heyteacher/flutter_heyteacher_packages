@@ -57,5 +57,11 @@
     "placeholders": {
       "defaultValue": {}
     }
+  },
+  "nSeconds": "{nSeconds, plural, =0{} other{{nSeconds} secondi}}",
+  "@nSeconds": {
+    "placeholders": {
+      "nSeconds": {}
+    }
   }
 }
