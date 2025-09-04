@@ -42,20 +42,22 @@ class FutureStreamBuilder<T> extends FutureBuilder<T> {
   ///  the [stream] parameter of [StreamBuilder]
   final Stream<T> stream;
 
-  const FutureStreamBuilder(
-      {super.key,
-      required super.future,
-      required this.stream,
-      required super.builder});
+  const FutureStreamBuilder({
+    super.key,
+    required super.future,
+    required this.stream,
+    required super.builder,
+  });
 
   @override
   AsyncWidgetBuilder<T> get builder =>
       (context, futureSnapshot) => futureSnapshot.hasData
-          ? StreamBuilder(
-              stream: stream,
-              initialData: futureSnapshot.data,
-              builder: super.builder)
-          : super.builder(context, futureSnapshot);
+      ? StreamBuilder(
+          stream: stream,
+          initialData: futureSnapshot.data,
+          builder: super.builder,
+        )
+      : super.builder(context, futureSnapshot);
 }
 
 /// Easily display a [SnackBar] (a brief message shown at the bottom of the
@@ -64,31 +66,35 @@ class FutureStreamBuilder<T> extends FutureBuilder<T> {
 /// It takes the [BuildContext], the [message] to display, an optional
 /// [duration] (in seconds), and a boolean [error] flag to show message in
 /// red as an error (othersise in green for succes message)
-void showSnackBar(
-        {required BuildContext? context,
-        required String message,
-        int? duration,
-        bool error = false}) =>
-    context != null
-        ? ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                duration: Duration(
-                    seconds: duration ??
-                        FirebaseRemoteConfig.instance
-                            .getInt('snackBarDurationInSeconds')),
-                backgroundColor: error
-                    ? ThemeViewModel.instance().colorScheme.onError
-                    : ThemeViewModel.instance().greenColor,
-                content: Text(message,
-                    style: TextStyle(
-                        color: error
-                            ? ThemeViewModel.instance().colorScheme.error
-                            : ThemeViewModel.instance()
-                                .theme
-                                .colorScheme
-                                .onPrimary))),
-          )
-        : null;
+void showSnackBar({
+  required BuildContext? context,
+  required String message,
+  int? duration,
+  bool error = false,
+}) => context != null
+    ? ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(
+            seconds:
+                duration ??
+                FirebaseRemoteConfig.instance.getInt(
+                  'snackBarDurationInSeconds',
+                ),
+          ),
+          backgroundColor: error
+              ? ThemeViewModel.instance().colorScheme.onError
+              : ThemeViewModel.instance().greenColor,
+          content: Text(
+            message,
+            style: TextStyle(
+              color: error
+                  ? ThemeViewModel.instance().colorScheme.error
+                  : ThemeViewModel.instance().theme.colorScheme.onPrimary,
+            ),
+          ),
+        ),
+      )
+    : null;
 
 /// Displays a standard [AlertDialog] to ask the user for confirmation or
 /// cancellation of an action.
@@ -97,54 +103,53 @@ void showSnackBar(
 /// confirms) and [cancelCallback] (executed if the user cancels), a [param]
 /// of type [ObjectParamType] passed to callbacks, the [title] and the [content]
 /// of dialog.
-Future<void> showConfirmCancelDialog<ObjectParamType>(
-    {required BuildContext context,
-    Future<String?> Function(ObjectParamType?)? confirmCallback,
-    Future<String?> Function(ObjectParamType?)? cancelCallback,
-    ObjectParamType? param,
-    Widget? title,
-    required Widget content}) async {
+Future<void> showConfirmCancelDialog<ObjectParamType>({
+  required BuildContext context,
+  Future<String?> Function(ObjectParamType?)? confirmCallback,
+  Future<String?> Function(ObjectParamType?)? cancelCallback,
+  ObjectParamType? param,
+  Widget? title,
+  required Widget content,
+}) async {
   final logger = Logger('showConfirmCancelDialog');
   logger.finest('<showConfirmCancelDialog>: title $title');
   final bool? confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: title != null
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: title,
-                )
-              : null,
-          content: Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: content),
-          actions: <Widget>[
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: title != null
+            ? Padding(padding: const EdgeInsets.only(top: 8.0), child: title)
+            : null,
+        content: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: content,
+        ),
+        actions: <Widget>[
+          IconButton(
+            key: const ValueKey('ib_dialog_no'),
+            icon: Icon(Icons.close, color: ThemeViewModel.instance().redColor),
+            onPressed: () {
+              // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+              SchedulerBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(context).pop(false);
+              });
+            },
+          ),
+          if (confirmCallback != null)
             IconButton(
-              key: const ValueKey('ib_dialog_no'),
-              icon: Icon(Icons.close,
-                  color: ThemeViewModel.instance().redColor),
-              onPressed: () {
+              key: const ValueKey('ib_dialog_yes'),
+              icon: const Icon(Icons.check),
+              onPressed: () async {
                 // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
                 SchedulerBinding.instance.addPostFrameCallback((_) {
-                  Navigator.of(context).pop(false);
+                  Navigator.of(context).pop(true);
                 });
               },
             ),
-            if (confirmCallback != null)
-              IconButton(
-                key: const ValueKey('ib_dialog_yes'),
-                icon: const Icon(Icons.check),
-                onPressed: () async {
-                  // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
-                  SchedulerBinding.instance.addPostFrameCallback((_) {
-                    Navigator.of(context).pop(true);
-                  });
-                },
-              ),
-          ],
-        );
-      });
+        ],
+      );
+    },
+  );
   if (confirmCallback != null && confirm != null && confirm) {
     logger.finest('(showConfirmCancelDialog): title $title. Confirm');
     String? message;
@@ -155,7 +160,10 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
       errorRaised = true;
       message = error.toString();
       logger.severe(
-          '(showConfirmCancelDialog): title $title. error', error, stackTrace);
+        '(showConfirmCancelDialog): title $title. error',
+        error,
+        stackTrace,
+      );
       rethrow;
     } finally {
       if (context.mounted && message != null) {
@@ -165,6 +173,32 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
   } else {
     if (cancelCallback != null) cancelCallback(param);
   }
+}
+
+/// Displays a [Tooltip] button.
+///
+/// It takes the [title] and the [content] of tooltip showed on pressed
+class TooltipIconButton extends StatelessWidget {
+  final Widget? title;
+  final Widget content;
+  final double? iconSize;
+
+  const TooltipIconButton({
+    super.key,
+    this.title,
+    required this.content,
+    this.iconSize,
+  });
+
+  @override
+  Widget build(BuildContext context) => InkResponse(
+    child: Icon(Icons.info, size: iconSize),
+    onTap: () => showConfirmCancelDialog(
+      context: context,
+      title: title ?? const SizedBox.shrink(),
+      content: content,
+    ),
+  );
 }
 
 /// Displays a CircularProgressIndicator centered on the screen.
@@ -187,18 +221,23 @@ class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(widget.timeout,
-        () => mounted ? setState(() => _timeoutReached = true) : null);
+    Future.delayed(
+      widget.timeout,
+      () => mounted ? setState(() => _timeoutReached = true) : null,
+    );
   }
 
   @override
   Widget build(BuildContext context) => Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          _timeoutReached
-              ? Text('', style: _noDataStyleContent(context))
-              : const CircularProgressIndicator()
-        ]),
-      );
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _timeoutReached
+            ? Text('', style: _noDataStyleContent(context))
+            : const CircularProgressIndicator(),
+      ],
+    ),
+  );
 
   TextStyle _noDataStyleContent(context) => Theme.of(context)
       .textTheme
@@ -224,64 +263,74 @@ class ErrorView extends StatelessWidget {
 
   @override
   Widget build(context) => Scaffold(
-        appBar: AppBar(),
-        body: _isFirebaseExceptionCode('permission-denied')
-            ? Column(children: [
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                        textAlign: TextAlign.center,
-                        FlutterHeyteacherUtilsLocalizations.of(context)!
-                            .userNotAuthenticated,
-                        style: _errorStyleContent(context)),
+    appBar: AppBar(),
+    body: _isFirebaseExceptionCode('permission-denied')
+        ? Column(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    FlutterHeyteacherUtilsLocalizations.of(
+                      context,
+                    )!.userNotAuthenticated,
+                    style: _errorStyleContent(context),
                   ),
                 ),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.topCenter,
-                      child: IconButton(
-                          key: const ValueKey('ic_login'),
-                          icon: Icon(Icons.login,
-                              size: Theme.of(context)
-                                  .textTheme
-                                  .displayMedium!
-                                  .fontSize),
-                          color: Theme.of(context).iconTheme.color,
-                          onPressed: () async {
-                            GoRouter.of(context)
-                                .pushNamed(AuthRouterName.signIn.name);
-                          })),
-                ),
-              ])
-            : _isFirebaseExceptionCode('unavailable')
-                ? Column(
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                              FlutterHeyteacherUtilsLocalizations.of(context)!
-                                  .contentUnavailableOfflineRetryWhenOnline,
-                              textAlign: TextAlign.center,
-                              style: _errorStyleContent(context)),
-                        ),
-                      ),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(error.toString(),
-                              textAlign: TextAlign.center,
-                              style: _errorStyleContent(context)),
-                        ),
-                      ),
-                    ],
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: IconButton(
+                    key: const ValueKey('ic_login'),
+                    icon: Icon(
+                      Icons.login,
+                      size: Theme.of(context).textTheme.displayMedium!.fontSize,
+                    ),
+                    color: Theme.of(context).iconTheme.color,
+                    onPressed: () async {
+                      GoRouter.of(
+                        context,
+                      ).pushNamed(AuthRouterName.signIn.name);
+                    },
                   ),
-      );
+                ),
+              ),
+            ],
+          )
+        : _isFirebaseExceptionCode('unavailable')
+        ? Column(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    FlutterHeyteacherUtilsLocalizations.of(
+                      context,
+                    )!.contentUnavailableOfflineRetryWhenOnline,
+                    textAlign: TextAlign.center,
+                    style: _errorStyleContent(context),
+                  ),
+                ),
+              ),
+            ],
+          )
+        : Column(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    error.toString(),
+                    textAlign: TextAlign.center,
+                    style: _errorStyleContent(context),
+                  ),
+                ),
+              ),
+            ],
+          ),
+  );
 
   bool _isFirebaseExceptionCode(String code) {
     return error == null ||
@@ -342,50 +391,49 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding:
-            const EdgeInsets.only(top: 4.0, left: 1, right: 1.0, bottom: 0),
-        child: DropdownMenu<T?>(
-          focusNode: _focusNode,
-          label: Text(widget._label, style: const TextStyle(fontSize: 11)),
-          initialSelection: widget.initialSelection,
-          onSelected: _preOnSelected,
-          enableSearch: widget.enableSearch,
-          searchCallback: widget.enableSearch ? _searchCallback : null,
-          requestFocusOnTap: widget.enableFilter || widget.enableSearch,
-          enableFilter: widget.enableFilter,
-          filterCallback: widget.enableFilter ? _filterCallback : null,
-          leadingIcon: widget.addCallback != null && _enableAddTag
-              ? IconButton(
-                  onPressed: _preAddCallback, icon: const Icon(Icons.add))
-              : null,
-          trailingIcon: const Icon(Icons.filter_list, applyTextScaling: true),
-          textStyle: Theme.of(context).textTheme.labelSmall,
-          width: widget.width,
-          menuHeight: widget.menuHeight,
-          dropdownMenuEntries: [
-            DropdownMenuEntry<T?>(value: null, label: ''),
-            ...widget.values.map((record) =>
-                DropdownMenuEntry<T?>(label: record.label, value: record.value))
-          ],
-          inputDecorationTheme: InputDecorationTheme(
-            contentPadding: const EdgeInsets.only(left: 8, right: 0),
-            isDense: widget.isDense,
-            constraints: BoxConstraints.tight(Size.fromHeight(widget.height)),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
+    padding: const EdgeInsets.only(top: 4.0, left: 1, right: 1.0, bottom: 0),
+    child: DropdownMenu<T?>(
+      focusNode: _focusNode,
+      label: Text(widget._label, style: const TextStyle(fontSize: 11)),
+      initialSelection: widget.initialSelection,
+      onSelected: _preOnSelected,
+      enableSearch: widget.enableSearch,
+      searchCallback: widget.enableSearch ? _searchCallback : null,
+      requestFocusOnTap: widget.enableFilter || widget.enableSearch,
+      enableFilter: widget.enableFilter,
+      filterCallback: widget.enableFilter ? _filterCallback : null,
+      leadingIcon: widget.addCallback != null && _enableAddTag
+          ? IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add))
+          : null,
+      trailingIcon: const Icon(Icons.filter_list, applyTextScaling: true),
+      textStyle: Theme.of(context).textTheme.labelSmall,
+      width: widget.width,
+      menuHeight: widget.menuHeight,
+      dropdownMenuEntries: [
+        DropdownMenuEntry<T?>(value: null, label: ''),
+        ...widget.values.map(
+          (record) =>
+              DropdownMenuEntry<T?>(label: record.label, value: record.value),
         ),
-      );
+      ],
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: const EdgeInsets.only(left: 8, right: 0),
+        isDense: widget.isDense,
+        constraints: BoxConstraints.tight(Size.fromHeight(widget.height)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    ),
+  );
 
   void _preAddCallback() async {
     if (_filter != null || _querySearch != null) {
       final newValue = _filter ?? _querySearch;
       if (widget.deniedValues.contains(newValue)) {
         showSnackBar(
-            context: context,
-            message: 'cannot add denied value $newValue ',
-            error: true);
+          context: context,
+          message: 'cannot add denied value $newValue ',
+          error: true,
+        );
       } else {
         widget.addCallback?.call(newValue!, index: widget.index);
       }
@@ -402,23 +450,28 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   }
 
   List<DropdownMenuEntry<T?>> _filterCallback(
-      List<DropdownMenuEntry<T?>> entries, String filter) {
+    List<DropdownMenuEntry<T?>> entries,
+    String filter,
+  ) {
     _filter = filter;
     final filteredEntries = [
       DropdownMenuEntry<T?>(value: null, label: ''),
-      ...entries.where((entry) =>
-          entry.value != null &&
-          entry.value!
-              .toString()
-              .toLowerCase()
-              .contains(_filter!.toLowerCase()))
+      ...entries.where(
+        (entry) =>
+            entry.value != null &&
+            entry.value!.toString().toLowerCase().contains(
+              _filter!.toLowerCase(),
+            ),
+      ),
     ];
     if ((_filter?.isNotEmpty ?? false) &&
         (_lastFilteredEntries?.length) != filteredEntries.length) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
-            _enableAddTag =
-                (_filter?.isNotEmpty ?? false) && filteredEntries.length == 1;
-          }));
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => setState(() {
+          _enableAddTag =
+              (_filter?.isNotEmpty ?? false) && filteredEntries.length == 1;
+        }),
+      );
     }
     _lastFilteredEntries = filteredEntries;
     return filteredEntries;
@@ -430,10 +483,9 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
       final entry = entries[i];
       if (entry.value != null &&
           (_querySearch?.isNotEmpty ?? false) &&
-          entry.value!
-              .toString()
-              .toLowerCase()
-              .contains(_querySearch!.toLowerCase())) {
+          entry.value!.toString().toLowerCase().contains(
+            _querySearch!.toLowerCase(),
+          )) {
         if (mounted) {
           _enableAddTag = false;
         }
@@ -441,14 +493,15 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
       }
     }
     if (_querySearch?.isNotEmpty ?? false) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {
-            _enableAddTag = true;
-          }));
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => setState(() {
+          _enableAddTag = true;
+        }),
+      );
     }
     return null;
   }
 }
-
 
 class FloatingActionTextIconButtom extends StatelessWidget {
   const FloatingActionTextIconButtom({
@@ -468,31 +521,34 @@ class FloatingActionTextIconButtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 1.0),
-        child: SizedBox(
-            height: 100,
-            width: 100,
-            child: FloatingActionButton(
-                key: fabKey,
-                // heroTag must be set unique in app for each FloatingActionButton
-                // to avoid warning introduce by go_router
-                heroTag: '${icon}HeroTag',
-                backgroundColor: backgroundColor,
-                onPressed: onPressed,
-                child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    direction: Axis.vertical,
-                    alignment: WrapAlignment.end,
-                    children: [
-                      icon,
-                      Text(text,
-                          style: TextStyle(
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .fontSize))
-                    ]))),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 1.0),
+    child: SizedBox(
+      height: 100,
+      width: 100,
+      child: FloatingActionButton(
+        key: fabKey,
+        // heroTag must be set unique in app for each FloatingActionButton
+        // to avoid warning introduce by go_router
+        heroTag: '${icon}HeroTag',
+        backgroundColor: backgroundColor,
+        onPressed: onPressed,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          direction: Axis.vertical,
+          alignment: WrapAlignment.end,
+          children: [
+            icon,
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.labelSmall!.fontSize,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 abstract class TableView extends StatelessWidget {
@@ -503,63 +559,91 @@ abstract class TableView extends StatelessWidget {
   const TableView({super.key});
 
   @protected
-
   /// Creates a styled [Text] widget for labels within the table.
-  Widget labelText(String text,
-          {textAlign = TextAlign.right, TextStyle? style}) =>
-      Padding(
-        padding: const EdgeInsets.only(right: 4.0, left: 4.0),
-        child: Text(text, textAlign: textAlign, style: style),
-      );
+  Widget labelText(
+    String text, {
+    textAlign = TextAlign.right,
+    TextStyle? style,
+  }) => Padding(
+    padding: const EdgeInsets.only(right: 4.0, left: 4.0),
+    child: Text(text, textAlign: textAlign, style: style),
+  );
 
   @protected
-
   /// Creates a value [Text] widget with a blue color.
-  Widget valueTextBlue(BuildContext context, String text,
-          {textAlign = TextAlign.left}) =>
-      _valueText(context, text,
-          color: ThemeViewModel.instance().blueColor, textAlign: textAlign);
+  Widget valueTextBlue(
+    BuildContext context,
+    String text, {
+    textAlign = TextAlign.left,
+  }) => _valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance().blueColor,
+    textAlign: textAlign,
+  );
 
   @protected
-
   /// Creates a value [Text] widget with an orange color.
-  Widget valueTextOrange(BuildContext context, String text,
-          {textAlign = TextAlign.left}) =>
-      _valueText(context, text,
-          color: ThemeViewModel.instance().orangeColor, textAlign: textAlign);
+  Widget valueTextOrange(
+    BuildContext context,
+    String text, {
+    textAlign = TextAlign.left,
+  }) => _valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance().orangeColor,
+    textAlign: textAlign,
+  );
 
   @protected
-
   /// Creates a value [Text] widget with a red color.
-  Widget valueTextRed(BuildContext context, String text,
-          {textAlign = TextAlign.left}) =>
-      _valueText(context, text,
-          color: ThemeViewModel.instance().redColor, textAlign: textAlign);
+  Widget valueTextRed(
+    BuildContext context,
+    String text, {
+    textAlign = TextAlign.left,
+  }) => _valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance().redColor,
+    textAlign: textAlign,
+  );
 
   @protected
-
   /// Creates a value [Text] widget with a yellow color.
-  Widget valueTextYellow(BuildContext context, String text,
-          {textAlign = TextAlign.left}) =>
-      _valueText(context, text,
-          color: ThemeViewModel.instance().yellowColor, textAlign: textAlign);
+  Widget valueTextYellow(
+    BuildContext context,
+    String text, {
+    textAlign = TextAlign.left,
+  }) => _valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance().yellowColor,
+    textAlign: textAlign,
+  );
 
   @protected
-
   /// Creates a value [Text] widget with a green color.
-  Widget valueTextGreen(BuildContext context, String text,
-          {textAlign = TextAlign.left}) =>
-      _valueText(context, text,
-          color: ThemeViewModel.instance().greenColor, textAlign: textAlign);
+  Widget valueTextGreen(
+    BuildContext context,
+    String text, {
+    textAlign = TextAlign.left,
+  }) => _valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance().greenColor,
+    textAlign: textAlign,
+  );
 
   /// A private helper to create a styled [Text] widget for displaying values.
-  Widget _valueText(BuildContext context, String text,
-          {textAlign = TextAlign.left, Color? color}) =>
-      Padding(
-        padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-        child:
-            Text(text, textAlign: textAlign, style: _textStyle(context, color)),
-      );
+  Widget _valueText(
+    BuildContext context,
+    String text, {
+    textAlign = TextAlign.left,
+    Color? color,
+  }) => Padding(
+    padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+    child: Text(text, textAlign: textAlign, style: _textStyle(context, color)),
+  );
 
   /// Returns a [TextStyle] for value widgets, based on the current theme.
   TextStyle _textStyle(BuildContext context, Color? color) =>
