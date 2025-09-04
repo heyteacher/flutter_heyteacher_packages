@@ -1,0 +1,5 @@
+{
+    "@@locale": "fr",
+    "enableTextToSpeech": "Enable Text to Speech",
+    "@enableTextToSpeech": {}
+}
