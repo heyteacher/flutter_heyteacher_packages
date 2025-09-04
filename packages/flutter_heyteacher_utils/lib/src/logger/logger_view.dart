@@ -208,8 +208,8 @@ class LogEntryCard extends StatelessWidget {
               onPressed: () => showConfirmCancelDialog(
                 context: context,
                 content:
-                    '${logEntry.error}\n\n'
-                    '${logEntry.stackTrace ?? ''}',
+                    Text('${logEntry.error}\n\n'
+                    '${logEntry.stackTrace ?? ''}'),
               ),
             )
           : null,

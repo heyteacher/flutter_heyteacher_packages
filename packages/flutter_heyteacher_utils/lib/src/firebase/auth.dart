@@ -83,12 +83,12 @@ class AccountCard extends StatelessWidget {
                                 }
                                 return null;
                               },
-                              title: FlutterHeyteacherUtilsLocalizations.of(
+                              title: Text(FlutterHeyteacherUtilsLocalizations.of(
                                       context)!
-                                  .deleteUserData,
-                              content: FlutterHeyteacherUtilsLocalizations.of(
+                                  .deleteUserData),
+                              content: Text(FlutterHeyteacherUtilsLocalizations.of(
                                       context)!
-                                  .doYouConfirmDeletionUserData,
+                                  .doYouConfirmDeletionUserData),
                             );
                           }),
                     IconButton(

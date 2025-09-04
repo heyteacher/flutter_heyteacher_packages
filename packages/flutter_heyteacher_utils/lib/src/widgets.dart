@@ -102,8 +102,8 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
     Future<String?> Function(ObjectParamType?)? confirmCallback,
     Future<String?> Function(ObjectParamType?)? cancelCallback,
     ObjectParamType? param,
-    String? title,
-    required String content}) async {
+    Widget? title,
+    required Widget content}) async {
   final logger = Logger('showConfirmCancelDialog');
   logger.finest('<showConfirmCancelDialog>: title $title');
   final bool? confirm = await showDialog<bool>(
@@ -113,12 +113,12 @@ Future<void> showConfirmCancelDialog<ObjectParamType>(
           title: title != null
               ? Padding(
                   padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(textAlign: TextAlign.center, title),
+                  child: title,
                 )
               : null,
           content: Padding(
               padding: const EdgeInsets.only(top: 16.0),
-              child: Text(textAlign: TextAlign.center, content)),
+              child: content),
           actions: <Widget>[
             IconButton(
               key: const ValueKey('ib_dialog_no'),
