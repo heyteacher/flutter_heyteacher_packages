@@ -101,8 +101,8 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
             setState(() {});
             return null;
           },
-          content: FlutterHeyteacherUtilsLocalizations.of(context)!
-              .areYouSureToChangeEncryptionPassphrase);
+          content: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
+              .areYouSureToChangeEncryptionPassphrase));
     } else {
       await E2EEViewModel.instance(AuthViewModel.instance().uid).setAAD(aadValue: value);
     }
@@ -147,8 +147,8 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                       : showConfirmCancelDialog(
                           context: context,
                           content:
-                              FlutterHeyteacherUtilsLocalizations.of(context)!
-                                  .userNotAuthenticated),
+                              Text(FlutterHeyteacherUtilsLocalizations.of(context)!
+                                  .userNotAuthenticated)),
                   icon: const Icon(Icons.qr_code)),
               IconButton(
                   onPressed: () => _showQrCodeScanner(),
@@ -208,8 +208,8 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
     if (AuthViewModel.instance().notAutenticated) {
       showConfirmCancelDialog(
           context: context,
-          content: FlutterHeyteacherUtilsLocalizations.of(context)!
-              .userNotAuthenticated);
+          content: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
+              .userNotAuthenticated));
       return;
     }
     String? secretJwkJson;
@@ -227,7 +227,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
     if (secretJwkJson != null) {
       showConfirmCancelDialog(
         context: context.mounted ? context : context,
-        content: confirmQuestionMessage,
+        content: Text(confirmQuestionMessage),
         confirmCallback: (_) async {
           // get localized success message before async invocation
           final successMessage =

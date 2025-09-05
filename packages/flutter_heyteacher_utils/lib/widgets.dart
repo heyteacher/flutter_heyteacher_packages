@@ -7,4 +7,5 @@ export 'src/widgets.dart'
         FloatingActionTextIconButtom,
         TableView,
         showConfirmCancelDialog,
-        showSnackBar;
+        showSnackBar,
+        TooltipIconButton;
