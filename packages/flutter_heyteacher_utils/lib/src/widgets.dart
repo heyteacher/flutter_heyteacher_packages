@@ -182,17 +182,23 @@ class TooltipIconButton extends StatelessWidget {
   final Widget? title;
   final Widget content;
   final double? iconSize;
+  final Color? iconColor;
 
   const TooltipIconButton({
     super.key,
     this.title,
     required this.content,
     this.iconSize,
+    this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) => InkResponse(
-    child: Icon(Icons.info, size: iconSize),
+    child: Icon(
+      Icons.info,
+      size: iconSize,
+      color: iconColor ?? ThemeViewModel.instance().colorScheme.onSurface,
+    ),
     onTap: () => showConfirmCancelDialog(
       context: context,
       title: title ?? const SizedBox.shrink(),
@@ -564,9 +570,27 @@ abstract class TableView extends StatelessWidget {
     String text, {
     textAlign = TextAlign.right,
     TextStyle? style,
+    Widget? tooltip,
   }) => Padding(
     padding: const EdgeInsets.only(right: 4.0, left: 4.0),
-    child: Text(text, textAlign: textAlign, style: style),
+    child: Wrap(
+      alignment: textAlign == TextAlign.right
+          ? WrapAlignment.end
+          : WrapAlignment.start,
+      children: [
+        if (tooltip != null && textAlign == TextAlign.right)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: tooltip,
+          ),
+        Text(text, textAlign: textAlign, style: style),
+        if (tooltip != null && textAlign == TextAlign.left)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: tooltip,
+          ),
+      ],
+    ),
   );
 
   @protected
