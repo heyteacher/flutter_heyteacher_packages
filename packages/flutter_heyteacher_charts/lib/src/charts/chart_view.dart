@@ -21,9 +21,10 @@ abstract class ChartView extends StatelessWidget {
   late final double maxY;
   late final double intervalY;
   final bool showRightTitles;
+  final Color Function(double) formatterColorAxisY;
   final String Function(int, ChartDataItem)? formatterY;
   final String Function(int, double) formatterAxisY;
-  final Color Function(int, double) formatterColorAxisY;
+  final Color Function(int, double)? formatterColorY;
   final Widget? axisNameWidgetY;
   final Iterable<RangeAnnotationData>? _horizontalRangeAnnotations;
   final Iterable<RangeAnnotationData>? _verticalRangeAnnotations;
@@ -34,7 +35,7 @@ abstract class ChartView extends StatelessWidget {
   final double reservedSizeY;
   final Iterable<bool?>? isCurvedList;
   final Iterable<bool?>? isStepLineChartList;
-  final Iterable<({int fromIndex, int toIndex, Color color})?>?
+  final Iterable<({int fromIndex, int toIndex, Color? color, Gradient? gradient})?>?
       betweenBarsDataList;
   final Iterable<({double cutoff, Color color})?>? aboveBarDataList;
   final Iterable<({double cutoff, Color color})?>? belowBarDataList;
@@ -54,6 +55,7 @@ abstract class ChartView extends StatelessWidget {
       double? minY,
       double minIntervalY = 1,
       this.formatterY,
+      this.formatterColorY,
       required this.formatterAxisY,
       required this.formatterColorAxisY,
       this.axisNameWidgetY,
@@ -73,29 +75,64 @@ abstract class ChartView extends StatelessWidget {
       : _verticalRangeAnnotations = verticalRangeAnnotations,
         _horizontalRangeAnnotations = horizontalRangeAnnotations {
     // set intervalX maxX minX
-    maxX ??= chartDataList.isNotEmpty
-        ? chartDataList.map((e) => e.x).max.toDouble()
-        : 0;
-    minX ??= chartDataList.isNotEmpty
-        ? chartDataList.map((e) => e.x).min.toDouble()
-        : 0;
+    maxX ??= _maxX();
+    minX ??= _minX();
     intervalX = interval(minX, maxX, minInterval: minIntervalX);
     this.minX = ChartView.floorToInterval(minX, intervalX);
     this.maxX = ChartView.ceilToInterval(maxX, intervalX);
     // set intervalY maxY minY
-    var iterableY = chartDataList.map((e) => e.y).nonNulls;
-    if (iterableY.isNotEmpty) {
-      maxY ??= iterableY.max.toDouble();
-      minY ??= iterableY.min.toDouble();
-      intervalY = interval(minY, maxY, minInterval: minIntervalY);
-      this.minY = ChartView.floorToInterval(minY, intervalY);
-      this.maxY = ChartView.ceilToInterval(maxY, intervalY) + intervalY;
-    } else {
-      this.maxY = 0;
-      this.minY = 0;
-      intervalY = minIntervalY;
-    }
+    final minMaxValues = _minMaxIntervalY(maxY, minY, minIntervalY);
+    intervalY = minMaxValues.intervalY;
+    minY ??= minMaxValues.minY;
+    maxY ??= minMaxValues.maxY;
+    this.minY = ChartView.floorToInterval(minY, intervalX);
+    this.maxY = ChartView.ceilToInterval(maxY, intervalX);
   }
+
+  ({double intervalY, double maxY, double minY}) _minMaxIntervalY(
+      double? maxY, double? minY, double minIntervalY) {
+    double? intervalYValue, maxYValue, minYValue;
+    for (var chartDataList in chartDataLists) {
+      var iterableY = chartDataList.map((e) => e.y).nonNulls;
+      if (iterableY.isNotEmpty) {
+        final newMaxY = iterableY.max.toDouble();
+        maxY = maxY == null || maxY < newMaxY ? newMaxY : maxY;
+        final newMinY = iterableY.min.toDouble();
+        minY = minY == null || minY > newMinY ? newMinY : minY;
+        intervalYValue = interval(minY, maxY, minInterval: minIntervalY);
+        minYValue = ChartView.floorToInterval(minY, intervalYValue);
+        maxYValue =
+            ChartView.ceilToInterval(maxY, intervalYValue) + intervalYValue;
+      } else {
+        minYValue = 0;
+        maxYValue = 0;
+        intervalYValue = minIntervalY;
+      }
+    }
+    return (
+      intervalY: intervalYValue ?? 0,
+      minY: minYValue ?? 0,
+      maxY: maxYValue ?? 0
+    );
+  }
+
+  double _minX() => chartDataLists.isNotEmpty
+      ? chartDataLists
+          .map((chartDataList) => chartDataList.isNotEmpty
+              ? chartDataList.map((e) => e.x).min.toDouble()
+              : 0)
+          .min
+          .toDouble()
+      : 0;
+
+  double _maxX() => chartDataLists.isNotEmpty
+      ? chartDataLists
+          .map((chartDataList) => chartDataList.isNotEmpty
+              ? chartDataList.map((e) => e.x).max.toDouble()
+              : 0)
+          .max
+          .toDouble()
+      : 0;
 
   @protected
   Iterable<ChartDataItem> get chartDataList => chartDataLists.first;
@@ -150,7 +187,7 @@ abstract class ChartView extends StatelessWidget {
                 EdgeInsets.only(right: rotate ? 0 : 4.0, top: rotate ? 4.0 : 0),
             child: Text(
               formatterAxisY(0, value),
-              style: TextStyle(color: formatterColorAxisY(0, value)),
+              style: TextStyle(color: formatterColorAxisY(value)),
             ),
           ),
         ),
@@ -332,6 +369,7 @@ abstract class ChartView extends StatelessWidget {
                   fromIndex: betweenBarsData.fromIndex,
                   toIndex: betweenBarsData.toIndex,
                   color: betweenBarsData.color,
+                  gradient: betweenBarsData.gradient,
                 )
               : null)
           .nonNulls
@@ -372,7 +410,7 @@ abstract class ChartView extends StatelessWidget {
   @protected
   bool isStepLineChart(int index) => (isStepLineChartList?.length ?? 0) > index
       ? isStepLineChartList?.elementAt(index) ?? false
-      : true;
+      : false;
 
   @protected
   static int roundToInterval(num value, num interval) =>
