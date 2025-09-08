@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 
 import 'chart_view.dart';
@@ -17,6 +19,7 @@ class LineChartView extends ChartView {
       super.minIntervalX,
       super.axisNameWidgetX,
       required super.formatterAxisY,
+      required super.formatterColorY,
       required super.formatterColorAxisY,
       super.reservedSizeY,
       super.maxY,
@@ -74,7 +77,7 @@ class LineChartView extends ChartView {
   LineChartBarData _lineChartBarData(int index, _) => LineChartBarData(
       isCurved: isCurved(index),
       isStepLineChart: isStepLineChart(index),
-      color: formatterColorAxisY(index, chartDataList.first.y.toDouble()),
+      color: formatterColorY?.call(index, chartDataList.first.y.toDouble()),
       barWidth: 1,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
@@ -83,7 +86,8 @@ class LineChartView extends ChartView {
       spots: chartDataLists
           .elementAt(index)
           .map(
-            (e) => FlSpot(e.x.toDouble(), e.y.toDouble()),
+            (e) => FlSpot(min(maxX, max(minX, e.x.toDouble())),
+                min(maxY, max(minY, e.y.toDouble()))),
           )
           .toList());
 }
