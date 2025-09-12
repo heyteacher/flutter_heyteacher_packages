@@ -151,4 +151,7 @@ class FlutterHeyteacherUtilsLocalizationsFr
     );
     return '$_temp0';
   }
+
+  @override
+  String get search => 'Rechercher';
 }

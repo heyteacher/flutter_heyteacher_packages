@@ -113,14 +113,17 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   @override
   Widget build(BuildContext context) => _loading
       ? const SliverFillRemaining(
-          hasScrollBody: false, child: ProgressIndicatorView())
+          hasScrollBody: false,
+          child: ProgressIndicatorView(),
+        )
       : SliverAnimatedList(
           key: _listGlobalKey,
           initialItemCount: dataList?.length ?? 0,
           itemBuilder: (context, index, animation) =>
               dataList?.isNotEmpty ?? false
-                  ? buildData(index, animation)
-                  : const SizedBox.shrink());
+              ? buildData(index, animation)
+              : const SizedBox.shrink(),
+        );
 
   /// Animates the deletion of an item at the given [index].
   @protected
@@ -128,11 +131,16 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       ?.removeItem(index, (context, animation) => buildData(index, animation));
 
   /// Subscribes to the data [stream] and handles list updates.
-  void updateDataList() {
+  void updateDataList([bool incrementsLimit = false]) {
     _listStreamSubscription?.cancel();
+    if (incrementsLimit) {
+      _limit += pageSize;
+    }
     _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
-      final changedIndexes =
-          _compare(oldList: dataList ?? [], newList: newDataList.toList());
+      final changedIndexes = _compare(
+        oldList: dataList ?? [],
+        newList: newDataList.toList(),
+      );
       for (var changedIndex in changedIndexes) {
         _listGlobalKey.currentState?.insertItem(changedIndex);
       }
@@ -141,22 +149,34 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
           (dataList?.length ?? 0) > 0 &&
           changedIndexes.last >= (dataList?.length ?? 0)) {
         Future.delayed(
-            const Duration(milliseconds: 500),
-            () => scrollController.animateTo(
-                  min(scrollController.offset + 200,
-                      max(scrollController.position.maxScrollExtent, 0)),
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.fastOutSlowIn,
-                ));
+          const Duration(milliseconds: 500),
+          () => scrollController.animateTo(
+            min(
+              scrollController.offset + 200,
+              max(scrollController.position.maxScrollExtent, 0),
+            ),
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.fastOutSlowIn,
+          ),
+        );
       }
       // for each item not in old data list, animate delete
+      bool removed = false;
       if (dataList != null) {
-        dataList!
-          .where((item) => !newDataList.contains(item))
-          .map((item) => dataList!.indexOf(item)).forEach(animateDeleteData);
+        final toBeRemoved = dataList!.reversed.where(
+          (item) => !newDataList.contains(item),
+        );
+        toBeRemoved
+            .map((item) => dataList!.indexOf(item))
+            .forEach(animateDeleteData);
+        removed = toBeRemoved.isNotEmpty;
       }
-
       dataList = newDataList.toList();
+      if ((dataList?.length ?? 0) < _limit &&
+          changedIndexes.isNotEmpty &&
+          removed) {
+        updateDataList(true);
+      }
       // first time _loading in true, so we need to wait for the first frame
       // to be built to set it to false
       if (_loading) {
@@ -180,9 +200,10 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     }
   }
 
-  Iterable<int> _compare(
-          {required List<D> oldList, required List<D> newList}) =>
-      newList.indexed.where((e) => !oldList.contains(e.$2)).map((e) => e.$1);
+  Iterable<int> _compare({
+    required List<D> oldList,
+    required List<D> newList,
+  }) => newList.indexed.where((e) => !oldList.contains(e.$2)).map((e) => e.$1);
 }
 
 class BlinkingText extends StatefulWidget {
@@ -192,12 +213,14 @@ class BlinkingText extends StatefulWidget {
   final TextStyle? style;
   final TextAlign? textAlign;
 
-  const BlinkingText(this.text,
-      {super.key,
-      this.animated = true,
-      this.durationInMs = 500,
-      this.style,
-      this.textAlign});
+  const BlinkingText(
+    this.text, {
+    super.key,
+    this.animated = true,
+    this.durationInMs = 500,
+    this.style,
+    this.textAlign,
+  });
 
   @override
   BlinkingTextState createState() => BlinkingTextState();
@@ -212,8 +235,9 @@ class BlinkingTextState extends State<BlinkingText> {
     super.initState();
     // Set a timer to toggle visibility every 500 milliseconds
     _timer?.cancel();
-    _timer =
-        Timer.periodic(Duration(milliseconds: widget.durationInMs), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: widget.durationInMs), (
+      timer,
+    ) {
       setState(() => _isVisible = !_isVisible);
     });
   }
@@ -229,24 +253,19 @@ class BlinkingTextState extends State<BlinkingText> {
     return widget.animated
         ? TweenAnimationBuilder<double>(
             tween: Tween<double>(
-                begin: _isVisible ? 1 : 0, end: _isVisible ? 0 : 1),
+              begin: _isVisible ? 1 : 0,
+              end: _isVisible ? 0 : 1,
+            ),
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
             builder: (BuildContext context, double opacity, Widget? child) {
-              return Opacity(
-                opacity: opacity,
-                child: _text,
-              );
+              return Opacity(opacity: opacity, child: _text);
             },
           )
         : _text;
   }
 
   Text get _text {
-    return Text(
-      widget.text,
-      style: widget.style,
-      textAlign: widget.textAlign,
-    );
+    return Text(widget.text, style: widget.style, textAlign: widget.textAlign);
   }
 }

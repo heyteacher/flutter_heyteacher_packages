@@ -149,4 +149,7 @@ class FlutterHeyteacherUtilsLocalizationsEs
     );
     return '$_temp0';
   }
+
+  @override
+  String get search => 'Buscar';
 }

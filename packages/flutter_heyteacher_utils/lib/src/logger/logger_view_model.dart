@@ -58,6 +58,7 @@ class LoggerViewModel {
   Stream<void> get updateStream => _updateStreamController.stream;
 
   Level? _filterLevel;
+  String? _filterText;
 
   static const String finestLoggerName = 'FINEST';
   static const int finestLoggerValue = 300;
@@ -302,18 +303,30 @@ class LoggerViewModel {
   /// - [filterStartTime]: The start time for filtering. Only logs at or after
   ///   this time will be included. If `null`, no time-based filtering is done.
   bool _filterLog({
-    required Level logLevel,
+    required String loggerName,
+    required String message,
+    required DateTime time,
+    required Level level,
+    required Object? error,
+    required String? stackTrace,
     required Level? filterLevel,
-    required DateTime logTime,
     required DateTime? filterStartTime,
+    required String? filterText,
   }) {
+    final textMatch =
+        filterText == null ||
+        filterText.isEmpty ||
+        message.contains(filterText) ||
+        loggerName.contains(filterText) ||
+        (error?.toString().contains(filterText) ?? false) ||
+        (stackTrace?.toString().contains(filterText) ?? false);
     final levelMatch =
         filterLevel == null ||
         filterLevel == Level.ALL ||
-        logLevel.value >= filterLevel.value;
+        level.value >= filterLevel.value;
     final timeMatch =
-        filterStartTime == null || !logTime.isBefore(filterStartTime);
-    return levelMatch && timeMatch;
+        filterStartTime == null || !time.isBefore(filterStartTime);
+    return textMatch && levelMatch && timeMatch;
   }
 
   /// Returns a list of log entries from the temporary log directory.
@@ -336,9 +349,14 @@ class LoggerViewModel {
     final notSavedLogEntries = notSavedLogRecords
         ?.where(
           (logRecord) => _filterLog(
-            logLevel: logRecord.level,
+            loggerName: logRecord.loggerName,
+            message: logRecord.message,
+            time: logRecord.time,
+            level: logRecord.level,
+            error: logRecord.error,
+            stackTrace: logRecord.stackTrace?.toString(),
             filterLevel: filterLevel,
-            logTime: logRecord.time,
+            filterText: _filterText,
             filterStartTime: startTime,
           ),
         )
@@ -348,6 +366,8 @@ class LoggerViewModel {
             level: logRecord.level,
             message: logRecord.message,
             loggerName: logRecord.loggerName,
+            error: logRecord.error?.toString(),
+            stackTrace: logRecord.stackTrace?.toString(),
           ),
         );
     // add to log entries list if not null
@@ -360,9 +380,14 @@ class LoggerViewModel {
       final logEntriesToAdd = _fromJson(file)
           .where(
             (logEntry) => _filterLog(
-              logLevel: logEntry.level,
+              loggerName: logEntry.loggerName,
+              message: logEntry.message,
+              time: logEntry.time,
+              level: logEntry.level,
+              error: logEntry.error,
+              stackTrace: logEntry.stackTrace,
               filterLevel: filterLevel,
-              logTime: logEntry.time,
+              filterText: _filterText,
               filterStartTime: startTime,
             ),
           )
@@ -468,6 +493,11 @@ class LoggerViewModel {
   }
 
   void refresh() {
+    _updateStreamController.add(null);
+  }
+
+  void updateFilterText(String value) {
+    _filterText = value;
     _updateStreamController.add(null);
   }
 }
