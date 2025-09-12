@@ -63,5 +63,7 @@
     "placeholders": {
       "nSeconds": {}
     }
-  }
+  },
+  "search": "Cerca",
+  "@search": {}
 }

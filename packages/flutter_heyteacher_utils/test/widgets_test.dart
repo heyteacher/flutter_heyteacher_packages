@@ -141,6 +141,9 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String nSeconds(num nSeconds) => '';
+
+  @override
+  String get search => '';
 }
 
 class _MockLocalizationsDelegate

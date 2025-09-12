@@ -325,6 +325,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'{nSeconds, plural, =0{0 sec} =1{1 sec} other{{nSeconds} secs}}'**
   String nSeconds(num nSeconds);
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate

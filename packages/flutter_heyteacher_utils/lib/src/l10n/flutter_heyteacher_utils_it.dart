@@ -148,4 +148,7 @@ class FlutterHeyteacherUtilsLocalizationsIt
     );
     return '$_temp0';
   }
+
+  @override
+  String get search => 'Cerca';
 }

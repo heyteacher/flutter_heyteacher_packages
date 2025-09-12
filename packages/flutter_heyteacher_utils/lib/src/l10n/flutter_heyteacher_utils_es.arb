@@ -85,5 +85,7 @@
     "placeholders": {
       "nSeconds": {}
     }
-  }
+  },
+  "search": "Buscar",
+  "@search": {}
 }

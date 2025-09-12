@@ -125,58 +125,93 @@ class _LoggerScreenState
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.logging),
-      actions: [
-        _buildLevelFilterDropdown(),
-        // add refresh button to reload logs
-        IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: LoggerViewModel.instance().refresh,
-        ),
-      ],
     ),
     body: SafeArea(
       child: CustomScrollView(
         controller: _scrollController,
-        slivers: [super.build(context)],
+        slivers: [_buildFilterDropdown(), super.build(context)],
       ),
     ),
   );
 
   /// Builds the dropdown menu for filtering log levels.
-  Widget _buildLevelFilterDropdown() => DropdownMenu<Level?>(
-    enableSearch: false,
-    enableFilter: false,
-    inputDecorationTheme: InputDecorationTheme(
-      isDense: true,
-      contentPadding: const EdgeInsets.only(left: 20),
-      constraints: BoxConstraints.tight(const Size.fromHeight(40)),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-    ),
-    label: Text('Log Level', style: Theme.of(context).textTheme.labelSmall),
-    textStyle: Theme.of(context).textTheme.labelSmall,
-    trailingIcon: const Icon(Icons.filter_list),
-    // Updates the _filterLevel and rebuilds the UI when a new level is
-    // selected.
-    onSelected: LoggerViewModel.instance().updateFilterLevel,
-    dropdownMenuEntries:
-        [
-              null,
-              Level.SHOUT,
-              Level.SEVERE,
-              Level.WARNING,
-              Level.CONFIG,
-              Level.INFO,
-              Level.FINE,
-              Level.FINER,
-              Level.FINEST,
-            ]
-            .map<DropdownMenuEntry<Level?>>(
-              (level) => DropdownMenuEntry<Level?>(
-                value: level,
-                label: level?.name ?? '',
+  Widget _buildFilterDropdown() => PinnedHeaderSliver(
+    child: Container(
+      padding: const EdgeInsets.only(bottom: 4),
+      color: ThemeViewModel.instance().colorScheme.onPrimary,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 2.0,
+            children: [
+              Expanded(
+                child: TextField(
+                  style: Theme.of(context).textTheme.labelSmall,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    constraints: BoxConstraints.tight(
+                      const Size.fromHeight(40),
+                    ),
+                    labelText: FlutterHeyteacherUtilsLocalizations.of(context)!.search,
+                    labelStyle: Theme.of(context).textTheme.labelSmall,
+                  ),
+                  onChanged: LoggerViewModel.instance().updateFilterText,
+                ),
               ),
-            )
-            .toList(),
+              DropdownMenu<Level?>(
+                enableSearch: false,
+                enableFilter: false,
+                inputDecorationTheme: InputDecorationTheme(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.only(left: 20),
+                  constraints: BoxConstraints.tight(const Size.fromHeight(40)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                label: Text(
+                  'Log Level',
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                textStyle: Theme.of(context).textTheme.labelSmall,
+                trailingIcon: const Icon(Icons.filter_list),
+                // Updates the _filterLevel and rebuilds the UI when a new level is
+                // selected.
+                onSelected: LoggerViewModel.instance().updateFilterLevel,
+                dropdownMenuEntries:
+                    [
+                          null,
+                          Level.SHOUT,
+                          Level.SEVERE,
+                          Level.WARNING,
+                          Level.CONFIG,
+                          Level.INFO,
+                          Level.FINE,
+                          Level.FINER,
+                          Level.FINEST,
+                        ]
+                        .map<DropdownMenuEntry<Level?>>(
+                          (level) => DropdownMenuEntry<Level?>(
+                            value: level,
+                            label: level?.name ?? '',
+                          ),
+                        )
+                        .toList(),
+              ),
+              // add refresh button to reload logs
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: LoggerViewModel.instance().refresh,
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
   );
 }
 
@@ -207,9 +242,10 @@ class LogEntryCard extends StatelessWidget {
               icon: const Icon(Icons.info),
               onPressed: () => showConfirmCancelDialog(
                 context: context,
-                content:
-                    Text('${logEntry.error}\n\n'
-                    '${logEntry.stackTrace ?? ''}'),
+                content: Text(
+                  '${logEntry.error}\n\n'
+                  '${logEntry.stackTrace ?? ''}',
+                ),
               ),
             )
           : null,
