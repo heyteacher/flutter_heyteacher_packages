@@ -1,6 +1,6 @@
 name: flutter_heyteacher_store
 description: "A heyteacher flutter package for genetrics firestore implementation"
-version: 1.22.1+250830050
+version: 1.23.0+250913120
 publish_to: none # Remove this line if you wish to publish to pub.dev
 environment:
   sdk: ^3.6.2
