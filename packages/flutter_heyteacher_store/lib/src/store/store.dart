@@ -531,6 +531,19 @@ abstract class Store<LightDataType extends FirestoreData,
         .map((e) => e.data());
   }
 
+ /// Returns the list of [DetailsDataType] limited to [limit]
+  Future<Iterable<DetailsDataType>> listAllDetailed({int? limit}) async {
+    _logger.finest(
+        '<$runtimeType.listAllDetailed>: $_collectionPathLog orderByFields: $orderByFields '
+        ' limit: $limit)');
+    _checkAuthenticated();
+    Query<DetailsDataType> retQuery = _detailsCollectionReference;
+    if (limit != null && limit > 0) {
+      retQuery.limit(limit);
+    }
+    return (await retQuery.get()).docs.map((e) => e.data());
+  }
+
   /// Returns `true` if exists a document identified by [id].
   Future<bool> exists(String id) async {
     final lock = Lock();
