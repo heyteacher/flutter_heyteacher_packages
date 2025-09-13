@@ -10,6 +10,7 @@ environment:
 dependencies:
   collection:
   fl_chart:
+    path: ../packages/fl_chart
   equatable:  
   flutter:
     sdk: flutter

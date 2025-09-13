@@ -35,8 +35,15 @@ abstract class ChartView extends StatelessWidget {
   final double reservedSizeY;
   final Iterable<bool?>? isCurvedList;
   final Iterable<bool?>? isStepLineChartList;
-  final Iterable<({int fromIndex, int toIndex, Color? color, Gradient? gradient})?>?
-      betweenBarsDataList;
+  final Iterable<
+      ({
+        int fromIndex,
+        int toIndex,
+        Color? color,
+        Color? fromAboveColor,
+        Color? fromBelowColor,
+        Gradient? gradient
+      })?>? betweenBarsDataList;
   final Iterable<({double cutoff, Color color})?>? aboveBarDataList;
   final Iterable<({double cutoff, Color color})?>? belowBarDataList;
   ChartView(
@@ -369,6 +376,8 @@ abstract class ChartView extends StatelessWidget {
                   fromIndex: betweenBarsData.fromIndex,
                   toIndex: betweenBarsData.toIndex,
                   color: betweenBarsData.color,
+                  fromAboveColor: betweenBarsData.fromAboveColor,
+                  fromBelowColor: betweenBarsData.fromBelowColor,
                   gradient: betweenBarsData.gradient,
                 )
               : null)
