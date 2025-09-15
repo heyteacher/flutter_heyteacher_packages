@@ -19,7 +19,7 @@ class CandlestickChartView extends ChartView {
       super.minX,
       super.minIntervalX,
       super.axisNameWidgetX,
-      super.showRightTitles,
+      super.rightTitlesLikeLeft,
       required super.formatterAxisY,
       required super.formatterColorAxisY,
       super.reservedSizeY,

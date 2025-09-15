@@ -21,7 +21,7 @@ class LineChartView extends ChartView {
       super.axisNameWidgetX,
 
       required super.formatterAxisY,
-      required super.formatterColorY,
+      required super.formatterColorLine,
       required super.formatterColorAxisY,
       super.reservedSizeY,
       super.maxY,
@@ -30,7 +30,6 @@ class LineChartView extends ChartView {
       super.axisNameWidgetY,
 
       super.formatterAxisYAlt,
-      super.formatterColorYAlt,
       super.formatterColorAxisYAlt,
       super.reservedSizeYAlt,
       super.maxYAlt,
@@ -48,7 +47,7 @@ class LineChartView extends ChartView {
       super.aspectRatio,
       super.isCurvedList,
       super.isStepLineChartList,
-      super.showRightTitles});
+      super.rightTitlesLikeLeft});
 
   @override
   Widget build(BuildContext context) => Column(
@@ -89,7 +88,7 @@ class LineChartView extends ChartView {
   LineChartBarData _lineChartBarData(int index, _) => LineChartBarData(
       isCurved: isCurved(index),
       isStepLineChart: isStepLineChart(index),
-      color: formatterColorY?.call(index, chartDataList.first.y.toDouble()),
+      color: formatterColorLine?.call(index, chartDataList.first.y.toDouble()),
       barWidth: 1,
       isStrokeCapRound: true,
       dotData: const FlDotData(show: false),
