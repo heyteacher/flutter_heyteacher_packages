@@ -10,6 +10,7 @@ abstract class ChartView extends StatelessWidget {
   final Widget title;
   final Iterable<Iterable<ChartDataItem>> chartDataLists;
   final double aspectRatio;
+  final double reservedSizeX;
   late final double minX;
   late final double maxX;
   late final double intervalX;
@@ -17,22 +18,30 @@ abstract class ChartView extends StatelessWidget {
   final String Function(double) formatterAxisX;
   final Color Function(double) formatterColorAxisX;
   final Widget? axisNameWidgetX;
+  final double? reservedSizeYAlt;
+  late final double? minYAlt;
+  late final double? maxYAlt;
+  late final double? intervalYAlt;
+  final Color Function(double)? formatterColorAxisYAlt;
+  final String Function(int, ChartDataItem)? formatterYAlt;
+  final String Function(int, double)? formatterAxisYAlt;
+  final Color Function(int, double)? formatterColorYAlt;
+  final Widget? axisNameWidgetYAlt;
+  final double reservedSizeY;
   late final double minY;
   late final double maxY;
   late final double intervalY;
-  final bool showRightTitles;
   final Color Function(double) formatterColorAxisY;
   final String Function(int, ChartDataItem)? formatterY;
   final String Function(int, double) formatterAxisY;
   final Color Function(int, double)? formatterColorY;
   final Widget? axisNameWidgetY;
+  final bool showRightTitles;
   final Iterable<RangeAnnotationData>? _horizontalRangeAnnotations;
   final Iterable<RangeAnnotationData>? _verticalRangeAnnotations;
   final Iterable<ExtraLineData>? extraHorizontalLines;
   final Iterable<ExtraLineData>? extraVerticalLines;
   final bool rotate;
-  final double reservedSizeX;
-  final double reservedSizeY;
   final Iterable<bool?>? isCurvedList;
   final Iterable<bool?>? isStepLineChartList;
   final Iterable<
@@ -47,9 +56,11 @@ abstract class ChartView extends StatelessWidget {
   final Iterable<({double cutoff, Color color})?>? aboveBarDataList;
   final Iterable<({double cutoff, Color color})?>? belowBarDataList;
   ChartView(
-      {required this.chartDataLists,
+      {super.key,
+      required this.chartDataLists,
       this.aspectRatio = 1,
       this.title = const Text(''),
+      this.showRightTitles = false,
       double? maxX,
       double? minX,
       double minIntervalX = 1,
@@ -57,7 +68,6 @@ abstract class ChartView extends StatelessWidget {
       required this.formatterAxisX,
       required this.formatterColorAxisX,
       this.axisNameWidgetX,
-      this.showRightTitles = false,
       double? maxY,
       double? minY,
       double minIntervalY = 1,
@@ -66,8 +76,19 @@ abstract class ChartView extends StatelessWidget {
       required this.formatterAxisY,
       required this.formatterColorAxisY,
       this.axisNameWidgetY,
+      double? maxYAlt,
+      double? minYAlt,
+      double minIntervalYAlt = 1,
+      this.reservedSizeYAlt,
+      this.intervalYAlt,
+      this.formatterYAlt,
+      this.formatterAxisYAlt,
+      this.formatterColorAxisYAlt,
+      this.formatterColorYAlt,
+      this.axisNameWidgetYAlt,
       this.extraHorizontalLines,
       this.extraVerticalLines,
+      
       Iterable<RangeAnnotationData>? horizontalRangeAnnotations,
       Iterable<RangeAnnotationData>? verticalRangeAnnotations,
       this.reservedSizeX = 45,
@@ -77,8 +98,7 @@ abstract class ChartView extends StatelessWidget {
       this.aboveBarDataList,
       this.belowBarDataList,
       this.isCurvedList,
-      this.isStepLineChartList,
-      super.key})
+      this.isStepLineChartList})
       : _verticalRangeAnnotations = verticalRangeAnnotations,
         _horizontalRangeAnnotations = horizontalRangeAnnotations {
     // set intervalX maxX minX
@@ -150,7 +170,7 @@ abstract class ChartView extends StatelessWidget {
           sideTitles: SideTitles(showTitles: false),
         ),
         rightTitles:
-            showRightTitles || rotate ? yAxisTitles() : const AxisTitles(),
+            showRightTitles || rotate ? yAltAxisTitles() : const AxisTitles(),
         bottomTitles: xAxisTitles(),
         leftTitles: rotate ? const AxisTitles() : yAxisTitles(),
       );
@@ -184,6 +204,20 @@ abstract class ChartView extends StatelessWidget {
                 leftTitleWidgets(value, meta)),
       );
 
+@protected
+  AxisTitles yAltAxisTitles() => AxisTitles(
+        axisNameWidget: axisNameWidgetYAlt,
+        drawBelowEverything: true,
+        sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: reservedSizeYAlt ?? 45,
+            maxIncluded: false,
+            minIncluded: false,
+            interval: intervalYAlt?.toDouble(),
+            getTitlesWidget: (value, TitleMeta meta) =>
+                rightTitleWidgets(value, meta)),
+      );
+
   @protected
   Widget leftTitleWidgets(double value, TitleMeta meta) => RotatedBox(
         quarterTurns: rotate ? 3 : 0,
@@ -195,6 +229,22 @@ abstract class ChartView extends StatelessWidget {
             child: Text(
               formatterAxisY(0, value),
               style: TextStyle(color: formatterColorAxisY(value)),
+            ),
+          ),
+        ),
+      );
+
+  @protected
+  Widget rightTitleWidgets(double value, TitleMeta meta) => RotatedBox(
+        quarterTurns: rotate ? 3 : 0,
+        child: SideTitleWidget(
+          meta: meta,
+          child: Padding(
+            padding:
+                EdgeInsets.only(right: rotate ? 0 : 4.0, top: rotate ? 4.0 : 0),
+            child: Text(
+              formatterAxisYAlt?.call(0, value) ?? '',
+              style: TextStyle(color: formatterColorAxisYAlt?.call(value)),
             ),
           ),
         ),

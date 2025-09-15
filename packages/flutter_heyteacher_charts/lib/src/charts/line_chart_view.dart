@@ -11,6 +11,7 @@ class LineChartView extends ChartView {
       {super.key,
       super.title,
       required super.chartDataLists,
+
       required super.formatterAxisX,
       required super.formatterColorAxisX,
       super.reservedSizeX,
@@ -18,6 +19,7 @@ class LineChartView extends ChartView {
       super.minX,
       super.minIntervalX,
       super.axisNameWidgetX,
+
       required super.formatterAxisY,
       required super.formatterColorY,
       required super.formatterColorAxisY,
@@ -26,6 +28,16 @@ class LineChartView extends ChartView {
       super.minY,
       super.minIntervalY,
       super.axisNameWidgetY,
+
+      super.formatterAxisYAlt,
+      super.formatterColorYAlt,
+      super.formatterColorAxisYAlt,
+      super.reservedSizeYAlt,
+      super.maxYAlt,
+      super.minYAlt,
+      super.minIntervalYAlt,
+      super.axisNameWidgetYAlt,
+
       super.extraHorizontalLines,
       super.extraVerticalLines,
       super.horizontalRangeAnnotations,
