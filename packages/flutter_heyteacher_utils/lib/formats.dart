@@ -111,10 +111,10 @@ class FormatterHelper {
   static String doubleFormat(num? num, {String defaultValue = ''}) =>
       num != null ? _doubleFormatter.format(num) : defaultValue;
 
-  static int dateTimeToJson(DateTime value) => value.millisecondsSinceEpoch;
+  static int? dateTimeToJson(DateTime? value) => value?.millisecondsSinceEpoch;
 
-  static DateTime dateTimeFromJson(int value) =>
-      DateTime.fromMillisecondsSinceEpoch(value);
+  static DateTime? dateTimeFromJson(int? value) =>
+      value != null ? DateTime.fromMillisecondsSinceEpoch(value):null;
 
   /// Formats a duration in milliseconds into a human-readable string suitable for Text-to-Speech (TTS).
   ///
