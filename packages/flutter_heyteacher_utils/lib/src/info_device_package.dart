@@ -11,6 +11,8 @@
 library;
 
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:clock/clock.dart';
@@ -171,8 +173,8 @@ class InfoDevicePackageViewModel {
       (AuthViewModel.instance().uid?.substring(0, 5)) ?? 'guest';
 
   /// uploads the logs to Firebase Storage and returns the log filename.
-  /// 
-  /// If `enableLogsStorage` is false, returns "Logs storage disabled" message 
+  ///
+  /// If `enableLogsStorage` is false, returns "Logs storage disabled" message
   /// instead.
   Future<String> storeLogs({DateTime? startTime}) async {
     if (!await LoggerViewModel.instance().enableLogsStorage) {
@@ -193,13 +195,17 @@ class InfoDevicePackageViewModel {
     final machineStopTime = FormatterHelper.machineTimeFormat(clock.now());
     final logFilename =
         'applogs/$machineDate/$machineStartDateTime-$machineStopTime'
-        '-${InfoDevicePackageViewModel.instance.identifierInfo}.log';
-    StorageViewModel.instance.uploadString(
-      logFilename,
-      await LoggerViewModel.instance().logs2Text(
-        startTime: startTime?.subtract(const Duration(seconds: 10)),
-      ),
-    );
+        '-${InfoDevicePackageViewModel.instance.identifierInfo}.log.gz';
+
+    final gZipEncoded = 
+      Uint8List.fromList(gzip.encode(
+        utf8.encode(
+          await LoggerViewModel.instance().logs2Text(
+            startTime: startTime?.subtract(const Duration(seconds: 10)),
+          ),
+        ),
+      ));
+    StorageViewModel.instance.upload(logFilename, gZipEncoded);
     return logFilename;
   }
 
