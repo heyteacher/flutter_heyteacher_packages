@@ -86,5 +86,7 @@
     }
   },
   "search": "Suche",
-  "@search": {}
+  "@search": {},
+  "enableLogsStorage": "Protokollierungsspeicher aktivieren",
+  "@enableLogsStorage": {}
 }

@@ -10,24 +10,52 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_data.dart';
 import 'package:flutter_heyteacher_utils/worker.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum LoggerSharedPreferencesKeys { htuLoggerLevelName, htuLoggerLevelValue }
+/// Keys for storing logger settings in [SharedPreferences].
+enum LoggerSharedPreferencesKeys {
+  /// The name of the locally overridden logger level.
+  htuLoggerLevelName,
 
+  /// The value of the locally overridden logger level.
+  htuLoggerLevelValue,
+
+  /// A boolean flag to enable or disable log storage locally.
+  htuEnableLogsStorage,
+}
+
+/// Keys for configuring the logger via Firebase Remote Config.
 enum LoggerRemoteConfigKeys {
+  /// The UID of a user for whom the logger level should be set to `FINEST`.
   loggerUIDRootLevelFinest,
-  loggerDebugRootLevelName,
-  loggerRootLevelName,
-  loggerDebugRootLevelValue,
-  loggerRootLevelValue;
 
+  /// The default logger level name for debug builds.
+  loggerDebugRootLevelName,
+
+  /// The default logger level name for release builds.
+  loggerRootLevelName,
+
+  /// The default logger level value for debug builds.
+  loggerDebugRootLevelValue,
+
+  /// The default logger level value for release builds.
+  loggerRootLevelValue,
+
+  /// A boolean flag to enable or disable log storage via remote config.
+  enableLogsStorage;
+
+  /// Gets the appropriate remote config key for the logger level name based on
+  /// the build mode (`kDebugMode`).
   static String get levelName =>
       kDebugMode ? loggerDebugRootLevelName.name : loggerRootLevelName.name;
 
+  /// Gets the appropriate remote config key for the logger level value based on
+  /// the build mode (`kDebugMode`).
   static String get levelValue =>
       kDebugMode ? loggerDebugRootLevelValue.name : loggerRootLevelValue.name;
 }
@@ -51,16 +79,23 @@ class LoggerViewModel {
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;
 
+  /// A list of [LogRecord]s that have been captured but not yet written to
+  /// persistent storage.
   final List<LogRecord> notSavedLogRecords = List.empty(growable: true);
 
   final StreamController<void> _updateStreamController =
       StreamController<void>.broadcast();
+
+  /// A stream that emits an event whenever the log view needs to be updated,
+  /// for example, when filters change.
   Stream<void> get updateStream => _updateStreamController.stream;
 
   Level? _filterLevel;
   String? _filterText;
 
+  /// The name for the `FINEST` log level.
   static const String finestLoggerName = 'FINEST';
+  /// The value for the `FINEST` log level.
   static const int finestLoggerValue = 300;
 
   /// Provides the singleton instance of [LoggerViewModel].
@@ -165,6 +200,12 @@ class LoggerViewModel {
     );
   }
 
+  /// Gets the current effective logging [Level].
+  ///
+  /// The level is determined by the following order of precedence:
+  /// 1. A value set locally via [SharedPreferences].
+  /// 2. A `FINEST` level if the current user's UID matches the one in remote config.
+  /// 3. The default level from Firebase Remote Config for the current build mode.
   Future<Level> get level async => Level(
     await _sharedPrefsLoggerName ??
         ((FirebaseRemoteConfig.instance.getString(
@@ -186,6 +227,11 @@ class LoggerViewModel {
               )),
   );
 
+  /// Sets the logger level locally, overriding the remote config.
+  ///
+  /// This stores the selected [level] in [SharedPreferences]. If [level] is
+  /// `null`, the local override is removed, and the logger reverts to the
+  /// level specified by remote config.
   void setLevel(Level? level, {int? index}) async {
     if (level == null) {
       await SharedPreferencesAsync().remove(
@@ -206,6 +252,18 @@ class LoggerViewModel {
     }
     initialize(reconfigure: true);
   }
+
+  /// Determines whether log storage is enabled.
+  ///
+  /// Checks for a local override in [SharedPreferences] first. If not present,
+  /// it falls back to the value from Firebase Remote Config.
+  Future<bool> get enableLogsStorage async =>
+      (await SharedPreferencesAsync().getBool(
+        LoggerSharedPreferencesKeys.htuEnableLogsStorage.name,
+      )) ??
+      RemoteConfigViewModel.instance.getBool(
+        LoggerRemoteConfigKeys.enableLogsStorage.name,
+      );
 
   Future<String?> get _sharedPrefsLoggerName async =>
       (await SharedPreferencesAsync().getString(
@@ -546,6 +604,7 @@ class WriteLogsWorker extends Worker<List<LogRecord>, void> {
 /// manage storage space.
 class ResetLogsWorker extends Worker<DateTime, int> {
   /// Deletes log files older than the provided [toDateTime].
+  /// Returns the number of files deleted.
   @override
   String get debugName => runtimeType.toString();
   @override

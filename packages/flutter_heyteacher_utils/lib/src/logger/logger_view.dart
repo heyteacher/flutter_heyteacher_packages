@@ -21,6 +21,7 @@ import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../formats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
@@ -302,4 +303,50 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
       ),
     ),
   );
+}
+
+class EnableLogsStorageCard extends StatefulWidget {
+  const EnableLogsStorageCard({super.key});
+
+  @override
+  State<EnableLogsStorageCard> createState() =>
+      _EnableLogsStorageCardState();
+}
+
+class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
+  bool _enableLogsStorage = RemoteConfigViewModel.instance.getBool(
+    LoggerRemoteConfigKeys.enableLogsStorage.name,
+  );
+
+  @override
+  Widget build(BuildContext context) => Card(
+        child: ListTile(
+          leading: const Icon(Icons.speaker_phone),
+          title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
+              .enableLogsStorage),
+          subtitle: Text(
+            FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
+              RemoteConfigViewModel.instance.getBool(
+                LoggerRemoteConfigKeys.enableLogsStorage.name,
+              ),
+            ),
+          ),
+          trailing: FutureBuilder(
+            future: SharedPreferencesAsync().getBool(
+              LoggerSharedPreferencesKeys.htuEnableLogsStorage.name,
+            ),
+            builder: (context, asyncSnapshot) => Switch(
+              // This bool value toggles the switch.
+              value: asyncSnapshot.data ?? _enableLogsStorage,
+              onChanged: (bool value) {
+                setState(() => _enableLogsStorage = value);
+                SharedPreferencesAsync().setBool(
+                  LoggerSharedPreferencesKeys.htuEnableLogsStorage.name,
+                  value,
+                );
+              },
+            ),
+          ),
+        ),
+      );
 }

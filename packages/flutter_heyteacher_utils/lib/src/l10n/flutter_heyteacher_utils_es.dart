@@ -152,4 +152,7 @@ class FlutterHeyteacherUtilsLocalizationsEs
 
   @override
   String get search => 'Buscar';
+
+  @override
+  String get enableLogsStorage => 'Activar almacenamiento de registro';
 }

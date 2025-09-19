@@ -85,5 +85,7 @@
     }
   },
   "search": "Search",
-  "@search": {}
+  "@search": {},
+  "enableLogsStorage": "Enable Logs Storage",
+  "@enableLogsStorage": {}
 }

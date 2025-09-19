@@ -144,6 +144,9 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String get search => '';
+  
+  @override
+  String get enableLogsStorage => throw UnimplementedError();
 }
 
 class _MockLocalizationsDelegate

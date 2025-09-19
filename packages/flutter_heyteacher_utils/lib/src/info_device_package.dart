@@ -23,10 +23,12 @@ import 'package:flutter_heyteacher_utils/logger.dart';
 import 'package:flutter_heyteacher_utils/src/connectivity.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/storage.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 import 'package:flutter_heyteacher_utils/src/widgets.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
+import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -81,6 +83,7 @@ class DevicePackageInfoCard extends StatelessWidget {
 ///
 /// Access the singleton instance via `InfoDevicePackageModel.instance`.
 class InfoDevicePackageViewModel {
+  static final _logger = Logger('InfoDevicePackageViewModel');
   static InfoDevicePackageViewModel? _instance;
 
   /// Provides the singleton instance of [InfoDevicePackageViewModel].
@@ -167,8 +170,15 @@ class InfoDevicePackageViewModel {
   String get identifierInfo =>
       (AuthViewModel.instance().uid?.substring(0, 5)) ?? 'guest';
 
-  /// uploads the logs to Firebase Storage and returns the log filename
+  /// uploads the logs to Firebase Storage and returns the log filename.
+  /// 
+  /// If `enableLogsStorage` is false, returns "Logs storage disabled" message 
+  /// instead.
   Future<String> storeLogs({DateTime? startTime}) async {
+    if (!await LoggerViewModel.instance().enableLogsStorage) {
+      _logger.finest('enableLogsStorage is false, return null');
+      return 'Logs storage disabled';
+    }
     if (await ConnectivityViewModel.instance.notConnected) {
       // await connection
       await ConnectivityViewModel.instance.stream
@@ -200,6 +210,10 @@ class InfoDevicePackageViewModel {
   /// - A body containing the user's identifier, device information, and app version,
   ///   formatted for easy support.
   void _askSupport(BuildContext context) async {
+    assert(
+      RemoteConfigViewModel.instance.getString('supportEmail').isNotEmpty,
+      'supportEmail is empty',
+    );
     final i10n = FlutterHeyteacherUtilsLocalizations.of(context)!;
     if (await ConnectivityViewModel.instance.notConnected && context.mounted) {
       showSnackBar(
@@ -227,7 +241,7 @@ class InfoDevicePackageViewModel {
         '\n';
     final uri = Uri(
       scheme: 'mailto',
-      path: 'heyteacher70@gmail.com',
+      path: RemoteConfigViewModel.instance.getString('supportEmail'),
       query: 'subject=$subject&body=${Uri.encodeFull(body)}',
     );
     launchUrl(uri);

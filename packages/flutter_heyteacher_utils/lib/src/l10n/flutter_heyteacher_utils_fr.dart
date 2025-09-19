@@ -154,4 +154,7 @@ class FlutterHeyteacherUtilsLocalizationsFr
 
   @override
   String get search => 'Rechercher';
+
+  @override
+  String get enableLogsStorage => 'Activer le stockage des journaux';
 }

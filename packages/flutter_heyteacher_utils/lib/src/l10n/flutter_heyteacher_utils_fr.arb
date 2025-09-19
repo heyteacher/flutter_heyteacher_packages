@@ -91,5 +91,7 @@
     }
   },
   "search": "Rechercher",
-  "@search": {}
+  "@search": {},
+  "enableLogsStorage": "Activer le stockage des journaux",
+  "@enableLogsStorage": {}
 }

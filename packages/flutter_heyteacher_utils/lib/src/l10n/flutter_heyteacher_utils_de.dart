@@ -152,4 +152,7 @@ class FlutterHeyteacherUtilsLocalizationsDe
 
   @override
   String get search => 'Suche';
+
+  @override
+  String get enableLogsStorage => 'Protokollierungsspeicher aktivieren';
 }
