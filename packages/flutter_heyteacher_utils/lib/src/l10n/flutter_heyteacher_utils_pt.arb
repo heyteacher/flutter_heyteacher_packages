@@ -91,5 +91,7 @@
     }
   },
   "search": "Pesquisar",
-  "@search": {}
+  "@search": {},
+  "enableLogsStorage": "Ativar armazenamento de registro" ,
+  "@enableLogsStorage": {}
 }

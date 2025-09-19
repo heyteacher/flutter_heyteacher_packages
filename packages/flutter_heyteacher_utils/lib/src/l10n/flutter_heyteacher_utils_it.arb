@@ -65,5 +65,7 @@
     }
   },
   "search": "Cerca",
-  "@search": {}
+  "@search": {},
+  "enableLogsStorage": "Abilita lo storage dei log",
+  "@enableLogsStorage": {}
 }

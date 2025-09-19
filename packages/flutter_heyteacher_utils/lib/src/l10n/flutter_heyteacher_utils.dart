@@ -331,6 +331,12 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Search'**
   String get search;
+
+  /// No description provided for @enableLogsStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Logs Storage'**
+  String get enableLogsStorage;
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate

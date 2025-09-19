@@ -15,7 +15,12 @@ import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 ///   to Firebase Analytics.
 
 export 'src/logger/logger_view.dart'
-    show LoggerScreen, LoggerCard, LoggingLevelDropDownMenuCard, LoggingRouter;
+    show
+        LoggerScreen,
+        LoggerCard,
+        LoggingLevelDropDownMenuCard,
+        EnableLogsStorageCard,
+        LoggingRouter;
 
 export 'src/logger/logger_view_model.dart'
     show LoggerViewModel, LoggerRemoteConfigKeys;

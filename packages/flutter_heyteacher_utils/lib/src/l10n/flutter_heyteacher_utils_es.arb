@@ -87,5 +87,7 @@
     }
   },
   "search": "Buscar",
-  "@search": {}
+  "@search": {},
+  "enableLogsStorage": "Activar almacenamiento de registro",
+  "@enableLogsStorage": {}
 }
