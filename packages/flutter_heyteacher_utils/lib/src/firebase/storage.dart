@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:logging/logging.dart';
@@ -13,7 +15,7 @@ class StorageViewModel {
 
   final _storage = FirebaseStorage.instance;
 
-  Future<String?> uploadString(String filePath, String fileContent) async {
+  Future<String?> upload(String filePath, Uint8List fileContent) async {
     log.finest('<uploadFile>: filePath $filePath');
     try {
       if (AuthViewModel.instance().notAutenticated) {
@@ -23,7 +25,7 @@ class StorageViewModel {
       }
       final storageRef = _storage.ref();
       final fileRef = storageRef.child(filePath);
-      await fileRef.putString(fileContent);
+      await fileRef.putData(fileContent);
       final downloadURL = await fileRef.getDownloadURL();
       log.info('(uploadFile): filePath $filePath. File uploaded successfully '
           '$downloadURL');
