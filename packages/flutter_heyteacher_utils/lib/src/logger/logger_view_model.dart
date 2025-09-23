@@ -69,7 +69,7 @@ enum LoggerRemoteConfigKeys {
 class LoggerViewModel {
   final Logger _logger = Logger('LoggerViewModel');
 
-  StreamSubscription? _loggerSubscription;
+  StreamSubscription? _loggerSubscription, _loggerForTestSubscription;
 
   final WriteLogsWorker _writeLogsWorker = WriteLogsWorker();
 
@@ -112,6 +112,8 @@ class LoggerViewModel {
   /// memory leaks.
   dispose() {
     _loggerSubscription?.cancel();
+    _loggerForTestSubscription?.cancel();
+    _updateStreamController.close();
     _alreadyConfigured = false;
     _writeLogsWorker.close();
   }
@@ -198,6 +200,38 @@ class LoggerViewModel {
         identifierInfo: identifierInfo,
       ),
     );
+  }
+
+  @visibleForTesting
+  /// Initializes a basic logger for testing purposes.
+  ///
+  /// This method sets the root logger's level to `ALL` and attaches a listener
+  /// that prints formatted log records to the console when in `kDebugMode`.
+  /// It's designed to provide simple, readable log output for unit and widget
+  /// tests.
+  void initializeLogForTest([Level level = Level.ALL]) {
+    Logger.root.level = level;
+    _alreadyConfigured = true;
+    _loggerForTestSubscription?.cancel();
+    _loggerForTestSubscription = Logger.root.onRecord.listen((record) {
+      // format error and stack trace
+      final String error = record.error != null ? '\n${record.error}' : '';
+      final String stackTrace = record.stackTrace != null
+          ? '\n${record.stackTrace}'
+          : '';
+      // get uid from firebase auth
+      // print in standard output
+      if (kDebugMode) {
+        print(
+          '${FormatterHelper.timeWithSecondsFormat(record.time)} '
+          '- ${record.level.name} '
+          '- ${record.loggerName} '
+          '- ${record.message} '
+          '$error'
+          '$stackTrace',
+        );
+      }
+    });
   }
 
   /// Gets the current effective logging [Level].
