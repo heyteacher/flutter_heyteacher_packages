@@ -98,10 +98,12 @@ class MovingAverage {
     bool modifyInputDataList = false,
   }) {
     if (period <= 0) {
-      throw ArgumentError('Period must be greater than 0.');
+      throw ArgumentError('moving average: period ($period) must be '
+      'greater than 0.');
     }
     if (data.length < period) {
-      throw ArgumentError('data length must be greater or equal than period.');
+      throw ArgumentError('moving average: data length (${data.length}) '
+      'must be greater or equal than period ($period).');
     }
     final List<double> ma = data.toList();
     for (int i = 1; i < data.length; i++) {
