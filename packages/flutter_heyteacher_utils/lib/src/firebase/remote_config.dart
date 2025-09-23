@@ -7,11 +7,12 @@
 library;
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
 enum RemoteConfigKeys {
   remoteConfigFetchTimeoutInMilliseconds,
-  remoteConfigMinimumFetchIntervalInMinutes
+  remoteConfigMinimumFetchIntervalInMinutes,
 }
 
 class RemoteConfigViewModel {
@@ -23,7 +24,11 @@ class RemoteConfigViewModel {
   RemoteConfigViewModel._();
 
   /// Provides the singleton instance of [RemoteConfigViewModel].
-  static RemoteConfigViewModel get instance => _instance ??= RemoteConfigViewModel._();
+  static RemoteConfigViewModel get instance =>
+      _instance ??= RemoteConfigViewModel._();
+
+  @visibleForTesting
+  static set instance(RemoteConfigViewModel value) => _instance = value;
 
   /// Initializes Firebase Remote Config with default values and fetch settings.
   ///
@@ -42,16 +47,24 @@ class RemoteConfigViewModel {
 
       // firebase remote config
       await _remoteConfig.setDefaults(defaultParameters);
-      _remoteConfig.setConfigSettings(RemoteConfigSettings(
-        fetchTimeout: Duration(
+      _remoteConfig.setConfigSettings(
+        RemoteConfigSettings(
+          fetchTimeout: Duration(
             milliseconds: _remoteConfig.getInt(
-                RemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name)),
-        minimumFetchInterval: Duration(
-            minutes: _remoteConfig.getInt(RemoteConfigKeys
-                .remoteConfigMinimumFetchIntervalInMinutes.name)),
-      ));
+              RemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name,
+            ),
+          ),
+          minimumFetchInterval: Duration(
+            minutes: _remoteConfig.getInt(
+              RemoteConfigKeys.remoteConfigMinimumFetchIntervalInMinutes.name,
+            ),
+          ),
+        ),
+      );
       _remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
-        _logger.config('(initialize): activate remote config updated keys: ${event.updatedKeys}');
+        _logger.config(
+          '(initialize): activate remote config updated keys: ${event.updatedKeys}',
+        );
         _remoteConfig.activate();
       });
       await _remoteConfig.fetchAndActivate();

@@ -45,66 +45,79 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
   bool _warningAlreadyShowed = false;
   @override
   Widget build(BuildContext context) => FutureBuilder(
-      future: E2EEViewModel.instance(AuthViewModel.instance().uid).getAAD(),
-      builder: (_, aadSnapshot) => Card(
-            child: ListTile(
-              focusNode: widget.encryptionPassphraseFocusNode,
-              leading: const Icon(Icons.password),
-              title: StreamBuilder<User?>(
-                  stream: AuthViewModel.instance().stateChangesStream,
-                  builder: (_, userSnapshot) => TextField(
-                      enabled: userSnapshot.hasData,
-                      onChanged: (value) async => await _setPassphrase(value,
-                          oldValue: aadSnapshot.data),
-                      obscureText: !_passphraseVisibility &&
-                          (aadSnapshot.data?.isNotEmpty ?? false),
-                      decoration: InputDecoration(
-                          isDense: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: ThemeViewModel.instance()
-                                    .theme
-                                    .colorScheme
-                                    .onSurface),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(_passphraseVisibility
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                            onPressed: () => setState(() =>
-                                _passphraseVisibility = !_passphraseVisibility),
-                          ),
-                          labelText:
-                              FlutterHeyteacherUtilsLocalizations.of(context)!
-                                  .encryptionPassphrase),
-                      controller:
-                          TextEditingController(text: aadSnapshot.data ?? ''))),
+    future: E2EEViewModel.instance(AuthViewModel.instance().uid).getAAD(),
+    builder: (_, aadSnapshot) => Card(
+      child: ListTile(
+        focusNode: widget.encryptionPassphraseFocusNode,
+        leading: const Icon(Icons.password),
+        title: StreamBuilder<User?>(
+          stream: AuthViewModel.instance().stateChangesStream,
+          builder: (_, userSnapshot) => TextField(
+            enabled: userSnapshot.hasData,
+            onChanged: (value) async =>
+                await _setPassphrase(value, oldValue: aadSnapshot.data),
+            obscureText:
+                !_passphraseVisibility &&
+                (aadSnapshot.data?.isNotEmpty ?? false),
+            decoration: InputDecoration(
+              isDense: true,
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: ThemeViewModel.instance().theme.colorScheme.onSurface,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _passphraseVisibility
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                ),
+                onPressed: () => setState(
+                  () => _passphraseVisibility = !_passphraseVisibility,
+                ),
+              ),
+              labelText: FlutterHeyteacherUtilsLocalizations.of(
+                context,
+              )!.encryptionPassphrase,
             ),
-          ));
+            controller: TextEditingController(text: aadSnapshot.data ?? ''),
+          ),
+        ),
+      ),
+    ),
+  );
 
   Future<void> _setPassphrase(String value, {String? oldValue}) async {
     // first time, show a warning on change encryption password and
     // lost ability to decrypt data
     if (!_warningAlreadyShowed && (oldValue?.isNotEmpty ?? false)) {
       showConfirmCancelDialog(
-          context: context,
-          confirmCallback: (_) async {
-            await E2EEViewModel.instance(AuthViewModel.instance().uid).setAAD(aadValue: value);
-            _warningAlreadyShowed = true;
-            return null;
-          },
-          cancelCallback: (_) async {
-            setState(() {});
-            return null;
-          },
-          content: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-              .areYouSureToChangeEncryptionPassphrase));
+        context: context,
+        confirmCallback: (_) async {
+          await E2EEViewModel.instance(
+            AuthViewModel.instance().uid,
+          ).setAAD(aadValue: value);
+          _warningAlreadyShowed = true;
+          return null;
+        },
+        cancelCallback: (_) async {
+          setState(() {});
+          return null;
+        },
+        content: Text(
+          FlutterHeyteacherUtilsLocalizations.of(
+            context,
+          )!.areYouSureToChangeEncryptionPassphrase,
+        ),
+      );
     } else {
-      await E2EEViewModel.instance(AuthViewModel.instance().uid).setAAD(aadValue: value);
+      await E2EEViewModel.instance(
+        AuthViewModel.instance().uid,
+      ).setAAD(aadValue: value);
     }
   }
 }
@@ -112,12 +125,12 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
 class E2EESecretKeyCard extends StatefulWidget {
   final FocusNode _encryptionPassphraseFocusNode;
   final VoidCallback _secretKeyImportedCallback;
-  const E2EESecretKeyCard(
-      {required FocusNode encryptionPassphraseFocusNode,
-      required void Function() secretKeyImportedCallback,
-      super.key})
-      : _secretKeyImportedCallback = secretKeyImportedCallback,
-        _encryptionPassphraseFocusNode = encryptionPassphraseFocusNode;
+  const E2EESecretKeyCard({
+    required FocusNode encryptionPassphraseFocusNode,
+    required void Function() secretKeyImportedCallback,
+    super.key,
+  }) : _secretKeyImportedCallback = secretKeyImportedCallback,
+       _encryptionPassphraseFocusNode = encryptionPassphraseFocusNode;
 
   @override
   State<E2EESecretKeyCard> createState() => _E2EESecretKeyCardState();
@@ -126,114 +139,140 @@ class E2EESecretKeyCard extends StatefulWidget {
 class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
   @override
   Widget build(BuildContext context) => FutureBuilder<bool>(
-        future: E2EEViewModel.instance(AuthViewModel.instance().uid).secretKeyStored,
-        builder: (_, secretKeySnapshot) => Card(
-          child: ListTile(
-            leading: Icon(
-              secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
-              color: secretKeySnapshot.data ?? false
-                  ? ThemeViewModel.instance().greenColor
-                  : ThemeViewModel.instance().redColor,
-            ),
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 15.0),
-              child: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-                  .encryptionSecretKey),
-            ),
-            trailing: Wrap(children: [
-              IconButton(
-                  onPressed: () => AuthViewModel.instance().autenticated
-                      ? _showQrCode()
-                      : showConfirmCancelDialog(
-                          context: context,
-                          content:
-                              Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-                                  .userNotAuthenticated)),
-                  icon: const Icon(Icons.qr_code)),
-              IconButton(
-                  onPressed: () => _showQrCodeScanner(),
-                  icon: const Icon(Icons.qr_code_scanner)),
-            ]),
+    future: E2EEViewModel.instance(
+      AuthViewModel.instance().uid,
+    ).secretKeyStored,
+    builder: (_, secretKeySnapshot) => Card(
+      child: ListTile(
+        leading: Icon(
+          secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
+          color: secretKeySnapshot.data ?? false
+              ? ThemeViewModel.instance().greenColor
+              : ThemeViewModel.instance().redColor,
+        ),
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: Text(
+            FlutterHeyteacherUtilsLocalizations.of(
+              context,
+            )!.encryptionSecretKey,
           ),
         ),
-      );
+        trailing: Wrap(
+          children: [
+            IconButton(
+              onPressed: () => AuthViewModel.instance().autenticated
+                  ? _showQrCode()
+                  : showConfirmCancelDialog(
+                      context: context,
+                      content: Text(
+                        FlutterHeyteacherUtilsLocalizations.of(
+                          context,
+                        )!.userNotAuthenticated,
+                      ),
+                    ),
+              icon: const Icon(Icons.qr_code),
+            ),
+            IconButton(
+              onPressed: () => _showQrCodeScanner(),
+              icon: const Icon(Icons.qr_code_scanner),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 
   void _showQrCode() async {
     // remove focus on encryption passphrase
     widget._encryptionPassphraseFocusNode.unfocus();
     await showDialog(
-        useSafeArea: true,
-        context: context,
-        builder: (context) {
-          return FutureBuilder<String>(
-            future: E2EEViewModel.instance(AuthViewModel.instance().uid).exportSecretJwkJson(),
-            builder: (_, snapshot) => snapshot.hasData
-                ? AlertDialog(
-                    title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-                        .scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase),
-                    content: SizedBox(
-                        width: 500,
-                        child: QrImageView(
-                            data: snapshot.data!,
-                            backgroundColor: Colors.white)))
-                : snapshot.hasError
-                    ? AlertDialog(
-                        content: Text(
-                          snapshot.error.toString(),
-                        ),
-                        actions: <Widget>[
-                          IconButton(
-                            key: const ValueKey('ib_dialog_no'),
-                            icon: Icon(Icons.close,
-                                color: ThemeViewModel.instance()
-                                    .redColor),
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                          )
-                        ],
-                      )
-                    : const ProgressIndicatorView(),
-          );
-        });
+      useSafeArea: true,
+      context: context,
+      builder: (context) {
+        return FutureBuilder<String>(
+          future: E2EEViewModel.instance(
+            AuthViewModel.instance().uid,
+          ).exportSecretJwkJson(),
+          builder: (_, snapshot) => snapshot.hasData
+              ? AlertDialog(
+                  title: Text(
+                    FlutterHeyteacherUtilsLocalizations.of(
+                      context,
+                    )!.scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase,
+                  ),
+                  content: SizedBox(
+                    width: 500,
+                    child: QrImageView(
+                      data: snapshot.data!,
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                )
+              : snapshot.hasError
+              ? AlertDialog(
+                  content: Text(snapshot.error.toString()),
+                  actions: <Widget>[
+                    IconButton(
+                      key: const ValueKey('ib_dialog_no'),
+                      icon: Icon(
+                        Icons.close,
+                        color: ThemeViewModel.instance().redColor,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                    ),
+                  ],
+                )
+              : const ProgressIndicatorView(),
+        );
+      },
+    );
     setState(() {});
   }
 
   void _showQrCodeScanner() async {
     // get localized confirm question message before async invocation
-    final confirmQuestionMessage =
-        FlutterHeyteacherUtilsLocalizations.of(context)!
-            .areYouSureToImportEncryptionSecretKey;
+    final confirmQuestionMessage = FlutterHeyteacherUtilsLocalizations.of(
+      context,
+    )!.areYouSureToImportEncryptionSecretKey;
     widget._encryptionPassphraseFocusNode.unfocus();
     if (AuthViewModel.instance().notAutenticated) {
       showConfirmCancelDialog(
-          context: context,
-          content: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-              .userNotAuthenticated));
+        context: context,
+        content: Text(
+          FlutterHeyteacherUtilsLocalizations.of(context)!.userNotAuthenticated,
+        ),
+      );
       return;
     }
     String? secretJwkJson;
     await showDialog<bool>(
-        useSafeArea: true,
-        context: context,
-        builder: (context) => MobileScanner(onDetect: (barcodeCapture) {
-              if (barcodeCapture
-                      .barcodes.firstOrNull?.displayValue?.isNotEmpty ??
-                  false) {
-                secretJwkJson = barcodeCapture.barcodes.first.displayValue!;
-                Navigator.of(context).pop(true);
-              }
-            }));
+      useSafeArea: true,
+      context: context,
+      builder: (context) => MobileScanner(
+        onDetect: (barcodeCapture) {
+          if (barcodeCapture.barcodes.firstOrNull?.displayValue?.isNotEmpty ??
+              false) {
+            secretJwkJson = barcodeCapture.barcodes.first.displayValue!;
+            Navigator.of(context).pop(true);
+          }
+        },
+      ),
+    );
     if (secretJwkJson != null) {
       showConfirmCancelDialog(
         context: context.mounted ? context : context,
         content: Text(confirmQuestionMessage),
         confirmCallback: (_) async {
           // get localized success message before async invocation
-          final successMessage =
-              FlutterHeyteacherUtilsLocalizations.of(context)!
-                  .encryptionSecretKeyImported;
-          await E2EEViewModel.instance(AuthViewModel.instance().uid!).importSecretJwkJson(secretJwkJson!);
+          final successMessage = FlutterHeyteacherUtilsLocalizations.of(
+            context,
+          )!.encryptionSecretKeyImported;
+          await E2EEViewModel.instance(
+            AuthViewModel.instance().uid!,
+          ).importSecretJwkJson(secretJwkJson!);
           setState(() {});
           widget._secretKeyImportedCallback();
           return successMessage;
@@ -254,38 +293,53 @@ class E2EEViewModel {
 
   /// Key used in secure storage for the Additional Authenticated Data (AAD).
   /// Uniquely identifies the AAD for the current authenticated user.
-  String get _aadKey => '${_uid}_aad';
+  @visibleForTesting
+  String get aadKey => '${_uid}_aad';
 
   /// Key used in secure storage for the user's secret encryption key (in JWK format).
   /// Uniquely identifies the secret key for the current authenticated user.
-  String get _secretKeyKey => '${_uid}_secretKey';
+  @visibleForTesting
+  String get secretKeyKey => '${_uid}_secretKey';
 
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
-      (await _secureStorage).containsKey(key: _secretKeyKey);
+      (await _secureStorage).containsKey(key: secretKeyKey);
 
   // Singleton instance
-  static final Map<String?,E2EEViewModel?> _instances = {};
+  static final Map<String?, E2EEViewModel?> _instances = {};
 
   final String? _uid;
 
   /// Provides the singleton instance of the [E2EEViewModel] manager.
-  static E2EEViewModel instance(String? uid) => _instances[uid] ??= E2EEViewModel._(uid);
+  static E2EEViewModel instance(String? uid) =>
+      _instances[uid] ??= E2EEViewModel._(uid);
 
   /// Private constructor for the singleton.
   E2EEViewModel._(this._uid);
 
   FlutterSecureStorage? _secureStorageInstance;
-  
+
+  @visibleForTesting
+  set secureStorage(FlutterSecureStorage secureStorage) =>
+      _secureStorageInstance = secureStorage;
 
   /// Lazily initializes and returns the [FlutterSecureStorage] instance.
   /// Configures Android-specific options for encrypted shared preferences.
   Future<FlutterSecureStorage> get _secureStorage async {
     if (_secureStorageInstance != null) return _secureStorageInstance!;
     String appName = 'appName';
-    appName = (await PackageInfo.fromPlatform()).appName;
-    _secureStorageInstance =
-        FlutterSecureStorage(aOptions: _getAndroidOptions(appName));
+    try {
+      appName = (await PackageInfo.fromPlatform()).appName;
+    } catch (error, stackTrace) {
+      _logger.warning(
+        'unable to read app name, use \'appName\'',
+        error,
+        stackTrace,
+      );
+    }
+    _secureStorageInstance = FlutterSecureStorage(
+      aOptions: _getAndroidOptions(appName),
+    );
     return _secureStorageInstance!;
   }
 
@@ -293,9 +347,10 @@ class E2EEViewModel {
   ///
   /// Enables encrypted shared preferences, using the [appName] for naming.
   AndroidOptions _getAndroidOptions(String appName) => AndroidOptions(
-      encryptedSharedPreferences: true,
-      sharedPreferencesName: appName,
-      preferencesKeyPrefix: appName);
+    encryptedSharedPreferences: true,
+    sharedPreferencesName: appName,
+    preferencesKeyPrefix: appName,
+  );
 
   /// Encrypts the given [value] string using AES-GCM.
   ///
@@ -319,8 +374,8 @@ class E2EEViewModel {
 
     if (secretKey == null) {
       // first use, generate the key if non present in secure storage
-      if (!await secureStorage.containsKey(key: _secretKeyKey)) {
-        secretKey = await _generateSecretKey();
+      if (!await secureStorage.containsKey(key: secretKeyKey)) {
+        secretKey = await generateSecretKey();
       } else {
         // read the json jwk secret key from secure storage
         secretKey = await _readSecretKey();
@@ -335,8 +390,11 @@ class E2EEViewModel {
     final decryptedBytes = utf8.encode(value);
     // encrypt the value, with initial vector ad additional data provided
     try {
-      final encryptedBytes = await secretKey.encryptBytes(decryptedBytes, iv,
-          additionalData: aadBytes);
+      final encryptedBytes = await secretKey.encryptBytes(
+        decryptedBytes,
+        iv,
+        additionalData: aadBytes,
+      );
       // return string encoded with the initial vector
       return E2EEValue(value: encryptedBytes, iv: iv);
     } catch (error, stackTrace) {
@@ -351,8 +409,10 @@ class E2EEViewModel {
   /// If [secretKey] is not provided, it retrieves the user's secret key from secure storage.
   /// Returns the decrypted string.
   /// Throws [UserNotAuthenticatedException], [AADEmptyException], [MissingEncryptionSecretKeyException], or [ErrorOnDecryptException] on failure.
-  Future<String> decrypt(E2EEValue encrypted,
-      {AesGcmSecretKey? secretKey}) async {
+  Future<String> decrypt(
+    E2EEValue encrypted, {
+    AesGcmSecretKey? secretKey,
+  }) async {
     _logger.finest('<decrypt>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
@@ -368,7 +428,7 @@ class E2EEViewModel {
 
     // raise exception if key not found in secure storage
     if (secretKey == null &&
-        !await secureStorage.containsKey(key: _secretKeyKey)) {
+        !await secureStorage.containsKey(key: secretKeyKey)) {
       _logger.severe('decrypt: missing secret key');
       throw MissingEncryptionSecretKeyException();
     }
@@ -379,8 +439,10 @@ class E2EEViewModel {
     // decrypt value
     try {
       final decryptedBytes = await secretKey.decryptBytes(
-          encrypted.value, encrypted.iv,
-          additionalData: aadBytes);
+        encrypted.value,
+        encrypted.iv,
+        additionalData: aadBytes,
+      );
       // return string decripted utf8 decoding bytes
       final decrypted = utf8.decode(decryptedBytes);
       return decrypted;
@@ -406,7 +468,9 @@ class E2EEViewModel {
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
     secureStorage.write(
-        key: _aadKey, value: generate ? _generateAADValue() : aadValue);
+      key: aadKey,
+      value: generate ? _generateAADValue() : aadValue,
+    );
   }
 
   /// Retrieves the Additional Authenticated Data (AAD) for the current user.
@@ -420,7 +484,7 @@ class E2EEViewModel {
       return null;
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
-    return secureStorage.read(key: _aadKey);
+    return secureStorage.read(key: aadKey);
   }
 
   /// Exports the user's secret key as a JSON string.
@@ -433,7 +497,7 @@ class E2EEViewModel {
     AesGcmSecretKey secretKey;
     if (!await secretKeyStored) {
       // if secret key isn't already generated, generate it
-      secretKey = await _generateSecretKey();
+      secretKey = await generateSecretKey();
     } else {
       // read the secret key from secure storage
       secretKey = await _readSecretKey();
@@ -443,8 +507,10 @@ class E2EEViewModel {
     // encode json the jwk
     final secretJwkJson = jsonEncode(secretJwk);
     // encrypt key with master key
-    final e2eeValue =
-        await encrypt(secretJwkJson, secretKey: await _readMasterSecretKey());
+    final e2eeValue = await encrypt(
+      secretJwkJson,
+      secretKey: await _readMasterSecretKey(),
+    );
     // return json encode E2EE value
     return jsonEncode(e2eeValue);
   }
@@ -459,13 +525,15 @@ class E2EEViewModel {
     // deserialize E2EEValue from json
     final e2eeValue = E2EEValue.fromJson(jsonDecode(e2eeValueJson));
     // decrypt E2EEValue using Master Secret Key (and passphrase)
-    final secretJwkJson =
-        await decrypt(e2eeValue, secretKey: await _readMasterSecretKey());
+    final secretJwkJson = await decrypt(
+      e2eeValue,
+      secretKey: await _readMasterSecretKey(),
+    );
     // try to read secret key
     await _readSecretKeyFromJwkJson(secretJwkJson);
     // write the jwk json into storage
     final FlutterSecureStorage secureStorage = await _secureStorage;
-    await secureStorage.write(key: _secretKeyKey, value: secretJwkJson);
+    await secureStorage.write(key: secretKeyKey, value: secretJwkJson);
   }
 
   String _generateAADValue() {
@@ -480,7 +548,8 @@ class E2EEViewModel {
   /// and returns the [AesGcmSecretKey].
   ///
   /// Requires the user to be authenticated.
-  Future<AesGcmSecretKey> _generateSecretKey() async {
+  @visibleForTesting
+  Future<AesGcmSecretKey> generateSecretKey() async {
     _logger.finest('<_generateSecretKey>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
@@ -495,9 +564,10 @@ class E2EEViewModel {
     // encode json the jwk
     final secretJwkJson = jsonEncode(secretJwk);
     // write the jwk json into storage
-    secureStorage.write(key: _secretKeyKey, value: secretJwkJson);
+    secureStorage.write(key: secretKeyKey, value: secretJwkJson);
     _logger.info(
-        '(_generateSecretKey): new key generated stored in secureStorage');
+      '(_generateSecretKey): new key generated stored in secureStorage',
+    );
     // secret key in secure storage, load it
     return secretKey;
   }
@@ -515,8 +585,9 @@ class E2EEViewModel {
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
     // read the json jwk secret key from secure storage
-    final String secretJwkJson =
-        (await secureStorage.read(key: _secretKeyKey))!;
+    final String secretJwkJson = (await secureStorage.read(
+      key: secretKeyKey,
+    ))!;
     // decode the json jwk
     return await _readSecretKeyFromJwkJson(secretJwkJson);
   }
@@ -535,16 +606,19 @@ class E2EEViewModel {
     }
     // decode the json jwk
     return await _readSecretKeyFromJwkJson(
-        FirebaseRemoteConfig.instance.getString('masterSecretKeyJwk'));
+      FirebaseRemoteConfig.instance.getString('masterSecretKeyJwk'),
+    );
   }
 
   /// Imports an [AesGcmSecretKey] from its JWK (JSON Web Key) JSON representation.
   Future<AesGcmSecretKey> _readSecretKeyFromJwkJson(
-      String secretJwkJson) async {
+    String secretJwkJson,
+  ) async {
     _logger.finest('<_readSecretKeyFromJwkJson>:');
     final secretJwk = jsonDecode(secretJwkJson);
     _logger.finest(
-        "(_readSecretKeyFromJwkJson): secret key alg ${secretJwk["alg"]}");
+      "(_readSecretKeyFromJwkJson): secret key alg ${secretJwk["alg"]}",
+    );
     // import the jwk into secret key
     return await AesGcmSecretKey.importJsonWebKey(secretJwk);
   }
@@ -554,11 +628,10 @@ class E2EEViewModel {
   void initSecretKey() async {
     _logger.finest('<initSecretKey>:');
     if (!await secretKeyStored) {
-      _generateSecretKey();
+      generateSecretKey();
     }
   }
 }
-
 
 /// Exception thrown when an error occurs during the encryption process.
 /// Often indicates an issue with the AAD (passphrase) or the secret key.
@@ -567,8 +640,9 @@ class ErrorOnEncryptException implements Exception {
   @override
   String toString() {
     if (ContextHelper.context != null) {
-      return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
-          .errorOnEncryptionCheckPassphrase;
+      return FlutterHeyteacherUtilsLocalizations.of(
+        ContextHelper.context!,
+      )!.errorOnEncryptionCheckPassphrase;
     } else {
       return 'Error on encryption, check passphrase';
     }
@@ -582,8 +656,9 @@ class ErrorOnDecryptException implements Exception {
   @override
   String toString() {
     if (ContextHelper.context != null) {
-      return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
-          .errorOnDecryptionCheckPassphrase;
+      return FlutterHeyteacherUtilsLocalizations.of(
+        ContextHelper.context!,
+      )!.errorOnDecryptionCheckPassphrase;
     } else {
       return 'Error on decryption, check passphrase';
     }
@@ -596,8 +671,9 @@ class AADEmptyException implements Exception {
   @override
   String toString() {
     if (ContextHelper.context != null) {
-      return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
-          .encryptionPassphraseIsEmptySetIt;
+      return FlutterHeyteacherUtilsLocalizations.of(
+        ContextHelper.context!,
+      )!.encryptionPassphraseIsEmptySetIt;
     } else {
       return 'Encryption Passphrase is empty, set it';
     }
@@ -610,8 +686,9 @@ class MissingEncryptionSecretKeyException implements Exception {
   @override
   String toString() {
     if (ContextHelper.context != null) {
-      return FlutterHeyteacherUtilsLocalizations.of(ContextHelper.context!)!
-          .missingEncryptionSecretKeyImportIt;
+      return FlutterHeyteacherUtilsLocalizations.of(
+        ContextHelper.context!,
+      )!.missingEncryptionSecretKeyImportIt;
     } else {
       return 'Missing Encryption Secret Key, import it';
     }
