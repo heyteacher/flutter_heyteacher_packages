@@ -309,7 +309,7 @@ abstract class ChartView extends StatelessWidget {
         ..._horizontalRangeAnnotations?.map(
               (e) => HorizontalLine(
                   y: e.min.toDouble(),
-                  color: e.color.withValues(alpha: 0.4),
+                  color: e.color,
                   label: HorizontalLineLabel(
                       style: TextStyle(
                           color: e.color, fontWeight: FontWeight.bold),
@@ -340,11 +340,11 @@ abstract class ChartView extends StatelessWidget {
         ..._verticalRangeAnnotations?.map(
               (e) => VerticalLine(
                   x: e.min.toDouble(),
-                  color: e.color.withValues(alpha: 0.4),
+                  color: e.color,
                   label: VerticalLineLabel(
                       style: TextStyle(
                           color: e.color, fontWeight: FontWeight.bold),
-                      alignment: Alignment.topRight,
+                      alignment: Alignment.topLeft,
                       show: true,
                       labelResolver: (_) => e.label)),
             ) ??
@@ -353,7 +353,7 @@ abstract class ChartView extends StatelessWidget {
         ..._verticalRangeAnnotations?.map(
               (e) => VerticalLine(
                   x: e.max.toDouble(),
-                  color: e.color.withValues(alpha: 0.4),
+                  color: e.color,
                   label: VerticalLineLabel(
                       style: TextStyle(
                           color:
@@ -387,7 +387,7 @@ abstract class ChartView extends StatelessWidget {
             (e) => VerticalRangeAnnotation(
                 x1: max(e.min.toDouble(), minX.toDouble()),
                 x2: min(e.max.toDouble(), maxX.toDouble()),
-                color: e.color.withValues(alpha: 0.4)),
+                color: e.color.withValues(alpha: 0.2)),
           )
           .toList() ??
       [];
@@ -399,7 +399,7 @@ abstract class ChartView extends StatelessWidget {
             (e) => HorizontalRangeAnnotation(
                 y1: max(e.min.toDouble(), minY.toDouble()),
                 y2: min(e.max.toDouble(), maxY.toDouble()),
-                color: e.color.withValues(alpha: 0.4)),
+                color: e.color.withValues(alpha: 0.2)),
           )
           .toList() ??
       [];
