@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:flutter_heyteacher_charts/src/charts/chart_data.dart';
+import 'package:flutter_heyteacher_utils/formats.dart';
+import 'package:flutter_heyteacher_utils/theme.dart';
 
 import 'chart_view.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -11,7 +14,6 @@ class LineChartView extends ChartView {
       {super.key,
       super.title,
       required super.chartDataLists,
-
       required super.formatterAxisX,
       required super.formatterColorAxisX,
       super.reservedSizeX,
@@ -19,7 +21,6 @@ class LineChartView extends ChartView {
       super.minX,
       super.minIntervalX,
       super.axisNameWidgetX,
-
       required super.formatterAxisY,
       required super.formatterColorLine,
       required super.formatterColorAxisY,
@@ -28,7 +29,6 @@ class LineChartView extends ChartView {
       super.minY,
       super.minIntervalY,
       super.axisNameWidgetY,
-
       super.formatterAxisYAlt,
       super.formatterColorAxisYAlt,
       super.reservedSizeYAlt,
@@ -36,7 +36,6 @@ class LineChartView extends ChartView {
       super.minYAlt,
       super.minIntervalYAlt,
       super.axisNameWidgetYAlt,
-
       super.extraHorizontalLines,
       super.extraVerticalLines,
       super.horizontalRangeAnnotations,
@@ -66,9 +65,22 @@ class LineChartView extends ChartView {
       );
 
   LineChartData get _lineChartData => LineChartData(
-        lineTouchData: const LineTouchData(
-          enabled: false,
-        ),
+        lineTouchData: LineTouchData(
+            enabled: true,
+            touchTooltipData: LineTouchTooltipData(
+              getTooltipItems: (touchedSpots) => touchedSpots
+                  .mapIndexed((index, touchedSpot) => LineTooltipItem(
+                      formatterY?.call(
+                              index,
+                              ChartDataItem(
+                                  x: touchedSpot.x, y: touchedSpot.y)) ??
+                          FormatterHelper.doubleFormat(touchedSpot.y),
+                      TextStyle(color: formatterColorLine?.call(
+                            index, touchedSpot.y))))
+                  .toList(),
+              getTooltipColor: (touchedSpot) =>
+                  ThemeViewModel.instance().colorScheme.surface,
+            )),
         rangeAnnotations: RangeAnnotations(
             verticalRangeAnnotations: verticalRangeAnnotations,
             horizontalRangeAnnotations: horizontalRangeAnnotations),
