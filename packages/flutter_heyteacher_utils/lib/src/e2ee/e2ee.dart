@@ -33,8 +33,13 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:webcrypto/webcrypto.dart';
 
 class E2EEPassphraseCard extends StatefulWidget {
-  final FocusNode encryptionPassphraseFocusNode;
-  const E2EEPassphraseCard(this.encryptionPassphraseFocusNode, {super.key});
+  final FocusNode focusNode;
+  final VoidCallback setPassphraseCallback;
+  const E2EEPassphraseCard({
+    super.key,
+    required this.focusNode,
+    required this.setPassphraseCallback,
+  });
 
   @override
   State<E2EEPassphraseCard> createState() => _E2EEPassphraseCard();
@@ -48,7 +53,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
     future: E2EEViewModel.instance(AuthViewModel.instance().uid).getAAD(),
     builder: (_, aadSnapshot) => Card(
       child: ListTile(
-        focusNode: widget.encryptionPassphraseFocusNode,
+        focusNode: widget.focusNode,
         leading: const Icon(Icons.password),
         title: StreamBuilder<User?>(
           stream: AuthViewModel.instance().stateChangesStream,
@@ -102,6 +107,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
             AuthViewModel.instance().uid,
           ).setAAD(aadValue: value);
           _warningAlreadyShowed = true;
+          widget.setPassphraseCallback();
           return null;
         },
         cancelCallback: (_) async {
@@ -118,6 +124,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
       await E2EEViewModel.instance(
         AuthViewModel.instance().uid,
       ).setAAD(aadValue: value);
+      widget.setPassphraseCallback();
     }
   }
 }
@@ -365,9 +372,9 @@ class E2EEViewModel {
       _logger.severe('(encrypt): user not authenticated');
       throw UserNotAuthenticatedException();
     }
-    String aad = await getAAD() ?? '';
-    if (aad.isEmpty) {
-      _logger.severe('(encrypt): aad is empty');
+    final aad = await getAAD();
+    if (aad == null || aad.isEmpty) {
+      _logger.severe('(encrypt): aad not set');
       throw AADEmptyException();
     }
     final FlutterSecureStorage secureStorage = await _secureStorage;
@@ -585,9 +592,7 @@ class E2EEViewModel {
     }
     FlutterSecureStorage secureStorage = await _secureStorage;
     // read the json jwk secret key from secure storage
-    final String secretJwkJson = (await secureStorage.read(
-      key: secretKeyKey,
-    ))!;
+    final String secretJwkJson = (await secureStorage.read(key: secretKeyKey))!;
     // decode the json jwk
     return await _readSecretKeyFromJwkJson(secretJwkJson);
   }
