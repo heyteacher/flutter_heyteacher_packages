@@ -260,7 +260,7 @@ abstract class ChartView extends StatelessWidget {
           quarterTurns: rotate ? 0 : 3,
           child: Text(
             formatterAxisX(value),
-            style: ThemeViewModel.instance()
+            style: ThemeViewModel.instance
                 .theme
                 .textTheme
                 .bodySmall!
@@ -274,28 +274,28 @@ abstract class ChartView extends StatelessWidget {
         show: true,
         border: Border(
           bottom: BorderSide(
-              color: ThemeViewModel.instance()
+              color: ThemeViewModel.instance
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: 0.5),
               width: 1),
           left: BorderSide(
-              color: ThemeViewModel.instance()
+              color: ThemeViewModel.instance
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: 0.5),
               width: 1),
           right: BorderSide(
-              color: ThemeViewModel.instance()
+              color: ThemeViewModel.instance
                   .theme
                   .colorScheme
                   .onSurface
                   .withValues(alpha: rightTitlesLikeLeft ? 0.5 : 0),
               width: 1),
           top: BorderSide(
-              color: ThemeViewModel.instance()
+              color: ThemeViewModel.instance
                   .theme
                   .colorScheme
                   .onSurface
@@ -357,7 +357,7 @@ abstract class ChartView extends StatelessWidget {
                   label: VerticalLineLabel(
                       style: TextStyle(
                           color:
-                              ThemeViewModel.instance().colorScheme.onSurface,
+                              ThemeViewModel.instance.colorScheme.onSurface,
                           fontWeight: FontWeight.bold),
                       alignment: Alignment.topRight,
                       show: true,

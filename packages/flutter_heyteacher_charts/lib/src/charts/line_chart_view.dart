@@ -79,7 +79,7 @@ class LineChartView extends ChartView {
                             index, touchedSpot.y))))
                   .toList(),
               getTooltipColor: (touchedSpot) =>
-                  ThemeViewModel.instance().colorScheme.surface,
+                  ThemeViewModel.instance.colorScheme.surface,
             )),
         rangeAnnotations: RangeAnnotations(
             verticalRangeAnnotations: verticalRangeAnnotations,
