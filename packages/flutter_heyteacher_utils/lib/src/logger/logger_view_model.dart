@@ -245,7 +245,7 @@ class LoggerViewModel {
         ((FirebaseRemoteConfig.instance.getString(
                   LoggerRemoteConfigKeys.loggerUIDRootLevelFinest.name,
                 ) ==
-                AuthViewModel.instance().uid)
+                AuthViewModel.instance.uid)
             ? finestLoggerName
             : FirebaseRemoteConfig.instance.getString(
                 LoggerRemoteConfigKeys.levelName,
@@ -254,7 +254,7 @@ class LoggerViewModel {
         ((FirebaseRemoteConfig.instance.getString(
                   LoggerRemoteConfigKeys.loggerUIDRootLevelFinest.name,
                 ) ==
-                AuthViewModel.instance().uid)
+                AuthViewModel.instance.uid)
             ? finestLoggerValue
             : FirebaseRemoteConfig.instance.getInt(
                 LoggerRemoteConfigKeys.levelValue,

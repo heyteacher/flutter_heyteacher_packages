@@ -335,7 +335,7 @@ void main() {
     // Check if the style matches the expected style from the widget
     expect(
       textWidget.style?.color,
-      ThemeViewModel.instance().colorScheme.onError,
+      ThemeViewModel.instance.colorScheme.onError,
     );
     expect(
       textWidget.style?.fontSize,
@@ -355,7 +355,7 @@ void main() {
 
     expect(
       authTextWidget.style?.color,
-      ThemeViewModel.instance().colorScheme.onError,
+      ThemeViewModel.instance.colorScheme.onError,
     );
   });
 }

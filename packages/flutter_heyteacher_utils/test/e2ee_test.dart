@@ -33,15 +33,15 @@ void main() {
   auth.signInWithEmailAndPassword(email: userEmail, password: userEmail);
 
   // initialize Auth with MockFirebaseAuth
-  AuthViewModel.instance(mockedFirebaseAuth: auth);
-  E2EEViewModel.instance(AuthViewModel.instance().uid)
+   AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
+   E2EEViewModel.instance(AuthViewModel.instance.uid)
       .setAAD(aadValue: 'aadValue');
 
   group('encrypt decryp message:', () {
     test('encrypted decrypted empty message return same', () async {
       final originalMessage = '';
       final encrypted =
-          await E2EEViewModel.instance(AuthViewModel.instance().uid)
+          await E2EEViewModel.instance(AuthViewModel.instance.uid)
               .encrypt(originalMessage);
 
       expect(encrypted.value.isNotEmpty, true,
@@ -49,7 +49,7 @@ void main() {
       expect(encrypted.iv.isNotEmpty, true, reason: 'encrypted iv is empty');
 
       final decryptedMessage =
-          await E2EEViewModel.instance(AuthViewModel.instance().uid)
+          await E2EEViewModel.instance(AuthViewModel.instance.uid)
               .decrypt(encrypted);
       expect(originalMessage, decryptedMessage,
           reason:
@@ -59,7 +59,7 @@ void main() {
     test('encrypted decrypted message return same', () async {
       final originalMessage = 'this is a message';
       final encrypted =
-          await E2EEViewModel.instance(AuthViewModel.instance().uid)
+          await E2EEViewModel.instance(AuthViewModel.instance.uid)
               .encrypt(originalMessage);
 
       expect(encrypted.value.isNotEmpty, true,
@@ -67,7 +67,7 @@ void main() {
       expect(encrypted.iv.isNotEmpty, true, reason: 'encrypted iv is empty');
 
       final decryptedMessage =
-          await E2EEViewModel.instance(AuthViewModel.instance().uid)
+          await E2EEViewModel.instance(AuthViewModel.instance.uid)
               .decrypt(encrypted);
       expect(originalMessage, decryptedMessage,
           reason:

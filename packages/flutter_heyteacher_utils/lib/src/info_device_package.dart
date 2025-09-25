@@ -67,8 +67,8 @@ class DevicePackageInfoCard extends StatelessWidget {
       ),
       trailing: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: ThemeViewModel.instance().colorScheme.primary,
-          foregroundColor: ThemeViewModel.instance().colorScheme.onPrimary,
+          backgroundColor: ThemeViewModel.instance.colorScheme.primary,
+          foregroundColor: ThemeViewModel.instance.colorScheme.onPrimary,
         ),
         onPressed: () =>
             InfoDevicePackageViewModel.instance._askSupport(context),
@@ -170,7 +170,7 @@ class InfoDevicePackageViewModel {
   /// It returns the first 5 characters of the authenticated user's UID if available,
   /// otherwise defaults to "guest".
   String get identifierInfo =>
-      (AuthViewModel.instance().uid?.substring(0, 5)) ?? 'guest';
+      (AuthViewModel.instance.uid?.substring(0, 5)) ?? 'guest';
 
   /// uploads the logs to Firebase Storage and returns the log filename.
   ///
