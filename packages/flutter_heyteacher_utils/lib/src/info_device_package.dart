@@ -170,7 +170,7 @@ class InfoDevicePackageViewModel {
   /// It returns the first 5 characters of the authenticated user's UID if available,
   /// otherwise defaults to "guest".
   String get identifierInfo =>
-      (AuthViewModel.instance().uid?.substring(0, 5)) ?? 'guest';
+      (AuthViewModel.instance.uid?.substring(0, 5)) ?? 'guest';
 
   /// uploads the logs to Firebase Storage and returns the log filename.
   ///

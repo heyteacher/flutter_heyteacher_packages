@@ -50,13 +50,13 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
   bool _warningAlreadyShowed = false;
   @override
   Widget build(BuildContext context) => FutureBuilder(
-    future: E2EEViewModel.instance(AuthViewModel.instance().uid).getAAD(),
+    future: E2EEViewModel.instance(AuthViewModel.instance.uid).getAAD(),
     builder: (_, aadSnapshot) => Card(
       child: ListTile(
         focusNode: widget.focusNode,
         leading: const Icon(Icons.password),
         title: StreamBuilder<User?>(
-          stream: AuthViewModel.instance().stateChangesStream,
+          stream: AuthViewModel.instance.stateChangesStream,
           builder: (_, userSnapshot) => TextField(
             enabled: userSnapshot.hasData,
             onChanged: (value) async =>
@@ -104,7 +104,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
         context: context,
         confirmCallback: (_) async {
           await E2EEViewModel.instance(
-            AuthViewModel.instance().uid,
+            AuthViewModel.instance.uid,
           ).setAAD(aadValue: value);
           _warningAlreadyShowed = true;
           widget.setPassphraseCallback();
@@ -122,7 +122,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
       );
     } else {
       await E2EEViewModel.instance(
-        AuthViewModel.instance().uid,
+        AuthViewModel.instance.uid,
       ).setAAD(aadValue: value);
       widget.setPassphraseCallback();
     }
@@ -147,7 +147,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
   @override
   Widget build(BuildContext context) => FutureBuilder<bool>(
     future: E2EEViewModel.instance(
-      AuthViewModel.instance().uid,
+      AuthViewModel.instance.uid,
     ).secretKeyStored,
     builder: (_, secretKeySnapshot) => Card(
       child: ListTile(
@@ -168,7 +168,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
         trailing: Wrap(
           children: [
             IconButton(
-              onPressed: () => AuthViewModel.instance().autenticated
+              onPressed: () => AuthViewModel.instance.autenticated
                   ? _showQrCode()
                   : showConfirmCancelDialog(
                       context: context,
@@ -199,7 +199,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
       builder: (context) {
         return FutureBuilder<String>(
           future: E2EEViewModel.instance(
-            AuthViewModel.instance().uid,
+            AuthViewModel.instance.uid,
           ).exportSecretJwkJson(),
           builder: (_, snapshot) => snapshot.hasData
               ? AlertDialog(
@@ -245,7 +245,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
       context,
     )!.areYouSureToImportEncryptionSecretKey;
     widget._encryptionPassphraseFocusNode.unfocus();
-    if (AuthViewModel.instance().notAutenticated) {
+    if (AuthViewModel.instance.notAutenticated) {
       showConfirmCancelDialog(
         context: context,
         content: Text(
@@ -278,7 +278,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
             context,
           )!.encryptionSecretKeyImported;
           await E2EEViewModel.instance(
-            AuthViewModel.instance().uid!,
+            AuthViewModel.instance.uid!,
           ).importSecretJwkJson(secretJwkJson!);
           setState(() {});
           widget._secretKeyImportedCallback();

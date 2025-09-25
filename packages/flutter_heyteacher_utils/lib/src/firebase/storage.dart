@@ -18,7 +18,7 @@ class StorageViewModel {
   Future<String?> upload(String filePath, Uint8List fileContent) async {
     log.finest('<uploadFile>: filePath $filePath');
     try {
-      if (AuthViewModel.instance().notAutenticated) {
+      if (AuthViewModel.instance.notAutenticated) {
         log.warning('(uploadFile): filePath $filePath. User not authenticated, '
             'cannot upload file in Storage');
         return null;
