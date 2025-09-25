@@ -139,7 +139,7 @@ class _LoggerScreenState
   Widget _buildFilterDropdown() => PinnedHeaderSliver(
     child: Container(
       padding: const EdgeInsets.only(bottom: 4),
-      color: ThemeViewModel.instance().colorScheme.onPrimary,
+      color: ThemeViewModel.instance.colorScheme.onPrimary,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -255,19 +255,19 @@ class LogEntryCard extends StatelessWidget {
 
   /// Determines the background color for a log entry based on its [Level].
   static Color? _backgroundColor(Level level) => switch (level) {
-    Level.SHOUT => ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
-    Level.SEVERE => ThemeViewModel.instance().redColor.withValues(alpha: 0.4),
-    Level.WARNING => ThemeViewModel.instance().orangeColor.withValues(
+    Level.SHOUT => ThemeViewModel.instance.redColor.withValues(alpha: 0.4),
+    Level.SEVERE => ThemeViewModel.instance.redColor.withValues(alpha: 0.4),
+    Level.WARNING => ThemeViewModel.instance.orangeColor.withValues(
       alpha: 0.4,
     ),
-    Level.CONFIG => ThemeViewModel.instance().orangeColor.withValues(
+    Level.CONFIG => ThemeViewModel.instance.orangeColor.withValues(
       alpha: 0.4,
     ),
-    Level.CONFIG => ThemeViewModel.instance().yellowColor.withValues(
+    Level.CONFIG => ThemeViewModel.instance.yellowColor.withValues(
       alpha: 0.4,
     ),
-    Level.INFO => ThemeViewModel.instance().greenColor.withValues(alpha: 0.4),
-    _ => ThemeViewModel.instance().blueColor.withValues(alpha: 0.4),
+    Level.INFO => ThemeViewModel.instance.greenColor.withValues(alpha: 0.4),
+    _ => ThemeViewModel.instance.blueColor.withValues(alpha: 0.4),
   };
 }
 

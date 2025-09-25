@@ -67,8 +67,8 @@ class DevicePackageInfoCard extends StatelessWidget {
       ),
       trailing: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: ThemeViewModel.instance().colorScheme.primary,
-          foregroundColor: ThemeViewModel.instance().colorScheme.onPrimary,
+          backgroundColor: ThemeViewModel.instance.colorScheme.primary,
+          foregroundColor: ThemeViewModel.instance.colorScheme.onPrimary,
         ),
         onPressed: () =>
             InfoDevicePackageViewModel.instance._askSupport(context),

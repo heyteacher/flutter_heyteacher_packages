@@ -82,14 +82,14 @@ void showSnackBar({
                 ),
           ),
           backgroundColor: error
-              ? ThemeViewModel.instance().colorScheme.onError
-              : ThemeViewModel.instance().greenColor,
+              ? ThemeViewModel.instance.colorScheme.onError
+              : ThemeViewModel.instance.greenColor,
           content: Text(
             message,
             style: TextStyle(
               color: error
-                  ? ThemeViewModel.instance().colorScheme.error
-                  : ThemeViewModel.instance().theme.colorScheme.onPrimary,
+                  ? ThemeViewModel.instance.colorScheme.error
+                  : ThemeViewModel.instance.theme.colorScheme.onPrimary,
             ),
           ),
         ),
@@ -127,7 +127,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
         actions: <Widget>[
           IconButton(
             key: const ValueKey('ib_dialog_no'),
-            icon: Icon(Icons.close, color: ThemeViewModel.instance().redColor),
+            icon: Icon(Icons.close, color: ThemeViewModel.instance.redColor),
             onPressed: () {
               // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
               SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -197,7 +197,7 @@ class TooltipIconButton extends StatelessWidget {
     child: Icon(
       Icons.info,
       size: iconSize,
-      color: iconColor ?? ThemeViewModel.instance().colorScheme.onSurface,
+      color: iconColor ?? ThemeViewModel.instance.colorScheme.onSurface,
     ),
     onTap: () => showConfirmCancelDialog(
       context: context,
@@ -248,7 +248,7 @@ class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
   TextStyle _noDataStyleContent(context) => Theme.of(context)
       .textTheme
       .headlineMedium!
-      .copyWith(color: ThemeViewModel.instance().orangeColor);
+      .copyWith(color: ThemeViewModel.instance.orangeColor);
 }
 
 /// Displays different error states to the user.
@@ -347,7 +347,7 @@ class ErrorView extends StatelessWidget {
   TextStyle _errorStyleContent(context) => Theme.of(context)
       .textTheme
       .headlineMedium!
-      .copyWith(color: ThemeViewModel.instance().colorScheme.onError);
+      .copyWith(color: ThemeViewModel.instance.colorScheme.onError);
 }
 
 /// a Generics implementation of [DropdownMenu].
@@ -602,7 +602,7 @@ abstract class TableView extends StatelessWidget {
   }) => _valueText(
     context,
     text,
-    color: ThemeViewModel.instance().blueColor,
+    color: ThemeViewModel.instance.blueColor,
     textAlign: textAlign,
   );
 
@@ -615,7 +615,7 @@ abstract class TableView extends StatelessWidget {
   }) => _valueText(
     context,
     text,
-    color: ThemeViewModel.instance().orangeColor,
+    color: ThemeViewModel.instance.orangeColor,
     textAlign: textAlign,
   );
 
@@ -628,7 +628,7 @@ abstract class TableView extends StatelessWidget {
   }) => _valueText(
     context,
     text,
-    color: ThemeViewModel.instance().redColor,
+    color: ThemeViewModel.instance.redColor,
     textAlign: textAlign,
   );
 
@@ -641,7 +641,7 @@ abstract class TableView extends StatelessWidget {
   }) => _valueText(
     context,
     text,
-    color: ThemeViewModel.instance().yellowColor,
+    color: ThemeViewModel.instance.yellowColor,
     textAlign: textAlign,
   );
 
@@ -654,7 +654,7 @@ abstract class TableView extends StatelessWidget {
   }) => _valueText(
     context,
     text,
-    color: ThemeViewModel.instance().greenColor,
+    color: ThemeViewModel.instance.greenColor,
     textAlign: textAlign,
   );
 

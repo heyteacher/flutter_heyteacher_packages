@@ -68,7 +68,7 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
               isDense: true,
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: ThemeViewModel.instance().theme.colorScheme.onSurface,
+                  color: ThemeViewModel.instance.theme.colorScheme.onSurface,
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -154,8 +154,8 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
         leading: Icon(
           secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
           color: secretKeySnapshot.data ?? false
-              ? ThemeViewModel.instance().greenColor
-              : ThemeViewModel.instance().redColor,
+              ? ThemeViewModel.instance.greenColor
+              : ThemeViewModel.instance.redColor,
         ),
         title: Padding(
           padding: const EdgeInsets.only(bottom: 15.0),
@@ -224,7 +224,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                       key: const ValueKey('ib_dialog_no'),
                       icon: Icon(
                         Icons.close,
-                        color: ThemeViewModel.instance().redColor,
+                        color: ThemeViewModel.instance.redColor,
                       ),
                       onPressed: () {
                         Navigator.of(context).pop(false);

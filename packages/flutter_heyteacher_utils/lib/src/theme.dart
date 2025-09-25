@@ -28,40 +28,40 @@ class ThemeCard extends StatefulWidget {
 class ThemeCardState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Card(
-        child: ListTile(
-          leading: const Icon(Icons.contrast),
-          title: Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 2,
-            children: [
-              ChoiceChip(
-                  selected:
-                      ThemeMode.system == ThemeViewModel.instance().themeMode,
-                  label: Text(ThemeMode.system.name),
-                  avatar: const Icon(Icons.smartphone),
-                  showCheckmark: false,
-                  onSelected: (bool selected) =>
-                      onSelected(selected ? ThemeMode.system : null)),
-              ChoiceChip(
-                  selected:
-                      ThemeMode.dark == ThemeViewModel.instance().themeMode,
-                  label: Text(ThemeMode.dark.name),
-                  avatar: const Icon(Icons.dark_mode),
-                  showCheckmark: false,
-                  onSelected: (bool selected) =>
-                      onSelected(selected ? ThemeMode.dark : null)),
-              ChoiceChip(
-                  selected:
-                      ThemeMode.light == ThemeViewModel.instance().themeMode,
-                  label: Text(ThemeMode.light.name),
-                  avatar: const Icon(Icons.light_mode),
-                  showCheckmark: false,
-                  onSelected: (bool selected) =>
-                      onSelected(selected ? ThemeMode.light : null)),
-            ],
+    child: ListTile(
+      leading: const Icon(Icons.contrast),
+      title: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 2,
+        children: [
+          ChoiceChip(
+            selected: ThemeMode.system == ThemeViewModel.instance.themeMode,
+            label: Text(ThemeMode.system.name),
+            avatar: const Icon(Icons.smartphone),
+            showCheckmark: false,
+            onSelected: (bool selected) =>
+                onSelected(selected ? ThemeMode.system : null),
           ),
-        ),
-      );
+          ChoiceChip(
+            selected: ThemeMode.dark == ThemeViewModel.instance.themeMode,
+            label: Text(ThemeMode.dark.name),
+            avatar: const Icon(Icons.dark_mode),
+            showCheckmark: false,
+            onSelected: (bool selected) =>
+                onSelected(selected ? ThemeMode.dark : null),
+          ),
+          ChoiceChip(
+            selected: ThemeMode.light == ThemeViewModel.instance.themeMode,
+            label: Text(ThemeMode.light.name),
+            avatar: const Icon(Icons.light_mode),
+            showCheckmark: false,
+            onSelected: (bool selected) =>
+                onSelected(selected ? ThemeMode.light : null),
+          ),
+        ],
+      ),
+    ),
+  );
 
   /// Called when a [ChoiceChip] is selected.
   ///
@@ -70,9 +70,8 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
   /// it defaults to [ThemeMode.system].
   @protected
   void onSelected(ThemeMode? newSelection) => setState(() {
-        ThemeViewModel.instance()
-            .setThemeMode(newSelection ?? ThemeMode.system);
-      });
+    ThemeViewModel.instance.setThemeMode(newSelection ?? ThemeMode.system);
+  });
 }
 
 /// Manages the application's theme, including light and dark modes,
@@ -102,7 +101,8 @@ class ThemeViewModel {
     Color surface,
     Color onSurfaceVariant,
     Color surfaceContainer,
-  }) _initialDarkColorScheme, _initialLightColorScheme;
+  }) _darkColorScheme,
+      _lightColorScheme;
 
   /// The [ThemeData] for the dark theme.
   ThemeData darkTheme = ThemeData.dark(), lightTheme = ThemeData.light();
@@ -113,8 +113,8 @@ class ThemeViewModel {
   /// Otherwise, it uses the explicitly set light or dark theme.
   ThemeData get theme =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? lightTheme
-          : darkTheme;
+      ? lightTheme
+      : darkTheme;
 
   /// The key used to store the selected theme mode in [SharedPreferences].
   static const _sharedPreferencesThemeModeKey = 'fhuThemeMode';
@@ -139,158 +139,167 @@ class ThemeViewModel {
   /// Gets a red color that adapts to the current theme (light/dark).
   Color get redColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.red.shade700
-          : Colors.red.shade300;
+      ? Colors.red.shade700
+      : Colors.red.shade300;
 
   /// Gets a blue color that adapts to the current theme (light/dark).
   Color get blueColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.blue.shade700
-          : Colors.blue.shade300;
+      ? Colors.blue.shade700
+      : Colors.blue.shade300;
 
   /// Gets a yellow color that adapts to the current theme (light/dark).
   Color get yellowColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.yellow.shade700
-          : Colors.yellow.shade300;
+      ? Colors.yellow.shade700
+      : Colors.yellow.shade300;
 
   /// Gets a green color that adapts to the current theme (light/dark).
   Color get greenColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.green.shade700
-          : Colors.green.shade300;
+      ? Colors.green.shade700
+      : Colors.green.shade300;
 
   /// Gets an orange color that adapts to the current theme (light/dark).
   Color get orangeColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.orange.shade700
-          : Colors.orange.shade300;
+      ? Colors.orange.shade700
+      : Colors.orange.shade300;
 
   /// get the purple color based on the current theme mode
   Color get purpleColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.purple.shade700
-          : Colors.purple.shade300;
+      ? Colors.purple.shade700
+      : Colors.purple.shade300;
 
   /// get the purple color based on the current theme mode
   Color get deepPurpleColor =>
       _themeMode == ThemeMode.light || _brightness == Brightness.light
-          ? Colors.deepPurple.shade700
-          : Colors.deepPurple.shade300;
+      ? Colors.deepPurple.shade700
+      : Colors.deepPurple.shade300;
 
-  static ThemeViewModel? _instance;
+  static final ({
+    Color primary,
+    Color disabled,
+    Color onPrimary,
+    Color secondary,
+    Color onSecondary,
+    Color error,
+    Color onError,
+    Color onSurface,
+    Color surface,
+    Color onSurfaceVariant,
+    Color surfaceContainer,
+  })
+  _defaultDarkColorScheme = (
+    primary: Colors.white,
+    disabled: Colors.white38,
+    onPrimary: Colors.black,
+    secondary: Colors.white70,
+    onSecondary: Colors.grey.shade900,
+    error: Colors.white,
+    onError: Colors.redAccent,
+    surface: Colors.black.withValues(alpha: 0.8),
+    onSurface: Colors.white70,
+    surfaceContainer: Colors.grey.shade900,
+    onSurfaceVariant: Colors.white,
+  );
+
+  static final ({
+    Color primary,
+    Color disabled,
+    Color onPrimary,
+    Color secondary,
+    Color onSecondary,
+    Color error,
+    Color onError,
+    Color onSurface,
+    Color surface,
+    Color onSurfaceVariant,
+    Color surfaceContainer,
+  })
+  _defaultLightColorScheme = (
+    primary: Colors.black,
+    disabled: Colors.grey.shade700,
+    onPrimary: Colors.white,
+    secondary: Colors.grey.shade900,
+    onSecondary: Colors.white70,
+    error: Colors.white,
+    onError: Colors.red,
+    surface: Colors.white.withValues(alpha: 0.8),
+    onSurface: Colors.grey.shade900,
+    surfaceContainer: Colors.grey.shade300,
+    onSurfaceVariant: Colors.black,
+  );
 
   /// Provides the singleton instance of [ThemeViewModel].
   ///
   /// On first call, it initializes the [ThemeViewModel] with optional
-  /// [initialDarkColorScheme] and [initialLightColorScheme]. If these are not
+  /// [_defaultDarkColorScheme] and [_defaultLightColorScheme]. If these are not
   /// provided, default color schemes are used.
   ///
   /// Subsequent calls return the existing instance.
   /// This method also triggers the loading of the persisted theme mode.
-  static ThemeViewModel instance(
-          {({
-            Color primary,
-            Color disabled,
-            Color onPrimary,
-            Color secondary,
-            Color onSecondary,
-            Color error,
-            Color onError,
-            Color onSurface,
-            Color surface,
-            Color onSurfaceVariant,
-            Color surfaceContainer,
-          })? initialDarkColorScheme,
-          ({
-            Color primary,
-            Color disabled,
-            Color onPrimary,
-            Color secondary,
-            Color onSecondary,
-            Color error,
-            Color onError,
-            Color onSurface,
-            Color surface,
-            Color onSurfaceVariant,
-            Color surfaceContainer,
-          })? initialLightColorScheme}) =>
-      _instance ??= ThemeViewModel._(
-          initialDarkColorScheme: initialDarkColorScheme ??
-              (
-                primary: Colors.white,
-                disabled: Colors.white38,
-                onPrimary: Colors.black,
-                secondary: Colors.white70,
-                onSecondary: Colors.grey.shade900,
-                error: Colors.white,
-                onError: Colors.redAccent,
-                surface: Colors.black.withValues(alpha: 0.8),
-                onSurface: Colors.white70,
-                surfaceContainer: Colors.grey.shade900,
-                onSurfaceVariant: Colors.white
-              ),
-          initialLightColorScheme: initialLightColorScheme ??
-              (
-                primary: Colors.black,
-                disabled: Colors.grey.shade700,
-                onPrimary: Colors.white,
-                secondary: Colors.grey.shade900,
-                onSecondary: Colors.white70,
-                error: Colors.white,
-                onError: Colors.red,
-                surface: Colors.white.withValues(alpha: 0.8),
-                onSurface: Colors.grey.shade900,
-                surfaceContainer: Colors.grey.shade300,
-                onSurfaceVariant: Colors.black
-              ));
+  static ThemeViewModel? _instance;
+  static ThemeViewModel get instance => _instance ??= ThemeViewModel(
+    darkColorScheme: _defaultDarkColorScheme,
+    lightColorScheme: _defaultLightColorScheme,
+  );
+  static set instance(ThemeViewModel instance) => _instance = instance;
 
   /// Private constructor for the [ThemeViewModel] singleton.
   ///
-  /// Initializes [_initialLightColorScheme] and [_initialDarkColorScheme],
+  /// Initializes [_lightColorScheme] and [_darkColorScheme],
   /// sets the default [_themeMode] to [ThemeMode.system],
   /// creates the initial [darkTheme] and [lightTheme] based on the provided schemes,
   /// and attempts to load the persisted theme mode from [SharedPreferencesAsync].
-  ThemeViewModel._(
-      {required ({
-        Color primary,
-        Color disabled,
-        Color onPrimary,
-        Color secondary,
-        Color onSecondary,
-        Color error,
-        Color onError,
-        Color onSurface,
-        Color surface,
-        Color onSurfaceVariant,
-        Color surfaceContainer,
-      }) initialDarkColorScheme,
-      required ({
-        Color primary,
-        Color disabled,
-        Color onPrimary,
-        Color secondary,
-        Color onSecondary,
-        Color error,
-        Color onError,
-        Color onSurface,
-        Color surface,
-        Color onSurfaceVariant,
-        Color surfaceContainer,
-      }) initialLightColorScheme})
-      : _initialLightColorScheme = initialLightColorScheme,
-        _initialDarkColorScheme = initialDarkColorScheme,
-        _themeMode = ThemeMode.system {
+  ThemeViewModel({
+    required ({
+      Color primary,
+      Color disabled,
+      Color onPrimary,
+      Color secondary,
+      Color onSecondary,
+      Color error,
+      Color onError,
+      Color onSurface,
+      Color surface,
+      Color onSurfaceVariant,
+      Color surfaceContainer,
+    })
+    darkColorScheme,
+    required ({
+      Color primary,
+      Color disabled,
+      Color onPrimary,
+      Color secondary,
+      Color onSecondary,
+      Color error,
+      Color onError,
+      Color onSurface,
+      Color surface,
+      Color onSurfaceVariant,
+      Color surfaceContainer,
+    })
+    lightColorScheme,
+  }) : _lightColorScheme = lightColorScheme,
+       _darkColorScheme = darkColorScheme,
+       _themeMode = ThemeMode.system {
     // initialize dark and light theme
     darkTheme = _themeData(
-        themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
+      themeMode: ThemeMode.dark,
+      colorScheme: _darkColorScheme,
+    );
     lightTheme = _themeData(
-        themeMode: ThemeMode.dark, colorScheme: _initialLightColorScheme);
+      themeMode: ThemeMode.dark,
+      colorScheme: _lightColorScheme,
+    );
 
-    SharedPreferencesAsync()
-        .getString(_sharedPreferencesThemeModeKey)
-        .then((themeModeName) {
-      _themeMode = ThemeMode.values
+    SharedPreferencesAsync().getString(_sharedPreferencesThemeModeKey).then((
+      themeModeName,
+    ) {
+      _themeMode =
+          ThemeMode.values
               .where((element) => element.name == themeModeName)
               .firstOrNull ??
           ThemeMode.system;
@@ -306,8 +315,10 @@ class ThemeViewModel {
   /// and an event is emitted on the [themeStream] to notify listeners.
   Future<void> setThemeMode(ThemeMode themeMode) async {
     _themeMode = themeMode;
-    await SharedPreferencesAsync()
-        .setString(_sharedPreferencesThemeModeKey, themeMode.name);
+    await SharedPreferencesAsync().setString(
+      _sharedPreferencesThemeModeKey,
+      themeMode.name,
+    );
     _themeStreamController.sink.add(theme);
   }
 
@@ -318,9 +329,13 @@ class ThemeViewModel {
   /// An event is emitted on the [themeStream].
   void setDefault() {
     darkTheme = _themeData(
-        themeMode: ThemeMode.dark, colorScheme: _initialDarkColorScheme);
+      themeMode: ThemeMode.dark,
+      colorScheme: _darkColorScheme,
+    );
     lightTheme = _themeData(
-        themeMode: ThemeMode.light, colorScheme: _initialLightColorScheme);
+      themeMode: ThemeMode.light,
+      colorScheme: _lightColorScheme,
+    );
     _themeStreamController.sink.add(theme);
   }
 
@@ -379,10 +394,14 @@ class ThemeViewModel {
           surfaceContainer: surfaceContainer?.dark,
           onSurfaceVariant: onSurfaceVariant?.dark,
         );
-    lightTheme =
-        _themeData(themeMode: ThemeMode.light, colorScheme: lightColorScheme);
-    darkTheme =
-        _themeData(themeMode: ThemeMode.dark, colorScheme: darkColorScheme);
+    lightTheme = _themeData(
+      themeMode: ThemeMode.light,
+      colorScheme: lightColorScheme,
+    );
+    darkTheme = _themeData(
+      themeMode: ThemeMode.dark,
+      colorScheme: darkColorScheme,
+    );
     _themeStreamController.sink.add(theme);
   }
 
@@ -393,8 +412,8 @@ class ThemeViewModel {
   /// If [themeMode] is not provided, the current [_themeMode] is used.
   Color? themeForegroundColor(Color? color, {ThemeMode? themeMode}) =>
       (themeMode ?? _themeMode) == ThemeMode.light
-          ? Color.lerp(color, Colors.black, 0.7)
-          : Color.lerp(color, Colors.white, 0.7);
+      ? Color.lerp(color, Colors.black, 0.7)
+      : Color.lerp(color, Colors.white, 0.7);
 
   /// Calculates a suitable background color based on a given [color] and [themeMode].
   ///
@@ -403,16 +422,16 @@ class ThemeViewModel {
   /// If [themeMode] is not provided, the current [_themeMode] is used.
   Color? themeBackgroundColor(Color? color, {ThemeMode? themeMode}) =>
       (themeMode ?? _themeMode) == ThemeMode.light
-          ? Color.lerp(color, Colors.white, 0.5)
-          : Color.lerp(color, Colors.black, 0.5);
+      ? Color.lerp(color, Colors.white, 0.5)
+      : Color.lerp(color, Colors.black, 0.5);
 
   /// Generates a pair of light and dark background colors based on a given [color].
   ///
   /// Uses [themeBackgroundColor] internally for both [ThemeMode.light] and [ThemeMode.dark].
   ({Color light, Color dark}) backgroundColor(Color color) => (
-        light: themeBackgroundColor(color, themeMode: ThemeMode.light)!,
-        dark: themeBackgroundColor(color, themeMode: ThemeMode.dark)!
-      );
+    light: themeBackgroundColor(color, themeMode: ThemeMode.light)!,
+    dark: themeBackgroundColor(color, themeMode: ThemeMode.dark)!,
+  );
 
   /// Constructs a [ThemeData] object for a specific [themeMode] (light or dark)
   /// using a provided [colorScheme].
@@ -421,24 +440,26 @@ class ThemeViewModel {
   /// it falls back to the corresponding colors from the `_initialLightColorScheme`
   /// or `_initialDarkColorScheme` based on the [themeMode].
   /// It also sets various theme properties like [AppBarTheme], [BottomNavigationBarThemeData], etc.
-  ThemeData _themeData(
-      {required ThemeMode themeMode,
-      required ({
-        Color? primary,
-        Color? disabled,
-        Color? onPrimary,
-        Color? secondary,
-        Color? onSecondary,
-        Color? error,
-        Color? onError,
-        Color? surface,
-        Color? onSurface,
-        Color? surfaceContainer,
-        Color? onSurfaceVariant,
-      }) colorScheme}) {
+  ThemeData _themeData({
+    required ThemeMode themeMode,
+    required ({
+      Color? primary,
+      Color? disabled,
+      Color? onPrimary,
+      Color? secondary,
+      Color? onSecondary,
+      Color? error,
+      Color? onError,
+      Color? surface,
+      Color? onSurface,
+      Color? surfaceContainer,
+      Color? onSurfaceVariant,
+    })
+    colorScheme,
+  }) {
     var initialColorScheme = themeMode == ThemeMode.light
-        ? _initialLightColorScheme
-        : _initialDarkColorScheme;
+        ? _lightColorScheme
+        : _darkColorScheme;
     Color primary = colorScheme.primary ?? initialColorScheme.primary;
     Color disabled = colorScheme.disabled ?? initialColorScheme.disabled;
     Color onPrimary = colorScheme.onPrimary ?? initialColorScheme.onPrimary;
@@ -455,49 +476,50 @@ class ThemeViewModel {
         colorScheme.onSurfaceVariant ?? initialColorScheme.onSurfaceVariant;
 
     return ThemeData(
-        brightness:
-            themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-        disabledColor: disabled,
-        colorScheme: ColorScheme(
-          brightness:
-              themeMode == ThemeMode.light ? Brightness.light : Brightness.dark,
-          primary: primary,
-          onPrimary: onPrimary,
-          secondary: secondary,
-          onSecondary: onSecondary,
-          onError: onError,
-          error: error,
-          surface: surface,
-          onSurface: onSurface,
-          surfaceContainer: surfaceContainer,
-          onSurfaceVariant: onSurfaceVariant,
-        ),
-        tabBarTheme: TabBarThemeData(
-            dividerColor: Colors.transparent,
-            unselectedLabelColor: disabled),
-        badgeTheme: BadgeThemeData(backgroundColor: onError, textColor: error),
-        appBarTheme: const AppBarTheme(iconTheme: IconThemeData(size: 40)),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          elevation: 0,
-          selectedItemColor: onSurfaceVariant,
-          unselectedItemColor: disabled,
-          backgroundColor: Colors.transparent,
-        ),
-        cardTheme: CardThemeData(elevation: 0, color: surfaceContainer),
-        textTheme: const TextTheme(
-            displayLarge: TextStyle(
-          fontSize: 120,
-        )),
-        snackBarTheme: const SnackBarThemeData(
-          //contentTextStyle: TextStyle(color: surface),
-          insetPadding: EdgeInsets.all(20.0),
-          elevation: 20,
-          //backgroundColor: surface
-        ),
-        bottomSheetTheme:
-            const BottomSheetThemeData(backgroundColor: Colors.transparent)
-        /* dark theme settings */
-        );
+      brightness: themeMode == ThemeMode.light
+          ? Brightness.light
+          : Brightness.dark,
+      disabledColor: disabled,
+      colorScheme: ColorScheme(
+        brightness: themeMode == ThemeMode.light
+            ? Brightness.light
+            : Brightness.dark,
+        primary: primary,
+        onPrimary: onPrimary,
+        secondary: secondary,
+        onSecondary: onSecondary,
+        onError: onError,
+        error: error,
+        surface: surface,
+        onSurface: onSurface,
+        surfaceContainer: surfaceContainer,
+        onSurfaceVariant: onSurfaceVariant,
+      ),
+      tabBarTheme: TabBarThemeData(
+        dividerColor: Colors.transparent,
+        unselectedLabelColor: disabled,
+      ),
+      badgeTheme: BadgeThemeData(backgroundColor: onError, textColor: error),
+      appBarTheme: const AppBarTheme(iconTheme: IconThemeData(size: 40)),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        elevation: 0,
+        selectedItemColor: onSurfaceVariant,
+        unselectedItemColor: disabled,
+        backgroundColor: Colors.transparent,
+      ),
+      cardTheme: CardThemeData(elevation: 0, color: surfaceContainer),
+      textTheme: const TextTheme(displayLarge: TextStyle(fontSize: 120)),
+      snackBarTheme: const SnackBarThemeData(
+        //contentTextStyle: TextStyle(color: surface),
+        insetPadding: EdgeInsets.all(20.0),
+        elevation: 20,
+        //backgroundColor: surface
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.transparent,
+      ),
+      /* dark theme settings */
+    );
   }
 
   /// Gets the current platform brightness (light or dark) from the [SchedulerBinding].
