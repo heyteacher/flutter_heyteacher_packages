@@ -69,7 +69,7 @@ class CandlestickChartView extends ChartView {
           painter: AxisLinesIndicatorPainter(
             verticalLineProvider: (x) => VerticalLine(
               x: x,
-              color: ThemeViewModel.instance().colorScheme.onSurface,
+              color: ThemeViewModel.instance.colorScheme.onSurface,
               strokeWidth: 1,
             ),
             horizontalLineProvider: (y) => HorizontalLine(
@@ -77,11 +77,11 @@ class CandlestickChartView extends ChartView {
               label: HorizontalLineLabel(
                   show: true,
                   style: TextStyle(
-                    color: ThemeViewModel.instance().yellowColor,
+                    color: ThemeViewModel.instance.yellowColor,
                   ),
                   labelResolver: (hLine) => hLine.y.toInt().toString(),
                   alignment: Alignment.topLeft),
-              color: ThemeViewModel.instance().colorScheme.onSurface,
+              color: ThemeViewModel.instance.colorScheme.onSurface,
               strokeWidth: 1,
             ),
           ),
