@@ -48,10 +48,10 @@ void main() {
     auth.signInWithEmailAndPassword(email: userEmail, password: userEmail);
 
     // initialize Auth with MockFirebaseAuth
-    AuthViewModel.instance(mockedFirebaseAuth: auth);
-
+   AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
+ 
     // set AAD
-    E2EEViewModel.instance(AuthViewModel.instance().uid).setAAD(aadValue: 'aadValue');
+    E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD(aadValue: 'aadValue');
 
     // mock firestore with mock authentication
     FakeFirebaseFirestore firestore =
@@ -73,7 +73,7 @@ void main() {
         startTime: DateTime.parse('2023-07-12 17:15:22'),
         stopTime: DateTime.parse('2023-07-12 20:15:22'),
         distance: 30000,
-        avgBpm: await E2EEViewModel.instance(AuthViewModel.instance().uid).encrypt('100')));
+        avgBpm: await E2EEViewModel.instance(AuthViewModel.instance.uid).encrypt('100')));
     await trackStore.set(TrackData(
       startTime: DateTime.parse('2023-09-12 17:15:22'),
       stopTime: DateTime.parse('2023-09-12 20:15:22'),
@@ -119,7 +119,7 @@ void main() {
       final TrackStore trackStore = TrackStore.instance();
       TrackData trackData = await trackStore.get('20230712_171522');
       expect(trackData.avgBpm != null, true, reason: 'avgBpm is null ');
-      expect(await E2EEViewModel.instance(AuthViewModel.instance().uid).decrypt(trackData.avgBpm!),
+      expect(await E2EEViewModel.instance(AuthViewModel.instance.uid).decrypt(trackData.avgBpm!),
           '100',
           reason: 'avgBpm wrong');
       expect(trackData.distance, 30000, reason: 'distance  wrong');
@@ -134,7 +134,7 @@ void main() {
       await trackStore.update(trackData, fields: ['avgRpm']);
       trackData = await trackStore.get('20230712_171522');
       expect(trackData.avgRpm, 80, reason: 'avgRpm wrong');
-      expect(await E2EEViewModel.instance(AuthViewModel.instance().uid).decrypt(trackData.avgBpm!),
+      expect(await E2EEViewModel.instance(AuthViewModel.instance.uid).decrypt(trackData.avgBpm!),
           '100',
           reason: 'avgBpm wrong');
       expect(trackData.distance, 30000, reason: 'distance wrong');
@@ -163,7 +163,7 @@ void main() {
       await trackStore.update(trackData, fields: ['avgRpm', 'distance']);
       trackData = await trackStore.get('20230712_171522');
       expect(trackData.avgRpm, 80, reason: 'avgRpm wrong');
-      expect(await E2EEViewModel.instance(AuthViewModel.instance().uid).decrypt(trackData.avgBpm!),
+      expect(await E2EEViewModel.instance(AuthViewModel.instance.uid).decrypt(trackData.avgBpm!),
           '100',
           reason: 'avgBpm wrong');
       expect(trackData.distance, 30000, reason: 'distance wrong');

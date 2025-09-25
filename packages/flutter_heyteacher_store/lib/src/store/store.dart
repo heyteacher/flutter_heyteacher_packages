@@ -494,7 +494,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns the stream on [Store.query]
   Stream<Iterable<LightDataType>> stream(
           {bool applyOrderBy = false, bool applyFilterBy = true, int? limit}) =>
-      AuthViewModel.instance().notAutenticated
+      AuthViewModel.instance.notAutenticated
           ? const Stream.empty()
           : query(
                   applyOrderBy: applyOrderBy,
@@ -878,7 +878,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Yields an aggregation result based on [aggregateFields].
   Future<void> notifyAggregatesChanges() async {
     _logger.finest('<$runtimeType.notifyAggregatesChanges>:');
-    if (AuthViewModel.instance().autenticated &&
+    if (AuthViewModel.instance.autenticated &&
         await ConnectivityViewModel.instance.connected) {
       final aggregatesValue = await aggregates;
       if (aggregatesValue != null) {
@@ -898,7 +898,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// update the group by counter.
   void _initGroupByCounter() async {
     _logger.finest('<$runtimeType._initGroupByCounter>:');
-    if (AuthViewModel.instance().notAutenticated) {
+    if (AuthViewModel.instance.notAutenticated) {
       _logger.finest(
           '($runtimeType._initGroupByCounter): user not authenticate, do nothing');
       return;
@@ -1062,7 +1062,7 @@ abstract class Store<LightDataType extends FirestoreData,
   /// if [_userProfile] is `true` and user not authenticated, throws
   /// [UserNotAuthenticatedException]
   void _checkAuthenticated() {
-    if (_userProfile && AuthViewModel.instance().notAutenticated) {
+    if (_userProfile && AuthViewModel.instance.notAutenticated) {
       throw UserNotAuthenticatedException();
     }
   }
@@ -1122,8 +1122,8 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Gets the uid of authenticated user.
   ///
   /// If user isn't authenticathed, throw [UserNotAuthenticatedException]
-  String get _uid => AuthViewModel.instance().autenticated
-      ? AuthViewModel.instance().uid!
+  String get _uid => AuthViewModel.instance.autenticated
+      ? AuthViewModel.instance.uid!
       : throw UserNotAuthenticatedException();
 }
 
