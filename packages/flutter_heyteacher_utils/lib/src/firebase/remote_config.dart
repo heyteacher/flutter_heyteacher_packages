@@ -21,11 +21,13 @@ class RemoteConfigViewModel {
   final _remoteConfig = FirebaseRemoteConfig.instance;
 
   static RemoteConfigViewModel? _instance;
-  RemoteConfigViewModel._();
+  
+  @visibleForTesting
+  RemoteConfigViewModel();
 
   /// Provides the singleton instance of [RemoteConfigViewModel].
   static RemoteConfigViewModel get instance =>
-      _instance ??= RemoteConfigViewModel._();
+      _instance ??= RemoteConfigViewModel();
 
   @visibleForTesting
   static set instance(RemoteConfigViewModel value) => _instance = value;

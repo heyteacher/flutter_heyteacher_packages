@@ -253,6 +253,7 @@ class ThemeViewModel {
   /// sets the default [_themeMode] to [ThemeMode.system],
   /// creates the initial [darkTheme] and [lightTheme] based on the provided schemes,
   /// and attempts to load the persisted theme mode from [SharedPreferencesAsync].
+  @visibleForTesting
   ThemeViewModel({
     required ({
       Color primary,

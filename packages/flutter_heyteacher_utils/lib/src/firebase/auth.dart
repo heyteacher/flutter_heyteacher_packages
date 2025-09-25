@@ -146,6 +146,7 @@ class AuthViewModel {
   /// Private constructor for the singleton.
   /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth] or the default [FirebaseAuth.instance].
   /// Configures [GoogleProvider] if not using a mocked instance.
+  @visibleForTesting
   AuthViewModel({FirebaseAuth? mockedFirebaseAuth}) {
     // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth
     //and configure provider
