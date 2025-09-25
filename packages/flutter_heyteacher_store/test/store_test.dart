@@ -56,10 +56,11 @@ void main() {
     // mock firestore with mock authentication
     FakeFirebaseFirestore firestore =
         FakeFirebaseFirestore(authObject: auth.authForFakeFirestore);
+    TrackStore.instance = TrackStore(firebaseFirestore: firestore);
 
     // initialize
     final TrackStore trackStore =
-        TrackStore.instance(firebaseFirestore: firestore);
+TrackStore.instance;
   
     await trackStore.set(TrackData(
         startTime: DateTime.parse('2024-02-27 13:27:56'),
@@ -83,12 +84,12 @@ void main() {
 
   group('track list, filter group:', () {
     test('store should contains 4 tracks', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       expect((await trackStore.list()).length, 4, reason: 'wrong store size');
     });
     test('store should contains 2 tracks filtered by startTime in 2023',
         () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       trackStore.storeFilter = LogicalStoreFilter(
           logicalOperator: LogicalOperator.and,
           filter1: ValueStoreFilter(
@@ -105,18 +106,18 @@ void main() {
   });
   group('track exists and get:', () {
     test('store contains 20230712_171522', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       expect(await trackStore.exists('20230712_171522'), true,
           reason: "track does't exists");
     });
     test('store track doesn\'t exist after delete', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       await trackStore.delete('20230712_171522');
       expect(await trackStore.exists('20230712_171522'), false,
           reason: 'track exists');
     });
     test('store get track and check fields', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       TrackData trackData = await trackStore.get('20230712_171522');
       expect(trackData.avgBpm != null, true, reason: 'avgBpm is null ');
       expect(await E2EEViewModel.instance(AuthViewModel.instance.uid).decrypt(trackData.avgBpm!),
@@ -129,7 +130,7 @@ void main() {
 
   group('track update group:', () {
     test('update', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       TrackData trackData = (await trackStore.get('20230712_171522')).copyWith.avgRpm(80);
       await trackStore.update(trackData, fields: ['avgRpm']);
       trackData = await trackStore.get('20230712_171522');
@@ -145,7 +146,7 @@ void main() {
           startTime: DateTime.parse('2023-07-12 17:15:22'),
           avgRpm: 80,
           distance: 0);
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       await trackStore.set(trackData);
 
       trackData = await trackStore.get('20230712_171522');
@@ -154,7 +155,7 @@ void main() {
       expect(trackData.distance, 0, reason: 'distance wrong');
     });
     test('update single field', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       TrackData trackData = await trackStore.get('20230712_171522');
       trackData = TrackData(
           startTime: DateTime.parse('2023-07-12 17:15:22'),
@@ -173,7 +174,7 @@ void main() {
 
   group('track groupByCounter group:', () {
     test('groupByCounter years check map', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       expect((await trackStore.groupBy())!.length, 2,
           reason: 'years wrong size');
       expect(
@@ -192,7 +193,7 @@ void main() {
           reason: 'year 2024 wrong size');
     });
     test('groupByCounter years check  map after add new track', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       await trackStore.set(TrackData(startTime: DateTime(2020), distance: 0));
       expect((await trackStore.groupBy())!.length, 3,
           reason: 'years wrong size');
@@ -221,7 +222,7 @@ void main() {
   });
   group('track aggregateStream group:', () {
     test('aggregateStream check', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       trackStore.notifyAggregatesChanges();
       final aggregate = await trackStore.aggregateStream.first;
       expect(aggregate.count, 4, reason: 'aggregate count wrong');
@@ -230,7 +231,7 @@ void main() {
           reason: 'sum duration wrong');
     });
     test('aggregateStream after add track', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       await trackStore.set(TrackData(
           startTime: DateTime.parse('2020-04-23 08:12:44'),
           stopTime: DateTime.parse('2020-04-23 09:12:44'),
@@ -243,7 +244,7 @@ void main() {
           reason: 'sum duration wrong');
     });
     test('aggregateStream after filter', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       trackStore.storeFilter = LogicalStoreFilter(
           logicalOperator: LogicalOperator.and,
           filter1: ValueStoreFilter(
@@ -267,12 +268,12 @@ void main() {
 
   group('track empty notEmpty group:', () {
     test('not empty check', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       expect(await trackStore.notEmpty(), true, reason: 'notEmpty wrong');
       expect(await trackStore.empty(), false, reason: 'empty wrong');
     });
     test('empty check', () async {
-      final TrackStore trackStore = TrackStore.instance();
+      final TrackStore trackStore = TrackStore.instance;
       for (var baseTrackData in await trackStore.list()) {
         await trackStore.delete(baseTrackData.id);
       }
@@ -282,7 +283,7 @@ void main() {
   });
 
   tearDown(() async {
-    final TrackStore trackStore = TrackStore.instance();
+    final TrackStore trackStore = TrackStore.instance;
     trackStore.storeFilter = null;
     await trackStore.notifyAggregatesChanges();
     for (var baseTrackData in await trackStore.list()) {
@@ -372,7 +373,7 @@ class BaseTrackData extends FirestoreData {
 }
 
 class TrackStore extends Store<BaseTrackData, TrackData> {
-  TrackStore._({super.firebaseFirestore})
+  TrackStore({super.firebaseFirestore})
       : super(
             collection: 'tracks',
             userProfile: true,
@@ -390,8 +391,6 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
   }
 
   static TrackStore? _instance;
-  static TrackStore instance({dynamic firebaseFirestore}) {
-    _instance ??= TrackStore._(firebaseFirestore: firebaseFirestore);
-    return _instance!;
-  }
+  static TrackStore get instance => _instance ??= TrackStore();
+  static set instance(TrackStore instance) => _instance = instance;
 }
