@@ -197,15 +197,14 @@ class InfoDevicePackageViewModel {
         'applogs/$machineDate/$machineStartDateTime-$machineStopTime'
         '-${InfoDevicePackageViewModel.instance.identifierInfo}.log.gz';
 
-    final gZipEncoded = 
-      Uint8List.fromList(gzip.encode(
-        utf8.encode(
-          await LoggerViewModel.instance().logs2Text(
-            startTime: startTime?.subtract(const Duration(seconds: 10)),
-          ),
-        ),
-      ));
-    StorageViewModel.instance.upload(logFilename, gZipEncoded);
+    final logFileContent = await LoggerViewModel.instance().logs2Text(
+      startTime: startTime?.subtract(const Duration(seconds: 10)),
+    );
+    StorageViewModel.instance.appLogsUpload(
+      relativeFilename: logFilename,
+      content: logFileContent,
+      encodeGZip: true,
+    );
     return logFilename;
   }
 

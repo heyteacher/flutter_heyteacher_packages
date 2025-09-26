@@ -1,9 +1,24 @@
+/// Provides a view model for interacting with Firebase Cloud Storage.
+///
+/// This library offers a singleton `StorageViewModel` to handle file uploads,
+/// including optional GZip compression and automatic directory structuring for logs.
+library;
+
+import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:clock/clock.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
+import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:logging/logging.dart';
 
+/// A view model for managing file uploads to Firebase Cloud Storage.
+///
+/// This class provides a singleton interface to upload string content,
+/// with an option for GZip compression. It handles authentication checks
+/// and throws a custom exception on failure.
 class StorageViewModel {
   final log = Logger('StorageViewModel');
 
@@ -15,30 +30,81 @@ class StorageViewModel {
 
   final _storage = FirebaseStorage.instance;
 
-  Future<String?> upload(String filePath, Uint8List fileContent) async {
-    log.finest('<uploadFile>: filePath $filePath');
+  /// Uploads application log content to a dated directory in Firebase Storage.
+  ///
+  /// This is a convenience method that uses [upload] to store log files.
+  /// The directory is automatically set to `applogs/<current_date>`.
+  ///
+  /// - [relativeFilename]: The name of the file to be created within the directory.
+  /// - [content]: The string content to upload.
+  /// - [encodeGZip]: If `true`, the content will be GZip compressed before uploading.
+  ///
+  /// Returns a `Future<String?>` with the download URL upon success, or `null` if
+  /// the user is not authenticated. Throws [UploadStorageException] on a Firebase error.
+  Future<String?> appLogsUpload({
+    required String relativeFilename,
+    required String content,
+    bool encodeGZip = false,
+  }) => upload(
+    directory: 'applogs/${FormatterHelper.machineDateFormat(clock.now())}',
+    relativeFilename: relativeFilename,
+    content: content,
+    encodeGZip: encodeGZip,
+  );
+  
+  /// Uploads string content to a specified path in Firebase Storage.
+  ///
+  /// - [directory]: The destination directory in the storage bucket.
+  /// - [relativeFilename]: The name of the file.
+  /// - [content]: The string content to upload.
+  /// - [encodeGZip]: If `true`, the content will be GZip compressed before uploading.
+  ///
+  /// Returns a `Future<String?>` with the download URL upon success, or `null` if
+  /// the user is not authenticated. Throws [UploadStorageException] on a Firebase error.
+  Future<String?> upload({
+    required String directory,
+    required String relativeFilename,
+    required String content,
+    bool encodeGZip = false,
+  }) async {
+    final absFilename = '$directory/$relativeFilename';
+
+    var fileContent = utf8.encode(content);
+    if (encodeGZip) {
+      fileContent = Uint8List.fromList(gzip.encode(fileContent));
+    }
+    log.finest('<uploadFile>: filePath $absFilename');
     try {
       if (AuthViewModel.instance.notAutenticated) {
-        log.warning('(uploadFile): filePath $filePath. User not authenticated, '
-            'cannot upload file in Storage');
+        log.warning(
+          '(uploadFile): filePath $absFilename. User not authenticated, '
+          'cannot upload file in Storage',
+        );
         return null;
       }
       final storageRef = _storage.ref();
-      final fileRef = storageRef.child(filePath);
+      final fileRef = storageRef.child(absFilename);
       await fileRef.putData(fileContent);
       final downloadURL = await fileRef.getDownloadURL();
-      log.info('(uploadFile): filePath $filePath. File uploaded successfully '
-          '$downloadURL');
+      log.info(
+        '(uploadFile): filePath $absFilename. File uploaded successfully '
+        '$downloadURL',
+      );
       return downloadURL;
     } on FirebaseException catch (error, stackTrace) {
       log.severe(
-          '(uploadFile): filePath $filePath. Failed tu upload file in Storage', error, stackTrace);
-      throw UploadStorageException(filePath);
+        '(uploadFile): filePath $absFilename. Failed tu upload file in Storage',
+        error,
+        stackTrace,
+      );
+      throw UploadStorageException(absFilename);
     }
   }
 }
 
+/// An exception thrown when a file upload to Firebase Storage fails.
 class UploadStorageException implements Exception {
+  /// The path of the file that failed to upload.
   String filePath;
 
   UploadStorageException(this.filePath);
