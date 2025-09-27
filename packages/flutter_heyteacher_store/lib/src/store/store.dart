@@ -108,7 +108,7 @@
 ///           ? map["duration"]
 ///            : calculateDuration(
 ///                FirestoreData.fromFirestoreTimestamp(map["startTime"])!,
-///                DateTime.now(),
+///                clock.now(),
 ///                0),
 ///        distance: ((map["distance"] as num? ?? 0) * 10).round() / 10);
 ///  }
