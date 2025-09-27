@@ -187,25 +187,23 @@ class InfoDevicePackageViewModel {
           .where((connected) => connected)
           .first;
     }
-    final machineDate = FormatterHelper.machineDateFormat(clock.now());
-
     final machineStartDateTime = FormatterHelper.machineDateTimeFormat(
       startTime ?? clock.now(),
     );
     final machineStopTime = FormatterHelper.machineTimeFormat(clock.now());
-    final logFilename =
-        'applogs/$machineDate/$machineStartDateTime-$machineStopTime'
+    final relativeFilename =
+        '$machineStartDateTime-$machineStopTime'
         '-${InfoDevicePackageViewModel.instance.identifierInfo}.log.gz';
 
-    final logFileContent = await LoggerViewModel.instance().logs2Text(
+    final content = await LoggerViewModel.instance().logs2Text(
       startTime: startTime?.subtract(const Duration(seconds: 10)),
     );
     StorageViewModel.instance.appLogsUpload(
-      relativeFilename: logFilename,
-      content: logFileContent,
+      relativeFilename: relativeFilename,
+      content: content,
       encodeGZip: true,
     );
-    return logFilename;
+    return relativeFilename;
   }
 
   /// Constructs and launches a "mailto" URI to allow users to ask for support.
