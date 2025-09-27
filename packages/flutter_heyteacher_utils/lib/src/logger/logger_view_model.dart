@@ -548,7 +548,7 @@ class LoggerViewModel {
       // error.
       return [
         LogEntry(
-          time: DateTime.now(),
+          time: clock.now(),
           level: Level.SEVERE,
           message: 'Error reading log file: ${file.path}',
           loggerName: 'LoggerModel',
