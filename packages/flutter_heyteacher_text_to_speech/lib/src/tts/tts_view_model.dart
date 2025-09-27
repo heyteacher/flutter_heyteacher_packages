@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_data.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
@@ -60,7 +61,7 @@ class TTSViewModel {
         .getInt(TTSRemoteConfigKeys.ttsThresholdInSeconds.name);
     if (checkTTSThreshold &&
         _previousTextSpeakedDateTime != null &&
-        DateTime.now().difference(_previousTextSpeakedDateTime!) <
+        clock.now().difference(_previousTextSpeakedDateTime!) <
             Duration(seconds: ttsThresholdInSeconds)) {
       _logger.finest('(speak): ignore text \'$text\' too close to previous '
           'speaked at \'$_previousTextSpeakedDateTime\' '
@@ -68,7 +69,7 @@ class TTSViewModel {
       return;
     }
     _previousTextSpeaked = text;
-    _previousTextSpeakedDateTime = DateTime.now();
+    _previousTextSpeakedDateTime = clock.now();
     _logger.finest('(speak): text \'$text\'');
     _textToSpeech.speak(text);
   }
