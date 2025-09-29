@@ -177,6 +177,7 @@ abstract class ChartView extends StatelessWidget {
 
   @protected
   AxisTitles xAxisTitles() => AxisTitles(
+        axisNameSize: 20,
         axisNameWidget:
             RotatedBox(quarterTurns: rotate ? 2 : 0, child: axisNameWidgetX),
         sideTitles: SideTitles(
