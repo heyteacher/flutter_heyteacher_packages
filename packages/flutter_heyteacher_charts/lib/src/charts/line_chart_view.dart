@@ -68,6 +68,8 @@ class LineChartView extends ChartView {
         lineTouchData: LineTouchData(
             enabled: true,
             touchTooltipData: LineTouchTooltipData(
+              fitInsideHorizontally: true,
+              fitInsideVertically: true,
               getTooltipItems: (touchedSpots) => touchedSpots
                   .mapIndexed((index, touchedSpot) => LineTooltipItem(
                       formatterY?.call(
