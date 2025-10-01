@@ -213,9 +213,19 @@ class TooltipIconButton extends StatelessWidget {
 /// is happening.
 class ProgressIndicatorView extends StatefulWidget {
   final Duration timeout;
+  final Widget? timeoutWidget;
+  final VoidCallback? onTimeout;
+  final BoxConstraints? constraints;
+  final EdgeInsets? padding;
+
+
   const ProgressIndicatorView({
     super.key,
     this.timeout = const Duration(seconds: 15),
+    this.timeoutWidget,
+    this.onTimeout,
+    this.constraints,
+    this.padding
   });
 
   @override
@@ -224,13 +234,14 @@ class ProgressIndicatorView extends StatefulWidget {
 
 class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
   bool _timeoutReached = false;
+  
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      widget.timeout,
-      () => mounted ? setState(() => _timeoutReached = true) : null,
-    );
+    Future.delayed(widget.timeout, () {
+      mounted ? setState(() => _timeoutReached = true) : null;
+      if (widget.onTimeout != null) widget.onTimeout!();
+    });
   }
 
   @override
@@ -239,16 +250,11 @@ class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _timeoutReached
-            ? Text('', style: _noDataStyleContent(context))
-            : const CircularProgressIndicator(),
+            ? widget.timeoutWidget ?? const SizedBox.shrink()
+            : CircularProgressIndicator(constraints: widget.constraints, padding: widget.padding ),
       ],
     ),
   );
-
-  TextStyle _noDataStyleContent(context) => Theme.of(context)
-      .textTheme
-      .headlineMedium!
-      .copyWith(color: ThemeViewModel.instance.orangeColor);
 }
 
 /// Displays different error states to the user.
