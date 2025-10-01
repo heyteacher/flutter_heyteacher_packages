@@ -347,6 +347,8 @@ abstract class Store<LightDataType extends FirestoreData,
   /// `true` if [LightDataType] differs [DetailsDataType], `false` otherwise.
   final bool _separatedDetailsCollection;
 
+  final _lock = Lock();
+
   /// The subscrition to listen aggregate changes.
   StreamSubscription<User?>? _aggregatesSubscription;
 
@@ -531,7 +533,7 @@ abstract class Store<LightDataType extends FirestoreData,
         .map((e) => e.data());
   }
 
- /// Returns the list of [DetailsDataType] limited to [limit]
+  /// Returns the list of [DetailsDataType] limited to [limit]
   Future<Iterable<DetailsDataType>> listAllDetailed({int? limit}) async {
     _logger.finest(
         '<$runtimeType.listAllDetailed>: $_collectionPathLog orderByFields: $orderByFields '
@@ -545,25 +547,23 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   /// Returns `true` if exists a document identified by [id].
-  Future<bool> exists(String id) async {
-    final lock = Lock();
-    return lock.synchronized(() async {
-      _logger.finest('<$runtimeType.exists>:  $_detailsCollectionPathLog/$id');
-      final cached = await _storeCache?.get(id);
-      if (cached != null) return true;
-      try {
-        await get(id);
-        return true;
-      } on DocumentNotFoundException {
-        return false;
-      } on FirebaseException catch (e) {
-        if (e.code == 'unavailable') {
+  Future<bool> exists(String id) => _lock.synchronized(() async {
+        _logger.finest(
+            '<$runtimeType.exists[synchronized]>:  $_detailsCollectionPathLog/$id');
+        final cached = await _storeCache?.get(id);
+        if (cached != null) return true;
+        try {
+          await get(id);
+          return true;
+        } on DocumentNotFoundException {
           return false;
+        } on FirebaseException catch (e) {
+          if (e.code == 'unavailable') {
+            return false;
+          }
+          rethrow;
         }
-        rethrow;
-      }
-    });
-  }
+      });
 
   /// Returns `true` if doesn't exists a document identified by [id].
   Future<bool> notExists(String? id) async {
@@ -574,47 +574,44 @@ abstract class Store<LightDataType extends FirestoreData,
   /// Returns the [DetailsDataType ] document identified by [id].
   ///
   /// [DocumentNotFoundException] is throw if document doesn't exist.
-  Future<DetailsDataType> get(String id) async {
-    final lock = Lock();
-    return lock.synchronized(() async {
-      _logger.finest('<$runtimeType.get>: $_detailsCollectionPathLog/$id)');
-
-      if (_storeCache?.exists(id) ?? false) {
-        final cached = await _storeCache?.get(id);
-        if (cached != null) {
-          return cached;
-        } else {
-          // document cached but null
-          throw DocumentNotFoundException('$_detailsCollectionPathLog/$id');
+  Future<DetailsDataType> get(String id) async => _lock.synchronized(() async {
+        _logger.finest(
+            '<$runtimeType.get[synchronized]>: $_detailsCollectionPathLog/$id)');
+        if (_storeCache?.exists(id) ?? false) {
+          final cached = await _storeCache?.get(id);
+          if (cached != null) {
+            return cached;
+          } else {
+            // document cached but null
+            throw DocumentNotFoundException('$_detailsCollectionPathLog/$id');
+          }
         }
-      }
-      _checkAuthenticated();
-      DocumentSnapshot<DetailsDataType>? detailsDocumentSnapshot =
-          await _detailsCollectionReference.doc(id).get();
-      // check if exists
-      if (detailsDocumentSnapshot.exists) {
-        DetailsDataType details = detailsDocumentSnapshot.data()!;
-        if (_separatedDetailsCollection) {
-          DocumentSnapshot<LightDataType> documentSnapshot =
-              await _collectionReference.doc(id).get();
-          // populate parent data fields
-          if (documentSnapshot.exists) {
-            details = details.setParentData(documentSnapshot.data()!);
+        _checkAuthenticated();
+        DocumentSnapshot<DetailsDataType>? detailsDocumentSnapshot =
+            await _detailsCollectionReference.doc(id).get();
+        // check if exists
+        if (detailsDocumentSnapshot.exists) {
+          DetailsDataType details = detailsDocumentSnapshot.data()!;
+          if (_separatedDetailsCollection) {
+            DocumentSnapshot<LightDataType> documentSnapshot =
+                await _collectionReference.doc(id).get();
+            // populate parent data fields
+            if (documentSnapshot.exists) {
+              details = details.setParentData(documentSnapshot.data()!);
+              _storeCache?.set(id, details);
+              return details;
+            } else {
+              _storeCache?.set(id, null);
+              throw DocumentNotFoundException('$_collectionPathLog/$id');
+            }
+          } else {
             _storeCache?.set(id, details);
             return details;
-          } else {
-            _storeCache?.set(id, null);
-            throw DocumentNotFoundException('$_collectionPathLog/$id');
           }
         } else {
-          _storeCache?.set(id, details);
-          return details;
+          throw DocumentNotFoundException('$_detailsCollectionPathLog/$id');
         }
-      } else {
-        throw DocumentNotFoundException('$_detailsCollectionPathLog/$id');
-      }
-    });
-  }
+      });
 
   /// Returns the [DetailsDataType ] document identified by [id].
   ///
