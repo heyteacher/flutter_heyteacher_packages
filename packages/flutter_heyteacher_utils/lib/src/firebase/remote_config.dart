@@ -9,10 +9,62 @@ library;
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+enum SharedPreferencesKeys {
+  fhuThemeMode,
+  fhuExecWorkerInIsolate,
+  fhuLocale,
+  fhuLoggingLevel,
+    /// The name of the locally overridden logger level.
+  htuLoggerLevelName,
+
+  /// The value of the locally overridden logger level.
+  htuLoggerLevelValue,
+
+  /// A boolean flag to enable or disable log storage locally.
+  htuEnableLogsStorage,
+    /// Indicates whether the alarm manager needs to be initialized.
+  htuFmcToBeInitialized,
+}
 
 enum RemoteConfigKeys {
   remoteConfigFetchTimeoutInMilliseconds,
-  remoteConfigMinimumFetchIntervalInMinutes,
+  remoteConfigMinimumFetchIntervalInMinutes, 
+  execWorkerInIsolate,
+  /// The UID of a user for whom the logger level should be set to `FINEST`.
+  loggerUIDRootLevelFinest,
+
+  /// The default logger level name for debug builds.
+  loggerDebugRootLevelName,
+
+  /// The default logger level name for release builds.
+  loggerRootLevelName,
+
+  /// The default logger level value for debug builds.
+  loggerDebugRootLevelValue,
+
+  /// The default logger level value for release builds.
+  loggerRootLevelValue,
+
+  /// A boolean flag to enable or disable log storage via remote config.
+  enableLogsStorage,
+
+  /// the interval in minutes to check car bluetooth status.
+  fmcIntervalInMinutes,
+
+  /// the Firebase Cloud Messaging topic name
+  fcmTopicName;
+
+  /// Gets the appropriate remote config key for the logger level name based on
+  /// the build mode (`kDebugMode`).
+  static String get levelName =>
+      kDebugMode ? loggerDebugRootLevelName.name : loggerRootLevelName.name;
+
+  /// Gets the appropriate remote config key for the logger level value based on
+  /// the build mode (`kDebugMode`).
+  static String get levelValue =>
+      kDebugMode ? loggerDebugRootLevelValue.name : loggerRootLevelValue.name;
 }
 
 class RemoteConfigViewModel {
@@ -74,6 +126,15 @@ class RemoteConfigViewModel {
       _logger.severe('(initialize): error', error, stackTrace);
     }
   }
+
+
+  Future<bool> get execWorkerInIsolate async =>
+      await SharedPreferencesAsync().getBool(
+        SharedPreferencesKeys.fhuExecWorkerInIsolate.name,
+      ) ??
+      RemoteConfigViewModel.instance.getBool(
+        RemoteConfigKeys.execWorkerInIsolate.name,
+      );
 
   int getInt(String key) => _remoteConfig.getInt(key);
   String getString(String key) => _remoteConfig.getString(key);

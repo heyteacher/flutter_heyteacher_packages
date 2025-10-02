@@ -3,7 +3,7 @@
 /// This allows for a single import to access various Firebase functionalities
 /// configured for the application, such as:
 /// - App Check configuration ([AppCheckModel])
-/// - Authentication services ([AuthModel], [UserNotAuthenticatedException], 
+/// - Authentication services ([AuthModel], [UserNotAuthenticatedException],
 ///   [AccountCard])
 /// - Crashlytics configuration ([CrashlyticsModel])
 /// - Remote Config configuration ([RemoteConfigModel])
@@ -17,8 +17,4 @@ export 'src/firebase/auth.dart'
 export 'src/firebase/crashlytics.dart' show CrashlyticsViewModel;
 export 'src/firebase/remote_config.dart' show RemoteConfigViewModel;
 export 'src/firebase/storage.dart' show StorageViewModel;
-export 'src/firebase/cloud_messaging.dart'
-    show
-        FirebaseCloudMessagingViewModel,
-        FCMSharedPreferencesKeys,
-        FCMRemoteConfigKeys;
+export 'src/firebase/cloud_messaging.dart' show FirebaseCloudMessagingViewModel;

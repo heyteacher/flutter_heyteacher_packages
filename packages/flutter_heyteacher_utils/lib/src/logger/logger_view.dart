@@ -284,7 +284,7 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
       subtitle: Text(
         FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
           RemoteConfigViewModel.instance.getString(
-            LoggerRemoteConfigKeys.levelName,
+            RemoteConfigKeys.levelName,
           ),
         ),
       ),
@@ -315,7 +315,7 @@ class EnableLogsStorageCard extends StatefulWidget {
 
 class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
   bool _enableLogsStorage = RemoteConfigViewModel.instance.getBool(
-    LoggerRemoteConfigKeys.enableLogsStorage.name,
+    RemoteConfigKeys.enableLogsStorage.name,
   );
 
   @override
@@ -327,13 +327,13 @@ class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
           subtitle: Text(
             FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
               RemoteConfigViewModel.instance.getBool(
-                LoggerRemoteConfigKeys.enableLogsStorage.name,
+                RemoteConfigKeys.enableLogsStorage.name,
               ),
             ),
           ),
           trailing: FutureBuilder(
             future: SharedPreferencesAsync().getBool(
-              LoggerSharedPreferencesKeys.htuEnableLogsStorage.name,
+              SharedPreferencesKeys.htuEnableLogsStorage.name,
             ),
             builder: (context, asyncSnapshot) => Switch(
               // This bool value toggles the switch.
@@ -341,7 +341,7 @@ class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
               onChanged: (bool value) {
                 setState(() => _enableLogsStorage = value);
                 SharedPreferencesAsync().setBool(
-                  LoggerSharedPreferencesKeys.htuEnableLogsStorage.name,
+                  SharedPreferencesKeys.htuEnableLogsStorage.name,
                   value,
                 );
               },

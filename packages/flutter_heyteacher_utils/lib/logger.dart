@@ -22,5 +22,4 @@ export 'src/logger/logger_view.dart'
         EnableLogsStorageCard,
         LoggingRouter;
 
-export 'src/logger/logger_view_model.dart'
-    show LoggerViewModel, LoggerRemoteConfigKeys;
+export 'src/logger/logger_view_model.dart' show LoggerViewModel;

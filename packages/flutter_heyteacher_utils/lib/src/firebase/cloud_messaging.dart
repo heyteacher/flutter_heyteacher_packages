@@ -6,30 +6,9 @@ import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_heyteacher_utils/firebase.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-/// Keys used for storing Firebase Cloud Messaging related settings in
-/// SharedPreferences.
-enum FCMSharedPreferencesKeys {
-  /// Indicates whether the alarm manager needs to be initialized.
-  toBeInitialized,
-}
-
-/// Keys used for fetching Firebase Cloud Messaging related configurations from
-/// Firebase Remote Config.
-enum FCMRemoteConfigKeys {
-  /// The distance filter in meters, potentially used by the alarm callback,
-  /// fetched from Remote Config.
-  distanceFilterInMeters,
-
-  /// the interval in minutes to check car bluetooth status.
-  intervalInMinutes,
-
-  /// the Firebase Cloud Messaging topic name
-  fcmTopicName,
-}
 
 /// Defines preset intervals for the Firebase Cloud Messaging.
 enum IntervalKeys {
@@ -77,10 +56,10 @@ abstract class FirebaseCloudMessagingViewModel {
   static int get remoteConfigIntervalInMinutes => kDebugMode
       ? 1
       : RemoteConfigViewModel.instance
-                  .getInt(FCMRemoteConfigKeys.intervalInMinutes.name) >
+                  .getInt(RemoteConfigKeys.fmcIntervalInMinutes.name) >
               0
           ? RemoteConfigViewModel.instance
-              .getInt(FCMRemoteConfigKeys.intervalInMinutes.name)
+              .getInt(RemoteConfigKeys.fmcIntervalInMinutes.name)
           : IntervalKeys.fiveMinutes.minutes;
 
   /// Initializes the Firebase Cloud Messaging.
@@ -89,7 +68,7 @@ abstract class FirebaseCloudMessagingViewModel {
   /// to initialize the Firebase Cloud Messaging.
   /// It initializes the Firebase Cloud Messaging and sets up a periodic alarm
   /// for execute [entryPointCallback] every
-  /// [FCMRemoteConfigKeys.intervalInMinutes] minutes.
+  /// [FCMRemoteConfigKeys.fmcIntervalInMinutes] minutes.
   /// The callback is set to run in the background even if the app is not running.
   /// The callback is set to run even if the device is in doze mode.
   Future<void> initialize() async {
@@ -108,7 +87,7 @@ abstract class FirebaseCloudMessagingViewModel {
       '(initialize): User granted permission ${settings.authorizationStatus}',
     );
     final topic = RemoteConfigViewModel.instance
-        .getString(FCMRemoteConfigKeys.fcmTopicName.name);
+        .getString(RemoteConfigKeys.fcmTopicName.name);
     await FirebaseMessaging.instance.subscribeToTopic(topic);
     _logger.info('(initialize): listen topic $topic');
     FirebaseMessaging.onBackgroundMessage(entryPointCallback);
@@ -116,7 +95,7 @@ abstract class FirebaseCloudMessagingViewModel {
         .info('(initialize): set sharedPreferences toBeInitialized to true and '
             '$lockSharedPreferencesKey to false');
     await _sharedPreferences.setBool(
-        FCMSharedPreferencesKeys.toBeInitialized.name, true);
+        SharedPreferencesKeys.htuFmcToBeInitialized.name, true);
     _sharedPreferences.setBool(lockSharedPreferencesKey, false);
   }
 }
