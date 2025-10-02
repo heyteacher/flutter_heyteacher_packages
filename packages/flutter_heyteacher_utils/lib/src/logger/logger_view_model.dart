@@ -17,49 +17,6 @@ import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Keys for storing logger settings in [SharedPreferences].
-enum LoggerSharedPreferencesKeys {
-  /// The name of the locally overridden logger level.
-  htuLoggerLevelName,
-
-  /// The value of the locally overridden logger level.
-  htuLoggerLevelValue,
-
-  /// A boolean flag to enable or disable log storage locally.
-  htuEnableLogsStorage,
-}
-
-/// Keys for configuring the logger via Firebase Remote Config.
-enum LoggerRemoteConfigKeys {
-  /// The UID of a user for whom the logger level should be set to `FINEST`.
-  loggerUIDRootLevelFinest,
-
-  /// The default logger level name for debug builds.
-  loggerDebugRootLevelName,
-
-  /// The default logger level name for release builds.
-  loggerRootLevelName,
-
-  /// The default logger level value for debug builds.
-  loggerDebugRootLevelValue,
-
-  /// The default logger level value for release builds.
-  loggerRootLevelValue,
-
-  /// A boolean flag to enable or disable log storage via remote config.
-  enableLogsStorage;
-
-  /// Gets the appropriate remote config key for the logger level name based on
-  /// the build mode (`kDebugMode`).
-  static String get levelName =>
-      kDebugMode ? loggerDebugRootLevelName.name : loggerRootLevelName.name;
-
-  /// Gets the appropriate remote config key for the logger level value based on
-  /// the build mode (`kDebugMode`).
-  static String get levelValue =>
-      kDebugMode ? loggerDebugRootLevelValue.name : loggerRootLevelValue.name;
-}
-
 /// Manages the application's logging configuration and stores log records.
 ///
 /// This class is a singleton and is responsible for:
@@ -243,21 +200,21 @@ class LoggerViewModel {
   Future<Level> get level async => Level(
     await _sharedPrefsLoggerName ??
         ((FirebaseRemoteConfig.instance.getString(
-                  LoggerRemoteConfigKeys.loggerUIDRootLevelFinest.name,
+                  RemoteConfigKeys.loggerUIDRootLevelFinest.name,
                 ) ==
                 AuthViewModel.instance.uid)
             ? finestLoggerName
             : FirebaseRemoteConfig.instance.getString(
-                LoggerRemoteConfigKeys.levelName,
+                RemoteConfigKeys.levelName,
               )),
     (await _sharedPrefsLoggerValue) ??
         ((FirebaseRemoteConfig.instance.getString(
-                  LoggerRemoteConfigKeys.loggerUIDRootLevelFinest.name,
+                  RemoteConfigKeys.loggerUIDRootLevelFinest.name,
                 ) ==
                 AuthViewModel.instance.uid)
             ? finestLoggerValue
             : FirebaseRemoteConfig.instance.getInt(
-                LoggerRemoteConfigKeys.levelValue,
+                RemoteConfigKeys.levelValue,
               )),
   );
 
@@ -269,18 +226,18 @@ class LoggerViewModel {
   void setLevel(Level? level, {int? index}) async {
     if (level == null) {
       await SharedPreferencesAsync().remove(
-        LoggerSharedPreferencesKeys.htuLoggerLevelName.name,
+        SharedPreferencesKeys.htuLoggerLevelName.name,
       );
       await SharedPreferencesAsync().remove(
-        LoggerSharedPreferencesKeys.htuLoggerLevelValue.name,
+        SharedPreferencesKeys.htuLoggerLevelValue.name,
       );
     } else {
       await SharedPreferencesAsync().setString(
-        LoggerSharedPreferencesKeys.htuLoggerLevelName.name,
+        SharedPreferencesKeys.htuLoggerLevelName.name,
         level.name,
       );
       await SharedPreferencesAsync().setInt(
-        LoggerSharedPreferencesKeys.htuLoggerLevelValue.name,
+        SharedPreferencesKeys.htuLoggerLevelValue.name,
         level.value,
       );
     }
@@ -293,19 +250,19 @@ class LoggerViewModel {
   /// it falls back to the value from Firebase Remote Config.
   Future<bool> get enableLogsStorage async =>
       (await SharedPreferencesAsync().getBool(
-        LoggerSharedPreferencesKeys.htuEnableLogsStorage.name,
+        SharedPreferencesKeys.htuEnableLogsStorage.name,
       )) ??
       RemoteConfigViewModel.instance.getBool(
-        LoggerRemoteConfigKeys.enableLogsStorage.name,
+        RemoteConfigKeys.enableLogsStorage.name,
       );
 
   Future<String?> get _sharedPrefsLoggerName async =>
       (await SharedPreferencesAsync().getString(
-        LoggerSharedPreferencesKeys.htuLoggerLevelName.name,
+        SharedPreferencesKeys.htuLoggerLevelName.name,
       ));
 
   Future<int?> get _sharedPrefsLoggerValue async => SharedPreferencesAsync()
-      .getInt(LoggerSharedPreferencesKeys.htuLoggerLevelValue.name);
+      .getInt(SharedPreferencesKeys.htuLoggerLevelValue.name);
 
   void _logRecord(
     LogRecord record, {

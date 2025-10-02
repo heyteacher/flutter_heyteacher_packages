@@ -12,6 +12,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A [ListTile] widget that allows users to select the application's [ThemeMode].
@@ -115,9 +116,6 @@ class ThemeViewModel {
       _themeMode == ThemeMode.light || _brightness == Brightness.light
       ? lightTheme
       : darkTheme;
-
-  /// The key used to store the selected theme mode in [SharedPreferences].
-  static const _sharedPreferencesThemeModeKey = 'fhuThemeMode';
 
   ThemeMode _themeMode;
 
@@ -296,7 +294,7 @@ class ThemeViewModel {
       colorScheme: _lightColorScheme,
     );
 
-    SharedPreferencesAsync().getString(_sharedPreferencesThemeModeKey).then((
+    SharedPreferencesAsync().getString(SharedPreferencesKeys.fhuThemeMode.name).then((
       themeModeName,
     ) {
       _themeMode =
@@ -317,7 +315,7 @@ class ThemeViewModel {
   Future<void> setThemeMode(ThemeMode themeMode) async {
     _themeMode = themeMode;
     await SharedPreferencesAsync().setString(
-      _sharedPreferencesThemeModeKey,
+      SharedPreferencesKeys.fhuThemeMode.name,
       themeMode.name,
     );
     _themeStreamController.sink.add(theme);

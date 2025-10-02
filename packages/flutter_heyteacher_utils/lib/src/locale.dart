@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart'; // Assuming SharedPreferencesAsync is defined here or re-exported
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,13 +63,10 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
 /// - Exposes a [localeStream] to notify listeners of locale changes.
 /// - Allows setting and getting the current application locale.
 ///
-/// The locale is stored under the key `_sharedPreferencesLocaleKey` in shared preferences.
+/// The locale is stored under the key `SharedPreferencesKeys.fhuLocale.name` in shared preferences.
 /// If no locale is explicitly set or loaded, it defaults to the system's locale or the first supported locale.
 class LocaleViewModel {
   Locale? _locale;
-
-  /// The key used to store the selected locale's language code in [SharedPreferences].
-  static const _sharedPreferencesLocaleKey = 'fhuLocale';
 
   static LocaleViewModel? _instance;
 
@@ -80,7 +78,7 @@ class LocaleViewModel {
   LocaleViewModel._() {
     // Load the saved locale from SharedPreferences
     SharedPreferencesAsync()
-        .getString(_sharedPreferencesLocaleKey)
+        .getString(SharedPreferencesKeys.fhuLocale.name)
         .then((localeName) {
       _locale = FlutterHeyteacherUtilsLocalizations.supportedLocales
           .where((locale) => locale.languageCode == localeName)
@@ -115,10 +113,10 @@ class LocaleViewModel {
     _locale = newLocale;
     if (newLocale != null) {
       SharedPreferencesAsync()
-          .setString(_sharedPreferencesLocaleKey, newLocale.languageCode);
+          .setString(SharedPreferencesKeys.fhuLocale.name, newLocale.languageCode);
       _localeStreamController.sink.add(newLocale);
     } else {
-      SharedPreferencesAsync().remove(_sharedPreferencesLocaleKey);
+      SharedPreferencesAsync().remove(SharedPreferencesKeys.fhuLocale.name);
     }
   }
 }
