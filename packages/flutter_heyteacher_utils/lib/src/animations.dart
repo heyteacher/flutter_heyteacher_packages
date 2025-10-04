@@ -265,7 +265,6 @@ class BlinkingTextState extends State<BlinkingText> {
         : _text;
   }
 
-  Text get _text {
-    return Text(widget.text, style: widget.style, textAlign: widget.textAlign);
-  }
+  Text get _text =>
+      Text(widget.text, style: widget.style, textAlign: widget.textAlign);
 }
