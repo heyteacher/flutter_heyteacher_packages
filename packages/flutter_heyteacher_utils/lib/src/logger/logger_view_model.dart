@@ -223,7 +223,7 @@ class LoggerViewModel {
   /// This stores the selected [level] in [SharedPreferences]. If [level] is
   /// `null`, the local override is removed, and the logger reverts to the
   /// level specified by remote config.
-  void setLevel(Level? level, {int? index}) async {
+  Future<void> setLevel(Level? level, {int? index}) async {
     if (level == null) {
       await SharedPreferencesAsync().remove(
         SharedPreferencesKeys.htuLoggerLevelName.name,
