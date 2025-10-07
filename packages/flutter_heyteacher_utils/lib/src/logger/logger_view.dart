@@ -272,7 +272,8 @@ class LogEntryCard extends StatelessWidget {
 }
 
 class LoggingLevelDropDownMenuCard extends StatelessWidget {
-  const LoggingLevelDropDownMenuCard({super.key});
+  final VoidCallback _onChanged;
+  const LoggingLevelDropDownMenuCard({super.key, required void Function() onChanged}) : _onChanged = onChanged;
 
   @override
   Widget build(BuildContext context) => Card(
@@ -293,7 +294,7 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
         builder: (context, asyncSnapshot) => GenericsDropDownMenu<Level>(
           label: FlutterHeyteacherUtilsLocalizations.of(context)!.loggingLevel,
           width: MediaQuery.of(context).size.width / 3,
-          onSelected: LoggerViewModel.instance().setLevel,
+          onSelected: _onSelected,
           values: Level.LEVELS
               .map((level) => (label: level.name, value: level))
               .toList(),
@@ -303,6 +304,11 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
       ),
     ),
   );
+
+  void _onSelected(Level? level, {int? index}) {
+    LoggerViewModel.instance().setLevel(level, index: index);
+    _onChanged();
+  }
 }
 
 class EnableLogsStorageCard extends StatefulWidget {
