@@ -52,6 +52,7 @@ class LoggerViewModel {
 
   /// The name for the `FINEST` log level.
   static const String finestLoggerName = 'FINEST';
+
   /// The value for the `FINEST` log level.
   static const int finestLoggerValue = 300;
 
@@ -365,10 +366,14 @@ class LoggerViewModel {
     final textMatch =
         filterText == null ||
         filterText.isEmpty ||
-        message.contains(filterText) ||
-        loggerName.contains(filterText) ||
-        (error?.toString().contains(filterText) ?? false) ||
-        (stackTrace?.toString().contains(filterText) ?? false);
+        message.toLowerCase().contains(filterText.toLowerCase()) ||
+        loggerName.toLowerCase().contains(filterText.toLowerCase()) ||
+        (error?.toString().toLowerCase().contains(filterText.toLowerCase()) ??
+            false) ||
+        (stackTrace?.toString().toLowerCase().contains(
+              filterText.toLowerCase(),
+            ) ??
+            false);
     final levelMatch =
         filterLevel == null ||
         filterLevel == Level.ALL ||
