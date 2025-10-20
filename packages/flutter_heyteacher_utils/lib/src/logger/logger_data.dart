@@ -34,6 +34,15 @@ class LogEntry extends Equatable {
     stackTrace,
   ];
 
+  factory LogEntry.fromLogRecord(LogRecord record) => LogEntry(
+    time: record.time,
+    level: record.level,
+    message: record.message,
+    loggerName: record.loggerName,
+    error: record.error?.toString(),
+    stackTrace: record.stackTrace?.toString(),
+  );
+
   factory LogEntry.fromJson(Map<String, dynamic> json) =>
       _$LogEntryFromJson(json);
 
