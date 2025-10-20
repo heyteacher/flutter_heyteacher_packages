@@ -28,7 +28,8 @@ class LoggerViewModel {
 
   StreamSubscription? _loggerSubscription, _loggerForTestSubscription;
 
-  final WriteLogsWorker _writeLogsWorker = WriteLogsWorker();
+  final Worker _writeLogsWorker = Worker(
+    WriteLogsWorkerIsolate());
 
   /// The singleton instance of [LoggerViewModel].
   static LoggerViewModel? _instance;
@@ -36,9 +37,9 @@ class LoggerViewModel {
   /// Flag to ensure configuration happens only once.
   bool _alreadyConfigured = false;
 
-  /// A list of [LogRecord]s that have been captured but not yet written to
+  /// A list of [LogEntry]s that have been captured but not yet written to
   /// persistent storage.
-  final List<LogRecord> notSavedLogRecords = List.empty(growable: true);
+  final List<LogEntry> notSavedLogEntries = List.empty(growable: true);
 
   final StreamController<void> _updateStreamController =
       StreamController<void>.broadcast();
@@ -124,13 +125,11 @@ class LoggerViewModel {
         '(initialize): reset $reset reconfigure $reconfigure. '
         'Reset all logs before $toDateTime',
       );
-      ResetLogsWorker resetLogsWorker = ResetLogsWorker();
+      final resetLogsWorker = Worker(ResetLogsWorkerIsolate());
       resetLogsWorker.execute(toDateTime).then((output) {
         if (output.error != null) {
           _logger.severe(
-            '(initialize): reset error',
-            output.error,
-            output.stackTrace,
+            '(initialize): reset error ${output.error} stackTrace ${output.stackTrace}',
           );
         }
         resetLogsWorker.close();
@@ -151,8 +150,8 @@ class LoggerViewModel {
     _writeLogsWorker.initialize();
     // Listen to records from the root logger.
     _loggerSubscription = Logger.root.onRecord.listen(
-      (record) => _logRecord(
-        record,
+      (logRecord) => _logEntry(
+        LogEntry.fromLogRecord(logRecord),
         version: version,
         deviceInfo: deviceInfo,
         identifierInfo: identifierInfo,
@@ -265,29 +264,29 @@ class LoggerViewModel {
   Future<int?> get _sharedPrefsLoggerValue async => SharedPreferencesAsync()
       .getInt(SharedPreferencesKeys.htuLoggerLevelValue.name);
 
-  void _logRecord(
-    LogRecord record, {
+  void _logEntry(
+    LogEntry entry, {
     required String version,
     required String deviceInfo,
     required String identifierInfo,
   }) async {
     // Format error and stack trace for potential inclusion in messages.
-    final String error = record.error != null ? '\n${record.error}' : '';
-    final String stackTrace = record.stackTrace != null
-        ? '\n${record.stackTrace}'
+    final String error = entry.error != null ? '\n${entry.error}' : '';
+    final String stackTrace = entry.stackTrace != null
+        ? '\n${entry.stackTrace}'
         : '';
-    notSavedLogRecords.add(record);
+    notSavedLogEntries.add(entry);
     // reached 1K logs or an error is raised, write logs to file
     // Print the log message to the console if in debug mode.
     if (kDebugMode) {
       print(
-        '${FormatterHelper.timeWithSecondsFormat(record.time)} '
+        '${FormatterHelper.timeWithSecondsFormat(entry.time)} '
         '- version $version '
         '- $deviceInfo '
-        '- ${record.level.name} '
+        '- ${entry.level.name} '
         '- $identifierInfo '
-        '- ${record.loggerName} '
-        '- ${record.message} '
+        '- ${entry.loggerName} '
+        '- ${entry.message} '
         '$error'
         '$stackTrace',
       );
@@ -298,19 +297,19 @@ class LoggerViewModel {
     FirebaseAnalytics.instance.logEvent(
       name: 'logger',
       parameters: {
-        'time': record.time.toLocal().toIso8601String(),
+        'time': entry.time.toLocal().toIso8601String(),
         'version': version,
         'device': deviceInfo,
-        'level': record.level.name,
+        'level': entry.level.name,
         'kDebugMode': kDebugMode.toString(),
-        'name': record.loggerName,
+        'name': entry.loggerName,
         'message':
             // Truncate message to 100 characters for Firebase.
-            record.message.substring(0, min(record.message.length, 100)),
-        if (record.error != null)
+            entry.message.substring(0, min(entry.message.length, 100)),
+        if (entry.error != null)
           // Truncate error to 100 characters for Firebase.
           'error': error.substring(0, min(error.length, 100)).trim(),
-        if (record.stackTrace != null)
+        if (entry.stackTrace != null)
           // Truncate stack trace to 100 characters for Firebase.
           'stackTrace': stackTrace
               .substring(0, min(stackTrace.length, 100))
@@ -319,7 +318,7 @@ class LoggerViewModel {
       },
     );
     // write log into file system
-    _writeLogRecords(record);
+    _writeLogEntry(entry);
   }
 
   /// Returns a string representation of the logs, formatted for display.
@@ -328,15 +327,17 @@ class LoggerViewModel {
     Level level = Level.ALL,
   }) async {
     _logger.finest('<logs2Text>: ');
-    final logs2TextWorker = Logs2TextWorker();
+    final logs2TextWorker = Worker(Logs2TextWorkerIsolate());
     final output = await logs2TextWorker.execute((
       startTime: startTime,
       filterLevel: level,
-      notSavedLogRecords: notSavedLogRecords,
+      notSavedEntries: notSavedLogEntries,
     ));
     logs2TextWorker.close();
     if (output.error != null) {
-      _logger.severe('(logs2Text): error', output.error, output.stackTrace);
+      _logger.severe(
+        '(logs2Text): reset error ${output.error} stackTrace ${output.stackTrace}',
+      );
       throw Exception(output.error.toString());
     }
     return output.output!;
@@ -357,7 +358,7 @@ class LoggerViewModel {
     required String message,
     required DateTime time,
     required Level level,
-    required Object? error,
+    required String? error,
     required String? stackTrace,
     required Level? filterLevel,
     required DateTime? filterStartTime,
@@ -368,8 +369,7 @@ class LoggerViewModel {
         filterText.isEmpty ||
         message.toLowerCase().contains(filterText.toLowerCase()) ||
         loggerName.toLowerCase().contains(filterText.toLowerCase()) ||
-        (error?.toString().toLowerCase().contains(filterText.toLowerCase()) ??
-            false) ||
+        (error?.toLowerCase().contains(filterText.toLowerCase()) ?? false) ||
         (stackTrace?.toString().toLowerCase().contains(
               filterText.toLowerCase(),
             ) ??
@@ -392,7 +392,7 @@ class LoggerViewModel {
   Future<List<LogEntry>> logs({
     DateTime? startTime,
     Level? filterLevel,
-    List<LogRecord>? notSavedLogRecords,
+    Iterable<LogEntry>? notSavedLogEntry,
     int? limit,
     required bool descending,
   }) async {
@@ -400,33 +400,22 @@ class LoggerViewModel {
 
     filterLevel ??= _filterLevel;
     // convert not saved log records to log entries filtered by log level
-    final notSavedLogEntries = notSavedLogRecords
-        ?.where(
-          (logRecord) => _filterLog(
-            loggerName: logRecord.loggerName,
-            message: logRecord.message,
-            time: logRecord.time,
-            level: logRecord.level,
-            error: logRecord.error,
-            stackTrace: logRecord.stackTrace?.toString(),
-            filterLevel: filterLevel,
-            filterText: _filterText,
-            filterStartTime: startTime,
-          ),
-        )
-        .map(
-          (logRecord) => LogEntry(
-            time: logRecord.time,
-            level: logRecord.level,
-            message: logRecord.message,
-            loggerName: logRecord.loggerName,
-            error: logRecord.error?.toString(),
-            stackTrace: logRecord.stackTrace?.toString(),
-          ),
-        );
+    final filteredNotSavedLogEntries = notSavedLogEntry?.where(
+      (logEntry) => _filterLog(
+        loggerName: logEntry.loggerName,
+        message: logEntry.message,
+        time: logEntry.time,
+        level: logEntry.level,
+        error: logEntry.error,
+        stackTrace: logEntry.stackTrace?.toString(),
+        filterLevel: filterLevel,
+        filterText: _filterText,
+        filterStartTime: startTime,
+      ),
+    );
     // add to log entries list if not null
-    if (notSavedLogEntries != null) {
-      logEntries.addAll(notSavedLogEntries);
+    if (filteredNotSavedLogEntries != null) {
+      logEntries.addAll(filteredNotSavedLogEntries);
     }
     // load log files from recent to old
     for (var file in await _logFiles(descending: descending)) {
@@ -461,24 +450,24 @@ class LoggerViewModel {
         .sublist(0, min(logEntries.length, limit ?? logEntries.length));
   }
 
-  Future<void> _writeLogRecords(LogRecord record) async {
-    //developer.log('flutter () <_writeLogRecords>:');
+  Future<void> _writeLogEntry(LogEntry logEntry) async {
+    //developer.log('flutter () <_writeLogEntry>:');
     try {
-      if (notSavedLogRecords.length == 1000 ||
-          record.level.value >= Level.SEVERE.value) {
-        final response = await _writeLogsWorker.execute(notSavedLogRecords);
+      if (notSavedLogEntries.length == 1000 ||
+          logEntry.level.value >= Level.SEVERE.value) {
+        final response = await _writeLogsWorker.execute(notSavedLogEntries);
         if (response.error != null) {
           _logger.severe(
-            '(_logRecord): WriteLogsWorker error '
-            '$record'
+            '(_writeLogEntry): WriteLogsWorker error '
+            '$logEntry'
             '${response.error} stackTrace ${response.stackTrace}',
           );
         } else {
-          notSavedLogRecords.clear();
+          notSavedLogEntries.clear();
         }
       }
     } catch (error /*, stackTrace*/) {
-      // developer.log('(_writeLogRecords): record '
+      // developer.log('(_writeLogEntry): record '
       //     '$record'
       //     ' error $error stackTrace $stackTrace');
     }
@@ -556,33 +545,19 @@ class LoggerViewModel {
   }
 }
 
-/// A background worker that writes a [LogRecord] to a file in JSON format.
+
+/// A background worker that writes [LogEntry] list to a file in JSON format.
 ///
 /// This worker is used to persist log entries to the device's temporary
 /// directory.
-class WriteLogsWorker extends Worker<List<LogRecord>, void> {
-  /// Writes a [LogRecord] to a file in JSON format.
-  @override
-  String get debugName => runtimeType.toString();
-
+class WriteLogsWorkerIsolate extends WorkerIsolate<List<LogEntry>, void> {
+  /// Writes a [LogEntry] list to a file in JSON format.
   @override
   @protected
-  Future<void> executeCallback(List<LogRecord> logRecords) async {
-    if (logRecords.isEmpty) {
+  Future<void> executeCallback(Iterable<LogEntry> logEntries) async {
+    if (logEntries.isEmpty) {
       return;
     }
-    final logEntries = logRecords
-        .map(
-          (logRecord) => LogEntry(
-            time: logRecord.time,
-            level: logRecord.level,
-            message: logRecord.message,
-            loggerName: logRecord.loggerName,
-            error: logRecord.error?.toString(),
-            stackTrace: logRecord.stackTrace?.toString(),
-          ),
-        )
-        .toList();
     final tmpLogDir = await LoggerViewModel.instance()._tmpLogsDir;
     final filename = FormatterHelper.machineDateTimeFormat(
       clock.now().toLocal(),
@@ -598,11 +573,9 @@ class WriteLogsWorker extends Worker<List<LogRecord>, void> {
 ///
 /// This is used to clean up old log files from the temporary directory to
 /// manage storage space.
-class ResetLogsWorker extends Worker<DateTime, int> {
+class ResetLogsWorkerIsolate extends WorkerIsolate<DateTime, int> {
   /// Deletes log files older than the provided [toDateTime].
   /// Returns the number of files deleted.
-  @override
-  String get debugName => runtimeType.toString();
   @override
   @protected
   Future<int> executeCallback(DateTime toDateTime) async {
@@ -627,19 +600,16 @@ class ResetLogsWorker extends Worker<DateTime, int> {
 /// single, human-readable string.
 ///
 /// Each log entry is formatted on a new line.
-class Logs2TextWorker
+class Logs2TextWorkerIsolate
     extends
-        Worker<
+        WorkerIsolate<
           ({
             DateTime? startTime,
             Level? filterLevel,
-            List<LogRecord> notSavedLogRecords,
+            Iterable<LogEntry> notSavedEntries,
           }),
           String
         > {
-  @override
-  String get debugName => runtimeType.toString();
-
   /// Formats all log entries into a single string.
   @override
   @protected
@@ -647,14 +617,14 @@ class Logs2TextWorker
     ({
       DateTime? startTime,
       Level? filterLevel,
-      List<LogRecord> notSavedLogRecords,
+      Iterable<LogEntry> notSavedEntries,
     })
     input,
   ) async =>
       (await LoggerViewModel.instance().logs(
             startTime: input.startTime,
             filterLevel: input.filterLevel,
-            notSavedLogRecords: input.notSavedLogRecords,
+            notSavedLogEntry: input.notSavedEntries,
             descending: false,
           ))
           .map(
