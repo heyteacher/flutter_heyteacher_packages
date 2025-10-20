@@ -111,7 +111,7 @@ class _LoggerScreenState
   Stream<Iterable<LogEntry>> stream({required int limit}) =>
       LoggerViewModel.instance()
           .logs(
-            notSavedLogRecords: LoggerViewModel.instance().notSavedLogRecords,
+            notSavedLogEntry: LoggerViewModel.instance().notSavedLogEntries,
             descending: true,
             limit: limit,
           )
@@ -157,7 +157,9 @@ class _LoggerScreenState
                     constraints: BoxConstraints.tight(
                       const Size.fromHeight(40),
                     ),
-                    labelText: FlutterHeyteacherUtilsLocalizations.of(context)!.search,
+                    labelText: FlutterHeyteacherUtilsLocalizations.of(
+                      context,
+                    )!.search,
                     labelStyle: Theme.of(context).textTheme.labelSmall,
                   ),
                   onChanged: LoggerViewModel.instance().updateFilterText,
@@ -257,15 +259,9 @@ class LogEntryCard extends StatelessWidget {
   static Color? _backgroundColor(Level level) => switch (level) {
     Level.SHOUT => ThemeViewModel.instance.redColor.withValues(alpha: 0.4),
     Level.SEVERE => ThemeViewModel.instance.redColor.withValues(alpha: 0.4),
-    Level.WARNING => ThemeViewModel.instance.orangeColor.withValues(
-      alpha: 0.4,
-    ),
-    Level.CONFIG => ThemeViewModel.instance.orangeColor.withValues(
-      alpha: 0.4,
-    ),
-    Level.CONFIG => ThemeViewModel.instance.yellowColor.withValues(
-      alpha: 0.4,
-    ),
+    Level.WARNING => ThemeViewModel.instance.orangeColor.withValues(alpha: 0.4),
+    Level.CONFIG => ThemeViewModel.instance.orangeColor.withValues(alpha: 0.4),
+    Level.CONFIG => ThemeViewModel.instance.yellowColor.withValues(alpha: 0.4),
     Level.INFO => ThemeViewModel.instance.greenColor.withValues(alpha: 0.4),
     _ => ThemeViewModel.instance.blueColor.withValues(alpha: 0.4),
   };
@@ -273,7 +269,10 @@ class LogEntryCard extends StatelessWidget {
 
 class LoggingLevelDropDownMenuCard extends StatelessWidget {
   final VoidCallback _onChanged;
-  const LoggingLevelDropDownMenuCard({super.key, required void Function() onChanged}) : _onChanged = onChanged;
+  const LoggingLevelDropDownMenuCard({
+    super.key,
+    required void Function() onChanged,
+  }) : _onChanged = onChanged;
 
   @override
   Widget build(BuildContext context) => Card(
@@ -284,9 +283,7 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
       ),
       subtitle: Text(
         FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
-          RemoteConfigViewModel.instance.getString(
-            RemoteConfigKeys.levelName,
-          ),
+          RemoteConfigViewModel.instance.getString(RemoteConfigKeys.levelName),
         ),
       ),
       trailing: FutureBuilder(
@@ -315,8 +312,7 @@ class EnableLogsStorageCard extends StatefulWidget {
   const EnableLogsStorageCard({super.key});
 
   @override
-  State<EnableLogsStorageCard> createState() =>
-      _EnableLogsStorageCardState();
+  State<EnableLogsStorageCard> createState() => _EnableLogsStorageCardState();
 }
 
 class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
@@ -326,33 +322,34 @@ class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
 
   @override
   Widget build(BuildContext context) => Card(
-        child: ListTile(
-          leading: const Icon(Icons.speaker_phone),
-          title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!
-              .enableLogsStorage),
-          subtitle: Text(
-            FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
-              RemoteConfigViewModel.instance.getBool(
-                RemoteConfigKeys.enableLogsStorage.name,
-              ),
-            ),
-          ),
-          trailing: FutureBuilder(
-            future: SharedPreferencesAsync().getBool(
-              SharedPreferencesKeys.htuEnableLogsStorage.name,
-            ),
-            builder: (context, asyncSnapshot) => Switch(
-              // This bool value toggles the switch.
-              value: asyncSnapshot.data ?? _enableLogsStorage,
-              onChanged: (bool value) {
-                setState(() => _enableLogsStorage = value);
-                SharedPreferencesAsync().setBool(
-                  SharedPreferencesKeys.htuEnableLogsStorage.name,
-                  value,
-                );
-              },
-            ),
+    child: ListTile(
+      leading: const Icon(Icons.speaker_phone),
+      title: Text(
+        FlutterHeyteacherUtilsLocalizations.of(context)!.enableLogsStorage,
+      ),
+      subtitle: Text(
+        FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
+          RemoteConfigViewModel.instance.getBool(
+            RemoteConfigKeys.enableLogsStorage.name,
           ),
         ),
-      );
+      ),
+      trailing: FutureBuilder(
+        future: SharedPreferencesAsync().getBool(
+          SharedPreferencesKeys.htuEnableLogsStorage.name,
+        ),
+        builder: (context, asyncSnapshot) => Switch(
+          // This bool value toggles the switch.
+          value: asyncSnapshot.data ?? _enableLogsStorage,
+          onChanged: (bool value) {
+            setState(() => _enableLogsStorage = value);
+            SharedPreferencesAsync().setBool(
+              SharedPreferencesKeys.htuEnableLogsStorage.name,
+              value,
+            );
+          },
+        ),
+      ),
+    ),
+  );
 }

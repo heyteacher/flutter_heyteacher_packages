@@ -5,4 +5,4 @@ library;
 /// computationally intensive tasks to a background isolate, thus keeping the
 /// main UI thread responsive.
 
-export 'src/worker.dart' show Worker;
+export 'src/worker.dart' show Worker, WorkerIsolate;
