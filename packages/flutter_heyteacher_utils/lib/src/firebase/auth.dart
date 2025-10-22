@@ -40,7 +40,7 @@ class AccountCard extends StatelessWidget {
         .listen((user) => user != null ? _createUserDataCallback(null) : null);
   }
 
-  dispose() {
+  void dispose() {
     _authStreamSubscription?.cancel();
   }
 

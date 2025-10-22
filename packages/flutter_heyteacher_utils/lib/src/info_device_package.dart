@@ -101,7 +101,7 @@ class InfoDevicePackageViewModel {
     ).listen((_) => _tapCounter = 0);
   }
 
-  dispose() {
+  void dispose() {
     _streamSubscription?.cancel();
     _tapCounterReachedStreamController.close();
   }

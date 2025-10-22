@@ -36,7 +36,7 @@ class ConnectivityViewModel {
   /// Disposes the controller, canceling the stream subscription to prevent memory leaks.
   ///
   /// This should be called when the controller is no longer needed.
-  dispose() {
+  void dispose() {
     _streamSubscription?.cancel();
   }
 

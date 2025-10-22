@@ -69,7 +69,7 @@ class LoggerViewModel {
   ///
   /// This should be called when the logger model is no longer needed to prevent
   /// memory leaks.
-  dispose() {
+  void dispose() {
     _loggerSubscription?.cancel();
     _loggerForTestSubscription?.cancel();
     _updateStreamController.close();
@@ -94,7 +94,7 @@ class LoggerViewModel {
   ///    Firebase.
   ///
   /// If [reset] is true, it clears the temporary log directory.
-  initialize({bool reset = true, bool reconfigure = false}) async {
+  Future<void> initialize({bool reset = true, bool reconfigure = false}) async {
     developer.log('flutter () <initialize>: reset $reset');
     // already configured, do nothing
     // Prevents re-configuration if already done.

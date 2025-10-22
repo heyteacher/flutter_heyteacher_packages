@@ -260,7 +260,7 @@ abstract class TimerWorkflow<T extends TimerTask> {
       .fold(0, (a, b) => a + b);
 
   /// The total number of tasks in the workflow.
-  get taskCount => tasks.length;
+  int get taskCount => tasks.length;
 }
 
 /// Represents a single, timed task within a [TimerWorkflow].

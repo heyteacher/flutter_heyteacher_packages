@@ -350,7 +350,7 @@ class ErrorView extends StatelessWidget {
             (error as FirebaseException).code == code);
   }
 
-  TextStyle _errorStyleContent(context) => Theme.of(context)
+  TextStyle _errorStyleContent(BuildContext context) => Theme.of(context)
       .textTheme
       .headlineMedium!
       .copyWith(color: ThemeViewModel.instance.colorScheme.onError);
