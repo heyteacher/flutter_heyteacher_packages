@@ -245,7 +245,7 @@ class GroupByResult {
     return compareTo(other) == 0;
   }
 
-  compareTo(GroupByResult b) {
+  int compareTo(GroupByResult b) {
     for (var key in groupByFields.keys) {
       int compare = groupByFields[key]!.compareTo(b.groupByFields[key]!);
       if (compare != 0) return compare;
@@ -460,7 +460,7 @@ abstract class Store<LightDataType extends FirestoreData,
   }
 
   /// On dispose, cancel the subscriptions.
-  dispose() {
+  void dispose() {
     _aggregatesSubscription?.cancel();
   }
 
@@ -1137,6 +1137,7 @@ abstract class FirestoreData<T> {
       _registeredFromFirestoreFactory = {};
 
   /// register a `fromFirestore` Factory for type `T`
+  // ignore: strict_top_level_inference
   static registerFromFirestoreFactory<T>(
       T Function(Map<String, dynamic> map) fromFirestoreFactory) {
     if (T == dynamic) {
