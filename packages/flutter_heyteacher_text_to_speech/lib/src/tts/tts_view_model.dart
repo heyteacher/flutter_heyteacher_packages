@@ -36,7 +36,7 @@ class TTSViewModel {
         .listen((locale) => _changeLanguage(locale.languageCode));
   }
 
-  dispose() {
+  void dispose() {
     _stateChangesStreamSubscription?.cancel();
     _onUserUpdateStreamSubscription?.cancel();
   }
