@@ -18,7 +18,7 @@ class LocaleCard extends StatefulWidget {
 
 class LocaleCardState<T extends StatefulWidget> extends State<T> {
   @protected
-  onTextToSpeechPressed() => TTSViewModel.instance.speak(
+  Future<void> onTextToSpeechPressed() => TTSViewModel.instance.speak(
       'Hello World, this is a test. Current locale is ${LocaleViewModel.instance.locale?.languageCode}', checkTTSThreshold: false,);
 
   @override
