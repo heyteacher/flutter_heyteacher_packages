@@ -28,6 +28,9 @@ final class PlatformHelper {
   /// `true` if the application is running in a web browser, linux or windows.
   static final bool isWeb = kIsWeb;
 
+  /// `true` if the application is not running in a web browser.
+  static bool get isNotWeb => !kIsWeb;
+
   // static class, avoid costructor
   PlatformHelper._();
 }
