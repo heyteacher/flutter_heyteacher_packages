@@ -37,7 +37,7 @@ class AppCheckViewModel {
     await FirebaseAppCheck.instance.activate(
       // You can also use 6a `ReCaptchaEnterpriseProvider` provider instance as an
       // argument for `webProvider`
-      providerWeb: ReCaptchaV3Provider(FirebaseRemoteConfig.instance
+      providerWeb: ReCaptchaEnterpriseProvider(FirebaseRemoteConfig.instance
           .getString('appCheckReCaptchaV3SiteKey')),
       // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
       // your preferred provider. Choose from:
