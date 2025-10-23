@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_heyteacher_utils/src/e2ee/e2ee_data.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
@@ -146,9 +147,7 @@ class E2EESecretKeyCard extends StatefulWidget {
 class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
   @override
   Widget build(BuildContext context) => FutureBuilder<bool>(
-    future: E2EEViewModel.instance(
-      AuthViewModel.instance.uid,
-    ).secretKeyStored,
+    future: E2EEViewModel.instance(AuthViewModel.instance.uid).secretKeyStored,
     builder: (_, secretKeySnapshot) => Card(
       child: ListTile(
         leading: Icon(
@@ -180,10 +179,16 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                     ),
               icon: const Icon(Icons.qr_code),
             ),
-            IconButton(
-              onPressed: () => _showQrCodeScanner(),
-              icon: const Icon(Icons.qr_code_scanner),
-            ),
+            if (PlatformHelper.isMobile)
+              IconButton(
+                onPressed: () => _showQrCodeScanner(),
+                icon: const Icon(Icons.qr_code_scanner),
+              ),
+            if (PlatformHelper.isNotMobile)
+              IconButton(
+                onPressed: () => _uploadSecretKey(),
+                icon: const Icon(Icons.upload),
+              ),
           ],
         ),
       ),
@@ -237,6 +242,39 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
       },
     );
     setState(() {});
+  }
+
+  void _uploadSecretKey() async {
+    String? secretJwkJson;
+    await showConfirmCancelDialog<void>(
+      context: context,
+      title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.encryptionSecretKey),
+      confirmCallback: (_) async {
+        await E2EEViewModel.instance(
+          AuthViewModel.instance.uid!,
+        ).importSecretJwkJson(secretJwkJson!);
+        if (mounted) setState(() {});
+        widget._secretKeyImportedCallback();
+        return null;
+      },
+      content: TextField(
+        minLines: 10,
+        maxLines: 20,
+       // expands: true,
+        keyboardType: TextInputType.multiline,
+        onChanged: (value) => secretJwkJson = value,
+        decoration: InputDecoration(
+          isDense: true,
+
+          border: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: ThemeViewModel.instance.theme.colorScheme.onSurface,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+      ),
+    );
   }
 
   void _showQrCodeScanner() async {
