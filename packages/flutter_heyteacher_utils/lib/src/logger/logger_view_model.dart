@@ -9,6 +9,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_data.dart';
@@ -28,8 +29,7 @@ class LoggerViewModel {
 
   StreamSubscription? _loggerSubscription, _loggerForTestSubscription;
 
-  final Worker _writeLogsWorker = Worker(
-    WriteLogsWorkerIsolate());
+  final Worker _writeLogsWorker = Worker(WriteLogsWorkerIsolate());
 
   /// The singleton instance of [LoggerViewModel].
   static LoggerViewModel? _instance;
@@ -95,12 +95,13 @@ class LoggerViewModel {
   ///
   /// If [reset] is true, it clears the temporary log directory.
   Future<void> initialize({bool reset = true, bool reconfigure = false}) async {
-    developer.log('flutter () <initialize>: reset $reset');
+    _logger.finest('<initialize>: reset $reset');
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured && !reconfigure) {
-      developer.log(
-        'flutter () (initialize): reset $reset reconfigure $reconfigure. Already configured',
+      _logger.finest(
+        '(initialize): reset $reset reconfigure $reconfigure. '
+        'Already configured',
       );
       return;
     }
@@ -122,7 +123,8 @@ class LoggerViewModel {
         clock.now().day,
       );
       developer.log(
-        '(initialize): reset $reset reconfigure $reconfigure. '
+        'flutter() ${clock.now().toIso8601String()} (initialize): '
+        'reset $reset reconfigure $reconfigure. '
         'Reset all logs before $toDateTime',
       );
       final resetLogsWorker = Worker(ResetLogsWorkerIsolate());
@@ -474,7 +476,10 @@ class LoggerViewModel {
   }
 
   List<LogEntry> _fromJson(FileSystemEntity file) {
-    developer.log('<LoggerViewModel._fromJson>: file ${file.path}');
+    developer.log(
+      'flutter () ${clock.now().toIso8601String()} <LoggerViewModel._fromJson>: '
+      'file ${file.path}',
+    );
     String jsonString = '';
     try {
       jsonString = (file as File).readAsStringSync();
@@ -545,7 +550,6 @@ class LoggerViewModel {
   }
 }
 
-
 /// A background worker that writes [LogEntry] list to a file in JSON format.
 ///
 /// This worker is used to persist log entries to the device's temporary
@@ -555,6 +559,18 @@ class WriteLogsWorkerIsolate extends WorkerIsolate<List<LogEntry>, void> {
   @override
   @protected
   Future<void> executeCallback(Iterable<LogEntry> logEntries) async {
+    developer.log(
+      'flutter () ${clock.now().toIso8601String()} <$runtimeType>: '
+      'logEntries.length ${logEntries.length} ',
+    );
+    if (PlatformHelper.isWeb) {
+      developer.log(
+        'flutter () ${clock.now().toIso8601String()} ($runtimeType): '
+        'logEntries.length ${logEntries.length} '
+        'Platform web not supported, do nothing',
+      );
+      return;
+    }
     if (logEntries.isEmpty) {
       return;
     }
@@ -579,7 +595,17 @@ class ResetLogsWorkerIsolate extends WorkerIsolate<DateTime, int> {
   @override
   @protected
   Future<int> executeCallback(DateTime toDateTime) async {
-    developer.log('flutter () <$runtimeType>: toDateTime $toDateTime ');
+    developer.log(
+      'flutter () ${clock.now().toIso8601String()} <$runtimeType>: '
+      'toDateTime $toDateTime ',
+    );
+    if (PlatformHelper.isWeb) {
+      developer.log(
+        'flutter () ${clock.now().toIso8601String()} ($runtimeType): '
+        'toDateTime $toDateTime. Platform web not supported, do nothing',
+      );
+      return 0;
+    }
     final logsToBeDelated =
         (await LoggerViewModel.instance()._logFiles(descending: false)).where(
           (fileSystemEntity) =>
@@ -590,9 +616,13 @@ class ResetLogsWorkerIsolate extends WorkerIsolate<DateTime, int> {
   }
 
   void _deleteFile(FileSystemEntity file) {
-    developer.log('flutter () <$runtimeType>: file ${file.path}. Deleted');
+    developer.log(
+      'flutter () ${clock.now().toIso8601String()} <$runtimeType>: file ${file.path}. Deleted',
+    );
     file.delete();
-    developer.log('flutter () ($runtimeType): file ${file.path}. Deleted');
+    developer.log(
+      'flutter () ${clock.now().toIso8601String()} ($runtimeType): file ${file.path}. Deleted',
+    );
   }
 }
 
