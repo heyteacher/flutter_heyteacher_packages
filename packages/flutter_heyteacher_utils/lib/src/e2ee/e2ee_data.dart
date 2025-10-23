@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -38,7 +38,7 @@ class E2EEValue {
     if (object == null) return null;
     final jsonEncodeValue = jsonEncode(object);
     final utf8Encoded = utf8.encode(jsonEncodeValue);
-    final gzipEncoded = gzip.encode(utf8Encoded);
+    final gzipEncoded = const GZipEncoder().encodeBytes(utf8Encoded);
     final base64Encoded = base64.encode(gzipEncoded);
     return base64Encoded;
   }
@@ -46,7 +46,7 @@ class E2EEValue {
   static Uint8List _unzip(String? base64Encoded) {
     if (base64Encoded == null) return Uint8List.fromList([]);
     final base64Decoded = base64.decode(base64Encoded);
-    final gzipDecoded = gzip.decode(base64Decoded);
+    final gzipDecoded = const GZipDecoder().decodeBytes(base64Decoded);
     final uft8Decoded = utf8.decode(gzipDecoded);
     return Uint8List.fromList(jsonDecode(uft8Decoded).cast<int>());
   }
