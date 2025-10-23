@@ -8,6 +8,7 @@ library;
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -129,12 +130,12 @@ class RemoteConfigViewModel {
 
 
   Future<bool> get execWorkerInIsolate async =>
-      await SharedPreferencesAsync().getBool(
+      PlatformHelper.isNotWeb && (await SharedPreferencesAsync().getBool(
         SharedPreferencesKeys.fhuExecWorkerInIsolate.name,
       ) ??
       RemoteConfigViewModel.instance.getBool(
         RemoteConfigKeys.execWorkerInIsolate.name,
-      );
+      ));
 
   int getInt(String key) => _remoteConfig.getInt(key);
   String getString(String key) => _remoteConfig.getString(key);
