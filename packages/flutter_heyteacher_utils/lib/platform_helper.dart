@@ -20,6 +20,18 @@ final class PlatformHelper {
   static final bool isMobile =
       !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
+  /// `true` if the application is running on Android.
+  ///
+  /// This excludes web environments.
+  static final bool isAndroid =
+      !kIsWeb && Platform.isAndroid;
+
+  /// `true` if the application is running on iOS.
+  ///
+  /// This excludes web environments.
+ static final bool isIOS =
+      !kIsWeb && Platform.isIOS;
+
   /// `true` if the application is running in a web browser, linux or windows.
   /// but not on mobile.
   static final bool isNotMobile =
