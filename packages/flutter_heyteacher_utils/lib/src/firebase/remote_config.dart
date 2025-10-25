@@ -55,8 +55,14 @@ enum RemoteConfigKeys {
   fmcIntervalInMinutes,
 
   /// the Firebase Cloud Messaging topic name
-  fcmTopicName;
+  fcmTopicName,
 
+  /// E2EE Web Debug Password
+  e2eeWebDebugPassword,
+
+  /// E2EE Web Debug Secret Key
+  e2eeWebDebugSecretKey;
+  
   /// Gets the appropriate remote config key for the logger level name based on
   /// the build mode (`kDebugMode`).
   static String get levelName =>
