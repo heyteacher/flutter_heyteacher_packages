@@ -181,14 +181,14 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
 class TooltipIconButton extends StatelessWidget {
   final Widget? title;
   final Widget content;
-  final double? iconSize;
+  final double iconSize;
   final Color? iconColor;
 
   const TooltipIconButton({
     super.key,
     this.title,
     required this.content,
-    this.iconSize,
+    this.iconSize = 14,
     this.iconColor,
   });
 
