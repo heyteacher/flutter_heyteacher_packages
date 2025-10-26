@@ -1,6 +1,6 @@
 name: flutter_heyteacher_charts
 description: "A heyteacher flutter package for create charts"
-version: 1.26.0+251022162
+version: 1.27.0+251026161
 publish_to: none
 
 environment:
@@ -9,9 +9,9 @@ environment:
 
 dependencies:
   collection:
+  equatable:  
   fl_chart:
     path: ../packages/fl_chart
-  equatable:  
   flutter:
     sdk: flutter
 
@@ -19,9 +19,10 @@ dependencies:
     path: ../flutter_heyteacher_utils
 
 dev_dependencies:
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
+  very_good_analysis: ^10.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
