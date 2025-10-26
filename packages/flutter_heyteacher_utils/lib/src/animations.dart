@@ -144,7 +144,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
         oldList: dataList ?? [],
         newList: newDataList.toList(),
       )
-      ..forEach(_listGlobalKey.currentState!.insertItem);
+      ..forEach((index) =>_listGlobalKey.currentState?.insertItem(index));
       // add new item at the end of list, scrollo down e litte bit
       if (changedIndexes.isNotEmpty &&
           (dataList?.length ?? 0) > 0 &&
