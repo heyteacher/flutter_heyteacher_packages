@@ -1,12 +1,18 @@
+
 export 'src/store/store.dart'
-    show Store, OrderDirection, FirestoreData, GroupByResult,DocumentNotFoundException;
+    show
+        DocumentNotFoundException,
+        FirestoreData,
+        GroupByResult,
+        OrderDirection,
+        Store;
 export 'src/store/store_filters.dart'
     show
-        Operator,
-        ValueStoreFilter,
         IsNullStoreFilter,
-        IterableValueStoreFilter,
-        LogicalStoreFilter,
-        StoreFilter,
         IterableOperator,
-        LogicalOperator;
+        IterableValueStoreFilter,
+        LogicalOperator,
+        LogicalStoreFilter,
+        Operator,
+        StoreFilter,
+        ValueStoreFilter;

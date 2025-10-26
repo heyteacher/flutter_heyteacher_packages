@@ -1,4 +1,5 @@
-/// Store filters define how to filter data provided by [Store] and i they match the structure of Firestore Filter.
+/// Store filters define how to filter data provided by [Store] and i they
+/// match the structure of Firestore Filter.
 /// Store filter are passed as paramenter [Store.storeFilter].
 ///
 /// There are three type of filter which implement [StoreFilter] interface:
@@ -6,11 +7,13 @@
 /// * [ValueStoreFilter]  where [ValueStoreFilter.field] is compared to
 ///   [ValueStoreFilter.value] according [Operator]
 ///
-/// * [IterableValueStoreFilter] where [IterableValueStoreFilter.field] is compare to
-///   iterable [IterableValueStoreFilter.values] according [IterableOperator]
+/// * [IterableValueStoreFilter] where [IterableValueStoreFilter.field] is
+///   compare to iterable [IterableValueStoreFilter.values] according
+///   [IterableOperator]
 ///
 /// * [IsNullStoreFilter] check if [IsNullStoreFilter.field] is null
-///   in the case [IsNullStoreFilter.value] is true, or is not null if [IsNullStoreFilter.value] is false
+///   in the case [IsNullStoreFilter.value] is true, or is not null if
+///   [IsNullStoreFilter.value] is false
 ///
 /// * [LogicalStoreFilter] coumpound [StoreFilter] according [LogicalOperator]
 ///
@@ -27,134 +30,157 @@
 ///    operator: Operator.isLessThan,
 ///    value: DateTime(intFormatter.parse(value).toInt() + 1)));
 /// ```
+// ignore_for_file: sort_constructors_first
+
 library;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
 
 /// Operators used in [ValueStoreFilter]
 enum Operator {
   /// If field value is equal to value
   isEqualTo('='),
+
   /// If field value isn't equal to value
   isNotEqualTo('<>'),
+
   /// If field value is less than field
   isLessThan('<'),
+
   /// If field value is less then or equal to value
   isLessThanOrEqualTo('<='),
+
   /// If field value is greater than field
   isGreaterThan('>'),
+
   /// If field value is greater then or equal to value
   isGreaterThanOrEqualTo('>='),
+
   /// If field array value contains the value
   arrayContains('in');
 
-  final String printable;
-  const Operator(this.printable);
+  final String _printable;
+  const Operator(this._printable);
 }
 
 /// Operators used in [IterableValueStoreFilter]
 enum IterableOperator {
   /// If field value is contained into the iterable values
   arrayContainsAny('in any'),
+
   /// If field value is is into iterable values
   whereIn('in'),
+
   /// If field value isn't into the iterable values
   whereNotIn('not in');
 
-  final String printable;
-  const IterableOperator(this.printable);
+  final String _printable;
+  const IterableOperator(this._printable);
 }
 
 /// Operators used in [LogicalStoreFilter]
 enum LogicalOperator {
   /// All [StoreFilter] children must be satisfied
   and,
+
   /// At least one [StoreFilter] children is satisfied
   or
 }
 
 /// The interface implemented by all store filters
-abstract class StoreFilter {
+abstract class StoreFilter extends Equatable {
   /// Converts the filter into Firestore [Filter]
   Filter toFirestore();
 }
 
 /// Compares [field] value to [value] according [Operator]
-class ValueStoreFilter implements StoreFilter {
+class ValueStoreFilter extends Equatable implements StoreFilter {
   /// The field in document
-  String field;
+  final String field;
 
   /// The operator used in comparition
-  Operator operator;
+  final Operator operator;
 
   /// The value to check
-  Object value;
+  final Object value;
 
   /// Creates a  value store filter
-  ValueStoreFilter(
-      {required this.field, required this.operator, required this.value});
+  const ValueStoreFilter({
+    required this.field,
+    required this.operator,
+    required this.value,
+  });
 
   /// Converts the value store filter into a Firestore filter
   @override
   Filter toFirestore() => switch (operator) {
-      Operator.isEqualTo => Filter(field, isEqualTo: value),
-      Operator.isNotEqualTo => Filter(field, isNotEqualTo: value),
-      Operator.isLessThan => Filter(field, isLessThan: value),
-      Operator.isLessThanOrEqualTo => Filter(field, isLessThanOrEqualTo: value),
-      Operator.isGreaterThan => Filter(field, isGreaterThan: value),
-      Operator.isGreaterThanOrEqualTo =>
-        Filter(field, isGreaterThanOrEqualTo: value),
-      Operator.arrayContains => Filter(field, arrayContains: value),
-    };
+        Operator.isEqualTo => Filter(field, isEqualTo: value),
+        Operator.isNotEqualTo => Filter(field, isNotEqualTo: value),
+        Operator.isLessThan => Filter(field, isLessThan: value),
+        Operator.isLessThanOrEqualTo =>
+          Filter(field, isLessThanOrEqualTo: value),
+        Operator.isGreaterThan => Filter(field, isGreaterThan: value),
+        Operator.isGreaterThanOrEqualTo =>
+          Filter(field, isGreaterThanOrEqualTo: value),
+        Operator.arrayContains => Filter(field, arrayContains: value),
+      };
 
   /// Prints the filter in polish notation
   @override
-  String toString() => '$field ${operator.printable} $value';
-  }
-
+  String toString() => '$field ${operator._printable} $value';
+  
+  @override
+  List<Object?> get props => [field, operator, value];
+}
 
 /// Compares [field] value to iterable [values] according the [IterableOperator]
-class IterableValueStoreFilter implements StoreFilter {
+class IterableValueStoreFilter extends Equatable implements StoreFilter {
   /// The field in document
-  String field;
+  final String field;
 
   /// The operator used in comparison
-  IterableOperator iterableOperator;
+  final IterableOperator iterableOperator;
 
   /// The iterable values to check
-  Iterable<Object?> values;
+  final Iterable<Object?> values;
 
   /// Creates a iterable store filter
-  IterableValueStoreFilter(
-      {required this.field,
-      required this.iterableOperator,
-      required this.values});
+  const IterableValueStoreFilter({
+    required this.field,
+    required this.iterableOperator,
+    required this.values,
+  });
 
   /// Converts the Iterable value store filter into a Firestore filter
   @override
   Filter toFirestore() => switch (iterableOperator) {
-      IterableOperator.arrayContainsAny =>
-        Filter(field, arrayContainsAny: values),
-      IterableOperator.whereIn => Filter(field, whereIn: values),
-      IterableOperator.whereNotIn => Filter(field, whereNotIn: values),
-    };
-  
+        IterableOperator.arrayContainsAny =>
+          Filter(field, arrayContainsAny: values),
+        IterableOperator.whereIn => Filter(field, whereIn: values),
+        IterableOperator.whereNotIn => Filter(field, whereNotIn: values),
+      };
 
   /// Prints the filter in polish notation
   @override
-  String toString() => '$field ${iterableOperator.printable} $values';
+  String toString() => '$field ${iterableOperator._printable} $values';
+
+  @override
+  List<Object?> get props => [field, iterableOperator, values];
 }
 
-/// If [value] is `true`, checks if [field] is null. Otherwise checks [field] is not null.
-class IsNullStoreFilter implements StoreFilter {
+/// If [value] is `true`, checks if [field] is null. Otherwise checks [field]
+///  is not null.
+class IsNullStoreFilter extends Equatable implements StoreFilter {
   /// The field to check nullability
-  String field;
+  final String field;
 
   /// if `true`, check nullability. If `false` checks non-nullability
-  bool value;
+  final bool value;
 
   /// creates a is null store filter
-  IsNullStoreFilter({required this.field, required this.value});
+  const IsNullStoreFilter({required this.field, required this.value});
 
   /// Converts the is null store filter into a Firestore filter
   @override
@@ -163,106 +189,110 @@ class IsNullStoreFilter implements StoreFilter {
   /// Prints the filter in polish notation
   @override
   String toString() => '$field is${value ? '' : 'Not'}Null';
+
+  @override
+  List<Object?> get props => [field, value];
 }
 
-/// Applies [LogicalOperator] to [StoreFilter]. If [LogicalOperator.and] all [StoreFilter] must be satisfied.
+/// Applies [LogicalOperator] to [StoreFilter]. If [LogicalOperator.and] all
+/// [StoreFilter] must be satisfied.
 /// If [LogicalOperator.or] at least one [StoreFilter] must be satisfied.
-class LogicalStoreFilter implements StoreFilter {
+class LogicalStoreFilter extends Equatable implements StoreFilter {
   /// The logical operator applied to filters
-  LogicalOperator logicalOperator;
+  final LogicalOperator logicalOperator;
 
   /// The filter to evaluate
-  StoreFilter filter1;
+  final StoreFilter filter1;
 
   /// The filter to evaluate
-  StoreFilter filter2;
+  final StoreFilter filter2;
 
   /// The filter to evaluate
-  StoreFilter? filter3;
+  final StoreFilter? filter3;
 
   /// The filter to evaluate
-  StoreFilter? filter4;
+  final StoreFilter? filter4;
 
   /// The filter to evaluate
-  StoreFilter? filter5;
+  final StoreFilter? filter5;
 
   /// The filter to evaluate
-  StoreFilter? filter6;
+  final StoreFilter? filter6;
 
   /// The filter to evaluate
-  StoreFilter? filter7;
+  final StoreFilter? filter7;
 
   /// The filter to evaluate
-  StoreFilter? filter8;
+  final StoreFilter? filter8;
 
   /// The filter to evaluate
-  StoreFilter? filter9;
+  final StoreFilter? filter9;
 
   /// The filter to evaluate
-  StoreFilter? filter10;
+  final StoreFilter? filter10;
 
   /// The filter to evaluate
-  StoreFilter? filter11;
+  final StoreFilter? filter11;
 
   /// The filter to evaluate
-  StoreFilter? filter12;
+  final StoreFilter? filter12;
 
   /// The filter to evaluate
-  StoreFilter? filter13;
+  final StoreFilter? filter13;
 
   /// The filter to evaluate
-  StoreFilter? filter14;
+  final StoreFilter? filter14;
 
   /// The filter to evaluate
-  StoreFilter? filter15;
+  final StoreFilter? filter15;
 
   /// The filter to evaluate
-  StoreFilter? filter16;
+  final StoreFilter? filter16;
 
   /// The filter to evaluate
-  StoreFilter? filter17;
+  final StoreFilter? filter17;
 
   /// The filter to evaluate
-  StoreFilter? filter18;
+  final StoreFilter? filter18;
 
   /// The filter to evaluate
-  StoreFilter? filter19;
+  final StoreFilter? filter19;
 
   /// The filter to evaluate
-  StoreFilter? filter20;
+  final StoreFilter? filter20;
 
   /// The filter to evaluate
-  StoreFilter? filter21;
+  final StoreFilter? filter21;
 
   /// The filter to evaluate
-  StoreFilter? filter22;
+  final StoreFilter? filter22;
 
   /// The filter to evaluate
-  StoreFilter? filter23;
+  final StoreFilter? filter23;
 
   /// The filter to evaluate
-  StoreFilter? filter24;
+  final StoreFilter? filter24;
 
   /// The filter to evaluate
-  StoreFilter? filter25;
+  final StoreFilter? filter25;
 
   /// The filter to evaluate
-  StoreFilter? filter26;
+  final StoreFilter? filter26;
 
   /// The filter to evaluate
-  StoreFilter? filter27;
+  final StoreFilter? filter27;
 
   /// The filter to evaluate
-  StoreFilter? filter28;
+  final StoreFilter? filter28;
 
   /// The filter to evaluate
-  StoreFilter? filter29;
+  final StoreFilter? filter29;
 
   /// The filter to evaluate
-  StoreFilter? filter30;
+  final StoreFilter? filter30;
 
-  // Creates a logical filter
-  LogicalStoreFilter({
+  /// Creates a logical filter
+  const LogicalStoreFilter({
     required this.logicalOperator,
     required this.filter1,
     required this.filter2,
@@ -365,36 +395,37 @@ class LogicalStoreFilter implements StoreFilter {
           ),
       };
 
-  /// Prints the filter in polish notation
   @override
-  String toString() => '('
-      '$filter1 ${logicalOperator.name} $filter2'
-      '${filter3 != null ? ' ${logicalOperator.name} ' : ''} ${filter3 ?? ''}'
-      '${filter4 != null ? ' ${logicalOperator.name} ' : ''} ${filter4 ?? ''}'
-      '${filter5 != null ? ' ${logicalOperator.name} ' : ''} ${filter5 ?? ''}'
-      '${filter6 != null ? ' ${logicalOperator.name} ' : ''} ${filter6 ?? ''}'
-      '${filter7 != null ? ' ${logicalOperator.name} ' : ''} ${filter7 ?? ''}'
-      '${filter8 != null ? ' ${logicalOperator.name} ' : ''} ${filter8 ?? ''}'
-      '${filter9 != null ? ' ${logicalOperator.name} ' : ''} ${filter9 ?? ''}'
-      '${filter10 != null ? ' ${logicalOperator.name} ' : ''} ${filter10 ?? ''}'
-      '${filter11 != null ? ' ${logicalOperator.name} ' : ''} ${filter11 ?? ''}'
-      '${filter12 != null ? ' ${logicalOperator.name} ' : ''} ${filter12 ?? ''}'
-      '${filter13 != null ? ' ${logicalOperator.name} ' : ''} ${filter13 ?? ''}'
-      '${filter14 != null ? ' ${logicalOperator.name} ' : ''} ${filter14 ?? ''}'
-      '${filter15 != null ? ' ${logicalOperator.name} ' : ''} ${filter15 ?? ''}'
-      '${filter16 != null ? ' ${logicalOperator.name} ' : ''} ${filter16 ?? ''}'
-      '${filter17 != null ? ' ${logicalOperator.name} ' : ''} ${filter17 ?? ''}'
-      '${filter18 != null ? ' ${logicalOperator.name} ' : ''} ${filter18 ?? ''}'
-      '${filter19 != null ? ' ${logicalOperator.name} ' : ''} ${filter19 ?? ''}'
-      '${filter20 != null ? ' ${logicalOperator.name} ' : ''} ${filter20 ?? ''}'
-      '${filter21 != null ? ' ${logicalOperator.name} ' : ''} ${filter21 ?? ''}'
-      '${filter22 != null ? ' ${logicalOperator.name} ' : ''} ${filter22 ?? ''}'
-      '${filter23 != null ? ' ${logicalOperator.name} ' : ''} ${filter23 ?? ''}'
-      '${filter24 != null ? ' ${logicalOperator.name} ' : ''} ${filter24 ?? ''}'
-      '${filter25 != null ? ' ${logicalOperator.name} ' : ''} ${filter25 ?? ''}'
-      '${filter26 != null ? ' ${logicalOperator.name} ' : ''} ${filter26 ?? ''}'
-      '${filter27 != null ? ' ${logicalOperator.name} ' : ''} ${filter27 ?? ''}'
-      '${filter28 != null ? ' ${logicalOperator.name} ' : ''} ${filter28 ?? ''}'
-      '${filter29 != null ? ' ${logicalOperator.name} ' : ''} ${filter29 ?? ''}'
-      '${filter30 != null ? ' ${logicalOperator.name} ' : ''} ${filter30 ?? ''})';
+  List<Object?> get props => [
+        filter1,
+        filter2,
+        filter3,
+        filter4,
+        filter5,
+        filter6,
+        filter7,
+        filter8,
+        filter9,
+        filter10,
+        filter11,
+        filter12,
+        filter13,
+        filter14,
+        filter15,
+        filter16,
+        filter17,
+        filter18,
+        filter19,
+        filter20,
+        filter21,
+        filter22,
+        filter23,
+        filter24,
+        filter25,
+        filter26,
+        filter27,
+        filter28,
+        filter29,
+        filter30,
+      ];
 }
