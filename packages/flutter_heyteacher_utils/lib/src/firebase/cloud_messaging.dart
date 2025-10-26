@@ -30,29 +30,33 @@ enum IntervalKeys {
   /// 30 minutes interval.
   thirtyMinutes(30);
 
-  /// The duration of the interval in minutes.
-  final int minutes;
-
   /// Creates an [IntervalKeys] with the given [minutes].
   const IntervalKeys(this.minutes);
+ /// The duration of the interval in minutes.
+  final int minutes;
 }
+
+ 
 
 /// Abstract class defining the contract for an Firebase Cloud Messaging model.
 /// Implementations of this class are responsible for providing an entry point
 /// callback and initializing the alarm.
 abstract class FirebaseCloudMessagingViewModel {
+
+  /// Creates an instance of [FirebaseCloudMessagingViewModel].
+  FirebaseCloudMessagingViewModel({required this.entryPointCallback});
   /// The callback function to be executed when the alarm triggers.
   /// This function must be a top-level or static function.
   BackgroundMessageHandler entryPointCallback;
 
-  FirebaseCloudMessagingViewModel({required this.entryPointCallback});
-
+  /// the lock shared preferences key
   @protected
   String get lockSharedPreferencesKey => '${runtimeType}Lock';
 
   final _logger = Logger('FirebaseCloudMessagingViewModel');
   final _sharedPreferences = SharedPreferencesAsync();
 
+  /// Gets the interval in minutes for the Firebase Cloud Messaging.
   static int get remoteConfigIntervalInMinutes => kDebugMode
       ? 1
       : RemoteConfigViewModel.instance
@@ -66,22 +70,17 @@ abstract class FirebaseCloudMessagingViewModel {
   ///
   /// This function is called when the app is started
   /// to initialize the Firebase Cloud Messaging.
-  /// It initializes the Firebase Cloud Messaging and sets up a periodic alarm
-  /// for execute [entryPointCallback] every
-  /// [FCMRemoteConfigKeys.fmcIntervalInMinutes] minutes.
-  /// The callback is set to run in the background even if the app is not running.
+  /// The callback is set to run in the background even if the app is not 
+  /// running.
   /// The callback is set to run even if the device is in doze mode.
   Future<void> initialize() async {
     _logger.finest('<initialize>:');
-    NotificationSettings settings =
+    final settings =
         await FirebaseMessaging.instance.requestPermission(
-      alert: true,
       announcement: true,
-      badge: true,
       carPlay: true,
       criticalAlert: true,
       provisional: true,
-      sound: true,
     );
     _logger.info(
       '(initialize): User granted permission ${settings.authorizationStatus}',
@@ -96,6 +95,6 @@ abstract class FirebaseCloudMessagingViewModel {
             '$lockSharedPreferencesKey to false');
     await _sharedPreferences.setBool(
         SharedPreferencesKeys.htuFmcToBeInitialized.name, true);
-    _sharedPreferences.setBool(lockSharedPreferencesKey, false);
+    unawaited(_sharedPreferences.setBool(lockSharedPreferencesKey, false));
   }
 }

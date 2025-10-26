@@ -1,10 +1,8 @@
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-
 void main() {
   group('Formatters', () {
-
     test('FormatterHelper.intFormatter has correct pattern', () {
       // NumberFormat patterns are a bit different, check formatting
       expect(FormatterHelper.intFormat(123), '123');
@@ -25,39 +23,77 @@ void main() {
   group('FormatterHelper.formatDurationTts', () {
     // Mock localization functions
     String mockNHours(int hours) => "$hours hour${hours == 1 ? '' : 's'}";
-    String mockNMinutes(int minutes) => "$minutes minute${minutes == 1 ? '' : 's'}";
+    String mockNMinutes(int minutes) =>
+        "$minutes minute${minutes == 1 ? '' : 's'}";
 
     test('returns empty string for null input', () {
-      expect(FormatterHelper.formatDurationTts(null, mockNHours, mockNMinutes), '');
+      expect(
+        FormatterHelper.formatDurationTts(null, mockNHours, mockNMinutes),
+        '',
+      );
     });
 
     test('formats zero duration correctly', () {
-      expect(FormatterHelper.formatDurationTts(0, mockNHours, mockNMinutes), '0 minutes');
+      expect(
+        FormatterHelper.formatDurationTts(0, mockNHours, mockNMinutes),
+        '0 minutes',
+      );
     });
 
     test('formats duration less than an hour correctly', () {
       const thirtyMinutesMs = 30 * 60 * 1000;
-      expect(FormatterHelper.formatDurationTts(thirtyMinutesMs, mockNHours, mockNMinutes), '30 minutes');
+      expect(
+        FormatterHelper.formatDurationTts(
+          thirtyMinutesMs,
+          mockNHours,
+          mockNMinutes,
+        ),
+        '30 minutes',
+      );
     });
 
-     test('formats duration with exactly one hour correctly', () {
+    test('formats duration with exactly one hour correctly', () {
       const oneHourMs = 60 * 60 * 1000;
-      expect(FormatterHelper.formatDurationTts(oneHourMs, mockNHours, mockNMinutes), '1 hour 0 minutes');
+      expect(
+        FormatterHelper.formatDurationTts(oneHourMs, mockNHours, mockNMinutes),
+        '1 hour 0 minutes',
+      );
     });
 
     test('formats duration with hours and minutes correctly', () {
       const oneHourThirtyMinutesMs = (60 + 30) * 60 * 1000;
-      expect(FormatterHelper.formatDurationTts(oneHourThirtyMinutesMs, mockNHours, mockNMinutes), '1 hour 30 minutes');
+      expect(
+        FormatterHelper.formatDurationTts(
+          oneHourThirtyMinutesMs,
+          mockNHours,
+          mockNMinutes,
+        ),
+        '1 hour 30 minutes',
+      );
     });
 
     test('formats duration with multiple hours and minutes correctly', () {
       const twoHoursFifteenMinutesMs = (2 * 60 + 15) * 60 * 1000;
-      expect(FormatterHelper.formatDurationTts(twoHoursFifteenMinutesMs, mockNHours, mockNMinutes), '2 hours 15 minutes');
+      expect(
+        FormatterHelper.formatDurationTts(
+          twoHoursFifteenMinutesMs,
+          mockNHours,
+          mockNMinutes,
+        ),
+        '2 hours 15 minutes',
+      );
     });
 
-     test('formats duration with only minutes correctly', () {
+    test('formats duration with only minutes correctly', () {
       const fiveMinutesMs = 5 * 60 * 1000;
-      expect(FormatterHelper.formatDurationTts(fiveMinutesMs, mockNHours, mockNMinutes), '5 minutes');
+      expect(
+        FormatterHelper.formatDurationTts(
+          fiveMinutesMs,
+          mockNHours,
+          mockNMinutes,
+        ),
+        '5 minutes',
+      );
     });
   });
 
@@ -66,7 +102,14 @@ void main() {
       expect(FormatterHelper.formatDuration(null), '');
       expect(FormatterHelper.formatDuration(null, showSeconds: true), '');
       expect(FormatterHelper.formatDuration(null, showHoursIfZero: false), '');
-      expect(FormatterHelper.formatDuration(null, showSeconds: true, showHoursIfZero: false), '');
+      expect(
+        FormatterHelper.formatDuration(
+          null,
+          showSeconds: true,
+          showHoursIfZero: false,
+        ),
+        '',
+      );
     });
 
     // --- Default options (showSeconds: false, showHoursIfZero: true) ---
@@ -76,10 +119,13 @@ void main() {
 
     test('formats less than a minute (default)', () {
       const thirtySecondsMs = 30 * 1000;
-      expect(FormatterHelper.formatDuration(thirtySecondsMs), '00:00'); // Seconds ignored
+      expect(
+        FormatterHelper.formatDuration(thirtySecondsMs),
+        '00:00',
+      ); // Seconds ignored
     });
 
-     test('formats exactly one minute (default)', () {
+    test('formats exactly one minute (default)', () {
       const oneMinuteMs = 60 * 1000;
       expect(FormatterHelper.formatDuration(oneMinuteMs), '00:01');
     });
@@ -88,7 +134,10 @@ void main() {
       const thirtyMinutesMs = 30 * 60 * 1000;
       const thirtyMinTenSecMs = (30 * 60 + 10) * 1000;
       expect(FormatterHelper.formatDuration(thirtyMinutesMs), '00:30');
-      expect(FormatterHelper.formatDuration(thirtyMinTenSecMs), '00:30'); // Seconds ignored
+      expect(
+        FormatterHelper.formatDuration(thirtyMinTenSecMs),
+        '00:30',
+      ); // Seconds ignored
     });
 
     test('formats exactly one hour (default)', () {
@@ -100,7 +149,10 @@ void main() {
       const oneHourThirtyMinutesMs = (60 + 30) * 60 * 1000;
       const twoHoursFiveMinTenSecMs = (2 * 60 * 60 + 5 * 60 + 10) * 1000;
       expect(FormatterHelper.formatDuration(oneHourThirtyMinutesMs), '01:30');
-      expect(FormatterHelper.formatDuration(twoHoursFiveMinTenSecMs), '02:05'); // Seconds ignored
+      expect(
+        FormatterHelper.formatDuration(twoHoursFiveMinTenSecMs),
+        '02:05',
+      ); // Seconds ignored
     });
 
     // --- showSeconds: true, showHoursIfZero: true ---
@@ -111,23 +163,41 @@ void main() {
     test('formats less than a minute (show seconds)', () {
       const thirtySecondsMs = 30 * 1000;
       const fiveSecondsMs = 5 * 1000;
-      expect(FormatterHelper.formatDuration(thirtySecondsMs, showSeconds: true), '00:00:30');
-      expect(FormatterHelper.formatDuration(fiveSecondsMs, showSeconds: true), '00:00:05');
+      expect(
+        FormatterHelper.formatDuration(thirtySecondsMs, showSeconds: true),
+        '00:00:30',
+      );
+      expect(
+        FormatterHelper.formatDuration(fiveSecondsMs, showSeconds: true),
+        '00:00:05',
+      );
     });
 
     test('formats less than an hour (show seconds)', () {
       const thirtyMinTenSecMs = (30 * 60 + 10) * 1000;
-      expect(FormatterHelper.formatDuration(thirtyMinTenSecMs, showSeconds: true), '00:30:10');
+      expect(
+        FormatterHelper.formatDuration(thirtyMinTenSecMs, showSeconds: true),
+        '00:30:10',
+      );
     });
 
-     test('formats exactly one hour (show seconds)', () {
+    test('formats exactly one hour (show seconds)', () {
       const oneHourMs = 60 * 60 * 1000;
-      expect(FormatterHelper.formatDuration(oneHourMs, showSeconds: true), '01:00:00');
+      expect(
+        FormatterHelper.formatDuration(oneHourMs, showSeconds: true),
+        '01:00:00',
+      );
     });
 
     test('formats more than an hour (show seconds)', () {
       const twoHoursFiveMinTenSecMs = (2 * 60 * 60 + 5 * 60 + 10) * 1000;
-      expect(FormatterHelper.formatDuration(twoHoursFiveMinTenSecMs, showSeconds: true), '02:05:10');
+      expect(
+        FormatterHelper.formatDuration(
+          twoHoursFiveMinTenSecMs,
+          showSeconds: true,
+        ),
+        '02:05:10',
+      );
     });
 
     // --- showSeconds: false, showHoursIfZero: false ---
@@ -137,57 +207,126 @@ void main() {
 
     test('formats less than a minute (hide zero hours)', () {
       const thirtySecondsMs = 30 * 1000;
-      expect(FormatterHelper.formatDuration(thirtySecondsMs, showHoursIfZero: false), '00'); // Seconds ignored
+      expect(
+        FormatterHelper.formatDuration(thirtySecondsMs, showHoursIfZero: false),
+        '00',
+      ); // Seconds ignored
     });
 
     test('formats less than an hour (hide zero hours)', () {
       const thirtyMinutesMs = 30 * 60 * 1000;
       const thirtyMinTenSecMs = (30 * 60 + 10) * 1000;
-      expect(FormatterHelper.formatDuration(thirtyMinutesMs, showHoursIfZero: false), '30');
-      expect(FormatterHelper.formatDuration(thirtyMinTenSecMs, showHoursIfZero: false), '30'); // Seconds ignored
+      expect(
+        FormatterHelper.formatDuration(thirtyMinutesMs, showHoursIfZero: false),
+        '30',
+      );
+      expect(
+        FormatterHelper.formatDuration(
+          thirtyMinTenSecMs,
+          showHoursIfZero: false,
+        ),
+        '30',
+      ); // Seconds ignored
     });
 
     test('formats exactly one hour (hide zero hours)', () {
       const oneHourMs = 60 * 60 * 1000;
-      expect(FormatterHelper.formatDuration(oneHourMs, showHoursIfZero: false), '01:00'); // Hours shown because > 0
+      expect(
+        FormatterHelper.formatDuration(oneHourMs, showHoursIfZero: false),
+        '01:00',
+      ); // Hours shown because > 0
     });
 
     test('formats more than an hour (hide zero hours)', () {
       const oneHourThirtyMinutesMs = (60 + 30) * 60 * 1000;
-      expect(FormatterHelper.formatDuration(oneHourThirtyMinutesMs, showHoursIfZero: false), '01:30');
+      expect(
+        FormatterHelper.formatDuration(
+          oneHourThirtyMinutesMs,
+          showHoursIfZero: false,
+        ),
+        '01:30',
+      );
     });
 
     // --- showSeconds: true, showHoursIfZero: false ---
     test('formats zero duration (show seconds, hide zero hours)', () {
-      expect(FormatterHelper.formatDuration(0, showSeconds: true, showHoursIfZero: false), '00:00');
+      expect(
+        FormatterHelper.formatDuration(
+          0,
+          showSeconds: true,
+          showHoursIfZero: false,
+        ),
+        '00:00',
+      );
     });
 
     test('formats less than a minute (show seconds, hide zero hours)', () {
       const thirtySecondsMs = 30 * 1000;
-      expect(FormatterHelper.formatDuration(thirtySecondsMs, showSeconds: true, showHoursIfZero: false), '00:30');
+      expect(
+        FormatterHelper.formatDuration(
+          thirtySecondsMs,
+          showSeconds: true,
+          showHoursIfZero: false,
+        ),
+        '00:30',
+      );
     });
 
     test('formats less than an hour (show seconds, hide zero hours)', () {
       const thirtyMinTenSecMs = (30 * 60 + 10) * 1000;
-      expect(FormatterHelper.formatDuration(thirtyMinTenSecMs, showSeconds: true, showHoursIfZero: false), '30:10');
+      expect(
+        FormatterHelper.formatDuration(
+          thirtyMinTenSecMs,
+          showSeconds: true,
+          showHoursIfZero: false,
+        ),
+        '30:10',
+      );
     });
 
     test('formats exactly one hour (show seconds, hide zero hours)', () {
       const oneHourMs = 60 * 60 * 1000;
-      expect(FormatterHelper.formatDuration(oneHourMs, showSeconds: true, showHoursIfZero: false), '01:00:00'); // Hours shown because > 0
+      expect(
+        FormatterHelper.formatDuration(
+          oneHourMs,
+          showSeconds: true,
+          showHoursIfZero: false,
+        ),
+        '01:00:00',
+      ); // Hours shown because > 0
     });
 
     test('formats more than an hour (show seconds, hide zero hours)', () {
       const twoHoursFiveMinTenSecMs = (2 * 60 * 60 + 5 * 60 + 10) * 1000;
-      expect(FormatterHelper.formatDuration(twoHoursFiveMinTenSecMs, showSeconds: true, showHoursIfZero: false), '02:05:10');
+      expect(
+        FormatterHelper.formatDuration(
+          twoHoursFiveMinTenSecMs,
+          showSeconds: true,
+          showHoursIfZero: false,
+        ),
+        '02:05:10',
+      );
     });
 
-     test('formats large duration correctly', () {
+    test('formats large duration correctly', () {
       const largeDurationMs = (25 * 60 * 60 + 45 * 60 + 15) * 1000; // 25:45:15
       expect(FormatterHelper.formatDuration(largeDurationMs), '25:45');
-      expect(FormatterHelper.formatDuration(largeDurationMs, showSeconds: true), '25:45:15');
-      expect(FormatterHelper.formatDuration(largeDurationMs, showHoursIfZero: false), '25:45');
-      expect(FormatterHelper.formatDuration(largeDurationMs, showSeconds: true, showHoursIfZero: false), '25:45:15');
+      expect(
+        FormatterHelper.formatDuration(largeDurationMs, showSeconds: true),
+        '25:45:15',
+      );
+      expect(
+        FormatterHelper.formatDuration(largeDurationMs, showHoursIfZero: false),
+        '25:45',
+      );
+      expect(
+        FormatterHelper.formatDuration(
+          largeDurationMs,
+          showSeconds: true,
+          showHoursIfZero: false,
+        ),
+        '25:45:15',
+      );
     });
   });
 }

@@ -1,13 +1,27 @@
 /// Provides extension methods on [DateTime] to determine its relation
 /// to the current day (e.g., today, yesterday, tomorrow).
 ///
-/// This library uses the `clock` package to allow for testable date comparisons.
+/// This library uses the `clock` package to allow for testable date 
+/// comparisons.
 library;
 
 import 'package:clock/clock.dart';
 
 /// Represents the relationship of a [DateTime] object to the current day.
-enum RelativeDay {today, tomorrow, yesterday, unknow}
+enum RelativeDay {
+  /// The date is the same as the current day.
+  today,
+
+  /// The date is the day after the current day.
+  tomorrow,
+
+  /// The date is the day before the current day.
+  yesterday,
+
+  /// The date's relationship to the current day is not today, tomorrow, or
+  /// yesterday.
+  unknow,
+}
 
 /// Extension methods for [DateTime] to facilitate common date comparisons.
 extension DateHelpers on DateTime {
@@ -21,7 +35,8 @@ extension DateHelpers on DateTime {
 
   /// Returns `true` if this [DateTime] instance represents yesterday.
   ///
-  /// Compares day, month, and year against `clock.now().subtract(const Duration(days: 1))`.
+  /// Compares day, month, and year against 
+  /// `clock.now().subtract(const Duration(days: 1))`.
   bool get isYesterday {
     final yesterday = clock.now().subtract(const Duration(days: 1));
     return yesterday.day == day &&
@@ -31,7 +46,8 @@ extension DateHelpers on DateTime {
 
   /// Returns `true` if this [DateTime] instance represents tomorrow.
   ///
-  /// Compares day, month, and year against `clock.now().add(const Duration(days: 1))`.
+  /// Compares day, month, and year against 
+  /// `clock.now().add(const Duration(days: 1))`.
   bool get isTomorrow {
     final yesterday = clock.now().add(const Duration(days: 1));
     return yesterday.day == day &&

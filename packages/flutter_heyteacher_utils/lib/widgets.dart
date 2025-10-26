@@ -1,11 +1,11 @@
 export 'src/widgets.dart'
     show
         ErrorView,
+        FloatingActionTextIconButtom,
         FutureStreamBuilder,
         GenericsDropDownMenu,
         ProgressIndicatorView,
-        FloatingActionTextIconButtom,
         TableView,
+        TooltipIconButton,
         showConfirmCancelDialog,
-        showSnackBar,
-        TooltipIconButton;
+        showSnackBar;

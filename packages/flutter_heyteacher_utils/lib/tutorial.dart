@@ -1,5 +1,7 @@
 /// Provides classes for creating and managing in-app tutorials.
-/// This library includes [TutorialModel] for managing tutorial flows.
+/// This library includes [TutorialViewModel] for managing tutorial flows.
 library;
 
-export 'src/tutorial.dart' show TutorialViewModel, TutorialContentAlignment;
+import 'package:flutter_heyteacher_utils/src/tutorial.dart';
+
+export 'src/tutorial.dart' show TutorialContentAlignment, TutorialViewModel;

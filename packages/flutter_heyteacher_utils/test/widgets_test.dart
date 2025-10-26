@@ -33,14 +33,6 @@ class MockFlutterHeyteacherUtilsLocalizations
   static const LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations>
   delegate = _MockLocalizationsDelegate();
 
-  static FlutterHeyteacherUtilsLocalizations of(BuildContext context) {
-    return Localizations.of<FlutterHeyteacherUtilsLocalizations>(
-          context,
-          FlutterHeyteacherUtilsLocalizations,
-        ) ??
-        MockFlutterHeyteacherUtilsLocalizations(); // Fallback
-  }
-
   @override
   String get areYouSureToConfirmTheAction => throw UnimplementedError();
 
@@ -100,6 +92,8 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String
+  /// impossible to avoid exeeding
+  // ignore: lines_longer_than_80_chars
   get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
       '';
 
@@ -144,7 +138,7 @@ class MockFlutterHeyteacherUtilsLocalizations
 
   @override
   String get search => '';
-  
+
   @override
   String get enableLogsStorage => throw UnimplementedError();
 }
@@ -165,7 +159,8 @@ class _MockLocalizationsDelegate
 }
 
 // Annotation for Mockito
-// Note: GoRouter is often better faked than mocked if complex interactions are needed.
+// Note: GoRouter is often better faked than mocked if complex interactions
+//are needed.
 // Here we use Mockito for simplicity assuming only pushNamed is called.
 @GenerateMocks([GoRouter])
 void main() {
@@ -175,9 +170,10 @@ void main() {
   // Helper function to pump the ErrorView widget with necessary providers
   Future<void> pumpErrorView(
     WidgetTester tester, {
-    Object? error,
+    required Object? error,  
+    required MockGoRouter
+    mockGoRouter, // Use the generated mock, Object? error,
     StackTrace? stackTrace,
-    required MockGoRouter mockGoRouter, // Use the generated mock
   }) async {
     await tester.pumpWidget(
       MaterialApp(
@@ -221,11 +217,13 @@ void main() {
     // Verify the generic error message is displayed
     expect(find.text(testError.toString()), findsOneWidget);
 
-    // Verify the "User not authenticated" message and login button are NOT present
+    // Verify the "User not authenticated" message and login button 
+    //are NOT present
     expect(find.text('User not authenticated (Mock)'), findsNothing);
     expect(find.byKey(const ValueKey('ic_login_logout')), findsNothing);
 
-    // Verify Expanded widgets are present (implicitly tested by finding content)
+    // Verify Expanded widgets are present (implicitly tested by 
+    //finding content)
     expect(
       find.byType(Expanded),
       findsOneWidget,
@@ -238,7 +236,7 @@ void main() {
       await pumpErrorView(
         tester,
         error: null,
-        stackTrace: null,
+        stackTrace: StackTrace.current,
         mockGoRouter: mockGoRouter,
       );
 
@@ -261,7 +259,8 @@ void main() {
   );
 
   testWidgets(
-    'ErrorView displays "User not authenticated" message for permission-denied error',
+    'ErrorView displays "User not authenticated" message for '
+    'permission-denied error',
     (tester) async {
       final permissionDeniedError = FirebaseException(
         plugin: 'test',
@@ -300,7 +299,7 @@ void main() {
     await pumpErrorView(
       tester,
       error: null,
-      stackTrace: null,
+      stackTrace: StackTrace.current,
       mockGoRouter: mockGoRouter,
     );
 
@@ -346,7 +345,7 @@ void main() {
     await pumpErrorView(
       tester,
       error: null,
-      stackTrace: null,
+      stackTrace: StackTrace.current,
       mockGoRouter: mockGoRouter,
     );
     final authTextWidget = tester.widget<Text>(

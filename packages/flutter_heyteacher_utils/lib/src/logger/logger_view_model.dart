@@ -25,11 +25,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// - Storing log records in temporary files in JSON format.
 /// - Sending log records to Firebase Analytics.
 class LoggerViewModel {
+  /// Private constructor for the singleton pattern.
+  /// Initializes the logger configuration.
+  LoggerViewModel._();
   final Logger _logger = Logger('LoggerViewModel');
 
-  StreamSubscription? _loggerSubscription, _loggerForTestSubscription;
+  StreamSubscription<LogRecord>? _loggerSubscription;
+  StreamSubscription<LogRecord>? _loggerForTestSubscription;
 
-  final Worker _writeLogsWorker = Worker(WriteLogsWorkerIsolate());
+  final Worker<List<LogEntry>, void> _writeLogsWorker = Worker(
+    writeLogsWorkerIsolate,
+  );
 
   /// The singleton instance of [LoggerViewModel].
   static LoggerViewModel? _instance;
@@ -61,6 +67,7 @@ class LoggerViewModel {
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
+  // ignore: prefer_constructors_over_static_methods
   static LoggerViewModel instance({bool initialize = false}) => initialize
       ? _instance = LoggerViewModel._()
       : _instance ??= LoggerViewModel._();
@@ -70,17 +77,12 @@ class LoggerViewModel {
   /// This should be called when the logger model is no longer needed to prevent
   /// memory leaks.
   void dispose() {
-    _loggerSubscription?.cancel();
-    _loggerForTestSubscription?.cancel();
-    _updateStreamController.close();
+    unawaited(_loggerSubscription?.cancel());
+    unawaited(_loggerForTestSubscription?.cancel());
+    unawaited(_updateStreamController.close());
     _alreadyConfigured = false;
     _writeLogsWorker.close();
   }
-
-  /// Private constructor for the singleton pattern.
-  /// Initializes the logger configuration.
-  /// If [reset] is true, it clears the temporary log directory.
-  LoggerViewModel._();
 
   /// Configures the root logger for the application.
   ///
@@ -127,15 +129,18 @@ class LoggerViewModel {
         'reset $reset reconfigure $reconfigure. '
         'Reset all logs before $toDateTime',
       );
-      final resetLogsWorker = Worker(ResetLogsWorkerIsolate());
-      resetLogsWorker.execute(toDateTime).then((output) {
-        if (output.error != null) {
-          _logger.severe(
-            '(initialize): reset error ${output.error} stackTrace ${output.stackTrace}',
-          );
-        }
-        resetLogsWorker.close();
-      });
+      final resetLogsWorker = Worker(resetLogsWorkerIsolate);
+      unawaited(
+        resetLogsWorker.execute(toDateTime).then((output) {
+          if (output.error != null) {
+            _logger.severe(
+              '(initialize): reset error ${output.error} '
+              'stackTrace ${output.stackTrace}',
+            );
+          }
+          resetLogsWorker.close();
+        }),
+      );
     }
 
     // Set the root logger's level based on debug mode and Firebase Remote
@@ -149,7 +154,7 @@ class LoggerViewModel {
     final identifierInfo = InfoDevicePackageViewModel.instance.identifierInfo;
     // initialize WriteLogsWorker in order to manage concurrent execution into
     // a single isolate
-    _writeLogsWorker.initialize();
+    unawaited(_writeLogsWorker.initialize());
     // Listen to records from the root logger.
     _loggerSubscription = Logger.root.onRecord.listen(
       (logRecord) => _logEntry(
@@ -171,11 +176,11 @@ class LoggerViewModel {
   void initializeLogForTest([Level level = Level.ALL]) {
     Logger.root.level = level;
     _alreadyConfigured = true;
-    _loggerForTestSubscription?.cancel();
+    unawaited(_loggerForTestSubscription?.cancel());
     _loggerForTestSubscription = Logger.root.onRecord.listen((record) {
       // format error and stack trace
-      final String error = record.error != null ? '\n${record.error}' : '';
-      final String stackTrace = record.stackTrace != null
+      final error = record.error != null ? '\n${record.error}' : '';
+      final stackTrace = record.stackTrace != null
           ? '\n${record.stackTrace}'
           : '';
       // get uid from firebase auth
@@ -197,8 +202,10 @@ class LoggerViewModel {
   ///
   /// The level is determined by the following order of precedence:
   /// 1. A value set locally via [SharedPreferences].
-  /// 2. A `FINEST` level if the current user's UID matches the one in remote config.
-  /// 3. The default level from Firebase Remote Config for the current build mode.
+  /// 2. A `FINEST` level if the current user's UID matches the one in
+  ///    remote config.
+  /// 3. The default level from Firebase Remote Config for the current
+  ///    build mode.
   Future<Level> get level async => Level(
     await _sharedPrefsLoggerName ??
         ((FirebaseRemoteConfig.instance.getString(
@@ -243,7 +250,7 @@ class LoggerViewModel {
         level.value,
       );
     }
-    initialize(reconfigure: true);
+    unawaited(initialize(reconfigure: true));
   }
 
   /// Determines whether log storage is enabled.
@@ -259,24 +266,22 @@ class LoggerViewModel {
       );
 
   Future<String?> get _sharedPrefsLoggerName async =>
-      (await SharedPreferencesAsync().getString(
+      SharedPreferencesAsync().getString(
         SharedPreferencesKeys.htuLoggerLevelName.name,
-      ));
+      );
 
   Future<int?> get _sharedPrefsLoggerValue async => SharedPreferencesAsync()
       .getInt(SharedPreferencesKeys.htuLoggerLevelValue.name);
 
-  void _logEntry(
+  Future<void> _logEntry(
     LogEntry entry, {
     required String version,
     required String deviceInfo,
     required String identifierInfo,
   }) async {
     // Format error and stack trace for potential inclusion in messages.
-    final String error = entry.error != null ? '\n${entry.error}' : '';
-    final String stackTrace = entry.stackTrace != null
-        ? '\n${entry.stackTrace}'
-        : '';
+    final error = entry.error != null ? '\n${entry.error}' : '';
+    final stackTrace = entry.stackTrace != null ? '\n${entry.stackTrace}' : '';
     notSavedLogEntries.add(entry);
     // reached 1K logs or an error is raised, write logs to file
     // Print the log message to the console if in debug mode.
@@ -296,31 +301,33 @@ class LoggerViewModel {
     // Send the log event to Firebase Analytics.
     // Message, error, and stacktrace are limited to 100 characters for
     // Firebase.
-    FirebaseAnalytics.instance.logEvent(
-      name: 'logger',
-      parameters: {
-        'time': entry.time.toLocal().toIso8601String(),
-        'version': version,
-        'device': deviceInfo,
-        'level': entry.level.name,
-        'kDebugMode': kDebugMode.toString(),
-        'name': entry.loggerName,
-        'message':
-            // Truncate message to 100 characters for Firebase.
-            entry.message.substring(0, min(entry.message.length, 100)),
-        if (entry.error != null)
-          // Truncate error to 100 characters for Firebase.
-          'error': error.substring(0, min(error.length, 100)).trim(),
-        if (entry.stackTrace != null)
-          // Truncate stack trace to 100 characters for Firebase.
-          'stackTrace': stackTrace
-              .substring(0, min(stackTrace.length, 100))
-              .trim(),
-        'uid': identifierInfo,
-      },
+    unawaited(
+      FirebaseAnalytics.instance.logEvent(
+        name: 'logger',
+        parameters: {
+          'time': entry.time.toLocal().toIso8601String(),
+          'version': version,
+          'device': deviceInfo,
+          'level': entry.level.name,
+          'kDebugMode': kDebugMode.toString(),
+          'name': entry.loggerName,
+          'message':
+              // Truncate message to 100 characters for Firebase.
+              entry.message.substring(0, min(entry.message.length, 100)),
+          if (entry.error != null)
+            // Truncate error to 100 characters for Firebase.
+            'error': error.substring(0, min(error.length, 100)).trim(),
+          if (entry.stackTrace != null)
+            // Truncate stack trace to 100 characters for Firebase.
+            'stackTrace': stackTrace
+                .substring(0, min(stackTrace.length, 100))
+                .trim(),
+          'uid': identifierInfo,
+        },
+      ),
     );
     // write log into file system
-    _writeLogEntry(entry);
+    unawaited(_writeLogEntry(entry));
   }
 
   /// Returns a string representation of the logs, formatted for display.
@@ -329,7 +336,7 @@ class LoggerViewModel {
     Level level = Level.ALL,
   }) async {
     _logger.finest('<logs2Text>: ');
-    final logs2TextWorker = Worker(Logs2TextWorkerIsolate());
+    final logs2TextWorker = Worker(logs2TextWorkerIsolate);
     final output = await logs2TextWorker.execute((
       startTime: startTime,
       filterLevel: level,
@@ -338,7 +345,8 @@ class LoggerViewModel {
     logs2TextWorker.close();
     if (output.error != null) {
       _logger.severe(
-        '(logs2Text): reset error ${output.error} stackTrace ${output.stackTrace}',
+        '(logs2Text): reset error ${output.error} '
+        'stackTrace ${output.stackTrace}',
       );
       throw Exception(output.error.toString());
     }
@@ -349,10 +357,11 @@ class LoggerViewModel {
   ///
   /// Returns `true` if the log record should be included, `false` otherwise.
   ///
-  /// - [logLevel]: The level of the log record.
-  /// - [filterLevel]: The minimum level to be included. If `null` or `Level.ALL`,
+  /// - [level]: The level of the log record.
+  /// - [filterLevel]: The minimum level to be included. If `null` or
+  ///   `Level.ALL`,
   ///   all levels are included.
-  /// - [logTime]: The timestamp of the log record.
+  /// - [time]: The timestamp of the log record.
   /// - [filterStartTime]: The start time for filtering. Only logs at or after
   ///   this time will be included. If `null`, no time-based filtering is done.
   bool _filterLog({
@@ -392,13 +401,13 @@ class LoggerViewModel {
   /// It does not follow links and lists files only in the top-level directory.
   /// The log entries are sorted by their time in ascending order.
   Future<List<LogEntry>> logs({
+    required bool descending,
     DateTime? startTime,
     Level? filterLevel,
     Iterable<LogEntry>? notSavedLogEntry,
     int? limit,
-    required bool descending,
   }) async {
-    final List<LogEntry> logEntries = [];
+    final logEntries = <LogEntry>[];
 
     filterLevel ??= _filterLevel;
     // convert not saved log records to log entries filtered by log level
@@ -420,7 +429,7 @@ class LoggerViewModel {
       logEntries.addAll(filteredNotSavedLogEntries);
     }
     // load log files from recent to old
-    for (var file in await _logFiles(descending: descending)) {
+    for (final file in await _logFiles(descending: descending)) {
       // load log entries from file and filter by level and add to log entries
       final logEntriesToAdd = _fromJson(file)
           .where(
@@ -468,7 +477,7 @@ class LoggerViewModel {
           notSavedLogEntries.clear();
         }
       }
-    } catch (error /*, stackTrace*/) {
+    } on Exception {
       // developer.log('(_writeLogEntry): record '
       //     '$record'
       //     ' error $error stackTrace $stackTrace');
@@ -477,16 +486,16 @@ class LoggerViewModel {
 
   List<LogEntry> _fromJson(FileSystemEntity file) {
     developer.log(
-      'flutter () ${clock.now().toIso8601String()} <LoggerViewModel._fromJson>: '
-      'file ${file.path}',
+      'flutter () ${clock.now().toIso8601String()} '
+      '<LoggerViewModel._fromJson>: file ${file.path}',
     );
-    String jsonString = '';
+    var jsonString = '';
     try {
       jsonString = (file as File).readAsStringSync();
       final decoded = jsonDecode(jsonString);
       if (decoded is List<dynamic>) {
         return List<LogEntry>.from(
-          decoded.map((log) => LogEntry.fromJson(log)),
+          decoded.map((log) => LogEntry.fromJson(log as Map<String, dynamic>)),
         );
       } else if (decoded is Map<String, dynamic>) {
         return [LogEntry.fromJson(decoded)];
@@ -494,7 +503,7 @@ class LoggerViewModel {
         throw Exception('unknow decoded type ${decoded.runtimeType}');
       }
     } on Exception catch (error, stackTrace) {
-      file.delete();
+      unawaited(file.delete());
       _logger.severe(
         '(_fromJson): file ${file.path}. Error on parse "$jsonString", deleted',
         error,
@@ -521,11 +530,11 @@ class LoggerViewModel {
       '${(await getTemporaryDirectory()).path}/logs',
     );
     // Check if the temporary logs directory exists, if not, create it.
-    return (await tmpLogsDir.exists()) ? tmpLogsDir : tmpLogsDir.create();
+    return tmpLogsDir.existsSync() ? tmpLogsDir : tmpLogsDir.create();
   }
 
   Future<List<FileSystemEntity>> _logFiles({required bool descending}) async =>
-      (await ((await _tmpLogsDir).list(recursive: false, followLinks: false))
+      (await ((await _tmpLogsDir).list(followLinks: false))
             .where((file) => file is File && file.path.endsWith('.json'))
             .toList())
         // sort by modified date
@@ -535,15 +544,24 @@ class LoggerViewModel {
               fileA.statSync().modified.compareTo(fileB.statSync().modified),
         );
 
+  /// Updates the log filter to the specified [level].
+  ///
+  /// Setting [level] to `null` removes the level filter.
+  /// Notifies listeners via [updateStream] to rebuild the log view.
   void updateFilterLevel(Level? level) {
     _filterLevel = level;
     _updateStreamController.add(null);
   }
 
+  /// Notifies listeners via [updateStream] to refresh the log view.
   void refresh() {
     _updateStreamController.add(null);
   }
 
+  /// Updates the log filter to only show entries containing [value].
+  ///
+  /// The search is case-insensitive.
+  /// Notifies listeners via [updateStream] to rebuild the log view.
   void updateFilterText(String value) {
     _filterText = value;
     _updateStreamController.add(null);
@@ -554,34 +572,30 @@ class LoggerViewModel {
 ///
 /// This worker is used to persist log entries to the device's temporary
 /// directory.
-class WriteLogsWorkerIsolate extends WorkerIsolate<List<LogEntry>, void> {
-  /// Writes a [LogEntry] list to a file in JSON format.
-  @override
-  @protected
-  Future<void> executeCallback(Iterable<LogEntry> logEntries) async {
+
+Future<void> writeLogsWorkerIsolate(Iterable<LogEntry> logEntries) async {
+  developer.log(
+    'flutter () ${clock.now().toIso8601String()} <WriteLogsWorkerIsolate>: '
+    'logEntries.length ${logEntries.length} ',
+  );
+  if (PlatformHelper.isWeb) {
     developer.log(
-      'flutter () ${clock.now().toIso8601String()} <$runtimeType>: '
-      'logEntries.length ${logEntries.length} ',
+      'flutter () ${clock.now().toIso8601String()} (WriteLogsWorkerIsolate): '
+      'logEntries.length ${logEntries.length} '
+      'Platform web not supported, do nothing',
     );
-    if (PlatformHelper.isWeb) {
-      developer.log(
-        'flutter () ${clock.now().toIso8601String()} ($runtimeType): '
-        'logEntries.length ${logEntries.length} '
-        'Platform web not supported, do nothing',
-      );
-      return;
-    }
-    if (logEntries.isEmpty) {
-      return;
-    }
-    final tmpLogDir = await LoggerViewModel.instance()._tmpLogsDir;
-    final filename = FormatterHelper.machineDateTimeFormat(
-      clock.now().toLocal(),
-    );
-    final file = File('${tmpLogDir.path}/$filename.json');
-    // write the log entry to logs temporary directory as a JSON file
-    await file.writeAsString(jsonEncode(logEntries));
+    return;
   }
+  if (logEntries.isEmpty) {
+    return;
+  }
+  final tmpLogDir = await LoggerViewModel.instance()._tmpLogsDir;
+  final filename = FormatterHelper.machineDateTimeFormat(
+    clock.now().toLocal(),
+  );
+  final file = File('${tmpLogDir.path}/$filename.json');
+  // write the log entry to logs temporary directory as a JSON file
+  await file.writeAsString(jsonEncode(logEntries));
 }
 
 /// A background worker that deletes log files older than a specified
@@ -589,81 +603,65 @@ class WriteLogsWorkerIsolate extends WorkerIsolate<List<LogEntry>, void> {
 ///
 /// This is used to clean up old log files from the temporary directory to
 /// manage storage space.
-class ResetLogsWorkerIsolate extends WorkerIsolate<DateTime, int> {
-  /// Deletes log files older than the provided [toDateTime].
-  /// Returns the number of files deleted.
-  @override
-  @protected
-  Future<int> executeCallback(DateTime toDateTime) async {
-    developer.log(
-      'flutter () ${clock.now().toIso8601String()} <$runtimeType>: '
-      'toDateTime $toDateTime ',
-    );
-    if (PlatformHelper.isWeb) {
-      developer.log(
-        'flutter () ${clock.now().toIso8601String()} ($runtimeType): '
-        'toDateTime $toDateTime. Platform web not supported, do nothing',
-      );
-      return 0;
-    }
-    final logsToBeDelated =
-        (await LoggerViewModel.instance()._logFiles(descending: false)).where(
-          (fileSystemEntity) =>
-              fileSystemEntity.statSync().modified.isBefore(toDateTime),
-        );
-    logsToBeDelated.forEach(_deleteFile);
-    return logsToBeDelated.length;
-  }
 
-  void _deleteFile(FileSystemEntity file) {
+Future<int> resetLogsWorkerIsolate(DateTime toDateTime) async {
+  developer.log(
+    'flutter () ${clock.now().toIso8601String()} <ResetLogsWorkerIsolate>: '
+    'toDateTime $toDateTime ',
+  );
+  if (PlatformHelper.isWeb) {
     developer.log(
-      'flutter () ${clock.now().toIso8601String()} <$runtimeType>: file ${file.path}. Deleted',
+      'flutter () ${clock.now().toIso8601String()} (ResetLogsWorkerIsolate): '
+      'toDateTime $toDateTime. Platform web not supported, do nothing',
     );
-    file.delete();
-    developer.log(
-      'flutter () ${clock.now().toIso8601String()} ($runtimeType): file ${file.path}. Deleted',
-    );
+    return 0;
   }
+  final logsToBeDelated =
+      (await LoggerViewModel.instance()._logFiles(descending: false)).where(
+        (fileSystemEntity) =>
+            fileSystemEntity.statSync().modified.isBefore(toDateTime),
+      )..forEach(_deleteFile);
+  return logsToBeDelated.length;
+}
+
+void _deleteFile(FileSystemEntity file) {
+  developer.log(
+    'flutter () ${clock.now().toIso8601String()} <ResetLogsWorkerIsolate>: '
+    'file ${file.path}. Deleted',
+  );
+  unawaited(file.delete());
+  developer.log(
+    'flutter () ${clock.now().toIso8601String()} (ResetLogsWorkerIsolate): '
+    'file ${file.path}. Deleted',
+  );
 }
 
 /// A background worker that reads all log entries and formats them into a
 /// single, human-readable string.
 ///
 /// Each log entry is formatted on a new line.
-class Logs2TextWorkerIsolate
-    extends
-        WorkerIsolate<
-          ({
-            DateTime? startTime,
-            Level? filterLevel,
-            Iterable<LogEntry> notSavedEntries,
-          }),
-          String
-        > {
-  /// Formats all log entries into a single string.
-  @override
-  @protected
-  Future<String> executeCallback(
-    ({
-      DateTime? startTime,
-      Level? filterLevel,
-      Iterable<LogEntry> notSavedEntries,
-    })
-    input,
-  ) async =>
-      (await LoggerViewModel.instance().logs(
-            startTime: input.startTime,
-            filterLevel: input.filterLevel,
-            notSavedLogEntry: input.notSavedEntries,
-            descending: false,
-          ))
-          .map(
-            (logEntry) =>
-                '${logEntry.time.toLocal().toIso8601String()} - '
-                '[${logEntry.level.name}] - ${logEntry.loggerName} - '
-                '${logEntry.message}'
-                '${logEntry.error != null ? ' - ${logEntry.error}' : ''}'
-                '${logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''}',
-          )
-          .join('\n');
-}
+
+Future<String> logs2TextWorkerIsolate(
+  ({
+    DateTime? startTime,
+    Level? filterLevel,
+    Iterable<LogEntry> notSavedEntries,
+  })
+  input,
+) async =>
+    (await LoggerViewModel.instance().logs(
+          startTime: input.startTime,
+          filterLevel: input.filterLevel,
+          notSavedLogEntry: input.notSavedEntries,
+          descending: false,
+        ))
+        .map(
+          (logEntry) =>
+              '${logEntry.time.toLocal().toIso8601String()} - '
+              '[${logEntry.level.name}] - ${logEntry.loggerName} - '
+              '${logEntry.message}'
+              '${logEntry.error != null ? ' - ${logEntry.error}' : ''}'
+              '${
+                logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''}'
+        )
+        .join('\n');

@@ -2,20 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:isolate';
 import 'package:clock/clock.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:logging/logging.dart';
 
-/// An abstrat class of Isolate worker.
-///
-/// Subclasses must implement the
-/// [executeCallback] method, which contains the logic to be executed in the
-/// background.
-abstract class WorkerIsolate<I, O> {
-  @protected
-  Future<O> executeCallback(I input);
-}
+/// The Isolate worker type.
+typedef WorkerIsolate<I, O> = Future<O> Function(I input);
 
 /// An abstract class for creating a long-running isolate that can handle
 /// multiple requests.
@@ -41,11 +33,13 @@ abstract class WorkerIsolate<I, O> {
 /// worker.close();
 /// ```
 final class Worker<I, O> {
+
+  /// Create a [Worker] instance with function [_workerIsolate] to be executed
+  /// in isolete
+  Worker(this._workerIsolate);
   static final Logger _logger = Logger('Worker');
 
   final WorkerIsolate<I, O> _workerIsolate;
-
-  Worker(this._workerIsolate);
 
   SendPort? _sendPort;
   ReceivePort? _receivePort;
@@ -80,11 +74,11 @@ final class Worker<I, O> {
     try {
       if (!await RemoteConfigViewModel.instance.execWorkerInIsolate) {
         _logger.finest(
-          '(${_workerIsolate.runtimeType}.execute): execWorkerInIsolate is false,'
-          ' execute in main thread',
+          '(${_workerIsolate.runtimeType}.execute): execWorkerInIsolate '
+          'is false, execute in main thread',
         );
         return (
-          output: await _workerIsolate.executeCallback(input),
+          output: await _workerIsolate.call(input),
           error: null,
           stackTrace: null,
         );
@@ -101,7 +95,7 @@ final class Worker<I, O> {
       _completers[id] = completer;
       _sendPort?.send((id, input));
       return await completer.future;
-    } catch (error, stackTrace) {
+    } on Exception catch (error, stackTrace) {
       return (
         output: null,
         error: error.toString(),
@@ -131,10 +125,11 @@ final class Worker<I, O> {
   /// This must be called before [execute].
   Future<void> _spawn() async {
     _logger.finest('<${_workerIsolate.runtimeType}._spawn>:');
-    RootIsolateToken? rootIsolateToken = RootIsolateToken.instance;
+    final rootIsolateToken = RootIsolateToken.instance;
     if (rootIsolateToken == null) {
       _logger.severe(
-        '(${_workerIsolate.runtimeType}._spawn): Cannot get the RootIsolateToken',
+        '(${_workerIsolate.runtimeType}._spawn): '
+        'Cannot get the RootIsolateToken',
       );
       throw Exception(
         'Cannot get the RootIsolateToken in ${_workerIsolate.runtimeType}',
@@ -144,10 +139,10 @@ final class Worker<I, O> {
     final rawReceivePort = RawReceivePort();
     // Spawn the isolate.
     final completer = Completer<(ReceivePort, SendPort)>.sync();
-    rawReceivePort.handler = (sendPort) {
+    rawReceivePort.handler = (SendPort sendPort) {
       completer.complete((
         ReceivePort.fromRawReceivePort(rawReceivePort),
-        sendPort as SendPort,
+        sendPort,
       ));
     };
     try {
@@ -155,7 +150,7 @@ final class Worker<I, O> {
       await Isolate.spawn(_startRemoteIsolate, (
         sendPort: rawReceivePort.sendPort,
         rootIsolateToken: rootIsolateToken,
-        workerIsolate: _workerIsolate,
+        workerIsolate: _workerIsolate as WorkerIsolate<dynamic, dynamic>,
       ), debugName: _workerIsolate.runtimeType.toString());
     } catch (error, stackTrace) {
       _logger.severe(
@@ -189,12 +184,14 @@ final class Worker<I, O> {
         '(${_workerIsolate.runtimeType}._handleResponsesFromIsolate): '
         'id $id completed with success',
       );
-      completer.complete(response);
+      completer.complete(
+        response as ({O? output, String? error, String? stackTrace}),
+      );
     }
     if (_closed && _completers.isEmpty) {
       _logger.finest(
-        '(${_workerIsolate.runtimeType}._handleResponsesFromIsolate): worker is '
-        'closed and completers is empty, close the receive port',
+        '(${_workerIsolate.runtimeType}._handleResponsesFromIsolate): '
+        'worker is closed and completers is empty, close the receive port',
       );
       _receivePort?.close();
     }
@@ -204,7 +201,7 @@ final class Worker<I, O> {
     ({
       SendPort sendPort,
       RootIsolateToken rootIsolateToken,
-      WorkerIsolate workerIsolate,
+      WorkerIsolate<dynamic, dynamic> workerIsolate,
     })
     message,
   ) {
@@ -223,7 +220,7 @@ final class Worker<I, O> {
   static void _handleCommandsToIsolate(
     ReceivePort receivePort,
     SendPort sendPort,
-    WorkerIsolate workerIsolate,
+    WorkerIsolate<dynamic, dynamic> workerIsolate,
   ) {
     receivePort.listen((message) async {
       if (message == 'shutdown') {
@@ -235,12 +232,12 @@ final class Worker<I, O> {
         sendPort.send((
           id,
           (
-            output: await workerIsolate.executeCallback(input),
+            output: await workerIsolate.call(input),
             error: null,
             stackTrace: null,
           ),
         ));
-      } catch (error, stackTrace) {
+      } on Exception catch (error, stackTrace) {
         log(
           'flutter (): ${clock.now().toIso8601String()}: '
           '(_handleCommandsToIsolate): error $error stackTrace $stackTrace',

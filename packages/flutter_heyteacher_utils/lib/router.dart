@@ -1,31 +1,42 @@
 /// Provides routing utilities for Flutter applications using `go_router`.
 ///
 /// This library includes:
-/// - [GoAuthRoute]: A helper class to easily set up authentication-related routes
+/// - [GoAuthRoute]: A helper class to easily set up authentication-related
+///   routes
 ///   (sign-in, sign-out) compatible with `firebase_ui_auth`.
 /// - [ScaffoldWithNavBar]: A reusable scaffold widget that integrates with
 ///   `go_router`'s `StatefulShellRoute` to provide a common UI structure
 ///   with a bottom navigation bar.
 library;
 
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
-enum AuthRouterName { signIn, signOut }
+/// Defines the names for authentication-related routes.
+enum AuthRouterName {
+  /// sign in route
+  signIn,
+
+  /// sign out route
+  signOut,
+}
 
 /// Helper to build the [GoRoute] paths for authentication.
 ///
-/// Exposes `sign-in`and `sign-out` actions.
+/// Exposes `sign-in` and `sign-out` actions.
 class GoAuthRoute {
   static final _logger = Logger('AuthRoute');
 
-  /// build the [GoRoute] paths for authenrication.
+  /// Builds the [GoRoute] paths for authentication.
   ///
-  /// The paths defined are `sign-in`and `sign-out` and pats start for
-  /// [signedOutRoutePath] prefix.
+  /// The paths defined are `sign-in` and `sign-out`, and paths start from
+  /// [signedOutRoute] prefix.
+  ///
+  /// The [signedOutRoute] is the route to redirect to after a successful
+  /// sign-out.
   static GoRoute builder({required String signedOutRoute}) => GoRoute(
     path: 'auth',
     builder: (BuildContext context, GoRouterState state) =>
@@ -64,19 +75,23 @@ class GoAuthRoute {
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where child is placed in the body of the Scaffold.
 abstract class ScaffoldWithNavBar extends StatelessWidget {
-  /// The navigation shell and container for the branch Navigators.
-  final StatefulNavigationShell navigationShell;
-
-  final List<BottomNavigationBarItem> _items;
-
   /// Constructs an [ScaffoldWithNavBar].
   const ScaffoldWithNavBar({
     required this.navigationShell,
-    Key? key,
     required List<BottomNavigationBarItem> items,
+    Key? key,
   }) : _items = items,
        super(key: key ?? const ValueKey<String>('ScaffoldWithNavBar'));
 
+  /// The navigation shell and container for the branch Navigators.
+  final StatefulNavigationShell navigationShell;
+
+  /// The list of items to display in the [BottomNavigationBar].
+  final List<BottomNavigationBarItem> _items;
+
+  /// A callback to determine if navigation to the initial location of a branch
+  /// should occur when the currently active item is tapped again.
+  /// Returns `true` to navigate to the initial location, `false` otherwise.
   bool onTapInitialLocation(int index);
 
   // #docregion configuration-custom-shell
@@ -96,7 +111,8 @@ abstract class ScaffoldWithNavBar extends StatelessWidget {
 
       // Navigate to the current location of the branch at the provided index
       // when tapping an item in the BottomNavigationBar.
-      onTap: (int index) => onTap(context, index, onTapInitialLocation(index)),
+      onTap: (int index) =>
+          onTap(context, index, initialLocation: onTapInitialLocation(index)),
     ),
   );
 
@@ -105,8 +121,18 @@ abstract class ScaffoldWithNavBar extends StatelessWidget {
   /// NOTE: For a slightly more sophisticated branch switching, change the onTap
   /// handler on the BottomNavigationBar above to the following:
   /// `onTap: (int index) => _onTap(context, index),`
+  ///
+  /// Navigates to the branch at the given [index].
+  ///
+  /// The [initialLocation] parameter controls whether to navigate to the
+  /// initial location of the branch. This is useful for resetting the
+  /// navigation stack of a branch when its tab is re-selected.
   @protected
-  void onTap(BuildContext context, int index, bool initialLocation) =>
+  void onTap(
+    BuildContext context,
+    int index, {
+    required bool initialLocation,
+  }) =>
       // When navigating to a new branch, it's recommended to use the goBranch
       // method, as doing so makes sure the last navigation state of the
       // Navigator for the branch is restored.
@@ -114,8 +140,8 @@ abstract class ScaffoldWithNavBar extends StatelessWidget {
         index,
         // A common pattern when using bottom navigation bars is to support
         // navigating to the initial location when tapping the item that is
-        // already active. This example demonstrates how to support this behavior,
-        // using the initialLocation parameter of goBranch.
+        // already active. This example demonstrates how to support
+        // this behavior,  using the initialLocation parameter of goBranch.
         initialLocation: initialLocation,
       );
 }

@@ -1,8 +1,9 @@
-/// Provides a global way to access a [BuildContext] from anywhere in the application.
+/// Provides a global way to access a [BuildContext] from anywhere in the 
+/// application.
 ///
-/// This is primarily useful for accessing services that typically require a context,
-/// such as localization or `ScaffoldMessenger`, from non-widget parts of the codebase
-/// (e.g., business logic classes).
+/// This is primarily useful for accessing services that typically require a 
+/// context, such as localization or `ScaffoldMessenger`, from non-widget parts 
+/// of the codebase (e.g., business logic classes).
 library;
 
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import 'package:flutter/material.dart';
 /// localization in business logic.
 /// 
 /// To use it, need to be set [scaffoldMessengerKey] in your app 
-/// ```
+/// ```dart
 /// class MyApp extends StatelessWidget {
 ///   
 ///   @override
@@ -23,12 +24,14 @@ import 'package:flutter/material.dart';
 ///       ...
 /// ```
 class ContextHelper {
+
+  ContextHelper._();
+
+  /// The global scaffold messenger key
   static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
   /// get the context
   static BuildContext? get context =>
       scaffoldMessengerKey.currentContext;
-
-  ContextHelper._();
 }

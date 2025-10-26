@@ -7,6 +7,8 @@
 /// [TutorialViewModel.start] show the tutoria per the specified screen.
 library;
 
+import 'dart:async';
+
 import 'package:app_tutorial/app_tutorial.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -17,14 +19,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// It allows adding tutorial items associated with specific screen names and
 /// then starting the tutorial sequence for a given screen.
 class TutorialViewModel {
+  /// Private constructor for the singleton pattern.
+  TutorialViewModel._();
   final _logger = Logger('TutorialViewModel');
 
   static TutorialViewModel? _instance;
 
-  /// Private constructor for the singleton pattern.
-  TutorialViewModel._();
-
   /// Provides access to the singleton instance of [TutorialViewModel].
+  // ignore: prefer_constructors_over_static_methods
   static TutorialViewModel get instance => _instance ??= TutorialViewModel._();
 
   final Map<String, List<TutorialItem>> _screens = {};
@@ -32,38 +34,44 @@ class TutorialViewModel {
   /// Adds a new tutorial item to a specific screen.
   ///
   /// If the [screenName] does not exist, it will be created.
-  void addItem(
-      {required String screenName,
-      required GlobalKey globalKey,
-      required String title,
-      required String content,
-      TutorialContentAlignment alignment = TutorialContentAlignment.center}) {
+  void addItem({
+    required String screenName,
+    required GlobalKey globalKey,
+    required String title,
+    required String content,
+    TutorialContentAlignment alignment = TutorialContentAlignment.center,
+  }) {
     if (!_screens.containsKey(screenName)) {
       _screens[screenName] = [];
     }
-    _screens[screenName]!.add(TutorialItem(
+    _screens[screenName]!.add(
+      TutorialItem(
         globalKey: globalKey,
         color: Colors.black.withValues(alpha: 0.8),
         child: TutorialItemContent(
           title: title,
           content: content,
           alignment: alignment,
-        )));
+        ),
+      ),
+    );
   }
 
   bool _started = false;
 
   /// Starts the tutorial for the specified [screenName].
   ///
-  /// The tutorial will be displayed after a short delay to ensure the UI is ready.
+  /// The tutorial will be displayed after a short delay to ensure the UI is
+  /// ready.
   /// It logs a message when the tutorial is completed.
-  void start(
+  Future<void> start(
     BuildContext context,
     String screenName,
   ) async {
     _logger.finest('<start>: screenName $screenName');
-    if ((await SharedPreferencesAsync()
-                .getBool('$screenName-tutorial-completed') ??
+    if ((await SharedPreferencesAsync().getBool(
+              '$screenName-tutorial-completed',
+            ) ??
             false) ||
         _started) {
       return;
@@ -71,21 +79,40 @@ class TutorialViewModel {
     _started = true;
     if (context.mounted) {
       _logger.info('((start): screenName $screenName. Show tutorial');
-      Tutorial.showTutorial(context, _screens[screenName]!,
+      unawaited(
+        Tutorial.showTutorial(
+          context,
+          _screens[screenName]!,
           onTutorialComplete: () {
-        _logger.info('(start): screenName $screenName. Tutorial completed');
-        SharedPreferencesAsync()
-            .setBool('$screenName-tutorial-completed', true);
-      });
+            _logger.info('(start): screenName $screenName. Tutorial completed');
+            unawaited(
+              SharedPreferencesAsync().setBool(
+                '$screenName-tutorial-completed',
+                true,
+              ),
+            );
+          },
+        ),
+      );
     }
   }
 }
 
+/// the content alignment in tutorial
 enum TutorialContentAlignment {
+  /// top alignment
   top,
+
+  /// middle top alignment
   middleTop,
+
+  /// center alignment
   center,
+
+  /// middle bottom alignment
   middleBottom,
+
+  /// bottom alignment
   bottom,
 }
 
@@ -96,13 +123,14 @@ enum TutorialContentAlignment {
 class TutorialItemContent extends StatelessWidget {
   /// Creates a [TutorialItemContent] widget.
   TutorialItemContent({
-    super.key,
     required this.title,
     required this.content,
+    super.key,
     this.alignment = TutorialContentAlignment.center,
-  }) {
-    assert(title.isNotEmpty, 'Title cannot be empty');
-    assert(content.isNotEmpty, 'Content cannot be empty');
+  }) : assert(
+         title.isNotEmpty && content.isNotEmpty,
+         'Title and content cannot be empty',
+       ) {
     switch (alignment) {
       case TutorialContentAlignment.top:
         _topFlex = 1;
@@ -133,42 +161,43 @@ class TutorialItemContent extends StatelessWidget {
   /// Defaults to [TutorialContentAlignment.center].
   final TutorialContentAlignment alignment;
 
-  late final int _topFlex, _bottomFlex;
+  late final int _topFlex;
+  late final int _bottomFlex;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Column(
-          children: [
-            Expanded(
-              flex: _topFlex,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
+    padding: const EdgeInsets.only(left: 10, right: 10),
+    child: Column(
+      children: [
+        Expanded(
+          flex: _topFlex,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: _bottomFlex,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  content,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
-            ),
-            Expanded(
-              flex: _bottomFlex,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      content,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      );
+      ],
+    ),
+  );
 }

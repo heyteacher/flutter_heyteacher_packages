@@ -5,36 +5,45 @@
 /// and displaying the current version or build number.
 ///
 /// Usage:
-/// `dart run flutter_heyteacher_utils:version mayor|minor|patch|build|show|show-build [--dry-run]`
+/// `dart run flutter_heyteacher_utils:version mayor|minor|patch|build|
+///     show|show-build [--dry-run]`
 ///
-/// - `mayor|minor|patch`: Increments the respective version component and resets subsequent components to 0.
+/// - `mayor|minor|patch`: Increments the respective version component and 
+///   resets subsequent components to 0.
 /// - `build`: Updates the build number to a format `yyMMddHHm` (9 digits).
 /// - `show`: Prints the full current version string (e.g., "1.2.3+001").
 /// - `show-build`: Prints only the current build number.
 /// - `--dry-run`: Shows the new version without modifying `pubspec.yaml`.
 ///
-/// The script automatically updates the build number to `yyMMddHHm` (first 9 digits)
-/// for `mayor`, `minor`, `patch`, and `build` commands unless `--dry-run` is specified.
+/// The script automatically updates the build number to `yyMMddHHm` 
+/// (first 9 digits)
+/// for `mayor`, `minor`, `patch`, and `build` commands unless `--dry-run` 
+/// is specified.
 library;
 
+import 'dart:developer' show log;
 import 'dart:io';
+
 import 'package:clock/clock.dart';
 import 'package:intl/intl.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
 /// Main entry point for the version management script.
 void main(List<String> arguments) async {
-  const int mayor = 0, minor = 1, patch = 2, build = 3;
-  final DateFormat buildNumberDateFormat = DateFormat('yyMMddHHmm');
-  final File pubspecFile = await File('pubspec.yaml').exists()
+  const mayor = 0;
+  const minor = 1;
+  const patch = 2;
+  const build = 3;
+  final buildNumberDateFormat = DateFormat('yyMMddHHmm');
+  final pubspecFile = File('pubspec.yaml').existsSync()
       // run on root project
       ? File('pubspec.yaml')
       // fastlane run inside android or ios subdir
       : File('../../pubspec.yaml');
   final yamlEditor = YamlEditor(await pubspecFile.readAsString());
   final regex = RegExp(r'^(\d+)\.(\d+)\.(\d+)\+(\d+)$');
-  final String curretVersion = yamlEditor.parseAt(['version']).value as String;
-  final List<String?>? version =
+  final curretVersion = yamlEditor.parseAt(['version']).value as String;
+  final version =
       regex.firstMatch(curretVersion)?.groups([1, 2, 3, 4]);
   switch (arguments.isNotEmpty ? arguments[0] : '') {
     case 'mayor':
@@ -55,17 +64,18 @@ void main(List<String> arguments) async {
       stdout.write(version?[build]);
       return;
     default:
-        // ignore: avoid_print
-        print(
-            'usage dart version.dart mayor|minor|patch|build|show|show-build [--dry-run]\n'
+        log(
+            'usage dart version.dart mayor|minor|patch|build|show|show-build '
+            '[--dry-run]\n'
             'found $arguments');
       exit(-1);
   }
-  // update build number with current date in 9-digit format YYMMddHHm (android build number limited to 2100000000)
+  /// Updated build number with current date in 9-digit format YYMMddHHm 
+  /// (android build number limited to 2100000000)
   _setVersion(version, build,
       buildNumberDateFormat.format(clock.now()).substring(0, 9));
   // update version in yaml
-  String newVersion =
+  final newVersion =
       '${version![0]}.${version[1]}.${version[2]}+${version[3]}';
   if (arguments.length < 2 || arguments[1] != '--dry-run') {
     yamlEditor.update(['version'], newVersion);
@@ -77,7 +87,7 @@ void main(List<String> arguments) async {
 
 /// Increments the version component at the given [index] in the [version] list.
 void _incrementVersion(List<String?>? version, int index) {
-  String value = (int.parse(version![index]!) + 1).toString();
+  final value = (int.parse(version![index]!) + 1).toString();
   _setVersion(version, index, value);
 }
 

@@ -1,17 +1,19 @@
-library;
-
-/// Provides UI components and a model for viewing and managing application logs.
+/// Provides UI components and a model for viewing and managing application
+/// logs.
 ///
 /// Key features include:
 /// - [LoggerScreen]: A dedicated screen to display and filter log messages.
-/// - [LoggerListTile]: A convenient [ListTile] for navigating to the
-///   [LoggerScreen].
 /// - [LoggingRouter]: Defines the routing for the logger UI.
 /// - [LoggerViewModel]: Handles log capture, configuration (including level
 ///   setting via Firebase Remote Config), in-memory storage, and forwarding of
 ///   structured logs to Firebase Analytics.
+library;
+
 import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/info_device_package.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/src/animations.dart';
@@ -21,13 +23,12 @@ import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../formats.dart';
-import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Defines the routing for the logger screen.
 class LoggingRouter {
+  /// The path for the logger screen.
   static const String path = 'logging';
 
   /// Builds a [GoRoute] for the logger screen.
@@ -38,16 +39,23 @@ class LoggingRouter {
   );
 }
 
+/// A card that provides navigation to the [LoggerScreen].
+///
+/// This widget is conditionally visible, appearing only when the application
+/// is in debug mode (`kDebugMode` is true) or after a specific tap gesture
+/// has been registered (listened via
+/// `InfoDevicePackageViewModel.tapCounterReachedStream`). This makes it a
+/// useful tool for developers and testers without cluttering the release UI.
 class LoggerCard extends StatelessWidget {
-  /// The prefix for the route path to the logger screen.
-  final String _pathPrefix;
-
   /// Creates a [LoggerCard].
   /// Requires a [_pathPrefix] to construct the navigation route.
   const LoggerCard(this._pathPrefix, {super.key});
 
+  /// The prefix for the route path to the logger screen.
+  final String _pathPrefix;
+
   @override
-  StreamBuilder<bool> build(context) => StreamBuilder<bool>(
+  StreamBuilder<bool> build(BuildContext context) => StreamBuilder<bool>(
     stream: InfoDevicePackageViewModel.instance.tapCounterReachedStream,
     builder: (_, tapCounterReachedSnapshot) => Visibility(
       visible: kDebugMode || (tapCounterReachedSnapshot.data ?? false),
@@ -67,12 +75,11 @@ class LoggerCard extends StatelessWidget {
   );
 }
 
+/// A screen that displays a paginated and filterable list of log messages.
 ///
-/// A [StatelessWidget] that displays a list of log messages.
-/// This screen allows users to view logs and filter them by level.
-///
-/// It listens to the root logger's `onRecord` stream and updates the UI
-/// with new log entries as they arrive.
+/// This screen allows users to view logs, filter them by level and textcontent,
+/// and refresh the view. It uses a [PagingSliverAnimatedListState] to
+/// efficiently handle large numbers of log entries.
 class LoggerScreen extends StatefulWidget {
   /// Creates a [LoggerScreen].
   const LoggerScreen({super.key});
@@ -145,7 +152,7 @@ class _LoggerScreenState
         children: [
           Row(
             mainAxisSize: MainAxisSize.min,
-            spacing: 2.0,
+            spacing: 2,
             children: [
               Expanded(
                 child: TextField(
@@ -167,7 +174,6 @@ class _LoggerScreenState
               ),
               DropdownMenu<Level?>(
                 enableSearch: false,
-                enableFilter: false,
                 inputDecorationTheme: InputDecorationTheme(
                   isDense: true,
                   contentPadding: const EdgeInsets.only(left: 20),
@@ -182,8 +188,8 @@ class _LoggerScreenState
                 ),
                 textStyle: Theme.of(context).textTheme.labelSmall,
                 trailingIcon: const Icon(Icons.filter_list),
-                // Updates the _filterLevel and rebuilds the UI when a new level is
-                // selected.
+                // Updates the _filterLevel and rebuilds the UI when a new
+                // level is selected.
                 onSelected: LoggerViewModel.instance().updateFilterLevel,
                 dropdownMenuEntries:
                     [
@@ -218,36 +224,45 @@ class _LoggerScreenState
   );
 }
 
+/// A card widget that displays a single [LogEntry].
+///
+/// The card's background color changes based on the log level to provide a
+/// quick visual cue (e.g., red for errors, orange for warnings). It shows the
+/// timestamp, level, logger name, and message. If an error and stack trace are
+/// present, it displays an info icon that reveals them in a dialog when tapped.
 class LogEntryCard extends StatelessWidget {
-  final LogEntry logEntry;
-  const LogEntryCard({super.key, required this.logEntry});
+  /// Creates a [LogEntryCard] to display the given [logEntry].
+  const LogEntryCard({required LogEntry logEntry, super.key})
+    : _logEntry = logEntry;
+
+  final LogEntry _logEntry;
   @override
   Widget build(BuildContext context) => Card(
-    color: _backgroundColor(logEntry.level),
+    color: _backgroundColor(_logEntry.level),
     child: ListTile(
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(FormatterHelper.timeWithSecondsFormat(logEntry.time)),
+          Text(FormatterHelper.timeWithSecondsFormat(_logEntry.time)),
           Text(
-            logEntry.level.name,
+            _logEntry.level.name,
             style: TextStyle(
-              color: _backgroundColor(logEntry.level)?.withValues(alpha: 0.8),
+              color: _backgroundColor(_logEntry.level)?.withValues(alpha: 0.8),
             ),
           ),
         ],
       ),
-      title: Text(logEntry.loggerName),
-      subtitle: Text(logEntry.message),
+      title: Text(_logEntry.loggerName),
+      subtitle: Text(_logEntry.message),
       isThreeLine: true,
-      trailing: logEntry.error != null
+      trailing: _logEntry.error != null
           ? IconButton(
               icon: const Icon(Icons.info),
-              onPressed: () => showConfirmCancelDialog(
+              onPressed: () => showConfirmCancelDialog<void>(
                 context: context,
                 content: Text(
-                  '${logEntry.error}\n\n'
-                  '${logEntry.stackTrace ?? ''}',
+                  '${_logEntry.error}\n\n'
+                  '${_logEntry.stackTrace ?? ''}',
                 ),
               ),
             )
@@ -267,12 +282,18 @@ class LogEntryCard extends StatelessWidget {
   };
 }
 
+/// A card widget that provides a dropdown menu to set the application's
+/// logging level.
+///
+/// It displays the current logging level and allows the user to select a new
+/// one, which is then persisted via [LoggerViewModel].
 class LoggingLevelDropDownMenuCard extends StatelessWidget {
-  final VoidCallback _onChanged;
+  /// Creates a [LoggingLevelDropDownMenuCard].
   const LoggingLevelDropDownMenuCard({
-    super.key,
     required void Function() onChanged,
+    super.key,
   }) : _onChanged = onChanged;
+  final VoidCallback _onChanged;
 
   @override
   Widget build(BuildContext context) => Card(
@@ -295,7 +316,6 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
           values: Level.LEVELS
               .map((level) => (label: level.name, value: level))
               .toList(),
-          enableSearch: false,
           initialSelection: asyncSnapshot.data,
         ),
       ),
@@ -303,12 +323,17 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
   );
 
   void _onSelected(Level? level, {int? index}) {
-    LoggerViewModel.instance().setLevel(level, index: index);
+    unawaited(LoggerViewModel.instance().setLevel(level, index: index));
     _onChanged();
   }
 }
 
+/// A card widget with a [Switch] to enable or disable the storage of logs
+/// to the device's file system.
+///
+/// The user's preference is persisted in [SharedPreferences].
 class EnableLogsStorageCard extends StatefulWidget {
+  /// Creates an [EnableLogsStorageCard].
   const EnableLogsStorageCard({super.key});
 
   @override
@@ -343,9 +368,11 @@ class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
           value: asyncSnapshot.data ?? _enableLogsStorage,
           onChanged: (bool value) {
             setState(() => _enableLogsStorage = value);
-            SharedPreferencesAsync().setBool(
-              SharedPreferencesKeys.htuEnableLogsStorage.name,
-              value,
+            unawaited(
+              SharedPreferencesAsync().setBool(
+                SharedPreferencesKeys.htuEnableLogsStorage.name,
+                value,
+              ),
             );
           },
         ),

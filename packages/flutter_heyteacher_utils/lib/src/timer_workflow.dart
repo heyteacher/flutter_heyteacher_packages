@@ -20,8 +20,8 @@ enum WorkflowStatus {
 /// each with a specific duration. It handles the state management for playing,
 /// pausing, stopping, and skipping tasks.
 ///
-/// Subclasses must implement the [initializeTasks] method to define the specific
-/// sequence of tasks for the workflow.
+/// Subclasses must implement the [initializeTasks] method to define the 
+/// specific sequence of tasks for the workflow.
 ///
 /// The workflow's progress can be monitored by listening to the [stream], which
 /// emits a [RunningTask] object every second. This object contains the current
@@ -31,7 +31,8 @@ enum WorkflowStatus {
 /// Example:
 /// ```dart
 /// class MyTask extends TimerTask {
-///   MyTask({required super.name, required super.description, required super.duration});
+///   MyTask({required super.name, required super.description, 
+///         required super.duration});
 /// }
 ///
 /// class MyWorkflow extends TimerWorkflow<MyTask> {
@@ -41,18 +42,27 @@ enum WorkflowStatus {
 ///   @override
 ///   void initializeTasks() {
 ///     tasks.addAll([
-///       MyTask(name: 'Step 1', description: 'First step', duration: Duration(seconds: 10)),
-///       MyTask(name: 'Step 2', description: 'Second step', duration: Duration(seconds: 20)),
+///       MyTask(name: 'Step 1', description: 'First step', 
+///        duration: Duration(seconds: 10)),
+///       MyTask(name: 'Step 2', description: 'Second step', 
+///        duration: Duration(seconds: 20)),
 ///     ]);
 ///   }
 /// }
 /// ```
 abstract class TimerWorkflow<T extends TimerTask> {
+
+  /// Initializes the workflow by calling [initializeTasks].
+  TimerWorkflow() {
+    initializeTasks();
+  }
   /// The list of tasks to be executed in the workflow.
   ///
-  /// This list should be populated within the [initializeTasks] method in a subclass.
+  /// This list should be populated within the [initializeTasks] method in a 
+  /// subclass.
   List<T> tasks = [];
 
+  /// The name of the workflow.
   String get name;
 
   bool _paused = false;
@@ -62,11 +72,6 @@ abstract class TimerWorkflow<T extends TimerTask> {
 
   /// The timer that drives the workflow execution.
   Timer? _timer;
-
-  /// Initializes the workflow by calling [initializeTasks].
-  TimerWorkflow() {
-    initializeTasks();
-  }
 
   /// The stream controller that manages the workflow's state stream.
   final StreamController<RunningTask<T>> _streamController =
@@ -88,13 +93,14 @@ abstract class TimerWorkflow<T extends TimerTask> {
   void dispose() {
     _timer?.cancel();
     _timer = null;
-    _streamController.close();
+    unawaited(_streamController.close());
   }
 
   /// Initializes the tasks for the workflow.
   ///
   /// Subclasses should override this method to populate the [tasks] list.
-  /// This base implementation ensures that tasks are not initialized more than once.
+  /// This base implementation ensures that tasks are not initialized more 
+  /// than once.
   void initializeTasks() {
     if (tasks.isNotEmpty) {
       throw WorkflowTaskAlreadyInitialized();
@@ -199,13 +205,13 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// the new state to the [stream].
   void _execute(Timer? timer) {
     final currentTask = _currentTask;
-    bool changed = false;
+    var changed = false;
     if (currentTask == null) {
       // all task completed
       stop();
       return;
     }
-    int remainingTaskMilliseconds = currentTask.duration.inMilliseconds -
+    var remainingTaskMilliseconds = currentTask.duration.inMilliseconds -
         _currentTaskCompletedInMilliseconds;
     if (remainingTaskMilliseconds <= 0) {
       // current task finished, mask as completed and reset current task counter
@@ -222,7 +228,7 @@ abstract class TimerWorkflow<T extends TimerTask> {
       // current task running and remaining second
       _currentTaskCompletedInMilliseconds += 1000;
     }
-    int remainingTotalMilliseconds = totalDurationInMilliseconds -
+    final remainingTotalMilliseconds = totalDurationInMilliseconds -
         _totalCompletedTaskInMilliseconds -
         _currentTaskCompletedInMilliseconds;
     // yield the current task and the remaining second
@@ -269,6 +275,14 @@ abstract class TimerWorkflow<T extends TimerTask> {
 /// such as its name, description, duration, and completion status.
 /// Subclasses can extend this to add more specific properties to a task.
 class TimerTask {
+
+  /// Creates a new [TimerTask].
+  TimerTask({
+    required this.name,
+    required this.description,
+    required this.duration,
+    this.completed = false,
+  });
   /// The name of the task.
   final String name;
 
@@ -280,14 +294,6 @@ class TimerTask {
 
   /// The total duration of the task.
   final Duration duration;
-
-  /// Creates a new [TimerTask].
-  TimerTask({
-    required this.name,
-    required this.description,
-    required this.duration,
-    this.completed = false,
-  });
 }
 
 /// An exception thrown when an attempt is made to initialize tasks in a
@@ -322,9 +328,20 @@ class WorkflowTaskNotInitialized implements Exception {
 
 /// Represents the current state of a running [TimerWorkflow].
 ///
-/// This object is emitted by the [TimerWorkflow.stream] every second and provides
+/// This object is emitted by the [TimerWorkflow.stream] every second and 
+/// provides
 /// a snapshot of the workflow's progress.
 class RunningTask<T extends TimerTask> {
+
+  /// Creates a snapshot of the current workflow state.
+  RunningTask(
+      {required this.workflowName,
+      required this.status,
+      required this.current,
+      required this.next,
+      required this.changed,
+      required this.remainingTaskMilliseconds,
+      required this.remainingTotalMilliseconds});
   /// The name of the workflow.
   final String workflowName;
 
@@ -336,7 +353,8 @@ class RunningTask<T extends TimerTask> {
   /// has completed.
   final T? current;
 
-  /// The next task in the sequence. Can be `null` if the current task is the last one.
+  /// The next task in the sequence. Can be `null` if the current task is the 
+  /// last one.
   final T? next;
 
   /// The remaining time for the current task, in milliseconds.
@@ -348,14 +366,4 @@ class RunningTask<T extends TimerTask> {
   /// A flag indicating if the task has just changed in this tick.
   /// `true` on the first tick of a new task.
   final bool changed;
-
-  /// Creates a snapshot of the current workflow state.
-  RunningTask(
-      {required this.workflowName,
-      required this.status,
-      required this.current,
-      required this.next,
-      required this.changed,
-      required this.remainingTaskMilliseconds,
-      required this.remainingTotalMilliseconds});
 }

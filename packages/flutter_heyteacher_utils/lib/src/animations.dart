@@ -6,9 +6,10 @@ import 'package:flutter_heyteacher_utils/src/widgets.dart';
 /// An abstract `State` class for creating a paginated `SliverAnimatedList` that
 /// is populated from a `Stream`.
 ///
-/// It simplifies the common pattern of displaying a list of data that is fetched
-/// in pages as the user scrolls down. It also handles real-time updates, such
-/// as inserting new items at the top of the list with an animation.
+/// It simplifies the common pattern of displaying a list of data that is 
+/// fetched in pages as the user scrolls down. It also handles real-time 
+/// updates, such as inserting new items at the top of the list with an 
+/// animation.
 abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     extends State<T> {
   /// The current list of data items displayed in the list.
@@ -31,7 +32,8 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       GlobalKey<SliverAnimatedListState>();
 
   /// The subscription to the data stream.
-  StreamSubscription? _listStreamSubscription, _updateStreamSubscription;
+  StreamSubscription<Iterable<D>>? _listStreamSubscription; 
+  StreamSubscription<void>? _updateStreamSubscription;
 
   bool _loading = true;
 
@@ -51,7 +53,8 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   /// The stream which notify that widget should be updated.
   ///
-  /// Inform widget that needed to be updated. Tipically a new filter is applied.
+  /// Inform widget that needed to be updated. Tipically a new filter is 
+  /// applied.
   @protected
   Stream<void> get updateStream;
 
@@ -90,22 +93,22 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       //     'PagingSliverAnimatedListState.initPostFrame(): $runtimeType '
       //     'dataList from initData not null, set state _loading false');
       setState(() => _loading = false);
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<dynamic>.delayed(const Duration(seconds: 1));
       if (mounted && _listGlobalKey.currentState != null) {
         _listGlobalKey.currentState?.insertAllItems(0, dataList!.length);
       }
     }
-    _updateStreamSubscription?.cancel();
+    unawaited(_updateStreamSubscription?.cancel());
     _updateStreamSubscription = updateStream.listen((_) => updateDataList());
-    updateDataList();
+    unawaited(updateDataList());
     _checkScollPosition();
     scrollController.addListener(_checkScollPosition);
   }
 
   @override
   void dispose() {
-    _listStreamSubscription?.cancel();
-    _updateStreamSubscription?.cancel();
+    unawaited(_listStreamSubscription?.cancel());
+    unawaited(_updateStreamSubscription?.cancel());
     scrollController.removeListener(_checkScollPosition);
     super.dispose();
   }
@@ -127,12 +130,12 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   /// Animates the deletion of an item at the given [index].
   @protected
-  void animateDeleteData(int index) async => _listGlobalKey.currentState
+  Future<void> animateDeleteData(int index) async => _listGlobalKey.currentState
       ?.removeItem(index, (context, animation) => buildData(index, animation));
 
   /// Subscribes to the data [stream] and handles list updates.
-  void updateDataList([bool incrementsLimit = false]) {
-    _listStreamSubscription?.cancel();
+  Future<void> updateDataList({bool incrementsLimit = false}) async {
+    await _listStreamSubscription?.cancel();
     if (incrementsLimit) {
       _limit += pageSize;
     }
@@ -140,10 +143,8 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       final changedIndexes = _compare(
         oldList: dataList ?? [],
         newList: newDataList.toList(),
-      );
-      for (var changedIndex in changedIndexes) {
-        _listGlobalKey.currentState?.insertItem(changedIndex);
-      }
+      )
+      ..forEach(_listGlobalKey.currentState!.insertItem);
       // add new item at the end of list, scrollo down e litte bit
       if (changedIndexes.isNotEmpty &&
           (dataList?.length ?? 0) > 0 &&
@@ -161,7 +162,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
         );
       }
       // for each item not in old data list, animate delete
-      bool removed = false;
+      var removed = false;
       if (dataList != null) {
         final toBeRemoved = dataList!.reversed.where(
           (item) => !newDataList.contains(item),
@@ -175,7 +176,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       if ((dataList?.length ?? 0) < _limit &&
           changedIndexes.isNotEmpty &&
           removed) {
-        updateDataList(true);
+        unawaited(updateDataList(incrementsLimit: true));
       }
       // first time _loading in true, so we need to wait for the first frame
       // to be built to set it to false
@@ -193,10 +194,10 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
         (dataList == null || _limit == (dataList!.length))) {
       // debugPrint(
-      //     'PagingSliverAnimatedListState._checkScollPosition(): $runtimeType '
-      //     '_limit $_limit dataList.length ${dataList?.length}. UPDATE');
+      //  'PagingSliverAnimatedListState._checkScollPosition(): $runtimeType '
+      //   '_limit $_limit dataList.length ${dataList?.length}. UPDATE');
       _limit += pageSize;
-      updateDataList();
+      unawaited(updateDataList());
     }
   }
 
@@ -206,13 +207,11 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   }) => newList.indexed.where((e) => !oldList.contains(e.$2)).map((e) => e.$1);
 }
 
+/// A widget that displays text with a blinking (fade in/out) animation.
 class BlinkingText extends StatefulWidget {
-  final String text;
-  final bool animated;
-  final int durationInMs;
-  final TextStyle? style;
-  final TextAlign? textAlign;
-
+  /// Creates a [BlinkingText] widget.
+  ///
+  /// The [text] to be displayed is required.
   const BlinkingText(
     this.text, {
     super.key,
@@ -222,10 +221,31 @@ class BlinkingText extends StatefulWidget {
     this.textAlign,
   });
 
+  /// The text to display.
+  final String text;
+
+  /// Whether to enable the blinking animation.
+  ///
+  /// Defaults to `true`. If `false`, the text is displayed statically.
+  final bool animated;
+
+  /// The duration of one half of the blink cycle (e.g., fade in or fade out)
+  /// in milliseconds.
+  ///
+  /// Defaults to 500ms.
+  final int durationInMs;
+
+  /// The style to use for the text.
+  final TextStyle? style;
+
+  /// How the text should be aligned horizontally.
+  final TextAlign? textAlign;
+
   @override
   BlinkingTextState createState() => BlinkingTextState();
 }
 
+/// The state for the [BlinkingText] widget, which manages the animation timer.
 class BlinkingTextState extends State<BlinkingText> {
   bool _isVisible = false;
   Timer? _timer;
@@ -233,18 +253,20 @@ class BlinkingTextState extends State<BlinkingText> {
   @override
   void initState() {
     super.initState();
-    // Set a timer to toggle visibility every 500 milliseconds
+    // Set a timer to toggle visibility based on the specified duration.
     _timer?.cancel();
     _timer = Timer.periodic(Duration(milliseconds: widget.durationInMs), (
       timer,
     ) {
-      setState(() => _isVisible = !_isVisible);
+      if (mounted) {
+        setState(() => _isVisible = !_isVisible);
+      }
     });
   }
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancel the timer when the widget is disposed
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -265,6 +287,7 @@ class BlinkingTextState extends State<BlinkingText> {
         : _text;
   }
 
+  /// A getter that builds the static [Text] widget.
   Text get _text =>
       Text(widget.text, style: widget.style, textAlign: widget.textAlign);
 }

@@ -4,8 +4,8 @@ library;
 
 export 'src/timer_workflow.dart'
     show
-        TimerWorkflow,
-        TimerTask,
-        WorkflowTaskAlreadyInitialized,
         RunningTask,
-        WorkflowStatus;
+        TimerTask,
+        TimerWorkflow,
+        WorkflowStatus,
+        WorkflowTaskAlreadyInitialized;

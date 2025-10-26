@@ -1,30 +1,27 @@
-/// Provides utilities for retrieving device and application package information,
-/// and a widget to display this information along with a support request option.
+/// Provides utilities for retrieving device and application package
+/// information and a widget to display this information along with a
+/// support request option.
 ///
 /// This library includes:
 /// - [DevicePackageInfoCard]: A [ListTile] widget that displays formatted
-///   device and package version information, and a button to initiate a support email.
-/// - [InfoDevicePackageViewModel]: A singleton class that fetches detailed device
-///   information (OS, model, browser) and package information (version, build number).
-// ignore_for_file: unused_import
-
+///   device and package version information, and a button to initiate
+///   a support email.
+/// - [InfoDevicePackageViewModel]: A singleton class that fetches detailed
+///   device information (OS, model, browser) and package information
+///   (version, build number).
 library;
 
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
 
 import 'package:clock/clock.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/logger.dart';
 import 'package:flutter_heyteacher_utils/src/connectivity.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/auth.dart';
-import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/storage.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
@@ -36,11 +33,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// A widget that displays device and package information in a list tile format.
 ///
-/// It asynchronously fetches and shows the device identifier, device details (model, OS version),
+/// It asynchronously fetches and shows the device identifier, device details
+/// (model, OS version),
 /// and the application's version and build number.
 /// It also includes a "Support" button that opens the default email client
 /// It shows the device type, version, and a button to ask for support.
 class DevicePackageInfoCard extends StatelessWidget {
+  /// Creates a [DevicePackageInfoCard].
   const DevicePackageInfoCard({super.key});
 
   @override
@@ -85,25 +84,26 @@ class DevicePackageInfoCard extends StatelessWidget {
 ///
 /// Access the singleton instance via `InfoDevicePackageModel.instance`.
 class InfoDevicePackageViewModel {
+  /// Private constructor for the singleton.
+  InfoDevicePackageViewModel._() {
+    _streamSubscription = Stream<dynamic>.periodic(
+      const Duration(seconds: 5),
+    ).listen((_) => _tapCounter = 0);
+  }
   static final _logger = Logger('InfoDevicePackageViewModel');
   static InfoDevicePackageViewModel? _instance;
 
   /// Provides the singleton instance of [InfoDevicePackageViewModel].
+  // ignore: prefer_constructors_over_static_methods
   static InfoDevicePackageViewModel get instance =>
       _instance ??= InfoDevicePackageViewModel._();
 
-  StreamSubscription? _streamSubscription;
+  StreamSubscription<dynamic>? _streamSubscription;
 
-  /// Private constructor for the singleton.
-  InfoDevicePackageViewModel._() {
-    _streamSubscription = Stream.periodic(
-      const Duration(seconds: 5),
-    ).listen((_) => _tapCounter = 0);
-  }
-
+  /// on dispose object
   void dispose() {
-    _streamSubscription?.cancel();
-    _tapCounterReachedStreamController.close();
+    unawaited(_streamSubscription?.cancel());
+    unawaited(_tapCounterReachedStreamController.close());
   }
 
   /// The current tap counter value.
@@ -131,7 +131,7 @@ class InfoDevicePackageViewModel {
   /// For mobile (Android/iOS), it returns model, OS version, and SDK/system version.
   /// For other platforms, it returns the platform name.
   Future<String> get deviceInfo async {
-    final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    final deviceInfoPlugin = DeviceInfoPlugin();
     if (kIsWeb) {
       final webDeviceInfo = await deviceInfoPlugin.webBrowserInfo;
       return 'w-${webDeviceInfo.browserName}-ua-${webDeviceInfo.userAgent}';
@@ -150,14 +150,18 @@ class InfoDevicePackageViewModel {
           return 'i-${iosDeviceInfo.model}-'
               'sysver-${iosDeviceInfo.systemVersion}';
         }
-      default:
+      case TargetPlatform.linux:
+      case TargetPlatform.macOS:
+      case TargetPlatform.windows:
+      case TargetPlatform.fuchsia:
         {
           return defaultTargetPlatform.name;
         }
     }
   }
 
-  /// Asynchronously retrieves the application's package version and build number.
+  /// Asynchronously retrieves the application's package version and build 
+  /// number.
   ///
   /// Formats it as "version+buildNumber".
   Future<String> get packageVersion async {
@@ -167,10 +171,10 @@ class InfoDevicePackageViewModel {
 
   /// Gets a user identifier string.
   ///
-  /// It returns the first 5 characters of the authenticated user's UID if available,
-  /// otherwise defaults to "guest".
+  /// It returns the first 5 characters of the authenticated user's UID if 
+  /// available, otherwise defaults to "guest".
   String get identifierInfo =>
-      (AuthViewModel.instance.uid?.substring(0, 5)) ?? 'guest';
+      AuthViewModel.instance.uid?.substring(0, 5) ?? 'guest';
 
   /// uploads the logs to Firebase Storage and returns the log filename.
   ///
@@ -198,11 +202,11 @@ class InfoDevicePackageViewModel {
     final content = await LoggerViewModel.instance().logs2Text(
       startTime: startTime?.subtract(const Duration(seconds: 10)),
     );
-    StorageViewModel.instance.appLogsUpload(
+    unawaited(StorageViewModel.instance.appLogsUpload(
       relativeFilename: relativeFilename,
       content: content,
       encodeGZip: true,
-    );
+    ));
     return relativeFilename;
   }
 
@@ -210,9 +214,9 @@ class InfoDevicePackageViewModel {
   ///
   /// The email is pre-filled with:
   /// - A subject line indicating the app name.
-  /// - A body containing the user's identifier, device information, and app version,
-  ///   formatted for easy support.
-  void _askSupport(BuildContext context) async {
+  /// - A body containing the user's identifier, device information, and app 
+  ///   version, formatted for easy support.
+  Future<void> _askSupport(BuildContext context) async {
     assert(
       RemoteConfigViewModel.instance.getString('supportEmail').isNotEmpty,
       'supportEmail is empty',
@@ -247,6 +251,6 @@ class InfoDevicePackageViewModel {
       path: RemoteConfigViewModel.instance.getString('supportEmail'),
       query: 'subject=$subject&body=${Uri.encodeFull(body)}',
     );
-    launchUrl(uri);
+    unawaited(launchUrl(uri));
   }
 }

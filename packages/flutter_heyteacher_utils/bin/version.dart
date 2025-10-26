@@ -5,16 +5,22 @@
 /// and displaying the current version or build number.
 ///
 /// Usage:
-/// `dart run flutter_heyteacher_utils:version mayor|minor|patch|build|show|show-build [--dry-run]`
+/// ```bash
+/// dart run flutter_heyteacher_utils:version mayor|minor|patch|build|show|
+///                                           show-build [--dry-run]
+/// ```
 ///
-/// - `mayor|minor|patch`: Increments the respective version component and resets subsequent components to 0.
+/// - `mayor|minor|patch`: Increments the respective version component and 
+///    resets subsequent components to 0.
 /// - `build`: Updates the build number to a format `yyMMddHHm` (9 digits).
 /// - `show`: Prints the full current version string (e.g., "1.2.3+001").
 /// - `show-build`: Prints only the current build number.
 /// - `--dry-run`: Shows the new version without modifying `pubspec.yaml`.
 ///
-/// The script automatically updates the build number to `yyMMddHHm` (first 9 digits)
-/// for `mayor`, `minor`, `patch`, and `build` commands unless `--dry-run` is specified.
+/// The script automatically updates the build number to `yyMMddHHm` 
+/// (first 9 digits)
+/// for `mayor`, `minor`, `patch`, and `build` commands unless `--dry-run` 
+/// is specified.
 library;
 
 export '../lib/version.dart' show main;

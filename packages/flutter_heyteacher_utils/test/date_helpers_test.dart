@@ -5,12 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('DateHelpers Extension Tests', () {
     // Define a fixed point in time for consistent testing
-    final fixedNow = DateTime(2023, 10, 27, 10, 30, 0); // October 27th, 2023
+    final fixedNow = DateTime(2023, 10, 27, 10, 30); // October 27th, 2023
 
     test('isToday returns true for the same day', () {
       // Use withClock to control the time returned by clock.now()
       withClock(Clock.fixed(fixedNow), () {
-        final today = DateTime(2023, 10, 27, 15, 0, 0);
+        final today = DateTime(2023, 10, 27, 15);
         expect(today.isToday, isTrue);
       });
     });
@@ -31,23 +31,23 @@ void main() {
 
     test('isYesterday returns true for the previous day', () {
       withClock(Clock.fixed(fixedNow), () {
-        final yesterday = DateTime(2023, 10, 26, 12, 0, 0);
+        final yesterday = DateTime(2023, 10, 26, 12);
         expect(yesterday.isYesterday, isTrue);
       });
     });
 
      test('isYesterday returns true across month boundary', () {
-      final firstOfMonth = DateTime(2023, 11, 1, 10, 0, 0);
+      final firstOfMonth = DateTime(2023, 11, 1, 10);
       withClock(Clock.fixed(firstOfMonth), () {
-        final lastOfPreviousMonth = DateTime(2023, 10, 31, 12, 0, 0);
+        final lastOfPreviousMonth = DateTime(2023, 10, 31, 12);
         expect(lastOfPreviousMonth.isYesterday, isTrue);
       });
     });
 
      test('isYesterday returns true across year boundary', () {
-      final firstOfYear = DateTime(2024, 1, 1, 10, 0, 0);
+      final firstOfYear = DateTime(2024, 1, 1, 10);
       withClock(Clock.fixed(firstOfYear), () {
-        final lastOfPreviousYear = DateTime(2023, 12, 31, 12, 0, 0);
+        final lastOfPreviousYear = DateTime(2023, 12, 31, 12);
         expect(lastOfPreviousYear.isYesterday, isTrue);
       });
     });
@@ -55,34 +55,35 @@ void main() {
     test('isYesterday returns false for the same or future day', () {
       withClock(Clock.fixed(fixedNow), () {
         final today = DateTime(2023, 10, 27, 0, 0, 1);
-        final tomorrow = DateTime(2023, 10, 28, 15, 0, 0);
+        final tomorrow = DateTime(2023, 10, 28, 15);
         final twoDaysAgo = DateTime(2023, 10, 25);
 
         expect(today.isYesterday, isFalse);
         expect(tomorrow.isYesterday, isFalse);
-        expect(twoDaysAgo.isYesterday, isFalse); // isYesterday only checks the *immediately* preceding day
+        // isYesterday only checks the *immediately* preceding day
+        expect(twoDaysAgo.isYesterday, isFalse); 
       });
     });
 
     test('isTomorrow returns true for the next day', () {
       withClock(Clock.fixed(fixedNow), () {
-        final tomorrow = DateTime(2023, 10, 28, 8, 0, 0);
+        final tomorrow = DateTime(2023, 10, 28, 8);
         expect(tomorrow.isTomorrow, isTrue);
       });
     });
 
     test('isTomorrow returns true across month boundary', () {
-      final lastOfMonth = DateTime(2023, 10, 31, 10, 0, 0);
+      final lastOfMonth = DateTime(2023, 10, 31, 10);
        withClock(Clock.fixed(lastOfMonth), () {
-        final firstOfNextMonth = DateTime(2023, 11, 1, 8, 0, 0);
+        final firstOfNextMonth = DateTime(2023, 11, 1, 8);
         expect(firstOfNextMonth.isTomorrow, isTrue);
       });
     });
 
      test('isTomorrow returns true across year boundary', () {
-      final lastOfYear = DateTime(2023, 12, 31, 10, 0, 0);
+      final lastOfYear = DateTime(2023, 12, 31, 10);
        withClock(Clock.fixed(lastOfYear), () {
-        final firstOfNextYear = DateTime(2024, 1, 1, 8, 0, 0);
+        final firstOfNextYear = DateTime(2024, 1, 1, 8);
         expect(firstOfNextYear.isTomorrow, isTrue);
       });
     });
@@ -90,13 +91,13 @@ void main() {
     test('isTomorrow returns false for the same or past day', () {
       withClock(Clock.fixed(fixedNow), () {
         final today = DateTime(2023, 10, 27, 23, 59, 59);
-        final yesterday = DateTime(2023, 10, 26, 15, 0, 0);
+        final yesterday = DateTime(2023, 10, 26, 15);
         final twoDaysLater = DateTime(2023, 10, 29);
 
         expect(today.isTomorrow, isFalse);
         expect(yesterday.isTomorrow, isFalse);
-        expect(twoDaysLater.isTomorrow, isFalse); // isTomorrow only checks the *immediately* succeeding day
-      });
+        // isTomorrow only checks the *immediately* succeeding day
+        expect(twoDaysLater.isTomorrow, isFalse); });
     });
 
     test('relativeDay returns correct enum values', () {

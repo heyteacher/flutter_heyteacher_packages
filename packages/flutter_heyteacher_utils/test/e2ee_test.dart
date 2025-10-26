@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_heyteacher_utils/e2ee.dart';
@@ -9,70 +11,86 @@ import 'package:package_info_plus/package_info_plus.dart';
 /// End 2 End Encryption tests
 ///
 /// compiler webwrypto library before first run of `flutter test`
-/// ```
+/// ```bash
 /// flutter pub run webcrypto:setup
 /// ```
 void main() {
-  const String userId = 'testuid',
-      userEmail = 'test@example.com',
-      userDisplayName = 'Test User';
+  const userId = 'testuid';
+  const userEmail = 'test@example.com';
+  const userDisplayName = 'Test User';
 
   WidgetsFlutterBinding.ensureInitialized();
   PackageInfoPlusLinuxPlugin.registerWith();
   FlutterSecureStorage.setMockInitialValues({});
   PackageInfoPlusLinuxPlugin.registerWith();
   // mock authentication
-  MockFirebaseAuth auth = MockFirebaseAuth(
-      mockUser: MockUser(
-    isAnonymous: false,
-    uid: userId,
-    email: userEmail,
-    displayName: userDisplayName,
-  ));
+  final auth = MockFirebaseAuth(
+    mockUser: MockUser(
+      uid: userId,
+      email: userEmail,
+      displayName: userDisplayName,
+    ),
+  );
   // mock sign-in
-  auth.signInWithEmailAndPassword(email: userEmail, password: userEmail);
+  unawaited(
+    auth.signInWithEmailAndPassword(email: userEmail, password: userEmail),
+  );
 
   // initialize Auth with MockFirebaseAuth
-   AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
-   E2EEViewModel.instance(AuthViewModel.instance.uid)
-      .setAAD(aadValue: 'aadValue');
+  AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
+  unawaited(E2EEViewModel.instance(
+    AuthViewModel.instance.uid,
+  ).setAAD(aadValue: 'aadValue'));
 
   group('encrypt decryp message:', () {
     test('encrypted decrypted empty message return same', () async {
-      final originalMessage = '';
-      final encrypted =
-          await E2EEViewModel.instance(AuthViewModel.instance.uid)
-              .encrypt(originalMessage);
+      const originalMessage = '';
+      final encrypted = await E2EEViewModel.instance(
+        AuthViewModel.instance.uid,
+      ).encrypt(originalMessage);
 
-      expect(encrypted.value.isNotEmpty, true,
-          reason: 'encrypted value is empty');
+      expect(
+        encrypted.value.isNotEmpty,
+        true,
+        reason: 'encrypted value is empty',
+      );
       expect(encrypted.iv.isNotEmpty, true, reason: 'encrypted iv is empty');
 
-      final decryptedMessage =
-          await E2EEViewModel.instance(AuthViewModel.instance.uid)
-              .decrypt(encrypted);
-      expect(originalMessage, decryptedMessage,
-          reason:
-              'decrypted message $decryptedMessage differs from original message $originalMessage');
+      final decryptedMessage = await E2EEViewModel.instance(
+        AuthViewModel.instance.uid,
+      ).decrypt(encrypted);
+      expect(
+        originalMessage,
+        decryptedMessage,
+        reason:
+            'decrypted message $decryptedMessage differs from original '
+            'message $originalMessage',
+      );
     });
 
     test('encrypted decrypted message return same', () async {
-      final originalMessage = 'this is a message';
-      final encrypted =
-          await E2EEViewModel.instance(AuthViewModel.instance.uid)
-              .encrypt(originalMessage);
+      const originalMessage = 'this is a message';
+      final encrypted = await E2EEViewModel.instance(
+        AuthViewModel.instance.uid,
+      ).encrypt(originalMessage);
 
-      expect(encrypted.value.isNotEmpty, true,
-          reason: 'encrypted value is empty');
+      expect(
+        encrypted.value.isNotEmpty,
+        true,
+        reason: 'encrypted value is empty',
+      );
       expect(encrypted.iv.isNotEmpty, true, reason: 'encrypted iv is empty');
 
-      final decryptedMessage =
-          await E2EEViewModel.instance(AuthViewModel.instance.uid)
-              .decrypt(encrypted);
-      expect(originalMessage, decryptedMessage,
-          reason:
-              'decrypted message $decryptedMessage differs from original '
-              'message $originalMessage');
+      final decryptedMessage = await E2EEViewModel.instance(
+        AuthViewModel.instance.uid,
+      ).decrypt(encrypted);
+      expect(
+        originalMessage,
+        decryptedMessage,
+        reason:
+            'decrypted message $decryptedMessage differs from original '
+            'message $originalMessage',
+      );
     });
   });
 }

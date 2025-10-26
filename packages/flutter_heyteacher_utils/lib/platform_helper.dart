@@ -9,12 +9,17 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-/// A utility class offering static boolean flags to identify the current platform.
+/// A utility class offering static boolean flags to identify the current 
+/// platform.
 ///
 /// This class cannot be instantiated and all its members are static.
 final class PlatformHelper {
+
+  // static class, avoid costructor
+  PlatformHelper._();
   
-  /// `true` if the application is running on a mobile platform (Android or iOS).
+  /// `true` if the application is running on a mobile platform 
+  /// (Android or iOS).
   ///
   /// This excludes web environments.
   static final bool isMobile =
@@ -38,11 +43,8 @@ final class PlatformHelper {
       kIsWeb || (!Platform.isAndroid && !Platform.isIOS);
 
   /// `true` if the application is running in a web browser, linux or windows.
-  static final bool isWeb = kIsWeb;
+  static const bool isWeb = kIsWeb;
 
   /// `true` if the application is not running in a web browser.
   static bool get isNotWeb => !kIsWeb;
-
-  // static class, avoid costructor
-  PlatformHelper._();
 }

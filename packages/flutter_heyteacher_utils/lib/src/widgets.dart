@@ -39,15 +39,16 @@ import 'package:logging/logging.dart';
 /// Useful when you need to fetch an initial state (e.g., from a database or
 /// API) and then subscribe to real-time updates for that same data.
 class FutureStreamBuilder<T> extends FutureBuilder<T> {
-  ///  the [stream] parameter of [StreamBuilder]
-  final Stream<T> stream;
-
+  /// Creates a [FutureStreamBuilder].
   const FutureStreamBuilder({
-    super.key,
     required super.future,
     required this.stream,
     required super.builder,
+    super.key,
   });
+
+  ///  the [stream] parameter of [StreamBuilder]
+  final Stream<T> stream;
 
   @override
   AsyncWidgetBuilder<T> get builder =>
@@ -105,23 +106,23 @@ void showSnackBar({
 /// of dialog.
 Future<void> showConfirmCancelDialog<ObjectParamType>({
   required BuildContext context,
+  required Widget content,
   Future<String?> Function(ObjectParamType?)? confirmCallback,
   Future<String?> Function(ObjectParamType?)? cancelCallback,
   ObjectParamType? param,
   Widget? title,
-  required Widget content,
 }) async {
-  final logger = Logger('showConfirmCancelDialog');
-  logger.finest('<showConfirmCancelDialog>: title $title');
-  final bool? confirm = await showDialog<bool>(
+  final logger = Logger('showConfirmCancelDialog')
+    ..finest('<showConfirmCancelDialog>: title $title');
+  final confirm = await showDialog<bool>(
     context: context,
     builder: (context) {
       return AlertDialog(
         title: title != null
-            ? Padding(padding: const EdgeInsets.only(top: 8.0), child: title)
+            ? Padding(padding: const EdgeInsets.only(top: 8), child: title)
             : null,
         content: Padding(
-          padding: const EdgeInsets.only(top: 16.0),
+          padding: const EdgeInsets.only(top: 16),
           child: content,
         ),
         actions: <Widget>[
@@ -153,7 +154,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
   if (confirmCallback != null && confirm != null && confirm) {
     logger.finest('(showConfirmCancelDialog): title $title. Confirm');
     String? message;
-    bool errorRaised = false;
+    var errorRaised = false;
     try {
       message = await confirmCallback(param);
     } catch (error, stackTrace) {
@@ -171,26 +172,41 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
       }
     }
   } else {
-    if (cancelCallback != null) cancelCallback(param);
+    if (cancelCallback != null) unawaited(cancelCallback(param));
   }
 }
 
-/// Displays a [Tooltip] button.
+/// An icon button that displays an informational dialog when tapped.
 ///
-/// It takes the [title] and the [content] of tooltip showed on pressed
+/// This widget shows an `info` icon. When the user taps on it, a dialog
+/// is displayed using [showConfirmCancelDialog], showing the provided [title]
+/// and [content]. It's a convenient way to provide more detailed information
+/// without cluttering the main UI.
 class TooltipIconButton extends StatelessWidget {
-  final Widget? title;
-  final Widget content;
-  final double iconSize;
-  final Color? iconColor;
-
+  /// Creates a [TooltipIconButton].
   const TooltipIconButton({
+    required this.content,
     super.key,
     this.title,
-    required this.content,
     this.iconSize = 14,
     this.iconColor,
   });
+
+  /// The optional title widget to display at the top of the dialog.
+  final Widget? title;
+
+  /// The main content widget to display in the dialog.
+  final Widget content;
+
+  /// The size of the info icon.
+  ///
+  /// Defaults to 14.
+  final double iconSize;
+
+  /// The color of the info icon.
+  ///
+  /// Defaults to the theme's `onSurface` color.
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) => InkResponse(
@@ -199,7 +215,7 @@ class TooltipIconButton extends StatelessWidget {
       size: iconSize,
       color: iconColor ?? ThemeViewModel.instance.colorScheme.onSurface,
     ),
-    onTap: () => showConfirmCancelDialog(
+    onTap: () => showConfirmCancelDialog<void>(
       context: context,
       title: title ?? const SizedBox.shrink(),
       content: content,
@@ -207,26 +223,39 @@ class TooltipIconButton extends StatelessWidget {
   );
 }
 
-/// Displays a CircularProgressIndicator centered on the screen.
+/// A centered [CircularProgressIndicator] that can time out.
 ///
 /// Typically used to indicate that some background processing or data loading
-/// is happening.
+/// is happening. After a specified [timeout], it can display an alternative
+/// [timeoutWidget] and trigger an [onTimeout] callback.
 class ProgressIndicatorView extends StatefulWidget {
-  final Duration timeout;
-  final Widget? timeoutWidget;
-  final VoidCallback? onTimeout;
-  final BoxConstraints? constraints;
-  final EdgeInsets? padding;
-
-
+  /// Creates a [ProgressIndicatorView].
   const ProgressIndicatorView({
     super.key,
     this.timeout = const Duration(seconds: 15),
     this.timeoutWidget,
     this.onTimeout,
     this.constraints,
-    this.padding
+    this.padding,
   });
+
+  /// The duration to wait before the progress indicator times out.
+  ///
+  /// Defaults to 15 seconds.
+  final Duration timeout;
+
+  /// An optional widget to display after the [timeout] duration has passed.
+  /// If null, a [SizedBox.shrink] is shown.
+  final Widget? timeoutWidget;
+
+  /// An optional callback to be executed when the timeout is reached.
+  final VoidCallback? onTimeout;
+
+  /// Optional constraints to apply to the [CircularProgressIndicator].
+  final BoxConstraints? constraints;
+
+  /// Optional padding to apply to the [CircularProgressIndicator].
+  final EdgeInsets? padding;
 
   @override
   State<ProgressIndicatorView> createState() => _ProgressIndicatorViewState();
@@ -234,13 +263,13 @@ class ProgressIndicatorView extends StatefulWidget {
 
 class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
   bool _timeoutReached = false;
-  
+
   @override
   void initState() {
     super.initState();
     Future.delayed(widget.timeout, () {
-      mounted ? setState(() => _timeoutReached = true) : null;
-      if (widget.onTimeout != null) widget.onTimeout!();
+      if (mounted) setState(() => _timeoutReached = true);
+      widget.onTimeout?.call();
     });
   }
 
@@ -249,32 +278,50 @@ class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _timeoutReached
-            ? widget.timeoutWidget ?? const SizedBox.shrink()
-            : CircularProgressIndicator(constraints: widget.constraints, padding: widget.padding ),
+        if (_timeoutReached)
+          widget.timeoutWidget ?? const SizedBox.shrink()
+        else
+          CircularProgressIndicator(
+            constraints: widget.constraints,
+            padding: widget.padding,
+          ),
       ],
     ),
   );
 }
 
-/// Displays different error states to the user.
+/// A widget that displays a user-friendly screen for different error states.
 ///
-///  It takes [error] and [stackTrace] raised by [Exception].
+/// It handles specific [FirebaseException] codes to provide contextual
+/// feedback and actions:
+/// - `permission-denied`: Shows a "user not authenticated" message and a login
+///   button to navigate to the sign-in screen.
+/// - `unavailable`: Informs the user they are offline and should retry when
+///   a connection is available.
 ///
-/// If the exception is a [FirebaseException] with [FirebaseException.code]
-/// `permission-denied` it shows a login button to navigate on auth screen.
+/// For all other errors, it displays the error's string representation.
+/// The error and stack trace are also logged using `Logger`.
 class ErrorView extends StatelessWidget {
-  static final _logger = Logger('ErrorView');
-
-  final Object? error;
-  final StackTrace? stackTrace;
-
+  /// Creates an [ErrorView] to display information about an [error].
+  ///
+  /// The [stackTrace] is also logged for debugging purposes.
   ErrorView(this.error, this.stackTrace, {super.key}) {
     _logger.severe('<ErrorView>', error, stackTrace);
   }
+  static final _logger = Logger('ErrorView');
+
+  /// The error object to be displayed.
+  ///
+  /// This is typically an [Exception] or [Error].
+  final Object? error;
+
+  /// The stack trace associated with the [error].
+  ///
+  /// This is used for logging and debugging.
+  final StackTrace? stackTrace;
 
   @override
-  Widget build(context) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(),
     body: _isFirebaseExceptionCode('permission-denied')
         ? Column(
@@ -302,9 +349,9 @@ class ErrorView extends StatelessWidget {
                     ),
                     color: Theme.of(context).iconTheme.color,
                     onPressed: () async {
-                      GoRouter.of(
+                      unawaited(GoRouter.of(
                         context,
-                      ).pushNamed(AuthRouterName.signIn.name);
+                      ).pushNamed(AuthRouterName.signIn.name));
                     },
                   ),
                 ),
@@ -316,7 +363,6 @@ class ErrorView extends StatelessWidget {
             children: [
               Expanded(
                 child: Align(
-                  alignment: Alignment.center,
                   child: Text(
                     FlutterHeyteacherUtilsLocalizations.of(
                       context,
@@ -332,7 +378,6 @@ class ErrorView extends StatelessWidget {
             children: [
               Expanded(
                 child: Align(
-                  alignment: Alignment.center,
                   child: Text(
                     error.toString(),
                     textAlign: TextAlign.center,
@@ -347,7 +392,7 @@ class ErrorView extends StatelessWidget {
   bool _isFirebaseExceptionCode(String code) {
     return error == null ||
         (error is FirebaseException &&
-            (error as FirebaseException).code == code);
+            (error! as FirebaseException).code == code);
   }
 
   TextStyle _errorStyleContent(BuildContext context) => Theme.of(context)
@@ -358,25 +403,12 @@ class ErrorView extends StatelessWidget {
 
 /// a Generics implementation of [DropdownMenu].
 class GenericsDropDownMenu<T> extends StatefulWidget {
-  final String _label;
-  final void Function(T?, {int? index}) onSelected;
-  final List<({String label, T value})> values;
-  final T? initialSelection;
-  final bool enableFilter;
-  final bool enableSearch;
-  final void Function(String, {int? index})? addCallback;
-  final int? index;
-  final bool isDense;
-  final double height;
-  final double? width;
-  final double menuHeight;
-  final List<String> deniedValues;
-
+  /// Creates a generic dropdown menu.
   const GenericsDropDownMenu({
-    super.key,
     required String label,
     required this.onSelected,
     required this.values,
+    super.key,
     this.deniedValues = const [],
     this.initialSelection,
     this.enableFilter = true,
@@ -388,6 +420,43 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
     this.width,
     this.menuHeight = 300,
   }) : _label = label;
+  final String _label;
+
+  /// The callback that is called when a new item is selected.
+  final void Function(T?, {int? index}) onSelected;
+
+  /// The list of items to display in the dropdown menu.
+  final List<({String label, T value})> values;
+
+  /// The initially selected value.
+  final T? initialSelection;
+
+  /// Whether to enable filtering of the dropdown menu entries.
+  final bool enableFilter;
+
+  /// Whether to enable searching of the dropdown menu entries.
+  final bool enableSearch;
+
+  /// A callback to add a new item to the dropdown menu.
+  final void Function(String, {int? index})? addCallback;
+
+  /// An optional index to pass to the [onSelected] and [addCallback] callbacks.
+  final int? index;
+
+  /// Whether the dropdown menu is dense.
+  final bool isDense;
+
+  /// The height of the dropdown menu.
+  final double height;
+
+  /// The width of the dropdown menu.
+  final double? width;
+
+  /// The height of the dropdown menu's list of entries.
+  final double menuHeight;
+
+  /// A list of values that are not allowed to be added.
+  final List<String> deniedValues;
 
   @override
   State<GenericsDropDownMenu<T>> createState() =>
@@ -403,7 +472,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(top: 4.0, left: 1, right: 1.0, bottom: 0),
+    padding: const EdgeInsets.only(top: 4, left: 1, right: 1),
     child: DropdownMenu<T?>(
       focusNode: _focusNode,
       label: Text(widget._label, style: const TextStyle(fontSize: 11)),
@@ -429,7 +498,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
         ),
       ],
       inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.only(left: 8, right: 0),
+        contentPadding: const EdgeInsets.only(left: 8),
         isDense: widget.isDense,
         constraints: BoxConstraints.tight(Size.fromHeight(widget.height)),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -437,7 +506,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
     ),
   );
 
-  void _preAddCallback() async {
+  Future<void> _preAddCallback() async {
     if (_filter != null || _querySearch != null) {
       final newValue = _filter ?? _querySearch;
       if (widget.deniedValues.contains(newValue)) {
@@ -477,7 +546,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
       ),
     ];
     if ((_filter?.isNotEmpty ?? false) &&
-        (_lastFilteredEntries?.length) != filteredEntries.length) {
+        _lastFilteredEntries?.length != filteredEntries.length) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => setState(() {
           _enableAddTag =
@@ -515,25 +584,36 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   }
 }
 
+/// A floating action button with text and an icon.
 class FloatingActionTextIconButtom extends StatelessWidget {
+  /// Creates a floating action button with text and an icon.
   const FloatingActionTextIconButtom({
-    super.key,
-    this.fabKey,
     required this.text,
     required this.icon,
     required this.onPressed,
+    super.key,
+    this.fabKey,
     this.backgroundColor,
   });
 
+  /// An optional key for the floating action button.
   final Key? fabKey;
+
+  /// The text to display below the icon.
   final String text;
+
+  /// The icon to display.
   final Widget icon;
+
+  /// The background color of the button.
   final Color? backgroundColor;
+
+  /// The callback that is called when the button is tapped.
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 1.0),
+    padding: const EdgeInsets.symmetric(horizontal: 1),
     child: SizedBox(
       height: 100,
       width: 100,
@@ -563,22 +643,24 @@ class FloatingActionTextIconButtom extends StatelessWidget {
   );
 }
 
+/// An abstract base class for creating views with a table-like layout.
+///
+/// Provides a set of protected helper methods for creating consistently
+/// styled text widgets and dividers, intended for use within a [Table]
+/// or similar layout.
 abstract class TableView extends StatelessWidget {
-  /// An abstract base class for creating views with a table-like layout.
-  ///
-  /// Provides a set of protected helper methods for creating consistently styled
-  /// text widgets and dividers, intended for use within a [Table] or similar layout.
+  /// Creates a [TableView].
   const TableView({super.key});
 
   @protected
   /// Creates a styled [Text] widget for labels within the table.
   Widget labelText(
     String text, {
-    textAlign = TextAlign.right,
+    TextAlign textAlign = TextAlign.right,
     TextStyle? style,
     Widget? tooltip,
   }) => Padding(
-    padding: const EdgeInsets.only(right: 4.0, left: 4.0),
+    padding: const EdgeInsets.only(right: 4, left: 4),
     child: Wrap(
       alignment: textAlign == TextAlign.right
           ? WrapAlignment.end
@@ -586,13 +668,13 @@ abstract class TableView extends StatelessWidget {
       children: [
         if (tooltip != null && textAlign == TextAlign.right)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: tooltip,
           ),
         Text(text, textAlign: textAlign, style: style),
         if (tooltip != null && textAlign == TextAlign.left)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: tooltip,
           ),
       ],
@@ -604,7 +686,7 @@ abstract class TableView extends StatelessWidget {
   Widget valueTextBlue(
     BuildContext context,
     String text, {
-    textAlign = TextAlign.left,
+    TextAlign textAlign = TextAlign.left,
   }) => _valueText(
     context,
     text,
@@ -617,7 +699,7 @@ abstract class TableView extends StatelessWidget {
   Widget valueTextOrange(
     BuildContext context,
     String text, {
-    textAlign = TextAlign.left,
+    TextAlign textAlign = TextAlign.left,
   }) => _valueText(
     context,
     text,
@@ -630,7 +712,7 @@ abstract class TableView extends StatelessWidget {
   Widget valueTextRed(
     BuildContext context,
     String text, {
-    textAlign = TextAlign.left,
+    TextAlign textAlign = TextAlign.left,
   }) => _valueText(
     context,
     text,
@@ -643,7 +725,7 @@ abstract class TableView extends StatelessWidget {
   Widget valueTextYellow(
     BuildContext context,
     String text, {
-    textAlign = TextAlign.left,
+    TextAlign textAlign = TextAlign.left,
   }) => _valueText(
     context,
     text,
@@ -656,7 +738,7 @@ abstract class TableView extends StatelessWidget {
   Widget valueTextGreen(
     BuildContext context,
     String text, {
-    textAlign = TextAlign.left,
+    TextAlign textAlign = TextAlign.left,
   }) => _valueText(
     context,
     text,
@@ -668,10 +750,10 @@ abstract class TableView extends StatelessWidget {
   Widget _valueText(
     BuildContext context,
     String text, {
-    textAlign = TextAlign.left,
+    TextAlign textAlign = TextAlign.left,
     Color? color,
   }) => Padding(
-    padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+    padding: const EdgeInsets.only(left: 4, right: 4),
     child: Text(text, textAlign: textAlign, style: _textStyle(context, color)),
   );
 

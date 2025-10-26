@@ -31,27 +31,27 @@ class TestWorkout extends TimerWorkflow<TimerTask> {
         ));
       }
     }
-    tasks.add(TimerTask(
+    tasks..add(TimerTask(
       name: 'Warm Up',
       description: 'Easy riding',
       duration: const Duration(minutes: 5),
-    ));
-    tasks.add(TimerTask(
+    ))
+    ..add(TimerTask(
       name: 'Main Set',
       description: 'All-Out',
       duration: const Duration(minutes: 5),
-    ));
-    tasks.add(TimerTask(
+    ))
+    ..add(TimerTask(
       name: 'Main Set',
       description: 'Easy riding',
       duration: const Duration(minutes: 10),
-    ));
-    tasks.add(TimerTask(
+    ))
+    ..add(TimerTask(
       name: 'Main Set',
       description: 'Time Trial',
       duration: const Duration(minutes: 20),
-    ));
-    tasks.add(TimerTask(
+    ))
+    ..add(TimerTask(
       name: 'Cool Down',
       description: 'Easy riding',
       duration: const Duration(minutes: 10),
@@ -62,11 +62,11 @@ class TestWorkout extends TimerWorkflow<TimerTask> {
 void main() {
   late TimerWorkflow<TimerTask> workflow;
 
-  Logger.root.level = const Level('ALL', 0);
+  Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
     // format error and stack trace
-    final String error = record.error != null ? '\n${record.error}' : '';
-    final String stackTrace =
+    final error = record.error != null ? '\n${record.error}' : '';
+    final stackTrace =
         record.stackTrace != null ? '\n${record.stackTrace}' : '';
     // get uid from firebase auth
     // print in standard output
@@ -191,7 +191,8 @@ void main() {
         workflow.play();
         async.elapse(firstTaskDuration);
 
-        // After the first task's duration has passed, it should be marked as completed.
+        // After the first task's duration has passed, it should be marked 
+        // as completed.
         expect(workflow.tasks.first.completed, isFalse);
 
         // The last event for the first task should have remainingSeconds <= 0
@@ -234,7 +235,8 @@ void main() {
 
       fakeAsync((async) {
         workflow.play();
-        // Elapse for the total duration plus a small buffer to ensure completion
+        // Elapse for the total duration plus a small buffer to ensure
+        // completion
         async.elapse(Duration(
             milliseconds: workflow.totalDurationInMilliseconds + 12000));
 
