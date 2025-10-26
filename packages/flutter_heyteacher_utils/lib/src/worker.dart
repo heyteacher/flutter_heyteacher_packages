@@ -150,7 +150,7 @@ final class Worker<I, O> {
       await Isolate.spawn(_startRemoteIsolate, (
         sendPort: rawReceivePort.sendPort,
         rootIsolateToken: rootIsolateToken,
-        workerIsolate: _workerIsolate as WorkerIsolate<dynamic, dynamic>,
+        workerIsolate: _workerIsolate
       ), debugName: _workerIsolate.runtimeType.toString());
     } catch (error, stackTrace) {
       _logger.severe(
@@ -201,7 +201,7 @@ final class Worker<I, O> {
     ({
       SendPort sendPort,
       RootIsolateToken rootIsolateToken,
-      WorkerIsolate<dynamic, dynamic> workerIsolate,
+      Function workerIsolate,
     })
     message,
   ) {
@@ -220,7 +220,7 @@ final class Worker<I, O> {
   static void _handleCommandsToIsolate(
     ReceivePort receivePort,
     SendPort sendPort,
-    WorkerIsolate<dynamic, dynamic> workerIsolate,
+    Function workerIsolate,
   ) {
     receivePort.listen((message) async {
       if (message == 'shutdown') {
@@ -232,6 +232,8 @@ final class Worker<I, O> {
         sendPort.send((
           id,
           (
+            //
+            // ignore: avoid_dynamic_calls
             output: await workerIsolate.call(input),
             error: null,
             stackTrace: null,
