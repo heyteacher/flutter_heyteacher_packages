@@ -5,23 +5,24 @@ import 'package:flutter_heyteacher_charts/src/charts/chart_data.dart';
 import 'package:flutter_heyteacher_charts/src/charts/chart_view.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 
+/// A chart widget that displays data as a series of candlesticks.
+/// It extends [ChartView] to handle common chart functionalities.
 class CandlestickChartView extends ChartView {
-  final List<TextSpan>? Function(int index)? getTooltipItems;
-
+  /// Creates a [CandlestickChartView].
   CandlestickChartView(
-      {super.key,
-      super.title,
-      required super.chartDataLists,
+      {required super.chartDataLists,
       required super.formatterAxisX,
       required super.formatterColorAxisX,
+      required super.formatterAxisY,
+      required super.formatterColorAxisY,
+      super.key,
+      super.title,
       super.reservedSizeX,
       super.maxX,
       super.minX,
       super.minIntervalX,
       super.axisNameWidgetX,
       super.rightTitlesLikeLeft,
-      required super.formatterAxisY,
-      required super.formatterColorAxisY,
       super.reservedSizeY,
       super.maxY,
       super.minY,
@@ -30,14 +31,17 @@ class CandlestickChartView extends ChartView {
       super.horizontalRangeAnnotations,
       super.verticalRangeAnnotations,
       super.aspectRatio,
-      this.getTooltipItems});
+      this.getTooltipItems,});
+  /// A function that provides custom tooltip text spans for a given data point
+  /// index. This allows for rich text formatting in the tooltips.
+  final List<TextSpan>? Function(int index)? getTooltipItems;
 
   @override
   Widget build(BuildContext context) => Column(
         children: [
           title,
           Padding(
-            padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),
+            padding: const EdgeInsets.only(bottom: 8, right: 8),
             child: AspectRatio(
               aspectRatio: aspectRatio,
               child: CandlestickChart(
@@ -55,7 +59,7 @@ class CandlestickChartView extends ChartView {
         ),
         rangeAnnotations: RangeAnnotations(
             verticalRangeAnnotations: verticalRangeAnnotations,
-            horizontalRangeAnnotations: horizontalRangeAnnotations),
+            horizontalRangeAnnotations: horizontalRangeAnnotations,),
         minY: _minY,
         maxY: _maxY,
         titlesData: titlesData,
@@ -64,7 +68,7 @@ class CandlestickChartView extends ChartView {
             touchTooltipData: CandlestickTouchTooltipData(
                 getTooltipItems: _getTooltipItems,
                 fitInsideHorizontally: true,
-                fitInsideVertically: true)),
+                fitInsideVertically: true,),),
         touchedPointIndicator: AxisSpotIndicator(
           painter: AxisLinesIndicatorPainter(
             verticalLineProvider: (x) => VerticalLine(
@@ -79,8 +83,7 @@ class CandlestickChartView extends ChartView {
                   style: TextStyle(
                     color: ThemeViewModel.instance.yellowColor,
                   ),
-                  labelResolver: (hLine) => hLine.y.toInt().toString(),
-                  alignment: Alignment.topLeft),
+                  labelResolver: (hLine) => hLine.y.toInt().toString(),),
               color: ThemeViewModel.instance.colorScheme.onSurface,
               strokeWidth: 1,
             ),
@@ -98,7 +101,7 @@ class CandlestickChartView extends ChartView {
             high: (entry.value as CandlestickDataItem).yHigh.toDouble(),
             low: (entry.value as CandlestickDataItem).yLow.toDouble(),
             close: entry.value.y.toDouble(),
-          ))
+          ),)
       .toList();
 
   double get _maxY {
@@ -120,7 +123,7 @@ class CandlestickChartView extends ChartView {
   }
 
   CandlestickTooltipItem? _getTooltipItems(FlCandlestickPainter painter,
-          CandlestickSpot touchedSpot, int spotIndex) =>
+          CandlestickSpot touchedSpot, int spotIndex,) =>
       getTooltipItems == null
           ? null
           : CandlestickTooltipItem('', children: getTooltipItems!(spotIndex));
