@@ -11,6 +11,8 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
+  flutter_heyteacher_fastlane:
+    path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
 
@@ -24,7 +26,9 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
-#flutter:
+flutter:
+
+  uses-material-design: true # Required if you use the Material icon font
 
   # To add assets to your package, add an assets section, like this:
   # assets:
