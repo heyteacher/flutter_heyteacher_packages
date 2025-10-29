@@ -6,12 +6,12 @@
 			"command": "dart",
 			"args": [
 				"run",
-				"flutter_heyteacher_utils:version",
+				"flutter_heyteacher_fastlane:version",
 				"build"
 			],
 			"group": "build",
 			"problemMatcher": [],
-			"label": "dart: run flutter_heyteacher_utils:version build",
+			"label": "dart: run flutter_heyteacher_fastlane:version build",
 			"detail": "increment version build number",
 			"presentation": {
 				"close": true,

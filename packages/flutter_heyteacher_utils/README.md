@@ -53,7 +53,7 @@ flutter pub add flutter_heyatecher_utils
 From the root of your project, run:
 
 ```bash
-dart run flutter_heyteacher_utils:version mayor|minor|patch|build|show|show-build [--dry-run]
+dart run flutter_heyteacher_fastlane:version mayor|minor|patch|build|show|show-build [--dry-run]
 ```
 
 * `mayor`,`minor`, `patch` increment the version in your `pubsec.yaml`.
@@ -82,12 +82,12 @@ automatically update build version every run/debug execution of your code:
                         "command": "dart",
                         "args": [
                                 "run",
-                                "flutter_heyteacher_utils:version",
+                                "flutter_heyteacher_fastlane:version",
                                 "build"
                         ],
                         "group": "build",
                         "problemMatcher": [],
-                        "label": "dart: run flutter_heyteacher_utils:version build",
+                        "label": "dart: run flutter_heyteacher_fastlane:version build",
                         "detail": "increment version build number",
                         "presentation": {
                                 "close": true,
@@ -108,7 +108,7 @@ automatically update build version every run/debug execution of your code:
   ```json
   ...
     
-    "preLaunchTask": "dart: run flutter_heyteacher_utils:version build"
+    "preLaunchTask": "dart: run flutter_heyteacher_fastlane:version build"
   ```
 
 ## localization utils

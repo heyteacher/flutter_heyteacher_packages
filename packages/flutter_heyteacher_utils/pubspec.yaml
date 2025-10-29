@@ -26,6 +26,8 @@ dependencies:
   firebase_ui_oauth_google: ^2.0.0
   flutter:
     sdk: flutter
+  flutter_heyteacher_fastlane:
+    path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_text_to_speech:
     path: ../flutter_heyteacher_text_to_speech
   flutter_localizations:
@@ -43,7 +45,6 @@ dependencies:
   shared_preferences_platform_interface: ^2.4.1
   url_launcher: ^6.3.1
   webcrypto: ^0.5.7
-  yaml_edit: ^2.2.1
 
 dev_dependencies:
   build_runner: ^2.4.15
