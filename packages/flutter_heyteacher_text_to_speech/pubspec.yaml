@@ -11,6 +11,8 @@ dependencies:
   clock: ^1.1.1
   flutter:
     sdk: flutter
+  flutter_heyteacher_fastlane:
+    path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
   flutter_tts: ^4.2.2
