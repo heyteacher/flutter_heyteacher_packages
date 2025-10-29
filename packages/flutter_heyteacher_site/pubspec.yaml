@@ -1,15 +1,18 @@
 name: flutter_heyteacher_site
 description: "A new Flutter package project."
 version: 0.0.1
-#homepage:
+publish_to: none
 
 environment:
   sdk: ^3.9.2
   flutter: ">=1.17.0"
 
 dependencies:
+  clock: ^1.1.2
   flutter:
     sdk: flutter
+  flutter_heyteacher_utils:
+    path: ../flutter_heyteacher_utils
 
 dev_dependencies:
   flutter_test:

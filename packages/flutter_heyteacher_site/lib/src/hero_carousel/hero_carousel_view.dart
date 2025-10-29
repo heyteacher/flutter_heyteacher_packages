@@ -1,0 +1,275 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_site/adaptive_screen_size.dart';
+import 'package:flutter_heyteacher_site/src/hero_carousel/hero_carousel_data.dart';
+import 'package:flutter_heyteacher_utils/theme.dart';
+
+/// A responsive carousel view that adapts to different screen sizes.
+///
+/// This widget acts as a wrapper that selects the appropriate carousel layout
+/// ([_SmallBaseHeroCarouselView], [_MediumBaseHeroCarouselView], or
+/// [_LargeBaseHeroCarouselView]) based on the screen width.
+class HeroCarouselView extends StatefulWidget {
+  /// Creates an instance of [HeroCarouselView].
+  const HeroCarouselView({
+    required Iterable<HeroCarouselItem> heroCarouselItems,
+    super.key,
+  }) : _heroCarouselItems = heroCarouselItems;
+
+  final Iterable<HeroCarouselItem> _heroCarouselItems;
+
+  @override
+  /// Creates the mutable state for this widget.
+  ///
+  /// This method is called by the Flutter framework to create the
+  /// [State] object for this widget.
+  State<HeroCarouselView> createState() => _HeroCarouselViewState();
+}
+
+/// The state for [HeroCarouselView].
+///
+/// It determines the current screen size and builds the corresponding
+/// carousel widget.
+class _HeroCarouselViewState extends State<HeroCarouselView>
+    with AdaptiveScreenSizeState<HeroCarouselView> {
+  @override
+  /// Builds the widget based on the current screen size.
+  ///
+  /// Returns a specific carousel implementation for large, medium,
+  /// or small screens.
+  Widget build(BuildContext context) => switch (currentScreenSize) {
+    ScreenSize.large => _LargeBaseHeroCarouselView(widget._heroCarouselItems),
+    ScreenSize.medium => _MediumBaseHeroCarouselView(widget._heroCarouselItems),
+    ScreenSize.small => _SmallBaseHeroCarouselView(widget._heroCarouselItems),
+  };
+}
+
+/// A carousel view for small screens, displaying one item at a time.
+class _SmallBaseHeroCarouselView extends _BaseHeroCarouselView {
+  const _SmallBaseHeroCarouselView(super.heroCarouselItems);
+  @override
+  List<int> get flexWeights => [1];
+}
+
+/// A carousel view for medium screens, displaying two items at a time.
+class _MediumBaseHeroCarouselView extends _BaseHeroCarouselView {
+  const _MediumBaseHeroCarouselView(super.heroCarouselItems);
+  @override
+  List<int> get flexWeights => [1, 1];
+}
+
+/// A carousel view for large screens, displaying four items at a time.
+class _LargeBaseHeroCarouselView extends _BaseHeroCarouselView {
+  const _LargeBaseHeroCarouselView(super.heroCarouselItems);
+
+  @override
+  List<int> get flexWeights => [1, 1, 1, 1];
+}
+
+/// An abstract base class for the hero carousel view.
+///
+/// This stateful widget provides the common structure and behavior for
+/// different carousel layouts.
+abstract class _BaseHeroCarouselView extends StatefulWidget {
+  /// Creates an instance of [_BaseHeroCarouselView].
+  ///
+  @protected
+  const _BaseHeroCarouselView(Iterable<HeroCarouselItem> heroCarouselItems)
+    : _heroCarouselItems = heroCarouselItems;
+  final Iterable<HeroCarouselItem> _heroCarouselItems;
+
+  /// The flex weights for the items in the carousel.
+
+  ///
+  /// The length of this list determines how many items are visible at once.
+  @protected
+  List<int> get flexWeights;
+
+  @override
+  /// Creates the state for the [_BaseHeroCarouselView].
+  State<_BaseHeroCarouselView> createState() => _BaseHeroCarouselViewState();
+}
+
+/// The state for [_BaseHeroCarouselView].
+///
+/// Manages the automatic scrolling timer, user interaction handling,
+/// and the underlying [CarouselView].
+class _BaseHeroCarouselViewState extends State<_BaseHeroCarouselView> {
+  /// The controller for the carousel.
+  final CarouselController _controller = CarouselController();
+
+  /// A timer for automatically advancing the carousel.
+  Timer? _timer;
+
+  /// The current starting index of the visible items in the carousel.
+  int _currentIndex = 0;
+
+  /// Calculates the index for the next set of items.
+  ///
+  /// Loops back to the beginning if it reaches the end.
+  int get _nextIndex => _currentIndex =
+      _currentIndex ==
+          widget._heroCarouselItems.length - widget.flexWeights.length
+      ? 0
+      : _currentIndex + widget.flexWeights.length;
+
+  /// Calculates the index for the previous set of items.
+  ///
+  /// Loops to the end if it's at the beginning.
+  int get _prevIndex => _currentIndex = _currentIndex == 0
+      ? widget._heroCarouselItems.length - widget.flexWeights.length
+      : _currentIndex - widget.flexWeights.length;
+
+  @override
+  /// Initializes the state, setting up a periodic timer to auto-scroll
+  /// the carousel.
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  /// Disposes the controller when the widget is removed from the widget tree.
+  void dispose() {
+    _stopTimer();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    //debugPrint('${clock.now().toIso8601String()} <_startTimer>:');
+    _timer?.cancel();
+    _timer = Timer.periodic(
+      Duration(seconds: widget.flexWeights.length * 5),
+      (_) {
+        //debugPrint('${clock.now().toIso8601String()} <Timer.periodic>:');
+        unawaited(_controller.animateToItem(_nextIndex));
+      },
+    );
+  }
+
+  void _stopTimer() {
+    //debugPrint('${clock.now().toIso8601String()} <_stopTimer>:');
+    _timer?.cancel();
+  }
+
+  @override
+  /// Builds the carousel.
+  ///
+  /// It includes a [Listener] to handle user pointer events for manual
+  /// navigation, which also pauses the auto-scroll timer.
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height / 2,
+      ),
+      child: MouseRegion(
+        onEnter: (event) => _stopTimer(),
+        onExit: (event) => _startTimer(),
+        child: Listener(
+          onPointerDown: (pointerDownEvent) {
+            //debugPrint('${clock.now().toIso8601String()} <onPointerDown>:');
+            _timer?.cancel();
+            if (pointerDownEvent.position.dx >=
+                MediaQuery.sizeOf(context).width / 2) {
+              unawaited(_controller.animateToItem(_nextIndex));
+            } else {
+              unawaited(_controller.animateToItem(_prevIndex));
+            }
+          },
+          child: CarouselView.weighted(
+            controller: _controller,
+            itemSnapping: true,
+            flexWeights: widget.flexWeights,
+            children: widget._heroCarouselItems
+                .map(
+                  _HeroLayoutCard.new,
+                )
+                .toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A widget that displays an image with a title and subtitle overlay,
+/// typically used within a carousel or hero section.
+class _HeroLayoutCard extends StatelessWidget {
+  /// Creates a card that displays an image and some text in a "hero" layout.
+  ///
+  /// The [screenshotCarouselItem] parameter is required and provides the data
+  /// for the card.
+  const _HeroLayoutCard(
+    HeroCarouselItem screenshotCarouselItem, {
+    super.key,
+  }) : _screenshotCarouselItem = screenshotCarouselItem;
+
+  /// The [HeroCarouselItem] object containing the title, subtitle,
+  /// and path for the image displayed in this card.
+  ///
+  /// This field is private and accessed via the constructor parameter.
+  /// It holds all the necessary data to render the card's content.
+  final HeroCarouselItem _screenshotCarouselItem;
+
+  @override
+  /// Builds the UI for the [_HeroLayoutCard].
+  ///
+  /// It uses a [Stack] to layer an image with text overlay.
+  /// The image is constrained and uses an [AssetImage].
+  Widget build(BuildContext context) => Stack(
+    alignment: AlignmentDirectional.bottomStart,
+    children: <Widget>[
+      ClipRect(
+        child: OverflowBox(
+          maxWidth: MediaQuery.sizeOf(context).width * 7 / 8,
+          minWidth: MediaQuery.sizeOf(context).width * 7 / 8,
+          child: Image(image: AssetImage(_screenshotCarouselItem.path)),
+        ),
+      ),
+      ColoredBox(
+        color: ThemeViewModel.instance.colorScheme.onPrimary.withValues(
+          alpha: 0.5,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                _screenshotCarouselItem.title,
+                overflow: TextOverflow.clip,
+                softWrap: false,
+                style:
+                    Theme.of(
+                      context,
+                    ).textTheme.headlineLarge?.copyWith(
+                      color: ThemeViewModel.instance.colorScheme.primary,
+                    ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+              child: Text(
+                _screenshotCarouselItem.subtitle,
+                overflow: TextOverflow.clip,
+                softWrap: true,
+                maxLines: 3,
+                textAlign: TextAlign.justify,
+                style:
+                    Theme.of(
+                      context,
+                    ).textTheme.headlineSmall?.copyWith(
+                      color: ThemeViewModel.instance.colorScheme.primary,
+                    ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
