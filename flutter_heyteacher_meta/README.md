@@ -3,15 +3,43 @@
 Utilities for configure flutter projects importing common or app `FastLane`.
 lanes.
 
+## Table of Contents
+
+- [Flutter Heyteacher Fastlane](#flutter-heyteacher-fastlane)
+  - [Table of Contents](#table-of-contents)
+  - [FastLane lanes](#fastlane-lanes)
+  - [environment setup](#environment-setup)
+    - [installation](#installation)
+    - [create and configure the flutter project in firebase](#create-and-configure-the-flutter-project-in-firebase)
+    - [fastlane](#fastlane)
+    - [run](#run)
+  - [release app](#release-app)
+    - [sign app](#sign-app)
+    - [App Distribution](#app-distribution)
+    - [Google Play](#google-play)
+  - [integration test](#integration-test)
+    - [Firebase Test Lab](#firebase-test-lab)
+  - [backup, restore and disaster recovery](#backup-restore-and-disaster-recovery)
+    - [install gcloud](#install-gcloud)
+    - [export a Point-in-time recovery (PITR)](#export-a-point-in-time-recovery-pitr)
+    - [restore a Point-in-time recovery (PITR)](#restore-a-point-in-time-recovery-pitr)
+    - [export current database](#export-current-database)
+    - [fastlane backup restore command](#fastlane-backup-restore-command)
+  - [launcher icon](#launcher-icon)
+  - [splash](#splash)
+  - [json resializable](#json-resializable)
+
+## FastLane lanes
+
 After setup the environment run from root project directory:
 
-* for libraries flutter projects:
+- for libraries flutter projects:
 
   ```bash
   install_common_lanes.sh
   ```
 
-* for android app flutter projects
+- for android app flutter projects
   
   ```bash
   install_app_lanes.sh
@@ -20,9 +48,9 @@ After setup the environment run from root project directory:
   For utilize firebase backup and app distribution edit
   `./fastlane/Fastfile` uncommenting and setup these environtment variables:
 
-  * `google_storage_backup_bucket` the Google Storage backup bucket name
+  - `google_storage_backup_bucket` the Google Storage backup bucket name
 
-  * `firebase_app_distribution_service_credentials_file` the Firebase App
+  - `firebase_app_distribution_service_credentials_file` the Firebase App
      Distribution service credentials file name
   
 ## environment setup
@@ -32,7 +60,7 @@ Flutter project.
 
 ### installation
 
-* install `nodejs` and `firebase CLI`
+- install `nodejs` and `firebase CLI`
 
    ```bash
    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
@@ -40,11 +68,11 @@ Flutter project.
    npm install -g firebase-tools
    ```
 
-* install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
+- install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
   
-* install  `Android Studio`
+- install  `Android Studio`
 
-* setup your `~/.bashrc` with this env variables and alias
+- setup your `~/.bashrc` with this env variables and alias
 
   ```bash
   #android studio
@@ -68,7 +96,7 @@ Flutter project.
   export GOOGLE_APPLICATION_CREDENTIALS=<path_of_app_distribution_json>
   ```
 
-* setup your `~/.bash_aliases` with this fl alias
+- setup your `~/.bash_aliases` with this fl alias
 
   ```bash
   # alias for fastlane inside flutter projects
@@ -79,7 +107,7 @@ Flutter project.
 
 Create a `flutter project application` in `vs code`
 
-* login in firebase and install flutterfire
+- login in firebase and install flutterfire
 
    ```bash
    firebase login
@@ -87,7 +115,7 @@ Create a `flutter project application` in `vs code`
    flutterfire configure
    ```
 
-* add firebase core and other packages
+- add firebase core and other packages
 
   ```bash
   flutter pub add firebase_core
@@ -96,14 +124,14 @@ Create a `flutter project application` in `vs code`
   flutterfire configure
   ```
 
-* initialize firestore, and deploy rules and indexes
+- initialize firestore, and deploy rules and indexes
 
   ```bash
   firebase init firestore
   firebase deploy --only firestore
   ```
 
-* build and run application created
+- build and run application created
 
   ```bash
   flutter run
@@ -111,7 +139,7 @@ Create a `flutter project application` in `vs code`
 
 ### fastlane
 
-* install rbenv, ruby and bundler
+- install rbenv, ruby and bundler
 
   ```bash
   brew install rbenv
@@ -122,14 +150,14 @@ Create a `flutter project application` in `vs code`
   gem install bundler
   ```
 
-* create Genfile in project root containing:
+- create Genfile in project root containing:
 
   ```bash
   source "https://rubygems.org"
   gem "fastlane"
   ```
 
-* install fastlane via bundle
+- install fastlane via bundle
 
   ```bash
   bundle update
@@ -153,14 +181,14 @@ the execution `fl` in root project directory without paramenter show all `lanes`
 
 ### sign app
 
-* generate upload keystore
+- generate upload keystore
 
   ```bash
   mkdir -p ~/.flutter
   keytool -genkey -v -keystore ~/.flutter/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
   ```
 
-* create `android/key.properties` containing:
+- create `android/key.properties` containing:
 
   ```properties
   storePassword=<password-from-previous-step>
@@ -169,15 +197,15 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   storeFile=<keystore-file-location>
   ```
 
-* configure Gradle following instruction <https://docs.flutter.dev/deployment/android#configure-signing-in-gradle>
+- configure Gradle following instruction <https://docs.flutter.dev/deployment/android#configure-signing-in-gradle>
 
-* create the ABB file running `flutter build appbundle`. The file created is located here:
+- create the ABB file running `flutter build appbundle`. The file created is located here:
 
   ```properties
   build/app/outputs/bundle/release/app-release.aab
   ```
 
-* extract SHA-1 SHA-256 from keystore
+- extract SHA-1 SHA-256 from keystore
 
   ```bash
   keytool -list -v -alias upload -keystore ~/.flutter/upload-keystore.jks
@@ -189,23 +217,23 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   keytool -printcert -jarfile build/app/outputs/bundle/release/app-release.aab 
   ```
 
-* load SHA256 in firebase AppCheck section in (`appcheck/apps`)  (this istructi on doesn't work for <https://firebase.google.com/docs/app-check/android/play-integrity-provider> `Currently, the built-in Play Integrity provider only supports Android apps distributed by Google Play` and <https://stackoverflow.com/a/78698583/1123065>)
+- load SHA256 in firebase AppCheck section in (`appcheck/apps`)  (this istructi on doesn't work for <https://firebase.google.com/docs/app-check/android/play-integrity-provider> `Currently, the built-in Play Integrity provider only supports Android apps distributed by Google Play` and <https://stackoverflow.com/a/78698583/1123065>)
 
-* link Google Cloud project to Google Play console follow istructions <https://developer.android.com/google/play/integrity/setup>
+- link Google Cloud project to Google Play console follow istructions <https://developer.android.com/google/play/integrity/setup>
 
 ### App Distribution
   
-* follow istructions <https://firebase.google.com/docs/app-distribution/android/distribute-fastlane?apptype=aab>
+- follow istructions <https://firebase.google.com/docs/app-distribution/android/distribute-fastlane?apptype=aab>
 
-* Copy the AppDistribution JSON keys created in google cloud IAM in:
+- Copy the AppDistribution JSON keys created in google cloud IAM in:
   
   ```bash
   ~/.flutter/<YOUR_PROJECT>-app_distribution.json
   ```
 
-* run `firebase login:ci` and copy the token generated
+- run `firebase login:ci` and copy the token generated
 
-* create the file `~/.flutter/firebase_cli_token.json` and paste the token generate in this json:
+- create the file `~/.flutter/firebase_cli_token.json` and paste the token generate in this json:
 
   ```json
   {
@@ -213,7 +241,7 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   }
   ```
 
-* run fastlane
+- run fastlane
 
   ```bash
   fl.sh distribute
@@ -221,11 +249,11 @@ the execution `fl` in root project directory without paramenter show all `lanes`
 
 ### Google Play
 
-* create the app and publish for internal test in Google Play following instructions <https://support.google.com/googleplay/android-developer/answer/9859152?hl=en>
+- create the app and publish for internal test in Google Play following instructions <https://support.google.com/googleplay/android-developer/answer/9859152?hl=en>
 
-* Link Firestore App Distribution to Google Play account following instructions <https://support.google.com/firebase/answer/6392038>
+- Link Firestore App Distribution to Google Play account following instructions <https://support.google.com/firebase/answer/6392038>
 
-* run fastlane
+- run fastlane
 
   ```bash
   ./fl.sh playstore track:production|beta|alpha|internal
@@ -237,14 +265,14 @@ Follow the instruction <https://github.com/flutter/flutter/tree/main/packages/in
 
 with this changes:
 
-* `android/gradle/wrapper/gradle-wrapper.properties`
+- `android/gradle/wrapper/gradle-wrapper.properties`
 
   ```properties
   - distributionUrl=https\://services.gradle.org/distributions/gradle-8.3-all.zip
   + distributionUrl=https\://services.gradle.org/distributions/gradle-8.9-all.zip
   ```
 
-* `android/settings.gradle`
+- `android/settings.gradle`
 
   ```properties
   - id "com.android.application" version "8.1.0" apply false
@@ -271,26 +299,26 @@ or with `gradlew`
 
 ### Firebase Test Lab
 
-* buid integration test artifacts using scripts `android/firebaseTestLabBuild.sh`, shortcut of:
+- buid integration test artifacts using scripts `android/firebaseTestLabBuild.sh`, shortcut of:
 
   ```bash
   ./gradlew app:assembleAndroidTest
   ./gradlew app:assembleDebug -Ptarget=`pwd`/../integration_test/main.dart
   ```
 
-* select device from supported devices:
+- select device from supported devices:
 
   ```bash
   gcloud firebase test android models list 
   ```
 
-* you can filter only virtual devices (hight availability, lower cost):
+- you can filter only virtual devices (hight availability, lower cost):
 
   ```bash
   gcloud firebase test android models list --filter=virtual 
   ```
 
-* start test in Firebase Test Lab on the selected device launching gcloud command. For example, run test in Medium Phone virtual with android 13 (version 33):
+- start test in Firebase Test Lab on the selected device launching gcloud command. For example, run test in Medium Phone virtual with android 13 (version 33):
 
   ```bash
   gcloud firebase test android run --type instrumentation --app=../build/app/outputs/apk/debug/app-debug.apk --test=../build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=MediumPhone.arm,version=33,locale=en,orientation=portrait
@@ -340,19 +368,19 @@ gcloud firestore export gs://<PROJECT_NAME>-backups
 
 There are three lanes for backup/restore firestore:
 
-* create a backup of current firestore database
+- create a backup of current firestore database
 
   ```bash
   fl backup
   ```
 
-* or create a backup from a disaster recovery snapshot
+- or create a backup from a disaster recovery snapshot
 
   ```bash
   fl backup snapshot:<YYYY-MM-DDTHH:mm:ss.00Z>
   ```
 
-* restore a firestore backup
+- restore a firestore backup
 
   ```bash
   # list all backups
@@ -361,7 +389,7 @@ There are three lanes for backup/restore firestore:
   fl restore <YYYY-MM-DDTHH:mm:ss_mi>
   ```
 
-* remove a firestore backup
+- remove a firestore backup
 
   ```hash
   # list all backups
@@ -372,8 +400,8 @@ There are three lanes for backup/restore firestore:
 
 ## launcher icon
 
-* modify 'assets/icon/icon.png' and 'assets/icon/background.png'
-* run
+- modify 'assets/icon/icon.png' and 'assets/icon/background.png'
+- run
 
   ```bash
   dart run flutter_launcher_icons
@@ -381,8 +409,8 @@ There are three lanes for backup/restore firestore:
 
 ## splash
 
-* modify 'assets/splash.png'
-* run
+- modify 'assets/splash.png'
+- run
 
   ```bash
   dart run flutter_native_splash:create
@@ -390,9 +418,9 @@ There are three lanes for backup/restore firestore:
 
 ## json resializable
 
-* <https://pub.dev/packages/json_serializable>
+- <https://pub.dev/packages/json_serializable>
 
-* command to generate artifacts
+- command to generate artifacts
 
   ```bash
   dart run build_runner build
