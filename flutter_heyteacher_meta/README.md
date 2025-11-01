@@ -1,7 +1,6 @@
 # Flutter Heyteacher Fastlane
 
-Utilities for configure flutter projects importing common or app `FastLane`.
-lanes.
+Utilities for configure environment for flutter projects and importing common and app `FastLane` lanes.
 
 ## Table of Contents
 
@@ -24,7 +23,7 @@ lanes.
     - [Backup and Restore database](#backup-and-restore-database)
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
-  - [JSON resializable](#json-resializable)
+  - [JSON serializable](#json-serializable)
 
 ## FastLane lanes
 
@@ -402,7 +401,7 @@ fl restore <YYYY-MM-DDTHH:mm:ss_mi>
   dart run flutter_native_splash:create
   ```
 
-## JSON resializable
+## JSON serializable
 
 - <https://pub.dev/packages/json_serializable>
 
