@@ -1,0 +1,163 @@
+# Uncomment the line if you want fastlane to automatically update itself
+#update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  desc "fl build\n\tBuild flutter artifacts and rebuild pubspec.lock"
+  lane :build do
+    Dir.chdir("../") do
+      sh("rm pubspec.lock")
+      sh("flutter pub upgrade")
+    end
+  end
+
+  desc "fl launch\n\tlaunch on device"
+  lane :launch do
+    _increment_flutter_build_number
+    sh("flutter run")
+  end
+
+  desc "fl appbundle\n\tclean and build application `build/app/outputs/bundle/release/app-release.aab`"
+  lane :appbundle do
+    sh("flutter build bundle")
+    _increment_flutter_build_number
+    # increment build number before build the release
+    sh("flutter build appbundle")  
+  end
+  
+  desc "fl integration_test\n\tRun integration tests"
+  lane :integration_test do
+    sh("flutter driver --driver=test_driver/main_test.dart --target=integration_test/main.dart")
+  end
+
+  desc "fl testlab\n\tRun integration test in Firebase Test Lab"
+  lane :testlab do
+    Dir.chdir("../android/") do
+      sh("./firebaseTestLabBuild.sh")
+      sh("gcloud firebase test android run --type instrumentation  --use-orchestrator --app=../build/app/outputs/apk/debug/app-debug.apk --test=../build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=MediumPhone.arm,version=33,locale=en,orientation=portrait")
+    end
+  end
+
+  desc "fl backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>]\n\tbackup dababase firestore on snapshot specified. If database isn't set use (default)"
+  lane :backup do |options|
+     snapshotTime = ""
+    if options[:snapshot] != nil
+    # set the snapshot time from disaster recovery
+    snapshotTime = "--snapshot-time=#{options[:snapshot]}"
+    end
+    database = "(default)"
+    if options[:database] != nil
+      database = options[:database]
+    end
+    # export to google storage
+    sh("gcloud firestore export #{ENV["google_storage_backup_bucket"]} #{snapshotTime} --database='#{database}'")
+  end
+   
+  desc "fl restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>]\n\trestore firestore backup into database specified. If database isn't set use (default)"
+  lane :restore do |options|
+    database = "(default)"
+    if options[:database] != nil
+      database = options[:database]
+    end
+    if options[:backup] == nil
+      sh("gcloud storage ls #{ENV["google_storage_backup_bucket"]}")
+      puts "usage: fl restore backup:<YYYY-MM-DDTHH:mm:ss_mi>"
+    else
+      sh("gcloud firestore import #{ENV["google_storage_backup_bucket"]}/#{options[:backup]} --database='#{database}'")
+    end
+  end
+
+  desc "fl rm backup:<YYYY-MM-DDTHH:mm:ss_mi>\n\tdelete firestore backup"
+  lane :rm do |options|
+    if options[:backup] == nil
+      sh("gcloud storage ls #{ENV["google_storage_backup_bucket"]}")
+      puts "usage: fl rm backup:<YYYY-MM-DDTHH:mm:ss_mi>"
+    else
+      sh("gcloud storage rm -R #{ENV["google_storage_backup_bucket"]}/#{options[:backup]}")
+    end
+  end
+
+  desc "fl app_distribution\n\tbuild the release and publish app in Google Play via `Firebase App Distribution`"
+  lane :app_distribution do
+    # generate AAB
+    appbundle
+    #load appId
+    require "json"
+    firebaseJsonData = JSON.load File.open "../firebase.json"
+    appId = firebaseJsonData["flutter"]["platforms"]["android"]["default"]["appId"] 
+    #load firebaseCliToken
+    firebaseCliTokenJsonData = JSON.load File.open "#{ENV["HOME"]}/.flutter/firebase_cli_token.json"
+    firebaseCliToken = firebaseCliTokenJsonData["firebase_cli_token"]
+    # read version
+    version = ""
+    Dir.chdir("../") do
+      version = sh("dart run flutter_heyteacher_fastlane:version show")
+    end 
+    puts "appId #{appId} version #{version}"
+    # build_android_app is a built-in fastlane action.
+    release = firebase_app_distribution(
+        app: appId,
+        firebase_cli_token: firebaseCliToken,
+        groups: "bt-tester",
+        service_credentials_file: ENV["firebase_app_distribution_service_credentials_file"],
+        android_artifact_path:"build/app/outputs/bundle/release/app-release.aab",
+        release_notes: version,
+        android_artifact_type: "AAB",
+    )
+    puts "release #{release}"
+  end
+
+  desc "fl playstore track:production|beta|alpha|internal [upload_only:true|false]\n\tupload app to Google Play via `supply`"
+  lane :playstore do |options|
+    # generate AAB
+    puts "Upload only #{options[:upload_only]}"
+    if options[:upload_only] != true
+      appbundle
+    end
+    # read version and build number
+    version = ""
+    buildNumber = ""
+    Dir.chdir("../") do
+      version = sh("dart run flutter_heyteacher_fastlane:version show")
+      buildNumber = sh("dart run flutter_heyteacher_fastlane:version show-build")
+      # edit release notes 
+      if options[:upload_only] != true
+        release_note_file = File.open('fastlane/metadata/android/en-US/changelogs/default.txt');
+        release_note_data = File.read release_note_file;
+        release_note_file.close;
+        puts "\nActual release notes #{release_note_data}"
+        release_notes_text = UI.input("Enter release notes for version #{version}:")
+        release_note_data = "<en-US>\n\t#{version}: #{release_notes_text}\n</en-US>"
+        File.write('fastlane/metadata/android/en-US/changelogs/default.txt',release_note_data)
+      end
+    end
+    if options[:upload_only] != true
+      git_commit(path: "fastlane/metadata/android/en-US/changelogs/default.txt", message: "release notes for version #{version}")
+      push_to_git_remote
+    end
+    # upload app on play store
+    upload_to_play_store(
+      version_code: buildNumber,
+      rollout: "1",
+      release_status: "completed", 
+      track: options[:track], 
+      aab: "./build/app/outputs/bundle/release/app-release.aab"
+    )
+  end
+
+  desc "fl playstore_promote from_track:beta|alpha|internal to_track:production|beta|alpha|internal\n\tpromote a release in Google Play via `supply`"
+  lane :playstore_promote do |options|
+    upload_to_play_store(
+      track: options[:from_track],
+      track_promote_to: options[:to_track],
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+end
