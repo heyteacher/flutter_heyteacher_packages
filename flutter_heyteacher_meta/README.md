@@ -8,26 +8,23 @@ lanes.
 - [Flutter Heyteacher Fastlane](#flutter-heyteacher-fastlane)
   - [Table of Contents](#table-of-contents)
   - [FastLane lanes](#fastlane-lanes)
-  - [environment setup](#environment-setup)
-    - [installation](#installation)
-    - [create and configure the flutter project in firebase](#create-and-configure-the-flutter-project-in-firebase)
-    - [fastlane](#fastlane)
-    - [run](#run)
-  - [release app](#release-app)
-    - [sign app](#sign-app)
+  - [Environment Setup](#environment-setup)
+    - [`Visual Studio Code`, `Android Studio` and `Node JS` Installation](#visual-studio-code-android-studio-and-node-js-installation)
+    - [Firebase](#firebase)
+    - [FastLane](#fastlane)
+  - [Release app](#release-app)
+    - [Sign app](#sign-app)
     - [App Distribution](#app-distribution)
     - [Google Play](#google-play)
-  - [integration test](#integration-test)
+  - [Integration Test](#integration-test)
     - [Firebase Test Lab](#firebase-test-lab)
-  - [backup, restore and disaster recovery](#backup-restore-and-disaster-recovery)
+  - [`Firestore` backup, restore and Point-in-time recovery](#firestore-backup-restore-and-point-in-time-recovery)
     - [install gcloud](#install-gcloud)
-    - [export a Point-in-time recovery (PITR)](#export-a-point-in-time-recovery-pitr)
-    - [restore a Point-in-time recovery (PITR)](#restore-a-point-in-time-recovery-pitr)
-    - [export current database](#export-current-database)
-    - [fastlane backup restore command](#fastlane-backup-restore-command)
-  - [launcher icon](#launcher-icon)
-  - [splash](#splash)
-  - [json resializable](#json-resializable)
+    - [Restore a Point-in-time Recovery (PITR)](#restore-a-point-in-time-recovery-pitr)
+    - [Backup and Restore database](#backup-and-restore-database)
+  - [Launcher Icon](#launcher-icon)
+  - [Splash](#splash)
+  - [JSON resializable](#json-resializable)
 
 ## FastLane lanes
 
@@ -53,12 +50,12 @@ After setup the environment run from root project directory:
   - `firebase_app_distribution_service_credentials_file` the Firebase App
      Distribution service credentials file name
   
-## environment setup
+## Environment Setup
 
 Instructions for setup environment installing all software needed to develop a
 Flutter project.
 
-### installation
+### `Visual Studio Code`, `Android Studio` and `Node JS` Installation
 
 - install `nodejs` and `firebase CLI`
 
@@ -103,7 +100,7 @@ Flutter project.
   alias fl='<PRJ_INSTALLATION_DIR>/flutter_heyteacher_fastlane/scripts/fl.sh'
   ```
 
-### create and configure the flutter project in firebase
+### Firebase
 
 Create a `flutter project application` in `vs code`
 
@@ -137,7 +134,7 @@ Create a `flutter project application` in `vs code`
   flutter run
   ```
 
-### fastlane
+### FastLane
 
 - install rbenv, ruby and bundler
 
@@ -163,23 +160,29 @@ Create a `flutter project application` in `vs code`
   bundle update
   ```
 
-### run
-
 `fl` is an alias of `fl.sh` command:
 
 ```bash
-if [ -z "$@" ] 
+#!/bin/bash
+#
+# Run FastLane Lanes.
+#
+# Executed without paramenter show lanes available and documentation 
+if [[ -z ${@} ]] 
 then
+    # show lanes avalilable and documentation
     bundle exec fastlane lanes
 else
+    # run lane 
     bundle exec fastlane $@
+fi  
 ```
 
 the execution `fl` in root project directory without paramenter show all `lanes` configured and how to use them.
 
-## release app
+## Release app
 
-### sign app
+### Sign app
 
 - generate upload keystore
 
@@ -259,7 +262,7 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   ./fl.sh playstore track:production|beta|alpha|internal
   ```
 
-## integration test
+## Integration Test
 
 Follow the instruction <https://github.com/flutter/flutter/tree/main/packages/integration_test>
 
@@ -326,7 +329,7 @@ or with `gradlew`
 
 The lane `fl testlab` run commands above
 
-## backup, restore and disaster recovery
+## `Firestore` backup, restore and Point-in-time recovery
 
 ### install gcloud
 
@@ -345,39 +348,22 @@ gcloud init
 
 create the bucket `<PROJECT_NAME>-backups` which hosts backups here: <https://console.cloud.google.com/storage/browser>
 
-### export a Point-in-time recovery (PITR)
+### Restore a Point-in-time Recovery (PITR)
+
+You can restore the database snapshot since last 15 days specifying `snapshot-time` in ISO 8601 format.
 
 ```bash
-gcloud firestore export gs://<PROJECT_NAME>-backups --snapshot-time=2024-12-20T10:16:00.00Z
+fl backup snapshot:<YYYY-MM-DDTHH:mm:ss.00Z>
+# restore the backup <YYYY-MM-DDTHH:mm:ss_mi> already created
+fl restore <YYYY-MM-DDTHH:mm:ss_mi>
 ```
 
-### restore a Point-in-time recovery (PITR)
-
-```bash
-gcloud firestore import gs://<PROJECT_NAME>-backups/2024-12-20T14:50:25_66816 --database='(default)'
-```
-
-### export current database
-
-```bash
-gcloud firestore export gs://<PROJECT_NAME>-backups
-
-```
-
-### fastlane backup restore command
-
-There are three lanes for backup/restore firestore:
+### Backup and Restore database
 
 - create a backup of current firestore database
 
   ```bash
   fl backup
-  ```
-
-- or create a backup from a disaster recovery snapshot
-
-  ```bash
-  fl backup snapshot:<YYYY-MM-DDTHH:mm:ss.00Z>
   ```
 
 - restore a firestore backup
@@ -394,11 +380,11 @@ There are three lanes for backup/restore firestore:
   ```hash
   # list all backups
   fl restore 
-  # restore a backup
+  # remove backup
   fl rm <YYYY-MM-DDTHH:mm:ss_mi>
   ```
 
-## launcher icon
+## Launcher Icon
 
 - modify 'assets/icon/icon.png' and 'assets/icon/background.png'
 - run
@@ -407,7 +393,7 @@ There are three lanes for backup/restore firestore:
   dart run flutter_launcher_icons
   ```
 
-## splash
+## Splash
 
 - modify 'assets/splash.png'
 - run
@@ -416,7 +402,7 @@ There are three lanes for backup/restore firestore:
   dart run flutter_native_splash:create
   ```
 
-## json resializable
+## JSON resializable
 
 - <https://pub.dev/packages/json_serializable>
 
