@@ -23,7 +23,7 @@ Utilities for configure environment for flutter projects and importing common an
     - [Backup and Restore database](#backup-and-restore-database)
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
-  - [JSON serializable](#json-serializable)
+  - [Dart Builders](#dart-builders)
 
 ## FastLane lanes
 
@@ -401,12 +401,16 @@ fl restore <YYYY-MM-DDTHH:mm:ss_mi>
   dart run flutter_native_splash:create
   ```
 
-## JSON serializable
+## Dart Builders
 
-- <https://pub.dev/packages/json_serializable>
+The builders like:
 
-- command to generate artifacts
+- [json_serializable](https://pub.dev/packages/json_serializable)
+- [copy_with_extension](https://pub.dev/packages/copy_with_extension)
+- [mockito](https://pub.dev/packages/mockito)
+
+can be gererated using script:
 
   ```bash
-  dart run build_runner build
+  dart_builders.sh
   ```
