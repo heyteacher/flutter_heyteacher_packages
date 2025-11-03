@@ -10,6 +10,9 @@ cp ../flutter_heyteacher_fastlane/Gemfile .
 cp ../flutter_heyteacher_fastlane/.ruby-version .
 # configure fastlane importing lanes from flutter_heyteacher_fastlane
 mkdir fastlane
+cp ../flutter_heyteacher_fastlane/fastlane/Pluginfile fastlane/
+echo "" >> Gemfile
+echo "eval_gemfile(\"fastlane/Pluginfile\")" >> Gemfile
 echo "import(\"../../flutter_heyteacher_fastlane/fastlane/Fastfile\")" > fastlane/Fastfile
 echo "" >> fastlane/Fastfile
 echo "# set the Google Cloud Storage bucket name" >> fastlane/Fastfile
