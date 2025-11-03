@@ -1,7 +1,5 @@
 source "https://rubygems.org"
 
-gem  "fastlane"
+gem "fastlane"
 gem "abbrev"
 gem "mutex_m"
-
-eval_gemfile("fastlane/Pluginfile")
