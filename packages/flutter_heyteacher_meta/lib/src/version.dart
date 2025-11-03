@@ -67,7 +67,7 @@ void main(List<String> arguments) async {
       stdout.write(curretVersion);
       return;
     case 'show-build':
-      stdout.write(currentVersionRegexed?[build]);
+      stdout.write(currentVersionRegexed?[build]?.substring(1));
       return;
     default:
       log(
