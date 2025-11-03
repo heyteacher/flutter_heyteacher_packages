@@ -13,11 +13,11 @@ import 'package:flutter_heyteacher_utils/theme.dart';
 class HeroCarouselView extends StatefulWidget {
   /// Creates an instance of [HeroCarouselView].
   const HeroCarouselView({
-    required Iterable<HeroCarouselItem> heroCarouselItems,
+    required Iterable<HeroCarouselItemData> heroCarouselItems,
     super.key,
   }) : _heroCarouselItems = heroCarouselItems;
 
-  final Iterable<HeroCarouselItem> _heroCarouselItems;
+  final Iterable<HeroCarouselItemData> _heroCarouselItems;
 
   @override
   /// Creates the mutable state for this widget.
@@ -75,9 +75,9 @@ abstract class _BaseHeroCarouselView extends StatefulWidget {
   /// Creates an instance of [_BaseHeroCarouselView].
   ///
   @protected
-  const _BaseHeroCarouselView(Iterable<HeroCarouselItem> heroCarouselItems)
+  const _BaseHeroCarouselView(Iterable<HeroCarouselItemData> heroCarouselItems)
     : _heroCarouselItems = heroCarouselItems;
-  final Iterable<HeroCarouselItem> _heroCarouselItems;
+  final Iterable<HeroCarouselItemData> _heroCarouselItems;
 
   /// The flex weights for the items in the carousel.
 
@@ -159,39 +159,32 @@ class _BaseHeroCarouselViewState extends State<_BaseHeroCarouselView> {
   ///
   /// It includes a [Listener] to handle user pointer events for manual
   /// navigation, which also pauses the auto-scroll timer.
-  Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.sizeOf(context).height / 2,
+  Widget build(BuildContext context) => MouseRegion(
+    onEnter: (event) => _stopTimer(),
+    onExit: (event) => _startTimer(),
+    child: Listener(
+      onPointerDown: (pointerDownEvent) {
+        //debugPrint('${clock.now().toIso8601String()} <onPointerDown>:');
+        _timer?.cancel();
+        if (pointerDownEvent.position.dx >=
+            MediaQuery.sizeOf(context).width / 2) {
+          unawaited(_controller.animateToItem(_nextIndex));
+        } else {
+          unawaited(_controller.animateToItem(_prevIndex));
+        }
+      },
+      child: CarouselView.weighted(
+        controller: _controller,
+        itemSnapping: true,
+        flexWeights: widget.flexWeights,
+        children: widget._heroCarouselItems
+            .map(
+              _HeroLayoutCard.new,
+            )
+            .toList(),
       ),
-      child: MouseRegion(
-        onEnter: (event) => _stopTimer(),
-        onExit: (event) => _startTimer(),
-        child: Listener(
-          onPointerDown: (pointerDownEvent) {
-            //debugPrint('${clock.now().toIso8601String()} <onPointerDown>:');
-            _timer?.cancel();
-            if (pointerDownEvent.position.dx >=
-                MediaQuery.sizeOf(context).width / 2) {
-              unawaited(_controller.animateToItem(_nextIndex));
-            } else {
-              unawaited(_controller.animateToItem(_prevIndex));
-            }
-          },
-          child: CarouselView.weighted(
-            controller: _controller,
-            itemSnapping: true,
-            flexWeights: widget.flexWeights,
-            children: widget._heroCarouselItems
-                .map(
-                  _HeroLayoutCard.new,
-                )
-                .toList(),
-          ),
-        ),
-      ),
-    );
-  }
+    ),
+  );
 }
 
 /// A widget that displays an image with a title and subtitle overlay,
@@ -202,16 +195,16 @@ class _HeroLayoutCard extends StatelessWidget {
   /// The [screenshotCarouselItem] parameter is required and provides the data
   /// for the card.
   const _HeroLayoutCard(
-    HeroCarouselItem screenshotCarouselItem, {
+    HeroCarouselItemData screenshotCarouselItem, {
     super.key,
   }) : _screenshotCarouselItem = screenshotCarouselItem;
 
-  /// The [HeroCarouselItem] object containing the title, subtitle,
+  /// The [HeroCarouselItemData] object containing the title, subtitle,
   /// and path for the image displayed in this card.
   ///
   /// This field is private and accessed via the constructor parameter.
   /// It holds all the necessary data to render the card's content.
-  final HeroCarouselItem _screenshotCarouselItem;
+  final HeroCarouselItemData _screenshotCarouselItem;
 
   @override
   /// Builds the UI for the [_HeroLayoutCard].
@@ -229,7 +222,7 @@ class _HeroLayoutCard extends StatelessWidget {
         ),
       ),
       ColoredBox(
-        color: ThemeViewModel.instance.colorScheme.onPrimary.withValues(
+        color: ThemeViewModel.instance.colorScheme.surface.withValues(
           alpha: 0.5,
         ),
         child: Column(
@@ -245,9 +238,7 @@ class _HeroLayoutCard extends StatelessWidget {
                 style:
                     Theme.of(
                       context,
-                    ).textTheme.headlineLarge?.copyWith(
-                      color: ThemeViewModel.instance.colorScheme.primary,
-                    ),
+                    ).textTheme.headlineLarge,
               ),
             ),
             const SizedBox(height: 10),
@@ -262,9 +253,7 @@ class _HeroLayoutCard extends StatelessWidget {
                 style:
                     Theme.of(
                       context,
-                    ).textTheme.headlineSmall?.copyWith(
-                      color: ThemeViewModel.instance.colorScheme.primary,
-                    ),
+                    ).textTheme.headlineSmall,
               ),
             ),
           ],

@@ -1,7 +1,7 @@
 /// Holds metadata for the images displayed in the carousel.
-class HeroCarouselItem {
-  /// Creates a new instance of [HeroCarouselItem].
-  const HeroCarouselItem({
+class HeroCarouselItemData {
+  /// Creates a new instance of [HeroCarouselItemData].
+  const HeroCarouselItemData({
     required this.title,
     required this.subtitle,
     required this.path,
