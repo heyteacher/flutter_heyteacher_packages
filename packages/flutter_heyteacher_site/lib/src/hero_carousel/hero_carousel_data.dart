@@ -2,17 +2,23 @@
 class HeroCarouselItemData {
   /// Creates a new instance of [HeroCarouselItemData].
   const HeroCarouselItemData({
-    required this.title,
-    required this.subtitle,
-    required this.path,
-  });
+    required String title,
+    required String subtitle,
+    required String path,
+  }) : _path = path,
+       _subtitle = subtitle,
+       _title = title;
+
+  final String _title;
+  final String _subtitle;
+  final String _path;
 
   /// The title displayed over the image.
-  final String title;
+  String get title => _title;
 
   /// The subtitle displayed over the image.
-  final String subtitle;
+  String get subtitle => _subtitle;
 
   /// The image asset path.
-  final String path;
+  String get path => _path;
 }
