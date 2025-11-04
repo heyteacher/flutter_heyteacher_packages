@@ -14,10 +14,14 @@ class HeroCarouselView extends StatefulWidget {
   /// Creates an instance of [HeroCarouselView].
   const HeroCarouselView({
     required Iterable<HeroCarouselItemData> heroCarouselItems,
+    required double maxHeight,
     super.key,
-  }) : _heroCarouselItems = heroCarouselItems;
+  }) : _maxHeight = maxHeight,
+       _heroCarouselItems = heroCarouselItems;
 
   final Iterable<HeroCarouselItemData> _heroCarouselItems;
+
+  final double _maxHeight;
 
   @override
   /// Creates the mutable state for this widget.
@@ -39,29 +43,38 @@ class _HeroCarouselViewState extends State<HeroCarouselView>
   /// Returns a specific carousel implementation for large, medium,
   /// or small screens.
   Widget build(BuildContext context) => switch (currentScreenSize) {
-    ScreenSize.large => _LargeBaseHeroCarouselView(widget._heroCarouselItems),
-    ScreenSize.medium => _MediumBaseHeroCarouselView(widget._heroCarouselItems),
-    ScreenSize.small => _SmallBaseHeroCarouselView(widget._heroCarouselItems),
+    ScreenSize.large => _LargeBaseHeroCarouselView(
+      widget._heroCarouselItems,
+      widget._maxHeight,
+    ),
+    ScreenSize.medium => _MediumBaseHeroCarouselView(
+      widget._heroCarouselItems,
+      widget._maxHeight,
+    ),
+    ScreenSize.small => _SmallBaseHeroCarouselView(
+      widget._heroCarouselItems,
+      widget._maxHeight,
+    ),
   };
 }
 
 /// A carousel view for small screens, displaying one item at a time.
 class _SmallBaseHeroCarouselView extends _BaseHeroCarouselView {
-  const _SmallBaseHeroCarouselView(super.heroCarouselItems);
+  const _SmallBaseHeroCarouselView(super.heroCarouselItems, super.maxHeight);
   @override
   List<int> get flexWeights => [1];
 }
 
 /// A carousel view for medium screens, displaying two items at a time.
 class _MediumBaseHeroCarouselView extends _BaseHeroCarouselView {
-  const _MediumBaseHeroCarouselView(super.heroCarouselItems);
+  const _MediumBaseHeroCarouselView(super.heroCarouselItems, super.maxHeight);
   @override
   List<int> get flexWeights => [1, 1];
 }
 
 /// A carousel view for large screens, displaying four items at a time.
 class _LargeBaseHeroCarouselView extends _BaseHeroCarouselView {
-  const _LargeBaseHeroCarouselView(super.heroCarouselItems);
+  const _LargeBaseHeroCarouselView(super.heroCarouselItems, super.maxHeight);
 
   @override
   List<int> get flexWeights => [1, 1, 1, 1];
@@ -75,9 +88,14 @@ abstract class _BaseHeroCarouselView extends StatefulWidget {
   /// Creates an instance of [_BaseHeroCarouselView].
   ///
   @protected
-  const _BaseHeroCarouselView(Iterable<HeroCarouselItemData> heroCarouselItems)
-    : _heroCarouselItems = heroCarouselItems;
+  const _BaseHeroCarouselView(
+    Iterable<HeroCarouselItemData> heroCarouselItems,
+    double maxHeight,
+  ) : _heroCarouselItems = heroCarouselItems,
+      _maxHeight = maxHeight;
+
   final Iterable<HeroCarouselItemData> _heroCarouselItems;
+  final double _maxHeight;
 
   /// The flex weights for the items in the carousel.
 
@@ -159,29 +177,34 @@ class _BaseHeroCarouselViewState extends State<_BaseHeroCarouselView> {
   ///
   /// It includes a [Listener] to handle user pointer events for manual
   /// navigation, which also pauses the auto-scroll timer.
-  Widget build(BuildContext context) => MouseRegion(
-    onEnter: (event) => _stopTimer(),
-    onExit: (event) => _startTimer(),
-    child: Listener(
-      onPointerDown: (pointerDownEvent) {
-        //debugPrint('${clock.now().toIso8601String()} <onPointerDown>:');
-        _timer?.cancel();
-        if (pointerDownEvent.position.dx >=
-            MediaQuery.sizeOf(context).width / 2) {
-          unawaited(_controller.animateToItem(_nextIndex));
-        } else {
-          unawaited(_controller.animateToItem(_prevIndex));
-        }
-      },
-      child: CarouselView.weighted(
-        controller: _controller,
-        itemSnapping: true,
-        flexWeights: widget.flexWeights,
-        children: widget._heroCarouselItems
-            .map(
-              _HeroLayoutCard.new,
-            )
-            .toList(),
+  Widget build(BuildContext context) => ConstrainedBox(
+    constraints: BoxConstraints(
+      maxHeight: widget._maxHeight,
+    ),
+    child: MouseRegion(
+      onEnter: (event) => _stopTimer(),
+      onExit: (event) => _startTimer(),
+      child: Listener(
+        onPointerDown: (pointerDownEvent) {
+          //debugPrint('${clock.now().toIso8601String()} <onPointerDown>:');
+          _timer?.cancel();
+          if (pointerDownEvent.position.dx >=
+              MediaQuery.sizeOf(context).width / 2) {
+            unawaited(_controller.animateToItem(_nextIndex));
+          } else {
+            unawaited(_controller.animateToItem(_prevIndex));
+          }
+        },
+        child: CarouselView.weighted(
+          controller: _controller,
+          itemSnapping: true,
+          flexWeights: widget.flexWeights,
+          children: widget._heroCarouselItems
+              .map(
+                _HeroLayoutCard.new,
+              )
+              .toList(),
+        ),
       ),
     ),
   );
@@ -223,7 +246,7 @@ class _HeroLayoutCard extends StatelessWidget {
       ),
       ColoredBox(
         color: ThemeViewModel.instance.colorScheme.surface.withValues(
-          alpha: 0.5,
+          alpha: 0.8,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -235,10 +258,9 @@ class _HeroLayoutCard extends StatelessWidget {
                 _screenshotCarouselItem.title,
                 overflow: TextOverflow.clip,
                 softWrap: false,
-                style:
-                    Theme.of(
-                      context,
-                    ).textTheme.headlineLarge,
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineLarge,
               ),
             ),
             const SizedBox(height: 10),
@@ -250,10 +272,9 @@ class _HeroLayoutCard extends StatelessWidget {
                 softWrap: true,
                 maxLines: 3,
                 textAlign: TextAlign.justify,
-                style:
-                    Theme.of(
-                      context,
-                    ).textTheme.headlineSmall,
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineSmall,
               ),
             ),
           ],
