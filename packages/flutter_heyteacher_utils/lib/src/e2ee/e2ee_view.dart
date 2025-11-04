@@ -126,9 +126,9 @@ class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
 /// This widget displays the status of the secret key (whether it's stored or
 /// not) and provides actions to export or import it.
 ///
-/// - **Export**: Displays the secret key as a QR code for another device 
+/// - **Export**: Displays the secret key as a QR code for another device
 ///   to scan.
-/// - **Import**: Allows importing the secret key by scanning a QR code 
+/// - **Import**: Allows importing the secret key by scanning a QR code
 ///   (on mobile) or by pasting the key data (on non-mobile platforms).
 class E2EESecretKeyCard extends StatefulWidget {
   /// Creates an [E2EESecretKeyCard].
@@ -142,6 +142,7 @@ class E2EESecretKeyCard extends StatefulWidget {
   /// The [FocusNode] for the passphrase input field, used to remove focus
   /// when showing the QR code.
   final FocusNode _encryptionPassphraseFocusNode;
+
   /// A callback that is invoked after the secret key has been successfully
   /// imported.
   final VoidCallback _secretKeyImportedCallback;
@@ -293,44 +294,67 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
     )!.areYouSureToImportEncryptionSecretKey;
     widget._encryptionPassphraseFocusNode.unfocus();
     if (AuthViewModel.instance.notAutenticated) {
-      unawaited(showConfirmCancelDialog<void>(
-        context: context,
-        content: Text(
-          FlutterHeyteacherUtilsLocalizations.of(context)!.userNotAuthenticated,
+      unawaited(
+        showConfirmCancelDialog<void>(
+          context: context,
+          content: Text(
+            FlutterHeyteacherUtilsLocalizations.of(
+              context,
+            )!.userNotAuthenticated,
+          ),
         ),
-      ));
+      );
       return;
     }
     String? secretJwkJson;
     await showDialog<bool>(
       context: context,
-      builder: (context) => MobileScanner(
-        onDetect: (barcodeCapture) {
-          if (barcodeCapture.barcodes.firstOrNull?.displayValue?.isNotEmpty ??
-              false) {
-            secretJwkJson = barcodeCapture.barcodes.first.displayValue;
-            Navigator.of(context).pop(true);
-          }
-        },
+      builder: (context) => Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          MobileScanner(
+            onDetect: (barcodeCapture) {
+              if (barcodeCapture
+                      .barcodes
+                      .firstOrNull
+                      ?.displayValue
+                      ?.isNotEmpty ??
+                  false) {
+                secretJwkJson = barcodeCapture.barcodes.first.displayValue;
+                Navigator.of(context).pop(true);
+              }
+            },
+            overlayBuilder: (context, constraints) =>
+                const Icon(Icons.qr_code_scanner, size: 180),
+          ),
+          IconButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            iconSize: 120,
+            color: ThemeViewModel.instance.redColor,
+            icon: const Icon(Icons.stop_circle_outlined),
+          ),
+        ],
       ),
     );
     if (secretJwkJson != null) {
-      unawaited(showConfirmCancelDialog(
-        context: context.mounted ? context : context,
-        content: Text(confirmQuestionMessage),
-        confirmCallback: (_) async {
-          // get localized success message before async invocation
-          final successMessage = FlutterHeyteacherUtilsLocalizations.of(
-            context,
-          )!.encryptionSecretKeyImported;
-          await E2EEViewModel.instance(
-            AuthViewModel.instance.uid,
-          ).importSecretJwkJson(secretJwkJson!);
-          setState(() {});
-          widget._secretKeyImportedCallback();
-          return successMessage;
-        },
-      ));
+      unawaited(
+        showConfirmCancelDialog(
+          context: context.mounted ? context : context,
+          content: Text(confirmQuestionMessage),
+          confirmCallback: (_) async {
+            // get localized success message before async invocation
+            final successMessage = FlutterHeyteacherUtilsLocalizations.of(
+              context,
+            )!.encryptionSecretKeyImported;
+            await E2EEViewModel.instance(
+              AuthViewModel.instance.uid,
+            ).importSecretJwkJson(secretJwkJson!);
+            setState(() {});
+            widget._secretKeyImportedCallback();
+            return successMessage;
+          },
+        ),
+      );
     }
   }
 }
