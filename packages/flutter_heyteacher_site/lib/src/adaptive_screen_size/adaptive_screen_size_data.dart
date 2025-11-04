@@ -10,13 +10,9 @@ enum ScreenSize {
   large;
 
   /// Determines the [ScreenSize] from a given [width].
-  static ScreenSize of(double width) {
-    if (width < 600) {
-      return ScreenSize.small;
-    } else if (width < 1200) {
-      return ScreenSize.medium;
-    } else {
-      return ScreenSize.large;
-    }
-  }
+  static ScreenSize of(double width) => width < 600
+      ? ScreenSize.small
+      : width < 1200
+      ? ScreenSize.medium
+      : ScreenSize.large;
 }
