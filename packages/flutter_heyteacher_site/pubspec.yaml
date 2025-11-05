@@ -1,6 +1,6 @@
 name: flutter_heyteacher_site
 description: "A new Flutter package project."
-version: 1.0.0+251104201
+version: 1.1.0+251105171
 publish_to: none
 
 environment:
@@ -15,6 +15,7 @@ dependencies:
     path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
+  video_player: ^2.10.0
 
 dev_dependencies:
   flutter_test:
