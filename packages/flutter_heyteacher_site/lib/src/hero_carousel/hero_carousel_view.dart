@@ -77,7 +77,7 @@ class _LargeBaseHeroCarouselView extends _BaseHeroCarouselView {
   const _LargeBaseHeroCarouselView(super.heroCarouselItems, super.maxHeight);
 
   @override
-  List<int> get flexWeights => [1, 1, 1, 1];
+  List<int> get flexWeights => [1, 1, 1];
 }
 
 /// An abstract base class for the hero carousel view.
@@ -235,49 +235,107 @@ class _HeroLayoutCard extends StatelessWidget {
   /// It uses a [Stack] to layer an image with text overlay.
   /// The image is constrained and uses an [AssetImage].
   Widget build(BuildContext context) => Stack(
-    alignment: AlignmentDirectional.bottomStart,
+    alignment: _screenshotCarouselItem.body != null
+        ? AlignmentDirectional.topStart
+        : AlignmentDirectional.bottomStart,
     children: <Widget>[
-      ClipRect(
-        child: OverflowBox(
-          maxWidth: MediaQuery.sizeOf(context).width * 7 / 8,
-          minWidth: MediaQuery.sizeOf(context).width * 7 / 8,
-          child: Image(image: AssetImage(_screenshotCarouselItem.path)),
+      /// show body sentences
+      if (_screenshotCarouselItem.body != null)
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 8,
+            top: 140,
+            bottom: 16,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _screenshotCarouselItem.body!
+                .map(
+                  (row) => Expanded(
+                    child: Row(
+                      spacing: 8,
+                      children: [
+                        Icon(
+                          row.leadingIcon,
+                          color: row.leadingIconColor,
+                          size: Theme.of(
+                            context,
+                          ).textTheme.displayMedium!.fontSize,
+                        ),
+                        Flexible(
+                          child: Text(
+                            row.text,
+                            overflow: TextOverflow.clip,
+                            softWrap: true,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.headlineMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        )
+      // show image
+      else if (_screenshotCarouselItem.imagePath?.isNotEmpty ?? false)
+        ClipRect(
+          child: OverflowBox(
+            maxWidth: MediaQuery.sizeOf(context).width * 7 / 8,
+            minWidth: MediaQuery.sizeOf(context).width * 7 / 8,
+            child: Image(image: AssetImage(_screenshotCarouselItem.imagePath!)),
+          ),
         ),
-      ),
       ColoredBox(
         color: ThemeViewModel.instance.colorScheme.surface.withValues(
           alpha: 0.8,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                _screenshotCarouselItem.title,
-                overflow: TextOverflow.clip,
-                softWrap: false,
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineLarge,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: 130,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  _screenshotCarouselItem.title,
+                  overflow: TextOverflow.clip,
+                  softWrap: false,
+                  textAlign: _screenshotCarouselItem.body != null
+                      ? TextAlign.center
+                      : TextAlign.left,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.headlineLarge,
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
-              child: Text(
-                _screenshotCarouselItem.subtitle,
-                overflow: TextOverflow.clip,
-                softWrap: true,
-                maxLines: 3,
-                textAlign: TextAlign.justify,
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineSmall,
-              ),
-            ),
-          ],
+              if (_screenshotCarouselItem.subtitle?.isNotEmpty ?? false)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+                  child: Text(
+                    _screenshotCarouselItem.subtitle!,
+                    overflow: TextOverflow.clip,
+                    softWrap: true,
+                    maxLines: 3,
+                    textAlign: _screenshotCarouselItem.body != null
+                        ? TextAlign.center
+                        : TextAlign.left,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineSmall,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     ],
