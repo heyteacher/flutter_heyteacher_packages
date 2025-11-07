@@ -1,9 +1,9 @@
-import 'dart:async' show StreamController, StreamSubscription, unawaited;
+import 'dart:async' show StreamController, unawaited;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_site/src/video/video_data.dart';
-import 'package:flutter_heyteacher_utils/animations.dart' show BlinkingText;
 import 'package:flutter_heyteacher_utils/theme.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:video_player/video_player.dart';
 
 /// A sliver grid that displays videos.
@@ -29,13 +29,6 @@ class VideoSliverGrid extends StatefulWidget {
 /// This class manages the [StreamController] that coordinates video playback
 /// among the [_VideoCard] children.
 class _VideoSliverGridState extends State<VideoSliverGrid> {
-  /// A stream controller to notify video cards when a video starts playing.
-  ///
-  /// When a video is played, its URL is added to this stream. All other
-  /// video cards listening to the stream will pause their playback, ensuring
-  /// that only one video plays at a time.
-  late StreamController<String> _videoPlayedStreamController;
-
   @override
   /// Initializes the state of the widget.
   ///
@@ -43,7 +36,6 @@ class _VideoSliverGridState extends State<VideoSliverGrid> {
   /// coordination.
   void initState() {
     super.initState();
-    _videoPlayedStreamController = StreamController<String>.broadcast();
   }
 
   @override
@@ -55,62 +47,116 @@ class _VideoSliverGridState extends State<VideoSliverGrid> {
   Widget build(BuildContext context) => SliverGrid(
     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
       maxCrossAxisExtent: 300,
-      childAspectRatio: 1 / 2,
+      //childAspectRatio: 1 / 2,
     ),
     delegate: SliverChildListDelegate(
       widget._videos
           .map(
             (videoData) => _VideoCard(
               videoData: videoData,
-              videoPlayedStreamController: _videoPlayedStreamController,
             ),
           )
           .toList(),
     ),
   );
+}
+
+/// Stateful widget to fetch and then display video content.
+class _VideoCard extends StatelessWidget {
+  const _VideoCard({
+    required VideoData videoData,
+  }) : _videolData = videoData;
+
+  final VideoData _videolData;
 
   @override
-  /// Disposes the resources used by this state.
-  ///
-  /// This method closes the [_videoPlayedStreamController] to prevent memory
-  /// leaks.
-  void dispose() {
-    unawaited(_videoPlayedStreamController.close());
-    super.dispose();
+  Widget build(BuildContext context) => Card(
+    clipBehavior: Clip.hardEdge,
+    child: Column(
+      //alignment: AlignmentDirectional.bottomStart,
+      children: [
+        Expanded(
+          child: Center(
+            child: IconButton(
+              icon: Icon(
+                Icons.play_circle_outline,
+                size: Theme.of(context).textTheme.displayLarge!.fontSize,
+              ),
+              onPressed: () => _show(context),
+            ),
+          ),
+        ),
+        Expanded(
+          child: ColoredBox(
+            color: ThemeViewModel.instance.colorScheme.surface.withValues(
+              alpha: 0.8,
+            ),
+            child: Column(
+              //mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Center(
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      _videolData.title,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  void _show(BuildContext context) {
+    unawaited(
+      showConfirmCancelDialog<void>(
+        context: context,
+        title: Text(
+          _videolData.title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.displayMedium,
+        ),
+        content: _VideoPlay(
+          videoData: _videolData,
+        ),
+      ),
+    );
   }
 }
 
 /// Stateful widget to fetch and then display video content.
-class _VideoCard extends StatefulWidget {
-  const _VideoCard({
+class _VideoPlay extends StatefulWidget {
+  const _VideoPlay({
     required VideoData videoData,
-    required StreamController<String> videoPlayedStreamController,
-  }) : _videolData = videoData,
-       _videoPlayedStreamController = videoPlayedStreamController;
+  }) : _videolData = videoData;
 
   final VideoData _videolData;
 
-  final StreamController<String> _videoPlayedStreamController;
-
   @override
-  State<_VideoCard> createState() => _VideoCardState();
+  State<_VideoPlay> createState() => _VideoPlayState();
 }
 
-class _VideoCardState extends State<_VideoCard> {
+class _VideoPlayState extends State<_VideoPlay> {
   late VideoPlayerController _videoPlayerController;
-  StreamSubscription<String>? _videoStreamSubscription;
   bool _showControl = false;
 
   @override
   void dispose() {
     unawaited(_videoPlayerController.dispose());
+    //debugPrint('dispose ${widget._videolData.url}');
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    debugPrint('load ${widget._videolData.url}');
+    //debugPrint('initState ${widget._videolData.url}');
     _videoPlayerController = VideoPlayerController.networkUrl(
       Uri.parse(
         widget._videolData.url,
@@ -121,92 +167,50 @@ class _VideoCardState extends State<_VideoCard> {
 
   Future<void> _init() async {
     await _videoPlayerController.initialize();
+    await _videoPlayerController.play();
     setState(() {});
     _videoPlayerController.addListener(() => setState(() {}));
-    await _videoStreamSubscription?.cancel();
-    _videoStreamSubscription = widget._videoPlayedStreamController.stream
-        .listen(
-          // stops (paused and seeked to start) all videos except current video
-          // played
-          (url) =>
-              url != widget._videolData.url ? _pause(seekToStart: true) : null,
-        );
   }
 
   @override
-  Widget build(BuildContext context) => Card(
-    clipBehavior: Clip.hardEdge,
-    child: MouseRegion(
-      // on mouse enter, show the control to play and pause
-      onEnter: (event) => setState(() => _showControl = true),
-      // on mouse exit, hide the control to play and pause
-      onExit: (event) => setState(() => _showControl = false),
-      child: Stack(
-        alignment: AlignmentDirectional.bottomStart,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: _videoPlayerController.value.isInitialized
-                ? VideoPlayer(_videoPlayerController)
-                : const SizedBox.shrink(),
-          ),
-          Center(
-            child: Visibility(
-              visible: !_videoPlayerController.value.isPlaying || _showControl,
-              child: IconButton(
-                icon: Icon(
-                  _videoPlayerController.value.isPlaying
-                      ? Icons.pause_circle_outline
-                      : Icons.play_circle_outline,
-                  size: Theme.of(context).textTheme.displayMedium!.fontSize,
-                ),
-                onPressed: () => setState(
-                  () => _videoPlayerController.value.isPlaying
-                      ? _pause()
-                      : _play(),
-                ),
+  Widget build(BuildContext context) => MouseRegion(
+    // on mouse enter, show the control to play and pause
+    onEnter: (event) => setState(() => _showControl = true),
+    // on mouse exit, hide the control to play and pause
+    onExit: (event) => setState(() => _showControl = false),
+    child: Stack(
+      alignment: AlignmentDirectional.bottomStart,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: _videoPlayerController.value.isInitialized
+              ? ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height * 2 / 3,
+                  ),
+                  child: VideoPlayer(_videoPlayerController),
+                )
+              : const SizedBox.shrink(),
+        ),
+        Center(
+          child: Visibility(
+            visible: !_videoPlayerController.value.isPlaying || _showControl,
+            child: IconButton(
+              icon: Icon(
+                _videoPlayerController.value.isPlaying
+                    ? Icons.pause_circle_outline
+                    : Icons.play_circle_outline,
+                size: Theme.of(context).textTheme.displayLarge!.fontSize,
+              ),
+              onPressed: () => setState(
+                () => _videoPlayerController.value.isPlaying
+                    ? unawaited(_videoPlayerController.pause())
+                    : unawaited(_videoPlayerController.play()),
               ),
             ),
           ),
-          ColoredBox(
-            color: ThemeViewModel.instance.colorScheme.surface.withValues(
-              alpha: 0.8,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Center(
-                    child: BlinkingText(
-                      animated: _videoPlayerController.value.isPlaying,
-                      textAlign: TextAlign.center,
-                      widget._videolData.title,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     ),
   );
-
-  void _play() {
-    unawaited(_videoPlayerController.play());
-    // notify to all other videos that this video i played
-    // other video are listening this controll and will be stopped
-    widget._videoPlayedStreamController.sink.add(widget._videolData.url);
-  }
-
-  void _pause({bool seekToStart = false}) {
-    unawaited(_videoPlayerController.pause());
-    if (seekToStart) {
-      // seek to start (duration to 0)
-      unawaited(_videoPlayerController.seekTo(Duration.zero));
-    }
-  }
 }
