@@ -243,10 +243,10 @@ class _HeroLayoutCard extends StatelessWidget {
       if (_screenshotCarouselItem.body != null)
         Padding(
           padding: const EdgeInsets.only(
-            left: 16,
-            right: 8,
-            top: 140,
-            bottom: 16,
+            left: 2,
+            right: 2,
+            top: 120,
+            bottom: 2,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -256,23 +256,23 @@ class _HeroLayoutCard extends StatelessWidget {
                 .map(
                   (row) => Expanded(
                     child: Row(
-                      spacing: 8,
+                      spacing: 2,
                       children: [
                         Icon(
                           row.leadingIcon,
                           color: row.leadingIconColor,
                           size: Theme.of(
                             context,
-                          ).textTheme.displayMedium!.fontSize,
+                          ).textTheme.headlineMedium!.fontSize,
                         ),
                         Flexible(
                           child: Text(
                             row.text,
-                            overflow: TextOverflow.clip,
-                            softWrap: true,
+                            //overflow: TextOverflow.clip,
+                            //softWrap: true,
                             style: Theme.of(
                               context,
-                            ).textTheme.headlineMedium,
+                            ).textTheme.headlineSmall,
                           ),
                         ),
                       ],
@@ -305,7 +305,7 @@ class _HeroLayoutCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 2),
                 child: Text(
                   _screenshotCarouselItem.title,
                   overflow: TextOverflow.clip,
@@ -320,7 +320,12 @@ class _HeroLayoutCard extends StatelessWidget {
               ),
               if (_screenshotCarouselItem.subtitle?.isNotEmpty ?? false)
                 Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+                  padding: const EdgeInsets.only(
+                    left: 2,
+                    right: 2,
+                    top: 2,
+                    bottom: 8,
+                  ),
                   child: Text(
                     _screenshotCarouselItem.subtitle!,
                     overflow: TextOverflow.clip,
