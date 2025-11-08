@@ -91,21 +91,22 @@ class _VideoCard extends StatelessWidget {
             color: ThemeViewModel.instance.colorScheme.surface.withValues(
               alpha: 0.8,
             ),
-            child: Column(
-              //mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Center(
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: Text(
                       textAlign: TextAlign.center,
+                      
                       _videolData.title,
-                      style: Theme.of(context).textTheme.headlineLarge,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
