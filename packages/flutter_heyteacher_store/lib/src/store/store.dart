@@ -3,7 +3,7 @@
 /// Main funtionality are:
 ///
 /// * use [generics](https://dart.dev/language/generics|generics) to define two
-///   different DataType in [CollectionReference.withConverter]
+///   different DataType in [firestore.CollectionReference.withConverter]
 
 ///   * `<LightDataType>` the lighweight [FirestoreData] document used in
 ///      [Store.list] and [Store.query]
@@ -218,7 +218,7 @@
 library;
 
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -341,14 +341,14 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     bool cacheEnabled = true,
     bool offlineEnabled = true,
     Map<String, String Function(DetailsDataType)?>? groupByFields,
-    FirebaseFirestore? firebaseFirestore,
+    firestore.FirebaseFirestore? firebaseFirestore,
   })  : _offlineEnabled = offlineEnabled,
         _cacheEnabled = cacheEnabled,
         _userProfile = userProfile,
         _collection = collection,
         _groupByFields = groupByFields,
         _separatedDetailsCollection = LightDataType != DetailsDataType {
-    _firestore = firebaseFirestore ?? FirebaseFirestore.instance;
+    _firestore = firebaseFirestore ?? firestore.FirebaseFirestore.instance;
 
     // FirebaseFirestore.instanceFor(
     //     app: FirebaseFirestore.instance.app, databaseId: 'bkdb');
@@ -357,7 +357,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
         _firestore.runtimeType.toString() == 'FakeFirebaseFirestore';
     if (!fakeFirestore) {
       // enable persistence for offline access
-      _firestore.settings = Settings(
+      _firestore.settings = firestore.Settings(
         persistenceEnabled: _offlineEnabled,
       );
     }
@@ -422,7 +422,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   }
   final _logger = Logger('Store');
 
-  late final FirebaseFirestore _firestore;
+  late final firestore.FirebaseFirestore _firestore;
 
   /// the map of order by fields.
   ///
@@ -474,11 +474,12 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   StreamSubscription<User?>? _aggregatesSubscription;
 
   /// The stream controller to yield aggregates changes.
-  final StreamController<AggregateQuerySnapshot> _aggregateStreamController =
-      StreamController<AggregateQuerySnapshot>.broadcast();
+  final StreamController<firestore.AggregateQuerySnapshot>
+      _aggregateStreamController =
+      StreamController<firestore.AggregateQuerySnapshot>.broadcast();
 
   /// The aggregate stream where aggregate changes are notified
-  Stream<AggregateQuerySnapshot> get aggregateStream =>
+  Stream<firestore.AggregateQuerySnapshot> get aggregateStream =>
       _aggregateStreamController.stream.where(
         (aggregateQuerySnapshot) => aggregateQuerySnapshot.count != null,
       );
@@ -493,12 +494,12 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   ///
   /// Apply [applyOrderBy], applies filter if [applyFilterBy] and applies
   /// [limit] if not null.
-  Query<LightDataType> query({
+  firestore.Query<LightDataType> query({
     bool applyOrderBy = false,
     bool applyFilterBy = true,
     int? limit,
   }) {
-    Query<LightDataType> retQuery = _collectionReference;
+    firestore.Query<LightDataType> retQuery = _collectionReference;
     _logger.finest('<$runtimeType.query>: applyOrderBy $applyOrderBy '
         ' applyFilterBy $applyFilterBy limit $limit');
     // apply filter
@@ -544,15 +545,14 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   Future<bool> empty() async {
     _logger.finest('<$runtimeType.empty>: $_collectionPathLog');
     _checkAuthenticated();
-    return ((await query().count().get()).count ?? 0) == 0;
+    return (await count()) == 0;
   }
 
   /// Returns `true` if collection is not empty based on [Store.storeFilter]
   /// defined.
   Future<bool> notEmpty() async {
     _logger.finest('<$runtimeType.notEmpty>: $_collectionPathLog');
-    _checkAuthenticated();
-    return !await empty();
+    return (await count()) > 0;
   }
 
   /// Returns the list of [LightDataType] based on [Store.storeFilter] ordered
@@ -566,15 +566,47 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
         .map((e) => e.data());
   }
 
-  /// Returns the list of [DetailsDataType] limited to [limit]
-  Future<Iterable<DetailsDataType>> listAllDetailed({int? limit}) async {
+  /// Returns the count of [LightDataType] based on [Store.storeFilter] ordered
+  Future<int> count() async {
+    _logger.finest('<$runtimeType.count>: $_collectionPathLog '
+        'storeFilter $storeFilter');
+    _checkAuthenticated();
+    return (await query().count().get()).count ?? 0;
+  }
+
+  /// Returns the list of [DetailsDataType].
+  ///
+  /// If [applyFilterBy] is true, filter by [Store.storeFilter].
+  /// If [applyOrderBy] is true order by [Store.orderByFields].
+  /// If [limit] is not null, apply limit.
+  Future<Iterable<DetailsDataType>> listDetails({
+    bool applyOrderBy = false,
+    bool applyFilterBy = true,
+    int? limit,
+  }) async {
     _logger.finest(
-        '<$runtimeType.listAllDetailed>: $_collectionPathLog orderByFields: '
+        '<$runtimeType.listDetailed>: $_collectionPathLog orderByFields: '
         '$orderByFields limit: $limit)');
     _checkAuthenticated();
-    final Query<DetailsDataType> retQuery = _detailsCollectionReference;
+    firestore.Query<DetailsDataType> retQuery = _detailsCollectionReference;
+    // apply filter
+    if (applyFilterBy && storeFilter != null) {
+      _logger.finest('($runtimeType.listDetailed): '
+          'storeFilter ${storeFilter!.toFirestore()}');
+      retQuery = retQuery.where(storeFilter!.toFirestore());
+    }
+    // apply order by
+    if (applyOrderBy && orderByFields != null) {
+      for (final orderbyField in orderByFields!.entries) {
+        retQuery = retQuery.orderBy(
+          orderbyField.key,
+          descending: orderbyField.value == OrderDirection.desc,
+        );
+      }
+    }
+    // apply limit
     if (limit != null && limit > 0) {
-      retQuery.limit(limit);
+      retQuery = retQuery.limit(limit);
     }
     return (await retQuery.get()).docs.map((e) => e.data());
   }
@@ -659,8 +691,8 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// Delete document identified by [id].
   ///
   /// If [batch] is not null, apply the `delete` operationto batch that will be
-  /// esecuted by [WriteBatch.commit].
-  Future<void> delete(String id, {WriteBatch? batch}) async {
+  /// esecuted by [firestore.WriteBatch.commit].
+  Future<void> delete(String id, {firestore.WriteBatch? batch}) async {
     _logger.fine('<$runtimeType.delete>: $_detailsCollectionPathLog/$id');
     _checkAuthenticated();
     if (_groupByFields != null) {
@@ -720,11 +752,11 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// If a document identified by [id] already exists, ovverride it.
   ///
   /// If [batch] is not null, apply the `set` operation to batch that will be
-  /// esecuted by [WriteBatch.commit].
+  /// esecuted by [firestore.WriteBatch.commit].
   Future<void> set(
     DetailsDataType detailsData, {
     String? id,
-    WriteBatch? batch,
+    firestore.WriteBatch? batch,
   }) async {
     id ??= detailsData.id;
     _logger.finest('<$runtimeType.set>: $_detailsCollectionPathLog/$id');
@@ -791,7 +823,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// If a document identified by [id] doesn't esists, create it.
   ///
   /// If [batch] is not null, apply the `update` operation to batch that will be
-  /// esecuted by [WriteBatch.commit].
+  /// esecuted by [firestore.WriteBatch.commit].
   Future<void> update(
     DetailsDataType document, {
     required List<String> fields,
@@ -808,7 +840,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     _checkAuthenticated();
     if (await exists(id)) {
       if (batch != null) {
-        batch as WriteBatch;
+        batch as firestore.WriteBatch;
         batch.update(
           _detailsCollectionReference.doc(id),
           document.toFirestore(fields),
@@ -823,7 +855,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       if (_separatedDetailsCollection) {
         if (document.getParentData() != null) {
           if (batch != null) {
-            batch as WriteBatch;
+            batch as firestore.WriteBatch;
             batch.update(
               _collectionReference.doc(id),
               document.getParentData()!.toFirestore(fields),
@@ -841,7 +873,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       }
       // document not found, create it
     } else {
-      unawaited(set(document, batch: batch as WriteBatch?));
+      unawaited(set(document, batch: batch as firestore.WriteBatch?));
     }
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
@@ -902,18 +934,18 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   }
 
   /// Yields an aggregation result based on [aggregateFields].
-  Future<AggregateQuerySnapshot?> get aggregates async {
+  Future<firestore.AggregateQuerySnapshot?> get aggregates async {
     _logger.finest('<$runtimeType.aggregates>:');
     _checkAuthenticated();
     if (aggregateFields == null || aggregateFields!.isEmpty) return null;
-    final aggregateParams = <AggregateField?>[
+    final aggregateParams = <firestore.AggregateField?>[
       for (var i = 0; i < 29; i++)
-        aggregateFields!.length > i ? sum(aggregateFields![i]) : null,
+        aggregateFields!.length > i ? firestore.sum(aggregateFields![i]) : null,
     ];
     _logger.finest('($runtimeType.aggregates): not null');
     return query()
         .aggregate(
-          count(),
+          firestore.count(),
           aggregateParams[0],
           aggregateParams[1],
           aggregateParams[2],
@@ -1030,7 +1062,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     // user document reference
     final userDocumentReference = _firestore.collection('users').doc(_uid);
     await _firestore.runTransaction(
-      (Transaction transaction) => _updateGroupByCounterTransaction(
+      (firestore.Transaction transaction) => _updateGroupByCounterTransaction(
         transaction,
         userDocumentReference,
         document,
@@ -1045,8 +1077,8 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
 
   /// Update the group by counter transaction.
   Future<void> _updateGroupByCounterTransaction(
-    Transaction transaction,
-    DocumentReference<Map<String, dynamic>> userDocumentReference,
+    firestore.Transaction transaction,
+    firestore.DocumentReference<Map<String, dynamic>> userDocumentReference,
     DetailsDataType document,
     bool increment,
     DetailsDataType? oldDetailsData,
@@ -1069,9 +1101,8 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
         groupByUserValue != oldGroupByUserValue) {
       // get the user document map which store group by values
       // into field <collection>_<groupByField>
-      final userDocumentMap =
-          (userDocument[groupByUserField] ??
-              <String, dynamic>{}) as Map<String, dynamic>;
+      final userDocumentMap = (userDocument[groupByUserField] ??
+          <String, dynamic>{}) as Map<String, dynamic>;
       // get the group by value
       var groupByValue = userDocumentMap[groupByUserValue] as int? ?? 0;
       groupByValue = increment ? groupByValue + 1 : groupByValue - 1;
@@ -1168,7 +1199,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
 
   /// Gets the collection reference for [LightDataType] applying `fromFirestore`
   /// and `toFirestore` converters.
-  CollectionReference<LightDataType> get _collectionReference =>
+  firestore.CollectionReference<LightDataType> get _collectionReference =>
       _firestore.collection(_collectionPath).withConverter(
             fromFirestore: (snapshot, _) =>
                 FirestoreData.fromFirestoreFactory<LightDataType>(
@@ -1180,15 +1211,16 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
 
   /// Gets the collection reference for [DetailsDataType] applying
   /// `fromFirestore` and `toFirestore` converters.
-  CollectionReference<DetailsDataType> get _detailsCollectionReference =>
-      _firestore.collection(_detailsCollectionPath!).withConverter(
-            fromFirestore: (snapshot, _) =>
-                FirestoreData.fromFirestoreFactory<DetailsDataType>(
-              snapshot.data()!,
-            ),
-            toFirestore: (DetailsDataType detailsData, _) =>
-                detailsData.toFirestore(null),
-          );
+  firestore.CollectionReference<DetailsDataType>
+      get _detailsCollectionReference =>
+          _firestore.collection(_detailsCollectionPath!).withConverter(
+                fromFirestore: (snapshot, _) =>
+                    FirestoreData.fromFirestoreFactory<DetailsDataType>(
+                  snapshot.data()!,
+                ),
+                toFirestore: (DetailsDataType detailsData, _) =>
+                    detailsData.toFirestore(null),
+              );
 
   /// Gets the collection path for [LightDataType] based on [_collection]
   /// and [_userProfile].
@@ -1286,14 +1318,14 @@ abstract class FirestoreData<T> {
   /// if [fields] is set, map contains only field defined in.
   Map<String, dynamic> toFirestore(List<String>? fields);
 
-  /// Converts [DateTime] into firestore [Timestamp]
-  static Timestamp? toFirestoreTimestamp(DateTime? dateTime) {
-    return dateTime == null ? null : Timestamp.fromDate(dateTime);
+  /// Converts [DateTime] into firestore [firestore.Timestamp]
+  static firestore.Timestamp? toFirestoreTimestamp(DateTime? dateTime) {
+    return dateTime == null ? null : firestore.Timestamp.fromDate(dateTime);
   }
 
-  /// Converts firestore [Timestamp] into [DateTime]
+  /// Converts firestore [firestore.Timestamp] into [DateTime]
   static DateTime? fromFirestoreTimestamp(Object? timestamp) {
-    return (timestamp as Timestamp?)?.toDate();
+    return (timestamp as firestore.Timestamp?)?.toDate();
   }
 }
 
