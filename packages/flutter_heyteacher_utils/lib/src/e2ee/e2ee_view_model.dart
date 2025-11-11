@@ -55,12 +55,13 @@ class E2EEViewModel {
 
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
-      (kDebugMode &&
-          PlatformHelper.isWeb &&
+      _useE2EEWebDebugSecretKey ||
+      await (await _secureStorage).containsKey(key: secretKeyKey);
+
+  bool get _useE2EEWebDebugSecretKey => PlatformHelper.isWeb &&
           RemoteConfigViewModel.instance
               .getString(RemoteConfigKeys.e2eeWebDebugSecretKey.name)
-              .isNotEmpty) ||
-      await (await _secureStorage).containsKey(key: secretKeyKey);
+              .isNotEmpty;
 
   /// Asynchronously checks if the user's secret key is not currently stored.
   Future<bool> get secretKeyNotStored async => !await secretKeyStored;
@@ -382,10 +383,10 @@ class E2EEViewModel {
       // try to read secret key from secure storage
       var secretJwkJson = await secureStorage.read(key: secretKeyKey);
       // if not found, try to read from remote config `e2eeWebDebugSecretKey`
-      if (secretJwkJson == null && kDebugMode && PlatformHelper.isWeb) {
+      if (secretJwkJson == null && _useE2EEWebDebugSecretKey) {
         _logger.info(
-          '(_readSecretKey): debug and web, try to read '
-          'from remote config',
+          '(_readSecretKey): secretJwkJson null and '
+          '_useE2EEWebDebugSecretKey true, read secret key from remote config',
         );
         secretJwkJson = await importSecretJwkJson(
           RemoteConfigViewModel.instance.getString(
