@@ -177,7 +177,7 @@ class AuthViewModel {
   /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth] 
   /// or the default [FirebaseAuth.instance].
   /// Configures [GoogleProvider] if not using a mocked instance.
-  @visibleForTesting
+  //@visibleForTesting
   AuthViewModel({FirebaseAuth? mockedFirebaseAuth}) {
     // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth
     //and configure provider
@@ -205,7 +205,7 @@ class AuthViewModel {
     return _instance!;
   }
 
-  @visibleForTesting
+  //@visibleForTesting
   static set instance(AuthViewModel instance) => _instance = instance;
 
   /// Signs out the current user from Firebase Authentication.
