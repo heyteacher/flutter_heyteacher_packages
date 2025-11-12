@@ -693,7 +693,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// If [batch] is not null, apply the `delete` operationto batch that will be
   /// esecuted by [firestore.WriteBatch.commit].
   Future<void> delete(String id, {firestore.WriteBatch? batch}) async {
-    _logger.fine('<$runtimeType.delete>: $_detailsCollectionPathLog/$id');
+    _logger.finest('<$runtimeType.delete>: $_detailsCollectionPathLog/$id');
     _checkAuthenticated();
     if (_groupByFields != null) {
       try {
@@ -714,7 +714,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       await _detailsCollectionReference.doc(id).delete();
     }
     if (_separatedDetailsCollection) {
-      _logger.fine('($runtimeType.delete): $_collectionPathLog/$id');
+      _logger.finest('($runtimeType.delete): $_collectionPathLog/$id');
       if (batch != null) {
         batch.delete(_collectionReference.doc(id));
       } else {
@@ -732,7 +732,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   Future<void> bulkDelete(
     List<String> ids,
   ) async {
-    _logger.fine(
+    _logger.finest(
       '<$runtimeType.bulkDelete>: $_detailsCollectionPathLog, ids: $ids)',
     );
     _checkAuthenticated();
@@ -801,7 +801,8 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     List<DetailsDataType> documents, {
     List<String>? ids,
   }) async {
-    _logger.fine('<$runtimeType.bulkSet>: $_detailsCollectionPathLog ids $ids');
+    _logger
+        .finest('<$runtimeType.bulkSet>: $_detailsCollectionPathLog ids $ids');
     _checkAuthenticated();
     final batch = _firestore.batch();
     for (var i = 0; i < documents.length; i++) {
@@ -830,7 +831,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     String? id,
     dynamic batch,
   }) async {
-    _logger.fine(
+    _logger.finest(
       '<$runtimeType.update>: $_detailsCollectionPathLog/$id fields: $fields)',
     );
     if (fields.isEmpty) {
