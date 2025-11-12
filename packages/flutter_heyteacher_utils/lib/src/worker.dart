@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:isolate';
 import 'package:clock/clock.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:logging/logging.dart';
@@ -33,7 +35,6 @@ typedef WorkerIsolate<I, O> = Future<O> Function(I input);
 /// worker.close();
 /// ```
 final class Worker<I, O> {
-
   /// Create a [Worker] instance with function [_workerIsolate] to be executed
   /// in isolete
   Worker(this._workerIsolate);
@@ -72,10 +73,11 @@ final class Worker<I, O> {
     I input,
   ) async {
     try {
-      if (!await RemoteConfigViewModel.instance.execWorkerInIsolate) {
+      if (!await RemoteConfigViewModel.instance.execWorkerInIsolate ||
+          (!kIsWeb && Platform.environment.containsKey('FLUTTER_TEST'))) {
         _logger.finest(
           '(${_workerIsolate.runtimeType}.execute): execWorkerInIsolate '
-          'is false, execute in main thread',
+          'is false or in test mode, execute in main thread',
         );
         return (
           output: await _workerIsolate.call(input),
@@ -150,7 +152,7 @@ final class Worker<I, O> {
       await Isolate.spawn(_startRemoteIsolate, (
         sendPort: rawReceivePort.sendPort,
         rootIsolateToken: rootIsolateToken,
-        workerIsolate: _workerIsolate
+        workerIsolate: _workerIsolate,
       ), debugName: _workerIsolate.runtimeType.toString());
     } catch (error, stackTrace) {
       _logger.severe(
