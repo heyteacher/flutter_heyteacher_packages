@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
 import 'dart:isolate';
 import 'package:clock/clock.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:logging/logging.dart';
 
@@ -74,7 +73,7 @@ final class Worker<I, O> {
   ) async {
     try {
       if (!await RemoteConfigViewModel.instance.execWorkerInIsolate ||
-          (!kIsWeb && Platform.environment.containsKey('FLUTTER_TEST'))) {
+          PlatformHelper.isFlutterTest) {
         _logger.finest(
           '(${_workerIsolate.runtimeType}.execute): execWorkerInIsolate '
           'is false or in test mode, execute in main thread',
