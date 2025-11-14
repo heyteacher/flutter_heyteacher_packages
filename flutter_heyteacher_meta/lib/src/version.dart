@@ -41,9 +41,6 @@ void main(List<String> arguments) async {
       // fastlane run inside android or ios subdir
       : File('../../pubspec.yaml');
   final yamlEditor = YamlEditor(await pubspecFile.readAsString());
-  // This deprecation informs that RegExp become final next release
-  // so ignore it for now.
-  // ignore: deprecated_member_use
   final regex = RegExp(r'^(\d+)\.(\d+)\.(\d+)\s?(\+(\d+))?$');
   final curretVersion = yamlEditor.parseAt(['version']).value as String;
   //print('curretVersion: $curretVersion');
