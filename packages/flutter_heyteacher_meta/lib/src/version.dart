@@ -41,16 +41,24 @@ void main(List<String> arguments) async {
       // fastlane run inside android or ios subdir
       : File('../../pubspec.yaml');
   final yamlEditor = YamlEditor(await pubspecFile.readAsString());
+  // This deprecation informs that RegExp become final next release
+  // so ignore it for now.
+  // ignore: deprecated_member_use
   final regex = RegExp(r'^(\d+)\.(\d+)\.(\d+)\s?(\+(\d+))?$');
   final curretVersion = yamlEditor.parseAt(['version']).value as String;
   //print('curretVersion: $curretVersion');
-  final currentVersionRegexed = regex.firstMatch(curretVersion)?.groups([
-    1,
-    2,
-    3,
-    4,
-  ]);
-  //print('currentVersionRegexed: $currentVersionRegexed');
+
+  final currentVersionRegexed = regex
+      .allMatches(curretVersion)
+      .firstOrNull
+      ?.groups([
+        1,
+        2,
+        3,
+        4,
+      ]);
+  // print('regex: $regex currentVersion: $curretVersion '
+  //     'currentVersionRegexed: $currentVersionRegexed');
   switch (arguments.isNotEmpty ? arguments[0] : '') {
     case 'mayor':
       _incrementVersion(currentVersionRegexed, mayor);
