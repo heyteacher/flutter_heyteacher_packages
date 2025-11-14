@@ -8,7 +8,8 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  app_tutorial: ^1.0.6
+  app_tutorial: 
+    git: https://github.com/heyteacher/app_tutorial.git
   archive: ^4.0.7
   clock: ^1.1.1 
   cloud_firestore: ^6.0.3
