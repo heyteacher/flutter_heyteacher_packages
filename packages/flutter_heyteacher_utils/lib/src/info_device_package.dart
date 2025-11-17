@@ -135,7 +135,7 @@ class InfoDevicePackageViewModel {
     final deviceInfoPlugin = DeviceInfoPlugin();
     if (PlatformHelper.isWeb) {
       final webDeviceInfo = await deviceInfoPlugin.webBrowserInfo;
-      return 'w-${webDeviceInfo.browserName}-ua-${webDeviceInfo.userAgent}';
+      return (!kDebugMode)? 'ua-${webDeviceInfo.userAgent}': 'ua-debug';
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -161,7 +161,7 @@ class InfoDevicePackageViewModel {
     }
   }
 
-  /// Asynchronously retrieves the application's package version and build 
+  /// Asynchronously retrieves the application's package version and build
   /// number.
   ///
   /// Formats it as "version+buildNumber".
@@ -172,10 +172,10 @@ class InfoDevicePackageViewModel {
 
   /// Gets a user identifier string.
   ///
-  /// It returns the first 5 characters of the authenticated user's UID if 
+  /// It returns the first 7 characters of the authenticated user's UID if
   /// available, otherwise defaults to "guest".
   String get identifierInfo =>
-      AuthViewModel.instance.uid?.substring(0, 5) ?? 'guest';
+      AuthViewModel.instance.uid?.substring(0, 7) ?? 'guest';
 
   /// uploads the logs to Firebase Storage and returns the log filename.
   ///
@@ -203,11 +203,13 @@ class InfoDevicePackageViewModel {
     final content = await LoggerViewModel.instance().logs2Text(
       startTime: startTime?.subtract(const Duration(seconds: 10)),
     );
-    unawaited(StorageViewModel.instance.appLogsUpload(
-      relativeFilename: relativeFilename,
-      content: content,
-      encodeGZip: true,
-    ));
+    unawaited(
+      StorageViewModel.instance.appLogsUpload(
+        relativeFilename: relativeFilename,
+        content: content,
+        encodeGZip: true,
+      ),
+    );
     return relativeFilename;
   }
 
@@ -215,7 +217,7 @@ class InfoDevicePackageViewModel {
   ///
   /// The email is pre-filled with:
   /// - A subject line indicating the app name.
-  /// - A body containing the user's identifier, device information, and app 
+  /// - A body containing the user's identifier, device information, and app
   ///   version, formatted for easy support.
   Future<void> _askSupport(BuildContext context) async {
     assert(
