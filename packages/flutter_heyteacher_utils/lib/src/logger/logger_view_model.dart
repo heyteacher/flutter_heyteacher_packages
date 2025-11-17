@@ -579,11 +579,6 @@ Future<void> writeLogsWorkerIsolate(Iterable<LogEntry> logEntries) async {
     'logEntries.length ${logEntries.length} ',
   );
   if (PlatformHelper.isWeb) {
-    developer.log(
-      'flutter () ${clock.now().toIso8601String()} (WriteLogsWorkerIsolate): '
-      'logEntries.length ${logEntries.length} '
-      'Platform web not supported, do nothing',
-    );
     return;
   }
   if (logEntries.isEmpty) {
