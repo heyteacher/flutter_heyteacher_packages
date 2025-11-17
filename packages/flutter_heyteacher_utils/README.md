@@ -135,7 +135,7 @@ automatically update build version every run/debug execution of your code:
   output-localization-file: flutter_heyteacher_utils.dart
   output-class: FlutterHeyteacherUtilsLocalizations
   output-dir: lib/src/l10n
-  untranslated-messages-file: desiredFileName.txt
+  untranslated-messages-file: untranslated-messages.txt
   ```
 
 * create the `arb` files of your supported languages
@@ -148,11 +148,11 @@ automatically update build version every run/debug execution of your code:
 
 * insert in `flutter_heyteacher_utils_en.arb` the translation
 
-* commit `desiredFileName.txt` the file containing localized strings to be
+* commit `untranslated-messages.txt` the file containing localized strings to be
   translated, this file should be always empty
 
   ```bash
-  git add desiredFileName.txt
+  git add untranslated-messages.txt
   git commit -m "localized strings to be translated, this file should be always empty"
   ```
 
