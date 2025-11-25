@@ -13,6 +13,15 @@ platform :android do
     end
   end
 
+  desc "fl buildweb [debug:true|false]\n\tbuild web and run local webserver on it"
+  lane :buildweb do|options|
+    Dir.chdir("../") do
+      sh("flutter build web #{options[:debug]? "--debug": ""}")
+      # run local webserver
+      sh("dart pub global run dhttpd --path build/web &")
+    end
+  end
+
   desc "fl launch\n\tlaunch on device"
   lane :launch do
     _increment_flutter_build_number
