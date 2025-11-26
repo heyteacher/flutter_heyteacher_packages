@@ -25,6 +25,16 @@ lane :buildweb do|options|
   end
 end
 
+desc "fl deployweb [debug:true]\n\tdeploy web in firabase hosting"
+lane :deployweb do|options|
+  Dir.chdir("../") do
+    test
+    sh("flutter build web #{options[:debug]? "--debug": ""}")
+    # run local webserver
+    sh("firebase deploy --only hosting")
+  end
+end
+
 
 desc "fl docweb\n\trun local webserver on generated doc"
 lane :docweb do
