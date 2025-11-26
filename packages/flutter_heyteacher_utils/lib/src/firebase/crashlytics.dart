@@ -10,6 +10,7 @@ import 'dart:async';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 
 /// A view model for managing Firebase Crashlytics initialization and
 /// configuration.
@@ -35,7 +36,7 @@ class CrashlyticsViewModel {
   /// Crashlytics reporting is disabled in debug mode (`kDebugMode` is true).
   void initialize() {
     // in debug mode, don't configuree Crashlytics
-    if (kDebugMode) return;
+    if (kDebugMode || PlatformHelper.isWeb) return;
 
     FlutterError.onError = (errorDetails) {
       unawaited(
