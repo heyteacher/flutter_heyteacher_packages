@@ -4,18 +4,18 @@ import 'package:flutter/widgets.dart';
 class HeroCarouselItemData {
   /// Creates a new instance of [HeroCarouselItemData].
   HeroCarouselItemData({
-    required this.title,
+    this.title,
     this.subtitle,
     this.imagePath,
     this.body,
-  }) : assert(title.isNotEmpty, 'title cannot be empty'),
+  }) : assert(title == null || title.isNotEmpty, 'title cannot be empty'),
        assert(
          (imagePath?.isNotEmpty ?? false) || (body?.isNotEmpty ?? false),
          'imagePath or body must be provided',
        );
 
   /// The title displayed over the image.
-  final String title;
+  final String? title;
 
   /// The subtitle displayed over the image.
   final String? subtitle;
