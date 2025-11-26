@@ -6,7 +6,7 @@ Utilities for configure environment for flutter projects and importing common an
 
 - [Flutter Heyteacher Fastlane](#flutter-heyteacher-fastlane)
   - [Table of Contents](#table-of-contents)
-  - [FastLane lanes](#fastlane-lanes)
+  - [FastLane Lanes](#fastlane-lanes)
   - [Environment Setup](#environment-setup)
     - [`Visual Studio Code`, `Android Studio` and `Node JS` Installation](#visual-studio-code-android-studio-and-node-js-installation)
     - [Firebase](#firebase)
@@ -21,11 +21,14 @@ Utilities for configure environment for flutter projects and importing common an
     - [install gcloud](#install-gcloud)
     - [Restore a Point-in-time Recovery (PITR)](#restore-a-point-in-time-recovery-pitr)
     - [Backup and Restore database](#backup-and-restore-database)
+  - [Firebase Hosting](#firebase-hosting)
+    - [Deploy default `site`](#deploy-default-site)
+    - [Alternative sites](#alternative-sites)
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
   - [Dart Builders](#dart-builders)
 
-## FastLane lanes
+## FastLane Lanes
 
 After setup the environment run from root project directory:
 
@@ -382,6 +385,93 @@ fl restore <YYYY-MM-DDTHH:mm:ss_mi>
   # remove backup
   fl rm <YYYY-MM-DDTHH:mm:ss_mi>
   ```
+
+## Firebase Hosting
+
+Deploy and publish a flutter web app into `Firebase Hosting`.
+
+Default `site`:
+
+- Site Id: `<Firebase Project Id>`
+- `Default URL`: `<Firebase Project Id>.web.app` and
+  `<Firebase Project Id>.web.firebaseapp.com/`
+
+### Deploy default `site`
+
+- configure `firebase.json` adding hosting configuration
+  
+  ```json
+    "hosting": {
+      "public": "build/web",
+      "frameworksBackend": {
+        "region": "<Firebase Region>"
+      }
+    }
+  ```
+
+- build web and test locally
+
+  ```bash
+  fl buildweb [--debug:true]
+  ```
+
+- deploy to default `site`
+
+  ```bash
+  firebase deploy --only hosting
+  ```
+  
+Default `site` cannot be deleted, you can disable entire hosting:
+
+```bash
+firebase hosting:disable
+```
+
+### Alternative sites
+
+- define the alternative site
+  
+  ```bash
+  firebase target:apply hosting <Alternative Site Id> <Alternative Site Id>
+  ```
+
+- Create the alternative site
+  
+  ```bash
+  firebase hosting:sites:create <Alternative Site Id>
+  ```
+
+- configure `firebase.json` adding `target`
+  
+  ```json
+    "hosting": [
+      {
+        "target": "<Alternative Site Id>",
+        "public": "build/web",
+        "frameworksBackend": {
+          "region": "<Firebase Region>"
+        }
+      }
+    ]
+  ```
+
+- deploy to the alternative site
+
+  ```bash
+  firebase deploy --only hosting
+  ```
+
+To list all sites created:
+
+```bash
+firebase hosting:sites:list
+```
+
+To delete an alternative site:
+
+```bash
+firebase hosting:sites:delete <Alternative Site Id>
+```
 
 ## Launcher Icon
 
