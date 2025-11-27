@@ -183,7 +183,7 @@ class InfoDevicePackageViewModel {
   /// instead.
   Future<String> storeLogs({DateTime? startTime}) async {
     if (!await LoggerViewModel.instance().enableLogsStorage) {
-      _logger.finest('enableLogsStorage is false, return null');
+      _logger.finer('enableLogsStorage is false, return null');
       return 'Logs storage disabled';
     }
     if (await ConnectivityViewModel.instance.notConnected) {

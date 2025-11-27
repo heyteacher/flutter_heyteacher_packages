@@ -113,7 +113,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
   Widget? title,
 }) async {
   final logger = Logger('showConfirmCancelDialog')
-    ..finest('<showConfirmCancelDialog>: title $title');
+    ..finer('<showConfirmCancelDialog>: title $title');
   final confirm = await showDialog<bool>(
     context: context,
     builder: (context) {
@@ -152,7 +152,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
     },
   );
   if (confirmCallback != null && confirm != null && confirm) {
-    logger.finest('(showConfirmCancelDialog): title $title. Confirm');
+    logger.finer('(showConfirmCancelDialog): title $title. Confirm');
     String? message;
     var errorRaised = false;
     try {

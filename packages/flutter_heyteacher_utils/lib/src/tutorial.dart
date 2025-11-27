@@ -68,7 +68,7 @@ class TutorialViewModel {
     BuildContext context,
     String screenName,
   ) async {
-    _logger.finest('<start>: screenName $screenName');
+    _logger.finer('<start>: screenName $screenName');
     if ((await SharedPreferencesAsync().getBool(
               '$screenName-tutorial-completed',
             ) ??

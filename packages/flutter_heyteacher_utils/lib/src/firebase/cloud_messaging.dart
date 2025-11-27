@@ -60,10 +60,10 @@ abstract class FirebaseCloudMessagingViewModel {
   static int get remoteConfigIntervalInMinutes => kDebugMode
       ? 1
       : RemoteConfigViewModel.instance
-                  .getInt(RemoteConfigKeys.fmcIntervalInMinutes.name) >
+                  .getInt(FHURemoteConfigKeys.fmcIntervalInMinutes.name) >
               0
           ? RemoteConfigViewModel.instance
-              .getInt(RemoteConfigKeys.fmcIntervalInMinutes.name)
+              .getInt(FHURemoteConfigKeys.fmcIntervalInMinutes.name)
           : IntervalKeys.fiveMinutes.minutes;
 
   /// Initializes the Firebase Cloud Messaging.
@@ -74,7 +74,7 @@ abstract class FirebaseCloudMessagingViewModel {
   /// running.
   /// The callback is set to run even if the device is in doze mode.
   Future<void> initialize() async {
-    _logger.finest('<initialize>:');
+    _logger.finer('<initialize>:');
     final settings =
         await FirebaseMessaging.instance.requestPermission(
       announcement: true,
@@ -86,7 +86,7 @@ abstract class FirebaseCloudMessagingViewModel {
       '(initialize): User granted permission ${settings.authorizationStatus}',
     );
     final topic = RemoteConfigViewModel.instance
-        .getString(RemoteConfigKeys.fcmTopicName.name);
+        .getString(FHURemoteConfigKeys.fcmTopicName.name);
     await FirebaseMessaging.instance.subscribeToTopic(topic);
     _logger.info('(initialize): listen topic $topic');
     FirebaseMessaging.onBackgroundMessage(entryPointCallback);
