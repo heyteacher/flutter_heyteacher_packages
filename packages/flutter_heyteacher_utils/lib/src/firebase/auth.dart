@@ -19,6 +19,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_heyteacher_utils/router.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
@@ -76,112 +77,112 @@ class _AccountCardState extends State<AccountCard> {
 
   @override
   Widget build(BuildContext context) => StreamBuilder<dynamic>(
-      stream: AuthViewModel.instance.stateChangesStream,
-      builder: (_, snapshot) {
-        return ListTile(
-          key: const ValueKey('lt_account'),
-          leading: Icon(
-            Icons.person,
-            color: AuthViewModel.instance.autenticated
-                ? Theme.of(context).iconTheme.color
-                : Theme.of(context).disabledColor,
-            size: Theme.of(context).textTheme.displayMedium!.fontSize,
-          ),
-          title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.account),
-          subtitle: AuthViewModel.instance.autenticated
-              ? Text(AuthViewModel.instance.displayName ?? '')
-              : Text(
-                  FlutterHeyteacherUtilsLocalizations.of(
-                    context,
-                  )!.userNotAuthenticated,
-                ),
-          trailing: Wrap(
-            children: [
-              if (AuthViewModel.instance.autenticated)
-                IconButton(
-                  key: const ValueKey('ic_delete_data'),
-                  icon: const Icon(Icons.delete),
-                  color: ThemeViewModel.instance.redColor,
-                  onPressed: () async {
-                    unawaited(
-                      showConfirmCancelDialog<String>(
-                        context: context,
-                        confirmCallback: (_) async {
-                          await widget._deleteUserDataCallback(null);
-                          if (context.mounted) {
-                            unawaited(
-                              GoRouter.of(
-                                context,
-                              ).pushNamed(AuthRouterName.signOut.name),
-                            );
-                          }
-                          return null;
-                        },
-                        title: Text(
-                          FlutterHeyteacherUtilsLocalizations.of(
-                            context,
-                          )!.deleteUserData,
-                        ),
-                        content: Text(
-                          FlutterHeyteacherUtilsLocalizations.of(
-                            context,
-                          )!.doYouConfirmDeletionUserData,
-                        ),
-                      ),
-                    );
-                  },
-                ),
+    stream: AuthViewModel.instance.stateChangesStream,
+    builder: (_, snapshot) {
+      return ListTile(
+        key: const ValueKey('lt_account'),
+        leading: Icon(
+          Icons.person,
+          color: AuthViewModel.instance.autenticated
+              ? Theme.of(context).iconTheme.color
+              : Theme.of(context).disabledColor,
+          size: Theme.of(context).textTheme.displayMedium!.fontSize,
+        ),
+        title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.account),
+        subtitle: AuthViewModel.instance.autenticated
+            ? Text(AuthViewModel.instance.displayName ?? '')
+            : Text(
+                FlutterHeyteacherUtilsLocalizations.of(
+                  context,
+                )!.userNotAuthenticated,
+              ),
+        trailing: Wrap(
+          children: [
+            if (AuthViewModel.instance.autenticated)
               IconButton(
-                key: const ValueKey('ic_login_logout'),
-                icon: Icon(
-                  AuthViewModel.instance.autenticated
-                      ? Icons.logout
-                      : Icons.login,
-                ),
-                color: AuthViewModel.instance.autenticated
-                    ? ThemeViewModel.instance.redColor
-                    : Theme.of(context).iconTheme.color,
+                key: const ValueKey('ic_delete_data'),
+                icon: const Icon(Icons.delete),
+                color: ThemeViewModel.instance.redColor,
                 onPressed: () async {
-                  if (AuthViewModel.instance.autenticated) {
-                    unawaited(
-                      GoRouter.of(
-                        context,
-                      ).pushNamed(AuthRouterName.signOut.name),
-                    );
-                  } else {
-                    unawaited(
-                      GoRouter.of(
-                        context,
-                      ).pushNamed(AuthRouterName.signIn.name),
-                    );
-                  }
+                  unawaited(
+                    showConfirmCancelDialog<String>(
+                      context: context,
+                      confirmCallback: (_) async {
+                        await widget._deleteUserDataCallback(null);
+                        if (context.mounted) {
+                          unawaited(
+                            GoRouter.of(
+                              context,
+                            ).pushNamed(AuthRouterName.signOut.name),
+                          );
+                        }
+                        return null;
+                      },
+                      title: Text(
+                        FlutterHeyteacherUtilsLocalizations.of(
+                          context,
+                        )!.deleteUserData,
+                      ),
+                      content: Text(
+                        FlutterHeyteacherUtilsLocalizations.of(
+                          context,
+                        )!.doYouConfirmDeletionUserData,
+                      ),
+                    ),
+                  );
                 },
               ),
-            ],
-          ),
-        );
-      },
-    );
+            IconButton(
+              key: const ValueKey('ic_login_logout'),
+              icon: Icon(
+                AuthViewModel.instance.autenticated
+                    ? Icons.logout
+                    : Icons.login,
+              ),
+              color: AuthViewModel.instance.autenticated
+                  ? ThemeViewModel.instance.redColor
+                  : Theme.of(context).iconTheme.color,
+              onPressed: () async {
+                if (AuthViewModel.instance.autenticated) {
+                  unawaited(
+                    GoRouter.of(
+                      context,
+                    ).pushNamed(AuthRouterName.signOut.name),
+                  );
+                } else {
+                  unawaited(
+                    GoRouter.of(
+                      context,
+                    ).pushNamed(AuthRouterName.signIn.name),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 /// Manages user authentication state and operations via Firebase.
 ///
 /// This class is a singleton, accessible via `Auth.instance()`.
 /// It provides methods for signing out, accessing the current [User] object,
-/// checking authentication status, and listening to authentication state 
+/// checking authentication status, and listening to authentication state
 /// changes.
 /// It can be initialized with a real or mocked [FirebaseAuth] instance.
 class AuthViewModel {
 
   /// Private constructor for the singleton.
-  /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth] 
+  /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth]
   /// or the default [FirebaseAuth.instance].
   /// Configures [GoogleProvider] if not using a mocked instance.
   //@visibleForTesting
   AuthViewModel({FirebaseAuth? mockedFirebaseAuth}) {
     // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth
     //and configure provider
-    if (mockedFirebaseAuth == null) {
+    if (mockedFirebaseAuth == null && PlatformHelper.isMobile) {
       _googleProvider = GoogleProvider(
         clientId: FirebaseRemoteConfig.instance.getString('authGoogleClientId'),
       );
@@ -189,6 +190,7 @@ class AuthViewModel {
     }
     _firebaseAuth = mockedFirebaseAuth ?? FirebaseAuth.instance;
   }
+  static final _logger = Logger('AuthViewModel');
   late final FirebaseAuth _firebaseAuth;
   GoogleProvider? _googleProvider;
 
@@ -213,13 +215,30 @@ class AuthViewModel {
   /// If a [GoogleProvider] was configured, it also attempts to sign out
   /// from the Google provider.
   Future<void> signOut() async {
-    final logger = Logger('signOut');
+    _logger.info('<signOut>:');
     try {
       await _firebaseAuth.signOut();
       await _googleProvider?.logOutProvider();
-      logger.info('sign out');
+      _logger.info('(signOut): success');
     } on Exception catch (error, stackTrace) {
-      logger.severe('signOut: failed', error, stackTrace);
+      _logger.severe('(signOut): failed', error, stackTrace);
+    }
+  }
+
+  /// Signs in with [email] and [password] using Firebase Authentication.
+  Future<void> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    _logger.info('<signInWithEmailAndPassword>: email $email');
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      _logger.info('(signInWithEmailAndPassword): email $email. Success');
+    } on Exception catch (error, stackTrace) {
+      _logger.severe('(signOut): failed', error, stackTrace);
     }
   }
 
@@ -244,7 +263,7 @@ class AuthViewModel {
   /// Returns `null` if no user is signed in.
   String? get uid => user?.uid;
 
-  /// A stream that emits the [User] object when the authentication state 
+  /// A stream that emits the [User] object when the authentication state
   /// changes.
   ///
   /// Emits `null` when the user signs out.
