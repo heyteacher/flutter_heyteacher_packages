@@ -20,18 +20,18 @@ desc "fl buildweb [debug:true]\n\tbuild web and run local webserver on it"
 lane :buildweb do|options|
   Dir.chdir("../") do
     sh("flutter build web #{options[:debug]? "--debug": ""}")
-    # run local webserver
+    # open browser http://localhost:8080 and run local webserver
+    sh("open http://localhost:8080")
     sh("dart pub global run dhttpd --path build/web &")
   end
 end
 
 desc "fl deployweb [debug:true]\n\tdeploy web in firabase hosting"
 lane :deployweb do|options|
+  test
   Dir.chdir("../") do
-    test
     sh("flutter build web #{options[:debug]? "--debug": ""}")
     # run local webserver
-    puts "starting local webserver on http://localhost:8080"
     sh("firebase deploy --only hosting")
   end
 end
@@ -40,8 +40,8 @@ end
 desc "fl docweb\n\trun local webserver on generated doc"
 lane :docweb do
   Dir.chdir("../") do
-    # run local webserver
-    puts "starting local webserver on http://localhost:8080"
+    # open browser http://localhost:8080 and run local webserver
+    sh("open http://localhost:8080")
     sh("dart pub global run dhttpd --path doc/api &")
   end
 end
