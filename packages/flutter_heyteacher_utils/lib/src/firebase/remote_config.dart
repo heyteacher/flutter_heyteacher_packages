@@ -50,7 +50,7 @@ enum SharedPreferencesKeys {
 }
 
 /// Keys for values fetched from Firebase Remote Config.
-enum RemoteConfigKeys {
+enum FHURemoteConfigKeys {
   /// The fetch timeout in milliseconds for Firebase Remote Config.
   remoteConfigFetchTimeoutInMilliseconds,
 
@@ -85,12 +85,15 @@ enum RemoteConfigKeys {
   /// The Firebase Cloud Messaging topic name to subscribe to.
   fcmTopicName,
 
-  /// The default password for End-to-End Encryption (E2EE) in web debug
-  /// environments.
-  e2eeWebDebugPassword,
+  /// The web demo user
+  webDemoUser,
 
-  /// E2EE Web Debug Secret Key
-  e2eeWebDebugSecretKey;
+  /// The web demo  password also user for End-to-End Encryption (E2EE)
+  /// passphrase.
+  webDemoPassword,
+
+  /// Web Demo E2EE Secret Key
+  webDemoE2EESecretKey;
 
   /// Gets the appropriate remote config key for the logger level name based on
   /// the build mode (`kDebugMode`).
@@ -135,12 +138,12 @@ class RemoteConfigViewModel {
   /// - Fetches and activates the latest configuration from the Firebase
   /// backend.
   Future<void> initialize({Map<String, dynamic>? defaultParameters}) async {
-    _logger.finest('<initialize>:');
+    _logger.finer('<initialize>:');
     try {
       defaultParameters ??= {};
       defaultParameters.addAll({
-        RemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name: 60000,
-        RemoteConfigKeys.remoteConfigMinimumFetchIntervalInMinutes.name: 60,
+        FHURemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name: 60000,
+        FHURemoteConfigKeys.remoteConfigMinimumFetchIntervalInMinutes.name: 60,
       });
 
       // firebase remote config
@@ -150,12 +153,14 @@ class RemoteConfigViewModel {
           RemoteConfigSettings(
             fetchTimeout: Duration(
               milliseconds: _remoteConfig.getInt(
-                RemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name,
+                FHURemoteConfigKeys.remoteConfigFetchTimeoutInMilliseconds.name,
               ),
             ),
             minimumFetchInterval: Duration(
               minutes: _remoteConfig.getInt(
-                RemoteConfigKeys.remoteConfigMinimumFetchIntervalInMinutes.name,
+                FHURemoteConfigKeys
+                    .remoteConfigMinimumFetchIntervalInMinutes
+                    .name,
               ),
             ),
           ),
@@ -185,17 +190,21 @@ class RemoteConfigViewModel {
             SharedPreferencesKeys.fhuExecWorkerInIsolate.name,
           ) ??
           RemoteConfigViewModel.instance.getBool(
-            RemoteConfigKeys.execWorkerInIsolate.name,
+            FHURemoteConfigKeys.execWorkerInIsolate.name,
           ));
 
   /// Gets an integer value from Remote Config for the given [key].
   int getInt(String key) => _remoteConfig.getInt(key);
+
   /// Gets a string value from Remote Config for the given [key].
   String getString(String key) => _remoteConfig.getString(key);
+
   /// Gets a boolean value from Remote Config for the given [key].
   bool getBool(String key) => _remoteConfig.getBool(key);
+
   /// Gets a double value from Remote Config for the given [key].
   double getDouble(String key) => _remoteConfig.getDouble(key);
+
   /// Gets a numeric value from Remote Config for the given [key].
   /// It attempts to get an integer first, then falls back to a double.
   num getNum(String key) => _remoteConfig.getInt(key) != 0
