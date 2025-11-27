@@ -366,16 +366,16 @@ class E2EEViewModel {
     _logger.info(
       '(generateSecretKey): new key generated stored in secureStorage',
     );
-    if (kDebugMode) {
-      final e2eeValue = await encrypt(
-        secretJwkJson,
-        esternalSecretKey: await _readMasterSecretKey(),
-      );
-      debugPrint(
-        '(generateSecretKey):  secretJwkJson '
-        '${jsonEncode(e2eeValue)}',
-      );
-    }
+    // if (kDebugMode) {
+    //   final e2eeValue = await encrypt(
+    //     secretJwkJson,
+    //     esternalSecretKey: await _readMasterSecretKey(),
+    //   );
+    //   debugPrint(
+    //     '(generateSecretKey):  secretJwkJson '
+    //     '${jsonEncode(e2eeValue)}',
+    //   );
+    // }
     // secret key in secure storage, load it
     return secretKey;
   }
