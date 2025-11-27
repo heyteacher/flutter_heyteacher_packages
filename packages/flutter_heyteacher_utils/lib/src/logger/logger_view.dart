@@ -304,7 +304,9 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
       ),
       subtitle: Text(
         FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
-          RemoteConfigViewModel.instance.getString(RemoteConfigKeys.levelName),
+          RemoteConfigViewModel.instance.getString(
+            FHURemoteConfigKeys.levelName,
+          ),
         ),
       ),
       trailing: FutureBuilder(
@@ -342,7 +344,7 @@ class EnableLogsStorageCard extends StatefulWidget {
 
 class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
   bool _enableLogsStorage = RemoteConfigViewModel.instance.getBool(
-    RemoteConfigKeys.enableLogsStorage.name,
+    FHURemoteConfigKeys.enableLogsStorage.name,
   );
 
   @override
@@ -355,7 +357,7 @@ class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
       subtitle: Text(
         FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
           RemoteConfigViewModel.instance.getBool(
-            RemoteConfigKeys.enableLogsStorage.name,
+            FHURemoteConfigKeys.enableLogsStorage.name,
           ),
         ),
       ),

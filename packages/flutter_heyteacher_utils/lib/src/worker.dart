@@ -55,7 +55,7 @@ final class Worker<I, O> {
   Future<void> initialize() async {
     if (_sendPort == null &&
         await RemoteConfigViewModel.instance.execWorkerInIsolate) {
-      _logger.finest(
+      _logger.finer(
         '(${_workerIsolate.runtimeType}.initialize): _sendPort is null and '
         'execWorkerInIsolate is true, spawn',
       );
@@ -74,7 +74,7 @@ final class Worker<I, O> {
     try {
       if (!await RemoteConfigViewModel.instance.execWorkerInIsolate ||
           PlatformHelper.isFlutterTest) {
-        _logger.finest(
+        _logger.finer(
           '(${_workerIsolate.runtimeType}.execute): execWorkerInIsolate '
           'is false or in test mode, execute in main thread',
         );
@@ -110,12 +110,12 @@ final class Worker<I, O> {
   /// After calling this, [execute] will throw a [StateError].
   /// It's safe to call this method multiple times.
   void close() {
-    _logger.finest('<${_workerIsolate.runtimeType}.close>:');
+    _logger.finer('<${_workerIsolate.runtimeType}.close>:');
     if (!_closed) {
       _closed = true;
       _sendPort?.send('shutdown');
       if (_completers.isEmpty) _receivePort?.close();
-      _logger.finest(
+      _logger.finer(
         '(${_workerIsolate.runtimeType}.close): succesfully closed',
       );
     }
@@ -125,7 +125,7 @@ final class Worker<I, O> {
   ///
   /// This must be called before [execute].
   Future<void> _spawn() async {
-    _logger.finest('<${_workerIsolate.runtimeType}._spawn>:');
+    _logger.finer('<${_workerIsolate.runtimeType}._spawn>:');
     final rootIsolateToken = RootIsolateToken.instance;
     if (rootIsolateToken == null) {
       _logger.severe(
@@ -169,19 +169,19 @@ final class Worker<I, O> {
   }
 
   void _handleResponsesFromIsolate(dynamic message) {
-    _logger.finest(
+    _logger.finer(
       '<${_workerIsolate.runtimeType}._handleResponsesFromIsolate>:',
     );
     final (int id, dynamic response) = message as (int, dynamic);
     final completer = _completers.remove(id)!;
     if (response is RemoteError) {
-      _logger.finest(
+      _logger.finer(
         '(${_workerIsolate.runtimeType}._handleResponsesFromIsolate): '
         'id $id completed with error $response',
       );
       completer.completeError(response, response.stackTrace);
     } else {
-      _logger.finest(
+      _logger.finer(
         '(${_workerIsolate.runtimeType}._handleResponsesFromIsolate): '
         'id $id completed with success',
       );
@@ -190,7 +190,7 @@ final class Worker<I, O> {
       );
     }
     if (_closed && _completers.isEmpty) {
-      _logger.finest(
+      _logger.finer(
         '(${_workerIsolate.runtimeType}._handleResponsesFromIsolate): '
         'worker is closed and completers is empty, close the receive port',
       );

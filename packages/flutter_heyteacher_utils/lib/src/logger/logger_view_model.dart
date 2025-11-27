@@ -97,11 +97,11 @@ class LoggerViewModel {
   ///
   /// If [reset] is true, it clears the temporary log directory.
   Future<void> initialize({bool reset = true, bool reconfigure = false}) async {
-    _logger.finest('<initialize>: reset $reset');
+    _logger.finer('<initialize>: reset $reset');
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured && !reconfigure) {
-      _logger.finest(
+      _logger.finer(
         '(initialize): reset $reset reconfigure $reconfigure. '
         'Already configured',
       );
@@ -209,21 +209,21 @@ class LoggerViewModel {
   Future<Level> get level async => Level(
     await _sharedPrefsLoggerName ??
         ((FirebaseRemoteConfig.instance.getString(
-                  RemoteConfigKeys.loggerUIDRootLevelFinest.name,
+                  FHURemoteConfigKeys.loggerUIDRootLevelFinest.name,
                 ) ==
                 AuthViewModel.instance.uid)
             ? finestLoggerName
             : FirebaseRemoteConfig.instance.getString(
-                RemoteConfigKeys.levelName,
+                FHURemoteConfigKeys.levelName,
               )),
     (await _sharedPrefsLoggerValue) ??
         ((FirebaseRemoteConfig.instance.getString(
-                  RemoteConfigKeys.loggerUIDRootLevelFinest.name,
+                  FHURemoteConfigKeys.loggerUIDRootLevelFinest.name,
                 ) ==
                 AuthViewModel.instance.uid)
             ? finestLoggerValue
             : FirebaseRemoteConfig.instance.getInt(
-                RemoteConfigKeys.levelValue,
+                FHURemoteConfigKeys.levelValue,
               )),
   );
 
@@ -262,7 +262,7 @@ class LoggerViewModel {
         SharedPreferencesKeys.htuEnableLogsStorage.name,
       )) ??
       RemoteConfigViewModel.instance.getBool(
-        RemoteConfigKeys.enableLogsStorage.name,
+        FHURemoteConfigKeys.enableLogsStorage.name,
       );
 
   Future<String?> get _sharedPrefsLoggerName async =>
@@ -335,7 +335,7 @@ class LoggerViewModel {
     DateTime? startTime,
     Level level = Level.ALL,
   }) async {
-    _logger.finest('<logs2Text>: ');
+    _logger.finer('<logs2Text>: ');
     final logs2TextWorker = Worker(logs2TextWorkerIsolate);
     final output = await logs2TextWorker.execute((
       startTime: startTime,

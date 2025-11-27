@@ -84,7 +84,7 @@ class StorageViewModel {
         absFilename = '$absFilename.gz';
       }
     }
-    _logger.finest('<uploadFile>: filePath $absFilename');
+    _logger.finer('<uploadFile>: filePath $absFilename');
     try {
       if (AuthViewModel.instance.notAutenticated) {
         _logger.warning(
@@ -93,7 +93,7 @@ class StorageViewModel {
         );
         return null;
       }
-      _logger.finest(
+      _logger.info(
         '(uploadFile): filePath $absFilename. Uploading file to Storage bucket '
         '${_storage.bucket}',
       );
