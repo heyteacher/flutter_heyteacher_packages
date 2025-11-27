@@ -71,13 +71,13 @@ class TTSViewModel {
   ///   the last speech is less than the threshold defined in remote config
   ///   (`ttsThresholdInSeconds`).
   Future<void> speak(String text, {required bool checkTTSThreshold}) async {
-    _logger.finest("<speak>: text '$text'");
+    _logger.finer("<speak>: text '$text'");
     if (!await enabled) {
-      _logger.finest("(speak): TTS disabled, ignored text '$text'");
+      _logger.finer("(speak): TTS disabled, ignored text '$text'");
       return;
     }
     if (_previousTextSpeaked == text) {
-      _logger.finest("(speak): ignore text equals to previous text '$text'");
+      _logger.finer("(speak): ignore text equals to previous text '$text'");
       return;
     }
     final ttsThresholdInSeconds = RemoteConfigViewModel.instance
@@ -86,14 +86,14 @@ class TTSViewModel {
         _previousTextSpeakedDateTime != null &&
         clock.now().difference(_previousTextSpeakedDateTime!) <
             Duration(seconds: ttsThresholdInSeconds)) {
-      _logger.finest("(speak): ignore text '$text' too close to previous "
+      _logger.finer("(speak): ignore text '$text' too close to previous "
           "speaked at '$_previousTextSpeakedDateTime' "
           'ttsThresholdInSeconds $ttsThresholdInSeconds');
       return;
     }
     _previousTextSpeaked = text;
     _previousTextSpeakedDateTime = clock.now();
-    _logger.finest("(speak): text '$text'");
+    _logger.finer("(speak): text '$text'");
     unawaited(_textToSpeech.speak(text));
   }
 
