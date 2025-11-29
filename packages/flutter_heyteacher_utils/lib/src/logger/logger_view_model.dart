@@ -574,13 +574,13 @@ class LoggerViewModel {
 /// directory.
 
 Future<void> writeLogsWorkerIsolate(Iterable<LogEntry> logEntries) async {
+  if (PlatformHelper.isWeb) {
+    return;
+  }
   developer.log(
     'flutter () ${clock.now().toIso8601String()} <WriteLogsWorkerIsolate>: '
     'logEntries.length ${logEntries.length} ',
   );
-  if (PlatformHelper.isWeb) {
-    return;
-  }
   if (logEntries.isEmpty) {
     return;
   }
