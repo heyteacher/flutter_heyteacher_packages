@@ -13,6 +13,7 @@ dependencies:
   archive: ^4.0.7
   clock: ^1.1.1 
   cloud_firestore: ^6.0.3
+  collection: ^1.19.1
   connectivity_plus: ^7.0.0
   device_info_plus: ^12.2.0
   equatable: 
