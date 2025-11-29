@@ -250,7 +250,6 @@ class E2EEViewModel {
       final e2eeWebDebugPassword = RemoteConfigViewModel.instance.getString(
         FHURemoteConfigKeys.webDemoPassword.name,
       );
-      _logger.severe('(getAAD): e2eeWebDebugPassword $e2eeWebDebugPassword');
       if (e2eeWebDebugPassword.isNotEmpty) {
         await setAAD(aadValue: e2eeWebDebugPassword);
         return e2eeWebDebugPassword;
