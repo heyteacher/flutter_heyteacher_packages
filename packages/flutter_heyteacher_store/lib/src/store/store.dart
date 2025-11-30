@@ -504,7 +504,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
         ' applyFilterBy $applyFilterBy limit $limit');
     // apply filter
     if (applyFilterBy && storeFilter != null) {
-      _logger.finer('($runtimeType.query): storeFilter $storeFilter');
+      _logger.finest('($runtimeType.query): storeFilter $storeFilter');
       retQuery = retQuery.where(storeFilter!.toFirestore());
     }
     // apply order by
