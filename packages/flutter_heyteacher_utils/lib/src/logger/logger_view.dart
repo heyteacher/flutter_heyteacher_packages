@@ -101,8 +101,12 @@ class _LoggerScreenState
     _scrollController = ScrollController();
   }
 
+ @override
+  int get crossAxisCount =>1;
+
+
   @override
-  Widget buildData(int index, Animation<double> animation) =>
+  Widget buildData(int index) =>
       index < (dataList?.length ?? 0)
       ? LogEntryCard(logEntry: dataList!.elementAt(index))
       : const SizedBox.shrink();
