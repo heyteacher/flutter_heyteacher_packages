@@ -122,7 +122,7 @@ class E2EEViewModel {
     String value, {
     AesGcmSecretKey? esternalSecretKey,
   }) async {
-    _logger.finer('<encrypt>:');
+    _logger.finest('<encrypt>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
       _logger.severe('(encrypt): user not authenticated');
@@ -173,7 +173,7 @@ class E2EEViewModel {
     E2EEValue encrypted, {
     AesGcmSecretKey? secretKey,
   }) async {
-    _logger.finer('<decrypt>:');
+    _logger.finest('<decrypt>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
       _logger.severe('(decrypt): user not authenticated');
@@ -239,7 +239,7 @@ class E2EEViewModel {
   ///
   /// Returns `null` if the user is not authenticated or if no AAD is set.
   Future<String?> getAAD() async {
-    _logger.finer('<getAAD>:');
+    _logger.finest('<getAAD>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
       _logger.warning('(getAAD): user not authenticated');
@@ -385,7 +385,7 @@ class E2EEViewModel {
   /// The key is expected to be stored in JWK JSON format.
   /// Requires the user to be authenticated.
   Future<AesGcmSecretKey> _readSecretKey() async {
-    _logger.finer('<_readSecretKey>:');
+    _logger.finest('<_readSecretKey>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
       _logger.severe('(_readSecretKey): user not authenticated');
