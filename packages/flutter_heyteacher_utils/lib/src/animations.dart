@@ -3,16 +3,16 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/src/widgets.dart';
 
-/// An abstract `State` class for creating a paginated `SliverAnimatedList` that
+/// An abstract `State` class for creating a paginated `SliverAnimatedGrid` that
 /// is populated from a `Stream`.
 ///
-/// It simplifies the common pattern of displaying a list of data that is 
-/// fetched in pages as the user scrolls down. It also handles real-time 
-/// updates, such as inserting new items at the top of the list with an 
+/// It simplifies the common pattern of displaying a grid of data that is
+/// fetched in pages as the user scrolls down. It also handles real-time
+/// updates, such as inserting new items at the top of the grid with an
 /// animation.
-abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
+abstract class PagingSliverAnimatedGridState<D, T extends StatefulWidget>
     extends State<T> {
-  /// The current list of data items displayed in the list.
+  /// The current list of data items displayed in the gruid.
   @protected
   List<D>? dataList;
 
@@ -23,16 +23,16 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// The current limit for the number of items to fetch from the [stream].
   ///
   /// This value is increased by [pageSize] when the user scrolls to the end
-  /// of the list.
+  /// of the grid.
   late int _limit = pageSize;
 
-  /// A global key for the [SliverAnimatedList] to manage its state,
+  /// A global key for the [SliverAnimatedGridState] to manage its state,
   /// such as inserting or removing items.
-  final GlobalKey<SliverAnimatedListState> _listGlobalKey =
-      GlobalKey<SliverAnimatedListState>();
+  final GlobalKey<SliverAnimatedGridState> _gridGlobalKey =
+      GlobalKey<SliverAnimatedGridState>();
 
   /// The subscription to the data stream.
-  StreamSubscription<Iterable<D>>? _listStreamSubscription; 
+  StreamSubscription<Iterable<D>>? _streamSubscription;
   StreamSubscription<void>? _updateStreamSubscription;
 
   bool _loading = true;
@@ -53,7 +53,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   /// The stream which notify that widget should be updated.
   ///
-  /// Inform widget that needed to be updated. Tipically a new filter is 
+  /// Inform widget that needed to be updated. Tipically a new filter is
   /// applied.
   @protected
   Stream<void> get updateStream;
@@ -63,8 +63,14 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   /// The [index] is the position of the item in [dataList], and the
   /// [animation] should be used to animate the item's appearance (e.g.,
   /// inside a [SizeTransition]).
+  ///
+  /// If [removing] the animation disapear the item.
   @protected
-  Widget buildData(int index, Animation<double> animation);
+  Widget buildData(
+    int index, {
+    required Animation<double> animation,
+    bool removing = false,
+  });
 
   /// Fetches the initial data for the list.
   ///
@@ -75,6 +81,13 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
   Future<Iterable<D>?> initData() async {
     return null;
   }
+
+  /// the cross axis (columns or rows) count
+  @protected
+  int get crossAxisCount;
+
+  /// the main axis (height or width) extent
+  double get mainAxisExtent;
 
   @override
   void initState() {
@@ -90,12 +103,12 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     dataList = (await initData())?.toList();
     if (dataList != null) {
       // debugPrint(
-      //     'PagingSliverAnimatedListState.initPostFrame(): $runtimeType '
+      //     'PagingSliverAnimatedGridState.initPostFrame(): $runtimeType '
       //     'dataList from initData not null, set state _loading false');
       setState(() => _loading = false);
       await Future<dynamic>.delayed(const Duration(seconds: 1));
-      if (mounted && _listGlobalKey.currentState != null) {
-        _listGlobalKey.currentState?.insertAllItems(0, dataList!.length);
+      if (mounted && _gridGlobalKey.currentState != null) {
+        _gridGlobalKey.currentState?.insertAllItems(0, dataList!.length);
       }
     }
     unawaited(_updateStreamSubscription?.cancel());
@@ -107,7 +120,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
 
   @override
   void dispose() {
-    unawaited(_listStreamSubscription?.cancel());
+    unawaited(_streamSubscription?.cancel());
     unawaited(_updateStreamSubscription?.cancel());
     scrollController.removeListener(_checkScollPosition);
     super.dispose();
@@ -119,32 +132,39 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
           hasScrollBody: false,
           child: ProgressIndicatorView(),
         )
-      : SliverAnimatedList(
-          key: _listGlobalKey,
+      : SliverAnimatedGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            mainAxisExtent: mainAxisExtent,
+          ),
+          key: _gridGlobalKey,
           initialItemCount: dataList?.length ?? 0,
           itemBuilder: (context, index, animation) =>
               dataList?.isNotEmpty ?? false
-              ? buildData(index, animation)
+              ? buildData(index, animation: animation)
               : const SizedBox.shrink(),
         );
 
   /// Animates the deletion of an item at the given [index].
   @protected
-  Future<void> animateDeleteData(int index) async => _listGlobalKey.currentState
-      ?.removeItem(index, (context, animation) => buildData(index, animation));
+  Future<void> animateDeleteData(int index) async =>
+      _gridGlobalKey.currentState?.removeItem(
+        index,
+        (context, animation) =>
+            buildData(index, animation: animation, removing: true),
+      );
 
   /// Subscribes to the data [stream] and handles list updates.
   Future<void> updateDataList({bool incrementsLimit = false}) async {
-    await _listStreamSubscription?.cancel();
     if (incrementsLimit) {
       _limit += pageSize;
     }
-    _listStreamSubscription = stream(limit: _limit).listen((newDataList) {
+    unawaited(_streamSubscription?.cancel());
+    _streamSubscription = stream(limit: _limit).listen((newDataList) {
       final changedIndexes = _compare(
         oldList: dataList ?? [],
         newList: newDataList.toList(),
-      )
-      ..forEach((index) =>_listGlobalKey.currentState?.insertItem(index));
+      )..forEach((index) => _gridGlobalKey.currentState?.insertItem(index));
       // add new item at the end of list, scrollo down e litte bit
       if (changedIndexes.isNotEmpty &&
           (dataList?.length ?? 0) > 0 &&
@@ -182,7 +202,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
       // to be built to set it to false
       if (_loading) {
         // debugPrint(
-        //     'PagingSliverAnimatedListState.updateDataList(): $runtimeType '
+        //     'PagingSliverAnimatedGridState.updateDataList(): $runtimeType '
         //     'set state _loading to false');
         setState(() => _loading = false);
       }
@@ -194,7 +214,7 @@ abstract class PagingSliverAnimatedListState<D, T extends StatefulWidget>
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
         (dataList == null || _limit == (dataList!.length))) {
       // debugPrint(
-      //  'PagingSliverAnimatedListState._checkScollPosition(): $runtimeType '
+      //  'PagingSliverAnimatedGridState._checkScollPosition(): $runtimeType '
       //   '_limit $_limit dataList.length ${dataList?.length}. UPDATE');
       _limit += pageSize;
       unawaited(updateDataList());
@@ -290,4 +310,75 @@ class BlinkingTextState extends State<BlinkingText> {
   /// A getter that builds the static [Text] widget.
   Text get _text =>
       Text(widget.text, style: widget.style, textAlign: widget.textAlign);
+}
+
+/// Create a Sliver Grid with remaining items centered
+class SliverAlignedGrid extends StatelessWidget {
+  /// Creates an instance of Sliver Grid with [crossAxisCount]
+  /// columns ([direction] = [Axis.horizontal] default) or
+  /// rows ([direction] = [Axis.vertical]) with remaining items centered.
+  ///
+  /// Childredn are spaced by [runSpacing] (default = 4) and [spacing]
+  /// (default = 4).
+  const SliverAlignedGrid({
+    required Iterable<Widget> children,
+    required int crossAxisCount,
+    Axis direction = Axis.horizontal,
+    ScrollController? controller,
+    double runSpacing = 4,
+    double spacing = 4,
+    super.key,
+  }) : _direction = direction,
+       _controller = controller,
+       _crossAxisCount = crossAxisCount,
+       _children = children,
+       _spacing = spacing,
+       _runSpacing = runSpacing;
+
+  final double _runSpacing;
+  final double _spacing;
+  final Iterable<Widget> _children;
+  final int _crossAxisCount;
+  final Axis _direction;
+  final ScrollController? _controller;
+
+  @override
+  Widget build(BuildContext context) => SliverToBoxAdapter(
+    child: SingleChildScrollView(
+      controller: _controller,
+      child: Wrap(
+        direction: _direction,
+        runSpacing: _runSpacing,
+        spacing: _spacing,
+        alignment: WrapAlignment.center,
+        children: _children
+            .map<Widget>(
+              (widget) => SizedBox(
+                width: _width(context),
+                height: _height(context),
+                child: widget,
+              ),
+            )
+            .toList(),
+      ),
+    ),
+  );
+
+  double? _width(BuildContext context) {
+    assert(_crossAxisCount > 0, 'columns must be greater than 0');
+    return _direction == Axis.horizontal
+        ? (MediaQuery.of(context).size.width -
+                  _runSpacing * (_crossAxisCount - 1)) /
+              _crossAxisCount
+        : null;
+  }
+
+  double? _height(BuildContext context) {
+    assert(_crossAxisCount > 0, 'columns must be greater than 0');
+    return _direction == Axis.vertical
+        ? (MediaQuery.of(context).size.height -
+                  _runSpacing * (_crossAxisCount - 1)) /
+              _crossAxisCount
+        : null;
+  }
 }

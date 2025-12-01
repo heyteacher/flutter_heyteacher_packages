@@ -78,7 +78,7 @@ class LoggerCard extends StatelessWidget {
 /// A screen that displays a paginated and filterable list of log messages.
 ///
 /// This screen allows users to view logs, filter them by level and textcontent,
-/// and refresh the view. It uses a [PagingSliverAnimatedListState] to
+/// and refresh the view. It uses a [PagingSliverAnimatedGridState] to
 /// efficiently handle large numbers of log entries.
 class LoggerScreen extends StatefulWidget {
   /// Creates a [LoggerScreen].
@@ -90,7 +90,7 @@ class LoggerScreen extends StatefulWidget {
 }
 
 class _LoggerScreenState
-    extends PagingSliverAnimatedListState<LogEntry, LoggerScreen> {
+    extends PagingSliverAnimatedGridState<LogEntry, LoggerScreen> {
   /// The currently selected [Level] to filter logs by. If null, no filter is
   /// applied.
   late ScrollController _scrollController;
@@ -101,13 +101,18 @@ class _LoggerScreenState
     _scrollController = ScrollController();
   }
 
- @override
-  int get crossAxisCount =>1;
-
+  @override
+  int get crossAxisCount => 1;
 
   @override
-  Widget buildData(int index) =>
-      index < (dataList?.length ?? 0)
+  double get mainAxisExtent => 70;
+
+  @override
+  Widget buildData(
+    int index, {
+    Animation<double>? animation,
+    bool removing = false,
+  }) => index < (dataList?.length ?? 0)
       ? LogEntryCard(logEntry: dataList!.elementAt(index))
       : const SizedBox.shrink();
 
