@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_site/adaptive_screen_size.dart';
 import 'package:flutter_heyteacher_site/src/hero_carousel/hero_carousel_data.dart';
+import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 
 /// A responsive carousel view that adapts to different screen sizes.
@@ -36,7 +36,7 @@ class HeroCarouselView extends StatefulWidget {
 /// It determines the current screen size and builds the corresponding
 /// carousel widget.
 class _HeroCarouselViewState extends State<HeroCarouselView>
-    with AdaptiveScreenSizeState<HeroCarouselView> {
+    with AdaptiveState<HeroCarouselView> {
   @override
   /// Builds the widget based on the current screen size.
   ///
