@@ -103,7 +103,9 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold>
         ),
         Expanded(
           child: Scaffold(
-            appBar: AppBar(title: widget.title, actions: widget.actions),
+            appBar: widget.title == null && widget.actions.isEmpty
+                ? null
+                : AppBar(title: widget.title, actions: widget.actions),
             body: widget.bodyForLargeBuilder.call(),
             floatingActionButton: widget.floatingActionButton,
           ),
@@ -113,7 +115,9 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold>
     // ScreenSize.medium and ScreenSize.small
     _ => Scaffold(
       body: widget.bodyForSmallBuilder.call(),
-      appBar: AppBar(title: widget.title, actions: widget.actions),
+      appBar: widget.title == null && widget.actions.isEmpty
+          ? null
+          : AppBar(title: widget.title, actions: widget.actions),
       floatingActionButton: widget.floatingActionButton,
     ),
   };
