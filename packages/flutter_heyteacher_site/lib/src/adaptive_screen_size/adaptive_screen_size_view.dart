@@ -20,3 +20,30 @@ mixin AdaptiveScreenSizeState<T extends StatefulWidget> on State<T> {
     _currentScreenSize = ScreenSize.of(MediaQuery.of(context).size.width);
   }
 }
+
+/// The abstract adaptive view mixin used by abstract statefull widgets
+mixin AbstractAdaptiveViewMixin {
+  /// the crossAxisCount which change on branch implementations
+  int get crossAxisCount;
+}
+
+/// the large adaptive screen size state mixin 
+mixin LargeAdaptiveScreenSizeStateMixin {
+  /// the crossAxisCount which change on branch implementations
+  @protected
+  int get crossAxisCount => 3;
+}
+
+/// The medium adaptive screen size state mixin 
+mixin MediumAdaptiveScreenSizeStateMixin {
+  /// the crossAxisCount which change on branch implementations
+  @protected
+  int get crossAxisCount => 2;
+}
+
+/// The small adaptive screen size state mixin 
+mixin SmallAdaptiveScreenSizeStateMixin {
+  /// the crossAxisCount which change on branch implementations
+  @protected
+  int get crossAxisCount => 1;
+}
