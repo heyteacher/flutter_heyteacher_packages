@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart'; // Assuming SharedPreferencesAsync is defined here or re-exported
+import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A [ListTile] widget that allows users to select the application's [Locale].
@@ -39,11 +40,15 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
       ),
       title: Wrap(
         alignment: WrapAlignment.center,
-        spacing: 2,
+        spacing: 1,
         children: [
           ...FlutterHeyteacherUtilsLocalizations.supportedLocales.map<Widget>(
             (locale) => ChoiceChip(
-              label: Text(locale.languageCode.toUpperCase()),
+              visualDensity: VisualDensity.compact, 
+              label: Text(
+                locale.languageCode.toUpperCase(),
+                style: ThemeViewModel.instance.theme.textTheme.labelSmall,
+              ),
               showCheckmark: false,
               selected:
                   locale ==

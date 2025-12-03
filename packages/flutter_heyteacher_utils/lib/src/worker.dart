@@ -55,7 +55,7 @@ final class Worker<I, O> {
   Future<void> initialize() async {
     if (_sendPort == null &&
         await RemoteConfigViewModel.instance.execWorkerInIsolate) {
-      _logger.finer(
+      _logger.finest(
         '(${_workerIsolate.runtimeType}.initialize): _sendPort is null and '
         'execWorkerInIsolate is true, spawn',
       );
@@ -74,7 +74,7 @@ final class Worker<I, O> {
     try {
       if (!await RemoteConfigViewModel.instance.execWorkerInIsolate ||
           PlatformHelper.isFlutterTest) {
-        _logger.finer(
+        _logger.finest(
           '(${_workerIsolate.runtimeType}.execute): execWorkerInIsolate '
           'is false or in test mode, execute in main thread',
         );

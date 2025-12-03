@@ -78,8 +78,8 @@ class _AccountCardState extends State<AccountCard> {
   @override
   Widget build(BuildContext context) => StreamBuilder<dynamic>(
     stream: AuthViewModel.instance.stateChangesStream,
-    builder: (_, snapshot) {
-      return ListTile(
+    builder: (_, snapshot) => Card(
+      child: ListTile(
         key: const ValueKey('lt_account'),
         leading: Icon(
           Icons.person,
@@ -90,7 +90,11 @@ class _AccountCardState extends State<AccountCard> {
         ),
         title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.account),
         subtitle: AuthViewModel.instance.autenticated
-            ? Text(AuthViewModel.instance.displayName ?? '')
+            ? AuthViewModel.instance.displayName != null
+                ? Text(
+                    AuthViewModel.instance.displayName!,
+                  )
+                : null
             : Text(
                 FlutterHeyteacherUtilsLocalizations.of(
                   context,
@@ -160,8 +164,8 @@ class _AccountCardState extends State<AccountCard> {
             ),
           ],
         ),
-      );
-    },
+      ),
+    ),
   );
 }
 
@@ -173,7 +177,6 @@ class _AccountCardState extends State<AccountCard> {
 /// changes.
 /// It can be initialized with a real or mocked [FirebaseAuth] instance.
 class AuthViewModel {
-
   /// Private constructor for the singleton.
   /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth]
   /// or the default [FirebaseAuth.instance].

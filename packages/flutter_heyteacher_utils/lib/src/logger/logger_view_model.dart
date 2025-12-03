@@ -600,17 +600,13 @@ Future<void> writeLogsWorkerIsolate(Iterable<LogEntry> logEntries) async {
 /// manage storage space.
 
 Future<int> resetLogsWorkerIsolate(DateTime toDateTime) async {
+  if (PlatformHelper.isWeb) {
+    return 0;
+  }
   developer.log(
     'flutter () ${clock.now().toIso8601String()} <ResetLogsWorkerIsolate>: '
     'toDateTime $toDateTime ',
   );
-  if (PlatformHelper.isWeb) {
-    developer.log(
-      'flutter () ${clock.now().toIso8601String()} (ResetLogsWorkerIsolate): '
-      'toDateTime $toDateTime. Platform web not supported, do nothing',
-    );
-    return 0;
-  }
   final logsToBeDelated =
       (await LoggerViewModel.instance()._logFiles(descending: false)).where(
         (fileSystemEntity) =>
