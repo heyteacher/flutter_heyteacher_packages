@@ -27,7 +27,6 @@ import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/storage.dart';
 import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 import 'package:flutter_heyteacher_utils/src/widgets.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -65,16 +64,11 @@ class DevicePackageInfoCard extends StatelessWidget {
           '${devicePackageSnapshot.data}',
         ),
       ),
-      trailing: TextButton(
-        style: TextButton.styleFrom(
-          backgroundColor: ThemeViewModel.instance.colorScheme.primary,
-          foregroundColor: ThemeViewModel.instance.colorScheme.onPrimary,
-        ),
+      trailing: IconButton(
         onPressed: () =>
             InfoDevicePackageViewModel.instance._askSupport(context),
-        child: Text(
-          FlutterHeyteacherUtilsLocalizations.of(context)!.askSupport,
-        ),
+        icon: const Icon(Icons.support),
+        tooltip: FlutterHeyteacherUtilsLocalizations.of(context)!.askSupport,
       ),
     ),
   );
