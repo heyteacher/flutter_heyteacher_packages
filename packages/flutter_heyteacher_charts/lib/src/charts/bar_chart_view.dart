@@ -17,6 +17,7 @@ class BarChartView extends ChartView {
     required super.formatterY,
     required super.formatterAxisY,
     required super.formatterColorAxisY,
+    required bool smallScreen,
     super.reservedSizeX,
     super.reservedSizeY,
     super.rotate,
@@ -29,7 +30,9 @@ class BarChartView extends ChartView {
     super.minIntervalY,
     super.axisNameWidgetY,
     super.key,
-  });
+  }) : _smallScreen = smallScreen;
+
+  final bool _smallScreen;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -39,18 +42,22 @@ class BarChartView extends ChartView {
             child: title,
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 20, bottom: 20),
+            padding: const EdgeInsets.only(right: 20, bottom: 20, top: 4),
             child: Column(
               children: [
                 AspectRatio(
-                  aspectRatio: switch (chartDataList.length) {
-                    0 => 6,
-                    1 => 3,
-                    2 => 2.5,
-                    3 => 2,
-                    4 => 1.4,
-                    _ => 8 / chartDataList.length
-                  },
+                  aspectRatio: !rotate
+                      ? _smallScreen
+                          ? 1
+                          : 2.5
+                      : switch (chartDataList.length) {
+                          1 => _smallScreen ? 5.5 : 5.5 * 1.8,
+                          2 => _smallScreen ? 3.5 : 3.5 * 1.8,
+                          3 => _smallScreen ? 2.5 : 2.5 * 1.8,
+                          4 => _smallScreen ? 1.4 : 1.4 * 1.8,
+                          _ =>
+                            (_smallScreen ? 8 : 8 * 2.5) / chartDataList.length
+                        },
                   child: BarChart(
                     BarChartData(
                       alignment: BarChartAlignment.spaceBetween,
