@@ -296,13 +296,34 @@ class LogEntryCard extends StatelessWidget {
 ///
 /// It displays the current logging level and allows the user to select a new
 /// one, which is then persisted via [LoggerViewModel].
-class LoggingLevelDropDownMenuCard extends StatelessWidget {
+class LoggingLevelDropDownMenuCard extends StatefulWidget {
   /// Creates a [LoggingLevelDropDownMenuCard].
   const LoggingLevelDropDownMenuCard({
     required void Function() onChanged,
     super.key,
   }) : _onChanged = onChanged;
   final VoidCallback _onChanged;
+
+  @override
+  State<LoggingLevelDropDownMenuCard> createState() =>
+      _LoggingLevelDropDownMenuCardState();
+}
+
+class _LoggingLevelDropDownMenuCardState
+    extends State<LoggingLevelDropDownMenuCard> {
+
+  Level? _level;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_init());
+  }
+
+  Future<void> _init() async {
+    _level = await LoggerViewModel.instance().level;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) => Card(
@@ -318,24 +339,22 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
           ),
         ),
       ),
-      trailing: FutureBuilder(
-        future: LoggerViewModel.instance().level,
-        builder: (context, asyncSnapshot) => GenericsDropDownMenu<Level>(
+      trailing: GenericsDropDownMenu<Level>(
           label: FlutterHeyteacherUtilsLocalizations.of(context)!.loggingLevel,
-          width: MediaQuery.of(context).size.width / 3,
+          width: 120,
+          isDense: true,
           onSelected: _onSelected,
           values: Level.LEVELS
               .map((level) => (label: level.name, value: level))
               .toList(),
-          initialSelection: asyncSnapshot.data,
+          initialSelection: _level,
         ),
       ),
-    ),
   );
 
   void _onSelected(Level? level, {int? index}) {
     unawaited(LoggerViewModel.instance().setLevel(level, index: index));
-    _onChanged();
+    widget._onChanged();
   }
 }
 
@@ -343,18 +362,34 @@ class LoggingLevelDropDownMenuCard extends StatelessWidget {
 /// to the device's file system.
 ///
 /// The user's preference is persisted in [SharedPreferences].
-class EnableLogsStorageCard extends StatefulWidget {
-  /// Creates an [EnableLogsStorageCard].
-  const EnableLogsStorageCard({super.key});
+class EnableLogsStorageChoiceCard extends StatefulWidget {
+  /// Creates an [EnableLogsStorageChoiceCard].
+  const EnableLogsStorageChoiceCard({super.key});
 
   @override
-  State<EnableLogsStorageCard> createState() => _EnableLogsStorageCardState();
+  State<EnableLogsStorageChoiceCard> createState() =>
+      _EnableLogsStorageChoiceCardState();
 }
 
-class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
-  bool _enableLogsStorage = RemoteConfigViewModel.instance.getBool(
+class _EnableLogsStorageChoiceCardState
+    extends State<EnableLogsStorageChoiceCard> {
+  final bool _defaultEnableLogsStorage = RemoteConfigViewModel.instance.getBool(
     FHURemoteConfigKeys.enableLogsStorage.name,
   );
+  bool? _enableLogsStorage;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_init());
+  }
+
+  Future<void> _init() async {
+    _enableLogsStorage = await SharedPreferencesAsync().getBool(
+      SharedPreferencesKeys.htuEnableLogsStorage.name,
+    );
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) => Card(
@@ -370,23 +405,18 @@ class _EnableLogsStorageCardState extends State<EnableLogsStorageCard> {
           ),
         ),
       ),
-      trailing: FutureBuilder(
-        future: SharedPreferencesAsync().getBool(
-          SharedPreferencesKeys.htuEnableLogsStorage.name,
-        ),
-        builder: (context, asyncSnapshot) => Switch(
-          // This bool value toggles the switch.
-          value: asyncSnapshot.data ?? _enableLogsStorage,
-          onChanged: (bool value) {
-            setState(() => _enableLogsStorage = value);
-            unawaited(
-              SharedPreferencesAsync().setBool(
-                SharedPreferencesKeys.htuEnableLogsStorage.name,
-                value,
-              ),
-            );
-          },
-        ),
+      trailing: Switch(
+        // This bool value toggles the switch.
+        value: _enableLogsStorage ?? _defaultEnableLogsStorage,
+        onChanged: (bool value) {
+          setState(() => _enableLogsStorage = value);
+          unawaited(
+            SharedPreferencesAsync().setBool(
+              SharedPreferencesKeys.htuEnableLogsStorage.name,
+              value,
+            ),
+          );
+        },
       ),
     ),
   );
