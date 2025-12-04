@@ -471,38 +471,35 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   List<DropdownMenuEntry<T?>>? _lastFilteredEntries;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(top: 4, left: 1, right: 1),
-    child: DropdownMenu<T?>(
-      focusNode: _focusNode,
-      label: Text(widget._label, style: const TextStyle(fontSize: 11)),
-      initialSelection: widget.initialSelection,
-      onSelected: _preOnSelected,
-      enableSearch: widget.enableSearch,
-      searchCallback: widget.enableSearch ? _searchCallback : null,
-      requestFocusOnTap: widget.enableFilter || widget.enableSearch,
-      enableFilter: widget.enableFilter,
-      filterCallback: widget.enableFilter ? _filterCallback : null,
-      leadingIcon: widget.addCallback != null && _enableAddTag
-          ? IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add))
-          : null,
-      trailingIcon: const Icon(Icons.filter_list, applyTextScaling: true),
-      textStyle: Theme.of(context).textTheme.labelSmall,
-      width: widget.width,
-      menuHeight: widget.menuHeight,
-      dropdownMenuEntries: [
-        DropdownMenuEntry<T?>(value: null, label: ''),
-        ...widget.values.map(
-          (record) =>
-              DropdownMenuEntry<T?>(label: record.label, value: record.value),
-        ),
-      ],
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.only(left: 8),
-        isDense: widget.isDense,
-        constraints: BoxConstraints.tight(Size.fromHeight(widget.height)),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+  Widget build(BuildContext context) => DropdownMenu<T?>(
+    focusNode: _focusNode,
+    label: Text(widget._label, style: const TextStyle(fontSize: 11)),
+    initialSelection: widget.initialSelection,
+    onSelected: _preOnSelected,
+    enableSearch: widget.enableSearch,
+    searchCallback: widget.enableSearch ? _searchCallback : null,
+    requestFocusOnTap: widget.enableFilter || widget.enableSearch,
+    enableFilter: widget.enableFilter,
+    filterCallback: widget.enableFilter ? _filterCallback : null,
+    leadingIcon: widget.addCallback != null && _enableAddTag
+        ? IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add))
+        : null,
+    trailingIcon: const Icon(Icons.filter_list, applyTextScaling: true),
+    textStyle: Theme.of(context).textTheme.labelSmall,
+    width: widget.width,
+    menuHeight: widget.menuHeight,
+    dropdownMenuEntries: [
+      DropdownMenuEntry<T?>(value: null, label: ''),
+      ...widget.values.map(
+        (record) =>
+            DropdownMenuEntry<T?>(label: record.label, value: record.value),
       ),
+    ],
+    inputDecorationTheme: InputDecorationTheme(
+      contentPadding: const EdgeInsets.only(left: 4),
+      isDense: widget.isDense,
+      constraints: BoxConstraints.tight(Size.fromHeight(widget.height)),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
     ),
   );
 
