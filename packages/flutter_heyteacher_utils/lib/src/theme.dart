@@ -277,6 +277,18 @@ class ThemeViewModel {
       ? Colors.deepPurple.shade700
       : Colors.deepPurple.shade300;
 
+  /// A deep purple color that adapts to the current theme (light/dark).
+  Color get greyColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      ? Colors.grey.shade700
+      : Colors.grey.shade400;
+
+  /// A deep purple color that adapts to the current theme (light/dark).
+  Color get darkGreyColor =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      ? Colors.grey.shade900
+      : Colors.grey.shade600;
+
   static final ({
     Color primary,
     Color disabled,
@@ -543,6 +555,7 @@ class ThemeViewModel {
         selectedItemColor: onSurfaceVariant,
         unselectedItemColor: disabled,
         backgroundColor: Colors.transparent,
+      
       ),
       cardTheme: CardThemeData(elevation: 0, color: surfaceContainer),
       textTheme: const TextTheme(displayLarge: TextStyle(fontSize: 120)),
