@@ -86,7 +86,6 @@ class _AccountCardState extends State<AccountCard> {
           color: AuthViewModel.instance.autenticated
               ? Theme.of(context).iconTheme.color
               : Theme.of(context).disabledColor,
-          size: Theme.of(context).textTheme.displayMedium!.fontSize,
         ),
         title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.account),
         subtitle: AuthViewModel.instance.autenticated
