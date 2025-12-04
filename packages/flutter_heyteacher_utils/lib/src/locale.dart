@@ -40,24 +40,28 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
         icon: const Icon(Icons.volume_up),
         onPressed: onTextToSpeechPressed,
       ),
-      title: Center(
-        child: GenericsDropDownMenu<String>(
-          enableFilter: false,
-          label: FlutterHeyteacherUtilsLocalizations.of(context)!.localeName,
-          initialSelection: LocaleViewModel.instance.locale.languageCode,
-          onSelected: (languageCode, {index}) {
-            LocaleViewModel.instance.setLocaleFromLanguageCode(languageCode);
-            setState(() {});
-          },
-          values: [
-            ...FlutterHeyteacherUtilsLocalizations.supportedLocales.map(
-              (locale) => (
-                label: locale.languageCode,
-                value: locale.languageCode,
+      title: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GenericsDropDownMenu<String>(
+            enableFilter: false,
+            isDense: true,
+            label: FlutterHeyteacherUtilsLocalizations.of(context)!.localeName,
+            initialSelection: LocaleViewModel.instance.locale.languageCode,
+            onSelected: (languageCode, {index}) {
+              LocaleViewModel.instance.setLocaleFromLanguageCode(languageCode);
+              setState(() {});
+            },
+            values: [
+              ...FlutterHeyteacherUtilsLocalizations.supportedLocales.map(
+                (locale) => (
+                  label: locale.languageCode,
+                  value: locale.languageCode,
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     ),
   );
