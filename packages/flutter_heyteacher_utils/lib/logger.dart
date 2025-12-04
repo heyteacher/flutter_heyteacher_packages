@@ -19,7 +19,7 @@ import 'package:flutter_heyteacher_utils/src/logger/logger_view_model.dart';
 
 export 'src/logger/logger_view.dart'
     show
-        EnableLogsStorageCard,
+        EnableLogsStorageChoiceCard,
         LoggerCard,
         LoggerScreen,
         LoggingLevelDropDownMenuCard,
