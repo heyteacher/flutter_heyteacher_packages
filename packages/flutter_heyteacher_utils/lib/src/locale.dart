@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
-import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart'; // Assuming SharedPreferencesAsync is defined here or re-exported
-import 'package:flutter_heyteacher_utils/theme.dart';
+import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart';
+import 'package:flutter_heyteacher_utils/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A [ListTile] widget that allows users to select the application's [Locale].
@@ -24,7 +26,7 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
   @protected
   Future<void> onTextToSpeechPressed() => TTSViewModel.instance.speak(
     'Hello World, this is a test. Current locale is '
-    '${LocaleViewModel.instance.locale?.languageCode}',
+    '${LocaleViewModel.instance.locale.languageCode}',
     checkTTSThreshold: false,
   );
 
@@ -38,30 +40,24 @@ class LocaleCardState<T extends StatefulWidget> extends State<T> {
         icon: const Icon(Icons.volume_up),
         onPressed: onTextToSpeechPressed,
       ),
-      title: Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 1,
-        children: [
-          ...FlutterHeyteacherUtilsLocalizations.supportedLocales.map<Widget>(
-            (locale) => ChoiceChip(
-              visualDensity: VisualDensity.compact, 
-              label: Text(
-                locale.languageCode.toUpperCase(),
-                style: ThemeViewModel.instance.theme.textTheme.labelSmall,
+      title: Center(
+        child: GenericsDropDownMenu<String>(
+          enableFilter: false,
+          label: FlutterHeyteacherUtilsLocalizations.of(context)!.localeName,
+          initialSelection: LocaleViewModel.instance.locale.languageCode,
+          onSelected: (languageCode, {index}) {
+            LocaleViewModel.instance.setLocaleFromLanguageCode(languageCode);
+            setState(() {});
+          },
+          values: [
+            ...FlutterHeyteacherUtilsLocalizations.supportedLocales.map(
+              (locale) => (
+                label: locale.languageCode,
+                value: locale.languageCode,
               ),
-              showCheckmark: false,
-              selected:
-                  locale ==
-                  (LocaleViewModel.instance.locale ??
-                      Localizations.localeOf(context)),
-              onSelected: (bool selected) {
-                setState(() {
-                  LocaleViewModel.instance.locale = selected ? locale : null;
-                });
-              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
@@ -89,26 +85,52 @@ class LocaleViewModel {
   /// `SharedPreferencesAsync`.
   LocaleViewModel._() {
     // Load the saved locale from SharedPreferences
-    unawaited(
-      SharedPreferencesAsync()
-          .getString(SharedPreferencesKeys.fhuLocale.name)
-          .then((localeName) {
-            _locale = FlutterHeyteacherUtilsLocalizations.supportedLocales
-                .where((locale) => locale.languageCode == localeName)
-                .firstOrNull;
-            if (_locale != null) {
-              _localeStreamController.sink.add(_locale!);
-            }
-          }),
-    );
+    unawaited(_initLocale());
   }
-  Locale? _locale;
+
+  static final Locale _defaultLocale = FlutterHeyteacherUtilsLocalizations
+      .supportedLocales
+      .singleWhereOrNull(
+        (locale) => locale.languageCode.startsWith(
+          Intl.getCurrentLocale().substring(0, 2),
+        ),
+      ) ?? FlutterHeyteacherUtilsLocalizations
+      .supportedLocales
+      .singleWhereOrNull(
+        (locale) => locale.languageCode.startsWith(
+          'en',
+        )) ?? FlutterHeyteacherUtilsLocalizations.supportedLocales.first;
 
   static LocaleViewModel? _instance;
 
   /// Provides the singleton instance of [LocaleViewModel].
   // ignore: prefer_constructors_over_static_methods
   static LocaleViewModel get instance => _instance ??= LocaleViewModel._();
+
+  Locale _locale = _defaultLocale;
+
+  /// Gets the current application [Locale].
+  ///
+  /// This might be `null` initially or if the persisted locale is invalid,
+  /// in which case the application might fall back to
+  /// `Localizations.localeOf(context)`.
+  Locale get locale => _locale;
+
+  /// Sets the [Locale] and saves it to SharedPreferences.
+  ///
+  /// If [languageCode] is null, remove the saved locale from SharedPreferences
+  /// and set the locale to null. If [languageCode] is not null, yield the new
+  /// locale to the stream
+  void setLocaleFromLanguageCode(String? languageCode) {
+    _locale = _localeFromLanguageCode(languageCode);
+    unawaited(
+      SharedPreferencesAsync().setString(
+        SharedPreferencesKeys.fhuLocale.name,
+        _locale.languageCode,
+      ),
+    );
+    _localeStreamController.sink.add(_locale);
+  }
 
   /// A stream controller to broadcast locale changes.
   final StreamController<Locale> _localeStreamController =
@@ -120,32 +142,22 @@ class LocaleViewModel {
   /// is updated.
   Stream<Locale> get localeStream => _localeStreamController.stream.distinct();
 
-  /// Gets the current application [Locale].
-  ///
-  /// This might be `null` initially or if the persisted locale is invalid,
-  /// in which case the application might fall back to
-  /// `Localizations.localeOf(context)`.
-  Locale? get locale => _locale;
+  Locale _localeFromLanguageCode([String? languageCode]) => languageCode == null
+      ? _defaultLocale
+      : FlutterHeyteacherUtilsLocalizations.supportedLocales
+                .where(
+                  (locale) =>
+                      locale.languageCode.toLowerCase() ==
+                      languageCode.toLowerCase(),
+                )
+                .firstOrNull ??
+            _defaultLocale;
 
-  /// Sets the [Locale] and saves it to SharedPreferences.
-  ///
-  /// If [newLocale] is null, remove the saved locale from SharedPreferences
-  /// and set the locale to null. If [newLocale] is not null, yield the new
-  /// locale to the stream
-  set locale(Locale? newLocale) {
-    _locale = newLocale;
-    if (newLocale != null) {
-      unawaited(
-        SharedPreferencesAsync().setString(
-          SharedPreferencesKeys.fhuLocale.name,
-          newLocale.languageCode,
-        ),
-      );
-      _localeStreamController.sink.add(newLocale);
-    } else {
-      unawaited(
-        SharedPreferencesAsync().remove(SharedPreferencesKeys.fhuLocale.name),
-      );
-    }
+  Future<void> _initLocale() async {
+    final languageCode = await SharedPreferencesAsync().getString(
+      SharedPreferencesKeys.fhuLocale.name,
+    );
+    _locale = _localeFromLanguageCode(languageCode);
+    _localeStreamController.sink.add(_locale);
   }
 }
