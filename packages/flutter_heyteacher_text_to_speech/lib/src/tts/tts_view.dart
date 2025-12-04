@@ -13,26 +13,38 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// default TTS setting from remote config, and a trailing `Switch` to let the
 /// user override the setting. The user's preference is persisted in
 /// [SharedPreferences].
-class EnableTTSDropDownMenuCard extends StatefulWidget {
-  /// Creates an [EnableTTSDropDownMenuCard] widget.
-  const EnableTTSDropDownMenuCard({super.key});
+class EnableTTSChoiceCard extends StatefulWidget {
+  /// Creates an [EnableTTSChoiceCard] widget.
+  const EnableTTSChoiceCard({super.key});
 
   @override
-  State<EnableTTSDropDownMenuCard> createState() =>
-      _EnableTTSDropDownMenuCardState();
+  State<EnableTTSChoiceCard> createState() => _EnableTTSChoiceCardState();
 }
 
-class _EnableTTSDropDownMenuCardState extends State<EnableTTSDropDownMenuCard> {
-  bool _enableTTS = RemoteConfigViewModel.instance.getBool(
-    TTSRemoteConfigKeys.ttsEnable.name,
-  );
+class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
+  bool? _enableTTS;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_init());
+  }
+
+  Future<void> _init() async {
+    _enableTTS = await SharedPreferencesAsync().getBool(
+      TTSPreferencesKeys.htuTtsEnableTTS.name,
+    );
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) => Card(
         child: ListTile(
           leading: const Icon(Icons.speaker_phone),
-          title: Text(FlutterHeyteacherTextToSpeechLocalizations.of(context)!
-              .enableTextToSpeech,),
+          title: Text(
+            FlutterHeyteacherTextToSpeechLocalizations.of(context)!
+                .enableTextToSpeech,
+          ),
           subtitle: Text(
             FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
               RemoteConfigViewModel.instance.getBool(
@@ -40,21 +52,21 @@ class _EnableTTSDropDownMenuCardState extends State<EnableTTSDropDownMenuCard> {
               ),
             ),
           ),
-          trailing: FutureBuilder(
-            future: SharedPreferencesAsync().getBool(
-              TTSPreferencesKeys.htuTtsEnableTTS.name,
-            ),
-            builder: (context, asyncSnapshot) => Switch(
-              // This bool value toggles the switch.
-              value: asyncSnapshot.data ?? _enableTTS,
-              onChanged: (bool value) {
-                setState(() => _enableTTS = value);
-                unawaited(SharedPreferencesAsync().setBool(
+          trailing: Switch(
+            // This bool value toggles the switch.
+            value: _enableTTS ??
+                RemoteConfigViewModel.instance.getBool(
+                  TTSRemoteConfigKeys.ttsEnable.name,
+                ),
+            onChanged: (bool value) {
+              setState(() => _enableTTS = value);
+              unawaited(
+                SharedPreferencesAsync().setBool(
                   TTSPreferencesKeys.htuTtsEnableTTS.name,
                   value,
-                ),);
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       );
