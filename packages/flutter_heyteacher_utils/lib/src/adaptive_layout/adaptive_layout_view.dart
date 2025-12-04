@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/src/adaptive_layout/adaptive_layout_data.dart';
+import 'package:flutter_heyteacher_utils/src/theme.dart';
 
 /// A mixin to make a [State] object adaptive to screen size changes.
 ///
@@ -89,17 +90,15 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold>
   Widget build(BuildContext context) => switch (currentScreenSize) {
     ScreenSize.large => Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Drawer(
-            width: MediaQuery.sizeOf(context).width * 0.3,
-            child: widget.drawler,
-          ),
+        Drawer(
+          shape: const RoundedRectangleBorder(),
+          width: MediaQuery.sizeOf(context).width * 0.3,
+          child: widget.drawler,
         ),
-        const VerticalDivider(
-          width: 4,
+        VerticalDivider(
+          width: 1,
           thickness: 1,
-          color: Colors.transparent,
+          color: ThemeViewModel.instance.darkGreyColor,
         ),
         Expanded(
           child: Scaffold(
