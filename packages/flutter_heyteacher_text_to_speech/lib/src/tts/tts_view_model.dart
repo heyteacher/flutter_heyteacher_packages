@@ -20,9 +20,7 @@ class TTSViewModel {
     _textToSpeech = FlutterTts();
     unawaited(_textToSpeech.awaitSpeakCompletion(false));
     // get locale language
-    final languageCode = LocaleViewModel.instance.locale?.languageCode ??
-        Intl.getCurrentLocale();
-    unawaited(_changeLanguage(languageCode));
+    unawaited(_changeLanguage(LocaleViewModel.instance.locale.languageCode));
     // listen locale languale change
     _stateChangesStreamSubscription = LocaleViewModel.instance.localeStream
         .listen((locale) => _changeLanguage(locale.languageCode));
