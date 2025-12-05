@@ -163,10 +163,10 @@ class _VideoPlayState extends State<_VideoPlay> {
         widget._videolData.url,
       ),
     );
-    unawaited(_init());
-  }
+     WidgetsBinding.instance.addPostFrameCallback(_init);
+ }
 
-  Future<void> _init() async {
+  Future<void> _init(_) async {
     await _videoPlayerController.initialize();
     await _videoPlayerController.play();
     setState(() {});
