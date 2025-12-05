@@ -317,10 +317,10 @@ class _LoggingLevelDropDownMenuCardState
   @override
   void initState() {
     super.initState();
-    unawaited(_init());
-  }
+     WidgetsBinding.instance.addPostFrameCallback(_init);
+ }
 
-  Future<void> _init() async {
+  Future<void> _init(_) async {
     _level = await LoggerViewModel.instance().level;
     setState(() {});
   }
@@ -381,10 +381,10 @@ class _EnableLogsStorageChoiceCardState
   @override
   void initState() {
     super.initState();
-    unawaited(_init());
-  }
+     WidgetsBinding.instance.addPostFrameCallback(_init);
+ }
 
-  Future<void> _init() async {
+  Future<void> _init(_) async {
     _enableLogsStorage = await SharedPreferencesAsync().getBool(
       SharedPreferencesKeys.htuEnableLogsStorage.name,
     );
