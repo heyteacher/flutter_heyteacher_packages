@@ -1,12 +1,99 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/src/adaptive_layout/adaptive_layout_data.dart';
-import 'package:flutter_heyteacher_utils/src/theme.dart';
+import 'package:flutter_heyteacher_utils/src/adaptive_layout/adaptive_layout_data.dart'
+    show ScreenSize;
+
+/// The state for the [_AbstractView].
+///
+/// 1° __Abstract__: this state implement the logic abstracting the screen size.
+///
+/// Usually [build] returns a [GridView] or a [SliverGrid] settings
+/// crossAxisCount to [_AbstractView.crossAxisCount].
+abstract class AbstractAdaptiveState<PARAMS>
+    extends State<_AbstractView<PARAMS>> {}
+
+/// The state for [SFW].
+///
+/// 2° __Measures__ the current [ScreenSize] with [AdaptiveStateMixin] and
+///   builds the corrisponding branch for [ScreenSize.small],
+/// [ScreenSize.medium] and [ScreenSize.large].
+abstract class AdaptiveState<
+  SFW extends StatefulWidget,
+  ST extends AbstractAdaptiveState<PARAMS>,
+  PARAMS
+>
+    extends State<SFW>
+    with AdaptiveStateMixin<SFW> {
+  @override
+  Widget build(BuildContext context) => switch (currentScreenSize) {
+    ScreenSize.large => _LargeAdaptiveView(createAdaptiveState, params),
+    ScreenSize.medium => _MediumAdaptiveView(createAdaptiveState, params),
+    ScreenSize.small => _SmallAdaptiveView(createAdaptiveState, params),
+  };
+
+  /// The parameters object pass to abstract
+  PARAMS get params;
+
+  /// Returns an instance [ST] State.
+  ST createAdaptiveState();
+}
+
+/// The abstract statefull widget.
+///
+/// Exposes [crossAxisCount]
+abstract class _AbstractView<PARAMS> extends StatefulWidget {
+  /// Creates an instance of [_AbstractView].
+  @protected
+  const _AbstractView(this.createAdaptiveState, this.params);
+
+
+  /// the crossAxisCount which change on branch implementations
+  int get crossAxisCount;
+
+  final AbstractAdaptiveState<PARAMS> Function() createAdaptiveState;
+  
+  final PARAMS params;
+
+  @override
+  /// Creates the state for the [_AbstractView].
+  // ignore: no_logic_in_create_state
+  State<_AbstractView<PARAMS>> createState() => createAdaptiveState();
+}
+
+/// 3° __Branch__:  implements [_AbstractView] for small screens.
+class _LargeAdaptiveView<PARAMS> extends _AbstractView<PARAMS> {
+  const _LargeAdaptiveView(super.createAdaptiveState, super.params);
+
+  /// the crossAxisCount which change on branch implementations
+  @override
+  @protected
+  int get crossAxisCount => 3;
+}
+
+/// 3° __Branch__  implements [_AbstractView] for medium screens.
+class _MediumAdaptiveView<PARAMS> extends _AbstractView<PARAMS> {
+  const _MediumAdaptiveView(super.createAdaptiveState, super.params);
+
+  /// the crossAxisCount which change on branch implementations
+  @override
+  @protected
+  int get crossAxisCount => 2;
+}
+
+/// 3° __Branch__ implements [_AbstractView] for small screens.
+class _SmallAdaptiveView<PARAMS> extends _AbstractView<PARAMS> {
+  const _SmallAdaptiveView(super.createAdaptiveState, super.params);
+
+  /// the crossAxisCount which change on branch implementations
+  @override
+  @protected
+  int get crossAxisCount => 1;
+}
 
 /// A mixin to make a [State] object adaptive to screen size changes.
 ///
 /// It listens to media query changes and updates the [_currentScreenSize]
 /// property accordingly.
-mixin AdaptiveState<T extends StatefulWidget> on State<T> {
+mixin AdaptiveStateMixin<T extends StatefulWidget> on State<T> {
   /// The current screen size category.
   ScreenSize _currentScreenSize = ScreenSize.small;
 
@@ -20,104 +107,4 @@ mixin AdaptiveState<T extends StatefulWidget> on State<T> {
     super.didChangeDependencies();
     _currentScreenSize = ScreenSize.of(MediaQuery.of(context).size.width);
   }
-}
-
-/// The abstract adaptive view mixin used by abstract statefull widgets
-mixin AbstractAdaptiveViewMixin {
-  /// the crossAxisCount which change on branch implementations
-  int get crossAxisCount;
-}
-
-/// the large adaptive screen size state mixin
-mixin LargeAdaptiveStateMixin {
-  /// the crossAxisCount which change on branch implementations
-  @protected
-  int get crossAxisCount => 3;
-}
-
-/// The medium adaptive screen size state mixin
-mixin MediumAdaptiveStateMixin {
-  /// the crossAxisCount which change on branch implementations
-  @protected
-  int get crossAxisCount => 2;
-}
-
-/// The small adaptive screen size state mixin
-mixin SmallAdaptiveStateMixin {
-  /// the crossAxisCount which change on branch implementations
-  @protected
-  int get crossAxisCount => 1;
-}
-
-/// A widget that adapts to the current display size, displaying a [Drawer],
-class AdaptiveScaffold extends StatefulWidget {
-  /// Creates a [AdaptiveScaffold].
-  const AdaptiveScaffold({
-    required this.drawler,
-    required this.bodyForLargeBuilder,
-    required this.bodyForSmallBuilder,
-    this.title,
-    this.actions = const [],
-    this.floatingActionButton,
-    super.key,
-  });
-
-  /// The title of the screen
-  final Widget? title;
-
-  /// The actions of the screen
-  final List<Widget> actions;
-
-  /// The drawer of the screen
-  final Widget drawler;
-
-  /// The expanded of the screen
-  final Widget Function() bodyForLargeBuilder;
-
-  /// The expanded of the screen
-  final Widget Function() bodyForSmallBuilder;
-
-  /// The floating action button of the screen
-  final FloatingActionButton? floatingActionButton;
-
-  @override
-  State<AdaptiveScaffold> createState() => _AdaptiveScaffoldState();
-}
-
-class _AdaptiveScaffoldState extends State<AdaptiveScaffold>
-    with AdaptiveState<AdaptiveScaffold> {
-  @override
-  Widget build(BuildContext context) => switch (currentScreenSize) {
-    ScreenSize.large => Row(
-      children: [
-        Drawer(
-          shape: const RoundedRectangleBorder(),
-          width: MediaQuery.sizeOf(context).width * 0.3,
-          child: widget.drawler,
-        ),
-        VerticalDivider(
-          width: 1,
-          thickness: 1,
-          color: ThemeViewModel.instance.darkGreyColor,
-        ),
-        Expanded(
-          child: Scaffold(
-            appBar: widget.title == null && widget.actions.isEmpty
-                ? null
-                : AppBar(title: widget.title, actions: widget.actions),
-            body: widget.bodyForLargeBuilder.call(),
-            floatingActionButton: widget.floatingActionButton,
-          ),
-        ),
-      ],
-    ),
-    // ScreenSize.medium and ScreenSize.small
-    _ => Scaffold(
-      body: widget.bodyForSmallBuilder.call(),
-      appBar: widget.title == null && widget.actions.isEmpty
-          ? null
-          : AppBar(title: widget.title, actions: widget.actions),
-      floatingActionButton: widget.floatingActionButton,
-    ),
-  };
 }
