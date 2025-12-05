@@ -27,10 +27,10 @@ class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
   @override
   void initState() {
     super.initState();
-    unawaited(_init());
+    WidgetsBinding.instance.addPostFrameCallback(_init);
   }
 
-  Future<void> _init() async {
+  Future<void> _init(Duration _) async {
     _enableTTS = await SharedPreferencesAsync().getBool(
       TTSPreferencesKeys.htuTtsEnableTTS.name,
     );
