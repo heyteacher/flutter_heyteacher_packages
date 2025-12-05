@@ -6,10 +6,6 @@ import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 
 /// A responsive carousel view that adapts to different screen sizes.
-///
-/// This widget acts as a wrapper that selects the appropriate carousel layout
-/// ([_SmallBaseHeroCarouselView], [_MediumBaseHeroCarouselView], or
-/// [_LargeBaseHeroCarouselView]) based on the screen width.
 class HeroCarouselView extends StatefulWidget {
   /// Creates an instance of [HeroCarouselView].
   const HeroCarouselView({
@@ -31,89 +27,44 @@ class HeroCarouselView extends StatefulWidget {
   State<HeroCarouselView> createState() => _HeroCarouselViewState();
 }
 
-/// The state for [HeroCarouselView].
-///
-/// It determines the current screen size and builds the corresponding
-/// carousel widget.
-class _HeroCarouselViewState extends State<HeroCarouselView>
-    with AdaptiveState<HeroCarouselView> {
+class _HeroCarouselViewState
+    extends
+        AdaptiveState<
+          HeroCarouselView,
+          _AbstractHeroCarouselViewState,
+          ({Iterable<HeroCarouselItemData> heroCarouselItems, double maxHeight})
+        > {
   @override
-  /// Builds the widget based on the current screen size.
-  ///
-  /// Returns a specific carousel implementation for large, medium,
-  /// or small screens.
-  Widget build(BuildContext context) => switch (currentScreenSize) {
-    ScreenSize.large => _LargeBaseHeroCarouselView(
-      widget._heroCarouselItems,
-      widget._maxHeight,
-    ),
-    ScreenSize.medium => _MediumBaseHeroCarouselView(
-      widget._heroCarouselItems,
-      widget._maxHeight,
-    ),
-    ScreenSize.small => _SmallBaseHeroCarouselView(
-      widget._heroCarouselItems,
-      widget._maxHeight,
-    ),
-  };
-}
-
-/// A carousel view for small screens, displaying one item at a time.
-class _SmallBaseHeroCarouselView extends _BaseHeroCarouselView {
-  const _SmallBaseHeroCarouselView(super.heroCarouselItems, super.maxHeight);
-  @override
-  List<int> get flexWeights => [1];
-}
-
-/// A carousel view for medium screens, displaying two items at a time.
-class _MediumBaseHeroCarouselView extends _BaseHeroCarouselView {
-  const _MediumBaseHeroCarouselView(super.heroCarouselItems, super.maxHeight);
-  @override
-  List<int> get flexWeights => [1, 1];
-}
-
-/// A carousel view for large screens, displaying four items at a time.
-class _LargeBaseHeroCarouselView extends _BaseHeroCarouselView {
-  const _LargeBaseHeroCarouselView(super.heroCarouselItems, super.maxHeight);
+  _AbstractHeroCarouselViewState createAdaptiveState() =>
+      _AbstractHeroCarouselViewState();
 
   @override
-  List<int> get flexWeights => [1, 1, 1];
+  ({Iterable<HeroCarouselItemData> heroCarouselItems, double maxHeight})
+  get params => (
+    heroCarouselItems: widget._heroCarouselItems,
+    maxHeight: widget._maxHeight,
+  );
 }
 
-/// An abstract base class for the hero carousel view.
-///
-/// This stateful widget provides the common structure and behavior for
-/// different carousel layouts.
-abstract class _BaseHeroCarouselView extends StatefulWidget {
-  /// Creates an instance of [_BaseHeroCarouselView].
-  ///
-  @protected
-  const _BaseHeroCarouselView(
-    Iterable<HeroCarouselItemData> heroCarouselItems,
-    double maxHeight,
-  ) : _heroCarouselItems = heroCarouselItems,
-      _maxHeight = maxHeight;
-
-  final Iterable<HeroCarouselItemData> _heroCarouselItems;
-  final double _maxHeight;
-
-  /// The flex weights for the items in the carousel.
-
-  ///
-  /// The length of this list determines how many items are visible at once.
-  @protected
-  List<int> get flexWeights;
-
-  @override
-  /// Creates the state for the [_BaseHeroCarouselView].
-  State<_BaseHeroCarouselView> createState() => _BaseHeroCarouselViewState();
-}
-
-/// The state for [_BaseHeroCarouselView].
+/// The abstract state for [HeroCarouselView].
 ///
 /// Manages the automatic scrolling timer, user interaction handling,
 /// and the underlying [CarouselView].
-class _BaseHeroCarouselViewState extends State<_BaseHeroCarouselView> {
+class _AbstractHeroCarouselViewState
+    extends
+        AbstractAdaptiveState<
+          ({Iterable<HeroCarouselItemData> heroCarouselItems, double maxHeight})
+        > {
+  List<int> get flexWeights => switch (widget.crossAxisCount) {
+    1 => [1],
+    2 => [1, 1],
+    3 => [1, 1, 1],
+    _ => throw Exception(
+      'Invalid crossAxisCount value: should be 1, 2 or 3, '
+      'got $widget.crossAxisCount',
+    ),
+  };
+
   /// The controller for the carousel.
   final CarouselController _controller = CarouselController();
 
@@ -128,16 +79,16 @@ class _BaseHeroCarouselViewState extends State<_BaseHeroCarouselView> {
   /// Loops back to the beginning if it reaches the end.
   int get _nextIndex => _currentIndex =
       _currentIndex ==
-          widget._heroCarouselItems.length - widget.flexWeights.length
+          widget.params.heroCarouselItems.length - flexWeights.length
       ? 0
-      : _currentIndex + widget.flexWeights.length;
+      : _currentIndex + flexWeights.length;
 
   /// Calculates the index for the previous set of items.
   ///
   /// Loops to the end if it's at the beginning.
   int get _prevIndex => _currentIndex = _currentIndex == 0
-      ? widget._heroCarouselItems.length - widget.flexWeights.length
-      : _currentIndex - widget.flexWeights.length;
+      ? widget.params.heroCarouselItems.length - flexWeights.length
+      : _currentIndex - flexWeights.length;
 
   @override
   /// Initializes the state, setting up a periodic timer to auto-scroll
@@ -159,7 +110,7 @@ class _BaseHeroCarouselViewState extends State<_BaseHeroCarouselView> {
     //debugPrint('${clock.now().toIso8601String()} <_startTimer>:');
     _timer?.cancel();
     _timer = Timer.periodic(
-      Duration(seconds: widget.flexWeights.length * 5),
+      Duration(seconds: flexWeights.length * 5),
       (_) {
         //debugPrint('${clock.now().toIso8601String()} <Timer.periodic>:');
         unawaited(_controller.animateToItem(_nextIndex));
@@ -179,7 +130,7 @@ class _BaseHeroCarouselViewState extends State<_BaseHeroCarouselView> {
   /// navigation, which also pauses the auto-scroll timer.
   Widget build(BuildContext context) => ConstrainedBox(
     constraints: BoxConstraints(
-      maxHeight: widget._maxHeight,
+      maxHeight: widget.params.maxHeight,
     ),
     child: MouseRegion(
       onEnter: (event) => _stopTimer(),
@@ -198,8 +149,8 @@ class _BaseHeroCarouselViewState extends State<_BaseHeroCarouselView> {
         child: CarouselView.weighted(
           controller: _controller,
           itemSnapping: true,
-          flexWeights: widget.flexWeights,
-          children: widget._heroCarouselItems
+          flexWeights: flexWeights,
+          children: widget.params.heroCarouselItems
               .map(
                 _HeroLayoutCard.new,
               )
