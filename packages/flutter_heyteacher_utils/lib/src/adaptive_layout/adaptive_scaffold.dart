@@ -38,17 +38,63 @@ class AdaptiveScaffold extends StatefulWidget {
   State<AdaptiveScaffold> createState() => _AdaptiveScaffoldState();
 }
 
-
-class _AdaptiveScaffoldState extends State<AdaptiveScaffold>
-    with AdaptiveStateMixin<AdaptiveScaffold> {
+class _AdaptiveScaffoldState
+    extends
+        AdaptiveState<
+          AdaptiveScaffold,
+          _AbstractAdaptiveScaffoldState,
+          ({
+            Widget? title,
+            List<Widget> actions,
+            Widget Function() bodyForLargeBuilder,
+            Widget Function() bodyForSmallBuilder,
+            FloatingActionButton? floatingActionButton,
+            Widget drawler,
+          })
+        > {
   @override
-  Widget build(BuildContext context) => switch (currentScreenSize) {
+  _AbstractAdaptiveScaffoldState createAdaptiveState() =>
+      _AbstractAdaptiveScaffoldState();
+
+  @override
+  ({
+    Widget? title,
+    List<Widget> actions,
+    Widget Function() bodyForLargeBuilder,
+    Widget Function() bodyForSmallBuilder,
+    FloatingActionButton? floatingActionButton,
+    Widget drawler,
+  })
+  get params => (
+    title: widget.title,
+    actions: widget.actions,
+    bodyForLargeBuilder: widget.bodyForLargeBuilder,
+    bodyForSmallBuilder: widget.bodyForSmallBuilder,
+    floatingActionButton: widget.floatingActionButton,
+    drawler: widget.drawler,
+  );
+}
+
+class _AbstractAdaptiveScaffoldState
+    extends
+        AbstractAdaptiveState<
+          ({
+            Widget? title,
+            List<Widget> actions,
+            Widget Function() bodyForLargeBuilder,
+            Widget Function() bodyForSmallBuilder,
+            FloatingActionButton? floatingActionButton,
+            Widget drawler,
+          })
+        > {
+  @override
+  Widget build(BuildContext context) => switch (widget.currentScreenSize) {
     ScreenSize.large => Row(
       children: [
         Drawer(
           shape: const RoundedRectangleBorder(),
           width: MediaQuery.sizeOf(context).width * 0.3,
-          child: widget.drawler,
+          child: widget.params.drawler,
         ),
         VerticalDivider(
           width: 1,
@@ -57,22 +103,25 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold>
         ),
         Expanded(
           child: Scaffold(
-            appBar: widget.title == null && widget.actions.isEmpty
+            appBar: widget.params.title == null && widget.params.actions.isEmpty
                 ? null
-                : AppBar(title: widget.title, actions: widget.actions),
-            body: widget.bodyForLargeBuilder.call(),
-            floatingActionButton: widget.floatingActionButton,
+                : AppBar(
+                    title: widget.params.title,
+                    actions: widget.params.actions,
+                  ),
+            body: widget.params.bodyForLargeBuilder.call(),
+            floatingActionButton: widget.params.floatingActionButton,
           ),
         ),
       ],
     ),
     // ScreenSize.medium and ScreenSize.small
     _ => Scaffold(
-      body: widget.bodyForSmallBuilder.call(),
-      appBar: widget.title == null && widget.actions.isEmpty
+      body: widget.params.bodyForSmallBuilder.call(),
+      appBar: widget.params.title == null && widget.params.actions.isEmpty
           ? null
-          : AppBar(title: widget.title, actions: widget.actions),
-      floatingActionButton: widget.floatingActionButton,
+          : AppBar(title: widget.params.title, actions: widget.params.actions),
+      floatingActionButton: widget.params.floatingActionButton,
     ),
   };
 }
