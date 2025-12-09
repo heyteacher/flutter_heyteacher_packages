@@ -55,15 +55,6 @@ class _AbstractHeroCarouselViewState
         AbstractAdaptiveState<
           ({Iterable<HeroCarouselItemData> heroCarouselItems, double maxHeight})
         > {
-  List<int> get flexWeights => switch (widget.crossAxisCount) {
-    1 => [1],
-    2 => [1, 1],
-    3 => [1, 1, 1],
-    _ => throw Exception(
-      'Invalid crossAxisCount value: should be 1, 2 or 3, '
-      'got $widget.crossAxisCount',
-    ),
-  };
 
   /// The controller for the carousel.
   final CarouselController _controller = CarouselController();
@@ -79,16 +70,16 @@ class _AbstractHeroCarouselViewState
   /// Loops back to the beginning if it reaches the end.
   int get _nextIndex => _currentIndex =
       _currentIndex ==
-          widget.params.heroCarouselItems.length - flexWeights.length
+          widget.params.heroCarouselItems.length - widget.flexWeights.length
       ? 0
-      : _currentIndex + flexWeights.length;
+      : _currentIndex + widget.flexWeights.length;
 
   /// Calculates the index for the previous set of items.
   ///
   /// Loops to the end if it's at the beginning.
   int get _prevIndex => _currentIndex = _currentIndex == 0
-      ? widget.params.heroCarouselItems.length - flexWeights.length
-      : _currentIndex - flexWeights.length;
+      ? widget.params.heroCarouselItems.length - widget.flexWeights.length
+      : _currentIndex - widget.flexWeights.length;
 
   @override
   /// Initializes the state, setting up a periodic timer to auto-scroll
@@ -110,7 +101,7 @@ class _AbstractHeroCarouselViewState
     //debugPrint('${clock.now().toIso8601String()} <_startTimer>:');
     _timer?.cancel();
     _timer = Timer.periodic(
-      Duration(seconds: flexWeights.length * 5),
+      Duration(seconds: widget.flexWeights.length * 5),
       (_) {
         //debugPrint('${clock.now().toIso8601String()} <Timer.periodic>:');
         unawaited(_controller.animateToItem(_nextIndex));
@@ -149,7 +140,7 @@ class _AbstractHeroCarouselViewState
         child: CarouselView.weighted(
           controller: _controller,
           itemSnapping: true,
-          flexWeights: flexWeights,
+          flexWeights: widget.flexWeights,
           children: widget.params.heroCarouselItems
               .map(
                 _HeroLayoutCard.new,
