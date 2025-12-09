@@ -11,7 +11,7 @@ import 'package:flutter_heyteacher_utils/src/adaptive_layout/adaptive_layout_dat
 abstract class AbstractAdaptiveState<PARAMS>
     extends State<_BranchView<PARAMS>> {}
 
-/// The state for [SFW].
+/// The state for generics [SFW].
 ///
 /// 2° __Measures__ the current [ScreenSize] and
 ///   builds the corrisponding branch for [ScreenSize.small],
@@ -57,7 +57,7 @@ abstract class AdaptiveState<
 
 /// Exposes:
 /// - [params]
-/// - [currentScreenSize]
+/// - [screenSize]
 /// - [crossAxisCount] for [GridView] and [SliverGrid]
 class _BranchView<PARAMS> extends StatefulWidget {
   
@@ -65,30 +65,38 @@ class _BranchView<PARAMS> extends StatefulWidget {
   @protected
   const _BranchView({
     required ScreenSize currentScreenSize,
-    required this.createAdaptiveState,
+    required AbstractAdaptiveState<PARAMS> Function() createAdaptiveState,
     required PARAMS params,
-  }) : _params = params,
-       _currentScreenSize = currentScreenSize;
+  }) : _createAdaptiveState = createAdaptiveState, _params = params,
+       _screenSize = currentScreenSize;
 
-  final ScreenSize _currentScreenSize;
+  final ScreenSize _screenSize;
+
+  ScreenSize get screenSize => _screenSize;
 
   final PARAMS _params;
 
-  ScreenSize get currentScreenSize => _currentScreenSize;
-
-  /// the crossAxisCount which change on branch implementations
-  int get crossAxisCount => switch (currentScreenSize) {
-    ScreenSize.large => 3,
-    ScreenSize.medium => 2,
-    ScreenSize.small => 1,
-  };
-
   PARAMS get params => _params;
 
-  final AbstractAdaptiveState<PARAMS> Function() createAdaptiveState;
+  /// the crossAxisCount which change on branch implementations
+  int get crossAxisCount => switch (_screenSize) {
+    ScreenSize.small => 1,
+    ScreenSize.medium => 2,
+    ScreenSize.large => 3,
+  };
+
+  /// The weights that each visible child should occupy in the [CarouselView] 
+  /// viewport.
+  List<int> get flexWeights => switch (_screenSize) {
+    ScreenSize.small => [1],
+    ScreenSize.medium => [1, 1],
+    ScreenSize.large => [1, 1, 1]
+  };
+
+  final AbstractAdaptiveState<PARAMS> Function() _createAdaptiveState;
 
   @override
   /// Creates the state for the [_BranchView].
   // ignore: no_logic_in_create_state
-  State<_BranchView<PARAMS>> createState() => createAdaptiveState();
+  State<_BranchView<PARAMS>> createState() => _createAdaptiveState();
 }

@@ -88,7 +88,7 @@ class _AbstractAdaptiveScaffoldState
           })
         > {
   @override
-  Widget build(BuildContext context) => switch (widget.currentScreenSize) {
+  Widget build(BuildContext context) => switch (widget.screenSize) {
     ScreenSize.large => Row(
       children: [
         Drawer(
