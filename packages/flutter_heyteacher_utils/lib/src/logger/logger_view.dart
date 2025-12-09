@@ -105,7 +105,7 @@ class _LoggerScreenState
   int get crossAxisCount => 1;
 
   @override
-  double get mainAxisExtent => 70;
+  double get mainAxisExtent => 100;
 
   @override
   Widget buildData(
