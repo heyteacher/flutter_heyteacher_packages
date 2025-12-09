@@ -9,6 +9,7 @@ import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
 import 'package:flutter_heyteacher_utils/connectivity.dart';
 import 'package:flutter_heyteacher_utils/e2ee.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
@@ -455,6 +456,8 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
           groupByFields: {
             'year': _groupByYear,
           },
+          // if web or test, use bkdb database
+          databaseId: PlatformHelper.isNotMobile ? 'bkdb' : null,
         );
 
   static String _groupByYear(TrackData trackData) {

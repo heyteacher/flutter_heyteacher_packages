@@ -338,6 +338,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     this.orderByFields,
     this.aggregateFields,
     this.storeFilter,
+    this.databaseId,
     bool cacheEnabled = true,
     bool offlineEnabled = true,
     Map<String, String Function(DetailsDataType)?>? groupByFields,
@@ -348,10 +349,13 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
         _collection = collection,
         _groupByFields = groupByFields,
         _separatedDetailsCollection = LightDataType != DetailsDataType {
-    _firestore = firebaseFirestore ?? firestore.FirebaseFirestore.instance;
-
-    // FirebaseFirestore.instanceFor(
-    //     app: FirebaseFirestore.instance.app, databaseId: 'bkdb');
+    _firestore = firebaseFirestore ??
+        (databaseId == null
+            ? firestore.FirebaseFirestore.instance
+            : firestore.FirebaseFirestore.instanceFor(
+                app: firestore.FirebaseFirestore.instance.app,
+                databaseId: databaseId,
+              ));
 
     final fakeFirestore =
         _firestore.runtimeType.toString() == 'FakeFirebaseFirestore';
@@ -421,6 +425,9 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     }
   }
   final _logger = Logger('Store');
+
+  /// The database id.
+  String? databaseId;
 
   late final firestore.FirebaseFirestore _firestore;
 
@@ -730,7 +737,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
 
   /// Deletes massively documents identified by list [ids].
   Future<void> bulkDelete(
-    List<String> ids,
+    Iterable<String> ids,
   ) async {
     _logger.finer(
       '<$runtimeType.bulkDelete>: $_detailsCollectionPathLog, ids: $ids)',
@@ -740,8 +747,8 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     for (var i = 0; i < ids.length; i++) {
       // need await operation in order batch commit will by executed as last
       // operation
-      await delete(ids[i], batch: batch);
-      _storeCache?.delete(ids[i]);
+      await delete(ids.elementAt(i), batch: batch);
+      _storeCache?.delete(ids.elementAt(i));
     }
     await batch.commit();
     unawaited(notifyAggregatesChanges());
@@ -799,7 +806,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// Creates (override) massively [documents] identified by list [ids].
   Future<void> bulkSet(
     List<DetailsDataType> documents, {
-    List<String>? ids,
+    Iterable<String>? ids,
   }) async {
     _logger
         .finer('<$runtimeType.bulkSet>: $_detailsCollectionPathLog ids $ids');
@@ -808,8 +815,8 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     for (var i = 0; i < documents.length; i++) {
       // need await operation in order batch commit will by executed as
       // last operation
-      await set(documents[i], id: ids?[i], batch: batch);
-      _storeCache?.set(ids?[i] ?? documents[i].id, documents[i]);
+      await set(documents[i], id: ids?.elementAt(i), batch: batch);
+      _storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
     }
     await batch.commit();
     unawaited(notifyAggregatesChanges());
@@ -889,7 +896,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   Future<void> bulkUpdate(
     List<DetailsDataType> documents, {
     required List<String> fields,
-    List<String>? ids,
+    Iterable<String>? ids,
   }) async {
     _logger.finer(
       '<$runtimeType.bulkUpdate>: $_detailsCollectionPathLog fields $fields',
@@ -899,8 +906,13 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     for (var i = 0; i < documents.length; i++) {
       // need await operation in order batch commit will by executed as last
       // operation
-      await update(documents[i], fields: fields, id: ids?[i], batch: batch);
-      _storeCache?.set(ids?[i] ?? documents[i].id, documents[i]);
+      await update(
+        documents[i],
+        fields: fields,
+        id: ids?.elementAt(i),
+        batch: batch,
+      );
+      _storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
     }
     await batch.commit();
     unawaited(notifyAggregatesChanges());
@@ -1107,8 +1119,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       // get the group by value
       var groupByValue = userDocumentMap[groupByUserValue] as int? ?? 0;
       groupByValue = increment ? groupByValue + 1 : groupByValue - 1;
-      _logger.finer(
-          '($runtimeType._updateGroupByCounterTransaction): document '
+      _logger.finer('($runtimeType._updateGroupByCounterTransaction): document '
           '${document.id} increment $increment, oldDetailsData '
           '${oldDetailsData?.id}. $groupByUserValue new value $groupByValue');
       // increment/decrement group by value based
