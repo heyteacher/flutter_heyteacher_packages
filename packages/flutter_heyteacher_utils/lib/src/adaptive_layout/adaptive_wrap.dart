@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 /// Adaptive [Wrap] based to the screen size.
 class AdaptiveWrap extends StatelessWidget {
- 
   /// Creates an instance of [AdaptiveWrap].
   ///
   /// the [children] width are adapted to Screen width and [crossAxisCount]
@@ -40,7 +39,7 @@ class AdaptiveWrap extends StatelessWidget {
           (child) => ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: _width(context),
-              maxHeight: _height(context)
+              maxHeight: _height(context),
             ),
             child: child,
           ),
@@ -52,6 +51,9 @@ class AdaptiveWrap extends StatelessWidget {
     assert(_crossAxisCount > 0, 'columns must be greater than 0');
     return _direction == Axis.horizontal
         ? (MediaQuery.of(context).size.width -
+                  (MediaQuery.of(context).orientation == Orientation.portrait
+                      ? 0
+                      : AppBar().preferredSize.shortestSide) -
                   _runSpacing * (_crossAxisCount - 1)) /
               _crossAxisCount
         : double.infinity;
@@ -84,7 +86,7 @@ class SliverAdaptiveWrap extends StatelessWidget {
     double spacing = 4,
     super.key,
   }) : _direction = direction,
-    //   _controller = controller,
+       //   _controller = controller,
        _crossAxisCount = crossAxisCount,
        _children = children,
        _spacing = spacing,
@@ -97,14 +99,14 @@ class SliverAdaptiveWrap extends StatelessWidget {
   final Axis _direction;
   //final ScrollController? _controller;
 
-@override
+  @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
     child: AdaptiveWrap(
       direction: _direction,
       runSpacing: _runSpacing,
       spacing: _spacing,
       crossAxisCount: _crossAxisCount,
-      children: _children
+      children: _children,
     ),
   );
 }
