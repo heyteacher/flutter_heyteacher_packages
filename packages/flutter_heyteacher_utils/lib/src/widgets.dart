@@ -586,7 +586,7 @@ class FloatingActionTextIconButtom extends StatelessWidget {
   /// Creates a floating action button with text and an icon.
   const FloatingActionTextIconButtom({
     required this.text,
-    required this.icon,
+    required this.iconData,
     required this.onPressed,
     super.key,
     this.fabKey,
@@ -600,7 +600,7 @@ class FloatingActionTextIconButtom extends StatelessWidget {
   final String text;
 
   /// The icon to display.
-  final Widget icon;
+  final IconData iconData;
 
   /// The background color of the button.
   final Color? backgroundColor;
@@ -612,13 +612,13 @@ class FloatingActionTextIconButtom extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 1),
     child: SizedBox(
-      height: 100,
-      width: 100,
+      height: 88,
+      width: 88,
       child: FloatingActionButton(
         key: fabKey,
         // heroTag must be set unique in app for each FloatingActionButton
         // to avoid warning introduce by go_router
-        heroTag: '${icon}HeroTag',
+        heroTag: '${iconData}HeroTag',
         backgroundColor: backgroundColor,
         onPressed: onPressed,
         child: Wrap(
@@ -626,7 +626,7 @@ class FloatingActionTextIconButtom extends StatelessWidget {
           direction: Axis.vertical,
           alignment: WrapAlignment.end,
           children: [
-            icon,
+            Icon(size: 72, iconData),
             Text(
               text,
               style: TextStyle(
