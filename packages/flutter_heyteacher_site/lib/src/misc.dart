@@ -8,7 +8,7 @@ class GetItOnGooglePlayButton extends StatelessWidget {
   /// [appId] on Play Store must be speficied
   const GetItOnGooglePlayButton({required String appId, super.key})
     : _appId = appId;
-  
+
   final String _appId;
 
   @override
@@ -47,18 +47,23 @@ class LeadingIcon extends StatelessWidget {
 
 /// The title text
 class TitleText extends StatelessWidget {
-  
   /// Creater a [TitleText]
-  const TitleText({required this.title, super.key});
+  const TitleText({
+    required this.title,
+    super.key,
+    TextAlign textAlign = TextAlign.center,
+  }) : _textAlign = textAlign;
 
   /// The title text
   @protected
   final String title;
 
+  final TextAlign _textAlign;
+
   @override
   Widget build(BuildContext context) => Text(
     title,
-    textAlign: TextAlign.center,
+    textAlign: _textAlign,
     style: Theme.of(context).textTheme.headlineLarge,
   );
 }
@@ -72,5 +77,4 @@ class TitleTextSliver extends TitleText {
   Widget build(BuildContext context) => SliverToBoxAdapter(
     child: TitleText(title: title),
   );
-
 }
