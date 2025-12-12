@@ -164,6 +164,7 @@ class _AbstractHeroCarouselViewState
         child: CarouselView.weighted(
           controller: _controller,
           itemSnapping: true,
+          shrinkExtent: MediaQuery.of(context).size.width,
           flexWeights: widget.flexWeights,
           children: widget.params.heroCarouselItems
               .map(
@@ -211,7 +212,7 @@ class _HeroLayoutCard extends StatelessWidget {
           padding: const EdgeInsets.only(
             left: 2,
             right: 2,
-            top: 120,
+            top: 60,
             bottom: 2,
           ),
           child: Column(
@@ -258,52 +259,47 @@ class _HeroLayoutCard extends StatelessWidget {
           ),
         ),
       if (_screenshotCarouselItem.title != null)
-        ConstrainedBox(
-          constraints: const BoxConstraints(
-            minHeight: 130,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: Text(
+                _screenshotCarouselItem.title!,
+                overflow: TextOverflow.clip,
+                softWrap: false,
+                textAlign: _screenshotCarouselItem.body != null
+                    ? TextAlign.center
+                    : TextAlign.left,
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineLarge,
+              ),
+            ),
+            if (_screenshotCarouselItem.subtitle?.isNotEmpty ?? false)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
+                padding: const EdgeInsets.only(
+                  left: 2,
+                  right: 2,
+                  top: 2,
+                  bottom: 8,
+                ),
                 child: Text(
-                  _screenshotCarouselItem.title!,
+                  _screenshotCarouselItem.subtitle!,
                   overflow: TextOverflow.clip,
-                  softWrap: false,
+                  softWrap: true,
+                  maxLines: 3,
                   textAlign: _screenshotCarouselItem.body != null
                       ? TextAlign.center
                       : TextAlign.left,
                   style: Theme.of(
                     context,
-                  ).textTheme.headlineLarge,
+                  ).textTheme.headlineSmall,
                 ),
               ),
-              if (_screenshotCarouselItem.subtitle?.isNotEmpty ?? false)
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 2,
-                    right: 2,
-                    top: 2,
-                    bottom: 8,
-                  ),
-                  child: Text(
-                    _screenshotCarouselItem.subtitle!,
-                    overflow: TextOverflow.clip,
-                    softWrap: true,
-                    maxLines: 3,
-                    textAlign: _screenshotCarouselItem.body != null
-                        ? TextAlign.center
-                        : TextAlign.left,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.headlineSmall,
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
     ],
   );
