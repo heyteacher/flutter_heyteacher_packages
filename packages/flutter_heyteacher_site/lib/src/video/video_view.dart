@@ -1,8 +1,9 @@
 import 'dart:async' show StreamController, unawaited;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_site/src/misc.dart';
 import 'package:flutter_heyteacher_site/src/video/video_data.dart';
-import 'package:flutter_heyteacher_utils/theme.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:video_player/video_player.dart';
 
@@ -30,24 +31,14 @@ class VideoSliverGrid extends StatefulWidget {
 /// among the [_VideoCard] children.
 class _VideoSliverGridState extends State<VideoSliverGrid> {
   @override
-  /// Initializes the state of the widget.
-  ///
-  /// This method sets up the broadcast [StreamController] for video playback
-  /// coordination.
-  void initState() {
-    super.initState();
-  }
-
-  @override
   /// Builds the sliver grid of videos.
   ///
   /// It uses a [SliverGrid] with a [SliverGridDelegateWithMaxCrossAxisExtent]
   /// to create a responsive grid. Each video is
   /// rendered as a [_VideoCard].
   Widget build(BuildContext context) => SliverGrid(
-    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-      maxCrossAxisExtent: 300,
-      //childAspectRatio: 1 / 2,
+    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+      maxCrossAxisExtent: MediaQuery.sizeOf(context).height / 3,
     ),
     delegate: SliverChildListDelegate(
       widget._videos
@@ -71,13 +62,18 @@ class _VideoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-    clipBehavior: Clip.hardEdge,
-    child: Column(
-      //alignment: AlignmentDirectional.bottomStart,
-      children: [
-        Expanded(
-          child: Center(
+    child: Padding(
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: TitleText(title: _videolData.title),
+          ),
+          Center(
             child: IconButton(
+              color: ThemeViewModel.instance.purpleColor,
               icon: Icon(
                 Icons.play_circle_outline,
                 size: Theme.of(context).textTheme.displayLarge!.fontSize,
@@ -85,32 +81,8 @@ class _VideoCard extends StatelessWidget {
               onPressed: () => _show(context),
             ),
           ),
-        ),
-        Expanded(
-          child: ColoredBox(
-            color: ThemeViewModel.instance.colorScheme.surface.withValues(
-              alpha: 0.8,
-            ),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      
-                      _videolData.title,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     ),
   );
 
@@ -163,8 +135,8 @@ class _VideoPlayState extends State<_VideoPlay> {
         widget._videolData.url,
       ),
     );
-     WidgetsBinding.instance.addPostFrameCallback(_init);
- }
+    WidgetsBinding.instance.addPostFrameCallback(_init);
+  }
 
   Future<void> _init(_) async {
     await _videoPlayerController.initialize();
