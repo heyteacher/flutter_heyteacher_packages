@@ -52,29 +52,35 @@ class TitleText extends StatelessWidget {
     required this.title,
     super.key,
     TextAlign textAlign = TextAlign.center,
-  }) : _textAlign = textAlign;
+    EdgeInsets? padding
+  }) : _padding = padding, _textAlign = textAlign;
 
   /// The title text
   @protected
   final String title;
 
   final TextAlign _textAlign;
+  
+  final EdgeInsets? _padding;
 
   @override
-  Widget build(BuildContext context) => Text(
-    title,
-    textAlign: _textAlign,
-    style: Theme.of(context).textTheme.headlineLarge,
+  Widget build(BuildContext context) => Padding(
+    padding: _padding ?? EdgeInsets.zero,
+    child: Text(
+      title,
+      textAlign: _textAlign,
+      style: Theme.of(context).textTheme.headlineLarge,
+    ),
   );
 }
 
 /// The title text as a sliver
 class TitleTextSliver extends TitleText {
   /// Creater a [TitleTextSliver]
-  const TitleTextSliver({required super.title, super.key});
+  const TitleTextSliver({required super.title, super.key, super.padding});
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
-    child: TitleText(title: title),
+    child: super.build(context),
   );
 }
