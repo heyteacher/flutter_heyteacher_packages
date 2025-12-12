@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 
 /// Adaptive [Wrap] based to the screen size.
 class AdaptiveWrap extends StatelessWidget {
@@ -51,7 +52,8 @@ class AdaptiveWrap extends StatelessWidget {
     assert(_crossAxisCount > 0, 'columns must be greater than 0');
     return _direction == Axis.horizontal
         ? (MediaQuery.of(context).size.width -
-                  (MediaQuery.of(context).orientation == Orientation.portrait
+                  (MediaQuery.of(context).orientation == Orientation.portrait &&
+                          PlatformHelper.isNotMobile
                       ? 0
                       : AppBar().preferredSize.shortestSide) -
                   _runSpacing * (_crossAxisCount - 1)) /
