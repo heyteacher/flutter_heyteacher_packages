@@ -52,10 +52,11 @@ class AdaptiveWrap extends StatelessWidget {
     assert(_crossAxisCount > 0, 'columns must be greater than 0');
     return _direction == Axis.horizontal
         ? (MediaQuery.of(context).size.width -
-                  (MediaQuery.of(context).orientation == Orientation.portrait &&
-                          PlatformHelper.isNotMobile
-                      ? 0
-                      : AppBar().preferredSize.shortestSide) -
+                  (MediaQuery.of(context).orientation ==
+                              Orientation.landscape &&
+                          PlatformHelper.isMobile
+                      ? AppBar().preferredSize.shortestSide
+                      : 0) -
                   _runSpacing * (_crossAxisCount - 1)) /
               _crossAxisCount
         : double.infinity;
