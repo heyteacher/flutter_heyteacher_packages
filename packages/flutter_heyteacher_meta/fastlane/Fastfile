@@ -25,7 +25,7 @@ lane :buildweb do|options|
   Dir.chdir("../") do
     sh("flutter build web --no-wasm-dry-run #{version}")
     # open browser http://localhost:8080 and run local webserver
-    sh("open http://localhost:8080")
+    sh("open http://localhost:8080 &")
     sh("dart pub global run dhttpd --path build/web &")
   end
 end
