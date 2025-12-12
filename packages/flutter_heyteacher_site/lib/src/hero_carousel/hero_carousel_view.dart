@@ -3,21 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_site/src/hero_carousel/hero_carousel_data.dart';
 import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
 
 /// A responsive carousel view that adapts to different screen sizes.
 class HeroCarouselView extends StatefulWidget {
   /// Creates an instance of [HeroCarouselView].
   const HeroCarouselView({
     required Iterable<HeroCarouselItemData> heroCarouselItems,
-    required double maxHeight,
+    double? maxHeight,
+    double? aspectRatio,
     super.key,
   }) : _maxHeight = maxHeight,
+       _aspectRatio = aspectRatio,
        _heroCarouselItems = heroCarouselItems;
 
   final Iterable<HeroCarouselItemData> _heroCarouselItems;
 
-  final double _maxHeight;
+  final double? _maxHeight;
+  final double? _aspectRatio;
 
   @override
   /// Creates the mutable state for this widget.
@@ -32,17 +34,26 @@ class _HeroCarouselViewState
         AdaptiveState<
           HeroCarouselView,
           _AbstractHeroCarouselViewState,
-          ({Iterable<HeroCarouselItemData> heroCarouselItems, double maxHeight})
+          ({
+            Iterable<HeroCarouselItemData> heroCarouselItems,
+            double? maxHeight,
+            double? aspectRatio,
+          })
         > {
   @override
   _AbstractHeroCarouselViewState createAdaptiveState() =>
       _AbstractHeroCarouselViewState();
 
   @override
-  ({Iterable<HeroCarouselItemData> heroCarouselItems, double maxHeight})
+  ({
+    Iterable<HeroCarouselItemData> heroCarouselItems,
+    double? maxHeight,
+    double? aspectRatio,
+  })
   get params => (
     heroCarouselItems: widget._heroCarouselItems,
     maxHeight: widget._maxHeight,
+    aspectRatio: widget._aspectRatio,
   );
 }
 
@@ -53,9 +64,12 @@ class _HeroCarouselViewState
 class _AbstractHeroCarouselViewState
     extends
         AbstractAdaptiveState<
-          ({Iterable<HeroCarouselItemData> heroCarouselItems, double maxHeight})
+          ({
+            Iterable<HeroCarouselItemData> heroCarouselItems,
+            double? maxHeight,
+            double? aspectRatio,
+          })
         > {
-
   /// The controller for the carousel.
   final CarouselController _controller = CarouselController();
 
@@ -119,16 +133,26 @@ class _AbstractHeroCarouselViewState
   ///
   /// It includes a [Listener] to handle user pointer events for manual
   /// navigation, which also pauses the auto-scroll timer.
-  Widget build(BuildContext context) => ConstrainedBox(
-    constraints: BoxConstraints(
-      maxHeight: widget.params.maxHeight,
-    ),
-    child: MouseRegion(
+  Widget build(BuildContext context) => widget.params.maxHeight != null
+      ? ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: widget.params.maxHeight!,
+          ),
+          child: _buildCarouselView(context),
+        )
+      : widget.params.aspectRatio != null
+      ? AspectRatio(
+          aspectRatio: widget.params.aspectRatio!,
+          child: _buildCarouselView(context),
+        )
+      : _buildCarouselView(context);
+
+  MouseRegion _buildCarouselView(BuildContext context) {
+    return MouseRegion(
       onEnter: (event) => _stopTimer(),
       onExit: (event) => _startTimer(),
       child: Listener(
         onPointerDown: (pointerDownEvent) {
-          //debugPrint('${clock.now().toIso8601String()} <onPointerDown>:');
           _timer?.cancel();
           if (pointerDownEvent.position.dx >=
               MediaQuery.sizeOf(context).width / 2) {
@@ -148,8 +172,8 @@ class _AbstractHeroCarouselViewState
               .toList(),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 /// A widget that displays an image with a title and subtitle overlay,
@@ -234,56 +258,51 @@ class _HeroLayoutCard extends StatelessWidget {
           ),
         ),
       if (_screenshotCarouselItem.title != null)
-        ColoredBox(
-          color: ThemeViewModel.instance.colorScheme.surface.withValues(
-            alpha: 0.8,
+        ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: 130,
           ),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              minHeight: 130,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Text(
+                  _screenshotCarouselItem.title!,
+                  overflow: TextOverflow.clip,
+                  softWrap: false,
+                  textAlign: _screenshotCarouselItem.body != null
+                      ? TextAlign.center
+                      : TextAlign.left,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.headlineLarge,
+                ),
+              ),
+              if (_screenshotCarouselItem.subtitle?.isNotEmpty ?? false)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  padding: const EdgeInsets.only(
+                    left: 2,
+                    right: 2,
+                    top: 2,
+                    bottom: 8,
+                  ),
                   child: Text(
-                    _screenshotCarouselItem.title!,
+                    _screenshotCarouselItem.subtitle!,
                     overflow: TextOverflow.clip,
-                    softWrap: false,
+                    softWrap: true,
+                    maxLines: 3,
                     textAlign: _screenshotCarouselItem.body != null
                         ? TextAlign.center
                         : TextAlign.left,
                     style: Theme.of(
                       context,
-                    ).textTheme.headlineLarge,
+                    ).textTheme.headlineSmall,
                   ),
                 ),
-                if (_screenshotCarouselItem.subtitle?.isNotEmpty ?? false)
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 2,
-                      right: 2,
-                      top: 2,
-                      bottom: 8,
-                    ),
-                    child: Text(
-                      _screenshotCarouselItem.subtitle!,
-                      overflow: TextOverflow.clip,
-                      softWrap: true,
-                      maxLines: 3,
-                      textAlign: _screenshotCarouselItem.body != null
-                          ? TextAlign.center
-                          : TextAlign.left,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.headlineSmall,
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
     ],
