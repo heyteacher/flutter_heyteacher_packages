@@ -32,14 +32,20 @@ class GetItOnGooglePlayButton extends StatelessWidget {
 /// The leading Icon
 class LeadingIcon extends StatelessWidget {
   /// Creates a [LeadingIcon].
-  const LeadingIcon({super.key});
+  const LeadingIcon({super.key, void Function()? onPressed})
+    : _onPressed = onPressed;
+
+  final VoidCallback? _onPressed;
 
   @override
-  Widget build(BuildContext context) => const Padding(
-    padding: EdgeInsets.all(8),
-    child: Image(
-      image: AssetImage(
-        'assets/images/icon.png',
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(8),
+    child: InkWell(
+      onTap: _onPressed,
+      child: const Image(
+        image: AssetImage(
+          'assets/images/icon.png',
+        ),
       ),
     ),
   );
@@ -52,15 +58,16 @@ class TitleText extends StatelessWidget {
     required this.title,
     super.key,
     TextAlign textAlign = TextAlign.center,
-    EdgeInsets? padding
-  }) : _padding = padding, _textAlign = textAlign;
+    EdgeInsets? padding,
+  }) : _padding = padding,
+       _textAlign = textAlign;
 
   /// The title text
   @protected
   final String title;
 
   final TextAlign _textAlign;
-  
+
   final EdgeInsets? _padding;
 
   @override
