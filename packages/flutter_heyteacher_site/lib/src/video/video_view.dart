@@ -38,7 +38,7 @@ class _VideoSliverGridState extends State<VideoSliverGrid> {
   /// rendered as a [_VideoCard].
   Widget build(BuildContext context) => SliverGrid(
     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-      maxCrossAxisExtent: MediaQuery.sizeOf(context).height / 3,
+      maxCrossAxisExtent: MediaQuery.sizeOf(context).height / 2.2,
     ),
     delegate: SliverChildListDelegate(
       widget._videos
