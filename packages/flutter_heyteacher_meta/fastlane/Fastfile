@@ -32,16 +32,22 @@ end
 desc "fl deployweb [version:profile|debug]\n\tdeploy web in firabase hosting"
 lane :deployweb do|options|
   test
+  _increment_flutter_build_number
   version = ""
   if (options[:version] == "profile" || options[:version] == "debug")
       version = "--#{options[:version]}"
-  end 
+  end
+  tag = ""
   Dir.chdir("../") do
     sh("flutter build web --no-wasm-dry-run #{version}")
-    # run local webserver
+    # deploy
     sh("firebase deploy --only hosting")
+    tag = sh("dart run flutter_heyteacher_fastlane:version show")
   end
-end
+  # commit bump and push remote
+  git_commit(path: "pubspec.yaml", message: "Version Bump #{tag}")
+  push_to_git_remote
+ end
 
 
 desc "fl docweb\n\trun local webserver on generated doc"
