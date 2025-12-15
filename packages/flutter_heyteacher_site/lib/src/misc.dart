@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
 /// A _Get In On Google Play_ button.
@@ -6,23 +7,35 @@ class GetItOnGooglePlayButton extends StatelessWidget {
   /// Creates a [GetItOnGooglePlayButton].
   ///
   /// [appId] on Play Store must be speficied
-  const GetItOnGooglePlayButton({required String appId, super.key})
-    : _appId = appId;
+  const GetItOnGooglePlayButton({
+    required String appId,
+    required ScreenSize screenSize, super.key,
+  }) : _screenSize = screenSize, _appId = appId;
 
   final String _appId;
+  final ScreenSize _screenSize;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(8),
+    padding: const EdgeInsets.all(4),
     child: InkWell(
       onTap: () => launchUrl(
         Uri.https('play.google.com', '/store/apps/details', {
           'id': _appId,
         }),
       ),
-      child: const Image(
-        image: AssetImage(
-          'assets/images/GetItOnGooglePlay_Badge_Web_color_English.png',
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: switch (_screenSize) {
+            ScreenSize.small => 160,
+            ScreenSize.medium => 230,
+            ScreenSize.large => 270,
+          },
+        ),
+        child: const Image(
+          image: AssetImage(
+            'assets/images/GetItOnGooglePlay_Badge_Web_color_English.png',
+          ),
         ),
       ),
     ),
