@@ -4,7 +4,7 @@
 /// - [GoAuthRoute]: A helper class to easily set up authentication-related
 ///   routes
 ///   (sign-in, sign-out) compatible with `firebase_ui_auth`.
-/// - [ScaffoldWithNavBar]: A reusable scaffold widget that integrates with
+/// - [ScaffoldNavigationShell]: A reusable scaffold widget that integrates with
 ///   `go_router`'s `StatefulShellRoute` to provide a common UI structure
 ///   with a bottom navigation bar.
 library;
@@ -72,26 +72,38 @@ class GoAuthRoute {
   );
 }
 
-/// Builds the "shell" for the app by building a Scaffold with a
-/// BottomNavigationBar, where child is placed in the body of the Scaffold.
-abstract class ScaffoldWithNavBar extends StatelessWidget {
-  /// Constructs an [ScaffoldWithNavBar].
-  const ScaffoldWithNavBar({
-    required this.navigationShell,
-    required List<BottomNavigationBarItem> items,
-    this.decoration,
+/// Builds the navigation shell for the app by building a Scaffold, where child
+/// is placed in the body of the Scaffold.
+///
+abstract class ScaffoldNavigationShell extends StatelessWidget {
+  /// Constructs an [ScaffoldNavigationShell].
+  ///
+  /// [navigationShell] is placed into the body of scaffold, and a bottom
+  /// navigation bar decorated with [bottomNavigationBarDecoration] is
+  /// displayed with [bottomNavigationBarItems].
+  const ScaffoldNavigationShell({
+    required StatefulNavigationShell navigationShell,
+    AppBar? appBar,
+    List<BottomNavigationBarItem> bottomNavigationBarItems =
+        const <BottomNavigationBarItem>[],
+    Decoration? bottomNavigationBarDecoration,
     Key? key,
-  }) : _items = items,
-       super(key: key ?? const ValueKey<String>('ScaffoldWithNavBar'));
+  }) : _navigationShell = navigationShell,
+       _appBar = appBar,
+       _bottomNavigationBarDecoration = bottomNavigationBarDecoration,
+       _bottomNavigationBarItems = bottomNavigationBarItems,
+       super(key: key ?? const ValueKey<String>('ScaffoldNavigationShell'));
 
   /// The navigation shell and container for the branch Navigators.
-  final StatefulNavigationShell navigationShell;
+  final StatefulNavigationShell _navigationShell;
 
   /// The list of items to display in the [BottomNavigationBar].
-  final List<BottomNavigationBarItem> _items;
-  
+  final List<BottomNavigationBarItem> _bottomNavigationBarItems;
+
   /// The decoration to apply to the [BottomNavigationBar].
-  final Decoration? decoration;
+  final Decoration? _bottomNavigationBarDecoration;
+
+  final PreferredSizeWidget? _appBar;
 
   /// A callback to determine if navigation to the initial location of a branch
   /// should occur when the currently active item is tapped again.
@@ -101,27 +113,33 @@ abstract class ScaffoldWithNavBar extends StatelessWidget {
   // #docregion configuration-custom-shell
   @override
   Widget build(BuildContext context) => Scaffold(
+    appBar: _appBar,
     // The StatefulNavigationShell from the associated StatefulShellRoute is
     // directly passed as the body of the Scaffold.
-    body: navigationShell,
-    bottomNavigationBar: Container(
-      decoration: decoration,
+    body: _navigationShell,
+    bottomNavigationBar: _bottomNavigationBarItems.isEmpty
+        ? null
+        : Container(
+            decoration: _bottomNavigationBarDecoration,
 
-      child: BottomNavigationBar(
-        showUnselectedLabels: true,
-        // Here, the items of BottomNavigationBar are hard coded. In a real
-        // world scenario, the items would most likely be generated from the
-        // branches of the shell route, which can be fetched using
-        // `navigationShell.route.branches`.
-        items: _items,
-        currentIndex: navigationShell.currentIndex,
+            child: BottomNavigationBar(
+              showUnselectedLabels: true,
+              // Here, the items of BottomNavigationBar are hard coded. In a 
+              // real world scenario, the items would most likely be generated 
+              // from thebranches of the shell route, which can be fetched using
+              // `navigationShell.route.branches`.
+              items: _bottomNavigationBarItems,
+              currentIndex: _navigationShell.currentIndex,
 
-        // Navigate to the current location of the branch at the provided index
-        // when tapping an item in the BottomNavigationBar.
-        onTap: (int index) =>
-            onTap(context, index, initialLocation: onTapInitialLocation(index)),
-      ),
-    ),
+              // Navigate to the current location of the branch at the provided 
+              // indexwhen tapping an item in the BottomNavigationBar.
+              onTap: (int index) => onTap(
+                context,
+                index,
+                initialLocation: onTapInitialLocation(index),
+              ),
+            ),
+          ),
   );
 
   // #enddocregion configuration-custom-shell
@@ -144,7 +162,7 @@ abstract class ScaffoldWithNavBar extends StatelessWidget {
       // When navigating to a new branch, it's recommended to use the goBranch
       // method, as doing so makes sure the last navigation state of the
       // Navigator for the branch is restored.
-      navigationShell.goBranch(
+      _navigationShell.goBranch(
         index,
         // A common pattern when using bottom navigation bars is to support
         // navigating to the initial location when tapping the item that is
