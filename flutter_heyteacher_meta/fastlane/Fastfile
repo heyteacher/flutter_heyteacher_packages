@@ -37,17 +37,25 @@ lane :deployweb do|options|
   if (options[:version] == "profile" || options[:version] == "debug")
       version = "--#{options[:version]}"
   end
-  tag = ""
   Dir.chdir("../") do
+    # build
     sh("flutter build web --no-wasm-dry-run #{version}")
     # deploy
     sh("firebase deploy --only hosting")
+  end
+  _commit_pubspec
+end
+
+desc "fl _commit_pubspec\n\tcommit pubspec.yaml"
+lane :_commit_pubspec do
+  tag = ""
+  Dir.chdir("../") do
     tag = sh("dart run flutter_heyteacher_fastlane:version show")
   end
   # commit bump and push remote
   git_commit(path: "pubspec.yaml", message: "Version Bump #{tag}")
   push_to_git_remote
- end
+end
 
 
 desc "fl docweb\n\trun local webserver on generated doc"
