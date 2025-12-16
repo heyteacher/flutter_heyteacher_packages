@@ -556,10 +556,10 @@ class ThemeViewModel {
       badgeTheme: BadgeThemeData(backgroundColor: onError, textColor: error),
       appBarTheme: const AppBarTheme(iconTheme: IconThemeData(size: 40)),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        elevation: 8,
-        selectedItemColor: onSurfaceVariant,
+        elevation: 0,
+        selectedItemColor: primary,
         unselectedItemColor: disabled,
-        backgroundColor: Colors.transparent,
+        backgroundColor: onPrimary,
       ),
       cardTheme: CardThemeData(elevation: 8, color: surfaceContainer),
       carouselViewTheme: CarouselViewThemeData(
