@@ -51,14 +51,11 @@ class LeadingIcon extends StatelessWidget {
   final VoidCallback? _onPressed;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(8),
-    child: InkWell(
-      onTap: _onPressed,
-      child: const Image(
-        image: AssetImage(
-          'assets/images/icon.png',
-        ),
+  Widget build(BuildContext context) => InkWell(
+    onTap: _onPressed,
+    child: const Image(
+      image: AssetImage(
+        'assets/images/icon.png',
       ),
     ),
   );
