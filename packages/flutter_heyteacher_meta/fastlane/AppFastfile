@@ -103,13 +103,13 @@ platform :android do
 
   desc "fl playstore track:production|beta|alpha|internal [upload_only:true|false]\n\tupload app to Google Play via `supply`"
   lane :playstore do |options|
-    # commit pubspec.yaml with current version
-    _commit_pubspec 
     # generate AAB
     puts "Upload only #{options[:upload_only]}"
     if options[:upload_only] != true
       appbundle
     end
+    # commit pubspec.yaml with current version
+    _commit_pubspec 
     # read version and build number
     version = ""
     buildNumber = ""
