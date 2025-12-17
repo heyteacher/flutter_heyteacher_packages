@@ -63,7 +63,7 @@ class GoAuthRoute {
         name: AuthRouterName.signOut.name,
         path: 'sign-out',
         redirect: (context, state) async {
-          _logger.info('<SignedOut>:');
+          _logger.info('<SignedOut>: redirect to $signedOutRoute');
           await AuthViewModel.instance.signOut();
           return signedOutRoute;
         },
