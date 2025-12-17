@@ -65,6 +65,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   generate: true
+  assets:
+    - assets/locale/
   fonts:
     - family: SocialIcons
       fonts:

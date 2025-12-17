@@ -2,7 +2,7 @@
 /// selection UI, locale persistence, and dynamic locale updates.
 ///
 /// This library provides:
-/// - [LocaleCard]: A widget for users to select their preferred language
+/// - [LocaleWrap]: A widget for users to select their preferred language
 ///   from the list of supported locales.
 /// - [LocaleViewModel]: A singleton class responsible for holding the current 
 ///   locale state,
@@ -17,4 +17,4 @@ export 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart'
     show FlutterHeyteacherUtilsLocalizations;
 
 export 'package:flutter_heyteacher_utils/src/locale.dart'
-    show LocaleCard, LocaleCardState, LocaleViewModel;
+    show LocaleCard,LocaleViewModel, LocaleWrap, LocaleWrapState;
