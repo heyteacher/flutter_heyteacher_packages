@@ -19,7 +19,6 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
-import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_heyteacher_utils/router.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
@@ -184,7 +183,7 @@ class AuthViewModel {
   AuthViewModel({FirebaseAuth? mockedFirebaseAuth}) {
     // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth
     //and configure provider
-    if (mockedFirebaseAuth == null && PlatformHelper.isMobile) {
+    if (mockedFirebaseAuth == null) {
       _googleProvider = GoogleProvider(
         clientId: FirebaseRemoteConfig.instance.getString('authGoogleClientId'),
       );
