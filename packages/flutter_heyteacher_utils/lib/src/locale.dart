@@ -59,8 +59,6 @@ class LocaleWrapState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Wrap(
     alignment: WrapAlignment.center,
-    spacing: 4,
-    runSpacing: 4,
     children: [
       ...FlutterHeyteacherUtilsLocalizations.supportedLocales.map<Widget>(
         (locale) => ChoiceChip(
