@@ -565,7 +565,6 @@ class ThemeViewModel {
       carouselViewTheme: CarouselViewThemeData(
         backgroundColor: surfaceContainer,
       ),
-      textTheme: const TextTheme(displayLarge: TextStyle(fontSize: 120)),
       snackBarTheme: const SnackBarThemeData(
         //contentTextStyle: TextStyle(color: surface),
         insetPadding: EdgeInsets.all(20),
