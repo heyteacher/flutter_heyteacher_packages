@@ -1,64 +1,96 @@
 {
   "@@locale": "it",
+  "account": "Account",
+  "@account": {},
   "userNotAuthenticated": "Utente non autenticato",
-  "notAuthenticated": "Non Autenticato",
-  "errorOnRetrieveData": "errore durante il caricamento dei dati",
-  "timeoutOnRetrieveData": "Timeout durante in caricamento dei dati",
+  "@userNotAuthenticated": {},
+  "notAuthenticated": "Non autenticato",
+  "@notAuthenticated": {},
+  "errorOnRetrieveData": "Errore nel recupero dei dati",
+  "@errorOnRetrieveData": {},
+  "timeoutOnRetrieveData": "Timeout nel recupero dei dati",
+  "@timeoutOnRetrieveData": {},
   "confirm": "Conferma",
-  "areYouSureToConfirmTheAction": "Sei sicuro di confermare l'azione?",
-  "encryptionPassphraseIsEmptySetIt": "Password di Criptazione non valorizzata, impostala",
-  "missingEncryptionSecretKeyImportIt": "Chiave Secreta di Criptazione non presente, importala",
-  "errorOnEncryptionCheckPassphrase": "Errore durante la criptazione, controlla la Password di Criptazione",
-  "errorOnDecryptionCheckPassphrase": "Errore durante la decriptazione, controlla la Password di Criptazione",
-  "id": "Id: ",
+  "@confirm": {},
+  "areYouSureToConfirmTheAction": "Sei sicuro di voler confermare l'azione?",
+  "@areYouSureToConfirmTheAction": {},
+  "encryptionPassphraseIsEmptySetIt": "La passphrase di crittografia è vuota, impostala",
+  "@encryptionPassphraseIsEmptySetIt": {},
+  "missingEncryptionSecretKeyImportIt": "Chiave segreta di crittografia mancante, importala",
+  "@missingEncryptionSecretKeyImportIt": {},
+  "errorOnEncryptionCheckPassphrase": "Errore di crittografia, controlla la passphrase di crittografia",
+  "@errorOnEncryptionCheckPassphrase": {},
+  "errorOnDecryptionCheckPassphrase": "Errore di decrittografia, controlla la passphrase di crittografia",
+  "@errorOnDecryptionCheckPassphrase": {},
+  "id": "ID: ",
+  "@id": {},
   "version": "Versione: ",
-  "askSupportFor": "Chiedi supporto per: ",
+  "@version": {},
   "askSupport": "Chiedi supporto",
+  "@askSupport": {},
+  "askSupportFor": "Chiedi supporto per: ",
+  "@askSupportFor": {},
   "logging": "Registrazione",
+  "@logging": {},
   "loggingLevel": "Livello di registrazione",
-  "nMinutes": "{minutes, plural, =1{{minutes} minuto} other{{minutes} minutes}}",
+  "@loggingLevel": {},
+  "nMinutes": "{minutes, plural, =1{un minuto} other{{minutes} minuti}}",
   "@nMinutes": {
-    "description": "Indica il numero di minuti, il parametro minutes è il numero di minuti.",
     "placeholders": {
       "minutes": {}
     }
   },
-  "account": "Account",
-  "areYouSureToChangeEncryptionPassphrase": "Sei sicuro di voler cambiare la password di criptazione?",
-  "areYouSureToImportEncryptionSecretKey": "Sei sicuro di voler importare la chiave segreta di criptazione?",
-  "encryptionSecretKeyImported": "Chiave segreta di criptazione importata",
-  "encryptionPassphrase": "Password di Criptazione",
-  "encryptionSecretKey": "Chiave Segreta di Criptazione",
-  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro. Ricorda di usare la stessa password di criptazione.",
-  "errorWorkflowTaskAlreadyInitialized": "Errore: il task del workflow è già stato inizializzato",
-  "errorWorkflowNotInitialized": "Workflow non inizializzato",
+  "areYouSureToChangeEncryptionPassphrase": "Se modifichi la passphrase di crittografia, non potrai più accedere ai dati crittografati con la vecchia passphrase.\n\nSei sicuro di voler modificare la passphrase di crittografia?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Se importi una chiave segreta di crittografia, la vecchia chiave verrà sovrascritta e i dati crittografati con la vecchia chiave andranno persi.\n\nSei sicuro di voler importare la chiave segreta di crittografia?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Chiave segreta di crittografia importata",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Passphrase di crittografia",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Chiave segreta di crittografia",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro.\nIl codice QR è crittografato con la passphrase di crittografia.\nDevi impostare la stessa passphrase di crittografia sul nuovo dispositivo.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "errorWorkflowTaskAlreadyInitialized": "Attività del flusso di lavoro già inizializzata",
+  "@errorWorkflowTaskAlreadyInitialized": {},
+  "errorWorkflowNotInitialized": "Flusso di lavoro non inizializzato",
   "@errorWorkflowNotInitialized": {},
-  "contentUnavailableOfflineRetryWhenOnline": "Contenuto non disponibile offline.\n\nPer favore, riprova quando sei connesso a Internet.",
+  "contentUnavailableOfflineRetryWhenOnline": "Contenuto non disponibile offline.\n\nRiprova quando il dispositivo è connesso a internet.",
   "@contentUnavailableOfflineRetryWhenOnline": {},
-  "deleteUserData": "Elimina dati utente",
-  "@deleteUserData": {
-    "description": "Testo per il pulsante o azione di eliminazione dei dati utente."
-  },
-  "doYouConfirmDeletionUserData": "Confermi l'eliminazione dei dati utente?",
+  "deleteUserData": "Pianifica eliminazione dati utente",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "Confermi l'eliminazione dei tuoi dati utente?\nAttenzione! Questa azione non può essere annullata fino a dopo {expireDateTime}.",
   "@doYouConfirmDeletionUserData": {
-    "description": "Messaggio di conferma per l'eliminazione dei dati utente."
+    "placeholders": {
+      "expireDateTime": {}
+    }
   },
-  "task": "Task",
+  "restoreUserData": "Ripristina dati utente",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "Hai pianificato l'eliminazione dei tuoi dati utente per il {expireDateTime}.\nConfermi di voler annullare l'eliminazione pianificata?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "task": "Attività",
   "@task": {},
   "description": "Descrizione",
   "@description": {},
-  "tasks": "Task",
+  "tasks": "Attività",
   "@tasks": {},
   "skip": "Salta",
   "@skip": {},
-  "deviceOfflineAskSupportWhenOnline": "Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a Internet.",
-  "defaultValue": "Valore di default: {defaultValue}",
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a internet.",
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "defaultValue": "Predefinito: {defaultValue}",
   "@defaultValue": {
     "placeholders": {
       "defaultValue": {}
     }
   },
-  "nSeconds": "{nSeconds, plural, =0{} other{{nSeconds} secondi}}",
+  "nSeconds": "{nSeconds, plural, =0{0 sec} =1{1 sec} other{{nSeconds} sec}}",
   "@nSeconds": {
     "placeholders": {
       "nSeconds": {}
@@ -66,6 +98,6 @@
   },
   "search": "Cerca",
   "@search": {},
-  "enableLogsStorage": "Abilita lo storage dei log",
+  "enableLogsStorage": "Abilita archiviazione log",
   "@enableLogsStorage": {}
 }

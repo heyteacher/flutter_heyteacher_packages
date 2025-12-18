@@ -110,11 +110,20 @@ class FlutterHeyteacherUtilsLocalizationsEn
       'Content unavailable offline.\n\nRetry when the device is connected to the internet.';
 
   @override
-  String get deleteUserData => 'Delete User Data';
+  String get deleteUserData => 'Schedule deletion User Data';
 
   @override
-  String get doYouConfirmDeletionUserData =>
-      'Do you confirm the deletion of your user data?\nBe careful! This action cannot be undone.';
+  String doYouConfirmDeletionUserData(Object expireDateTime) {
+    return 'Do you confirm the deletion of your user data?\nBe careful! This action cannot be undone until after $expireDateTime.';
+  }
+
+  @override
+  String get restoreUserData => 'Restore User Data';
+
+  @override
+  String doYouConfirmRestoringUserData(Object expireDateTime) {
+    return 'You sheduled the deletion of your user data on $expireDateTime.\nDo you confirm to cancel the deletion scheduled?';
+  }
 
   @override
   String get task => 'Task';

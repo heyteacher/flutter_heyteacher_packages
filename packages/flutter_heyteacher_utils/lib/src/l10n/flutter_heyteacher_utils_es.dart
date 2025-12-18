@@ -16,7 +16,7 @@ class FlutterHeyteacherUtilsLocalizationsEs
   String get userNotAuthenticated => 'Usuario no autenticado';
 
   @override
-  String get notAuthenticated => 'No Autenticado';
+  String get notAuthenticated => 'No autenticado';
 
   @override
   String get errorOnRetrieveData => 'Error al recuperar datos';
@@ -30,35 +30,35 @@ class FlutterHeyteacherUtilsLocalizationsEs
 
   @override
   String get areYouSureToConfirmTheAction =>
-      '¿Estás seguro de confirmar la acción?';
+      '¿Está seguro de confirmar la acción?';
 
   @override
   String get encryptionPassphraseIsEmptySetIt =>
-      'La frase de contraseña de cifrado está vacía, configúrala';
+      'La frase de contraseña de cifrado está vacía, configúrela';
 
   @override
   String get missingEncryptionSecretKeyImportIt =>
-      'Falta la clave secreta de cifrado, impórtala';
+      'Falta la clave secreta de cifrado, impórtela';
 
   @override
   String get errorOnEncryptionCheckPassphrase =>
-      'Error en el cifrado, verifica la frase de contraseña de cifrado';
+      'Error en el cifrado, verifique la frase de contraseña de cifrado';
 
   @override
   String get errorOnDecryptionCheckPassphrase =>
-      'Error en el descifrado, verifica la frase de contraseña de cifrado';
+      'Error en el descifrado, verifique la frase de contraseña de cifrado';
 
   @override
-  String get id => 'Id: ';
+  String get id => 'ID: ';
 
   @override
   String get version => 'Versión: ';
 
   @override
-  String get askSupport => 'Pedir soporte';
+  String get askSupport => 'Solicitar soporte';
 
   @override
-  String get askSupportFor => 'Pedir soporte para: ';
+  String get askSupportFor => 'Solicitar soporte para: ';
 
   @override
   String get logging => 'Registro';
@@ -72,18 +72,18 @@ class FlutterHeyteacherUtilsLocalizationsEs
       minutes,
       locale: localeName,
       other: '$minutes minutos',
-      one: '$minutes minuto',
+      one: 'un minuto',
     );
     return '$_temp0';
   }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      '¿Estás seguro de cambiar la frase de contraseña de cifrado?';
+      'Si cambia la frase de contraseña de cifrado, no podrá acceder a los datos cifrados con la frase de contraseña antigua.\n\n¿Está seguro de que desea cambiar la frase de contraseña de cifrado?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      '¿Estás seguro de importar la clave secreta de cifrado?';
+      'Si importa una clave secreta de cifrado, la clave antigua se sobrescribirá y los datos cifrados con la clave antigua se perderán.\n\n¿Está seguro de que desea importar la clave secreta de cifrado?';
 
   @override
   String get encryptionSecretKeyImported =>
@@ -98,25 +98,34 @@ class FlutterHeyteacherUtilsLocalizationsEs
   @override
   String
   get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Escanea el código QR con otro dispositivo o guárdalo en un lugar seguro. Recuerda usar la misma frase de contraseña.';
+      'Escanee el código QR con otro dispositivo o guárdelo en un lugar seguro.\nEl código QR está cifrado con la frase de contraseña de cifrado.\nDebe establecer la misma frase de contraseña de cifrado en el nuevo dispositivo.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
-      'La tarea del flujo de trabajo ya ha sido inicializada';
+      'Tarea de flujo de trabajo ya inicializada';
 
   @override
-  String get errorWorkflowNotInitialized => 'Workflow no inicializado';
+  String get errorWorkflowNotInitialized => 'Flujo de trabajo no inicializado';
 
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
-      'Contenido no disponible sin conexión.\n\nPor favor, inténtalo de nuevo cuando estés conectado a Internet.';
+      'Contenido no disponible sin conexión.\n\nIntente de nuevo cuando el dispositivo esté conectado a internet.';
 
   @override
-  String get deleteUserData => 'Eliminar datos de usuario';
+  String get deleteUserData => 'Programar eliminación de datos de usuario';
 
   @override
-  String get doYouConfirmDeletionUserData =>
-      '¿Confirma la eliminación de los datos de usuario?';
+  String doYouConfirmDeletionUserData(Object expireDateTime) {
+    return '¿Confirma la eliminación de sus datos de usuario?\n¡Tenga cuidado! Esta acción no se puede deshacer hasta después de $expireDateTime.';
+  }
+
+  @override
+  String get restoreUserData => 'Restaurar datos de usuario';
+
+  @override
+  String doYouConfirmRestoringUserData(Object expireDateTime) {
+    return 'Ha programado la eliminación de sus datos de usuario para $expireDateTime.\n¿Confirma que desea cancelar la eliminación programada?';
+  }
 
   @override
   String get task => 'Tarea';
@@ -128,15 +137,15 @@ class FlutterHeyteacherUtilsLocalizationsEs
   String get tasks => 'Tareas';
 
   @override
-  String get skip => 'Saltar';
+  String get skip => 'Omitir';
 
   @override
   String get deviceOfflineAskSupportWhenOnline =>
-      'Dispositivo sin conexión. Pida soporte cuando el dispositivo esté conectado a internet.';
+      'Dispositivo sin conexión. Solicite soporte cuando el dispositivo esté conectado a internet.';
 
   @override
   String defaultValue(Object defaultValue) {
-    return 'Valor por defecto: $defaultValue';
+    return 'Predeterminado: $defaultValue';
   }
 
   @override
@@ -144,8 +153,9 @@ class FlutterHeyteacherUtilsLocalizationsEs
     String _temp0 = intl.Intl.pluralLogic(
       nSeconds,
       locale: localeName,
-      other: '$nSeconds seg',
-      zero: '',
+      other: '$nSeconds segs',
+      one: '1 seg',
+      zero: '0 seg',
     );
     return '$_temp0';
   }
@@ -154,5 +164,5 @@ class FlutterHeyteacherUtilsLocalizationsEs
   String get search => 'Buscar';
 
   @override
-  String get enableLogsStorage => 'Activar almacenamiento de registro';
+  String get enableLogsStorage => 'Habilitar almacenamiento de registros';
 }

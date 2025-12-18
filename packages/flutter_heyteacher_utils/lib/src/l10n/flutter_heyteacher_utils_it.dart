@@ -16,39 +16,39 @@ class FlutterHeyteacherUtilsLocalizationsIt
   String get userNotAuthenticated => 'Utente non autenticato';
 
   @override
-  String get notAuthenticated => 'Non Autenticato';
+  String get notAuthenticated => 'Non autenticato';
 
   @override
-  String get errorOnRetrieveData => 'errore durante il caricamento dei dati';
+  String get errorOnRetrieveData => 'Errore nel recupero dei dati';
 
   @override
-  String get timeoutOnRetrieveData => 'Timeout durante in caricamento dei dati';
+  String get timeoutOnRetrieveData => 'Timeout nel recupero dei dati';
 
   @override
   String get confirm => 'Conferma';
 
   @override
   String get areYouSureToConfirmTheAction =>
-      'Sei sicuro di confermare l\'azione?';
+      'Sei sicuro di voler confermare l\'azione?';
 
   @override
   String get encryptionPassphraseIsEmptySetIt =>
-      'Password di Criptazione non valorizzata, impostala';
+      'La passphrase di crittografia è vuota, impostala';
 
   @override
   String get missingEncryptionSecretKeyImportIt =>
-      'Chiave Secreta di Criptazione non presente, importala';
+      'Chiave segreta di crittografia mancante, importala';
 
   @override
   String get errorOnEncryptionCheckPassphrase =>
-      'Errore durante la criptazione, controlla la Password di Criptazione';
+      'Errore di crittografia, controlla la passphrase di crittografia';
 
   @override
   String get errorOnDecryptionCheckPassphrase =>
-      'Errore durante la decriptazione, controlla la Password di Criptazione';
+      'Errore di decrittografia, controlla la passphrase di crittografia';
 
   @override
-  String get id => 'Id: ';
+  String get id => 'ID: ';
 
   @override
   String get version => 'Versione: ';
@@ -70,72 +70,82 @@ class FlutterHeyteacherUtilsLocalizationsIt
     String _temp0 = intl.Intl.pluralLogic(
       minutes,
       locale: localeName,
-      other: '$minutes minutes',
-      one: '$minutes minuto',
+      other: '$minutes minuti',
+      one: 'un minuto',
     );
     return '$_temp0';
   }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'Sei sicuro di voler cambiare la password di criptazione?';
+      'Se modifichi la passphrase di crittografia, non potrai più accedere ai dati crittografati con la vecchia passphrase.\n\nSei sicuro di voler modificare la passphrase di crittografia?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'Sei sicuro di voler importare la chiave segreta di criptazione?';
+      'Se importi una chiave segreta di crittografia, la vecchia chiave verrà sovrascritta e i dati crittografati con la vecchia chiave andranno persi.\n\nSei sicuro di voler importare la chiave segreta di crittografia?';
 
   @override
   String get encryptionSecretKeyImported =>
-      'Chiave segreta di criptazione importata';
+      'Chiave segreta di crittografia importata';
 
   @override
-  String get encryptionPassphrase => 'Password di Criptazione';
+  String get encryptionPassphrase => 'Passphrase di crittografia';
 
   @override
-  String get encryptionSecretKey => 'Chiave Segreta di Criptazione';
+  String get encryptionSecretKey => 'Chiave segreta di crittografia';
 
   @override
   String
   get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro. Ricorda di usare la stessa password di criptazione.';
+      'Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro.\nIl codice QR è crittografato con la passphrase di crittografia.\nDevi impostare la stessa passphrase di crittografia sul nuovo dispositivo.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
-      'Errore: il task del workflow è già stato inizializzato';
+      'Attività del flusso di lavoro già inizializzata';
 
   @override
-  String get errorWorkflowNotInitialized => 'Workflow non inizializzato';
+  String get errorWorkflowNotInitialized =>
+      'Flusso di lavoro non inizializzato';
 
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
-      'Contenuto non disponibile offline.\n\nPer favore, riprova quando sei connesso a Internet.';
+      'Contenuto non disponibile offline.\n\nRiprova quando il dispositivo è connesso a internet.';
 
   @override
-  String get deleteUserData => 'Elimina dati utente';
+  String get deleteUserData => 'Pianifica eliminazione dati utente';
 
   @override
-  String get doYouConfirmDeletionUserData =>
-      'Confermi l\'eliminazione dei dati utente?';
+  String doYouConfirmDeletionUserData(Object expireDateTime) {
+    return 'Confermi l\'eliminazione dei tuoi dati utente?\nAttenzione! Questa azione non può essere annullata fino a dopo $expireDateTime.';
+  }
 
   @override
-  String get task => 'Task';
+  String get restoreUserData => 'Ripristina dati utente';
+
+  @override
+  String doYouConfirmRestoringUserData(Object expireDateTime) {
+    return 'Hai pianificato l\'eliminazione dei tuoi dati utente per il $expireDateTime.\nConfermi di voler annullare l\'eliminazione pianificata?';
+  }
+
+  @override
+  String get task => 'Attività';
 
   @override
   String get description => 'Descrizione';
 
   @override
-  String get tasks => 'Task';
+  String get tasks => 'Attività';
 
   @override
   String get skip => 'Salta';
 
   @override
   String get deviceOfflineAskSupportWhenOnline =>
-      'Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a Internet.';
+      'Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a internet.';
 
   @override
   String defaultValue(Object defaultValue) {
-    return 'Valore di default: $defaultValue';
+    return 'Predefinito: $defaultValue';
   }
 
   @override
@@ -143,8 +153,9 @@ class FlutterHeyteacherUtilsLocalizationsIt
     String _temp0 = intl.Intl.pluralLogic(
       nSeconds,
       locale: localeName,
-      other: '$nSeconds secondi',
-      zero: '',
+      other: '$nSeconds sec',
+      one: '1 sec',
+      zero: '0 sec',
     );
     return '$_temp0';
   }
@@ -153,5 +164,5 @@ class FlutterHeyteacherUtilsLocalizationsIt
   String get search => 'Cerca';
 
   @override
-  String get enableLogsStorage => 'Abilita lo storage dei log';
+  String get enableLogsStorage => 'Abilita archiviazione log';
 }

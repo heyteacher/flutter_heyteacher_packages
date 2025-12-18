@@ -32,12 +32,9 @@ class GoAuthRoute {
 
   /// Builds the [GoRoute] paths for authentication.
   ///
-  /// The paths defined are `sign-in` and `sign-out`, and paths start from
-  /// [signedOutRoute] prefix.
-  ///
-  /// The [signedOutRoute] is the route to redirect to after a successful
-  /// sign-out.
-  static GoRoute builder({required String signedOutRoute}) => GoRoute(
+  /// The [landingRoute] is the route to redirect to after a successful
+  /// sign-out / sign-out.
+  static GoRoute builder({required String landingRoute}) => GoRoute(
     path: 'auth',
     builder: (BuildContext context, GoRouterState state) =>
         const SizedBox.shrink(),
@@ -49,12 +46,12 @@ class GoAuthRoute {
           showAuthActionSwitch: false,
           actions: [
             AuthStateChangeAction<UserCreated>((context, userCreated) {
-              _logger.info('<UserCreated>:');
-              GoRouter.of(context).pop();
+              _logger.info('<UserCreated>: landingRoute $landingRoute');
+              GoRouter.of(context).goNamed(landingRoute);
             }),
             AuthStateChangeAction<SignedIn>((context, state) {
-              _logger.info('<SignedIn>:');
-              GoRouter.of(context).pop();
+              _logger.info('<SignedIn>: landingRoute $landingRoute');
+              GoRouter.of(context).goNamed(landingRoute);
             }),
           ],
         ),
@@ -63,9 +60,9 @@ class GoAuthRoute {
         name: AuthRouterName.signOut.name,
         path: 'sign-out',
         redirect: (context, state) async {
-          _logger.info('<SignedOut>: redirect to $signedOutRoute');
+          _logger.info('<SignedOut>: redirect to $landingRoute');
           await AuthViewModel.instance.signOut();
-          return signedOutRoute;
+          return landingRoute;
         },
       ),
     ],

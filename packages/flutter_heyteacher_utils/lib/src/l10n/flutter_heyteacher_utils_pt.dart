@@ -16,20 +16,20 @@ class FlutterHeyteacherUtilsLocalizationsPt
   String get userNotAuthenticated => 'Usuário não autenticado';
 
   @override
-  String get notAuthenticated => 'Não Autenticado';
+  String get notAuthenticated => 'Não autenticado';
 
   @override
   String get errorOnRetrieveData => 'Erro ao recuperar dados';
 
   @override
-  String get timeoutOnRetrieveData => 'Tempo esgotado ao recuperar dados';
+  String get timeoutOnRetrieveData => 'Tempo limite ao recuperar dados';
 
   @override
   String get confirm => 'Confirmar';
 
   @override
   String get areYouSureToConfirmTheAction =>
-      'Tem certeza que deseja confirmar a ação?';
+      'Tem certeza de que deseja confirmar a ação?';
 
   @override
   String get encryptionPassphraseIsEmptySetIt =>
@@ -48,7 +48,7 @@ class FlutterHeyteacherUtilsLocalizationsPt
       'Erro na descriptografia, verifique a frase secreta de criptografia';
 
   @override
-  String get id => 'Id: ';
+  String get id => 'ID: ';
 
   @override
   String get version => 'Versão: ';
@@ -71,18 +71,18 @@ class FlutterHeyteacherUtilsLocalizationsPt
       minutes,
       locale: localeName,
       other: '$minutes minutos',
-      one: '$minutes minuto',
+      one: 'um minuto',
     );
     return '$_temp0';
   }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'Tem certeza que deseja alterar a frase secreta de criptografia?';
+      'Se você alterar a frase secreta de criptografia, não poderá acessar os dados criptografados com a frase secreta antiga.\n\nTem certeza de que deseja alterar a frase secreta de criptografia?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'Tem certeza que deseja importar a chave secreta de criptografia?';
+      'Se você importar uma chave secreta de criptografia, a chave antiga será substituída e os dados criptografados com a chave antiga serão perdidos.\n\nTem certeza de que deseja importar a chave secreta de criptografia?';
 
   @override
   String get encryptionSecretKeyImported =>
@@ -97,25 +97,35 @@ class FlutterHeyteacherUtilsLocalizationsPt
   @override
   String
   get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Escaneie o código QR com outro dispositivo ou armazene em um local seguro. Lembre-se de usar a mesma frase secreta.';
+      'Digitalize o código QR com outro dispositivo ou armazene-o em um local seguro.\nO código QR é criptografado com a frase secreta de criptografia.\nVocê deve definir a mesma frase secreta de criptografia no novo dispositivo.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
       'Tarefa de fluxo de trabalho já inicializada';
 
   @override
-  String get errorWorkflowNotInitialized => 'Workflow não inicializado';
+  String get errorWorkflowNotInitialized =>
+      'Fluxo de trabalho não inicializado';
 
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
-      'Conteúdo indisponível offline.\n\nPor favor, tente novamente quando estiver conectado à internet.';
+      'Conteúdo indisponível offline.\n\nTente novamente quando o dispositivo estiver conectado à internet.';
 
   @override
-  String get deleteUserData => 'Excluir dados do usuário';
+  String get deleteUserData => 'Agendar exclusão de dados do usuário';
 
   @override
-  String get doYouConfirmDeletionUserData =>
-      'Você confirma a exclusão dos dados do usuário?';
+  String doYouConfirmDeletionUserData(Object expireDateTime) {
+    return 'Você confirma a exclusão dos seus dados de usuário?\nCuidado! Esta ação não pode ser desfeita até depois de $expireDateTime.';
+  }
+
+  @override
+  String get restoreUserData => 'Restaurar dados do usuário';
+
+  @override
+  String doYouConfirmRestoringUserData(Object expireDateTime) {
+    return 'Você agendou a exclusão dos seus dados de usuário para $expireDateTime.\nVocê confirma o cancelamento da exclusão agendada?';
+  }
 
   @override
   String get task => 'Tarefa';
@@ -135,7 +145,7 @@ class FlutterHeyteacherUtilsLocalizationsPt
 
   @override
   String defaultValue(Object defaultValue) {
-    return 'Valor padrão: $defaultValue';
+    return 'Padrão: $defaultValue';
   }
 
   @override
@@ -143,8 +153,9 @@ class FlutterHeyteacherUtilsLocalizationsPt
     String _temp0 = intl.Intl.pluralLogic(
       nSeconds,
       locale: localeName,
-      other: '$nSeconds seg',
-      zero: '',
+      other: '$nSeconds segs',
+      one: '1 seg',
+      zero: '0 seg',
     );
     return '$_temp0';
   }
@@ -153,5 +164,5 @@ class FlutterHeyteacherUtilsLocalizationsPt
   String get search => 'Pesquisar';
 
   @override
-  String get enableLogsStorage => 'Ativar armazenamento de registro';
+  String get enableLogsStorage => 'Habilitar armazenamento de logs';
 }

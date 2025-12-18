@@ -110,9 +110,6 @@ class MockFlutterHeyteacherUtilsLocalizations
   String get deleteUserData => '';
 
   @override
-  String get doYouConfirmDeletionUserData => '';
-
-  @override
   String get description => '';
 
   @override
@@ -140,7 +137,16 @@ class MockFlutterHeyteacherUtilsLocalizations
   String get search => '';
 
   @override
-  String get enableLogsStorage => throw UnimplementedError();
+  String get enableLogsStorage => '';
+  
+  @override
+  String get restoreUserData => '';
+  
+  @override
+  String doYouConfirmDeletionUserData(Object expireDateTime) => '';
+  
+  @override
+  String doYouConfirmRestoringUserData(Object expireDateTime) => '';
 }
 
 class _MockLocalizationsDelegate
