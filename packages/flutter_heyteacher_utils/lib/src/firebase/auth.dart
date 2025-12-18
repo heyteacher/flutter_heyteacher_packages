@@ -12,14 +12,18 @@ library;
 
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
+import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/router.dart';
+import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -38,20 +42,20 @@ class AccountCard extends StatefulWidget {
   /// Requires callbacks for creating and deleting user data, which are
   /// triggered by authentication events and user actions.
   const AccountCard({
-    required Future<String?> Function(String?) createUserDataCallback,
-    required Future<String?> Function(String?) deleteUserDataCallback,
+    required AsyncCallback createAccountCallback,
+    required AsyncCallback deleteAccountCallback,
     super.key,
-  }) : _createUserDataCallback = createUserDataCallback,
-       _deleteUserDataCallback = deleteUserDataCallback;
+  }) : _createUserDataCallback = createAccountCallback,
+       _deleteUserDataCallback = deleteAccountCallback;
 
   /// A callback function that is invoked to delete the user's data.
   /// This is typically triggered when the user confirms the data deletion
   /// action.
-  final Future<String?> Function(String?) _deleteUserDataCallback;
+  final AsyncCallback _deleteUserDataCallback;
 
   /// A callback function that is invoked to create initial user data.
   /// This is automatically triggered when a user signs in.
-  final Future<String?> Function(String?) _createUserDataCallback;
+  final AsyncCallback _createUserDataCallback;
 
   @override
   State<AccountCard> createState() => _AccountCardState();
@@ -64,7 +68,7 @@ class _AccountCardState extends State<AccountCard> {
   void initState() {
     super.initState();
     _authStreamSubscription = AuthViewModel.instance.stateChangesStream.listen(
-      (user) => user != null ? widget._createUserDataCallback(null) : null,
+      (user) => user != null ? widget._createUserDataCallback() : null,
     );
   }
 
@@ -89,10 +93,10 @@ class _AccountCardState extends State<AccountCard> {
         title: Text(FlutterHeyteacherUtilsLocalizations.of(context)!.account),
         subtitle: AuthViewModel.instance.autenticated
             ? AuthViewModel.instance.displayName != null
-                ? Text(
-                    AuthViewModel.instance.displayName!,
-                  )
-                : null
+                  ? Text(
+                      AuthViewModel.instance.displayName!,
+                    )
+                  : null
             : Text(
                 FlutterHeyteacherUtilsLocalizations.of(
                   context,
@@ -105,34 +109,42 @@ class _AccountCardState extends State<AccountCard> {
                 key: const ValueKey('ic_delete_data'),
                 icon: const Icon(Icons.delete),
                 color: ThemeViewModel.instance.redColor,
-                onPressed: () async {
-                  unawaited(
-                    showConfirmCancelDialog<String>(
-                      context: context,
-                      confirmCallback: (_) async {
-                        await widget._deleteUserDataCallback(null);
-                        if (context.mounted) {
-                          unawaited(
-                            GoRouter.of(
-                              context,
-                            ).pushNamed(AuthRouterName.signOut.name),
-                          );
-                        }
-                        return null;
-                      },
-                      title: Text(
-                        FlutterHeyteacherUtilsLocalizations.of(
-                          context,
-                        )!.deleteUserData,
-                      ),
-                      content: Text(
-                        FlutterHeyteacherUtilsLocalizations.of(
-                          context,
-                        )!.doYouConfirmDeletionUserData,
+                onPressed: () async => unawaited(
+                  showConfirmCancelDialog<String>(
+                    context: context,
+                    confirmCallback: (_) async {
+                      await widget._deleteUserDataCallback();
+                      if (context.mounted) {
+                        unawaited(
+                          GoRouter.of(
+                            context,
+                          ).pushNamed(AuthRouterName.signOut.name),
+                        );
+                      }
+                      return null;
+                    },
+                    title: Text(
+                      FlutterHeyteacherUtilsLocalizations.of(
+                        context,
+                      )!.deleteUserData,
+                    ),
+                    content: Text(
+                      FlutterHeyteacherUtilsLocalizations.of(
+                        context,
+                      )!.doYouConfirmDeletionUserData(
+                        FormatterHelper.dateTimeFormat(
+                          clock.now().add(
+                            Duration(
+                              days: RemoteConfigViewModel.instance.getInt(
+                                FHURemoteConfigKeys.expireDurationInDays.name,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
             IconButton(
               key: const ValueKey('ic_login_logout'),
@@ -145,12 +157,14 @@ class _AccountCardState extends State<AccountCard> {
                   ? ThemeViewModel.instance.redColor
                   : Theme.of(context).iconTheme.color,
               onPressed: () async {
+                // sign out
                 if (AuthViewModel.instance.autenticated) {
                   unawaited(
                     GoRouter.of(
                       context,
                     ).pushNamed(AuthRouterName.signOut.name),
                   );
+                  // sign in
                 } else {
                   unawaited(
                     GoRouter.of(

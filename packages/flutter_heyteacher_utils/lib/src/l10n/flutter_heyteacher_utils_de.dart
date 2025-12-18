@@ -19,52 +19,52 @@ class FlutterHeyteacherUtilsLocalizationsDe
   String get notAuthenticated => 'Nicht authentifiziert';
 
   @override
-  String get errorOnRetrieveData => 'Fehler beim Abrufen der Daten';
+  String get errorOnRetrieveData => 'Fehler beim Abrufen von Daten';
 
   @override
   String get timeoutOnRetrieveData =>
-      'Zeitüberschreitung beim Abrufen der Daten';
+      'Zeitüberschreitung beim Abrufen von Daten';
 
   @override
   String get confirm => 'Bestätigen';
 
   @override
   String get areYouSureToConfirmTheAction =>
-      'Sind Sie sicher, dass Sie die Aktion bestätigen möchten?';
+      'Möchten Sie die Aktion wirklich bestätigen?';
 
   @override
   String get encryptionPassphraseIsEmptySetIt =>
-      'Verschlüsselungspasswort ist leer, bitte festlegen';
+      'Verschlüsselungspassphrase ist leer, bitte festlegen';
 
   @override
   String get missingEncryptionSecretKeyImportIt =>
-      'Fehlender geheimer Verschlüsselungsschlüssel, bitte importieren';
+      'Fehlender Verschlüsselungs-Geheimschlüssel, bitte importieren';
 
   @override
   String get errorOnEncryptionCheckPassphrase =>
-      'Fehler bei der Verschlüsselung, überprüfen Sie das Verschlüsselungspasswort';
+      'Fehler bei der Verschlüsselung, überprüfen Sie die Verschlüsselungspassphrase';
 
   @override
   String get errorOnDecryptionCheckPassphrase =>
-      'Fehler bei der Entschlüsselung, überprüfen Sie das Verschlüsselungspasswort';
+      'Fehler bei der Entschlüsselung, überprüfen Sie die Verschlüsselungspassphrase';
 
   @override
-  String get id => 'Id: ';
+  String get id => 'ID: ';
 
   @override
   String get version => 'Version: ';
 
   @override
-  String get askSupport => 'Support anfordern';
+  String get askSupport => 'Support anfragen';
 
   @override
-  String get askSupportFor => 'Support anfordern für: ';
+  String get askSupportFor => 'Support anfragen für: ';
 
   @override
   String get logging => 'Protokollierung';
 
   @override
-  String get loggingLevel => 'Protokollierungsebene';
+  String get loggingLevel => 'Protokollierungsstufe';
 
   @override
   String nMinutes(num minutes) {
@@ -72,33 +72,33 @@ class FlutterHeyteacherUtilsLocalizationsDe
       minutes,
       locale: localeName,
       other: '$minutes Minuten',
-      one: '$minutes Minuten',
+      one: 'eine Minute',
     );
-    return '$_temp0 ';
+    return '$_temp0';
   }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'Sind Sie sicher, dass Sie das Verschlüsselungspasswort ändern möchten?';
+      'Wenn Sie die Verschlüsselungspassphrase ändern, können Sie nicht mehr auf Daten zugreifen, die mit der alten Passphrase verschlüsselt wurden.\n\nMöchten Sie die Verschlüsselungspassphrase wirklich ändern?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'Sind Sie sicher, dass Sie den geheimen Verschlüsselungsschlüssel importieren möchten?';
+      'Wenn Sie einen Verschlüsselungs-Geheimschlüssel importieren, wird der alte Schlüssel überschrieben und mit dem alten Schlüssel verschlüsselte Daten gehen verloren.\n\nMöchten Sie den Verschlüsselungs-Geheimschlüssel wirklich importieren?';
 
   @override
   String get encryptionSecretKeyImported =>
-      'Geheimer Verschlüsselungsschlüssel importiert';
+      'Verschlüsselungs-Geheimschlüssel importiert';
 
   @override
-  String get encryptionPassphrase => 'Verschlüsselungspasswort';
+  String get encryptionPassphrase => 'Verschlüsselungspassphrase';
 
   @override
-  String get encryptionSecretKey => 'Geheimer Verschlüsselungsschlüssel';
+  String get encryptionSecretKey => 'Verschlüsselungs-Geheimschlüssel';
 
   @override
   String
   get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scannen Sie den QR-Code mit einem anderen Gerät oder speichern Sie ihn an einem sicheren Ort. Denken Sie daran, dasselbe Passwort zu verwenden.';
+      'Scannen Sie den QR-Code mit einem anderen Gerät oder speichern Sie ihn an einem sicheren Ort.\nDer QR-Code ist mit der Verschlüsselungspassphrase verschlüsselt.\nSie müssen auf dem neuen Gerät dieselbe Verschlüsselungspassphrase festlegen.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
@@ -109,14 +109,23 @@ class FlutterHeyteacherUtilsLocalizationsDe
 
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
-      'Inhalt offline nicht verfügbar.\\n\\nBitte versuchen Sie es erneut, wenn Sie mit dem Internet verbunden sind.';
+      'Inhalt offline nicht verfügbar.\n\nVersuchen Sie es erneut, wenn das Gerät mit dem Internet verbunden ist.';
 
   @override
-  String get deleteUserData => 'Benutzerdaten löschen';
+  String get deleteUserData => 'Löschung der Benutzerdaten planen';
 
   @override
-  String get doYouConfirmDeletionUserData =>
-      'Möchten Sie das Löschen der Benutzerdaten bestätigen?';
+  String doYouConfirmDeletionUserData(Object expireDateTime) {
+    return 'Bestätigen Sie die Löschung Ihrer Benutzerdaten?\nSeien Sie vorsichtig! Diese Aktion kann erst nach $expireDateTime rückgängig gemacht werden.';
+  }
+
+  @override
+  String get restoreUserData => 'Benutzerdaten wiederherstellen';
+
+  @override
+  String doYouConfirmRestoringUserData(Object expireDateTime) {
+    return 'Sie haben die Löschung Ihrer Benutzerdaten für $expireDateTime geplant.\nBestätigen Sie, dass Sie die geplante Löschung abbrechen möchten?';
+  }
 
   @override
   String get task => 'Aufgabe';
@@ -132,7 +141,7 @@ class FlutterHeyteacherUtilsLocalizationsDe
 
   @override
   String get deviceOfflineAskSupportWhenOnline =>
-      'Gerät offline. Bitten Sie um Unterstützung, wenn das Gerät mit dem Internet verbunden ist.';
+      'Gerät offline. Support anfragen, wenn das Gerät mit dem Internet verbunden ist.';
 
   @override
   String defaultValue(Object defaultValue) {
@@ -144,15 +153,16 @@ class FlutterHeyteacherUtilsLocalizationsDe
     String _temp0 = intl.Intl.pluralLogic(
       nSeconds,
       locale: localeName,
-      other: '$nSeconds sek',
-      zero: '',
+      other: '$nSeconds Sek.',
+      one: '1 Sek.',
+      zero: '0 Sek.',
     );
     return '$_temp0';
   }
 
   @override
-  String get search => 'Suche';
+  String get search => 'Suchen';
 
   @override
-  String get enableLogsStorage => 'Protokollierungsspeicher aktivieren';
+  String get enableLogsStorage => 'Protokollspeicherung aktivieren';
 }

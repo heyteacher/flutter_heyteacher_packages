@@ -275,14 +275,26 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @deleteUserData.
   ///
   /// In en, this message translates to:
-  /// **'Delete User Data'**
+  /// **'Schedule deletion User Data'**
   String get deleteUserData;
 
   /// No description provided for @doYouConfirmDeletionUserData.
   ///
   /// In en, this message translates to:
-  /// **'Do you confirm the deletion of your user data?\nBe careful! This action cannot be undone.'**
-  String get doYouConfirmDeletionUserData;
+  /// **'Do you confirm the deletion of your user data?\nBe careful! This action cannot be undone until after {expireDateTime}.'**
+  String doYouConfirmDeletionUserData(Object expireDateTime);
+
+  /// No description provided for @restoreUserData.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore User Data'**
+  String get restoreUserData;
+
+  /// No description provided for @doYouConfirmRestoringUserData.
+  ///
+  /// In en, this message translates to:
+  /// **'You sheduled the deletion of your user data on {expireDateTime}.\nDo you confirm to cancel the deletion scheduled?'**
+  String doYouConfirmRestoringUserData(Object expireDateTime);
 
   /// No description provided for @task.
   ///

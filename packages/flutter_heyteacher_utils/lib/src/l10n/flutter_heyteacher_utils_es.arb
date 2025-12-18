@@ -1,8 +1,10 @@
 {
   "@@locale": "es",
+  "account": "Cuenta",
+  "@account": {},
   "userNotAuthenticated": "Usuario no autenticado",
   "@userNotAuthenticated": {},
-  "notAuthenticated": "No Autenticado",
+  "notAuthenticated": "No autenticado",
   "@notAuthenticated": {},
   "errorOnRetrieveData": "Error al recuperar datos",
   "@errorOnRetrieveData": {},
@@ -10,42 +12,37 @@
   "@timeoutOnRetrieveData": {},
   "confirm": "Confirmar",
   "@confirm": {},
-  "areYouSureToConfirmTheAction": "¿Estás seguro de confirmar la acción?",
+  "areYouSureToConfirmTheAction": "¿Está seguro de confirmar la acción?",
   "@areYouSureToConfirmTheAction": {},
-  "encryptionPassphraseIsEmptySetIt": "La frase de contraseña de cifrado está vacía, configúrala",
+  "encryptionPassphraseIsEmptySetIt": "La frase de contraseña de cifrado está vacía, configúrela",
   "@encryptionPassphraseIsEmptySetIt": {},
-  "missingEncryptionSecretKeyImportIt": "Falta la clave secreta de cifrado, impórtala",
+  "missingEncryptionSecretKeyImportIt": "Falta la clave secreta de cifrado, impórtela",
   "@missingEncryptionSecretKeyImportIt": {},
-  "errorOnEncryptionCheckPassphrase": "Error en el cifrado, verifica la frase de contraseña de cifrado",
+  "errorOnEncryptionCheckPassphrase": "Error en el cifrado, verifique la frase de contraseña de cifrado",
   "@errorOnEncryptionCheckPassphrase": {},
-  "errorOnDecryptionCheckPassphrase": "Error en el descifrado, verifica la frase de contraseña de cifrado",
+  "errorOnDecryptionCheckPassphrase": "Error en el descifrado, verifique la frase de contraseña de cifrado",
   "@errorOnDecryptionCheckPassphrase": {},
-  "id": "Id: ",
+  "id": "ID: ",
   "@id": {},
   "version": "Versión: ",
   "@version": {},
-  "support": "Soporte",
-  "@support": {},
-  "askSupportFor": "Pedir soporte para: ",
-  "@askSupportFor": {},
-  "askSupport": "Pedir soporte",
+  "askSupport": "Solicitar soporte",
   "@askSupport": {},
+  "askSupportFor": "Solicitar soporte para: ",
+  "@askSupportFor": {},
   "logging": "Registro",
   "@logging": {},
   "loggingLevel": "Nivel de registro",
   "@loggingLevel": {},
-  "nMinutes": "{minutes, plural, =1{{minutes} minuto} other{{minutes} minutos}}",
+  "nMinutes": "{minutes, plural, =1{un minuto} other{{minutes} minutos}}",
   "@nMinutes": {
-    "description": "Indica la cantidad de minutos, con pluralización.",
     "placeholders": {
       "minutes": {}
     }
   },
-  "account": "Cuenta",
-  "@account": {},
-  "areYouSureToChangeEncryptionPassphrase": "¿Estás seguro de cambiar la frase de contraseña de cifrado?",
+  "areYouSureToChangeEncryptionPassphrase": "Si cambia la frase de contraseña de cifrado, no podrá acceder a los datos cifrados con la frase de contraseña antigua.\n\n¿Está seguro de que desea cambiar la frase de contraseña de cifrado?",
   "@areYouSureToChangeEncryptionPassphrase": {},
-  "areYouSureToImportEncryptionSecretKey": "¿Estás seguro de importar la clave secreta de cifrado?",
+  "areYouSureToImportEncryptionSecretKey": "Si importa una clave secreta de cifrado, la clave antigua se sobrescribirá y los datos cifrados con la clave antigua se perderán.\n\n¿Está seguro de que desea importar la clave secreta de cifrado?",
   "@areYouSureToImportEncryptionSecretKey": {},
   "encryptionSecretKeyImported": "Clave secreta de cifrado importada",
   "@encryptionSecretKeyImported": {},
@@ -53,34 +50,47 @@
   "@encryptionPassphrase": {},
   "encryptionSecretKey": "Clave secreta de cifrado",
   "@encryptionSecretKey": {},
-  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Escanea el código QR con otro dispositivo o guárdalo en un lugar seguro. Recuerda usar la misma frase de contraseña.",
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Escanee el código QR con otro dispositivo o guárdelo en un lugar seguro.\nEl código QR está cifrado con la frase de contraseña de cifrado.\nDebe establecer la misma frase de contraseña de cifrado en el nuevo dispositivo.",
   "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
-  "errorWorkflowTaskAlreadyInitialized": "La tarea del flujo de trabajo ya ha sido inicializada",
+  "errorWorkflowTaskAlreadyInitialized": "Tarea de flujo de trabajo ya inicializada",
   "@errorWorkflowTaskAlreadyInitialized": {},
-  "errorWorkflowNotInitialized": "Workflow no inicializado",
+  "errorWorkflowNotInitialized": "Flujo de trabajo no inicializado",
   "@errorWorkflowNotInitialized": {},
-  "contentUnavailableOfflineRetryWhenOnline": "Contenido no disponible sin conexión.\n\nPor favor, inténtalo de nuevo cuando estés conectado a Internet.",
+  "contentUnavailableOfflineRetryWhenOnline": "Contenido no disponible sin conexión.\n\nIntente de nuevo cuando el dispositivo esté conectado a internet.",
   "@contentUnavailableOfflineRetryWhenOnline": {},
-  "deleteUserData": "Eliminar datos de usuario",
+  "deleteUserData": "Programar eliminación de datos de usuario",
   "@deleteUserData": {},
-  "doYouConfirmDeletionUserData": "¿Confirma la eliminación de los datos de usuario?",
-  "@doYouConfirmDeletionUserData": {},
+  "doYouConfirmDeletionUserData": "¿Confirma la eliminación de sus datos de usuario?\n¡Tenga cuidado! Esta acción no se puede deshacer hasta después de {expireDateTime}.",
+  "@doYouConfirmDeletionUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "restoreUserData": "Restaurar datos de usuario",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "Ha programado la eliminación de sus datos de usuario para {expireDateTime}.\n¿Confirma que desea cancelar la eliminación programada?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
   "task": "Tarea",
   "@task": {},
   "description": "Descripción",
   "@description": {},
   "tasks": "Tareas",
   "@tasks": {},
-  "skip": "Saltar",
+  "skip": "Omitir",
   "@skip": {},
-  "deviceOfflineAskSupportWhenOnline": "Dispositivo sin conexión. Pida soporte cuando el dispositivo esté conectado a internet.",
-  "defaultValue": "Valor por defecto: {defaultValue}",
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo sin conexión. Solicite soporte cuando el dispositivo esté conectado a internet.",
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "defaultValue": "Predeterminado: {defaultValue}",
   "@defaultValue": {
     "placeholders": {
       "defaultValue": {}
     }
   },
-  "nSeconds": "{nSeconds, plural, =0{} other{{nSeconds} seg}}",
+  "nSeconds": "{nSeconds, plural, =0{0 seg} =1{1 seg} other{{nSeconds} segs}}",
   "@nSeconds": {
     "placeholders": {
       "nSeconds": {}
@@ -88,6 +98,6 @@
   },
   "search": "Buscar",
   "@search": {},
-  "enableLogsStorage": "Activar almacenamiento de registro",
+  "enableLogsStorage": "Habilitar almacenamiento de registros",
   "@enableLogsStorage": {}
 }

@@ -16,7 +16,7 @@ class FlutterHeyteacherUtilsLocalizationsFr
   String get userNotAuthenticated => 'Utilisateur non authentifié';
 
   @override
-  String get notAuthenticated => 'Non Authentifié';
+  String get notAuthenticated => 'Non authentifié';
 
   @override
   String get errorOnRetrieveData =>
@@ -35,25 +35,25 @@ class FlutterHeyteacherUtilsLocalizationsFr
 
   @override
   String get encryptionPassphraseIsEmptySetIt =>
-      'La phrase de passe de chiffrement est vide, veuillez la définir';
+      'La phrase secrète de chiffrement est vide, définissez-la';
 
   @override
   String get missingEncryptionSecretKeyImportIt =>
-      'Clé secrète de chiffrement manquante, veuillez l\'importer';
+      'Clé secrète de chiffrement manquante, importez-la';
 
   @override
   String get errorOnEncryptionCheckPassphrase =>
-      'Erreur de chiffrement, vérifiez la phrase de passe de chiffrement';
+      'Erreur de chiffrement, vérifiez la phrase secrète de chiffrement';
 
   @override
   String get errorOnDecryptionCheckPassphrase =>
-      'Erreur de déchiffrement, vérifiez la phrase de passe de chiffrement';
+      'Erreur de déchiffrement, vérifiez la phrase secrète de chiffrement';
 
   @override
-  String get id => 'Id : ';
+  String get id => 'ID: ';
 
   @override
-  String get version => 'Version : ';
+  String get version => 'Version: ';
 
   @override
   String get askSupport => 'Demander de l\'aide';
@@ -73,25 +73,25 @@ class FlutterHeyteacherUtilsLocalizationsFr
       minutes,
       locale: localeName,
       other: '$minutes minutes',
-      one: '$minutes minute',
+      one: 'une minute',
     );
     return '$_temp0';
   }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'Êtes-vous sûr de vouloir changer la phrase de passe de chiffrement ?';
+      'Si vous modifiez la phrase secrète de chiffrement, vous ne pourrez plus accéder aux données chiffrées avec l\'ancienne phrase secrète.\n\nÊtes-vous sûr de vouloir modifier la phrase secrète de chiffrement ?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'Êtes-vous sûr de vouloir importer la clé secrète de chiffrement ?';
+      'Si vous importez une clé secrète de chiffrement, l\'ancienne clé sera écrasée et les données chiffrées avec l\'ancienne clé seront perdues.\n\nÊtes-vous sûr de vouloir importer la clé secrète de chiffrement ?';
 
   @override
   String get encryptionSecretKeyImported =>
       'Clé secrète de chiffrement importée';
 
   @override
-  String get encryptionPassphrase => 'Phrase de passe de chiffrement';
+  String get encryptionPassphrase => 'Phrase secrète de chiffrement';
 
   @override
   String get encryptionSecretKey => 'Clé secrète de chiffrement';
@@ -99,25 +99,35 @@ class FlutterHeyteacherUtilsLocalizationsFr
   @override
   String
   get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scannez le code QR avec un autre appareil ou stockez-le dans un endroit sûr. N\'oubliez pas d\'utiliser la même phrase de passe.';
+      'Scannez le code QR avec un autre appareil ou stockez-le dans un endroit sécurisé.\nLe code QR est chiffré avec la phrase secrète de chiffrement.\nVous devez définir la même phrase secrète de chiffrement sur le nouvel appareil.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
-      'La tâche du flux de travail a déjà été initialisée';
+      'Tâche de workflow déjà initialisée';
 
   @override
   String get errorWorkflowNotInitialized => 'Workflow non initialisé';
 
   @override
   String get contentUnavailableOfflineRetryWhenOnline =>
-      'Contenu indisponible hors ligne.\\n\\nVeuillez réessayer lorsque vous êtes connecté à Internet.';
+      'Contenu indisponible hors ligne.\n\nRéessayez lorsque l\'appareil est connecté à internet.';
 
   @override
-  String get deleteUserData => 'Supprimer les données utilisateur';
+  String get deleteUserData =>
+      'Planifier la suppression des données utilisateur';
 
   @override
-  String get doYouConfirmDeletionUserData =>
-      'Confirmez-vous la suppression des données utilisateur ?';
+  String doYouConfirmDeletionUserData(Object expireDateTime) {
+    return 'Confirmez-vous la suppression de vos données utilisateur ?\nAttention ! Cette action ne peut pas être annulée avant le $expireDateTime.';
+  }
+
+  @override
+  String get restoreUserData => 'Restaurer les données utilisateur';
+
+  @override
+  String doYouConfirmRestoringUserData(Object expireDateTime) {
+    return 'Vous avez planifié la suppression de vos données utilisateur pour le $expireDateTime.\nConfirmez-vous l\'annulation de la suppression planifiée ?';
+  }
 
   @override
   String get task => 'Tâche';
@@ -129,15 +139,15 @@ class FlutterHeyteacherUtilsLocalizationsFr
   String get tasks => 'Tâches';
 
   @override
-  String get skip => 'Sauter';
+  String get skip => 'Passer';
 
   @override
   String get deviceOfflineAskSupportWhenOnline =>
-      'Appareil hors ligne. Demandez de l\'aide lorsque l\'appareil est connecté à Internet.';
+      'Appareil hors ligne. Demandez de l\'aide lorsque l\'appareil est connecté à internet.';
 
   @override
   String defaultValue(Object defaultValue) {
-    return 'Valeur par défaut : $defaultValue';
+    return 'Par défaut : $defaultValue';
   }
 
   @override

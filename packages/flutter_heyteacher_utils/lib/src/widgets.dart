@@ -113,66 +113,67 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
   Widget? title,
 }) async {
   final logger = Logger('showConfirmCancelDialog')
-    ..finer('<showConfirmCancelDialog>: title $title');
+    ..finer('<showConfirmCancelDialog>:');
   final confirm = await showDialog<bool>(
     context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: title != null
-            ? Padding(padding: const EdgeInsets.only(top: 8), child: title)
-            : null,
-        content: Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: content,
+    builder: (context) => AlertDialog(
+      title: title != null
+          ? Padding(padding: const EdgeInsets.only(top: 8), child: title)
+          : null,
+      content: Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: content,
+      ),
+      actions: <Widget>[
+        IconButton(
+          key: const ValueKey('ib_dialog_no'),
+          icon: Icon(Icons.close, color: ThemeViewModel.instance.redColor),
+          onPressed: () {
+            // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pop(false);
+            });
+          },
         ),
-        actions: <Widget>[
+        if (confirmCallback != null)
           IconButton(
-            key: const ValueKey('ib_dialog_no'),
-            icon: Icon(Icons.close, color: ThemeViewModel.instance.redColor),
-            onPressed: () {
+            key: const ValueKey('ib_dialog_yes'),
+            icon: const Icon(Icons.check),
+            onPressed: () async {
               // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
               SchedulerBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).pop(false);
+                Navigator.of(context).pop(true);
               });
             },
           ),
-          if (confirmCallback != null)
-            IconButton(
-              key: const ValueKey('ib_dialog_yes'),
-              icon: const Icon(Icons.check),
-              onPressed: () async {
-                // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
-                SchedulerBinding.instance.addPostFrameCallback((_) {
-                  Navigator.of(context).pop(true);
-                });
-              },
-            ),
-        ],
-      );
-    },
+      ],
+    ),
   );
-  if (confirmCallback != null && confirm != null && confirm) {
-    logger.finer('(showConfirmCancelDialog): title $title. Confirm');
-    String? message;
-    var errorRaised = false;
-    try {
-      message = await confirmCallback(param);
-    } catch (error, stackTrace) {
-      errorRaised = true;
-      message = error.toString();
-      logger.severe(
-        '(showConfirmCancelDialog): title $title. error',
-        error,
-        stackTrace,
-      );
-      rethrow;
-    } finally {
-      if (context.mounted && message != null) {
-        showSnackBar(context: context, message: message, error: errorRaised);
+  if (confirm != null) {
+    if (confirm) {
+      logger.finer('(showConfirmCancelDialog): Confirm');
+      String? message;
+      var errorRaised = false;
+      try {
+        message = await confirmCallback?.call(param);
+      } catch (error, stackTrace) {
+        errorRaised = true;
+        message = error.toString();
+        logger.severe(
+          '(showConfirmCancelDialog): error',
+          error,
+          stackTrace,
+        );
+        rethrow;
+      } finally {
+        if (context.mounted && message != null) {
+          showSnackBar(context: context, message: message, error: errorRaised);
+        }
       }
+    } else {
+      logger.finer('(showConfirmCancelDialog): cancel');
+      unawaited(cancelCallback?.call(param));
     }
-  } else {
-    if (cancelCallback != null) unawaited(cancelCallback(param));
   }
 }
 
@@ -349,9 +350,11 @@ class ErrorView extends StatelessWidget {
                     ),
                     color: Theme.of(context).iconTheme.color,
                     onPressed: () async {
-                      unawaited(GoRouter.of(
-                        context,
-                      ).pushNamed(AuthRouterName.signIn.name));
+                      unawaited(
+                        GoRouter.of(
+                          context,
+                        ).pushNamed(AuthRouterName.signIn.name),
+                      );
                     },
                   ),
                 ),
