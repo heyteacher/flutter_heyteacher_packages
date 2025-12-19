@@ -15,6 +15,7 @@ dependencies:
     path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
+  markdown_widget: ^2.3.2+8
   url_launcher: ^6.3.2
   video_player: ^2.10.0
 

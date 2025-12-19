@@ -1,2 +1,7 @@
 export 'src/misc.dart'
-    show GetItOnGooglePlayButton, LeadingIcon, TitleText, TitleTextSliver;
+    show
+        GetItOnGooglePlayButton,
+        LeadingIcon,
+        MarkdownPage,
+        TitleText,
+        TitleTextSliver;

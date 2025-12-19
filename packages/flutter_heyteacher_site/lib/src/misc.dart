@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
+import 'package:flutter_heyteacher_utils/locale.dart' show LocaleViewModel;
+import 'package:markdown_widget/widget/markdown.dart' show MarkdownWidget;
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
 /// A _Get In On Google Play_ button.
@@ -100,4 +103,35 @@ class TitleTextSliver extends TitleText {
   Widget build(BuildContext context) => SliverToBoxAdapter(
     child: super.build(context),
   );
+}
+
+/// The markdown page widget loding markdown from assets
+class MarkdownPage extends StatelessWidget {
+  /// Markdown page constructor. 
+  /// 
+  /// The markdown is loaded from assets [page] based on the current locale 
+  /// [LocaleViewModel.locale].
+  const MarkdownPage({
+    required String page,
+    super.key,
+  }) : _page = page;
+
+  final String _page;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: LocaleViewModel.instance.localeStream,
+      initialData: LocaleViewModel.instance.locale,
+      builder: (_, _) => FutureBuilder<String>(
+        future: rootBundle.loadString(
+          'assets/pages/${LocaleViewModel.instance.locale.languageCode}/'
+          '$_page.md',
+        ),
+        builder: (_, asyncSnapshot) => MarkdownWidget(
+          data: asyncSnapshot.data ?? '',
+        ),
+      ),
+    );
+  }
 }
