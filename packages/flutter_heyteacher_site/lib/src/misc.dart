@@ -12,8 +12,10 @@ class GetItOnGooglePlayButton extends StatelessWidget {
   /// [appId] on Play Store must be speficied
   const GetItOnGooglePlayButton({
     required String appId,
-    required ScreenSize screenSize, super.key,
-  }) : _screenSize = screenSize, _appId = appId;
+    required ScreenSize screenSize,
+    super.key,
+  }) : _screenSize = screenSize,
+       _appId = appId;
 
   final String _appId;
   final ScreenSize _screenSize;
@@ -107,9 +109,9 @@ class TitleTextSliver extends TitleText {
 
 /// The markdown page widget loding markdown from assets
 class MarkdownPage extends StatelessWidget {
-  /// Markdown page constructor. 
-  /// 
-  /// The markdown is loaded from assets [page] based on the current locale 
+  /// Markdown page constructor.
+  ///
+  /// The markdown is loaded from assets [page] based on the current locale
   /// [LocaleViewModel.locale].
   const MarkdownPage({
     required String page,
@@ -119,8 +121,9 @@ class MarkdownPage extends StatelessWidget {
   final String _page;
 
   @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(8),
+    child: StreamBuilder(
       stream: LocaleViewModel.instance.localeStream,
       initialData: LocaleViewModel.instance.locale,
       builder: (_, _) => FutureBuilder<String>(
@@ -132,6 +135,6 @@ class MarkdownPage extends StatelessWidget {
           data: asyncSnapshot.data ?? '',
         ),
       ),
-    );
-  }
+    ),
+  );
 }
