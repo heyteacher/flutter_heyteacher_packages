@@ -553,6 +553,15 @@ class ThemeViewModel {
         dividerColor: Colors.transparent,
         unselectedLabelColor: disabled,
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          textStyle: const WidgetStatePropertyAll(
+            TextStyle(fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: WidgetStatePropertyAll(primary),
+          foregroundColor: WidgetStatePropertyAll(onPrimary),
+        ),
+      ),
       badgeTheme: BadgeThemeData(backgroundColor: onError, textColor: error),
       appBarTheme: const AppBarTheme(iconTheme: IconThemeData(size: 40)),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
