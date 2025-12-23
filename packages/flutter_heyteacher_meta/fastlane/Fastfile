@@ -18,6 +18,8 @@ end
 
 desc "fl buildweb [version:profile|debug]\n\tbuild web and run local webserver on it"
 lane :buildweb do|options|
+  test
+  _increment_flutter_build_number
   version = ""
   if (options[:version] == "profile" || options[:version] == "debug")
       version = "--#{options[:version]}"
