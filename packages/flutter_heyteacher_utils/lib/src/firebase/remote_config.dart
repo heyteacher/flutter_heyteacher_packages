@@ -81,7 +81,8 @@ enum FHURemoteConfigKeys {
   /// The web demo  password also user for End-to-End Encryption (E2EE)
   /// passphrase.
   webDemoPassword,
-
+  /// The backup databaseId
+  backupDatabaseId,
   /// Web Demo E2EE Secret Key
   webDemoE2EESecretKey;
 
