@@ -20,6 +20,7 @@ desc "fl buildweb [version:profile|debug]\n\tbuild web and run local webserver o
 lane :buildweb do|options|
   test
   _increment_flutter_build_number
+  _commit_pubspec
   version = ""
   if (options[:version] == "profile" || options[:version] == "debug")
       version = "--#{options[:version]}"
@@ -35,6 +36,7 @@ desc "fl deployweb [version:profile|debug]\n\tdeploy web in firabase hosting"
 lane :deployweb do|options|
   test
   _increment_flutter_build_number
+  _commit_pubspec
   version = ""
   if (options[:version] == "profile" || options[:version] == "debug")
       version = "--#{options[:version]}"
@@ -45,7 +47,6 @@ lane :deployweb do|options|
     # deploy
     sh("firebase deploy --only hosting")
   end
-  _commit_pubspec
 end
 
 desc "fl _commit_pubspec\n\tcommit pubspec.yaml"
