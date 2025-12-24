@@ -702,7 +702,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   Future<void> delete(String id, {firestore.WriteBatch? batch}) async {
     _logger.finer('<$runtimeType.delete>: $_detailsCollectionPathLog/$id');
     _checkAuthenticated();
-    if (_groupByFields != null) {
+    if (_groupByFields != null && await exists(id)) {
       try {
         await _updateGroupByCounter(await get(id), increment: false);
       } on Exception catch (e, s) {
