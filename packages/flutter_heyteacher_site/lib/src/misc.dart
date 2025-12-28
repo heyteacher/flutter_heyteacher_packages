@@ -91,7 +91,7 @@ class TitleText extends StatelessWidget {
     child: Text(
       title,
       textAlign: _textAlign,
-      style: Theme.of(context).textTheme.headlineLarge,
+      style: Theme.of(context).textTheme.headlineMedium,
     ),
   );
 }
