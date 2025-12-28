@@ -74,7 +74,7 @@ class _AbstractHeroCarouselViewState
   final CarouselController _controller = CarouselController();
 
   /// A timer for automatically advancing the carousel.
-  Timer? _timer;
+  //Timer? _timer;
 
   /// The current starting index of the visible items in the carousel.
   int _currentIndex = 0;
@@ -96,36 +96,20 @@ class _AbstractHeroCarouselViewState
       : _currentIndex - widget.flexWeights.length;
 
   @override
-  /// Initializes the state, setting up a periodic timer to auto-scroll
-  /// the carousel.
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  @override
   /// Disposes the controller when the widget is removed from the widget tree.
   void dispose() {
-    _stopTimer();
     _controller.dispose();
     super.dispose();
   }
 
-  void _startTimer() {
-    //debugPrint('${clock.now().toIso8601String()} <_startTimer>:');
-    _timer?.cancel();
-    _timer = Timer.periodic(
-      Duration(seconds: widget.flexWeights.length * 5),
-      (_) {
-        //debugPrint('${clock.now().toIso8601String()} <Timer.periodic>:');
-        unawaited(_controller.animateToItem(_nextIndex));
-      },
-    );
+  void _next() {
+    //debugPrint('${clock.now().toIso8601String()} <Timer.periodic>:');
+    unawaited(_controller.animateToItem(_nextIndex));
   }
 
-  void _stopTimer() {
-    //debugPrint('${clock.now().toIso8601String()} <_stopTimer>:');
-    _timer?.cancel();
+  void _prev() {
+    //debugPrint('${clock.now().toIso8601String()} <Timer.periodic>:');
+    unawaited(_controller.animateToItem(_prevIndex));
   }
 
   @override
@@ -147,34 +131,56 @@ class _AbstractHeroCarouselViewState
         )
       : _buildCarouselView(context);
 
-  MouseRegion _buildCarouselView(BuildContext context) {
-    return MouseRegion(
-      onEnter: (event) => _stopTimer(),
-      onExit: (event) => _startTimer(),
-      child: Listener(
-        onPointerDown: (pointerDownEvent) {
-          _timer?.cancel();
-          if (pointerDownEvent.position.dx >=
-              MediaQuery.sizeOf(context).width / 2) {
-            unawaited(_controller.animateToItem(_nextIndex));
-          } else {
-            unawaited(_controller.animateToItem(_prevIndex));
-          }
-        },
-        child: CarouselView.weighted(
+  Widget _buildCarouselView(BuildContext context) => Listener(
+    onPointerDown: (pointerDownEvent) {
+      if (pointerDownEvent.position.dx >=
+          MediaQuery.sizeOf(context).width / 2) {
+        _next();
+      } else {
+        _prev();
+      }
+    },
+    child: Stack(
+      children: [
+        CarouselView.weighted(
           controller: _controller,
           itemSnapping: true,
           shrinkExtent: MediaQuery.of(context).size.width,
           flexWeights: widget.flexWeights,
           children: widget.params.heroCarouselItems
               .map(
-                _HeroLayoutCard.new,
+                (screenshotCarouselItem) => _HeroLayoutCard(
+                  screenshotCarouselItem: screenshotCarouselItem,
+                ),
               )
               .toList(),
         ),
-      ),
-    );
-  }
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            IconButton(
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.5),
+              icon: const Icon(
+                size: 80,
+                Icons.keyboard_arrow_left,
+              ),
+              onPressed: _prev,
+            ),
+            const Expanded(child: SizedBox.shrink()),
+            IconButton(
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.5),
+              icon: const Icon(Icons.keyboard_arrow_right, size: 80),
+              onPressed: _next,
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }
 
 /// A widget that displays an image with a title and subtitle overlay,
@@ -184,9 +190,8 @@ class _HeroLayoutCard extends StatelessWidget {
   ///
   /// The [screenshotCarouselItem] parameter is required and provides the data
   /// for the card.
-  const _HeroLayoutCard(
-    HeroCarouselItemData screenshotCarouselItem, {
-    super.key,
+  const _HeroLayoutCard({
+    required HeroCarouselItemData screenshotCarouselItem,
   }) : _screenshotCarouselItem = screenshotCarouselItem;
 
   /// The [HeroCarouselItemData] object containing the title, subtitle,
@@ -210,8 +215,8 @@ class _HeroLayoutCard extends StatelessWidget {
       if (_screenshotCarouselItem.body != null)
         Padding(
           padding: const EdgeInsets.only(
-            left: 2,
-            right: 2,
+            left: 8,
+            right: 8,
             top: 60,
             bottom: 2,
           ),
@@ -223,23 +228,21 @@ class _HeroLayoutCard extends StatelessWidget {
                 .map(
                   (row) => Expanded(
                     child: Row(
-                      spacing: 2,
+                      spacing: 16,
                       children: [
                         Icon(
                           row.leadingIcon,
                           color: row.leadingIconColor,
                           size: Theme.of(
                             context,
-                          ).textTheme.headlineMedium!.fontSize,
+                          ).textTheme.headlineLarge!.fontSize,
                         ),
                         Flexible(
                           child: Text(
                             row.text,
-                            //overflow: TextOverflow.clip,
-                            //softWrap: true,
                             style: Theme.of(
                               context,
-                            ).textTheme.headlineSmall,
+                            ).textTheme.titleMedium,
                           ),
                         ),
                       ],
@@ -275,7 +278,7 @@ class _HeroLayoutCard extends StatelessWidget {
                     : TextAlign.left,
                 style: Theme.of(
                   context,
-                ).textTheme.headlineLarge,
+                ).textTheme.headlineMedium,
               ),
             ),
             if (_screenshotCarouselItem.subtitle?.isNotEmpty ?? false)
@@ -283,7 +286,7 @@ class _HeroLayoutCard extends StatelessWidget {
                 padding: const EdgeInsets.only(
                   left: 2,
                   right: 2,
-                  top: 2,
+                  top: 16,
                   bottom: 8,
                 ),
                 child: Text(
@@ -296,7 +299,7 @@ class _HeroLayoutCard extends StatelessWidget {
                       : TextAlign.left,
                   style: Theme.of(
                     context,
-                  ).textTheme.headlineSmall,
+                  ).textTheme.titleMedium,
                 ),
               ),
           ],
