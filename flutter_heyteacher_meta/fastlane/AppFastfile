@@ -5,6 +5,17 @@ default_platform(:android)
 
 platform :android do
 
+  desc "fl _commit_pubspec\n\tcommit pubspec.yaml"
+  lane :_commit_pubspec do
+    tag = ""
+    Dir.chdir("../") do
+      tag = sh("dart run flutter_heyteacher_fastlane:version show")
+    end
+    # commit bump and push remote
+    git_commit(path: "pubspec.yaml", message: "Version Bump #{tag}")
+    push_to_git_remote
+  end
+
   desc "fl launch\n\tlaunch on device"
   lane :launch do
     _increment_flutter_build_number
@@ -29,6 +40,48 @@ platform :android do
     Dir.chdir("../android/") do
       sh("./firebaseTestLabBuild.sh")
       sh("gcloud firebase test android run --type instrumentation  --use-orchestrator --app=../build/app/outputs/apk/debug/app-debug.apk --test=../build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=MediumPhone.arm,version=33,locale=en,orientation=portrait")
+    end
+  end
+
+  desc "fl buildweb [version:profile|debug]\n\tbuild web and run local webserver on it"
+  lane :buildweb do|options|
+    test
+    _increment_flutter_build_number
+    version = ""
+    if (options[:version] == "profile" || options[:version] == "debug")
+        version = "--#{options[:version]}"
+    end 
+    Dir.chdir("../") do
+      sh("flutter build web --no-wasm-dry-run #{version}")
+      build = sh("dart run flutter_heyteacher_fastlane:version show-build")
+      # Source - https://stackoverflow.com/a/3502884
+      # Posted by Jim Kane, modified by community. See post 'Timeline' for change history
+      # Retrieved 2025-12-28, License - CC BY-SA 3.0
+      sh("ruby -pi -e \"gsub(/flutter_bootstrap.js/, 'flutter_bootstrap.js?b=#{build}')\" build/web/index.html")
+      sh("ruby -pi -e \"gsub(/manifest.json/, 'manifest.json?b=#{build}')\" build/web/index.html")
+      sh("ruby -pi -e \"gsub(/favicon.png/, 'favicon.png?b=#{build}')\" build/web/index.html")
+      sh("ruby -pi -e \"gsub(/x.png/, 'x.png?b=#{build}')\" build/web/index.html")
+      sh("ruby -pi -e \"gsub(/.png/, '.png?b=#{build}')\" build/web/manifest.json")
+ 
+      # open browser http://localhost:8080 and run local webserver
+      sh("dart pub global run dhttpd --path build/web & open http://localhost:8080?b=#{build}")
+    end
+  end
+
+  desc "fl deployweb [version:profile|debug]\n\tdeploy web in firabase hosting"
+  lane :deployweb do|options|
+    test
+    _increment_flutter_build_number
+    _commit_pubspec
+    version = ""
+    if (options[:version] == "profile" || options[:version] == "debug")
+        version = "--#{options[:version]}"
+    end
+    Dir.chdir("../") do
+      # build
+      sh("flutter build web --no-wasm-dry-run #{version}")
+      # deploy
+      sh("firebase deploy --only hosting")
     end
   end
 
