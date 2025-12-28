@@ -5,6 +5,20 @@ default_platform(:android)
 
 platform :android do
 
+  desc "fl _appendbuildwebassets\n\tadd suffix ?b=<build> to assets in index.html and manifest.json"
+  lane :_appendbuildwebassets do
+    buildNumber = sh("dart run flutter_heyteacher_fastlane:version show-build")
+    # Source - https://stackoverflow.com/a/3502884
+    # Posted by Jim Kane, modified by community. See post 'Timeline' for change history
+    # Retrieved 2025-12-28, License - CC BY-SA 3.0
+    sh("ruby -pi -e \"gsub(/flutter_bootstrap.js/, 'flutter_bootstrap.js?b=#{buildNumber}')\" build/web/index.html")
+    sh("ruby -pi -e \"gsub(/manifest.json/, 'manifest.json?b=#{buildNumber}')\" build/web/index.html")
+    sh("ruby -pi -e \"gsub(/favicon.png/, 'favicon.png?b=#{buildNumber}')\" build/web/index.html")
+    sh("ruby -pi -e \"gsub(/Icon-192.png/, 'Icon-192.png?b=#{buildNumber}')\" build/web/index.html")
+    sh("ruby -pi -e \"gsub(/x.png/, 'x.png?b=#{buildNumber}')\" build/web/index.html")
+    sh("ruby -pi -e \"gsub(/.png/, '.png?b=#{buildNumber}')\" build/web/manifest.json")
+  end
+
   desc "fl _commit_pubspec\n\tcommit pubspec.yaml"
   lane :_commit_pubspec do
     tag = ""
@@ -53,18 +67,10 @@ platform :android do
     end 
     Dir.chdir("../") do
       sh("flutter build web --no-wasm-dry-run #{version}")
-      build = sh("dart run flutter_heyteacher_fastlane:version show-build")
-      # Source - https://stackoverflow.com/a/3502884
-      # Posted by Jim Kane, modified by community. See post 'Timeline' for change history
-      # Retrieved 2025-12-28, License - CC BY-SA 3.0
-      sh("ruby -pi -e \"gsub(/flutter_bootstrap.js/, 'flutter_bootstrap.js?b=#{build}')\" build/web/index.html")
-      sh("ruby -pi -e \"gsub(/manifest.json/, 'manifest.json?b=#{build}')\" build/web/index.html")
-      sh("ruby -pi -e \"gsub(/favicon.png/, 'favicon.png?b=#{build}')\" build/web/index.html")
-      sh("ruby -pi -e \"gsub(/x.png/, 'x.png?b=#{build}')\" build/web/index.html")
-      sh("ruby -pi -e \"gsub(/.png/, '.png?b=#{build}')\" build/web/manifest.json")
- 
+      _appendbuildwebassets
+      buildNumber = sh("dart run flutter_heyteacher_fastlane:version show-build")
       # open browser http://localhost:8080 and run local webserver
-      sh("dart pub global run dhttpd --path build/web & open http://localhost:8080?b=#{build}")
+      sh("dart pub global run dhttpd --path build/web & open http://localhost:8080?b=#{buildNumber}")
     end
   end
 
@@ -80,6 +86,7 @@ platform :android do
     Dir.chdir("../") do
       # build
       sh("flutter build web --no-wasm-dry-run #{version}")
+      _appendbuildwebassets
       # deploy
       sh("firebase deploy --only hosting")
     end
