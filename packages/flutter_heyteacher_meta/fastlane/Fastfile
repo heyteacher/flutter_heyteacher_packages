@@ -11,7 +11,7 @@ end
 desc "fl build\n\tBuild flutter artifacts and rebuild pubspec.lock"
 lane :build do
   Dir.chdir("../") do
-    sh("rm pubspec.lock")
+    sh("rm -rf pubspec.lock")
     sh("flutter pub upgrade")
   end
 end
