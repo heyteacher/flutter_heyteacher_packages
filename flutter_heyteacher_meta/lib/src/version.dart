@@ -21,7 +21,6 @@
 /// is specified.
 library;
 
-import 'dart:developer' show log;
 import 'dart:io';
 
 import 'package:clock/clock.dart';
@@ -75,10 +74,9 @@ void main(List<String> arguments) async {
       stdout.write(currentVersionRegexed?[build]?.substring(1));
       return;
     default:
-      log(
-        'usage dart version.dart mayor|minor|patch|build|show|show-build '
-        '[--dry-run]\n'
-        'found $arguments',
+      stdout.write(
+        '\nusage dart version.dart mayor|minor|patch|build|show|show-build '
+        '[--dry-run]\n\n',
       );
       exit(-1);
   }
