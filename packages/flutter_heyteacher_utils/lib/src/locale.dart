@@ -59,31 +59,50 @@ class LocaleWrapState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Wrap(
     alignment: WrapAlignment.center,
-    children: [
-      ...FlutterHeyteacherUtilsLocalizations.supportedLocales.map<Widget>(
-        (locale) => ChoiceChip(
-          padding: EdgeInsets.zero,
-          side: BorderSide.none,
-          showCheckmark: false,
-          label: ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 20, maxWidth: 20),
-            child: Image(
-              image: AssetImage(
-                'assets/locale/${locale.languageCode}.png',
-                package: 'flutter_heyteacher_utils',
+    children:
+        [
+              ...FlutterHeyteacherUtilsLocalizations.supportedLocales,
+              const Locale('en', 'US'),
+              const Locale('en', 'CA'),
+              const Locale('pt', 'BR'),
+              const Locale('es', 'AR'),
+            ]
+            .map<Widget>(
+              (locale) => ChoiceChip(
+                padding: EdgeInsets.zero,
+                side: BorderSide.none,
+                showCheckmark: false,
+                label: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxHeight: 20,
+                    maxWidth: 20,
+                  ),
+                  child: Image(
+                    image: AssetImage(
+                      'assets/locale/${_flagCode(locale)}.png',
+                      package: 'flutter_heyteacher_utils',
+                    ),
+                  ),
+                ),
+                selected: locale == LocaleViewModel.instance.locale,
+                onSelected: (bool selected) {
+                  setState(
+                    () => LocaleViewModel.instance.locale = selected
+                        ? locale
+                        : null,
+                  );
+                },
               ),
-            ),
-          ),
-          selected: locale == LocaleViewModel.instance.locale,
-          onSelected: (bool selected) {
-            setState(
-              () => LocaleViewModel.instance.locale = selected ? locale : null,
-            );
-          },
-        ),
-      ),
-    ],
+            )
+            .toList(),
   );
+
+  String _flagCode(Locale locale) =>
+      locale.countryCode ??
+      switch (locale.languageCode) {
+        'en' => 'UK',
+        _ => locale.languageCode.toUpperCase(),
+      };
 }
 
 /// Manages the application's selected [Locale] for localization.
