@@ -26,7 +26,10 @@ platform :android do
       tag = sh("dart run flutter_heyteacher_fastlane:version show")
     end
     # commit bump and push remote
-    git_commit(path: "pubspec.yaml", message: "Version Bump #{tag}")
+    git_commit(
+      path: "pubspec.yaml", 
+      message: "Version Bump #{tag}", 
+      allow_nothing_to_commit: true)
     push_to_git_remote
   end
 
