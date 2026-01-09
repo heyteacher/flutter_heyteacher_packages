@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_data.dart';
 import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
+import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
@@ -18,12 +19,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TTSViewModel {
   TTSViewModel._() {
     _textToSpeech = FlutterTts();
-    unawaited(_textToSpeech.awaitSpeakCompletion(false));
-    // get locale language
-    unawaited(_changeLanguage(LocaleViewModel.instance.locale.languageCode));
-    // listen locale languale change
-    _stateChangesStreamSubscription = LocaleViewModel.instance.localeStream
-        .listen((locale) => _changeLanguage(locale.languageCode));
+    if (PlatformHelper.isMobile || PlatformHelper.isWeb) {
+      unawaited(_textToSpeech.awaitSpeakCompletion(false));
+      // get locale language
+      unawaited(_changeLanguage(LocaleViewModel.instance.locale.languageCode));
+      // listen locale languale change
+      _stateChangesStreamSubscription = LocaleViewModel.instance.localeStream
+          .listen((locale) => _changeLanguage(locale.languageCode));
+    }
   }
   static final _logger = Logger('TTSViewModel');
 
@@ -31,7 +34,7 @@ class TTSViewModel {
 
   String? _previousTextSpeaked;
 
-  StreamSubscription<Locale>?  _stateChangesStreamSubscription;
+  StreamSubscription<Locale>? _stateChangesStreamSubscription;
 
   static TTSViewModel? _instance;
 
@@ -63,7 +66,7 @@ class TTSViewModel {
   ///
   /// This method includes several checks:
   /// - It will not speak if TTS is disabled.
-  /// - It will not speak if the [text] is the same as the previously spoken 
+  /// - It will not speak if the [text] is the same as the previously spoken
   ///   text.
   /// - If [checkTTSThreshold] is `true`, it will not speak if the time since
   ///   the last speech is less than the threshold defined in remote config
