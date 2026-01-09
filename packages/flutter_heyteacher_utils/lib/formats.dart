@@ -6,6 +6,9 @@
 /// human-readable duration strings.
 library;
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_heyteacher_utils/context_helper.dart';
+import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:intl/intl.dart';
 
 /// A utility class providing static methods and pre-configured formatters for
@@ -13,7 +16,6 @@ import 'package:intl/intl.dart';
 ///
 /// This class is not meant to be instantiated.
 class FormatterHelper {
-
   // A private constructor to prevent instantiation of this utility class.
   FormatterHelper._();
   static const _machineDateTimeFormatPattern = 'yyyyMMdd_HHmmss';
@@ -160,28 +162,44 @@ class FormatterHelper {
   static DateTime? dateTimeFromJson(int? value) =>
       value != null ? DateTime.fromMillisecondsSinceEpoch(value) : null;
 
-  /// Formats a duration in milliseconds into a human-readable string suitable f
-  /// or Text-to-Speech (TTS).
+  /// Formats a duration in milliseconds into a human-readable string suitable
+  /// for Text-to-Speech (TTS).
   ///
-  /// Uses provided localization functions [nHours] and [nMinutes] to generate
-  /// localized strings like "X hours Y minutes".
-  ///
-  /// - [milliseconds]: The duration in milliseconds.
-  /// - [nHours]: A function that takes an integer (number of hours) and
-  ///   returns a localized string for hours.
-  /// - [nMinutes]: A function that takes an integer (number of minutes)
+  /// - [duration]: The duration to format.
   ///   and returns a localized string for minutes.
-  /// Returns an empty string if [milliseconds] is null.
-  static String formatDurationTts(
-    num? milliseconds,
-    String Function(int) nHours,
-    String Function(int) nMinutes,
-  ) {
-    if (milliseconds != null) {
-      final duration = Duration(milliseconds: milliseconds.toInt());
-      return ''
-              '${duration.inHours > 0 ? nHours(duration.inHours) : ""} '
-              '${nMinutes(duration.inMinutes - (duration.inHours * 60))}'
+  /// Returns an empty string if [duration] is null.
+  /// - [speakHours]: If `true`, hours are included in the output
+  ///   (e.g., "one hours two minutes"). if `false` format minutes only.
+  ///   (e.g., "seventy minutes fortyfive seconds"). 
+  ///   Defaults to `true`.
+  /// - [speakSeconds]: If `true`, seconds are included in the output
+  ///   (e.g., "one hours two minutes and three seconds"). 
+  ///   Defaults to `true`.
+  static Future<String> formatDurationTts(
+    Duration? duration, {
+    bool speakHours = true,
+    bool speakSeconds = true,
+  }) async {
+    if (duration != null) {
+      late FlutterHeyteacherUtilsLocalizations i10n;
+      if (ContextHelper.context != null) {
+        i10n = FlutterHeyteacherUtilsLocalizations.of(
+          ContextHelper.context!,
+        )!;
+      } else {
+        i10n = await FlutterHeyteacherUtilsLocalizations.delegate.load(
+          const Locale('en'),
+        );
+      }
+      return '${duration.inHours > 0 && speakHours ? i10n.nHours(
+                      duration.inHours,
+                    ) : ''} '
+              '${i10n.nMinutes(
+                duration.inMinutes - (speakHours ? duration.inHours * 60 : 0),
+              )} '
+              '${speakSeconds ? i10n.nSeconds(
+                      duration.inSeconds - (duration.inMinutes * 60),
+                    ) : ''}'
           .trim();
     } else {
       return '';

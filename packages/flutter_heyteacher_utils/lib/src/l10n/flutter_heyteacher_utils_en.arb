@@ -34,12 +34,6 @@
   "@logging": {},
   "loggingLevel": "Logging Level",
   "@loggingLevel": {},
-  "nMinutes": "{minutes, plural, =1{one minute} other{{minutes} minutes}}",
-  "@nMinutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "areYouSureToChangeEncryptionPassphrase": "If you change the Encryption Passphrase, you will not be able to access data encrypted with the old passphrase.\n\nAre you sure you want to change the Encryption Passphrase?",
   "@areYouSureToChangeEncryptionPassphrase": {},
   "areYouSureToImportEncryptionSecretKey": "If you import an Encryption Secret Key, the old key will be overridden and data encrypted with the old key will be lost.\n\nAre you sure you want to import the Encryption Secret Key?",
@@ -90,7 +84,7 @@
       "defaultValue": {}
     }
   },
-  "nSeconds": "{nSeconds, plural, =0{0 sec} =1{1 sec} other{{nSeconds} secs}}",
+  "nSeconds": "{nSeconds, plural, =0{0 seconds} =1{1 second} other{{nSeconds} seconds}}",
   "@nSeconds": {
     "placeholders": {
       "nSeconds": {}
@@ -99,5 +93,29 @@
   "search": "Search",
   "@search": {},
   "enableLogsStorage": "Enable Logs Storage",
-  "@enableLogsStorage": {}
+  "@enableLogsStorage": {},
+  "nMinutes": "{minutes, plural, =0{0 minutes} =1{1 minute} other{{minutes} minutes}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 hour} =1{1 hour} other{{hours} hours}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
 }

@@ -34,12 +34,6 @@
   "@logging": {},
   "loggingLevel": "Livello di registrazione",
   "@loggingLevel": {},
-  "nMinutes": "{minutes, plural, =1{un minuto} other{{minutes} minuti}}",
-  "@nMinutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "areYouSureToChangeEncryptionPassphrase": "Se modifichi la passphrase di crittografia, non potrai più accedere ai dati crittografati con la vecchia passphrase.\n\nSei sicuro di voler modificare la passphrase di crittografia?",
   "@areYouSureToChangeEncryptionPassphrase": {},
   "areYouSureToImportEncryptionSecretKey": "Se importi una chiave segreta di crittografia, la vecchia chiave verrà sovrascritta e i dati crittografati con la vecchia chiave andranno persi.\n\nSei sicuro di voler importare la chiave segreta di crittografia?",
@@ -99,5 +93,29 @@
   "search": "Cerca",
   "@search": {},
   "enableLogsStorage": "Abilita archiviazione log",
-  "@enableLogsStorage": {}
+  "@enableLogsStorage": {},
+  "nMinutes": "{minutes, plural, =0{0 minuti} =1{1 minuto} other{{minutes} minuti}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 ore} =1{1 ora} other{{hours} ore}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
 }

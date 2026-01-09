@@ -1,7 +1,9 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   group('Formatters', () {
     test('FormatterHelper.intFormatter has correct pattern', () {
       // NumberFormat patterns are a bit different, check formatting
@@ -21,76 +23,123 @@ void main() {
   });
 
   group('FormatterHelper.formatDurationTts', () {
-    // Mock localization functions
-    String mockNHours(int hours) => "$hours hour${hours == 1 ? '' : 's'}";
-    String mockNMinutes(int minutes) =>
-        "$minutes minute${minutes == 1 ? '' : 's'}";
-
-    test('returns empty string for null input', () {
+    test('returns empty string for null input', () async {
       expect(
-        FormatterHelper.formatDurationTts(null, mockNHours, mockNMinutes),
+        await FormatterHelper.formatDurationTts(null),
         '',
       );
     });
 
-    test('formats zero duration correctly', () {
+    test('formats zero duration correctly', () async {
       expect(
-        FormatterHelper.formatDurationTts(0, mockNHours, mockNMinutes),
+        await FormatterHelper.formatDurationTts(Duration.zero),
+        '0 minutes 0 seconds',
+      );
+      expect(
+        await FormatterHelper.formatDurationTts(
+          Duration.zero,
+          speakSeconds: false,
+        ),
         '0 minutes',
       );
     });
 
-    test('formats duration less than an hour correctly', () {
-      const thirtyMinutesMs = 30 * 60 * 1000;
+    test('formats duration less than an hour correctly', () async {
+      const duration = Duration(minutes: 30, seconds: 30);
       expect(
-        FormatterHelper.formatDurationTts(
-          thirtyMinutesMs,
-          mockNHours,
-          mockNMinutes,
+        await FormatterHelper.formatDurationTts(duration),
+        '30 minutes 30 seconds',
+      );
+      expect(
+        await FormatterHelper.formatDurationTts(
+          duration,
+          speakSeconds: false,
         ),
         '30 minutes',
       );
     });
 
-    test('formats duration with exactly one hour correctly', () {
-      const oneHourMs = 60 * 60 * 1000;
+    test('formats duration with exactly one hour correctly', () async {
+      const duration = Duration(hours: 1);
       expect(
-        FormatterHelper.formatDurationTts(oneHourMs, mockNHours, mockNMinutes),
+        await FormatterHelper.formatDurationTts(
+          duration,
+        ),
+        '1 hour 0 minutes 0 seconds',
+      );
+      expect(
+        await FormatterHelper.formatDurationTts(
+          duration,
+          speakHours: false,
+        ),
+        '60 minutes 0 seconds',
+      );
+      expect(
+        await FormatterHelper.formatDurationTts(
+          duration,
+          speakSeconds: false,
+        ),
         '1 hour 0 minutes',
+      );
+      expect(
+        await FormatterHelper.formatDurationTts(
+          duration,
+          speakSeconds: false,
+          speakHours: false,
+        ),
+        '60 minutes',
       );
     });
 
-    test('formats duration with hours and minutes correctly', () {
-      const oneHourThirtyMinutesMs = (60 + 30) * 60 * 1000;
+    test('formats duration with hours and minutes correctly', () async {
+      const duration = Duration(hours: 1, minutes: 30, seconds: 30);
       expect(
-        FormatterHelper.formatDurationTts(
-          oneHourThirtyMinutesMs,
-          mockNHours,
-          mockNMinutes,
+        await FormatterHelper.formatDurationTts(
+          duration,
+        ),
+        '1 hour 30 minutes 30 seconds',
+      );
+      expect(
+        await FormatterHelper.formatDurationTts(
+          duration,
+          speakSeconds: false,
         ),
         '1 hour 30 minutes',
       );
-    });
-
-    test('formats duration with multiple hours and minutes correctly', () {
-      const twoHoursFifteenMinutesMs = (2 * 60 + 15) * 60 * 1000;
       expect(
-        FormatterHelper.formatDurationTts(
-          twoHoursFifteenMinutesMs,
-          mockNHours,
-          mockNMinutes,
+        await FormatterHelper.formatDurationTts(
+          duration,
+          speakHours: false,
         ),
-        '2 hours 15 minutes',
+        '90 minutes 30 seconds',
+      );
+      expect(
+        await FormatterHelper.formatDurationTts(
+          duration,
+          speakHours: false,
+          speakSeconds: false,
+        ),
+        '90 minutes',
       );
     });
 
-    test('formats duration with only minutes correctly', () {
-      const fiveMinutesMs = 5 * 60 * 1000;
+    test(
+      'formats duration with multiple hours and minutes correctly',
+      () async {
+        const duration = Duration(hours: 2, minutes: 15, seconds: 15);
+        expect(
+          await FormatterHelper.formatDurationTts(duration),
+          '2 hours 15 minutes 15 seconds',
+        );
+      },
+    );
+
+    test('formats duration with only minutes correctly', () async {
+      const duration = Duration(minutes: 5);
       expect(
-        FormatterHelper.formatDurationTts(
-          fiveMinutesMs,
-          mockNHours,
-          mockNMinutes,
+        await FormatterHelper.formatDurationTts(
+          duration,
+          speakSeconds: false,
         ),
         '5 minutes',
       );

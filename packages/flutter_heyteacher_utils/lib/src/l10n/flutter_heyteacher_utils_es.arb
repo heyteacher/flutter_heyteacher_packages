@@ -34,12 +34,6 @@
   "@logging": {},
   "loggingLevel": "Nivel de registro",
   "@loggingLevel": {},
-  "nMinutes": "{minutes, plural, =1{un minuto} other{{minutes} minutos}}",
-  "@nMinutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "areYouSureToChangeEncryptionPassphrase": "Si cambia la frase de contraseña de cifrado, no podrá acceder a los datos cifrados con la frase de contraseña antigua.\n\n¿Está seguro de que desea cambiar la frase de contraseña de cifrado?",
   "@areYouSureToChangeEncryptionPassphrase": {},
   "areYouSureToImportEncryptionSecretKey": "Si importa una clave secreta de cifrado, la clave antigua se sobrescribirá y los datos cifrados con la clave antigua se perderán.\n\n¿Está seguro de que desea importar la clave secreta de cifrado?",
@@ -99,5 +93,29 @@
   "search": "Buscar",
   "@search": {},
   "enableLogsStorage": "Habilitar almacenamiento de registros",
-  "@enableLogsStorage": {}
+  "@enableLogsStorage": {},
+    "nMinutes": "{minutes, plural, =0{0 minutos} =1{1 minuto} other{{minutes} minutos}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 horas} =1{1 hora} other{{hours} horas}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
 }
