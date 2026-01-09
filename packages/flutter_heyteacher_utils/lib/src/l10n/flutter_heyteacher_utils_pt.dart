@@ -66,17 +66,6 @@ class FlutterHeyteacherUtilsLocalizationsPt
   String get loggingLevel => 'Nível de registro';
 
   @override
-  String nMinutes(num minutes) {
-    String _temp0 = intl.Intl.pluralLogic(
-      minutes,
-      locale: localeName,
-      other: '$minutes minutos',
-      one: 'um minuto',
-    );
-    return '$_temp0';
-  }
-
-  @override
   String get areYouSureToChangeEncryptionPassphrase =>
       'Se você alterar a frase secreta de criptografia, não poderá acessar os dados criptografados com a frase secreta antiga.\n\nTem certeza de que deseja alterar a frase secreta de criptografia?';
 
@@ -165,4 +154,36 @@ class FlutterHeyteacherUtilsLocalizationsPt
 
   @override
   String get enableLogsStorage => 'Habilitar armazenamento de logs';
+
+  @override
+  String nMinutes(num minutes) {
+    final intl.NumberFormat minutesNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String minutesString = minutesNumberFormat.format(minutes);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutesString minutos',
+      one: '1 minuto',
+      zero: '0 minutos',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String nHours(num hours) {
+    final intl.NumberFormat hoursNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String hoursString = hoursNumberFormat.format(hours);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: '$hoursString horas',
+      one: '1 hora',
+      zero: '0 horas',
+    );
+    return '$_temp0';
+  }
 }

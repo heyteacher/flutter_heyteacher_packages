@@ -34,12 +34,6 @@
   "@logging": {},
   "loggingLevel": "Niveau de journalisation",
   "@loggingLevel": {},
-  "nMinutes": "{minutes, plural, =1{une minute} other{{minutes} minutes}}",
-  "@nMinutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "areYouSureToChangeEncryptionPassphrase": "Si vous modifiez la phrase secrète de chiffrement, vous ne pourrez plus accéder aux données chiffrées avec l'ancienne phrase secrète.\n\nÊtes-vous sûr de vouloir modifier la phrase secrète de chiffrement ?",
   "@areYouSureToChangeEncryptionPassphrase": {},
   "areYouSureToImportEncryptionSecretKey": "Si vous importez une clé secrète de chiffrement, l'ancienne clé sera écrasée et les données chiffrées avec l'ancienne clé seront perdues.\n\nÊtes-vous sûr de vouloir importer la clé secrète de chiffrement ?",
@@ -99,5 +93,29 @@
   "search": "Rechercher",
   "@search": {},
   "enableLogsStorage": "Activer le stockage des journaux",
-  "@enableLogsStorage": {}
+  "@enableLogsStorage": {},
+    "nMinutes": "{minutes, plural, =0{0 minutes} =1{1 minute} other{{minutes} minutes}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 heure} =1{1 heure} other{{hours} heures}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
 }

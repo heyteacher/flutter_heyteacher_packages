@@ -34,12 +34,6 @@
   "@logging": {},
   "loggingLevel": "Protokollierungsstufe",
   "@loggingLevel": {},
-  "nMinutes": "{minutes, plural, =1{eine Minute} other{{minutes} Minuten}}",
-  "@nMinutes": {
-    "placeholders": {
-      "minutes": {}
-    }
-  },
   "areYouSureToChangeEncryptionPassphrase": "Wenn Sie die Verschlüsselungspassphrase ändern, können Sie nicht mehr auf Daten zugreifen, die mit der alten Passphrase verschlüsselt wurden.\n\nMöchten Sie die Verschlüsselungspassphrase wirklich ändern?",
   "@areYouSureToChangeEncryptionPassphrase": {},
   "areYouSureToImportEncryptionSecretKey": "Wenn Sie einen Verschlüsselungs-Geheimschlüssel importieren, wird der alte Schlüssel überschrieben und mit dem alten Schlüssel verschlüsselte Daten gehen verloren.\n\nMöchten Sie den Verschlüsselungs-Geheimschlüssel wirklich importieren?",
@@ -99,5 +93,29 @@
   "search": "Suchen",
   "@search": {},
   "enableLogsStorage": "Protokollspeicherung aktivieren",
-  "@enableLogsStorage": {}
+  "@enableLogsStorage": {},
+  "nMinutes": "{minutes, plural, =0{0 Minuten} =1{1 Minute} other{{minutes} Minuten}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 Stunden} =1{1 Stunde} other{{hours} Stunden}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
 }

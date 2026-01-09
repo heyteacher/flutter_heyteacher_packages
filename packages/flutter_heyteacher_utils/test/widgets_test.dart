@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart'; // For FirebaseException
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:flutter_heyteacher_utils/router.dart';
@@ -16,154 +15,6 @@ import 'package:shared_preferences_platform_interface/shared_preferences_async_p
 // Import generated mocks
 import 'widgets_test.mocks.dart';
 
-// --- Mock Localization Delegate ---
-class MockFlutterHeyteacherUtilsLocalizations
-    extends FlutterHeyteacherUtilsLocalizations {
-  MockFlutterHeyteacherUtilsLocalizations() : super('en'); // Default locale
-
-  @override
-  String get userNotAuthenticated => 'User not authenticated (Mock)';
-  @override
-  String get id => 'ID: (Mock)';
-  @override
-  String get version => 'Version: (Mock)';
-  @override
-  String get askSupport => 'Support (Mock)';
-
-  static const LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations>
-  delegate = _MockLocalizationsDelegate();
-
-  @override
-  String get areYouSureToConfirmTheAction => throw UnimplementedError();
-
-  @override
-  String get askSupportFor => throw UnimplementedError();
-
-  @override
-  String get confirm => throw UnimplementedError();
-
-  @override
-  String get encryptionPassphraseIsEmptySetIt => throw UnimplementedError();
-
-  @override
-  String get errorOnDecryptionCheckPassphrase => throw UnimplementedError();
-
-  @override
-  String get errorOnEncryptionCheckPassphrase => throw UnimplementedError();
-
-  @override
-  String get errorOnRetrieveData => throw UnimplementedError();
-
-  @override
-  String get missingEncryptionSecretKeyImportIt => throw UnimplementedError();
-
-  @override
-  String get notAuthenticated => throw UnimplementedError();
-
-  @override
-  String get timeoutOnRetrieveData => throw UnimplementedError();
-
-  @override
-  String get logging => 'Logging';
-
-  @override
-  String nMinutes(num minutes) {
-    return '$minutes minutes';
-  }
-
-  @override
-  String get account => 'Account';
-
-  @override
-  String get areYouSureToChangeEncryptionPassphrase =>
-      'areYouSureToChangeEncryptionPassphrase';
-
-  @override
-  String get areYouSureToImportEncryptionSecretKey => '';
-
-  @override
-  String get encryptionPassphrase => '';
-
-  @override
-  String get encryptionSecretKey => '';
-
-  @override
-  String get encryptionSecretKeyImported => '';
-
-  @override
-  String
-  /// impossible to avoid exeeding
-  // ignore: lines_longer_than_80_chars
-  get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      '';
-
-  @override
-  String get errorWorkflowTaskAlreadyInitialized => '';
-
-  @override
-  String get errorWorkflowNotInitialized => '';
-
-  @override
-  String get contentUnavailableOfflineRetryWhenOnline => '';
-
-  @override
-  String get deleteUserData => '';
-
-  @override
-  String get description => '';
-
-  @override
-  String get task => '';
-
-  @override
-  String get tasks => '';
-
-  @override
-  String get skip => '';
-
-  @override
-  String get deviceOfflineAskSupportWhenOnline => '';
-
-  @override
-  String get loggingLevel => '';
-
-  @override
-  String defaultValue(Object defaultValue) => '';
-
-  @override
-  String nSeconds(num nSeconds) => '';
-
-  @override
-  String get search => '';
-
-  @override
-  String get enableLogsStorage => '';
-  
-  @override
-  String get restoreUserData => '';
-  
-  @override
-  String doYouConfirmDeletionUserData(Object expireDateTime) => '';
-  
-  @override
-  String doYouConfirmRestoringUserData(Object expireDateTime) => '';
-}
-
-class _MockLocalizationsDelegate
-    extends LocalizationsDelegate<FlutterHeyteacherUtilsLocalizations> {
-  const _MockLocalizationsDelegate();
-
-  @override
-  bool isSupported(Locale locale) => true; // Support all locales for mock
-
-  @override
-  Future<FlutterHeyteacherUtilsLocalizations> load(Locale locale) =>
-      SynchronousFuture(MockFlutterHeyteacherUtilsLocalizations());
-
-  @override
-  bool shouldReload(_MockLocalizationsDelegate old) => false;
-}
-
 // Annotation for Mockito
 // Note: GoRouter is often better faked than mocked if complex interactions
 //are needed.
@@ -176,7 +27,7 @@ void main() {
   // Helper function to pump the ErrorView widget with necessary providers
   Future<void> pumpErrorView(
     WidgetTester tester, {
-    required Object? error,  
+    required Object? error,
     required MockGoRouter
     mockGoRouter, // Use the generated mock, Object? error,
     StackTrace? stackTrace,
@@ -184,7 +35,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         localizationsDelegates: const [
-          MockFlutterHeyteacherUtilsLocalizations.delegate,
+          FlutterHeyteacherUtilsLocalizations.delegate,
           // Add other delegates if needed (e.g., GlobalMaterialLocalizations)
         ],
         supportedLocales: const [
@@ -223,12 +74,12 @@ void main() {
     // Verify the generic error message is displayed
     expect(find.text(testError.toString()), findsOneWidget);
 
-    // Verify the "User not authenticated" message and login button 
+    // Verify the "User not authenticated" message and login button
     //are NOT present
     expect(find.text('User not authenticated (Mock)'), findsNothing);
     expect(find.byKey(const ValueKey('ic_login_logout')), findsNothing);
 
-    // Verify Expanded widgets are present (implicitly tested by 
+    // Verify Expanded widgets are present (implicitly tested by
     //finding content)
     expect(
       find.byType(Expanded),
@@ -247,7 +98,7 @@ void main() {
       );
 
       // Verify the "User not authenticated" message is displayed
-      expect(find.text('User not authenticated (Mock)'), findsOneWidget);
+      expect(find.text('User not authenticated'), findsOneWidget);
 
       // Verify the login icon button is present
       expect(find.byKey(const ValueKey('ic_login')), findsOneWidget);
@@ -283,7 +134,7 @@ void main() {
       );
 
       // Verify the "User not authenticated" message is displayed
-      expect(find.text('User not authenticated (Mock)'), findsOneWidget);
+      expect(find.text('User not authenticated'), findsOneWidget);
 
       // Verify the login icon button is present
       expect(find.byKey(const ValueKey('ic_login')), findsOneWidget);
@@ -355,7 +206,7 @@ void main() {
       mockGoRouter: mockGoRouter,
     );
     final authTextWidget = tester.widget<Text>(
-      find.text('User not authenticated (Mock)'),
+      find.text('User not authenticated'),
     );
 
     expect(

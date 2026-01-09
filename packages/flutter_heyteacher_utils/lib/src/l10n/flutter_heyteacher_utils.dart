@@ -211,12 +211,6 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// **'Logging Level'**
   String get loggingLevel;
 
-  /// No description provided for @nMinutes.
-  ///
-  /// In en, this message translates to:
-  /// **'{minutes, plural, =1{one minute} other{{minutes} minutes}}'**
-  String nMinutes(num minutes);
-
   /// No description provided for @areYouSureToChangeEncryptionPassphrase.
   ///
   /// In en, this message translates to:
@@ -335,7 +329,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @nSeconds.
   ///
   /// In en, this message translates to:
-  /// **'{nSeconds, plural, =0{0 sec} =1{1 sec} other{{nSeconds} secs}}'**
+  /// **'{nSeconds, plural, =0{0 seconds} =1{1 second} other{{nSeconds} seconds}}'**
   String nSeconds(num nSeconds);
 
   /// No description provided for @search.
@@ -349,6 +343,18 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// In en, this message translates to:
   /// **'Enable Logs Storage'**
   String get enableLogsStorage;
+
+  /// No description provided for @nMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =0{0 minutes} =1{1 minute} other{{minutes} minutes}}'**
+  String nMinutes(num minutes);
+
+  /// No description provided for @nHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours, plural, =0{0 hour} =1{1 hour} other{{hours} hours}}'**
+  String nHours(num hours);
 }
 
 class _FlutterHeyteacherUtilsLocalizationsDelegate
