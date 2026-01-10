@@ -211,10 +211,13 @@ class TooltipIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkResponse(
-    child: Icon(
-      Icons.info,
-      size: iconSize,
-      color: iconColor ?? ThemeViewModel.instance.colorScheme.onSurface,
+    child: Padding(
+      padding: const EdgeInsets.only(left: 3, top: 3),
+      child: Icon(
+        Icons.info,
+        size: iconSize,
+        color: iconColor ?? ThemeViewModel.instance.colorScheme.onSurface,
+      ),
     ),
     onTap: () => showConfirmCancelDialog<void>(
       context: context,
