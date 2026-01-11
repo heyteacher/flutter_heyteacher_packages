@@ -56,7 +56,7 @@ class LineChartView extends ChartView {
         children: [
           title,
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.only(right: 8),
             child: AspectRatio(
               aspectRatio: aspectRatio,
               child: LineChart(
@@ -72,19 +72,22 @@ class LineChartView extends ChartView {
           touchTooltipData: LineTouchTooltipData(
             fitInsideHorizontally: true,
             fitInsideVertically: true,
-            getTooltipItems: (touchedSpots) => touchedSpots
-                .mapIndexed(
-                  (index, touchedSpot) => LineTooltipItem(
+            getTooltipItems: (lineBarSpots) => lineBarSpots
+                .map(
+                  (lineBarSpot) => LineTooltipItem(
                     formatterY?.call(
-                          index,
+                          lineBarSpot.barIndex,
                           ChartDataItem(
-                            x: touchedSpot.x,
-                            y: touchedSpot.y,
+                            x: lineBarSpot.x,
+                            y: lineBarSpot.y,
                           ),
                         ) ??
-                        FormatterHelper.doubleFormat(touchedSpot.y),
+                        FormatterHelper.doubleFormat(lineBarSpot.y),
                     TextStyle(
-                      color: formatterColorLine?.call(index, touchedSpot.y),
+                      color: formatterColorLine?.call(
+                        lineBarSpot.barIndex,
+                        lineBarSpot.y,
+                      ),
                     ),
                   ),
                 )
