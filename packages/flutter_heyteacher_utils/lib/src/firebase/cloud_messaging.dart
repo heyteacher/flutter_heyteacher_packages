@@ -94,7 +94,7 @@ abstract class FirebaseCloudMessagingViewModel {
         .info('(initialize): set sharedPreferences toBeInitialized to true and '
             '$lockSharedPreferencesKey to false');
     await _sharedPreferences.setBool(
-        SharedPreferencesKeys.htuFmcToBeInitialized.name, true);
+        FlutterHeyteacherUtilsSharedPreferencesKeys.htuFmcToBeInitialized.name, true);
     unawaited(_sharedPreferences.setBool(lockSharedPreferencesKey, false));
   }
 }

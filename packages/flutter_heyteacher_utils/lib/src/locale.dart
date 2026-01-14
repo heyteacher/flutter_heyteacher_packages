@@ -166,7 +166,7 @@ class LocaleViewModel {
     _locale = newLocale ?? _defaultLocale;
     unawaited(
       SharedPreferencesAsync().setString(
-        SharedPreferencesKeys.fhuLocale.name,
+        FlutterHeyteacherUtilsSharedPreferencesKeys.fhuLocale.name,
         _locale.languageCode,
       ),
     );
@@ -196,7 +196,7 @@ class LocaleViewModel {
 
   Future<void> _initLocale() async {
     final languageCode = await SharedPreferencesAsync().getString(
-      SharedPreferencesKeys.fhuLocale.name,
+      FlutterHeyteacherUtilsSharedPreferencesKeys.fhuLocale.name,
     );
     _locale = _localeFromLanguageCode(languageCode);
     _localeStreamController.sink.add(_locale);

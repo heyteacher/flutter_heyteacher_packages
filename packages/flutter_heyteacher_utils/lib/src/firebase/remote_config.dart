@@ -18,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// This enum standardizes the keys used for local data persistence, preventing
 /// typos and making it easier to manage stored preferences.
-enum SharedPreferencesKeys {
+enum FlutterHeyteacherUtilsSharedPreferencesKeys {
   /// The key for storing the user's selected theme mode (e.g., 'light',
   /// 'dark', 'system').
   fhuThemeMode,
@@ -178,7 +178,7 @@ class RemoteConfigViewModel {
   Future<bool> get execWorkerInIsolate async =>
       PlatformHelper.isNotWeb &&
       (await SharedPreferencesAsync().getBool(
-            SharedPreferencesKeys.fhuExecWorkerInIsolate.name,
+            FlutterHeyteacherUtilsSharedPreferencesKeys.fhuExecWorkerInIsolate.name,
           ) ??
           RemoteConfigViewModel.instance.getBool(
             FHURemoteConfigKeys.execWorkerInIsolate.name,

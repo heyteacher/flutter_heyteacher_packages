@@ -161,7 +161,7 @@ class ThemeViewModel {
 
     unawaited(
       SharedPreferencesAsync()
-          .getString(SharedPreferencesKeys.fhuThemeMode.name)
+          .getString(FlutterHeyteacherUtilsSharedPreferencesKeys.fhuThemeMode.name)
           .then((
             themeModeName,
           ) {
@@ -375,7 +375,7 @@ class ThemeViewModel {
   Future<void> setThemeMode(ThemeMode themeMode) async {
     _themeMode = themeMode;
     await SharedPreferencesAsync().setString(
-      SharedPreferencesKeys.fhuThemeMode.name,
+      FlutterHeyteacherUtilsSharedPreferencesKeys.fhuThemeMode.name,
       themeMode.name,
     );
     _themeStreamController.sink.add(theme);

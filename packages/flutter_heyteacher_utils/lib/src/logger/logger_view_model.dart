@@ -235,18 +235,18 @@ class LoggerViewModel {
   Future<void> setLevel(Level? level, {int? index}) async {
     if (level == null) {
       await SharedPreferencesAsync().remove(
-        SharedPreferencesKeys.htuLoggerLevelName.name,
+        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelName.name,
       );
       await SharedPreferencesAsync().remove(
-        SharedPreferencesKeys.htuLoggerLevelValue.name,
+        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelValue.name,
       );
     } else {
       await SharedPreferencesAsync().setString(
-        SharedPreferencesKeys.htuLoggerLevelName.name,
+        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelName.name,
         level.name,
       );
       await SharedPreferencesAsync().setInt(
-        SharedPreferencesKeys.htuLoggerLevelValue.name,
+        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelValue.name,
         level.value,
       );
     }
@@ -259,7 +259,7 @@ class LoggerViewModel {
   /// it falls back to the value from Firebase Remote Config.
   Future<bool> get enableLogsStorage async =>
       (await SharedPreferencesAsync().getBool(
-        SharedPreferencesKeys.htuEnableLogsStorage.name,
+        FlutterHeyteacherUtilsSharedPreferencesKeys.htuEnableLogsStorage.name,
       )) ??
       RemoteConfigViewModel.instance.getBool(
         FHURemoteConfigKeys.enableLogsStorage.name,
@@ -267,11 +267,11 @@ class LoggerViewModel {
 
   Future<String?> get _sharedPrefsLoggerName async =>
       SharedPreferencesAsync().getString(
-        SharedPreferencesKeys.htuLoggerLevelName.name,
+        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelName.name,
       );
 
   Future<int?> get _sharedPrefsLoggerValue async => SharedPreferencesAsync()
-      .getInt(SharedPreferencesKeys.htuLoggerLevelValue.name);
+      .getInt(FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelValue.name);
 
   Future<void> _logEntry(
     LogEntry entry, {

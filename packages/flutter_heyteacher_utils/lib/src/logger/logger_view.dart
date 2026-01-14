@@ -386,7 +386,7 @@ class _EnableLogsStorageChoiceCardState
 
   Future<void> _init(_) async {
     _enableLogsStorage = await SharedPreferencesAsync().getBool(
-      SharedPreferencesKeys.htuEnableLogsStorage.name,
+      FlutterHeyteacherUtilsSharedPreferencesKeys.htuEnableLogsStorage.name,
     );
     setState(() {});
   }
@@ -412,7 +412,7 @@ class _EnableLogsStorageChoiceCardState
           setState(() => _enableLogsStorage = value);
           unawaited(
             SharedPreferencesAsync().setBool(
-              SharedPreferencesKeys.htuEnableLogsStorage.name,
+              FlutterHeyteacherUtilsSharedPreferencesKeys.htuEnableLogsStorage.name,
               value,
             ),
           );
