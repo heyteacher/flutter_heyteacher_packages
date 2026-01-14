@@ -311,14 +311,13 @@ class LoggingLevelDropDownMenuCard extends StatefulWidget {
 
 class _LoggingLevelDropDownMenuCardState
     extends State<LoggingLevelDropDownMenuCard> {
-
   Level? _level;
 
   @override
   void initState() {
     super.initState();
-     WidgetsBinding.instance.addPostFrameCallback(_init);
- }
+    WidgetsBinding.instance.addPostFrameCallback(_init);
+  }
 
   Future<void> _init(_) async {
     _level = await LoggerViewModel.instance().level;
@@ -340,16 +339,16 @@ class _LoggingLevelDropDownMenuCardState
         ),
       ),
       trailing: GenericsDropDownMenu<Level>(
-          label: FlutterHeyteacherUtilsLocalizations.of(context)!.loggingLevel,
-          width: 120,
-          isDense: true,
-          onSelected: _onSelected,
-          values: Level.LEVELS
-              .map((level) => (label: level.name, value: level))
-              .toList(),
-          initialSelection: _level,
-        ),
+        label: FlutterHeyteacherUtilsLocalizations.of(context)!.loggingLevel,
+        width: 120,
+        isDense: true,
+        onSelected: _onSelected,
+        values: Level.LEVELS
+            .map((level) => (label: level.name, value: level))
+            .toList(),
+        initialSelection: _level,
       ),
+    ),
   );
 
   void _onSelected(Level? level, {int? index}) {
@@ -381,8 +380,8 @@ class _EnableLogsStorageChoiceCardState
   @override
   void initState() {
     super.initState();
-     WidgetsBinding.instance.addPostFrameCallback(_init);
- }
+    WidgetsBinding.instance.addPostFrameCallback(_init);
+  }
 
   Future<void> _init(_) async {
     _enableLogsStorage = await SharedPreferencesAsync().getBool(
@@ -412,7 +411,9 @@ class _EnableLogsStorageChoiceCardState
           setState(() => _enableLogsStorage = value);
           unawaited(
             SharedPreferencesAsync().setBool(
-              FlutterHeyteacherUtilsSharedPreferencesKeys.htuEnableLogsStorage.name,
+              FlutterHeyteacherUtilsSharedPreferencesKeys
+                  .htuEnableLogsStorage
+                  .name,
               value,
             ),
           );

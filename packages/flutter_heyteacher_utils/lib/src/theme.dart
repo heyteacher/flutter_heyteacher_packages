@@ -161,7 +161,9 @@ class ThemeViewModel {
 
     unawaited(
       SharedPreferencesAsync()
-          .getString(FlutterHeyteacherUtilsSharedPreferencesKeys.fhuThemeMode.name)
+          .getString(
+            FlutterHeyteacherUtilsSharedPreferencesKeys.fhuThemeMode.name,
+          )
           .then((
             themeModeName,
           ) {

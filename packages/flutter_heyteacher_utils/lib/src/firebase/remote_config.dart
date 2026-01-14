@@ -53,36 +53,51 @@ enum FlutterHeyteacherUtilsSharedPreferencesKeys {
 enum FHURemoteConfigKeys {
   /// The fetch timeout in milliseconds for Firebase Remote Config.
   remoteConfigFetchTimeoutInMilliseconds,
+
   /// The minimum fetch interval in minutes for Firebase Remote Config.
   remoteConfigMinimumFetchIntervalInMinutes,
+
   /// A boolean flag to override the remote config setting for executing
   /// workers in a separate isolate.
   execWorkerInIsolate,
+
   /// The UID of a user for whom the logger level should be set to `FINEST`.
   loggerUIDRootLevelFinest,
+
   /// The default logger level name for debug builds.
   loggerDebugRootLevelName,
+
   /// The default logger level name for release builds.
   loggerRootLevelName,
+
   /// The default logger level value for debug builds.
   loggerDebugRootLevelValue,
+
   /// The default logger level value for release builds.
   loggerRootLevelValue,
+
   /// A boolean flag to enable or disable log storage via remote config.
   enableLogsStorage,
- /// Expire duration in days
+
+  /// Expire duration in days
   expireDurationInDays,
+
   /// The interval in minutes for the Firebase Cloud Messaging background task.
   fmcIntervalInMinutes,
+
   /// The Firebase Cloud Messaging topic name to subscribe to.
   fcmTopicName,
+
   /// The web demo user
   webDemoUser,
+
   /// The web demo  password also user for End-to-End Encryption (E2EE)
   /// passphrase.
   webDemoPassword,
+
   /// The backup databaseId
   backupDatabaseId,
+
   /// Web Demo E2EE Secret Key
   webDemoE2EESecretKey;
 
@@ -178,7 +193,9 @@ class RemoteConfigViewModel {
   Future<bool> get execWorkerInIsolate async =>
       PlatformHelper.isNotWeb &&
       (await SharedPreferencesAsync().getBool(
-            FlutterHeyteacherUtilsSharedPreferencesKeys.fhuExecWorkerInIsolate.name,
+            FlutterHeyteacherUtilsSharedPreferencesKeys
+                .fhuExecWorkerInIsolate
+                .name,
           ) ??
           RemoteConfigViewModel.instance.getBool(
             FHURemoteConfigKeys.execWorkerInIsolate.name,

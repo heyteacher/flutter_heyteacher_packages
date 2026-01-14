@@ -270,8 +270,10 @@ class LoggerViewModel {
         FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelName.name,
       );
 
-  Future<int?> get _sharedPrefsLoggerValue async => SharedPreferencesAsync()
-      .getInt(FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelValue.name);
+  Future<int?> get _sharedPrefsLoggerValue async =>
+      SharedPreferencesAsync().getInt(
+        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelValue.name,
+      );
 
   Future<void> _logEntry(
     LogEntry entry, {
@@ -652,7 +654,7 @@ Future<String> logs2TextWorkerIsolate(
               '[${logEntry.level.name}] - ${logEntry.loggerName} - '
               '${logEntry.message}'
               '${logEntry.error != null ? ' - ${logEntry.error}' : ''}'
-              '${
-                logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''}'
+              '${logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''
+              ''}',
         )
         .join('\n');
