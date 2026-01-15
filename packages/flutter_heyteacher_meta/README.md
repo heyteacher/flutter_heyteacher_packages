@@ -6,12 +6,16 @@ Utilities for configure environment for flutter projects and importing common an
 
 - [Flutter Heyteacher Fastlane](#flutter-heyteacher-fastlane)
   - [Table of Contents](#table-of-contents)
-  - [Create a project](#create-a-project)
-    - [FastLane Lanes](#fastlane-lanes)
   - [Environment Setup](#environment-setup)
-    - [`Visual Studio Code`, `Android Studio` and `Node JS` Installation](#visual-studio-code-android-studio-and-node-js-installation)
-    - [Firebase](#firebase)
+    - [`Node JS`](#node-js)
+    - [`firebase CLI`](#firebase-cli)
+    - [`Flutter`](#flutter)
+    - [`Visual Studio Code`](#visual-studio-code)
+    - [`Android Studio`](#android-studio)
     - [FastLane](#fastlane)
+  - [Create a flutter project](#create-a-flutter-project)
+    - [Configure FastLane Lanes](#configure-fastlane-lanes)
+  - [Add Firebase to a app flutter project](#add-firebase-to-a-app-flutter-project)
   - [Release app](#release-app)
     - [Sign app](#sign-app)
     - [App Distribution](#app-distribution)
@@ -28,24 +32,135 @@ Utilities for configure environment for flutter projects and importing common an
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
   - [Dart Builders](#dart-builders)
+  
+## Environment Setup
 
-## Create a project
+Instructions for setup environment installing all software needed to develop a
+Flutter project.
 
-- app projects:
+### `Node JS`
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+nvm install 22
+```
+
+### `firebase CLI`
+
+```bash
+npm install -g firebase-tools
+```
+
+### `Flutter`
+
+install flutter manually following instructions <https://docs.flutter.dev/install/quick#install>
+
+- setup your `~/.bashrc` with this env variables
+
+  ```bash
+  # flutter
+  export PATH=/usr/local/flutter/bin:$PATH
+
+  #dart 
+  export PATH="$PATH":"$HOME/.pub-cache/bin"
+
+  #flutter_heyteacher_fastlane scripts
+  export PATH="$PATH":"<INSTALLATION_DIR>flutter_heyteacher_fastlane/scripts"
+
+  # flutter mapbox token for maven compiler created here https://console.mapbox.com/account/access-tokens/
+  export SDK_REGISTRY_TOKEN=<public_token>
+
+  # setup for `Firestore App Distribution` in `~/.flutter/` 
+  export GOOGLE_APPLICATION_CREDENTIALS=<path_of_app_distribution_json>
+  ```
+
+### `Visual Studio Code`
+
+install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
+
+### `Android Studio`
+
+- install  `Android Studio`
+
+- setup your `~/.bashrc` with this env variables and alias
+
+  ```bash
+  #android studio
+  export ANDROID_HOME="$HOME/Android/Sdk/"
+  export PATH="${PATH}:${ANDROID_HOME}tools/:${ANDROID_HOME}platform-tools/"
+  export PATH=/usr/local/android-studio/jbr/bin/:$PATH
+  ```
+
+### FastLane
+
+- install rbenv, ruby and bundler
+
+  ```bash
+  brew install rbenv
+  rbenv init
+  rbenv install -l
+  rbenv install 3.3.6
+  rbenv local 3.3.6
+  gem install bundler
+  ```
+
+- create Genfile in project root containing:
+
+  ```bash
+  source "https://rubygems.org"
+  gem "fastlane"
+  ```
+
+- install fastlane via bundle
+
+  ```bash
+  bundle update
+  ```
+
+- setup your `~/.bash_aliases` with this fl alias
+
+  ```bash
+  # alias for fastlane inside flutter projects
+  alias fl='<PRJ_INSTALLATION_DIR>/flutter_heyteacher_fastlane/scripts/fl.sh'
+  ```
+
+  `fl` is an alias of `fl.sh` command.
+
+```bash
+#!/bin/bash
+#
+# Run FastLane Lanes.
+#
+# Executed without paramenter show lanes available and documentation 
+if [[ -z ${@} ]] 
+then
+    # show lanes avalilable and documentation
+    bundle exec fastlane lanes
+else
+    # run lane 
+    bundle exec fastlane $@
+fi  
+```
+
+the execution `fl` in root project directory without paramenter show all `lanes` configured and how to use them.
+
+## Create a flutter project
+
+- flutter app project:
 
   ```bash
   flutter create <app project name>
   ```
 
-- package projects:
+- flutter package projects:
 
   ```bash
   flutter create -t package <app project name>
   ```
 
-### FastLane Lanes
+### Configure FastLane Lanes
 
-After setup the environment run from root project directory:
+After setup the environment run from root project directory and create the project:
 
 - for libraries flutter projects:
 
@@ -66,60 +181,8 @@ After setup the environment run from root project directory:
 
   - `firebase_app_distribution_service_credentials_file` the Firebase App
      Distribution service credentials file name
-  
-## Environment Setup
 
-Instructions for setup environment installing all software needed to develop a
-Flutter project.
-
-### `Visual Studio Code`, `Android Studio` and `Node JS` Installation
-
-- install `nodejs` and `firebase CLI`
-
-   ```bash
-   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-   nvm install 22
-   npm install -g firebase-tools
-   ```
-
-- install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
-  
-- install  `Android Studio`
-
-- setup your `~/.bashrc` with this env variables and alias
-
-  ```bash
-  #android studio
-  export ANDROID_HOME="$HOME/Android/Sdk/"
-  export PATH="${PATH}:${ANDROID_HOME}tools/:${ANDROID_HOME}platform-tools/"
-  export PATH=/usr/local/android-studio/jbr/bin/:$PATH
-
-  # flutter
-  export PATH=/usr/local/flutter/bin:$PATH
-
-  #dart 
-  export PATH="$PATH":"$HOME/.pub-cache/bin"
-
-  #flutter_heyteacher_fastlane scripts
-  export PATH="$PATH":"<INSTALLATION_DIR>flutter_heyteacher_fastlane/scripts"
-
-  # flutter mapbox token for maven compiler created here https://console.mapbox.com/account/access-tokens/
-  export SDK_REGISTRY_TOKEN=<public_token>
-
-  # setup for `Firestore App Distribution` in `~/.flutter/` 
-  export GOOGLE_APPLICATION_CREDENTIALS=<path_of_app_distribution_json>
-  ```
-
-- setup your `~/.bash_aliases` with this fl alias
-
-  ```bash
-  # alias for fastlane inside flutter projects
-  alias fl='<PRJ_INSTALLATION_DIR>/flutter_heyteacher_fastlane/scripts/fl.sh'
-  ```
-
-### Firebase
-
-Create a `flutter project application` in `vs code`
+## Add Firebase to a app flutter project
 
 - login in firebase and install flutterfire
 
@@ -150,52 +213,6 @@ Create a `flutter project application` in `vs code`
   ```bash
   flutter run
   ```
-
-### FastLane
-
-- install rbenv, ruby and bundler
-
-  ```bash
-  brew install rbenv
-  rbenv init
-  rbenv install -l
-  rbenv install 3.3.6
-  rbenv local 3.3.6
-  gem install bundler
-  ```
-
-- create Genfile in project root containing:
-
-  ```bash
-  source "https://rubygems.org"
-  gem "fastlane"
-  ```
-
-- install fastlane via bundle
-
-  ```bash
-  bundle update
-  ```
-
-`fl` is an alias of `fl.sh` command:
-
-```bash
-#!/bin/bash
-#
-# Run FastLane Lanes.
-#
-# Executed without paramenter show lanes available and documentation 
-if [[ -z ${@} ]] 
-then
-    # show lanes avalilable and documentation
-    bundle exec fastlane lanes
-else
-    # run lane 
-    bundle exec fastlane $@
-fi  
-```
-
-the execution `fl` in root project directory without paramenter show all `lanes` configured and how to use them.
 
 ## Release app
 
