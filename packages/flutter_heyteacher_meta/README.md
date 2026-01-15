@@ -6,7 +6,8 @@ Utilities for configure environment for flutter projects and importing common an
 
 - [Flutter Heyteacher Fastlane](#flutter-heyteacher-fastlane)
   - [Table of Contents](#table-of-contents)
-  - [FastLane Lanes](#fastlane-lanes)
+  - [Create a project](#create-a-project)
+    - [FastLane Lanes](#fastlane-lanes)
   - [Environment Setup](#environment-setup)
     - [`Visual Studio Code`, `Android Studio` and `Node JS` Installation](#visual-studio-code-android-studio-and-node-js-installation)
     - [Firebase](#firebase)
@@ -28,7 +29,21 @@ Utilities for configure environment for flutter projects and importing common an
   - [Splash](#splash)
   - [Dart Builders](#dart-builders)
 
-## FastLane Lanes
+## Create a project
+
+- app projects:
+
+  ```bash
+  flutter create <app project name>
+  ```
+
+- package projects:
+
+  ```bash
+  flutter create -t package <app project name>
+  ```
+
+### FastLane Lanes
 
 After setup the environment run from root project directory:
 
