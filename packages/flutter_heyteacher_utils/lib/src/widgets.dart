@@ -107,10 +107,11 @@ void showSnackBar({
 Future<void> showConfirmCancelDialog<ObjectParamType>({
   required BuildContext context,
   required Widget content,
+  Widget? title,
+  ObjectParamType? param,
   Future<String?> Function(ObjectParamType?)? confirmCallback,
   Future<String?> Function(ObjectParamType?)? cancelCallback,
-  ObjectParamType? param,
-  Widget? title,
+  Duration? timeout,
 }) async {
   final logger = Logger('showConfirmCancelDialog')
     ..finer('<showConfirmCancelDialog>:');
@@ -130,9 +131,9 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
           icon: Icon(Icons.close, color: ThemeViewModel.instance.redColor),
           onPressed: () {
             // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
-            SchedulerBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pop(false);
-            });
+            SchedulerBinding.instance.addPostFrameCallback(
+              (_) => Navigator.of(context).pop(false),
+            );
           },
         ),
         if (confirmCallback != null)
@@ -141,9 +142,9 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
             icon: const Icon(Icons.check),
             onPressed: () async {
               // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
-              SchedulerBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).pop(true);
-              });
+              SchedulerBinding.instance.addPostFrameCallback(
+                (_) => Navigator.of(context).pop(true),
+              );
             },
           ),
       ],
