@@ -99,8 +99,8 @@ install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Co
   brew install rbenv
   rbenv init
   rbenv install -l
-  rbenv install 3.3.6
-  rbenv local 3.3.6
+  rbenv install 3.4.3
+  rbenv local 3.4.3
   gem install bundler
   ```
 
