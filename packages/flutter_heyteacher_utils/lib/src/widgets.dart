@@ -104,9 +104,11 @@ void showSnackBar({
 /// confirms) and [cancelCallback] (executed if the user cancels), a [param]
 /// of type [ObjectParamType] passed to callbacks, the [title] and the [content]
 /// of dialog.
+///
+/// If [timeout] is provided, show a [ProgressIndicator] and close the dialog
+/// when [timeout] reached.
 /// 
-/// If [timeout] is specified, show a [ProgressIndicator] and close the dialog 
-/// when reached.
+/// If [timeoutCallback] is provided, call them when [timeout] reached.
 Future<void> showConfirmCancelDialog<ObjectParamType>({
   required BuildContext context,
   required Widget content,
@@ -114,8 +116,13 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
   ObjectParamType? param,
   Future<String?> Function(ObjectParamType?)? confirmCallback,
   Future<String?> Function(ObjectParamType?)? cancelCallback,
+  VoidCallback? timeoutCallback,
   Duration? timeout,
 }) async {
+  assert(
+    (timeoutCallback == null || timeout != null),
+    'if timeoutCallback provided, also timeout must be provided',
+  );
   final logger = Logger('showConfirmCancelDialog')
     ..finer('<showConfirmCancelDialog>:');
   BuildContext? dialogContext;
@@ -143,9 +150,10 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
                 minWidth: 15,
               ),
               onTimeout: () => dialogContext != null
-                  ? SchedulerBinding.instance.addPostFrameCallback(
-                      (_) => Navigator.of(dialogContext!).pop(false),
-                    )
+                  ? SchedulerBinding.instance.addPostFrameCallback((_) {
+                      Navigator.of(dialogContext!).pop(false);
+                      timeoutCallback?.call();
+                    })
                   : null,
             ),
 
@@ -259,8 +267,8 @@ class TooltipIconButton extends StatelessWidget {
 /// A [CircularProgressIndicator] constrained to a [constraints].
 ///
 /// Typically used to indicate that some background processing or data loading
-/// is happening. 
-/// 
+/// is happening.
+///
 /// After a specified [timeout], it can display an alternative
 /// [timeoutWidget] and trigger an [onTimeout] callback.
 ///
@@ -352,8 +360,8 @@ class _ProgressIndicatorState extends State<ProgressIndicator> {
 /// A centered view of [ProgressIndicator] constrained to a [constraints].
 ///
 /// Typically used to indicate that some background processing or data loading
-/// is happening. 
-/// 
+/// is happening.
+///
 /// After a specified [timeout], it can display an alternative
 /// [timeoutWidget] and trigger an [onTimeout] callback.
 ///
@@ -515,10 +523,11 @@ class ErrorView extends StatelessWidget {
           ),
   );
 
-  bool _isFirebaseExceptionCode(String code) => error == null ||
-        (error is FirebaseException &&
-            (error! as FirebaseException).code == code);
-  
+  bool _isFirebaseExceptionCode(String code) =>
+      error == null ||
+      (error is FirebaseException &&
+          (error! as FirebaseException).code == code);
+
   TextStyle _errorStyleContent(BuildContext context) => Theme.of(context)
       .textTheme
       .headlineMedium!
