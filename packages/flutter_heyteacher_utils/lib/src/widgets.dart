@@ -100,10 +100,13 @@ void showSnackBar({
 /// Displays a standard [AlertDialog] to ask the user for confirmation or
 /// cancellation of an action.
 ///
-/// It takes the [BuildContext], a [confirmCallback] (executed if the user
+/// It takes the [context], a [confirmCallback] (executed if the user
 /// confirms) and [cancelCallback] (executed if the user cancels), a [param]
 /// of type [ObjectParamType] passed to callbacks, the [title] and the [content]
 /// of dialog.
+/// 
+/// If [timeout] is specified, show a [ProgressIndicator] and close the dialog 
+/// when reached.
 Future<void> showConfirmCancelDialog<ObjectParamType>({
   required BuildContext context,
   required Widget content,
@@ -115,40 +118,61 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
 }) async {
   final logger = Logger('showConfirmCancelDialog')
     ..finer('<showConfirmCancelDialog>:');
+  BuildContext? dialogContext;
   final confirm = await showDialog<bool>(
     context: context,
-    builder: (context) => AlertDialog(
-      title: title != null
-          ? Padding(padding: const EdgeInsets.only(top: 8), child: title)
-          : null,
-      content: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: content,
-      ),
-      actions: <Widget>[
-        IconButton(
-          key: const ValueKey('ib_dialog_no'),
-          icon: Icon(Icons.close, color: ThemeViewModel.instance.redColor),
-          onPressed: () {
-            // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
-            SchedulerBinding.instance.addPostFrameCallback(
-              (_) => Navigator.of(context).pop(false),
-            );
-          },
+    builder: (context) {
+      dialogContext = context;
+      return AlertDialog(
+        title: title != null
+            ? Padding(padding: const EdgeInsets.only(top: 8), child: title)
+            : null,
+        content: Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: content,
         ),
-        if (confirmCallback != null)
+        actions: <Widget>[
+          if (timeout != null)
+            ProgressIndicator(
+              timeout: timeout,
+              showCountdown: true,
+              constraints: const BoxConstraints(
+                maxHeight: 15,
+                maxWidth: 15,
+                minHeight: 15,
+                minWidth: 15,
+              ),
+              onTimeout: () => dialogContext != null
+                  ? SchedulerBinding.instance.addPostFrameCallback(
+                      (_) => Navigator.of(dialogContext!).pop(false),
+                    )
+                  : null,
+            ),
+
           IconButton(
-            key: const ValueKey('ib_dialog_yes'),
-            icon: const Icon(Icons.check),
-            onPressed: () async {
-              // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
-              SchedulerBinding.instance.addPostFrameCallback(
-                (_) => Navigator.of(context).pop(true),
-              );
-            },
+            key: const ValueKey('ib_dialog_no'),
+            icon: Icon(Icons.close, color: ThemeViewModel.instance.redColor),
+            onPressed: () =>
+                // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(dialogContext!).pop(false);
+                  dialogContext = null;
+                }),
           ),
-      ],
-    ),
+          if (confirmCallback != null)
+            IconButton(
+              key: const ValueKey('ib_dialog_yes'),
+              icon: const Icon(Icons.check),
+              onPressed:
+                  () => // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    Navigator.of(dialogContext!).pop(true);
+                    dialogContext = null;
+                  }),
+            ),
+        ],
+      );
+    },
   );
   if (confirm != null) {
     if (confirm) {
@@ -168,7 +192,11 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
         rethrow;
       } finally {
         if (context.mounted && message != null) {
-          showSnackBar(context: context, message: message, error: errorRaised);
+          showSnackBar(
+            context: context,
+            message: message,
+            error: errorRaised,
+          );
         }
       }
     } else {
@@ -228,19 +256,29 @@ class TooltipIconButton extends StatelessWidget {
   );
 }
 
-/// A centered [CircularProgressIndicator] that can time out.
+/// A [CircularProgressIndicator] constrained to a [constraints].
 ///
 /// Typically used to indicate that some background processing or data loading
-/// is happening. After a specified [timeout], it can display an alternative
+/// is happening. 
+/// 
+/// After a specified [timeout], it can display an alternative
 /// [timeoutWidget] and trigger an [onTimeout] callback.
-class ProgressIndicatorView extends StatefulWidget {
-  /// Creates a [ProgressIndicatorView].
-  const ProgressIndicatorView({
+///
+/// If [showCountdown], show the countdown inside indicator
+class ProgressIndicator extends StatefulWidget {
+  /// Creates a [ProgressIndicator].
+  const ProgressIndicator({
     super.key,
     this.timeout = const Duration(seconds: 15),
     this.timeoutWidget,
+    this.showCountdown = false,
     this.onTimeout,
-    this.constraints,
+    this.constraints = const BoxConstraints(
+      minHeight: 200,
+      minWidth: 200,
+      maxHeight: 200,
+      maxWidth: 200,
+    ),
     this.padding,
   });
 
@@ -257,39 +295,120 @@ class ProgressIndicatorView extends StatefulWidget {
   final VoidCallback? onTimeout;
 
   /// Optional constraints to apply to the [CircularProgressIndicator].
-  final BoxConstraints? constraints;
+  final BoxConstraints constraints;
 
-  /// Optional padding to apply to the [CircularProgressIndicator].
+  /// Optional padding to apply to the [CircularProgressIndicator].99
   final EdgeInsets? padding;
 
+  /// If true, show the countdown inside indicator
+  final bool showCountdown;
+
   @override
-  State<ProgressIndicatorView> createState() => _ProgressIndicatorViewState();
+  State<ProgressIndicator> createState() => _ProgressIndicatorState();
 }
 
-class _ProgressIndicatorViewState extends State<ProgressIndicatorView> {
-  bool _timeoutReached = false;
+class _ProgressIndicatorState extends State<ProgressIndicator> {
+  late int _countdownInSec;
+  Timer? _countdownTimer;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(widget.timeout, () {
-      if (mounted) setState(() => _timeoutReached = true);
-      widget.onTimeout?.call();
-    });
+    _countdownInSec = widget.timeout.inSeconds;
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => setState(() {
+        _countdownInSec--;
+        if (_countdownInSec <= 0) {
+          _countdownTimer?.cancel();
+        }
+        setState(() => _countdownInSec <= 0);
+        if (_countdownInSec <= 0) {
+          widget.onTimeout?.call();
+        }
+      }),
+    );
   }
+
+  @override
+  void dispose() {
+    _countdownTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => _countdownInSec <= 0
+      ? widget.timeoutWidget ?? const SizedBox.shrink()
+      : CircularProgressIndicator(
+          constraints: widget.constraints,
+          value: widget.showCountdown
+              ? _countdownInSec / widget.timeout.inSeconds
+              : null,
+          padding: widget.padding,
+        );
+}
+
+/// A centered view of [ProgressIndicator] constrained to a [constraints].
+///
+/// Typically used to indicate that some background processing or data loading
+/// is happening. 
+/// 
+/// After a specified [timeout], it can display an alternative
+/// [timeoutWidget] and trigger an [onTimeout] callback.
+///
+/// If [showCountdown], show the countdown inside indicator.
+class ProgressIndicatorView extends StatelessWidget {
+  /// Creates a [ProgressIndicatorView].
+  const ProgressIndicatorView({
+    super.key,
+    this.timeout = const Duration(seconds: 15),
+    this.timeoutWidget,
+    this.showCountdown = false,
+    this.onTimeout,
+    this.constraints = const BoxConstraints(
+      minHeight: 200,
+      minWidth: 200,
+      maxHeight: 200,
+      maxWidth: 200,
+    ),
+    this.padding,
+  });
+
+  /// The duration to wait before the progress indicator times out.
+  ///
+  /// Defaults to 15 seconds.
+  final Duration timeout;
+
+  /// An optional widget to display after the [timeout] duration has passed.
+  /// If null, a [SizedBox.shrink] is shown.
+  final Widget? timeoutWidget;
+
+  /// An optional callback to be executed when the timeout is reached.
+  final VoidCallback? onTimeout;
+
+  /// Optional constraints to apply to the [ProgressIndicator].
+  final BoxConstraints constraints;
+
+  /// Optional padding to apply to the [ProgressIndicator].
+  final EdgeInsets? padding;
+
+  /// If true, show the countdown inside indicator
+  final bool showCountdown;
 
   @override
   Widget build(BuildContext context) => Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (_timeoutReached)
-          widget.timeoutWidget ?? const SizedBox.shrink()
-        else
-          CircularProgressIndicator(
-            constraints: widget.constraints,
-            padding: widget.padding,
-          ),
+        ProgressIndicator(
+          constraints: constraints,
+          padding: padding,
+          showCountdown: showCountdown,
+          timeout: timeout,
+          timeoutWidget: timeoutWidget,
+          onTimeout: onTimeout,
+        ),
       ],
     ),
   );
@@ -396,12 +515,10 @@ class ErrorView extends StatelessWidget {
           ),
   );
 
-  bool _isFirebaseExceptionCode(String code) {
-    return error == null ||
+  bool _isFirebaseExceptionCode(String code) => error == null ||
         (error is FirebaseException &&
             (error! as FirebaseException).code == code);
-  }
-
+  
   TextStyle _errorStyleContent(BuildContext context) => Theme.of(context)
       .textTheme
       .headlineMedium!
