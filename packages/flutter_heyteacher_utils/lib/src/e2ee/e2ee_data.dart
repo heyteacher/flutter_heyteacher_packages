@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:archive/archive.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,7 +13,7 @@ part 'e2ee_data.g.dart';
 /// Provides methods for JSON serialization/deserialization, including GZip compression
 /// and Base64 encoding for efficient storage or transmission.
 @JsonSerializable()
-class E2EEValue {
+class E2EEValue extends Equatable {
   /// Creates an [E2EEValue].
   const E2EEValue({required this.value, required this.iv});
 
@@ -54,4 +55,10 @@ class E2EEValue {
       (jsonDecode(uft8Decoded) as Iterable).cast<int>() as List<int>,
     );
   }
+
+  @override
+  List<Object?> get props => [value, iv];
+
+  @override
+  bool get stringify => false;
 }
