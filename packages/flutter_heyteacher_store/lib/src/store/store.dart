@@ -378,7 +378,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
             'offlineEnabled $_offlineEnabled',
         'storeFilter $storeFilter',
       )
-      ..finer('($runtimeType): register fromFireStoreFactory');
+      ..finest('($runtimeType): register fromFireStoreFactory');
     FirestoreData.registerFromFirestoreFactory<LightDataType>(
       fromFirestoreFactory,
     );
@@ -507,7 +507,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     int? limit,
   }) {
     firestore.Query<LightDataType> retQuery = _collectionReference;
-    _logger.finer('<$runtimeType.query>: applyOrderBy $applyOrderBy '
+    _logger.finest('<$runtimeType.query>: applyOrderBy $applyOrderBy '
         ' applyFilterBy $applyFilterBy limit $limit');
     // apply filter
     if (applyFilterBy && storeFilter != null) {
@@ -565,7 +565,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// Returns the list of [LightDataType] based on [Store.storeFilter] ordered
   /// by [Store.orderByFields] limited to [limit]
   Future<Iterable<LightDataType>> list({int? limit}) async {
-    _logger.finer('<$runtimeType.list>: $_collectionPathLog orderByFields: '
+    _logger.finest('<$runtimeType.list>: $_collectionPathLog orderByFields: '
         '$orderByFields limit: $limit)');
     _checkAuthenticated();
     return (await query(applyOrderBy: true, limit: limit).get())
@@ -948,14 +948,14 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
 
   /// Yields an aggregation result based on [aggregateFields].
   Future<firestore.AggregateQuerySnapshot?> get aggregates async {
-    _logger.finer('<$runtimeType.aggregates>:');
+    _logger.finest('<$runtimeType.aggregates>:');
     _checkAuthenticated();
     if (aggregateFields == null || aggregateFields!.isEmpty) return null;
     final aggregateParams = <firestore.AggregateField?>[
       for (var i = 0; i < 29; i++)
         aggregateFields!.length > i ? firestore.sum(aggregateFields![i]) : null,
     ];
-    _logger.finer('($runtimeType.aggregates): not null');
+    _logger.finest('($runtimeType.aggregates): not null');
     return query()
         .aggregate(
           firestore.count(),
