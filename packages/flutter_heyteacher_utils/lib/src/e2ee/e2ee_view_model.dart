@@ -439,9 +439,9 @@ class E2EEViewModel {
   Future<AesGcmSecretKey> _readSecretKeyFromJwkJson(
     String secretJwkJson,
   ) async {
-    _logger.finer('<_readSecretKeyFromJwkJson>:');
+    _logger.finest('<_readSecretKeyFromJwkJson>:');
     final secretJwk = jsonDecode(secretJwkJson) as Map<String, dynamic>;
-    _logger.finer(
+    _logger.finest(
       '(_readSecretKeyFromJwkJson): secret key alg ${secretJwk["alg"]} '
       'secretJwkJson $secretJwkJson',
     );
