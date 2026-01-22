@@ -281,9 +281,9 @@ class StoreCache<DetailsDataType extends FirestoreData<dynamic>> {
   ///
   /// Returns the cached `DetailsDataType` object if found, otherwise `null`.
   Future<DetailsDataType?> get(String id) async {
-    _logger.finer('<get>:');
+    _logger.finest('<get>:');
     if (exists(id)) {
-      _logger.finer('(get): id $id. HIT runtimeType '
+      _logger.finest('(get): id $id. HIT runtimeType '
           '${DetailsDataType.runtimeType} hashCode $hashCode');
       return _cache[id];
     }
@@ -385,12 +385,12 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     // manage the separated detail collection
     if (_separatedDetailsCollection) {
       _detailsCollection = '${_collection}_details';
-      _logger.finer(
+      _logger.finest(
         '($runtimeType): detailsCollection $_detailsCollectionPathLog ',
       );
 
       if (detailsFromFirestoreFactory != null) {
-        _logger.finer('($runtimeType): register detailsFromFirestoreFactory');
+        _logger.finest('($runtimeType): register detailsFromFirestoreFactory');
         FirestoreData.registerFromFirestoreFactory<DetailsDataType>(
           detailsFromFirestoreFactory,
         );
@@ -1014,15 +1014,15 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// If already initialized, do nothing. Otherwise load all documents and
   /// update the group by counter.
   Future<void> _initGroupByCounter() async {
-    _logger.finer('<$runtimeType._initGroupByCounter>:');
+    _logger.finest('<$runtimeType._initGroupByCounter>:');
     if (AuthViewModel.instance.notAutenticated) {
-      _logger.finer(
+      _logger.warning(
         '($runtimeType._initGroupByCounter): user not authenticate, do nothing',
       );
       return;
     }
     if (_initGroupByCounterAlreadyRunning) {
-      _logger.finer(
+      _logger.finest(
         '($runtimeType._initGroupByCounter): already running, do nothing',
       );
       return;
@@ -1034,7 +1034,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       final documentSnapshot =
           await _firestore.collection('users').doc(_uid).get();
       if (documentSnapshot.data()?[groupByUserField] != null) {
-        _logger.finer(
+        _logger.finest(
           '($runtimeType._initGroupByCounter): user $groupByUserField already '
           'initialized. Do nothing',
         );
