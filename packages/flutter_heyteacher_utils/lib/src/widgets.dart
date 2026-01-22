@@ -109,7 +109,7 @@ void showSnackBar({
 /// when [timeout] reached.
 /// 
 /// If [timeoutCallback] is provided, call them when [timeout] reached.
-Future<void> showConfirmCancelDialog<ObjectParamType>({
+Future<bool> showConfirmCancelDialog<ObjectParamType>({
   required BuildContext context,
   required Widget content,
   Widget? title,
@@ -212,6 +212,7 @@ Future<void> showConfirmCancelDialog<ObjectParamType>({
       unawaited(cancelCallback?.call(param));
     }
   }
+  return confirm ?? false;
 }
 
 /// An icon button that displays an informational dialog when tapped.
