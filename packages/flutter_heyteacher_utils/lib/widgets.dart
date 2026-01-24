@@ -5,6 +5,7 @@ export 'src/widgets.dart'
         FutureStreamBuilder,
         GenericsDropDownMenu,
         ProgressIndicatorView,
+        ProgressIndicatorWidget,
         TableView,
         TooltipIconButton,
         showConfirmCancelDialog,
