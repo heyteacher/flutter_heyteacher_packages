@@ -282,10 +282,10 @@ class ProgressIndicatorWidget extends StatefulWidget {
     this.showCountdown = false,
     this.onTimeout,
     this.constraints = const BoxConstraints(
-      minHeight: 200,
-      minWidth: 200,
-      maxHeight: 200,
-      maxWidth: 200,
+      minHeight: 20,
+      minWidth: 20,
+      maxHeight: 20,
+      maxWidth: 20,
     ),
     this.padding,
   });
