@@ -105,9 +105,9 @@ void showSnackBar({
 /// of type [ObjectParamType] passed to callbacks, the [title] and the [content]
 /// of dialog.
 ///
-/// If [timeout] is provided, show a [ProgressIndicator] and close the dialog
-/// when [timeout] reached.
-/// 
+/// If [timeout] is provided, show a [_ProgressIndicatorWidget] and close the 
+/// dialog when [timeout] reached.
+///
 /// If [timeoutCallback] is provided, call them when [timeout] reached.
 Future<bool> showConfirmCancelDialog<ObjectParamType>({
   required BuildContext context,
@@ -140,7 +140,7 @@ Future<bool> showConfirmCancelDialog<ObjectParamType>({
         ),
         actions: <Widget>[
           if (timeout != null)
-            ProgressIndicator(
+            _ProgressIndicatorWidget(
               timeout: timeout,
               showCountdown: true,
               constraints: const BoxConstraints(
@@ -274,10 +274,9 @@ class TooltipIconButton extends StatelessWidget {
 /// [timeoutWidget] and trigger an [onTimeout] callback.
 ///
 /// If [showCountdown], show the countdown inside indicator
-class ProgressIndicator extends StatefulWidget {
-  /// Creates a [ProgressIndicator].
-  const ProgressIndicator({
-    super.key,
+class _ProgressIndicatorWidget extends StatefulWidget {
+  /// Creates a [_ProgressIndicatorWidget].
+  const _ProgressIndicatorWidget({
     this.timeout = const Duration(seconds: 15),
     this.timeoutWidget,
     this.showCountdown = false,
@@ -313,10 +312,11 @@ class ProgressIndicator extends StatefulWidget {
   final bool showCountdown;
 
   @override
-  State<ProgressIndicator> createState() => _ProgressIndicatorState();
+  State<_ProgressIndicatorWidget> createState() =>
+      _ProgressIndicatorWidgetState();
 }
 
-class _ProgressIndicatorState extends State<ProgressIndicator> {
+class _ProgressIndicatorWidgetState extends State<_ProgressIndicatorWidget> {
   late int _countdownInSec;
   Timer? _countdownTimer;
 
@@ -358,7 +358,8 @@ class _ProgressIndicatorState extends State<ProgressIndicator> {
         );
 }
 
-/// A centered view of [ProgressIndicator] constrained to a [constraints].
+/// A centered view of [_ProgressIndicatorWidget] constrained to 
+/// a [constraints].
 ///
 /// Typically used to indicate that some background processing or data loading
 /// is happening.
@@ -396,10 +397,10 @@ class ProgressIndicatorView extends StatelessWidget {
   /// An optional callback to be executed when the timeout is reached.
   final VoidCallback? onTimeout;
 
-  /// Optional constraints to apply to the [ProgressIndicator].
+  /// Optional constraints to apply to the [_ProgressIndicatorWidget].
   final BoxConstraints constraints;
 
-  /// Optional padding to apply to the [ProgressIndicator].
+  /// Optional padding to apply to the [_ProgressIndicatorWidget].
   final EdgeInsets? padding;
 
   /// If true, show the countdown inside indicator
@@ -410,7 +411,7 @@ class ProgressIndicatorView extends StatelessWidget {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ProgressIndicator(
+        _ProgressIndicatorWidget(
           constraints: constraints,
           padding: padding,
           showCountdown: showCountdown,
