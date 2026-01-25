@@ -54,7 +54,12 @@ lane :release do |options|
     end
   end
   # commit bump and push remote
+  sh("git branch #{tag}")
+  sh("git checkout #{tag}")
   git_commit(path: "pubspec.yaml", message: "Version Bump #{tag}")
+  sh("git checkout main")
+  sh("git merge #{tag}")
+  sh("git branch #{tag} -d")
   push_to_git_remote
   # add tag and puth remote
   add_git_tag(tag: tag)
