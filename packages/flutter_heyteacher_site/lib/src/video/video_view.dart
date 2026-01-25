@@ -81,6 +81,12 @@ class _VideoCard extends StatelessWidget {
               onPressed: () => _show(context),
             ),
           ),
+          Center(
+            child: TitleText(
+              title: _videolData.subTitle,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
         ],
       ),
     ),

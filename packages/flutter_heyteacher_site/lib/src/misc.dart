@@ -71,10 +71,11 @@ class TitleText extends StatelessWidget {
   /// Creater a [TitleText]
   const TitleText({
     required this.title,
+    TextStyle? style,
     super.key,
     TextAlign textAlign = TextAlign.center,
     EdgeInsets? padding,
-  }) : _padding = padding,
+  }) : _style = style, _padding = padding,
        _textAlign = textAlign;
 
   /// The title text
@@ -85,13 +86,15 @@ class TitleText extends StatelessWidget {
 
   final EdgeInsets? _padding;
 
+  final TextStyle? _style;
+  
   @override
   Widget build(BuildContext context) => Padding(
     padding: _padding ?? EdgeInsets.zero,
     child: Text(
       title,
       textAlign: _textAlign,
-      style: Theme.of(context).textTheme.headlineMedium,
+      style: _style ?? Theme.of(context).textTheme.headlineMedium,
     ),
   );
 }
