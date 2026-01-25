@@ -48,8 +48,8 @@ lane :release do |options|
    tag = ""
    Dir.chdir("../") do
     tag = sh("dart run flutter_heyteacher_fastlane:version #{options[:version]}")
-    # append tag suffix if founr
-    if options[:suffix] != ""
+    # append tag suffix if set
+    if options[:suffix] != nil && options[:suffix] != ""
       tag = "#{tag}_#{options[:suffix]}"
     end
   end
