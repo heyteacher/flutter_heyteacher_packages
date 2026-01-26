@@ -23,7 +23,7 @@ export 'src/firebase/auth.dart'
     show AccountCard, AuthViewModel, UserNotAuthenticatedException;
 export 'src/firebase/cloud_messaging.dart' show FirebaseCloudMessagingViewModel;
 export 'src/firebase/crashlytics.dart' show CrashlyticsViewModel;
+export 'src/firebase/google_analytics.dart' show GoogleAnalitycsViewModel;
 export 'src/firebase/remote_config.dart'
     show FHURemoteConfigKeys, RemoteConfigViewModel;
-
 export 'src/firebase/storage.dart' show StorageViewModel;
