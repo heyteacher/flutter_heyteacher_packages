@@ -7,11 +7,12 @@ Utilities for configure environment for flutter projects and importing common an
 - [Flutter Heyteacher Fastlane](#flutter-heyteacher-fastlane)
   - [Table of Contents](#table-of-contents)
   - [Environment Setup](#environment-setup)
-    - [`Node JS`](#node-js)
-    - [`firebase CLI`](#firebase-cli)
-    - [`Flutter`](#flutter)
-    - [`Visual Studio Code`](#visual-studio-code)
-    - [`Android Studio`](#android-studio)
+    - [Node JS](#node-js)
+    - [Firebase CLI](#firebase-cli)
+    - [Flutter](#flutter)
+    - [Visual Studio Code](#visual-studio-code)
+    - [Android Studio](#android-studio)
+    - [changelog-from-release](#changelog-from-release)
     - [FastLane](#fastlane)
   - [Create a flutter project](#create-a-flutter-project)
     - [Configure FastLane Lanes](#configure-fastlane-lanes)
@@ -38,20 +39,20 @@ Utilities for configure environment for flutter projects and importing common an
 Instructions for setup environment installing all software needed to develop a
 Flutter project.
 
-### `Node JS`
+### Node JS
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 nvm install 22
 ```
 
-### `firebase CLI`
+### Firebase CLI
 
 ```bash
 npm install -g firebase-tools
 ```
 
-### `Flutter`
+### Flutter
 
 install flutter manually following instructions <https://docs.flutter.dev/install/quick#install>
 
@@ -74,11 +75,11 @@ install flutter manually following instructions <https://docs.flutter.dev/instal
   export GOOGLE_APPLICATION_CREDENTIALS=<path_of_app_distribution_json>
   ```
 
-### `Visual Studio Code`
+### Visual Studio Code
 
 install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
 
-### `Android Studio`
+### Android Studio
 
 - install  `Android Studio`
 
@@ -89,6 +90,40 @@ install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Co
   export ANDROID_HOME="$HOME/Android/Sdk/"
   export PATH="${PATH}:${ANDROID_HOME}tools/:${ANDROID_HOME}platform-tools/"
   export PATH=/usr/local/android-studio/jbr/bin/:$PATH
+  ```
+
+### changelog-from-release
+
+- install `go`
+  
+- install `changelog-from-release`
+
+  ```bash
+  go install github.com/rhysd/changelog-from-release/v3@latest
+  ```
+
+- set the classpath of go binaries
+
+  ```bash
+  export PATH="$PATH":"$HOME/go/bin"  
+  ```
+
+- create a github `personal access token` and set on GITHUB_TOKEN env variable
+
+  ```bash
+  export GITHUB_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  ```
+
+- authenticate on `gh` whith the same token
+
+  ```bash
+  gh auth login --with-token
+  ```
+
+- test the command
+
+  ```bash
+  changelog-from-release
   ```
 
 ### FastLane
