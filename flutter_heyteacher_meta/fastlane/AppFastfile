@@ -65,41 +65,6 @@ platform :android do
     end
   end
 
-  desc "fl buildweb [version:profile|debug]\n\tbuild web and run local webserver on it"
-  lane :buildweb do|options|
-    test
-    _increment_flutter_build_number
-    version = ""
-    if (options[:version] == "profile" || options[:version] == "debug")
-        version = "--#{options[:version]}"
-    end 
-    Dir.chdir("../") do
-      sh("flutter build web --no-wasm-dry-run #{version}")
-      _appendbuildwebassets
-      buildNumber = sh("dart run flutter_heyteacher_fastlane:version show-build")
-      # open browser http://localhost:8080 and run local webserver
-      sh("dart pub global run dhttpd --path build/web & open http://localhost:8080?b=#{buildNumber}")
-    end
-  end
-
-  desc "fl deployweb [version:profile|debug]\n\tdeploy web in firabase hosting"
-  lane :deployweb do|options|
-    test
-    _increment_flutter_build_number
-    _commit_pubspec
-    version = ""
-    if (options[:version] == "profile" || options[:version] == "debug")
-        version = "--#{options[:version]}"
-    end
-    Dir.chdir("../") do
-      # build
-      sh("flutter build web --no-wasm-dry-run #{version}")
-      _appendbuildwebassets
-      # deploy
-      sh("firebase deploy --only hosting")
-    end
-  end
-
   desc "fl backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>]\n\tbackup dababase firestore on snapshot specified. If database isn't set use (default)"
   lane :backup do |options|
      snapshotTime = ""
@@ -169,15 +134,23 @@ platform :android do
     puts "release #{release}"
   end
 
-  desc "fl playstore track:production|beta|alpha|internal [upload_only:true|false]\n\tupload app to Google Play via `supply`"
+  desc "fl playstore_promote from_track:beta|alpha|internal to_track:production|beta|alpha|internal\n\tpromote a release in Google Play via `supply`"
+  lane :playstore_promote do |options|
+    upload_to_play_store(
+      track: options[:from_track],
+      track_promote_to: options[:to_track],
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "fl playstore version:mayor|minor|patch track:production|beta|alpha|internal [suffix:<nmenonic_tag_suffix>] [upload_only:true|false]\n\tupload app to Google Play via `supply`"
   lane :playstore do |options|
-    # generate AAB
-    puts "Upload only #{options[:upload_only]}"
-    if options[:upload_only] != true
-      appbundle
-    end
-    # commit pubspec.yaml with current version
-    _commit_pubspec 
+    release(version: options[:version], suffix: options[:suffix], create_release: true)
     # read version and build number
     version = ""
     buildNumber = ""
@@ -195,7 +168,9 @@ platform :android do
         File.write('fastlane/metadata/android/en-US/changelogs/default.txt',release_note_data)
       end
     end
+    # commit release notes
     if options[:upload_only] != true
+      puts "commit release notes for version #{version}"
       sh("git branch release_note")
       sh("git checkout release_note")
       git_commit(
@@ -206,7 +181,14 @@ platform :android do
       sh("git branch release_note -d")
       push_to_git_remote
     end
+    # generate AAB
+    puts "Upload only #{options[:upload_only]}"
+    if options[:upload_only] != true
+       puts "generate AAB"
+       appbundle
+    end
     # upload app on play store
+    puts "upload to playstore track #{options[:track]}"
     upload_to_play_store(
       version_code: buildNumber,
       rollout: "1",
@@ -216,17 +198,39 @@ platform :android do
     )
   end
 
-  desc "fl playstore_promote from_track:beta|alpha|internal to_track:production|beta|alpha|internal\n\tpromote a release in Google Play via `supply`"
-  lane :playstore_promote do |options|
-    upload_to_play_store(
-      track: options[:from_track],
-      track_promote_to: options[:to_track],
-      skip_upload_apk: true,
-      skip_upload_aab: true,
-      skip_upload_metadata: true,
-      skip_upload_changelogs: true,
-      skip_upload_images: true,
-      skip_upload_screenshots: true
-    )
+  desc "fl buildweb [version:profile|debug]\n\tbuild web and run local webserver on it"
+  lane :buildweb do|options|
+    test
+    _increment_flutter_build_number
+    version = ""
+    if (options[:version] == "profile" || options[:version] == "debug")
+        version = "--#{options[:version]}"
+    end 
+    Dir.chdir("../") do
+      sh("flutter build web --no-wasm-dry-run #{version}")
+      _appendbuildwebassets
+      buildNumber = sh("dart run flutter_heyteacher_fastlane:version show-build")
+      # open browser http://localhost:8080 and run local webserver
+      sh("dart pub global run dhttpd --path build/web & open http://localhost:8080?b=#{buildNumber}")
+    end
+  end
+
+  desc "fl deployweb version:mayor|minor|patch [suffix:<nmenonic_tag_suffix>] [release_type:release|profile|debug]\n\tdeploy web in firabase hosting"
+  lane :deployweb do|options|
+    release(version: options[:version], suffix: options[:suffix], create_release: true)
+    # release type: release, profile or debug  (default release)
+    release_type = "release"
+    if (options[:release_type] != nil)
+        release_type = "--#{options[:release_type]}"
+    end
+    Dir.chdir("../") do
+      # build
+      puts "build #{release_type}"
+      sh("flutter build web --no-wasm-dry-run #{release_type}")
+      _appendbuildwebassets
+      # deploy
+      puts "deploy"
+      sh("firebase deploy --only hosting")
+    end
   end
 end
