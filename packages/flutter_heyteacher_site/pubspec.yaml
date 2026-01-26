@@ -11,6 +11,7 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
+  flutter_cookie_consent: ^1.0.3
   flutter_heyteacher_fastlane:
     path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_utils:
@@ -30,9 +31,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+ 
   uses-material-design: true # Required if you use the Material icon font
 
+  generate: true
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

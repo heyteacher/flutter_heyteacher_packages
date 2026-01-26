@@ -1,0 +1,8 @@
+{
+  "@@locale": "fr",
+ "cookieSettings": "Paramètres des cookies",
+  "cookieMessage": "Ce site Web collecte des cookies pour offrir une meilleure expérience utilisateur.\nPour plus d'informations, consultez notre politique en matière de cookies.",
+  "accept": "Accepter",
+  "decline": "Refuser",
+  "settings": "Paramètres"
+}
