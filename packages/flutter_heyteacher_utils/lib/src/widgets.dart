@@ -792,7 +792,7 @@ abstract class TableView extends StatelessWidget {
     TextStyle? style,
     Widget? tooltip,
   }) => Padding(
-    padding: const EdgeInsets.only(right: 4, left: 4),
+    padding: const EdgeInsets.symmetric(horizontal: 4),
     child: Wrap(
       alignment: textAlign == TextAlign.right
           ? WrapAlignment.end
@@ -800,13 +800,13 @@ abstract class TableView extends StatelessWidget {
       children: [
         if (tooltip != null && textAlign == TextAlign.right)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: tooltip,
           ),
         Text(text, textAlign: textAlign, style: style),
         if (tooltip != null && textAlign == TextAlign.left)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: tooltip,
           ),
       ],
@@ -819,7 +819,7 @@ abstract class TableView extends StatelessWidget {
     BuildContext context,
     String text, {
     TextAlign textAlign = TextAlign.left,
-  }) => _valueText(
+  }) => valueText(
     context,
     text,
     color: ThemeViewModel.instance.blueColor,
@@ -832,7 +832,7 @@ abstract class TableView extends StatelessWidget {
     BuildContext context,
     String text, {
     TextAlign textAlign = TextAlign.left,
-  }) => _valueText(
+  }) => valueText(
     context,
     text,
     color: ThemeViewModel.instance.orangeColor,
@@ -845,7 +845,7 @@ abstract class TableView extends StatelessWidget {
     BuildContext context,
     String text, {
     TextAlign textAlign = TextAlign.left,
-  }) => _valueText(
+  }) => valueText(
     context,
     text,
     color: ThemeViewModel.instance.redColor,
@@ -858,7 +858,7 @@ abstract class TableView extends StatelessWidget {
     BuildContext context,
     String text, {
     TextAlign textAlign = TextAlign.left,
-  }) => _valueText(
+  }) => valueText(
     context,
     text,
     color: ThemeViewModel.instance.yellowColor,
@@ -871,7 +871,7 @@ abstract class TableView extends StatelessWidget {
     BuildContext context,
     String text, {
     TextAlign textAlign = TextAlign.left,
-  }) => _valueText(
+  }) => valueText(
     context,
     text,
     color: ThemeViewModel.instance.greenColor,
@@ -879,7 +879,8 @@ abstract class TableView extends StatelessWidget {
   );
 
   /// A private helper to create a styled [Text] widget for displaying values.
-  Widget _valueText(
+  @protected
+  Widget valueText(
     BuildContext context,
     String text, {
     TextAlign textAlign = TextAlign.left,
