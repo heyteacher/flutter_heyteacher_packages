@@ -61,24 +61,31 @@ lane :release do |options|
   sh("git merge tag")
   sh("git branch tag -d")
   push_to_git_remote
-  # add tag and puth remote
-  puts "create tag #{tag}"
-  add_git_tag(tag: tag)
-  push_git_tags(tag: tag)
   # generate a release
   if options[:create_release] == true
-    puts "create github release #{tag}"
-    sh("gh release create #{tag} --generate-notes")
-    puts "update CHANGELOG.md from releases"
-    sh("git branch release")
-    sh("git checkout release")
-    Dir.chdir("../") do
-      sh("changelog-from-release > CHANGELOG.md")
-    end 
-    git_commit(path: "CHANGELOG.md", message: "Update change log from release #{tag}")
-    sh("git checkout main")
-    sh("git merge release")
-    sh("git branch release -d")
-    push_to_git_remote
+    _create_release(release: tag)
+  else 
+    # add tag and puth remote
+    puts "create tag #{tag}"
+    add_git_tag(tag: tag)
+    push_git_tags(tag: tag)
   end
+end
+
+lane :_create_release do |options|
+  release = options[:release]
+  puts "create github release #{release}"
+  sh("gh release create #{release} --generate-notes")
+  puts "update CHANGELOG.md with release #{release}"
+  sh("git branch release")
+  sh("git checkout release")
+  Dir.chdir("../") do
+    output = sh("changelog-from-release > CHANGELOG.md")
+    puts "changelog-from-release output #{output}"
+  end 
+  git_commit(path: "CHANGELOG.md", message: "Update change log from release #{release}")
+  sh("git checkout main")
+  sh("git merge release")
+  sh("git branch release -d")
+  push_to_git_remote
 end
