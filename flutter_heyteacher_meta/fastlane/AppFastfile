@@ -215,13 +215,18 @@ platform :android do
     end
   end
 
-  desc "fl deployweb version:mayor|minor|patch [suffix:<nmenonic_tag_suffix>] [release_type:release|profile|debug]\n\tdeploy web in firabase hosting"
+  desc "fl deployweb [version:mayor|minor|patch] [suffix:<nmenonic_tag_suffix>] [release_type:release|profile|debug]\n\tdeploy web in firabase hosting"
   lane :deployweb do|options|
-    elease(version: options[:version], suffix: options[:suffix], create_release: true)
+    # is version i set, create e new release
+    if (options[:version] != nil && options[:suffix] != '')
+      release(version: options[:version], suffix: options[:suffix], create_release: true)
+    else 
+      test
+    end
     # release type: release, profile or debug  (default release)
     release_type = "--release"
     if (options[:release_type] != nil)
-        release_type = "--#{options[:release_type]}"
+      release_type = "--#{options[:release_type]}"
     end
     Dir.chdir("../") do
       # build
