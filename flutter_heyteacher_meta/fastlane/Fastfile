@@ -62,7 +62,7 @@ lane :release do |options|
   sh("git branch tag -d")
   push_to_git_remote
   # generate a release
-  if options[:suffix] == nil || options[:create_release] == true
+  if options[:create_release] == nil || options[:create_release] == true
     _create_release(release: tag)
   else 
     # add tag and puth remote
