@@ -110,7 +110,7 @@ class LoggerViewModel {
     _alreadyConfigured = true;
     FlutterError.onError = (FlutterErrorDetails details) {
       _logger.severe(
-        '(FlutterError.onError)',
+        '(FlutterError.onError) ${details.summary}',
         details.exception,
         details.stack,
       );
@@ -655,6 +655,6 @@ Future<String> logs2TextWorkerIsolate(
               '${logEntry.message}'
               '${logEntry.error != null ? ' - ${logEntry.error}' : ''}'
               '${logEntry.stackTrace != null ? ' - ${logEntry.stackTrace}' : ''
-              ''}',
+                        ''}',
         )
         .join('\n');
