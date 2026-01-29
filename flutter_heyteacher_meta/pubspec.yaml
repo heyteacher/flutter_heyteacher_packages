@@ -1,6 +1,6 @@
 name: flutter_heyteacher_fastlane
 description: "A Flutter utility package project with FastLane lines"
-version: 1.0.2+260129185
+version: 1.0.3+260129185
 #homepage:
 
 environment:
