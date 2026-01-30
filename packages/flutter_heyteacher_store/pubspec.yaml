@@ -15,8 +15,6 @@ dependencies:
   firebase_auth: ^6.1.1
   flutter:
     sdk: flutter
-  flutter_heyteacher_fastlane:
-    path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
   intl: ^0.20.2
@@ -30,6 +28,8 @@ dev_dependencies:
   copy_with_extension_gen: ^11.0.0
   fake_cloud_firestore: ^4.0.0
   firebase_auth_mocks: ^0.15.1
+  flutter_heyteacher_fastlane:
+    path: ../flutter_heyteacher_fastlane   
   flutter_secure_storage: ^10.0.0
   flutter_test:
     sdk: flutter
