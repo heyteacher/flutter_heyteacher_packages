@@ -12,8 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_cookie_consent: ^1.0.3
-  flutter_heyteacher_fastlane:
-    path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
   markdown_widget: ^2.3.2+8
@@ -21,6 +19,8 @@ dependencies:
   video_player: ^2.10.0
 
 dev_dependencies:
+  flutter_heyteacher_fastlane:
+    path: ../flutter_heyteacher_fastlane   
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.0.0
