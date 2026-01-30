@@ -14,12 +14,12 @@ dependencies:
     path: ../packages/fl_chart
   flutter:
     sdk: flutter
-  flutter_heyteacher_fastlane:
-    path: ../flutter_heyteacher_fastlane
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
 
 dev_dependencies:
+  flutter_heyteacher_fastlane:
+    path: ../flutter_heyteacher_fastlane
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.0.0
