@@ -76,14 +76,19 @@ lane :_create_release do |options|
   release = options[:release]
   puts "create github release #{release}"
   sh("gh release create #{release} --generate-notes")
-  puts "update CHANGELOG.md with release #{release}"
+  Dir.chdir("../") do
+    puts "generate CHANGELOG.md changelog-from-release"
+    changelog_content = sh("changelog-from-release")
+    puts "write CHANGELOG.md with changelog-from-release output"
+    changelog_file = File.open('CHANGELOG.md','w') 
+    changelog_file.write(changelog_content) 
+    changelog_file.close() 
+    puts "CHANGELOG.md updated"
+  end 
+  puts "commit CHANGELOG.md with release #{release}"
   sh("git branch release")
   sh("git checkout release")
-  Dir.chdir("../") do
-    output = sh("changelog-from-release > CHANGELOG.md")
-    puts "changelog-from-release output #{output}"
-  end 
-  git_commit(path: "CHANGELOG.md", message: "Update change log from release #{release}")
+  git_commit(path: "CHANGELOG.md", message: "Update CHANGELOG.md with release #{release}")
   sh("git checkout main")
   sh("git merge release")
   sh("git branch release -d")
