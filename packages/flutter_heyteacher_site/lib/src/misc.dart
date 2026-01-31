@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
 import 'package:flutter_heyteacher_utils/locale.dart' show LocaleViewModel;
-import 'package:markdown_widget/widget/markdown.dart' show MarkdownWidget;
+import 'package:markdown_widget/config/all.dart';
+import 'package:markdown_widget/widget/all.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
 /// A _Get In On Google Play_ button.
@@ -75,7 +76,8 @@ class TitleText extends StatelessWidget {
     super.key,
     TextAlign textAlign = TextAlign.center,
     EdgeInsets? padding,
-  }) : _style = style, _padding = padding,
+  }) : _style = style,
+       _padding = padding,
        _textAlign = textAlign;
 
   /// The title text
@@ -87,7 +89,7 @@ class TitleText extends StatelessWidget {
   final EdgeInsets? _padding;
 
   final TextStyle? _style;
-  
+
   @override
   Widget build(BuildContext context) => Padding(
     padding: _padding ?? EdgeInsets.zero,
@@ -116,12 +118,17 @@ class MarkdownPage extends StatelessWidget {
   ///
   /// The markdown is loaded from assets [page] based on the current locale
   /// [LocaleViewModel.locale].
-  const MarkdownPage({
+  MarkdownPage({
     required String page,
     super.key,
   }) : _page = page;
 
   final String _page;
+
+  final TocController _tocController = TocController();
+
+  Widget _codeWrapper(Widget child, String code, String language) =>
+      _CodeWrapperWidget(child, code, language);
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -134,10 +141,104 @@ class MarkdownPage extends StatelessWidget {
           'assets/pages/${LocaleViewModel.instance.locale.languageCode}/'
           '$_page.md',
         ),
-        builder: (_, asyncSnapshot) => MarkdownWidget(
-          data: asyncSnapshot.data ?? '',
+        builder: (_, asyncSnapshot) => AdaptiveScaffold(
+          drawler: TocWidget(controller: _tocController),
+          bodyForLargeBuilder: () => MarkdownWidget(
+            config: MarkdownConfig.darkConfig.copy(
+              configs: [PreConfig.darkConfig.copy(wrapper: _codeWrapper)],
+            ),
+            padding: const EdgeInsets.all(8),
+            tocController: _tocController,
+            data: asyncSnapshot.data ?? '',
+          ),
+          bodyForSmallBuilder: () => MarkdownWidget(
+            tocController: _tocController,
+            data: asyncSnapshot.data ?? '',
+          ),
         ),
       ),
     ),
   );
+}
+
+class _CodeWrapperWidget extends StatefulWidget {
+  const _CodeWrapperWidget(this.child, this.text, this.language);
+  final Widget child;
+  final String text;
+  final String language;
+
+  @override
+  State<_CodeWrapperWidget> createState() => _PreWrapperState();
+}
+
+class _PreWrapperState extends State<_CodeWrapperWidget> {
+  late Widget _switchWidget;
+  bool hasCopied = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _switchWidget = Icon(Icons.copy_rounded, key: UniqueKey());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Stack(
+      children: [
+        widget.child,
+        Align(
+          alignment: Alignment.topRight,
+          child: Container(
+            color: isDark? Colors.white10 : Colors.white70,
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (widget.language.isNotEmpty)
+                  SelectionContainer.disabled(
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 2),
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                          width: 0.5,
+                          color: isDark ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      child: Text(widget.language),
+                    ),
+                  ),
+                InkWell(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: _switchWidget,
+                  ),
+                  onTap: () async {
+                    if (hasCopied) return;
+                    await Clipboard.setData(ClipboardData(text: widget.text));
+                    _switchWidget = Icon(Icons.check, key: UniqueKey());
+                    refresh();
+                    Future.delayed(const Duration(seconds: 2), () {
+                      hasCopied = false;
+                      _switchWidget = Icon(
+                        Icons.copy_rounded,
+                        key: UniqueKey(),
+                      );
+                      refresh();
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void refresh() {
+    if (mounted) setState(() {});
+  }
 }
