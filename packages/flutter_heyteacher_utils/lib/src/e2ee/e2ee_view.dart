@@ -11,15 +11,15 @@ import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-/// A card widget for managing the End-to-End Encryption (E2EE) passphrase.
+/// A text field for managing the End-to-End Encryption (E2EE) passphrase.
 ///
 /// This widget provides a [TextField] for the user to enter or update their
 /// E2EE passphrase (AAD). It includes a visibility toggle and handles the
 /// confirmation logic for changing an existing passphrase to prevent accidental
 /// data loss.
-class E2EEPassphraseCard extends StatefulWidget {
-  /// Creates an [E2EEPassphraseCard].
-  const E2EEPassphraseCard({
+class _E2EEPassphraseTextField extends StatefulWidget {
+  /// Creates an [_E2EEPassphraseTextField].
+  const _E2EEPassphraseTextField({
     required this.focusNode,
     required this.setPassphraseCallback,
     super.key,
@@ -32,56 +32,48 @@ class E2EEPassphraseCard extends StatefulWidget {
   final VoidCallback setPassphraseCallback;
 
   @override
-  State<E2EEPassphraseCard> createState() => _E2EEPassphraseCard();
+  State<_E2EEPassphraseTextField> createState() => _E2EEPassphraseCard();
 }
 
-class _E2EEPassphraseCard extends State<E2EEPassphraseCard> {
+class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
   bool _passphraseVisibility = false;
   bool _warningAlreadyShowed = false;
   @override
   Widget build(BuildContext context) => FutureBuilder(
     future: E2EEViewModel.instance(AuthViewModel.instance.uid).getAAD(),
-    builder: (_, aadSnapshot) => Card(
-      child: ListTile(
+    builder: (_, aadSnapshot) => StreamBuilder<User?>(
+      stream: AuthViewModel.instance.stateChangesStream,
+      builder: (_, userSnapshot) => TextField(
         focusNode: widget.focusNode,
-        leading: const Icon(Icons.password),
-        title: StreamBuilder<User?>(
-          stream: AuthViewModel.instance.stateChangesStream,
-          builder: (_, userSnapshot) => TextField(
-            enabled: userSnapshot.hasData,
-            onChanged: (value) async =>
-                _setPassphrase(value, oldValue: aadSnapshot.data),
-            obscureText:
-                !_passphraseVisibility &&
-                (aadSnapshot.data?.isNotEmpty ?? false),
-            decoration: InputDecoration(
-              isDense: true,
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: ThemeViewModel.instance.theme.colorScheme.onSurface,
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _passphraseVisibility
-                      ? Icons.visibility_off
-                      : Icons.visibility,
-                ),
-                onPressed: () => setState(
-                  () => _passphraseVisibility = !_passphraseVisibility,
-                ),
-              ),
-              labelText: FlutterHeyteacherUtilsLocalizations.of(
-                context,
-              )!.encryptionPassphrase,
+        enabled: userSnapshot.hasData,
+        onChanged: (value) async =>
+            _setPassphrase(value, oldValue: aadSnapshot.data),
+        obscureText:
+            !_passphraseVisibility && (aadSnapshot.data?.isNotEmpty ?? false),
+        decoration: InputDecoration(
+          isDense: true,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: ThemeViewModel.instance.theme.colorScheme.onSurface,
             ),
-            controller: TextEditingController(text: aadSnapshot.data ?? ''),
+            borderRadius: BorderRadius.circular(8),
           ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _passphraseVisibility ? Icons.visibility_off : Icons.visibility,
+            ),
+            onPressed: () => setState(
+              () => _passphraseVisibility = !_passphraseVisibility,
+            ),
+          ),
+          labelText: FlutterHeyteacherUtilsLocalizations.of(
+            context,
+          )!.encryptionPassphrase,
         ),
+        controller: TextEditingController(text: aadSnapshot.data ?? ''),
       ),
     ),
   );
@@ -135,8 +127,10 @@ class E2EESecretKeyCard extends StatefulWidget {
   const E2EESecretKeyCard({
     required FocusNode encryptionPassphraseFocusNode,
     required void Function() secretKeyImportedCallback,
+    required Key e2eePassphraseKey,
     super.key,
-  }) : _secretKeyImportedCallback = secretKeyImportedCallback,
+  }) : _e2eePassphraseKey = e2eePassphraseKey,
+       _secretKeyImportedCallback = secretKeyImportedCallback,
        _encryptionPassphraseFocusNode = encryptionPassphraseFocusNode;
 
   /// The [FocusNode] for the passphrase input field, used to remove focus
@@ -146,6 +140,8 @@ class E2EESecretKeyCard extends StatefulWidget {
   /// A callback that is invoked after the secret key has been successfully
   /// imported.
   final VoidCallback _secretKeyImportedCallback;
+
+  final Key _e2eePassphraseKey;
 
   @override
   State<E2EESecretKeyCard> createState() => _E2EESecretKeyCardState();
@@ -171,6 +167,12 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
             )!.encryptionSecretKey,
           ),
         ),
+        subtitle: _E2EEPassphraseTextField(
+          focusNode: widget._encryptionPassphraseFocusNode,
+          setPassphraseCallback: widget._secretKeyImportedCallback,
+          key: widget._e2eePassphraseKey,
+        ),
+
         trailing: Wrap(
           children: [
             IconButton(
