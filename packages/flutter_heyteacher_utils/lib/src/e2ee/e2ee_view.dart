@@ -125,17 +125,11 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
 class E2EESecretKeyCard extends StatefulWidget {
   /// Creates an [E2EESecretKeyCard].
   const E2EESecretKeyCard({
-    required FocusNode encryptionPassphraseFocusNode,
     required void Function() secretKeyImportedCallback,
     required Key e2eePassphraseKey,
     super.key,
   }) : _e2eePassphraseKey = e2eePassphraseKey,
-       _secretKeyImportedCallback = secretKeyImportedCallback,
-       _encryptionPassphraseFocusNode = encryptionPassphraseFocusNode;
-
-  /// The [FocusNode] for the passphrase input field, used to remove focus
-  /// when showing the QR code.
-  final FocusNode _encryptionPassphraseFocusNode;
+       _secretKeyImportedCallback = secretKeyImportedCallback;
 
   /// A callback that is invoked after the secret key has been successfully
   /// imported.
@@ -148,6 +142,24 @@ class E2EESecretKeyCard extends StatefulWidget {
 }
 
 class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
+  
+  /// The [FocusNode] for the passphrase input field, used to remove focus
+  /// when showing the QR code.
+  late FocusNode _encryptionPassphraseFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _encryptionPassphraseFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    _encryptionPassphraseFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) => FutureBuilder<bool>(
     future: E2EEViewModel.instance(AuthViewModel.instance.uid).secretKeyStored,
@@ -168,7 +180,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
           ),
         ),
         subtitle: _E2EEPassphraseTextField(
-          focusNode: widget._encryptionPassphraseFocusNode,
+          focusNode: _encryptionPassphraseFocusNode,
           setPassphraseCallback: widget._secretKeyImportedCallback,
           key: widget._e2eePassphraseKey,
         ),
@@ -206,7 +218,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
 
   Future<void> _showQrCode() async {
     // remove focus on encryption passphrase
-    widget._encryptionPassphraseFocusNode.unfocus();
+    _encryptionPassphraseFocusNode.unfocus();
     await showDialog<dynamic>(
       context: context,
       builder: (context) {
@@ -294,7 +306,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
     final confirmQuestionMessage = FlutterHeyteacherUtilsLocalizations.of(
       context,
     )!.areYouSureToImportEncryptionSecretKey;
-    widget._encryptionPassphraseFocusNode.unfocus();
+    _encryptionPassphraseFocusNode.unfocus();
     if (AuthViewModel.instance.notAutenticated) {
       unawaited(
         showConfirmCancelDialog<void>(
