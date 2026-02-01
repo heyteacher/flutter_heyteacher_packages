@@ -1,3 +1,11 @@
+<a id="1.39.4+260201085_reorganize_settings"></a>
+# [1.39.4+260201085_reorganize_settings](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.39.4+260201085_reorganize_settings) - 2026-02-01
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.3+260130094_move_fastlane_dev_dependencies...1.39.4+260201085_reorganize_settings
+
+[Changes][1.39.4+260201085_reorganize_settings]
+
+
 <a id="1.39.3+260130094_move_fastlane_dev_dependencies"></a>
 # [1.39.3+260130094_move_fastlane_dev_dependencies](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.39.3+260130094_move_fastlane_dev_dependencies) - 2026-01-30
 
@@ -71,6 +79,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.39.4+260201085_reorganize_settings]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.3+260130094_move_fastlane_dev_dependencies...1.39.4+260201085_reorganize_settings
 [1.39.3+260130094_move_fastlane_dev_dependencies]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.2+260129183_log_summary_flutter_onerror...1.39.3+260130094_move_fastlane_dev_dependencies
 [1.39.2+260129183_log_summary_flutter_onerror]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.1+260118082_...1.39.2+260129183_log_summary_flutter_onerror
 [1.39.1+260118082_]: https://github.com/heyteacher/flutter_heyteacher_utils/tree/1.39.1+260118082_
