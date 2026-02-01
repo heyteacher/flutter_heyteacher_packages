@@ -1,3 +1,15 @@
+<a id="1.2.0+260201100_markdown_toc"></a>
+# [1.2.0+260201100_markdown_toc](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.2.0+260201100_markdown_toc) - 2026-02-01
+
+## What's Changed
+* add TOC to markdown pages +  add code wrapper for darkmode by [@heyteacher](https://github.com/heyteacher) in [#7](https://github.com/heyteacher/flutter_heyteacher_site/pull/7)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.1.2+260130095_move_fastlane_dev_dependencies...1.2.0+260201100_markdown_toc
+
+[Changes][1.2.0+260201100_markdown_toc]
+
+
 <a id="1.1.2+260130095_move_fastlane_dev_dependencies"></a>
 # [1.1.2+260130095_move_fastlane_dev_dependencies](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.1.2+260130095_move_fastlane_dev_dependencies) - 2026-01-30
 
@@ -26,6 +38,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[1.2.0+260201100_markdown_toc]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.1.2+260130095_move_fastlane_dev_dependencies...1.2.0+260201100_markdown_toc
 [1.1.2+260130095_move_fastlane_dev_dependencies]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.1.1+260118083_...1.1.2+260130095_move_fastlane_dev_dependencies
 [1.1.1+260118083_]: https://github.com/heyteacher/flutter_heyteacher_site/tree/1.1.1+260118083_
 
