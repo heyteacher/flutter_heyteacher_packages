@@ -1,3 +1,15 @@
+<a id="1.41.0+260202171_fake_signin"></a>
+# [1.41.0+260202171_fake_signin](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.41.0+260202171_fake_signin) - 2026-02-02
+
+## What's Changed
+* add management of fake sign in bypassing google login by [@heyteacher](https://github.com/heyteacher) in [#47](https://github.com/heyteacher/flutter_heyteacher_utils/pull/47)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.40.0+260202115_theme_is_dart_is_light...1.41.0+260202171_fake_signin
+
+[Changes][1.41.0+260202171_fake_signin]
+
+
 <a id="1.40.0+260202115_theme_is_dart_is_light"></a>
 # [1.40.0+260202115_theme_is_dart_is_light](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.40.0+260202115_theme_is_dart_is_light) - 2026-02-02
 
@@ -91,6 +103,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.41.0+260202171_fake_signin]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.40.0+260202115_theme_is_dart_is_light...1.41.0+260202171_fake_signin
 [1.40.0+260202115_theme_is_dart_is_light]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.4+260201085_reorganize_settings...1.40.0+260202115_theme_is_dart_is_light
 [1.39.4+260201085_reorganize_settings]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.3+260130094_move_fastlane_dev_dependencies...1.39.4+260201085_reorganize_settings
 [1.39.3+260130094_move_fastlane_dev_dependencies]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.2+260129183_log_summary_flutter_onerror...1.39.3+260130094_move_fastlane_dev_dependencies
