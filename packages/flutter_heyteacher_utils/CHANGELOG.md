@@ -1,3 +1,15 @@
+<a id="1.40.0+260202115_theme_is_dart_is_light"></a>
+# [1.40.0+260202115_theme_is_dart_is_light](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.40.0+260202115_theme_is_dart_is_light) - 2026-02-02
+
+## What's Changed
+* add isDark and isLight to ThemeViewModel by [@heyteacher](https://github.com/heyteacher) in [#46](https://github.com/heyteacher/flutter_heyteacher_utils/pull/46)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.4+260201085_reorganize_settings...1.40.0+260202115_theme_is_dart_is_light
+
+[Changes][1.40.0+260202115_theme_is_dart_is_light]
+
+
 <a id="1.39.4+260201085_reorganize_settings"></a>
 # [1.39.4+260201085_reorganize_settings](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.39.4+260201085_reorganize_settings) - 2026-02-01
 
@@ -79,6 +91,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.40.0+260202115_theme_is_dart_is_light]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.4+260201085_reorganize_settings...1.40.0+260202115_theme_is_dart_is_light
 [1.39.4+260201085_reorganize_settings]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.3+260130094_move_fastlane_dev_dependencies...1.39.4+260201085_reorganize_settings
 [1.39.3+260130094_move_fastlane_dev_dependencies]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.2+260129183_log_summary_flutter_onerror...1.39.3+260130094_move_fastlane_dev_dependencies
 [1.39.2+260129183_log_summary_flutter_onerror]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.1+260118082_...1.39.2+260129183_log_summary_flutter_onerror
