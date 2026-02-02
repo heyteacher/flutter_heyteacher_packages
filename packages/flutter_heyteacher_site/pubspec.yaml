@@ -14,7 +14,8 @@ dependencies:
   flutter_cookie_consent: ^1.0.3
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
-  markdown_widget: ^2.3.2+8
+  markdown_widget: 
+    path: ../packages/markdown_widget
   url_launcher: ^6.3.2
   video_player: ^2.10.0
 
