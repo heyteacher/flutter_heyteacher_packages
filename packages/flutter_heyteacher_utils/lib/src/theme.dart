@@ -218,7 +218,7 @@ class ThemeViewModel {
   /// brightness.
   /// Otherwise, it uses the explicitly set light or dark theme.
   ThemeData get theme =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? lightTheme
       : darkTheme;
 
@@ -241,56 +241,60 @@ class ThemeViewModel {
   Stream<ThemeData> get themeStream => _themeStreamController.stream.distinct();
 
   /// A red color that adapts to the current theme (light/dark).
-  Color get redColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
-      ? Colors.red.shade700
-      : Colors.red.shade300;
+  Color get redColor => isLight ? Colors.red.shade700 : Colors.red.shade300;
+
+  /// Returns true if theme mode is light
+  bool get isLight =>
+      _themeMode == ThemeMode.light || _brightness == Brightness.light;
+
+  /// Returns true if theme mode is dark
+  bool get isDark => !isLight;
 
   /// A blue color that adapts to the current theme (light/dark).
   Color get blueColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? Colors.blue.shade700
       : Colors.blue.shade300;
 
   /// A yellow color that adapts to the current theme (light/dark).
   Color get yellowColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? Colors.yellow.shade700
       : Colors.yellow.shade300;
 
   /// A green color that adapts to the current theme (light/dark).
   Color get greenColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? Colors.green.shade700
       : Colors.green.shade300;
 
   /// An orange color that adapts to the current theme (light/dark).
   Color get orangeColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? Colors.orange.shade700
       : Colors.orange.shade300;
 
   /// A purple color that adapts to the current theme (light/dark).
   Color get purpleColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? Colors.purple.shade700
       : Colors.purple.shade300;
 
   /// A deep purple color that adapts to the current theme (light/dark).
   Color get deepPurpleColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? Colors.deepPurple.shade700
       : Colors.deepPurple.shade300;
 
   /// A deep purple color that adapts to the current theme (light/dark).
   Color get greyColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? Colors.grey.shade700
       : Colors.grey.shade400;
 
   /// A deep purple color that adapts to the current theme (light/dark).
   Color get darkGreyColor =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light
+      isLight
       ? Colors.grey.shade900
       : Colors.grey.shade600;
 
