@@ -27,13 +27,14 @@ class MarkdownView extends StatefulWidget {
 }
 
 class _MarkdownViewState extends State<MarkdownView> {
-  final Map<String, int> _headerIndexes = {};
 
   String _markdownContents = '';
 
   final TocController _tocController = TocController();
-  
+
   final List<TocItem> _tocList = [];
+
+  final Map<String, int> _headerIndexes = {};
 
   StreamSubscription<Locale>? _localeStreamSubscription;
 
@@ -44,15 +45,17 @@ class _MarkdownViewState extends State<MarkdownView> {
   }
 
   Future<void> _init(_) async {
+    _tocList.clear();
+    _headerIndexes.clear();
     _markdownContents = await rootBundle.loadString(
       'assets/pages/${LocaleViewModel.instance.locale.languageCode}/'
       '${widget._page}.md',
     );
-    setState(() {});
     unawaited(_localeStreamSubscription?.cancel());
     _localeStreamSubscription = LocaleViewModel.instance.localeStream.listen(
-      (_) => setState(() {}),
+      _init,
     );
+    setState(() {});
   }
 
   @override
@@ -136,8 +139,9 @@ class _MarkdownViewState extends State<MarkdownView> {
     if (_headerIndexes.isEmpty) {
       _initHeaderIndexes();
     }
-    if (_headerIndexes[value] == null) return;
-    _tocController.jumpToWidgetIndex(_headerIndexes[value]!);
+    final decoded = Uri.decodeQueryComponent(value);
+    if (_headerIndexes[decoded] == null) return;
+    _tocController.jumpToWidgetIndex(_headerIndexes[decoded]!);
   }
 
   Widget _codeWrapper(Widget child, String code, String language) =>
