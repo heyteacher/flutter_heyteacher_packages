@@ -34,7 +34,10 @@ class GoAuthRoute {
   ///
   /// The [landingRoutePath] is the route to redirect to after a successful
   /// sign-out / sign-out.
-  static GoRoute builder({required String landingRoutePath}) => GoRoute(
+  static GoRoute builder({
+    required String landingRoutePath,
+    Future<void> Function()? fakeSignIn,
+  }) => GoRoute(
     path: 'auth',
     builder: (BuildContext context, GoRouterState state) =>
         const SizedBox.shrink(),
@@ -42,19 +45,34 @@ class GoAuthRoute {
       GoRoute(
         name: AuthRouterName.signIn.name,
         path: 'sign-in',
-        builder: (BuildContext context, GoRouterState state) => SignInScreen(
-          showAuthActionSwitch: false,
-          actions: [
-            AuthStateChangeAction<UserCreated>((context, userCreated) {
-              _logger.info('<UserCreated>: landingRoute $landingRoutePath');
-              GoRouter.of(context).go(landingRoutePath);
-            }),
-            AuthStateChangeAction<SignedIn>((context, state) {
-              _logger.info('<SignedIn>: landingRoute $landingRoutePath');
-              GoRouter.of(context).go(landingRoutePath);
-            }),
-          ],
-        ),
+        // if fake sign in is set, invoke and redirect to landing route
+        redirect: fakeSignIn == null
+            ? null
+            : (context, state) async {
+                _logger.info(
+                  '<SignedIn>: fake sign-in redirect to $landingRoutePath',
+                );
+                await fakeSignIn.call();
+                return landingRoutePath;
+              },
+        // if fake sign in is not set, show sign-in screen
+        builder: fakeSignIn != null
+            ? null
+            : (BuildContext context, GoRouterState state) => SignInScreen(
+                showAuthActionSwitch: false,
+                actions: [
+                  AuthStateChangeAction<UserCreated>((context, userCreated) {
+                    _logger.info(
+                      '<UserCreated>: landingRoute $landingRoutePath',
+                    );
+                    GoRouter.of(context).go(landingRoutePath);
+                  }),
+                  AuthStateChangeAction<SignedIn>((context, state) {
+                    _logger.info('<SignedIn>: landingRoute $landingRoutePath');
+                    GoRouter.of(context).go(landingRoutePath);
+                  }),
+                ],
+              ),
       ),
       GoRoute(
         name: AuthRouterName.signOut.name,
@@ -121,14 +139,14 @@ abstract class ScaffoldNavigationShell extends StatelessWidget {
 
             child: BottomNavigationBar(
               showUnselectedLabels: true,
-              // Here, the items of BottomNavigationBar are hard coded. In a 
-              // real world scenario, the items would most likely be generated 
+              // Here, the items of BottomNavigationBar are hard coded. In a
+              // real world scenario, the items would most likely be generated
               // from thebranches of the shell route, which can be fetched using
               // `navigationShell.route.branches`.
               items: _bottomNavigationBarItems,
               currentIndex: _navigationShell.currentIndex,
 
-              // Navigate to the current location of the branch at the provided 
+              // Navigate to the current location of the branch at the provided
               // indexwhen tapping an item in the BottomNavigationBar.
               onTap: (int index) => onTap(
                 context,
