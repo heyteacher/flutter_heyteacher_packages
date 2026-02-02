@@ -86,7 +86,7 @@ def _make_release(version, suffix, create_github_release)
   puts "commit pubspec.yaml"
   sh("git branch tag")
   sh("git checkout tag")
-  sh("git add ../pubspec.*")
+  sh("git add -f ../pubspec.*")
   sh("git commit -m \"Version Bump #{tag}\"")
   sh("git checkout main")
   sh("git merge tag")
