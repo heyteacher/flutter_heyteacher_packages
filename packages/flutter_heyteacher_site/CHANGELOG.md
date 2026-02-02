@@ -1,3 +1,15 @@
+<a id="1.3.1+260202145_fix_accent_char_reload_on_change_lang"></a>
+# [1.3.1+260202145_fix_accent_char_reload_on_change_lang](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.3.1+260202145_fix_accent_char_reload_on_change_lang) - 2026-02-02
+
+## What's Changed
+* decode paragraph frame segment link + fix reload  markdown on change language by [@heyteacher](https://github.com/heyteacher) in [#9](https://github.com/heyteacher/flutter_heyteacher_site/pull/9)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.3.0+260202115_markdown_paragraph_link...1.3.1+260202145_fix_accent_char_reload_on_change_lang
+
+[Changes][1.3.1+260202145_fix_accent_char_reload_on_change_lang]
+
+
 <a id="1.3.0+260202115_markdown_paragraph_link"></a>
 # [1.3.0+260202115_markdown_paragraph_link](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.3.0+260202115_markdown_paragraph_link) - 2026-02-02
 
@@ -50,6 +62,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[1.3.1+260202145_fix_accent_char_reload_on_change_lang]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.3.0+260202115_markdown_paragraph_link...1.3.1+260202145_fix_accent_char_reload_on_change_lang
 [1.3.0+260202115_markdown_paragraph_link]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.2.0+260201100_markdown_toc...1.3.0+260202115_markdown_paragraph_link
 [1.2.0+260201100_markdown_toc]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.1.2+260130095_move_fastlane_dev_dependencies...1.2.0+260201100_markdown_toc
 [1.1.2+260130095_move_fastlane_dev_dependencies]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.1.1+260118083_...1.1.2+260130095_move_fastlane_dev_dependencies
