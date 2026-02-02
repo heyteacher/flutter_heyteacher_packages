@@ -5,49 +5,16 @@ default_platform(:android)
 
 platform :android do
 
-  desc "fl _appendbuildwebassets\n\tadd suffix ?b=<build> to assets in index.html and manifest.json"
-  lane :_appendbuildwebassets do
-    buildNumber = sh("dart run flutter_heyteacher_fastlane:version show-build")
-    # Source - https://stackoverflow.com/a/3502884
-    # Posted by Jim Kane, modified by community. See post 'Timeline' for change history
-    # Retrieved 2025-12-28, License - CC BY-SA 3.0
-    sh("ruby -pi -e \"gsub(/flutter_bootstrap.js/, 'flutter_bootstrap.js?b=#{buildNumber}')\" build/web/index.html")
-    sh("ruby -pi -e \"gsub(/manifest.json/, 'manifest.json?b=#{buildNumber}')\" build/web/index.html")
-    sh("ruby -pi -e \"gsub(/favicon.png/, 'favicon.png?b=#{buildNumber}')\" build/web/index.html")
-    sh("ruby -pi -e \"gsub(/Icon-192.png/, 'Icon-192.png?b=#{buildNumber}')\" build/web/index.html")
-    sh("ruby -pi -e \"gsub(/x.png/, 'x.png?b=#{buildNumber}')\" build/web/index.html")
-    sh("ruby -pi -e \"gsub(/.png/, '.png?b=#{buildNumber}')\" build/web/manifest.json")
-  end
-
-  desc "fl _commit_pubspec\n\tcommit pubspec.yaml"
-  lane :_commit_pubspec do
-    tag = ""
-    Dir.chdir("../") do
-      tag = sh("dart run flutter_heyteacher_fastlane:version show")
-    end
-    sh("git branch #{tag}")
-    sh("git checkout #{tag}")
-    # commit bump and push remote
-    git_commit(
-      path: "pubspec.yaml", 
-      message: "Version Bump #{tag}", 
-      allow_nothing_to_commit: true)
-    sh("git checkout main")
-    sh("git merge #{tag}")
-    sh("git branch #{tag} -d")
-    push_to_git_remote
-  end
-
   desc "fl launch\n\tlaunch on device"
   lane :launch do
-    _increment_flutter_build_number
+    increment_flutter_build_number
     sh("flutter run")
   end
 
   desc "fl appbundle\n\tclean and build application `build/app/outputs/bundle/release/app-release.aab`"
   lane :appbundle do
     sh("flutter build bundle")
-    _increment_flutter_build_number
+    increment_flutter_build_number
     # increment build number before build the release
     sh("flutter build appbundle")  
   end
@@ -148,9 +115,8 @@ platform :android do
     )
   end
 
-  desc "fl playstore version:mayor|minor|patch track:production|beta|alpha|internal [suffix:<nmenonic_tag_suffix>] [upload_only:true|false]\n\tupload app to Google Play via `supply`"
+  desc "fl playstore track:production|beta|alpha|internal [upload_only:true|false]\n\tupload app to Google Play via `supply`"
   lane :playstore do |options|
-    release(version: options[:version], suffix: options[:suffix], create_release: true)
     # read version and build number
     version = ""
     buildNumber = ""
@@ -201,28 +167,23 @@ platform :android do
   desc "fl buildweb [version:profile|debug]\n\tbuild web and run local webserver on it"
   lane :buildweb do|options|
     test
-    _increment_flutter_build_number
+    increment_flutter_build_number
     version = ""
     if (options[:version] == "profile" || options[:version] == "debug")
         version = "--#{options[:version]}"
     end 
     Dir.chdir("../") do
       sh("flutter build web --no-wasm-dry-run #{version}")
-      _appendbuildwebassets
+      appendBuildWebAssets
       buildNumber = sh("dart run flutter_heyteacher_fastlane:version show-build")
       # open browser http://localhost:8080 and run local webserver
       sh("dart pub global run dhttpd --path build/web & open http://localhost:8080?b=#{buildNumber}")
     end
   end
 
-  desc "fl deployweb [version:mayor|minor|patch] [suffix:<nmenonic_tag_suffix>] [release_type:release|profile|debug]\n\tdeploy web in firabase hosting"
+  desc "fl deployweb [release_type:release|profile|debug]\n\tdeploy web in firabase hosting"
   lane :deployweb do|options|
-    # is version i set, create e new release
-    if (options[:version] != nil && options[:suffix] != '')
-      release(version: options[:version], suffix: options[:suffix], create_release: true)
-    else 
-      test
-    end
+    test
     # release type: release, profile or debug  (default release)
     release_type = "--release"
     if (options[:release_type] != nil)
@@ -232,10 +193,24 @@ platform :android do
       # build
       puts "build #{release_type}"
       sh("flutter build web --no-wasm-dry-run #{release_type}")
-      _appendbuildwebassets
+      appendBuildWebAssets
       # deploy
       puts "deploy"
       sh("firebase deploy --only hosting")
     end
   end
 end
+
+# add suffix ?b=<build> to assets in index.html and manifest.json
+def appendBuildWebAssets
+  buildNumber = sh("dart run flutter_heyteacher_fastlane:version show-build")
+  # Source - https://stackoverflow.com/a/3502884
+  # Posted by Jim Kane, modified by community. See post 'Timeline' for change history
+  # Retrieved 2025-12-28, License - CC BY-SA 3.0
+  sh("ruby -pi -e \"gsub(/flutter_bootstrap.js/, 'flutter_bootstrap.js?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/manifest.json/, 'manifest.json?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/favicon.png/, 'favicon.png?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/Icon-192.png/, 'Icon-192.png?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/x.png/, 'x.png?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/.png/, '.png?b=#{buildNumber}')\" build/web/manifest.json")
+end  

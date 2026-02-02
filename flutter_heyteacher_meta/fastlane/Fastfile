@@ -1,13 +1,6 @@
 # Uncomment the line if you want fastlane to automatically update itself
 #update_fastlane
 
-desc "fl _increment_flutter_build_number\n\tincrement flutter build number"
-lane :_increment_flutter_build_number do
-  Dir.chdir("../") do
-    sh("dart run flutter_heyteacher_fastlane:version build")
-  end
-end
-
 desc "fl build\n\tBuild flutter artifacts and rebuild pubspec.lock"
 lane :build do
   Dir.chdir("../") do
@@ -41,29 +34,67 @@ lane :test do
   end
 end
 
-desc "fl release version:mayor|minor|patch [suffix:<nmenonic_tag_suffix>] [create_release:true|false]\n\trelease e version tagging in git"
-lane :release do |options|
-  _increment_flutter_build_number
-   test
-   tag = ""
-   Dir.chdir("../") do
-    tag = sh("dart run flutter_heyteacher_fastlane:version #{options[:version]}")
+desc "fl checkout \n\tcheckout last branch created"
+lane :checkout do
+  puts "fetch repository getting output in gitFetch"
+  gitFetch = sh("git fetch 2>&1 | grep branch")
+  gitFetchLastLine= gitFetch.lines.last
+
+  puts "get the branch name from #{gitFetchLastLine}"
+  branch=gitFetchLastLine.split(" ")[3]
+
+  puts "checkout branch #{branch} then pull"
+  sh("git checkout #{branch}")
+end
+
+desc "fl release [version:mayor|minor|patch] [suffix:<nmenonic_tag_suffix>] [merge:true|false]\n\tCreates new release and merge branch into main"
+lane :release do|options|
+  if options[:merge] == nil || options[:merge] == true
+    puts "create pull request"
+    sh("gh pr create --fill-verbose")
+    puts "wait 1 second in order new pull request will be available on github API"
+    sleep(1)
+    puts "merge pull request"
+    sh("gh pr merge -m -d --auto")
+  end
+  puts "make release #{options[:version]} suffix #{options[:suffix]}"
+  _make_release(
+    options[:version], 
+    options[:suffix], 
+    true
+  )
+end
+
+# release e version tagging in git 
+# Params:
+# +version+:: semver (mayor|minor|patch)
+# +suffix+:: mnemonic tag suffix (may be nil)
+# +create_github_release+:: if true, create a github release (true|false)
+def _make_release(version, suffix, create_github_release)
+  increment_flutter_build_number
+  test
+  tag = ""
+  Dir.chdir("../") do
+    tag = sh("dart run flutter_heyteacher_fastlane:version #{version}")
     # append tag suffix if set
-    if options[:suffix] != nil && options[:suffix] != ""
-      tag = "#{tag}_#{options[:suffix]}"
+    if suffix != nil && suffix != ""
+      tag = "#{tag}_#{suffix}"
     end
   end
   # commit bump and push remote
+  sh("git pull")
+  puts "commit pubspec.yaml"
   sh("git branch tag")
   sh("git checkout tag")
-  git_commit(path: "pubspec.yaml", message: "Version Bump #{tag}")
+  sh("git add ../pubspec.*")
+  sh("git commit -m \"Version Bump #{tag}\"")
   sh("git checkout main")
   sh("git merge tag")
   sh("git branch tag -d")
   push_to_git_remote
   # generate a release
-  if options[:create_release] == nil || options[:create_release] == true
-    _create_release(release: tag)
+  if create_github_release == nil || create_github_release == true
+    create_github_release(tag)
   else 
     # add tag and puth remote
     puts "create tag #{tag}"
@@ -72,10 +103,16 @@ lane :release do |options|
   end
 end
 
-lane :_create_release do |options|
-  release = options[:release]
-  puts "create github release #{release}"
-  sh("gh release create #{release} --generate-notes")
+# create a git hub release
+# Params:
+# +name+:: the release name
+# +suffix+:: mnemonic tag suffix (may be nil)
+# +create_github_release+:: if true, create a github release (true|false)
+def create_github_release(name)
+  puts "create github release #{name}"
+  sh("gh release create #{name} --generate-notes")
+  puts "wait 1 second in order new release will be available on github API"
+  sleep(1)
   Dir.chdir("../") do
     puts "generate CHANGELOG.md changelog-from-release"
     changelog_content = sh("changelog-from-release")
@@ -85,12 +122,18 @@ lane :_create_release do |options|
     changelog_file.close() 
     puts "CHANGELOG.md updated"
   end 
-  puts "commit CHANGELOG.md with release #{release}"
+  puts "commit CHANGELOG.md with release #{name}"
   sh("git branch release")
   sh("git checkout release")
-  git_commit(path: "CHANGELOG.md", message: "Update CHANGELOG.md with release #{release}")
+  git_commit(path: "CHANGELOG.md", message: "Update CHANGELOG.md with release #{name}")
   sh("git checkout main")
   sh("git merge release")
   sh("git branch release -d")
   push_to_git_remote
+end
+
+def increment_flutter_build_number 
+  Dir.chdir("../") do
+    sh("dart run flutter_heyteacher_fastlane:version build")
+  end
 end
