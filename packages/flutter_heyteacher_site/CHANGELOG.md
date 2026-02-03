@@ -1,3 +1,15 @@
+<a id="1.4.0+260203132_add_up_down_scroller"></a>
+# [1.4.0+260203132_add_up_down_scroller](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.4.0+260203132_add_up_down_scroller) - 2026-02-03
+
+## What's Changed
+* wrap with UpDownArrowScroller by [@heyteacher](https://github.com/heyteacher) in [#10](https://github.com/heyteacher/flutter_heyteacher_site/pull/10)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.3.1+260202145_fix_accent_char_reload_on_change_lang...1.4.0+260203132_add_up_down_scroller
+
+[Changes][1.4.0+260203132_add_up_down_scroller]
+
+
 <a id="1.3.1+260202145_fix_accent_char_reload_on_change_lang"></a>
 # [1.3.1+260202145_fix_accent_char_reload_on_change_lang](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.3.1+260202145_fix_accent_char_reload_on_change_lang) - 2026-02-02
 
@@ -62,6 +74,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[1.4.0+260203132_add_up_down_scroller]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.3.1+260202145_fix_accent_char_reload_on_change_lang...1.4.0+260203132_add_up_down_scroller
 [1.3.1+260202145_fix_accent_char_reload_on_change_lang]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.3.0+260202115_markdown_paragraph_link...1.3.1+260202145_fix_accent_char_reload_on_change_lang
 [1.3.0+260202115_markdown_paragraph_link]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.2.0+260201100_markdown_toc...1.3.0+260202115_markdown_paragraph_link
 [1.2.0+260201100_markdown_toc]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.1.2+260130095_move_fastlane_dev_dependencies...1.2.0+260201100_markdown_toc
