@@ -1,3 +1,15 @@
+<a id="1.1.1+260203145_fix_typo_mayor_with_major_version_command"></a>
+# [1.1.1+260203145_fix_typo_mayor_with_major_version_command](https://github.com/heyteacher/flutter_heyteacher_fastlane/releases/tag/1.1.1+260203145_fix_typo_mayor_with_major_version_command) - 2026-02-03
+
+## What's Changed
+* 484 fix typo release version mayor with major by [@heyteacher](https://github.com/heyteacher) in [#5](https://github.com/heyteacher/flutter_heyteacher_fastlane/pull/5)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.1.0+260202164_fl_checkout_fl_release_with_merge...1.1.1+260203145_fix_typo_mayor_with_major_version_command
+
+[Changes][1.1.1+260203145_fix_typo_mayor_with_major_version_command]
+
+
 <a id="1.1.0+260202164_fl_checkout_fl_release_with_merge"></a>
 # [1.1.0+260202164_fl_checkout_fl_release_with_merge](https://github.com/heyteacher/flutter_heyteacher_fastlane/releases/tag/1.1.0+260202164_fl_checkout_fl_release_with_merge) - 2026-02-02
 
@@ -35,6 +47,7 @@
 [Changes][1.0.1+260129184_create_release_on_fl_release]
 
 
+[1.1.1+260203145_fix_typo_mayor_with_major_version_command]: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.1.0+260202164_fl_checkout_fl_release_with_merge...1.1.1+260203145_fix_typo_mayor_with_major_version_command
 [1.1.0+260202164_fl_checkout_fl_release_with_merge]: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.0.3+260129185_fix_create_release...1.1.0+260202164_fl_checkout_fl_release_with_merge
 [1.0.3+260129185_fix_create_release]: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.0.1+260129184_create_release_on_fl_release...1.0.3+260129185_fix_create_release
 [1.0.1+260129184_create_release_on_fl_release]: https://github.com/heyteacher/flutter_heyteacher_fastlane/tree/1.0.1+260129184_create_release_on_fl_release
