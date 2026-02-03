@@ -5,10 +5,10 @@
 /// and displaying the current version or build number.
 ///
 /// Usage:
-/// `dart run flutter_heyteacher_fastlane:version mayor|minor|patch|build|
+/// `dart run flutter_heyteacher_fastlane:version major|minor|patch|build|
 ///     show|show-build [--dry-run]`
 ///
-/// - `mayor|minor|patch`: Increments the respective version component and
+/// - `major|minor|patch`: Increments the respective version component and
 ///   resets subsequent components to 0.
 /// - `build`: Updates the build number to a format `yyMMddHHm` (9 digits).
 /// - `show`: Prints the full current version string (e.g., "1.2.3+001").
@@ -17,7 +17,7 @@
 ///
 /// The script automatically updates the build number to `yyMMddHHm`
 /// (first 9 digits)
-/// for `mayor`, `minor`, `patch`, and `build` commands unless `--dry-run`
+/// for `major`, `minor`, `patch`, and `build` commands unless `--dry-run`
 /// is specified.
 library;
 
@@ -29,7 +29,7 @@ import 'package:yaml_edit/yaml_edit.dart';
 
 /// Main entry point for the version management script.
 void main(List<String> arguments) async {
-  const mayor = 0;
+  const major = 0;
   const minor = 1;
   const patch = 2;
   const build = 3;
@@ -56,8 +56,8 @@ void main(List<String> arguments) async {
   // print('regex: $regex currentVersion: $curretVersion '
   //     'currentVersionRegexed: $currentVersionRegexed');
   switch (arguments.isNotEmpty ? arguments[0] : '') {
-    case 'mayor':
-      _incrementVersion(currentVersionRegexed, mayor);
+    case 'major':
+      _incrementVersion(currentVersionRegexed, major);
       _setVersion(currentVersionRegexed, minor, '0');
       _setVersion(currentVersionRegexed, patch, '0');
     case 'minor':
@@ -75,7 +75,7 @@ void main(List<String> arguments) async {
       return;
     default:
       stdout.write(
-        '\nusage dart version.dart mayor|minor|patch|build|show|show-build '
+        '\nusage dart version.dart major|minor|patch|build|show|show-build '
         '[--dry-run]\n\n',
       );
       exit(-1);
