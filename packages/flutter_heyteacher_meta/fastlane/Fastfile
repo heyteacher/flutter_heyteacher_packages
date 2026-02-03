@@ -47,7 +47,7 @@ lane :checkout do
   sh("git checkout #{branch}")
 end
 
-desc "fl release [version:mayor|minor|patch] [suffix:<nmenonic_tag_suffix>] [merge:true|false]\n\tCreates new release and merge branch into main"
+desc "fl release [version:major|minor|patch] [suffix:<nmenonic_tag_suffix>] [merge:true|false]\n\tCreates new release and merge branch into main"
 lane :release do|options|
   if options[:merge] == nil || options[:merge] == true
     puts "create pull request"
@@ -67,7 +67,7 @@ end
 
 # release e version tagging in git 
 # Params:
-# +version+:: semver (mayor|minor|patch)
+# +version+:: semver (major|minor|patch)
 # +suffix+:: mnemonic tag suffix (may be nil)
 # +create_github_release+:: if true, create a github release (true|false)
 def _make_release(version, suffix, create_github_release)
