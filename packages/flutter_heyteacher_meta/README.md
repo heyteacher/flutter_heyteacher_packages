@@ -33,6 +33,8 @@ Utilities for configure environment for flutter projects and importing common an
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
   - [Dart Builders](#dart-builders)
+  - [localization utils](#localization-utils)
+  - [command-line utility `version`](#command-line-utility-version)
   
 ## Environment Setup
 
@@ -570,4 +572,167 @@ can be gererated using script:
 
   ```bash
   dart_builders.sh
+  ```
+
+## localization utils
+
+- install packages
+
+  ```bash
+  flutter pub add flutter_localizations --sdk=flutter
+  flutter pub add intl:any
+  ```
+
+- modify `pubspec.yaml` setting flutter artifact generation  
+
+  ```yaml
+  flutter:
+    generate: true
+  ```
+
+- in root project creat `l10n.yaml`
+
+  ```yaml
+  arb-dir: lib/src/l10n
+  template-arb-file: flutter_heyteacher_utils_en.arb
+  output-localization-file: flutter_heyteacher_utils.dart
+  output-class: FlutterHeyteacherUtilsLocalizations
+  output-dir: lib/src/l10n
+  untranslated-messages-file: untranslated-messages.txt
+  ```
+
+- create the `arb` files of your supported languages
+
+  ```bash
+  mkdir lib/l10n
+  touch lib/l10n/flutter_heyteacher_utils_en.arb
+  touch lib/l10n/flutter_heyteacher_utils_it.arb
+  ```
+
+- insert in `flutter_heyteacher_utils_en.arb` the translation
+
+- commit `untranslated-messages.txt` the file containing localized strings to be
+  translated, this file should be always empty
+
+  ```bash
+  git add untranslated-messages.txt
+  git commit -m "localized strings to be translated, this file should be always empty"
+  ```
+
+- insert localized string into `flutter_heyteacher_utils_en.arb`
+
+  ```json
+  {
+    "@@locale": "en",
+    "userNotAutenticated": "User not autenticated",
+    "@userNotAutenticated": {},
+    "notAuthenticated": "Not Authenticated",
+    "@notAuthenticated": {},
+    "errorOnRetrieveData": "Error on retrieve Data",
+    "@errorOnRetrieveData": {},
+    "timeoutOnRetrieveData": "Timeout on retieve data",
+    "@timeoutOnRetrieveData": {}
+  }
+  ```
+
+- regenerate the artifacts
+
+  ```bash
+  flutter pub get
+  ```
+
+- create a file `lib/localizations.dart` containing the export
+
+  ```dart
+  export 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart' show FlutterHeyteacherUtilsLocalizations;
+  ```
+
+- add delegate to your app
+
+  ```dart
+  MaterialApp.router(
+    localizationsDelegates: [
+      .
+      .
+      .
+      FlutterHeyteacherUtilsLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+
+  )
+  ```
+
+- import and use in your code
+
+  ```dart
+  import 'package:flutter_heyteacher_utils/localizations.dart';
+  .
+  .
+  .
+  FlutterHeyteacherUtilsLocalizations.of(context)!.userNotAutenticated
+  ```
+
+## command-line utility `version`
+
+From the root of your project, run:
+
+```bash
+dart run flutter_heyteacher_fastlane:version major|minor|patch|build|show|show-build [--dry-run]
+```
+
+- `major`,`minor`, `patch` increment the version in your `pubsec.yaml`.
+  `--dry-run` show how the version will be changed without modify `pubsec.yaml`
+
+- `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on
+  the current time.
+  
+- `dry-run` show how the version will be changed without modify `pubsec.yaml`
+
+- `show` print the version in `pubsec.yaml`
+
+- `show-build` print only the build version from `pubsec.yaml`
+
+You can configure you `vscode` to execute the command with `build` in order to
+automatically update build version every run/debug execution of your code:
+
+- create/modify `.vscode/tasks.json` in the root of your project
+  
+  ```json
+  {
+        "version": "2.0.0",
+        "tasks": [
+                {
+                        "type": "dart",
+                        "command": "dart",
+                        "args": [
+                                "run",
+                                "flutter_heyteacher_fastlane:version",
+                                "build"
+                        ],
+                        "group": "build",
+                        "problemMatcher": [],
+                        "label": "dart: run flutter_heyteacher_fastlane:version build",
+                        "detail": "increment version build number",
+                        "presentation": {
+                                "close": true,
+                                "echo": false,
+                                "reveal": "silent",
+                                "focus": false,
+                                "panel": "shared",
+                                "showReuseMessage": false,
+                                "clear": false
+                        }
+                }
+        ]
+  }
+  ```
+
+- add `preLaunchTask` in your launch configurations '.vscode/launch.json'
+  
+  ```json
+  ...
+    
+    "preLaunchTask": "dart: run flutter_heyteacher_fastlane:version build"
   ```
