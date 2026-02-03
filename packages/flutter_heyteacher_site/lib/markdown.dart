@@ -7,6 +7,8 @@ import 'package:flutter_heyteacher_utils/locale.dart' show LocaleViewModel;
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:markdown_widget/config/all.dart';
 import 'package:markdown_widget/widget/all.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
+import 'package:updown_arrow_scroller/updown_arrow_scroller.dart' show UpDownArrowScroller;
 import 'package:url_launcher/url_launcher.dart';
 
 /// The markdown view loading markdown page from assets
@@ -27,7 +29,6 @@ class MarkdownView extends StatefulWidget {
 }
 
 class _MarkdownViewState extends State<MarkdownView> {
-
   String _markdownContents = '';
 
   final TocController _tocController = TocController();
@@ -35,6 +36,8 @@ class _MarkdownViewState extends State<MarkdownView> {
   final List<TocItem> _tocList = [];
 
   final Map<String, int> _headerIndexes = {};
+
+  final AutoScrollController _autoScrollController = AutoScrollController();
 
   StreamSubscription<Locale>? _localeStreamSubscription;
 
@@ -100,31 +103,39 @@ class _MarkdownViewState extends State<MarkdownView> {
   Widget _buildMarkdownWidget() {
     _tocList.clear();
     _headerIndexes.clear();
-    return MarkdownWidget(
-      markdownGenerator: MarkdownGenerator(
-        // build the toc list on load the document
-        // this is needed for small screens without TocWidget
-        onNodeAccepted: (node, index) {
-          if (node is HeadingNode) {
-            final listLength = _tocList.length;
-            _tocList.add(
-              TocItem(node: node, widgetIndex: index, tocListIndex: listLength),
-            );
-          }
-        },
+    return UpDownArrowScroller(
+      childScrollController: _autoScrollController,
+      child: MarkdownWidget(
+        autoScrollController: _autoScrollController,
+        markdownGenerator: MarkdownGenerator(
+          // build the toc list on load the document
+          // this is needed for small screens without TocWidget
+          onNodeAccepted: (node, index) {
+            if (node is HeadingNode) {
+              final listLength = _tocList.length;
+              _tocList.add(
+                TocItem(
+                  node: node,
+                  widgetIndex: index,
+                  tocListIndex: listLength,
+                ),
+              );
+            }
+          },
+        ),
+        config: MarkdownConfig.darkConfig.copy(
+          configs: [
+            _paragraphLinkConfig,
+            if (ThemeViewModel.instance.isDark)
+              PreConfig.darkConfig.copy(wrapper: _codeWrapper)
+            else
+              const PreConfig().copy(wrapper: _codeWrapper),
+          ],
+        ),
+        padding: const EdgeInsets.all(8),
+        tocController: _tocController,
+        data: _markdownContents,
       ),
-      config: MarkdownConfig.darkConfig.copy(
-        configs: [
-          _paragraphLinkConfig,
-          if (ThemeViewModel.instance.isDark)
-            PreConfig.darkConfig.copy(wrapper: _codeWrapper)
-          else
-            const PreConfig().copy(wrapper: _codeWrapper),
-        ],
-      ),
-      padding: const EdgeInsets.all(8),
-      tocController: _tocController,
-      data: _markdownContents,
     );
   }
 
