@@ -621,7 +621,7 @@ packages:
       path: "../flutter_heyteacher_fastlane"
       relative: true
     source: path
-    version: "1.1.0+260202164"
+    version: "1.1.1+260203145"
   flutter_heyteacher_text_to_speech:
     dependency: "direct main"
     description:
