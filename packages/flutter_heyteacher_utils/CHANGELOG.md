@@ -1,3 +1,15 @@
+<a id="1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane"></a>
+# [1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane) - 2026-02-03
+
+## What's Changed
+* move version command line doc to flutter_heyteacher_fastlane by [@heyteacher](https://github.com/heyteacher) in [#48](https://github.com/heyteacher/flutter_heyteacher_utils/pull/48)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.0+260202171_fake_signin...1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane
+
+[Changes][1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane]
+
+
 <a id="1.41.0+260202171_fake_signin"></a>
 # [1.41.0+260202171_fake_signin](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.41.0+260202171_fake_signin) - 2026-02-02
 
@@ -103,6 +115,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.0+260202171_fake_signin...1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane
 [1.41.0+260202171_fake_signin]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.40.0+260202115_theme_is_dart_is_light...1.41.0+260202171_fake_signin
 [1.40.0+260202115_theme_is_dart_is_light]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.4+260201085_reorganize_settings...1.40.0+260202115_theme_is_dart_is_light
 [1.39.4+260201085_reorganize_settings]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.3+260130094_move_fastlane_dev_dependencies...1.39.4+260201085_reorganize_settings
