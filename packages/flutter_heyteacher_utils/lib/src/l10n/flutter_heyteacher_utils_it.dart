@@ -33,19 +33,19 @@ class FlutterHeyteacherUtilsLocalizationsIt
 
   @override
   String get encryptionPassphraseIsEmptySetIt =>
-      'La passphrase di crittografia è vuota, impostala';
+      'La password di crittografia è vuota, impostala';
 
   @override
   String get missingEncryptionSecretKeyImportIt =>
-      'Chiave segreta di crittografia mancante, importala';
+      'Chiave Crittografica mancante, importala';
 
   @override
   String get errorOnEncryptionCheckPassphrase =>
-      'Errore di crittografia, controlla la passphrase di crittografia';
+      'Errore di crittografia, controlla la password di crittografia';
 
   @override
   String get errorOnDecryptionCheckPassphrase =>
-      'Errore di decrittografia, controlla la passphrase di crittografia';
+      'Errore di decrittografia, controlla la password di crittografia';
 
   @override
   String get id => 'ID: ';
@@ -67,26 +67,25 @@ class FlutterHeyteacherUtilsLocalizationsIt
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'Se modifichi la passphrase di crittografia, non potrai più accedere ai dati crittografati con la vecchia passphrase.\n\nSei sicuro di voler modificare la passphrase di crittografia?';
+      'Se modifichi la password crittografica, non potrai più accedere ai dati crittografati con la vecchia passphrase.\n\nSei sicuro di voler modificare la password crittografica?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'Se importi una chiave segreta di crittografia, la vecchia chiave verrà sovrascritta e i dati crittografati con la vecchia chiave andranno persi.\n\nSei sicuro di voler importare la chiave segreta di crittografia?';
+      'Se importi una chiave crittografica, la vecchia chiave verrà sovrascritta e i dati crittografati con la vecchia chiave andranno persi.\n\nSei sicuro di voler importare la chiave crittografica?';
 
   @override
-  String get encryptionSecretKeyImported =>
-      'Chiave segreta di crittografia importata';
+  String get encryptionSecretKeyImported => 'Chiave crittografica importata';
 
   @override
-  String get encryptionPassphrase => 'Passphrase di crittografia';
+  String get encryptionPassphrase => 'Password crittografica';
 
   @override
-  String get encryptionSecretKey => 'Chiave segreta di crittografia';
+  String get encryptionSecretKey => 'Chiave Crittografica';
 
   @override
   String
   get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro.\nIl codice QR è crittografato con la passphrase di crittografia.\nDevi impostare la stessa passphrase di crittografia sul nuovo dispositivo.';
+      'Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro.\nIl codice QR è crittografato con la password crittografica.\nDevi impostare la stessa password crittografica sul nuovo dispositivo.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>

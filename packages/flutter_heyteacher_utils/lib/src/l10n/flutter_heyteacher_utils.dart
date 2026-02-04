@@ -160,7 +160,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @missingEncryptionSecretKeyImportIt.
   ///
   /// In en, this message translates to:
-  /// **'Missing Encryption Secret Key, import it'**
+  /// **'Missing Encryption Key, import it'**
   String get missingEncryptionSecretKeyImportIt;
 
   /// No description provided for @errorOnEncryptionCheckPassphrase.
@@ -220,13 +220,13 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @areYouSureToImportEncryptionSecretKey.
   ///
   /// In en, this message translates to:
-  /// **'If you import an Encryption Secret Key, the old key will be overridden and data encrypted with the old key will be lost.\n\nAre you sure you want to import the Encryption Secret Key?'**
+  /// **'If you import an Encryption Key, the old key will be overridden and data encrypted with the old key will be lost.\n\nAre you sure you want to import the Encryption Key?'**
   String get areYouSureToImportEncryptionSecretKey;
 
   /// No description provided for @encryptionSecretKeyImported.
   ///
   /// In en, this message translates to:
-  /// **'Encryption Secret Key imported'**
+  /// **'Encryption Key imported'**
   String get encryptionSecretKeyImported;
 
   /// No description provided for @encryptionPassphrase.
@@ -238,7 +238,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @encryptionSecretKey.
   ///
   /// In en, this message translates to:
-  /// **'Encryption Secret Key'**
+  /// **'Encryption Key'**
   String get encryptionSecretKey;
 
   /// No description provided for @scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase.
