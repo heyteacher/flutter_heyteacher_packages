@@ -1,3 +1,15 @@
+<a id="1.43.0+260204141_add_external_aad_encrypt_decrypt"></a>
+# [1.43.0+260204141_add_external_aad_encrypt_decrypt](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.43.0+260204141_add_external_aad_encrypt_decrypt) - 2026-02-04
+
+## What's Changed
+* add externalAAD params to encrypt and deccrypt + add isToStore param to generateSecretKey by [@heyteacher](https://github.com/heyteacher) in [#50](https://github.com/heyteacher/flutter_heyteacher_utils/pull/50)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.42.0+260204083_download_key...1.43.0+260204141_add_external_aad_encrypt_decrypt
+
+[Changes][1.43.0+260204141_add_external_aad_encrypt_decrypt]
+
+
 <a id="1.42.0+260204083_download_key"></a>
 # [1.42.0+260204083_download_key](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.42.0+260204083_download_key) - 2026-02-04
 
@@ -127,6 +139,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.43.0+260204141_add_external_aad_encrypt_decrypt]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.42.0+260204083_download_key...1.43.0+260204141_add_external_aad_encrypt_decrypt
 [1.42.0+260204083_download_key]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane...1.42.0+260204083_download_key
 [1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.0+260202171_fake_signin...1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane
 [1.41.0+260202171_fake_signin]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.40.0+260202115_theme_is_dart_is_light...1.41.0+260202171_fake_signin
