@@ -1,3 +1,15 @@
+<a id="1.42.0+260204083_download_key"></a>
+# [1.42.0+260204083_download_key](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.42.0+260204083_download_key) - 2026-02-04
+
+## What's Changed
+* 463 download qrcode of secret key by [@heyteacher](https://github.com/heyteacher) in [#49](https://github.com/heyteacher/flutter_heyteacher_utils/pull/49)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane...1.42.0+260204083_download_key
+
+[Changes][1.42.0+260204083_download_key]
+
+
 <a id="1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane"></a>
 # [1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane) - 2026-02-03
 
@@ -115,6 +127,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.42.0+260204083_download_key]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane...1.42.0+260204083_download_key
 [1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.0+260202171_fake_signin...1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane
 [1.41.0+260202171_fake_signin]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.40.0+260202115_theme_is_dart_is_light...1.41.0+260202171_fake_signin
 [1.40.0+260202115_theme_is_dart_is_light]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.39.4+260201085_reorganize_settings...1.40.0+260202115_theme_is_dart_is_light
