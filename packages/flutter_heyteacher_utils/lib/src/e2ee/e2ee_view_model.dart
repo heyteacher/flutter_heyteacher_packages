@@ -111,15 +111,24 @@ class E2EEViewModel {
   /// Encrypts the given [value] string using AES-GCM.
   ///
   /// Requires the user to be authenticated and an AAD (passphrase) to be set.
-  /// If [esternalSecretKey] is not provided, it generates or retrieves
-  /// the user's secret key from secure storage.
+  /// Generates or retrieves the user's secret key from secure storage and use 
+  /// the AAD supplied by [getAAD]. 
+  /// 
+  /// If [esternalSecretKey] is provided, use it for encryption insteaf of 
+  /// the user's secret key.
+  /// 
+  /// if [externalAAD] is provided, use it for encryption insteaf of 
+  /// the AAD supplied by [getAAD].
+  /// 
   /// Returns an [E2EEValue] containing the encrypted data and the
   /// Initialization Vector (IV).
+  /// 
   /// Throws [UserNotAuthenticatedException], [AADEmptyException],
   /// or [ErrorOnEncryptException] on failure.
   Future<E2EEValue> encrypt(
     String value, {
     AesGcmSecretKey? esternalSecretKey,
+    String? externalAAD
   }) async {
     _logger.finest('<encrypt>:');
     // cannot encrypt if not auth
@@ -127,7 +136,7 @@ class E2EEViewModel {
       _logger.severe('(encrypt): user not authenticated');
       throw UserNotAuthenticatedException();
     }
-    final aad = await getAAD();
+    final aad = externalAAD ?? await getAAD();
     if (aad == null || aad.isEmpty) {
       _logger.severe('(encrypt): aad not set');
       throw AADEmptyException();
@@ -162,15 +171,22 @@ class E2EEViewModel {
   /// Decrypts the given [encrypted] [E2EEValue] using AES-GCM.
   ///
   /// Requires the user to be authenticated and an AAD (passphrase) to be set.
-  /// If [secretKey] is not provided, it retrieves the user's secret key from
-  /// secure storage.
+  /// 
+  /// If [esternalSecretKey] is provided, use it for encryption insteaf of 
+  /// the user's secret key.
+  /// 
+  /// if [externalAAD] is provided, use it for encryption insteaf of 
+  /// the AAD supplied by [getAAD].
+  /// 
   /// Returns the decrypted string.
+  /// 
   /// Throws [UserNotAuthenticatedException], [AADEmptyException],
   /// [MissingEncryptionSecretKeyException], or [ErrorOnDecryptException]
   /// on failure.
   Future<String> decrypt(
     E2EEValue encrypted, {
-    AesGcmSecretKey? secretKey,
+    AesGcmSecretKey? esternalSecretKey,
+    String? externalAAD
   }) async {
     _logger.finest('<decrypt>:');
     // cannot encrypt if not auth
@@ -179,12 +195,12 @@ class E2EEViewModel {
       throw UserNotAuthenticatedException();
     }
     // check and read AAD
-    final aad = await getAAD();
+    final aad =  externalAAD ?? await getAAD();
     if (aad == null || aad.isEmpty) {
       _logger.severe('(decrypt): aad is empty');
       throw AADEmptyException();
     }
-    var secretKeyToUse = secretKey;
+    var secretKeyToUse = esternalSecretKey;
     // raise exception if key not found in secure storage
     if (secretKeyToUse == null && await secretKeyStored) {
       // if param secretKey is null, read the secret key from secure storage
@@ -320,7 +336,7 @@ class E2EEViewModel {
     // decrypt E2EEValue using Master Secret Key (and passphrase)
     final secretJwkJson = await decrypt(
       e2eeValue,
-      secretKey: await _readMasterSecretKey(),
+      esternalSecretKey: await _readMasterSecretKey(),
     );
     // try to read secret key
     await _readSecretKeyFromJwkJson(secretJwkJson);
@@ -343,9 +359,11 @@ class E2EEViewModel {
   /// Generates a new AES-GCM secret key (256-bit), stores it securely in
   /// JWK format, and returns the [AesGcmSecretKey].
   ///
+  /// Stores into user's secure storage if [isToStore] is true (the default).
+  /// 
   /// Requires the user to be authenticated.
   @visibleForTesting
-  Future<AesGcmSecretKey> generateSecretKey() async {
+  Future<AesGcmSecretKey> generateSecretKey({bool isToStore = true}) async {
     _logger.info('<generateSecretKey>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
@@ -359,22 +377,13 @@ class E2EEViewModel {
     final secretJwk = await secretKey.exportJsonWebKey();
     // encode json the jwk
     final secretJwkJson = jsonEncode(secretJwk);
-    // write the jwk json into storage
-    await secureStorage.write(key: secretKeyKey, value: secretJwkJson);
-    _logger.info(
-      '(generateSecretKey): new key generated stored in secureStorage',
-    );
-    // if (kDebugMode) {
-    //   final e2eeValue = await encrypt(
-    //     secretJwkJson,
-    //     esternalSecretKey: await _readMasterSecretKey(),
-    //   );
-    //   debugPrint(
-    //     '(generateSecretKey):  secretJwkJson '
-    //     '${jsonEncode(e2eeValue)}',
-    //   );
-    // }
-    // secret key in secure storage, load it
+    if (isToStore) {
+      // write the jwk json into storage
+      await secureStorage.write(key: secretKeyKey, value: secretJwkJson);
+      _logger.info(
+        '(generateSecretKey): new key generated stored in secureStorage',
+      );
+    }
     return secretKey;
   }
 

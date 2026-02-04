@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,9 +39,54 @@ void main() {
 
   // initialize Auth with MockFirebaseAuth
   AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
-  unawaited(E2EEViewModel.instance(
-    AuthViewModel.instance.uid,
-  ).setAAD(aadValue: 'aadValue'));
+  unawaited(
+    E2EEViewModel.instance(
+      AuthViewModel.instance.uid,
+    ).setAAD(aadValue: 'aadValue'),
+  );
+
+  group('secret key', () {
+    test('generate secret key ,encrypt an decrypt with master key', () async {
+      // Generate a master key
+      final masterSecretKey = await E2EEViewModel.instance(
+        AuthViewModel.instance.uid,
+      ).generateSecretKey(isToStore: false);
+      debugPrint(
+        'masterSecretJwkJson:\n\n'
+        '${jsonEncode(await masterSecretKey.exportJsonWebKey())}',
+      );
+      // generate a secret key
+      final secretKey = await E2EEViewModel.instance(
+        AuthViewModel.instance.uid,
+      ).generateSecretKey(isToStore: false);
+      final secretJwkJson = jsonEncode(await secretKey.exportJsonWebKey());
+      const aad = '/&/8678bhnogvd6&/=gB097';
+      // encrypt with master key
+      final encryptedSecretE2EEValue =
+          await E2EEViewModel.instance(
+            AuthViewModel.instance.uid,
+          ).encrypt(
+            secretJwkJson,
+            esternalSecretKey: masterSecretKey,
+            externalAAD: aad,
+          );
+      debugPrint(
+        'encryptedSecretE2EEValue:\n'
+        '\n${jsonEncode(encryptedSecretE2EEValue)}',
+      );
+      // decrypt with master key
+      final decryptedSecretJwkJson =
+          await E2EEViewModel.instance(
+            AuthViewModel.instance.uid,
+          ).decrypt(
+            encryptedSecretE2EEValue,
+            esternalSecretKey: masterSecretKey,
+            externalAAD: aad,
+          );
+      // check if it's the same
+      expect(secretJwkJson, decryptedSecretJwkJson);
+    });
+  });
 
   group('encrypt decryp message:', () {
     test('encrypted decrypted empty message return same', () async {
