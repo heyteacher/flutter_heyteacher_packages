@@ -38,7 +38,7 @@ class FlutterHeyteacherUtilsLocalizationsDe
 
   @override
   String get missingEncryptionSecretKeyImportIt =>
-      'Fehlender Verschlüsselungs-Geheimschlüssel, bitte importieren';
+      'Fehlender Kryptografischen Schlüssel, bitte importieren';
 
   @override
   String get errorOnEncryptionCheckPassphrase =>
@@ -72,17 +72,17 @@ class FlutterHeyteacherUtilsLocalizationsDe
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'Wenn Sie einen Verschlüsselungs-Geheimschlüssel importieren, wird der alte Schlüssel überschrieben und mit dem alten Schlüssel verschlüsselte Daten gehen verloren.\n\nMöchten Sie den Verschlüsselungs-Geheimschlüssel wirklich importieren?';
+      'Wenn Sie einen Kryptografischen Schlüssel importieren, wird der alte Schlüssel überschrieben und mit dem alten Schlüssel verschlüsselte Daten gehen verloren.\n\nMöchten Sie den Kryptografischen Schlüssel wirklich importieren?';
 
   @override
   String get encryptionSecretKeyImported =>
-      'Verschlüsselungs-Geheimschlüssel importiert';
+      'Kryptografischen Schlüssel importiert';
 
   @override
   String get encryptionPassphrase => 'Verschlüsselungspassphrase';
 
   @override
-  String get encryptionSecretKey => 'Verschlüsselungs-Geheimschlüssel';
+  String get encryptionSecretKey => 'Kryptografischen Schlüssel';
 
   @override
   String

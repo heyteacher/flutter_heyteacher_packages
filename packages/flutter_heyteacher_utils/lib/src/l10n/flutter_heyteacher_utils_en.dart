@@ -37,7 +37,7 @@ class FlutterHeyteacherUtilsLocalizationsEn
 
   @override
   String get missingEncryptionSecretKeyImportIt =>
-      'Missing Encryption Secret Key, import it';
+      'Missing Encryption Key, import it';
 
   @override
   String get errorOnEncryptionCheckPassphrase =>
@@ -71,16 +71,16 @@ class FlutterHeyteacherUtilsLocalizationsEn
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'If you import an Encryption Secret Key, the old key will be overridden and data encrypted with the old key will be lost.\n\nAre you sure you want to import the Encryption Secret Key?';
+      'If you import an Encryption Key, the old key will be overridden and data encrypted with the old key will be lost.\n\nAre you sure you want to import the Encryption Key?';
 
   @override
-  String get encryptionSecretKeyImported => 'Encryption Secret Key imported';
+  String get encryptionSecretKeyImported => 'Encryption Key imported';
 
   @override
   String get encryptionPassphrase => 'Encryption Passphrase';
 
   @override
-  String get encryptionSecretKey => 'Encryption Secret Key';
+  String get encryptionSecretKey => 'Encryption Key';
 
   @override
   String

@@ -35,19 +35,19 @@ class FlutterHeyteacherUtilsLocalizationsFr
 
   @override
   String get encryptionPassphraseIsEmptySetIt =>
-      'La phrase secrète de chiffrement est vide, définissez-la';
+      'La Phrase Cryptographique de chiffrement est vide, définissez-la';
 
   @override
   String get missingEncryptionSecretKeyImportIt =>
-      'Clé secrète de chiffrement manquante, importez-la';
+      'Clé Cryptographique de chiffrement manquante, importez-la';
 
   @override
   String get errorOnEncryptionCheckPassphrase =>
-      'Erreur de chiffrement, vérifiez la phrase secrète de chiffrement';
+      'Erreur de chiffrement, vérifiez la Phrase Cryptographique';
 
   @override
   String get errorOnDecryptionCheckPassphrase =>
-      'Erreur de déchiffrement, vérifiez la phrase secrète de chiffrement';
+      'Erreur de déchiffrement, vérifiez la Phrase Cryptographique';
 
   @override
   String get id => 'ID: ';
@@ -69,26 +69,25 @@ class FlutterHeyteacherUtilsLocalizationsFr
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
-      'Si vous modifiez la phrase secrète de chiffrement, vous ne pourrez plus accéder aux données chiffrées avec l\'ancienne phrase secrète.\n\nÊtes-vous sûr de vouloir modifier la phrase secrète de chiffrement ?';
+      'Si vous modifiez la Phrase Cryptographique, vous ne pourrez plus accéder aux données chiffrées avec l\'ancienne phrase secrète.\n\nÊtes-vous sûr de vouloir modifier la Phrase Cryptographique?';
 
   @override
   String get areYouSureToImportEncryptionSecretKey =>
-      'Si vous importez une clé secrète de chiffrement, l\'ancienne clé sera écrasée et les données chiffrées avec l\'ancienne clé seront perdues.\n\nÊtes-vous sûr de vouloir importer la clé secrète de chiffrement ?';
+      'Si vous importez une Clé Cryptographique, l\'ancienne clé sera écrasée et les données chiffrées avec l\'ancienne clé seront perdues.\n\nÊtes-vous sûr de vouloir importer la Clé Cryptographique?';
 
   @override
-  String get encryptionSecretKeyImported =>
-      'Clé secrète de chiffrement importée';
+  String get encryptionSecretKeyImported => 'Clé Cryptographique importée';
 
   @override
-  String get encryptionPassphrase => 'Phrase secrète de chiffrement';
+  String get encryptionPassphrase => 'Phrase Cryptographique';
 
   @override
-  String get encryptionSecretKey => 'Clé secrète de chiffrement';
+  String get encryptionSecretKey => 'Clé Cryptographique';
 
   @override
   String
   get scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase =>
-      'Scannez le code QR avec un autre appareil ou stockez-le dans un endroit sécurisé.\nLe code QR est chiffré avec la phrase secrète de chiffrement.\nVous devez définir la même phrase secrète de chiffrement sur le nouvel appareil.';
+      'Scannez le code QR avec un autre appareil ou stockez-le dans un endroit sécurisé.\nLe code QR est chiffré avec la Cryptographique.\nVous devez définir la même Cryptographique sur le nouvel appareil.';
 
   @override
   String get errorWorkflowTaskAlreadyInitialized =>
