@@ -136,12 +136,12 @@ platform :android do
     end
     # commit release notes
     if options[:upload_only] != true
-      puts "commit release notes for version #{version}"
       sh("git branch release_note")
       sh("git checkout release_note")
+      puts "commit release notes for version #{version}"
       git_commit(
         path: "fastlane/metadata/android/en-US/changelogs/default.txt", 
-        message: "release notes for version #{version}")
+        message: "docs: release notes for version #{version}")
       sh("git checkout main")
       sh("git merge release_note")
       sh("git branch release_note -d")
