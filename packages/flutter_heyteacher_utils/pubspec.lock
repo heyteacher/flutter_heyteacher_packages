@@ -628,7 +628,7 @@ packages:
       path: "../flutter_heyteacher_text_to_speech"
       relative: true
     source: path
-    version: "1.28.2+260130085"
+    version: "1.28.3+260206125"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
