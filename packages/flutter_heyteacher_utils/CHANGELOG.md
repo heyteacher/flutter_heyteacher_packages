@@ -1,3 +1,15 @@
+<a id="1.44.0+260206084_add_icons_to_values_of_generics_drop_down_menu"></a>
+# [1.44.0+260206084_add_icons_to_values_of_generics_drop_down_menu](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.44.0+260206084_add_icons_to_values_of_generics_drop_down_menu) - 2026-02-06
+
+## What's Changed
+* 492 featflutter heyteacher utils add icons to values and add trailing icon to genericsdropdownmenu by [@heyteacher](https://github.com/heyteacher) in [#51](https://github.com/heyteacher/flutter_heyteacher_utils/pull/51)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.43.0+260204141_add_external_aad_encrypt_decrypt...1.44.0+260206084_add_icons_to_values_of_generics_drop_down_menu
+
+[Changes][1.44.0+260206084_add_icons_to_values_of_generics_drop_down_menu]
+
+
 <a id="1.43.0+260204141_add_external_aad_encrypt_decrypt"></a>
 # [1.43.0+260204141_add_external_aad_encrypt_decrypt](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.43.0+260204141_add_external_aad_encrypt_decrypt) - 2026-02-04
 
@@ -139,6 +151,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.44.0+260206084_add_icons_to_values_of_generics_drop_down_menu]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.43.0+260204141_add_external_aad_encrypt_decrypt...1.44.0+260206084_add_icons_to_values_of_generics_drop_down_menu
 [1.43.0+260204141_add_external_aad_encrypt_decrypt]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.42.0+260204083_download_key...1.43.0+260204141_add_external_aad_encrypt_decrypt
 [1.42.0+260204083_download_key]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane...1.42.0+260204083_download_key
 [1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.0+260202171_fake_signin...1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane
