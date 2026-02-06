@@ -85,7 +85,7 @@ class LocaleWrapState<T extends StatefulWidget> extends State<T> {
                   ),
                 ),
                 selected: locale == LocaleViewModel.instance.locale,
-                onSelected: (bool selected) {
+                onSelected: (selected) {
                   setState(
                     () => LocaleViewModel.instance.locale = selected
                         ? locale

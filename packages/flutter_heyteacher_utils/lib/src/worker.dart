@@ -140,6 +140,8 @@ final class Worker<I, O> {
     final rawReceivePort = RawReceivePort();
     // Spawn the isolate.
     final completer = Completer<(ReceivePort, SendPort)>.sync();
+    // without type, sendPort cannot be inferred
+    // ignore: avoid_types_on_closure_parameters
     rawReceivePort.handler = (SendPort sendPort) {
       completer.complete((
         ReceivePort.fromRawReceivePort(rawReceivePort),

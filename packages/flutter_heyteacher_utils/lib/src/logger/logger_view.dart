@@ -34,7 +34,7 @@ class LoggingRouter {
   /// Builds a [GoRoute] for the logger screen.
   static GoRoute builder() => GoRoute(
     path: path,
-    builder: (BuildContext context, GoRouterState state) =>
+    builder: (context, state) =>
         const LoggerScreen(),
   );
 }
@@ -407,7 +407,7 @@ class _EnableLogsStorageChoiceCardState
       trailing: Switch(
         // This bool value toggles the switch.
         value: _enableLogsStorage ?? _defaultEnableLogsStorage,
-        onChanged: (bool value) {
+        onChanged: (value) {
           setState(() => _enableLogsStorage = value);
           unawaited(
             SharedPreferencesAsync().setBool(

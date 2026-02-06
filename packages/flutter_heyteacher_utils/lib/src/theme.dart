@@ -49,7 +49,7 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
             label: Text(ThemeMode.system.name),
             avatar: const Icon(Icons.smartphone),
             showCheckmark: false,
-            onSelected: (bool selected) =>
+            onSelected: (selected) =>
                 onSelected(selected ? ThemeMode.system : null),
           ),
           ChoiceChip(
@@ -57,7 +57,7 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
             label: Text(ThemeMode.dark.name),
             avatar: const Icon(Icons.dark_mode),
             showCheckmark: false,
-            onSelected: (bool selected) =>
+            onSelected: (selected) =>
                 onSelected(selected ? ThemeMode.dark : null),
           ),
           ChoiceChip(
@@ -65,7 +65,7 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
             label: Text(ThemeMode.light.name),
             avatar: const Icon(Icons.light_mode),
             showCheckmark: false,
-            onSelected: (bool selected) =>
+            onSelected: (selected) =>
                 onSelected(selected ? ThemeMode.light : null),
           ),
         ],

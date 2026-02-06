@@ -172,7 +172,7 @@ class RemoteConfigViewModel {
           ),
         ),
       );
-      _remoteConfig.onConfigUpdated.listen((RemoteConfigUpdate event) async {
+      _remoteConfig.onConfigUpdated.listen((event) async {
         _logger.config(
           '(initialize): activate remote config updated keys: '
           '${event.updatedKeys}',
