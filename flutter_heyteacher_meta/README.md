@@ -616,7 +616,7 @@ can be gererated using script:
 
   ```bash
   git add untranslated-messages.txt
-  git commit -m "localized strings to be translated, this file should be always empty"
+  git commit -m "chore: localized strings to be translated, this file should be always empty"
   ```
 
 - insert localized string into `flutter_heyteacher_utils_en.arb`
