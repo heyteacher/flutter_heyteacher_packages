@@ -1,3 +1,15 @@
+<a id="1.4.1+260206125_bump_deps_versions"></a>
+# [1.4.1+260206125_bump_deps_versions](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.4.1+260206125_bump_deps_versions) - 2026-02-06
+
+## What's Changed
+* build(deps): bump versions by [@heyteacher](https://github.com/heyteacher) in [#11](https://github.com/heyteacher/flutter_heyteacher_site/pull/11)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.0+260203132_add_up_down_scroller...1.4.1+260206125_bump_deps_versions
+
+[Changes][1.4.1+260206125_bump_deps_versions]
+
+
 <a id="1.4.0+260203132_add_up_down_scroller"></a>
 # [1.4.0+260203132_add_up_down_scroller](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.4.0+260203132_add_up_down_scroller) - 2026-02-03
 
@@ -74,6 +86,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[1.4.1+260206125_bump_deps_versions]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.0+260203132_add_up_down_scroller...1.4.1+260206125_bump_deps_versions
 [1.4.0+260203132_add_up_down_scroller]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.3.1+260202145_fix_accent_char_reload_on_change_lang...1.4.0+260203132_add_up_down_scroller
 [1.3.1+260202145_fix_accent_char_reload_on_change_lang]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.3.0+260202115_markdown_paragraph_link...1.3.1+260202145_fix_accent_char_reload_on_change_lang
 [1.3.0+260202115_markdown_paragraph_link]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.2.0+260201100_markdown_toc...1.3.0+260202115_markdown_paragraph_link
