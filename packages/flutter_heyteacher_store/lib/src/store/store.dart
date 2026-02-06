@@ -497,15 +497,20 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     unawaited(_aggregatesSubscription?.cancel());
   }
 
-  /// Return a Query of LightDataType.
+  /// Return a query of [LightDataType].
   ///
-  /// Apply [applyOrderBy], applies filter if [applyFilterBy] and applies
-  /// [limit] if not null.
+  /// If [applyOrderBy] and [limit] not equals 1, order by
+  /// [Store.orderByFields].
+  ///
+  /// If [applyFilterBy], filter by [Store.storeFilter].
+  ///
+  /// If [limit] is not null, apply limit.
   firestore.Query<LightDataType> query({
     bool applyOrderBy = false,
     bool applyFilterBy = true,
     int? limit,
   }) {
+    assert(limit == null || limit > 0, 'if set, limit must be > 0');
     firestore.Query<LightDataType> retQuery = _collectionReference;
     _logger.finest('<$runtimeType.query>: applyOrderBy $applyOrderBy '
         ' applyFilterBy $applyFilterBy limit $limit');
@@ -515,7 +520,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       retQuery = retQuery.where(storeFilter!.toFirestore());
     }
     // apply order by
-    if (applyOrderBy && orderByFields != null) {
+    if (applyOrderBy && orderByFields != null && limit != 1) {
       for (final orderbyField in orderByFields!.entries) {
         retQuery = retQuery.orderBy(
           orderbyField.key,
@@ -530,7 +535,14 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     return retQuery;
   }
 
-  /// Returns the stream on [Store.query]
+  /// Returns the stream on [Store.query].
+  ///
+  /// If [applyOrderBy] and [limit] not equals 1, order by
+  /// [Store.orderByFields].
+  ///
+  /// If [applyFilterBy], filter by [Store.storeFilter].
+  ///
+  /// If [limit] is not null, apply limit.
   Stream<Iterable<LightDataType>> stream({
     bool applyOrderBy = false,
     bool applyFilterBy = true,
