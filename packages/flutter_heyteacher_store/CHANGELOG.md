@@ -1,3 +1,15 @@
+<a id="1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1"></a>
+# [1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1) - 2026-02-06
+
+## What's Changed
+* build: bump flutter_heyteacher_utils version to  1.45.0+260206123 by [@heyteacher](https://github.com/heyteacher) in [#18](https://github.com/heyteacher/flutter_heyteacher_store/pull/18)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1...1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1
+
+[Changes][1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1]
+
+
 <a id="1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1"></a>
 # [1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1) - 2026-02-06
 
@@ -48,6 +60,7 @@
 [Changes][1.27.1+260118083_]
 
 
+[1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1...1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1
 [1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.2+260130094_move_fastlane_dev_dependencies...1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1
 [1.27.2+260130094_move_fastlane_dev_dependencies]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.1+260118083_...1.27.2+260130094_move_fastlane_dev_dependencies
 [1.27.1+260118083_]: https://github.com/heyteacher/flutter_heyteacher_store/tree/1.27.1+260118083_
