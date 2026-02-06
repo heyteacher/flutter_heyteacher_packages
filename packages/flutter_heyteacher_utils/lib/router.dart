@@ -39,7 +39,7 @@ class GoAuthRoute {
     Future<void> Function()? fakeSignIn,
   }) => GoRoute(
     path: 'auth',
-    builder: (BuildContext context, GoRouterState state) =>
+    builder: (context, state) =>
         const SizedBox.shrink(),
     routes: <RouteBase>[
       GoRoute(
@@ -58,7 +58,7 @@ class GoAuthRoute {
         // if fake sign in is not set, show sign-in screen
         builder: fakeSignIn != null
             ? null
-            : (BuildContext context, GoRouterState state) => SignInScreen(
+            : (context, state) => SignInScreen(
                 showAuthActionSwitch: false,
                 actions: [
                   AuthStateChangeAction<UserCreated>((context, userCreated) {
@@ -148,7 +148,7 @@ abstract class ScaffoldNavigationShell extends StatelessWidget {
 
               // Navigate to the current location of the branch at the provided
               // indexwhen tapping an item in the BottomNavigationBar.
-              onTap: (int index) => onTap(
+              onTap: (index) => onTap(
                 context,
                 index,
                 initialLocation: onTapInitialLocation(index),

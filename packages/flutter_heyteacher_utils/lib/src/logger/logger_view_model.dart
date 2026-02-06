@@ -108,7 +108,7 @@ class LoggerViewModel {
       return;
     }
     _alreadyConfigured = true;
-    FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.onError = (details) {
       _logger.severe(
         '(FlutterError.onError) ${details.summary}',
         details.exception,

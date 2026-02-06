@@ -300,7 +300,7 @@ class BlinkingTextState extends State<BlinkingText> {
             ),
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
-            builder: (BuildContext context, double opacity, Widget? child) {
+            builder: (context, opacity, child) {
               return Opacity(opacity: opacity, child: _text);
             },
           )
