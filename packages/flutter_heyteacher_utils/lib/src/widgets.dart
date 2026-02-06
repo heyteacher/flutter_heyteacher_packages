@@ -19,6 +19,7 @@ library;
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -105,7 +106,7 @@ void showSnackBar({
 /// of type [ObjectParamType] passed to callbacks, the [title] and the [content]
 /// of dialog.
 ///
-/// If [timeout] is provided, show a [ProgressIndicatorWidget] and close the 
+/// If [timeout] is provided, show a [ProgressIndicatorWidget] and close the
 /// dialog when [timeout] reached.
 ///
 /// If [timeoutCallback] is provided, call them when [timeout] reached.
@@ -276,7 +277,8 @@ class TooltipIconButton extends StatelessWidget {
 /// If [showCountdown], show the countdown inside indicator
 class ProgressIndicatorWidget extends StatefulWidget {
   /// Creates a [ProgressIndicatorWidget].
-  const ProgressIndicatorWidget({super.key, 
+  const ProgressIndicatorWidget({
+    super.key,
     this.timeout = const Duration(seconds: 15),
     this.timeoutWidget,
     this.showCountdown = false,
@@ -358,7 +360,7 @@ class _ProgressIndicatorWidgetState extends State<ProgressIndicatorWidget> {
         );
 }
 
-/// A centered view of [ProgressIndicatorWidget] constrained to 
+/// A centered view of [ProgressIndicatorWidget] constrained to
 /// a [constraints].
 ///
 /// Typically used to indicate that some background processing or data loading
@@ -541,57 +543,74 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
   /// Creates a generic dropdown menu.
   const GenericsDropDownMenu({
     required String label,
-    required this.onSelected,
-    required this.values,
+    required void Function(T?, {int? index}) onSelected,
+    required List<({Icon? icon, String label, T value})> values,
     super.key,
-    this.deniedValues = const [],
-    this.initialSelection,
-    this.enableFilter = true,
-    this.enableSearch = false,
-    this.addCallback,
-    this.index,
-    this.isDense = false,
-    this.height = 40,
-    this.width,
-    this.menuHeight = 300,
-  }) : _label = label;
+    List<String> deniedValues = const [],
+    T? initialSelection,
+    bool enableFilter = true,
+    bool enableSearch = false,
+    void Function(String, {int? index})? addCallback,
+    int? index,
+    bool isDense = false,
+    double height = 40,
+    double? width,
+    double menuHeight = 300,
+    IconData trailingIcon = Icons.filter_list,
+  }) : _onSelected = onSelected, _values = values,
+       _initialSelection = initialSelection,
+       _enableFilter = enableFilter,
+       _enableSearch = enableSearch,
+       _addCallback = addCallback,
+       _index = index,
+       _isDense = isDense,
+       _height = height,
+       _width = width,
+       _menuHeight = menuHeight,
+       _deniedValues = deniedValues,
+       _trailingIcon = trailingIcon,
+       _label = label;
   final String _label;
 
   /// The callback that is called when a new item is selected.
-  final void Function(T?, {int? index}) onSelected;
+  final void Function(T?, {int? index}) _onSelected;
 
   /// The list of items to display in the dropdown menu.
-  final List<({String label, T value})> values;
+  final List<({String label, T value, Icon? icon})> _values;
 
   /// The initially selected value.
-  final T? initialSelection;
+  final T? _initialSelection;
 
   /// Whether to enable filtering of the dropdown menu entries.
-  final bool enableFilter;
+  final bool _enableFilter;
 
   /// Whether to enable searching of the dropdown menu entries.
-  final bool enableSearch;
+  final bool _enableSearch;
 
   /// A callback to add a new item to the dropdown menu.
-  final void Function(String, {int? index})? addCallback;
+  final void Function(String, {int? index})? _addCallback;
 
-  /// An optional index to pass to the [onSelected] and [addCallback] callbacks.
-  final int? index;
+  /// An optional index to pass to the [_onSelected] and [_addCallback] 
+  /// callbacks.
+  final int? _index;
 
   /// Whether the dropdown menu is dense.
-  final bool isDense;
+  final bool _isDense;
 
   /// The height of the dropdown menu.
-  final double height;
+  final double _height;
 
   /// The width of the dropdown menu.
-  final double? width;
+  final double? _width;
 
   /// The height of the dropdown menu's list of entries.
-  final double menuHeight;
+  final double _menuHeight;
 
   /// A list of values that are not allowed to be added.
-  final List<String> deniedValues;
+  final List<String> _deniedValues;
+
+  /// The icon to display on the right side of the dropdown menu.
+  final IconData _trailingIcon;
 
   @override
   State<GenericsDropDownMenu<T>> createState() =>
@@ -605,35 +624,48 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   final FocusNode _focusNode = FocusNode();
   List<DropdownMenuEntry<T?>>? _lastFilteredEntries;
 
+  ({String? label, T? value, Icon? icon})? _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget._values.firstWhereOrNull(
+      (record) => record.value == widget._initialSelection,
+    );
+  }
+
   @override
   Widget build(BuildContext context) => DropdownMenu<T?>(
     focusNode: _focusNode,
     label: Text(widget._label, style: const TextStyle(fontSize: 11)),
-    initialSelection: widget.initialSelection,
+    initialSelection: widget._initialSelection,
     onSelected: _preOnSelected,
-    enableSearch: widget.enableSearch,
-    searchCallback: widget.enableSearch ? _searchCallback : null,
-    requestFocusOnTap: widget.enableFilter || widget.enableSearch,
-    enableFilter: widget.enableFilter,
-    filterCallback: widget.enableFilter ? _filterCallback : null,
-    leadingIcon: widget.addCallback != null && _enableAddTag
+    enableSearch: widget._enableSearch,
+    searchCallback: widget._enableSearch ? _searchCallback : null,
+    requestFocusOnTap: widget._enableFilter || widget._enableSearch,
+    enableFilter: widget._enableFilter,
+    filterCallback: widget._enableFilter ? _filterCallback : null,
+    leadingIcon: widget._addCallback != null && _enableAddTag
         ? IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add))
-        : null,
-    trailingIcon: const Icon(Icons.filter_list, applyTextScaling: true),
+        : _value?.icon,
+    trailingIcon: Icon(widget._trailingIcon, applyTextScaling: true),
     textStyle: Theme.of(context).textTheme.labelSmall,
-    width: widget.width,
-    menuHeight: widget.menuHeight,
+    width: widget._width,
+    menuHeight: widget._menuHeight,
     dropdownMenuEntries: [
       DropdownMenuEntry<T?>(value: null, label: ''),
-      ...widget.values.map(
-        (record) =>
-            DropdownMenuEntry<T?>(label: record.label, value: record.value),
+      ...widget._values.map(
+        (record) => DropdownMenuEntry<T?>(
+          label: record.label,
+          value: record.value,
+          leadingIcon: record.icon,
+        ),
       ),
     ],
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: const EdgeInsets.only(left: 4),
-      isDense: widget.isDense,
-      constraints: BoxConstraints.tight(Size.fromHeight(widget.height)),
+      isDense: widget._isDense,
+      constraints: BoxConstraints.tight(Size.fromHeight(widget._height)),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
     ),
   );
@@ -641,14 +673,14 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   Future<void> _preAddCallback() async {
     if (_filter != null || _querySearch != null) {
       final newValue = _filter ?? _querySearch;
-      if (widget.deniedValues.contains(newValue)) {
+      if (widget._deniedValues.contains(newValue)) {
         showSnackBar(
           context: context,
           message: 'cannot add denied value $newValue ',
           error: true,
         );
       } else {
-        widget.addCallback?.call(newValue!, index: widget.index);
+        widget._addCallback?.call(newValue!, index: widget._index);
       }
       _focusNode.unfocus();
       setState(() {
@@ -658,7 +690,8 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   }
 
   void _preOnSelected(T? value) {
-    widget.onSelected(value, index: widget.index);
+    _value = widget._values.firstWhereOrNull((record) => record.value == value);
+    widget._onSelected(value, index: widget._index);
     _focusNode.unfocus();
   }
 
