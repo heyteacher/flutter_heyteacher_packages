@@ -111,24 +111,24 @@ class E2EEViewModel {
   /// Encrypts the given [value] string using AES-GCM.
   ///
   /// Requires the user to be authenticated and an AAD (passphrase) to be set.
-  /// Generates or retrieves the user's secret key from secure storage and use 
-  /// the AAD supplied by [getAAD]. 
-  /// 
-  /// If [esternalSecretKey] is provided, use it for encryption insteaf of 
-  /// the user's secret key.
-  /// 
-  /// if [externalAAD] is provided, use it for encryption insteaf of 
+  /// Generates or retrieves the user's secret key from secure storage and use
   /// the AAD supplied by [getAAD].
-  /// 
+  ///
+  /// If [esternalSecretKey] is provided, use it for encryption insteaf of
+  /// the user's secret key.
+  ///
+  /// if [externalAAD] is provided, use it for encryption insteaf of
+  /// the AAD supplied by [getAAD].
+  ///
   /// Returns an [E2EEValue] containing the encrypted data and the
   /// Initialization Vector (IV).
-  /// 
+  ///
   /// Throws [UserNotAuthenticatedException], [AADEmptyException],
   /// or [ErrorOnEncryptException] on failure.
   Future<E2EEValue> encrypt(
     String value, {
     AesGcmSecretKey? esternalSecretKey,
-    String? externalAAD
+    String? externalAAD,
   }) async {
     _logger.finest('<encrypt>:');
     // cannot encrypt if not auth
@@ -171,22 +171,22 @@ class E2EEViewModel {
   /// Decrypts the given [encrypted] [E2EEValue] using AES-GCM.
   ///
   /// Requires the user to be authenticated and an AAD (passphrase) to be set.
-  /// 
-  /// If [esternalSecretKey] is provided, use it for encryption insteaf of 
+  ///
+  /// If [esternalSecretKey] is provided, use it for encryption insteaf of
   /// the user's secret key.
-  /// 
-  /// if [externalAAD] is provided, use it for encryption insteaf of 
+  ///
+  /// if [externalAAD] is provided, use it for encryption insteaf of
   /// the AAD supplied by [getAAD].
-  /// 
+  ///
   /// Returns the decrypted string.
-  /// 
+  ///
   /// Throws [UserNotAuthenticatedException], [AADEmptyException],
   /// [MissingEncryptionSecretKeyException], or [ErrorOnDecryptException]
   /// on failure.
   Future<String> decrypt(
     E2EEValue encrypted, {
     AesGcmSecretKey? esternalSecretKey,
-    String? externalAAD
+    String? externalAAD,
   }) async {
     _logger.finest('<decrypt>:');
     // cannot encrypt if not auth
@@ -195,7 +195,7 @@ class E2EEViewModel {
       throw UserNotAuthenticatedException();
     }
     // check and read AAD
-    final aad =  externalAAD ?? await getAAD();
+    final aad = externalAAD ?? await getAAD();
     if (aad == null || aad.isEmpty) {
       _logger.severe('(decrypt): aad is empty');
       throw AADEmptyException();
@@ -261,17 +261,15 @@ class E2EEViewModel {
       return null;
     }
     if (PlatformHelper.isWeb) {
-      // not found, try to read from remote config `e2eeWebDebugPassword`
-      final e2eeWebDebugPassword = RemoteConfigViewModel.instance.getString(
-        FHURemoteConfigKeys.webDemoPassword.name,
-      );
-      if (e2eeWebDebugPassword.isNotEmpty) {
+      final aad = await (await _secureStorage).read(key: aadKey);
+      if (aad == null || aad.isEmpty) {
+        final e2eeWebDebugPassword = RemoteConfigViewModel.instance.getString(
+          FHURemoteConfigKeys.webDemoPassword.name,
+        );
         await setAAD(aadValue: e2eeWebDebugPassword);
         return e2eeWebDebugPassword;
       } else {
-        _logger.severe('(getAAD): e2eeWebDebugPassword is empty');
-        // not found, return null
-        return null;
+        return aad;
       }
     } else {
       // try to read from secure storage
@@ -360,7 +358,7 @@ class E2EEViewModel {
   /// JWK format, and returns the [AesGcmSecretKey].
   ///
   /// Stores into user's secure storage if [isToStore] is true (the default).
-  /// 
+  ///
   /// Requires the user to be authenticated.
   @visibleForTesting
   Future<AesGcmSecretKey> generateSecretKey({bool isToStore = true}) async {

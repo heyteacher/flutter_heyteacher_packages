@@ -344,7 +344,7 @@ class _LoggingLevelDropDownMenuCardState
         isDense: true,
         onSelected: _onSelected,
         values: Level.LEVELS
-            .map((level) => (label: level.name, value: level))
+            .map((level) => (label: level.name, value: level, icon: null))
             .toList(),
         initialSelection: _level,
       ),
