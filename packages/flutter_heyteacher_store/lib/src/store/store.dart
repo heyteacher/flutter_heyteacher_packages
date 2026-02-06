@@ -1087,7 +1087,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     // user document reference
     final userDocumentReference = _firestore.collection('users').doc(_uid);
     await _firestore.runTransaction(
-      (firestore.Transaction transaction) => _updateGroupByCounterTransaction(
+      (transaction) => _updateGroupByCounterTransaction(
         transaction,
         userDocumentReference,
         document,
@@ -1229,7 +1229,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
                 FirestoreData.fromFirestoreFactory<LightDataType>(
               snapshot.data()!,
             ),
-            toFirestore: (LightDataType lightData, _) =>
+            toFirestore: (lightData, _) =>
                 lightData.toFirestore(null),
           );
 
@@ -1242,7 +1242,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
                     FirestoreData.fromFirestoreFactory<DetailsDataType>(
                   snapshot.data()!,
                 ),
-                toFirestore: (DetailsDataType detailsData, _) =>
+                toFirestore: (detailsData, _) =>
                     detailsData.toFirestore(null),
               );
 
