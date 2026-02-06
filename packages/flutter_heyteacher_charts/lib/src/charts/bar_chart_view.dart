@@ -100,10 +100,10 @@ class BarChartView extends ChartView {
                           getTooltipColor: (group) => Colors.transparent,
                           tooltipMargin: 13,
                           getTooltipItem: (
-                            BarChartGroupData group,
-                            int groupIndex,
-                            BarChartRodData rod,
-                            int rodIndex,
+                            group,
+                            groupIndex,
+                            rod,
+                            rodIndex,
                           ) =>
                               BarTooltipItem(
                             formatterY?.call(
