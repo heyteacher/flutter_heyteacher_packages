@@ -58,7 +58,7 @@ class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
                 RemoteConfigViewModel.instance.getBool(
                   TTSRemoteConfigKeys.ttsEnable.name,
                 ),
-            onChanged: (bool value) {
+            onChanged: (value) {
               setState(() => _enableTTS = value);
               unawaited(
                 SharedPreferencesAsync().setBool(
