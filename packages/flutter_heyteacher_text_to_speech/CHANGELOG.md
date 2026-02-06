@@ -1,3 +1,15 @@
+<a id="1.28.3+260206125_remove_unnecessary_annotation"></a>
+# [1.28.3+260206125_remove_unnecessary_annotation](https://github.com/heyteacher/flutter_heyteacher_text_to_speech/releases/tag/1.28.3+260206125_remove_unnecessary_annotation) - 2026-02-06
+
+## What's Changed
+* fix: remove unnecessary type annotation by [@heyteacher](https://github.com/heyteacher) in [#13](https://github.com/heyteacher/flutter_heyteacher_text_to_speech/pull/13)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/compare/1.28.2+260130085_remove_fastlane_dependency...1.28.3+260206125_remove_unnecessary_annotation
+
+[Changes][1.28.3+260206125_remove_unnecessary_annotation]
+
+
 <a id="1.28.2+260130085_remove_fastlane_dependency"></a>
 # [1.28.2+260130085_remove_fastlane_dependency](https://github.com/heyteacher/flutter_heyteacher_text_to_speech/releases/tag/1.28.2+260130085_remove_fastlane_dependency) - 2026-01-30
 
@@ -33,6 +45,7 @@
 [Changes][1.28.1+260118082_]
 
 
+[1.28.3+260206125_remove_unnecessary_annotation]: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/compare/1.28.2+260130085_remove_fastlane_dependency...1.28.3+260206125_remove_unnecessary_annotation
 [1.28.2+260130085_remove_fastlane_dependency]: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/compare/1.28.1+260118082_...1.28.2+260130085_remove_fastlane_dependency
 [1.28.1+260118082_]: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/tree/1.28.1+260118082_
 
