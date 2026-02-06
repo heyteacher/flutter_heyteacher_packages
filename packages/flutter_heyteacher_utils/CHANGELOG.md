@@ -1,3 +1,15 @@
+<a id="1.45.1+260206130_bump_deps_versions"></a>
+# [1.45.1+260206130_bump_deps_versions](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.45.1+260206130_bump_deps_versions) - 2026-02-06
+
+## What's Changed
+* build(deps): bump versions by [@heyteacher](https://github.com/heyteacher) in [#53](https://github.com/heyteacher/flutter_heyteacher_utils/pull/53)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.0+260206123_add_icons_to_values_of_generics_drop_down_menu...1.45.1+260206130_bump_deps_versions
+
+[Changes][1.45.1+260206130_bump_deps_versions]
+
+
 <a id="1.45.0+260206123_add_icons_to_values_of_generics_drop_down_menu"></a>
 # [1.45.0+260206123_add_icons_to_values_of_generics_drop_down_menu](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.45.0+260206123_add_icons_to_values_of_generics_drop_down_menu) - 2026-02-06
 
@@ -152,6 +164,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.45.1+260206130_bump_deps_versions]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.0+260206123_add_icons_to_values_of_generics_drop_down_menu...1.45.1+260206130_bump_deps_versions
 [1.45.0+260206123_add_icons_to_values_of_generics_drop_down_menu]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.43.0+260204141_add_external_aad_encrypt_decrypt...1.45.0+260206123_add_icons_to_values_of_generics_drop_down_menu
 [1.43.0+260204141_add_external_aad_encrypt_decrypt]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.42.0+260204083_download_key...1.43.0+260204141_add_external_aad_encrypt_decrypt
 [1.42.0+260204083_download_key]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.41.1+260203145_move_version_command_docs_to_flutter_heyteacher_fastlane...1.42.0+260204083_download_key
