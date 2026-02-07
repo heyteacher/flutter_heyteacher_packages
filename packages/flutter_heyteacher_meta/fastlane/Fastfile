@@ -52,7 +52,7 @@ desc "fl bump\n\tCommits pubspec.lock"
 lane :bump do
   sh("git branch bump")
   sh("git checkout bump")
-  sh("git add -f ../pubspec.lock")
+  sh("git add -f ../pubspec.lock ../Gemfile.lock")
   sh("git commit -m \"build(deps): bump deps version\"")
   sh("git checkout main")
   sh("git merge bump")
