@@ -476,7 +476,7 @@ packages:
       path: "../flutter_heyteacher_utils"
       relative: true
     source: path
-    version: "1.45.0+260206123"
+    version: "1.45.2+260207112"
   flutter_localizations:
     dependency: transitive
     description: flutter
