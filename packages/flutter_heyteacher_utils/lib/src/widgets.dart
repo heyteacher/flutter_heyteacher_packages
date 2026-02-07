@@ -19,7 +19,6 @@ library;
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -557,7 +556,8 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
     double? width,
     double menuHeight = 300,
     IconData trailingIcon = Icons.filter_list,
-  }) : _onSelected = onSelected, _values = values,
+  }) : _onSelected = onSelected,
+       _values = values,
        _initialSelection = initialSelection,
        _enableFilter = enableFilter,
        _enableSearch = enableSearch,
@@ -590,7 +590,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
   /// A callback to add a new item to the dropdown menu.
   final void Function(String, {int? index})? _addCallback;
 
-  /// An optional index to pass to the [_onSelected] and [_addCallback] 
+  /// An optional index to pass to the [_onSelected] and [_addCallback]
   /// callbacks.
   final int? _index;
 
@@ -624,16 +624,6 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   final FocusNode _focusNode = FocusNode();
   List<DropdownMenuEntry<T?>>? _lastFilteredEntries;
 
-  ({String? label, T? value, Icon? icon})? _value;
-
-  @override
-  void initState() {
-    super.initState();
-    _value = widget._values.firstWhereOrNull(
-      (record) => record.value == widget._initialSelection,
-    );
-  }
-
   @override
   Widget build(BuildContext context) => DropdownMenu<T?>(
     focusNode: _focusNode,
@@ -647,7 +637,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
     filterCallback: widget._enableFilter ? _filterCallback : null,
     leadingIcon: widget._addCallback != null && _enableAddTag
         ? IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add))
-        : _value?.icon,
+        : null,
     trailingIcon: Icon(widget._trailingIcon, applyTextScaling: true),
     textStyle: Theme.of(context).textTheme.labelSmall,
     width: widget._width,
@@ -665,6 +655,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: const EdgeInsets.only(left: 4),
       isDense: widget._isDense,
+
       constraints: BoxConstraints.tight(Size.fromHeight(widget._height)),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
     ),
@@ -690,7 +681,6 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   }
 
   void _preOnSelected(T? value) {
-    _value = widget._values.firstWhereOrNull((record) => record.value == value);
     widget._onSelected(value, index: widget._index);
     _focusNode.unfocus();
   }
