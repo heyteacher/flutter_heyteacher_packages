@@ -47,6 +47,19 @@ lane :checkout do
   sh("git checkout #{branch}")
 end
 
+
+desc "fl bump\n\tCommits pubspec.lock"
+lane :bump do
+  sh("git branch bump")
+  sh("git checkout bump")
+  sh("git add -f ../pubspec.lock")
+  sh("git commit -m \"build(deps): bump deps version\"")
+  sh("git checkout main")
+  sh("git merge bump")
+  sh("git branch bump -d")
+  push_to_git_remote
+end
+
 desc "fl release [version:major|minor|patch] [suffix:<nmenonic_tag_suffix>] [merge:true|false]\n\tCreates new release and merge branch into main"
 lane :release do|options|
   if options[:merge] == nil || options[:merge] == true
