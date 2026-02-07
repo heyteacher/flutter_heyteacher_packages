@@ -507,7 +507,7 @@ packages:
       path: "../flutter_heyteacher_utils"
       relative: true
     source: path
-    version: "1.45.2+260207112"
+    version: "1.45.3+260207180"
   flutter_highlight:
     dependency: transitive
     description:
