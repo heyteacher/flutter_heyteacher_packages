@@ -1,8 +1,12 @@
 #!/bin/sh
 #
 
-test "" != "$(egrep '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: ([\s\S]*)+([\s\S]*)' "$1")" || {
-    echo >&2 "Commit message must agree conventional commit specification:"
+test "" != "$(egrep '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: ([\s\S])+([\s\S]*)' "$1")" || {
+    echo >&2 "Commit message"
+    echo >&2 ""
+    echo >&2 "`cat .git/COMMIT_EDITMSG`"
+    echo >&2 ""
+    echo >&2 "must agree conventional commit specification:"
     echo >&2 ""
     echo >&2 "<type>[optional scope]: <description>"
     echo >&2 ""
