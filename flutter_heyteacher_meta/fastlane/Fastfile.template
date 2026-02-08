@@ -1,0 +1,10 @@
+# Uncomment the line if you want fastlane to automatically update itself
+#update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  import("../../flutter_heyteacher_fastlane/fastlane/Fastfile")
+
+end
