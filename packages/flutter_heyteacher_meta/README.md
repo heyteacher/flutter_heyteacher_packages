@@ -199,16 +199,16 @@ the execution `fl` in root project directory without paramenter show all `lanes`
 
 After setup the environment run from root project directory and create the project:
 
-- for libraries flutter projects:
+- for flutter packages:
 
   ```bash
-  install_common_lanes.sh
+  configure_flutter_package.sh
   ```
 
-- for android app flutter projects
+- for flutter app
   
   ```bash
-  install_app_lanes.sh
+  configure_flutter_app.sh
   ```
   
   For utilize firebase backup and app distribution edit
