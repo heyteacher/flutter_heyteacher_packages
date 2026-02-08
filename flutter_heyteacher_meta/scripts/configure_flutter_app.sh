@@ -8,8 +8,9 @@ set -x
 set -e 
 # configure standard flutter package
 ../flutter_heyteacher_fastlane/scripts/configure_flutter_package.sh
-# configure fastlane Pluginfile
-cp ../flutter_heyteacher_fastlane/fastlane/Pluginfile fastlane/
+# add fastlane Pluginfile
+cp ../flutter_heyteacher_fastlane/fastlane/Pluginfile.template fastlane/Pluginfile
+# configure fastlane Pluginfile in Gembile
 echo "" >> Gemfile
 echo "eval_gemfile(\"fastlane/Pluginfile\")" >> Gemfile
 # configure fastlane importing lanes from flutter_heyteacher_fastlane
