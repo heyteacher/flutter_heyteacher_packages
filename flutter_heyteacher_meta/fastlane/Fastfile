@@ -50,9 +50,10 @@ end
 
 desc "fl bump\n\tCommits pubspec.lock"
 lane :bump do
-  if sh("git branch --show-current") != "main"
-    puts "current branch must be \"main\""
-    return
+  currentBranch = sh("git branch --show-current").strip!
+  if currentBranch != "main"
+    puts "current branch must be \"main\", found \"#{currentBranch}\""
+    exit(1)
   end
   sh("git branch bump")
   sh("git checkout bump")
