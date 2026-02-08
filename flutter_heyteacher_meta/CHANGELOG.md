@@ -1,13 +1,14 @@
-<a id="1.2.0+260208113"></a>
-# [1.2.0+260208113](https://github.com/heyteacher/flutter_heyteacher_fastlane/releases/tag/1.2.0+260208113) - 2026-02-08
+<a id="1.2.1+260208140"></a>
+# [1.2.1+260208140](https://github.com/heyteacher/flutter_heyteacher_fastlane/releases/tag/1.2.1+260208140) - 2026-02-08
 
 ## What's Changed
 * 501 choremeta check conventional commit sintax on git commit by [@heyteacher](https://github.com/heyteacher) in [#6](https://github.com/heyteacher/flutter_heyteacher_fastlane/pull/6)
+* 501 choremeta check conventional commit sintax on git commit fix by [@heyteacher](https://github.com/heyteacher) in [#7](https://github.com/heyteacher/flutter_heyteacher_fastlane/pull/7)
 
 
-**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.1.1+260203145_fix_typo_mayor_with_major_version_command...1.2.0+260208113
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.1.1+260203145_fix_typo_mayor_with_major_version_command...1.2.1+260208140
 
-[Changes][1.2.0+260208113]
+[Changes][1.2.1+260208140]
 
 
 <a id="1.1.1+260203145_fix_typo_mayor_with_major_version_command"></a>
@@ -59,7 +60,7 @@
 [Changes][1.0.1+260129184_create_release_on_fl_release]
 
 
-[1.2.0+260208113]: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.1.1+260203145_fix_typo_mayor_with_major_version_command...1.2.0+260208113
+[1.2.1+260208140]: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.1.1+260203145_fix_typo_mayor_with_major_version_command...1.2.1+260208140
 [1.1.1+260203145_fix_typo_mayor_with_major_version_command]: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.1.0+260202164_fl_checkout_fl_release_with_merge...1.1.1+260203145_fix_typo_mayor_with_major_version_command
 [1.1.0+260202164_fl_checkout_fl_release_with_merge]: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.0.3+260129185_fix_create_release...1.1.0+260202164_fl_checkout_fl_release_with_merge
 [1.0.3+260129185_fix_create_release]: https://github.com/heyteacher/flutter_heyteacher_fastlane/compare/1.0.1+260129184_create_release_on_fl_release...1.0.3+260129185_fix_create_release
