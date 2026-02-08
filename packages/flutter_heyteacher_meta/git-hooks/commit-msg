@@ -1,10 +1,12 @@
 #!/bin/sh
 #
 
-test "" != "$(egrep '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: ([\s\S])+([\s\S]*)' "$1")" || {
-    echo >&2 "Commit message"
+commit_msg=$(cat .git/COMMIT_EDITMSG)
+
+test "" != "$(egrep '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([[:alnum:]._-]+\))?(!)?: ([[:space:][:print:]]*)+([[:space:][:print:]]*)' "$1")" || {
+    echo >&2 "Commit message:"
     echo >&2 ""
-    echo >&2 "`cat .git/COMMIT_EDITMSG`"
+    echo >&2 "\t$commit_msg"
     echo >&2 ""
     echo >&2 "must agree conventional commit specification:"
     echo >&2 ""
