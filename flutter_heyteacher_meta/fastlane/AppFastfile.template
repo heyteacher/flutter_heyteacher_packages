@@ -1,0 +1,18 @@
+# Uncomment the line if you want fastlane to automatically update itself
+#update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  import("../../flutter_heyteacher_fastlane/fastlane/Fastfile")
+
+  # set the Google Cloud Storage bucket name
+  #ENV["google_storage_backup_bucket"] = "gs://..."
+
+  # set the Firebase App Distribution service credentials file name
+  #ENV["firebase_app_distribution_service_credentials_file"] = "#{ENV["HOME"]}/.flutter/..."
+
+  import("../../flutter_heyteacher_fastlane/fastlane/AppFastfile")
+
+end
