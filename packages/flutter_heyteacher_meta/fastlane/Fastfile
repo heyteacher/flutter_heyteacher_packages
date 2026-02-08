@@ -50,6 +50,10 @@ end
 
 desc "fl bump\n\tCommits pubspec.lock"
 lane :bump do
+  if sh("git branch --show-current") != "main"
+    puts "current branch must be \"main\""
+    return
+  end
   sh("git branch bump")
   sh("git checkout bump")
   sh("git add -f ../pubspec.lock ../Gemfile.lock")
