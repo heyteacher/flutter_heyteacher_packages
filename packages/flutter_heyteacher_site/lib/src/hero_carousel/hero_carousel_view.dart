@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_site/src/hero_carousel/hero_carousel_data.dart';
 import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
+import 'package:flutter_heyteacher_utils/theme.dart';
 
 /// A responsive carousel view that adapts to different screen sizes.
 class HeroCarouselView extends StatefulWidget {
@@ -159,9 +160,9 @@ class _AbstractHeroCarouselViewState
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             IconButton(
-              color: Theme.of(
-                context,
-              ).colorScheme.primary.withValues(alpha: 0.5),
+              color: ThemeViewModel.instance.colorScheme.primary.withValues(
+                alpha: 0.5,
+              ),
               icon: const Icon(
                 size: 80,
                 Icons.keyboard_arrow_left,
@@ -170,9 +171,9 @@ class _AbstractHeroCarouselViewState
             ),
             const Expanded(child: SizedBox.shrink()),
             IconButton(
-              color: Theme.of(
-                context,
-              ).colorScheme.primary.withValues(alpha: 0.5),
+              color: ThemeViewModel.instance.colorScheme.primary.withValues(
+                alpha: 0.5,
+              ),
               icon: const Icon(Icons.keyboard_arrow_right, size: 80),
               onPressed: _next,
             ),
