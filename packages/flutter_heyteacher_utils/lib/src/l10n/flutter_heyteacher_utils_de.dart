@@ -79,7 +79,7 @@ class FlutterHeyteacherUtilsLocalizationsDe
       'Kryptografischen Schlüssel importiert';
 
   @override
-  String get encryptionPassphrase => 'Verschlüsselungspassphrase';
+  String get encryptionPassphrase => 'Passwort';
 
   @override
   String get encryptionSecretKey => 'Kryptografischen Schlüssel';

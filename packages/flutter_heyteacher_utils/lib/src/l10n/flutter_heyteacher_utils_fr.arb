@@ -40,7 +40,7 @@
   "@areYouSureToImportEncryptionSecretKey": {},
   "encryptionSecretKeyImported": "Clé Cryptographique importée",
   "@encryptionSecretKeyImported": {},
-  "encryptionPassphrase": "Phrase Cryptographique",
+  "encryptionPassphrase": "Mot de passe",
   "@encryptionPassphrase": {},
   "encryptionSecretKey": "Clé Cryptographique",
   "@encryptionSecretKey": {},

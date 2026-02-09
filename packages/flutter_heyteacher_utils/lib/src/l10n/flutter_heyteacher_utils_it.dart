@@ -77,7 +77,7 @@ class FlutterHeyteacherUtilsLocalizationsIt
   String get encryptionSecretKeyImported => 'Chiave crittografica importata';
 
   @override
-  String get encryptionPassphrase => 'Password crittografica';
+  String get encryptionPassphrase => 'Password';
 
   @override
   String get encryptionSecretKey => 'Chiave Crittografica';

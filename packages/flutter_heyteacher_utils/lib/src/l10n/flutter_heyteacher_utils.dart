@@ -232,7 +232,7 @@ abstract class FlutterHeyteacherUtilsLocalizations {
   /// No description provided for @encryptionPassphrase.
   ///
   /// In en, this message translates to:
-  /// **'Encryption Passphrase'**
+  /// **'Passphrase'**
   String get encryptionPassphrase;
 
   /// No description provided for @encryptionSecretKey.
