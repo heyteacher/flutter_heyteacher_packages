@@ -91,7 +91,7 @@ void showSnackBar({
             style: TextStyle(
               color: error
                   ? ThemeViewModel.instance.colorScheme.error
-                  : ThemeViewModel.instance.theme.colorScheme.onPrimary,
+                  : ThemeViewModel.instance.colorScheme.onPrimary,
             ),
           ),
         ),
