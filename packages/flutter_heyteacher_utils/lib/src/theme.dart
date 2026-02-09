@@ -44,29 +44,38 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
         alignment: WrapAlignment.center,
         spacing: 2,
         children: [
-          ChoiceChip(
-            selected: ThemeMode.system == ThemeViewModel.instance.themeMode,
-            label: Text(ThemeMode.system.name),
-            avatar: const Icon(Icons.smartphone),
-            showCheckmark: false,
-            onSelected: (selected) =>
-                onSelected(selected ? ThemeMode.system : null),
-          ),
-          ChoiceChip(
-            selected: ThemeMode.dark == ThemeViewModel.instance.themeMode,
-            label: Text(ThemeMode.dark.name),
-            avatar: const Icon(Icons.dark_mode),
-            showCheckmark: false,
-            onSelected: (selected) =>
-                onSelected(selected ? ThemeMode.dark : null),
-          ),
-          ChoiceChip(
-            selected: ThemeMode.light == ThemeViewModel.instance.themeMode,
-            label: Text(ThemeMode.light.name),
-            avatar: const Icon(Icons.light_mode),
-            showCheckmark: false,
-            onSelected: (selected) =>
-                onSelected(selected ? ThemeMode.light : null),
+          SegmentedButton<ThemeMode?>(
+            emptySelectionAllowed: true,
+            showSelectedIcon: false,
+            style: ButtonStyle(
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ),
+            segments: <ButtonSegment<ThemeMode>>[
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.system,
+                label: Text(ThemeMode.system.name),
+              ),
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.dark,
+                label: Text(ThemeMode.dark.name),
+                icon: const Icon(
+                  Icons.dark_mode,
+                ),
+              ),
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.light,
+                label: Text(ThemeMode.light.name),
+                icon: const Icon(
+                  Icons.light_mode,
+                ),
+              ),
+            ],
+            selected: <ThemeMode>{ThemeViewModel.instance.themeMode},
+            onSelectionChanged: onSelected,
           ),
         ],
       ),
@@ -82,9 +91,11 @@ class ThemeCardState<T extends StatefulWidget> extends State<T> {
   ///
   /// - [newSelection]: The [ThemeMode] selected by the user.
   @protected
-  void onSelected(ThemeMode? newSelection) => setState(() {
+  void onSelected(Set<ThemeMode?> newSelection) => setState(() {
     unawaited(
-      ThemeViewModel.instance.setThemeMode(newSelection ?? ThemeMode.system),
+      ThemeViewModel.instance.setThemeMode(
+        newSelection.first ?? ThemeMode.system,
+      ),
     );
   });
 }
@@ -217,10 +228,7 @@ class ThemeViewModel {
   /// If [themeMode] is [ThemeMode.system], it considers the platform's
   /// brightness.
   /// Otherwise, it uses the explicitly set light or dark theme.
-  ThemeData get theme =>
-      isLight
-      ? lightTheme
-      : darkTheme;
+  ThemeData get theme => isLight ? lightTheme : darkTheme;
 
   ThemeMode _themeMode;
 
@@ -245,58 +253,41 @@ class ThemeViewModel {
 
   /// Returns true if theme mode is light
   bool get isLight =>
-      _themeMode == ThemeMode.light || _brightness == Brightness.light;
+      _themeMode == ThemeMode.light ||
+      (_themeMode == ThemeMode.system && _brightness == Brightness.light);
 
   /// Returns true if theme mode is dark
   bool get isDark => !isLight;
 
   /// A blue color that adapts to the current theme (light/dark).
-  Color get blueColor =>
-      isLight
-      ? Colors.blue.shade700
-      : Colors.blue.shade300;
+  Color get blueColor => isLight ? Colors.blue.shade700 : Colors.blue.shade300;
 
   /// A yellow color that adapts to the current theme (light/dark).
   Color get yellowColor =>
-      isLight
-      ? Colors.yellow.shade700
-      : Colors.yellow.shade300;
+      isLight ? Colors.yellow.shade700 : Colors.yellow.shade300;
 
   /// A green color that adapts to the current theme (light/dark).
   Color get greenColor =>
-      isLight
-      ? Colors.green.shade700
-      : Colors.green.shade300;
+      isLight ? Colors.green.shade700 : Colors.green.shade300;
 
   /// An orange color that adapts to the current theme (light/dark).
   Color get orangeColor =>
-      isLight
-      ? Colors.orange.shade700
-      : Colors.orange.shade300;
+      isLight ? Colors.orange.shade700 : Colors.orange.shade300;
 
   /// A purple color that adapts to the current theme (light/dark).
   Color get purpleColor =>
-      isLight
-      ? Colors.purple.shade700
-      : Colors.purple.shade300;
+      isLight ? Colors.purple.shade700 : Colors.purple.shade300;
 
   /// A deep purple color that adapts to the current theme (light/dark).
   Color get deepPurpleColor =>
-      isLight
-      ? Colors.deepPurple.shade700
-      : Colors.deepPurple.shade300;
+      isLight ? Colors.deepPurple.shade700 : Colors.deepPurple.shade300;
 
   /// A deep purple color that adapts to the current theme (light/dark).
-  Color get greyColor =>
-      isLight
-      ? Colors.grey.shade700
-      : Colors.grey.shade400;
+  Color get greyColor => isLight ? Colors.grey.shade700 : Colors.grey.shade400;
 
   /// A deep purple color that adapts to the current theme (light/dark).
   Color get darkGreyColor =>
-      isLight
-      ? Colors.grey.shade900
-      : Colors.grey.shade600;
+      isLight ? Colors.grey.shade900 : Colors.grey.shade600;
 
   static final ({
     Color primary,
@@ -371,7 +362,8 @@ class ThemeViewModel {
   static set instance(ThemeViewModel instance) => _instance = instance;
 
   /// The [ColorScheme] of the current theme.
-  ColorScheme get colorScheme => theme.colorScheme;
+  ColorScheme get colorScheme =>
+      isDark ? darkTheme.colorScheme : lightTheme.colorScheme;
 
   /// Sets the application's [ThemeMode] to the provided [themeMode].
   ///
@@ -559,10 +551,18 @@ class ThemeViewModel {
         dividerColor: Colors.transparent,
         unselectedLabelColor: disabled,
       ),
+      textButtonTheme: const TextButtonThemeData(
+        style: ButtonStyle(
+          minimumSize: WidgetStatePropertyAll(Size(2, 2)),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
+          minimumSize: const WidgetStatePropertyAll(Size(4, 4)),
           textStyle: const WidgetStatePropertyAll(
-            TextStyle(fontWeight: FontWeight.bold),
+            TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
           backgroundColor: WidgetStatePropertyAll(primary),
           foregroundColor: WidgetStatePropertyAll(onPrimary),
@@ -572,6 +572,7 @@ class ThemeViewModel {
       appBarTheme: const AppBarTheme(iconTheme: IconThemeData(size: 40)),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         elevation: 0,
+
         selectedItemColor: primary,
         unselectedItemColor: disabled,
         backgroundColor: onPrimary,
