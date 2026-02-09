@@ -55,7 +55,7 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
           isDense: true,
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: ThemeViewModel.instance.theme.colorScheme.onSurface,
+              color: ThemeViewModel.instance.colorScheme.onSurface,
             ),
             borderRadius: BorderRadius.circular(8),
           ),
@@ -305,7 +305,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
           isDense: true,
           border: OutlineInputBorder(
             borderSide: BorderSide(
-              color: ThemeViewModel.instance.theme.colorScheme.onSurface,
+              color: ThemeViewModel.instance.colorScheme.onSurface,
             ),
             borderRadius: BorderRadius.circular(8),
           ),
