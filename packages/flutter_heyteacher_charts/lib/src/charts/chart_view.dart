@@ -327,7 +327,10 @@ abstract class ChartView extends StatelessWidget {
                 EdgeInsets.only(right: rotate ? 0 : 4.0, top: rotate ? 4.0 : 0),
             child: Text(
               formatterAxisY(0, value),
-              style: TextStyle(color: formatterColorAxisY(value)),
+              style: TextStyle(
+                color: formatterColorAxisY(value),
+                fontSize: 10,
+              ),
             ),
           ),
         ),
@@ -375,8 +378,7 @@ abstract class ChartView extends StatelessWidget {
             quarterTurns: rotate ? 0 : 3,
             child: Text(
               formatterAxisX(value),
-              style: ThemeViewModel.instance.theme.textTheme.bodySmall!
-                  .copyWith(color: formatterColorAxisX(value)),
+              style: TextStyle(color: formatterColorAxisX(value), fontSize: 10),
             ),
           ),
         ),
@@ -388,19 +390,19 @@ abstract class ChartView extends StatelessWidget {
         show: true,
         border: Border(
           bottom: BorderSide(
-            color: ThemeViewModel.instance.theme.colorScheme.onSurface
+            color: ThemeViewModel.instance.colorScheme.onSurface
                 .withValues(alpha: 0.5),
           ),
           left: BorderSide(
-            color: ThemeViewModel.instance.theme.colorScheme.onSurface
+            color: ThemeViewModel.instance.colorScheme.onSurface
                 .withValues(alpha: 0.5),
           ),
           right: BorderSide(
-            color: ThemeViewModel.instance.theme.colorScheme.onSurface
+            color: ThemeViewModel.instance.colorScheme.onSurface
                 .withValues(alpha: rightTitlesLikeLeft ? 0.5 : 0),
           ),
           top: BorderSide(
-            color: ThemeViewModel.instance.theme.colorScheme.onSurface
+            color: ThemeViewModel.instance.colorScheme.onSurface
                 .withValues(alpha: 0),
           ),
         ),
@@ -606,8 +608,9 @@ abstract class ChartView extends StatelessWidget {
 
   /// Checks if the line at the given [index] should be a step line.
   @protected
-  bool isStepLineChart(int index) => (isStepLineChartList?.length ?? 0) > index
-      && (isStepLineChartList?.elementAt(index) ?? false);
+  bool isStepLineChart(int index) =>
+      (isStepLineChartList?.length ?? 0) > index &&
+      (isStepLineChartList?.elementAt(index) ?? false);
 
   /// Rounds a [value] to the nearest [interval].
   @protected

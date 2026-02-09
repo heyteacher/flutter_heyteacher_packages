@@ -51,7 +51,7 @@ class BarChartView extends ChartView {
                           ? 1
                           : 2.5
                       : switch (chartDataList.length) {
-                          1 => _smallScreen ? 5.5 : 5.5 * 1.8,
+                          1 => _smallScreen ? 3.5 : 3.5 * 1.8,
                           2 => _smallScreen ? 3.5 : 3.5 * 1.8,
                           3 => _smallScreen ? 2.5 : 2.5 * 1.8,
                           4 => _smallScreen ? 1.4 : 1.4 * 1.8,
@@ -85,7 +85,7 @@ class BarChartView extends ChartView {
                               toY: data.y.toDouble(),
                               color: data.yColor,
                               borderRadius: BorderRadius.zero,
-                              width: 25,
+                              width: 20,
                             ),
                           ],
                           showingTooltipIndicators: [
@@ -112,9 +112,7 @@ class BarChartView extends ChartView {
                                 ) ??
                                 '',
                             TextStyle(
-                              color: rod.color,
-                              height: 0.9,
-                            ),
+                                color: rod.color, height: 0.9, fontSize: 10,),
                           ),
                         ),
                       ),
