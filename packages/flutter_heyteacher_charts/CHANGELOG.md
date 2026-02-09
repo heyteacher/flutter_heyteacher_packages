@@ -1,3 +1,15 @@
+<a id="1.28.6+260209131"></a>
+# [1.28.6+260209131](https://github.com/heyteacher/flutter_heyteacher_charts/releases/tag/1.28.6+260209131) - 2026-02-09
+
+## What's Changed
+* 499 fixtheme android 8 small screen and no dark mode by [@heyteacher](https://github.com/heyteacher) in [#13](https://github.com/heyteacher/flutter_heyteacher_charts/pull/13)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.5+260206125_remove_unnecessary_annotation...1.28.6+260209131
+
+[Changes][1.28.6+260209131]
+
+
 <a id="1.28.5+260206125_remove_unnecessary_annotation"></a>
 # [1.28.5+260206125_remove_unnecessary_annotation](https://github.com/heyteacher/flutter_heyteacher_charts/releases/tag/1.28.5+260206125_remove_unnecessary_annotation) - 2026-02-06
 
@@ -45,6 +57,7 @@
 [Changes][1.28.3+260118083_]
 
 
+[1.28.6+260209131]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.5+260206125_remove_unnecessary_annotation...1.28.6+260209131
 [1.28.5+260206125_remove_unnecessary_annotation]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.4+260130092_move_fastlane_dev_dependencies...1.28.5+260206125_remove_unnecessary_annotation
 [1.28.4+260130092_move_fastlane_dev_dependencies]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.3+260118083_...1.28.4+260130092_move_fastlane_dev_dependencies
 [1.28.3+260118083_]: https://github.com/heyteacher/flutter_heyteacher_charts/tree/1.28.3+260118083_
