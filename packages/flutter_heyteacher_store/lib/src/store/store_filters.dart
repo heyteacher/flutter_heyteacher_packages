@@ -36,6 +36,7 @@ library;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
 
 /// Operators used in [ValueStoreFilter]
@@ -91,12 +92,25 @@ enum LogicalOperator {
 
 /// The interface implemented by all store filters
 abstract class StoreFilter extends Equatable {
+  /// Creates a store filter
+  const StoreFilter();
+
+  /// The field document id
+  static const String documentId = 'id';
+
   /// Converts the filter into Firestore [Filter]
   Filter toFirestore();
+
+  /// Gets the field name.
+  ///
+  /// if [field] equals [StoreFilter.documentId] returns [FieldPath.documentId]
+  @protected
+  Object getField(String field) =>
+      field == StoreFilter.documentId ? FieldPath.documentId : field;
 }
 
 /// Compares [field] value to [value] according [Operator]
-class ValueStoreFilter extends Equatable implements StoreFilter {
+class ValueStoreFilter extends StoreFilter with EquatableMixin {
   /// The field in document
   final String field;
 
@@ -116,27 +130,27 @@ class ValueStoreFilter extends Equatable implements StoreFilter {
   /// Converts the value store filter into a Firestore filter
   @override
   Filter toFirestore() => switch (operator) {
-        Operator.isEqualTo => Filter(field, isEqualTo: value),
-        Operator.isNotEqualTo => Filter(field, isNotEqualTo: value),
-        Operator.isLessThan => Filter(field, isLessThan: value),
+        Operator.isEqualTo => Filter(getField(field), isEqualTo: value),
+        Operator.isNotEqualTo => Filter(getField(field), isNotEqualTo: value),
+        Operator.isLessThan => Filter(getField(field), isLessThan: value),
         Operator.isLessThanOrEqualTo =>
-          Filter(field, isLessThanOrEqualTo: value),
-        Operator.isGreaterThan => Filter(field, isGreaterThan: value),
+          Filter(getField(field), isLessThanOrEqualTo: value),
+        Operator.isGreaterThan => Filter(getField(field), isGreaterThan: value),
         Operator.isGreaterThanOrEqualTo =>
-          Filter(field, isGreaterThanOrEqualTo: value),
-        Operator.arrayContains => Filter(field, arrayContains: value),
+          Filter(getField(field), isGreaterThanOrEqualTo: value),
+        Operator.arrayContains => Filter(getField(field), arrayContains: value),
       };
 
   /// Prints the filter in polish notation
   @override
   String toString() => '$field ${operator._printable} $value';
-  
+
   @override
   List<Object?> get props => [field, operator, value];
 }
 
 /// Compares [field] value to iterable [values] according the [IterableOperator]
-class IterableValueStoreFilter extends Equatable implements StoreFilter {
+class IterableValueStoreFilter extends StoreFilter with EquatableMixin {
   /// The field in document
   final String field;
 
@@ -157,9 +171,10 @@ class IterableValueStoreFilter extends Equatable implements StoreFilter {
   @override
   Filter toFirestore() => switch (iterableOperator) {
         IterableOperator.arrayContainsAny =>
-          Filter(field, arrayContainsAny: values),
-        IterableOperator.whereIn => Filter(field, whereIn: values),
-        IterableOperator.whereNotIn => Filter(field, whereNotIn: values),
+          Filter(getField(field), arrayContainsAny: values),
+        IterableOperator.whereIn => Filter(getField(field), whereIn: values),
+        IterableOperator.whereNotIn =>
+          Filter(getField(field), whereNotIn: values),
       };
 
   /// Prints the filter in polish notation
@@ -172,7 +187,7 @@ class IterableValueStoreFilter extends Equatable implements StoreFilter {
 
 /// If [value] is `true`, checks if [field] is null. Otherwise checks [field]
 ///  is not null.
-class IsNullStoreFilter extends Equatable implements StoreFilter {
+class IsNullStoreFilter extends StoreFilter with EquatableMixin {
   /// The field to check nullability
   final String field;
 
@@ -197,7 +212,7 @@ class IsNullStoreFilter extends Equatable implements StoreFilter {
 /// Applies [LogicalOperator] to [StoreFilter]. If [LogicalOperator.and] all
 /// [StoreFilter] must be satisfied.
 /// If [LogicalOperator.or] at least one [StoreFilter] must be satisfied.
-class LogicalStoreFilter extends Equatable implements StoreFilter {
+class LogicalStoreFilter extends StoreFilter with EquatableMixin {
   /// The logical operator applied to filters
   final LogicalOperator logicalOperator;
 
