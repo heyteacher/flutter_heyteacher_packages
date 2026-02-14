@@ -1,1 +1,2 @@
-export 'src/animations.dart' show BlinkingText, PagingSliverAnimatedGridState;
+export 'src/animations.dart'
+    show AnimateText, BlinkingText, PagingSliverAnimatedGridState;
