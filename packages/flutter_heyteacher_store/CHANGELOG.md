@@ -1,3 +1,15 @@
+<a id="1.28.0+260214153"></a>
+# [1.28.0+260214153](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.28.0+260214153) - 2026-02-14
+
+## What's Changed
+* feat: add filter by document id via constant `Filter.documentId` by [@heyteacher](https://github.com/heyteacher) in [#20](https://github.com/heyteacher/flutter_heyteacher_store/pull/20)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.6+260206125_bump_deps_versions...1.28.0+260214153
+
+[Changes][1.28.0+260214153]
+
+
 <a id="1.27.6+260206125_bump_deps_versions"></a>
 # [1.27.6+260206125_bump_deps_versions](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.27.6+260206125_bump_deps_versions) - 2026-02-06
 
@@ -72,6 +84,7 @@
 [Changes][1.27.1+260118083_]
 
 
+[1.28.0+260214153]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.6+260206125_bump_deps_versions...1.28.0+260214153
 [1.27.6+260206125_bump_deps_versions]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1...1.27.6+260206125_bump_deps_versions
 [1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1...1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1
 [1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.2+260130094_move_fastlane_dev_dependencies...1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1
