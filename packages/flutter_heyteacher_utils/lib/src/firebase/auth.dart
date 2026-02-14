@@ -294,7 +294,9 @@ class UserNotAuthenticatedException implements Exception {
   UserNotAuthenticatedException();
 
   @override
-  String toString() => FlutterHeyteacherUtilsLocalizations.of(
-    ContextHelper.context!,
-  )!.userNotAuthenticated;
+  String toString() => ContextHelper.context != null
+      ? FlutterHeyteacherUtilsLocalizations.of(
+          ContextHelper.context!,
+        )!.userNotAuthenticated
+      : 'user not authenticated';
 }

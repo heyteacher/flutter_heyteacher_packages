@@ -289,8 +289,7 @@ class BlinkingTextState extends State<BlinkingText> {
     _timer?.cancel();
     super.dispose();
   }
-
-  @override
+@override
   Widget build(BuildContext context) {
     return widget.animated
         ? TweenAnimationBuilder<double>(
@@ -310,4 +309,61 @@ class BlinkingTextState extends State<BlinkingText> {
   /// A getter that builds the static [Text] widget.
   Text get _text =>
       Text(widget.text, style: widget.style, textAlign: widget.textAlign);
+}
+
+/// Shows a Text with (fade in/out) animation
+class AnimateText extends StatelessWidget {
+  /// Creates a [AnimateText] widget.
+  ///
+  /// The [text] to be displayed is required.
+  const AnimateText(
+    this.text, {
+    super.key,
+    this.animated = true,
+    this.durationInMs = 1000,
+    this.style,
+    this.textAlign,
+    this.visibleOnStart = false,
+  });
+
+  /// The text to display.
+  final String text;
+
+  /// Whether to enable the blinking animation.
+  ///
+  /// Defaults to `true`. If `false`, the text is displayed statically.
+  final bool animated;
+
+  /// The duration of one half of the blink cycle (e.g., fade in or fade out)
+  /// in milliseconds.
+  ///
+  /// Defaults to 500ms.
+  final int durationInMs;
+
+  /// The style to use for the text.
+  final TextStyle? style;
+
+  /// How the text should be aligned horizontally.
+  final TextAlign? textAlign;
+
+  /// If widget is visible.
+  final bool visibleOnStart;
+
+  @override
+  Widget build(BuildContext context) => animated
+      ? TweenAnimationBuilder<double>(
+          key: UniqueKey(),
+          tween: Tween<double>(
+            begin: visibleOnStart ? 1 : 0,
+            end: visibleOnStart ? 0 : 1,
+          ),
+          duration: Duration(milliseconds: durationInMs),
+          curve: Curves.easeInOut,
+          builder: (context, opacity, child) =>
+              Opacity(opacity: opacity, child: _text),
+        )
+      : _text;
+
+  /// A getter that builds the static [Text] widget.
+  Text get _text => Text(text, style: style, textAlign: textAlign);
 }
