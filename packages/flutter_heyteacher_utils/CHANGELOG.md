@@ -1,3 +1,15 @@
+<a id="1.46.0+260214102"></a>
+# [1.46.0+260214102](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.46.0+260214102) - 2026-02-14
+
+## What's Changed
+* 495 feat replace hr tss with eftp in live and blink on update by [@heyteacher](https://github.com/heyteacher) in [#57](https://github.com/heyteacher/flutter_heyteacher_utils/pull/57)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.4+260209130...1.46.0+260214102
+
+[Changes][1.46.0+260214102]
+
+
 <a id="1.45.4+260209130"></a>
 # [1.45.4+260209130](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.45.4+260209130) - 2026-02-09
 
@@ -200,6 +212,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.46.0+260214102]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.4+260209130...1.46.0+260214102
 [1.45.4+260209130]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.3+260207180...1.45.4+260209130
 [1.45.3+260207180]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.2+260207112...1.45.3+260207180
 [1.45.2+260207112]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.1+260206130_bump_deps_versions...1.45.2+260207112
