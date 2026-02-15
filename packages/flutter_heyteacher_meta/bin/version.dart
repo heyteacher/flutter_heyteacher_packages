@@ -6,7 +6,7 @@
 ///
 /// Usage:
 /// ```bash
-/// dart run flutter_heyteacher_fastlane:version major|minor|patch|build|show|
+/// dart run flutter_heyteacher_meta:version major|minor|patch|build|show|
 ///                                           show-build [--dry-run]
 /// ```
 ///
