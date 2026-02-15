@@ -615,20 +615,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_heyteacher_fastlane:
+  flutter_heyteacher_meta:
     dependency: "direct dev"
     description:
-      path: "../flutter_heyteacher_fastlane"
+      path: "../flutter_heyteacher_meta"
       relative: true
     source: path
-    version: "1.2.1+260208140"
+    version: "2.0.0+260215111"
   flutter_heyteacher_text_to_speech:
     dependency: "direct main"
     description:
       path: "../flutter_heyteacher_text_to_speech"
       relative: true
     source: path
-    version: "1.28.3+260206125"
+    version: "1.29.0+260215113"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
