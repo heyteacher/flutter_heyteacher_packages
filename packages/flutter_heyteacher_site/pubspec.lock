@@ -487,13 +487,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
-  flutter_heyteacher_fastlane:
+  flutter_heyteacher_meta:
     dependency: "direct dev"
     description:
-      path: "../flutter_heyteacher_fastlane"
+      path: "../flutter_heyteacher_meta"
       relative: true
     source: path
-    version: "1.2.1+260208140"
+    version: "2.0.0+260215111"
   flutter_heyteacher_text_to_speech:
     dependency: transitive
     description:
