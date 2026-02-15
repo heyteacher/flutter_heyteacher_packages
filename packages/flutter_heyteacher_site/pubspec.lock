@@ -500,14 +500,14 @@ packages:
       path: "../flutter_heyteacher_text_to_speech"
       relative: true
     source: path
-    version: "1.28.3+260206125"
+    version: "1.29.0+260215113"
   flutter_heyteacher_utils:
     dependency: "direct main"
     description:
       path: "../flutter_heyteacher_utils"
       relative: true
     source: path
-    version: "1.46.0+260214102"
+    version: "1.47.0+260215114"
   flutter_highlight:
     dependency: transitive
     description:
