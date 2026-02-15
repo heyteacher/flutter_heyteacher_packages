@@ -5,7 +5,7 @@
 /// and displaying the current version or build number.
 ///
 /// Usage:
-/// `dart run flutter_heyteacher_fastlane:version major|minor|patch|
+/// `dart run flutter_heyteacher_meta:version major|minor|patch|
 ///            build|show|show-build [--dry-run]`
 ///
 /// - `major|minor|patch`: Increments the respective version component and 

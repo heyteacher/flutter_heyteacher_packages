@@ -5,6 +5,6 @@ default_platform(:android)
 
 platform :android do
 
-  import("../../flutter_heyteacher_fastlane/fastlane/Fastfile")
+  import("../../flutter_heyteacher_meta/fastlane/Fastfile")
 
 end
