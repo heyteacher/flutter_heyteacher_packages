@@ -5,7 +5,7 @@ default_platform(:android)
 
 platform :android do
 
-  import("../../flutter_heyteacher_fastlane/fastlane/Fastfile")
+  import("../../flutter_heyteacher_meta/fastlane/Fastfile")
 
   # set the Google Cloud Storage bucket name
   #ENV["google_storage_backup_bucket"] = "gs://..."
@@ -13,6 +13,6 @@ platform :android do
   # set the Firebase App Distribution service credentials file name
   #ENV["firebase_app_distribution_service_credentials_file"] = "#{ENV["HOME"]}/.flutter/..."
 
-  import("../../flutter_heyteacher_fastlane/fastlane/AppFastfile")
+  import("../../flutter_heyteacher_meta/fastlane/AppFastfile")
 
 end

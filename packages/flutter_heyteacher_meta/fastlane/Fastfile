@@ -65,7 +65,7 @@ lane :bump do
   push_to_git_remote
 end
 
-desc "fl release [version:major|minor|patch] [suffix:<nmenonic_tag_suffix>] [merge:true|false]\n\tCreates new release and merge branch into main"
+desc "fl release [version:major|minor|patch] [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release and merge branch into main"
 lane :release do|options|
   if options[:merge] == nil || options[:merge] == true
     puts "create pull request"
@@ -75,11 +75,11 @@ lane :release do|options|
     puts "merge pull request"
     sh("gh pr merge -m -d --auto")
   end
-  puts "make release #{options[:version]} suffix #{options[:suffix]}"
+  puts "make release #{options[:version]} suffix #{options[:suffix]} github #{options[:github]}"
   _make_release(
     options[:version], 
     options[:suffix], 
-    true
+    options[:github]
   )
 end
 
@@ -93,7 +93,7 @@ def _make_release(version, suffix, create_github_release)
   test
   tag = ""
   Dir.chdir("../") do
-    tag = sh("dart run flutter_heyteacher_fastlane:version #{version}")
+    tag = sh("dart run flutter_heyteacher_meta:version #{version}")
     # append tag suffix if set
     if suffix != nil && suffix != ""
       tag = "#{tag}_#{suffix}"
@@ -111,7 +111,7 @@ def _make_release(version, suffix, create_github_release)
   sh("git branch tag -d")
   push_to_git_remote
   # generate a release
-  if create_github_release == nil || create_github_release == true
+  if create_github_release == true
     create_github_release(tag)
   else 
     # add tag and puth remote
@@ -152,6 +152,6 @@ end
 
 def increment_flutter_build_number 
   Dir.chdir("../") do
-    sh("dart run flutter_heyteacher_fastlane:version build")
+    sh("dart run flutter_heyteacher_meta:version build")
   end
 end

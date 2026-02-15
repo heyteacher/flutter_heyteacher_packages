@@ -1,10 +1,10 @@
-# Flutter Heyteacher Fastlane
+# Flutter Heyteacher Meta
 
-Utilities for configure environment for flutter projects and importing common and app `FastLane` lanes.
+A Flutter meta project with utilities for Flutter packages and applications.
 
 ## Table of Contents
 
-- [Flutter Heyteacher Fastlane](#flutter-heyteacher-fastlane)
+- [Flutter Heyteacher Meta](#flutter-heyteacher-meta)
   - [Table of Contents](#table-of-contents)
   - [Environment Setup](#environment-setup)
     - [Node JS](#node-js)
@@ -64,17 +64,11 @@ install flutter manually following instructions <https://docs.flutter.dev/instal
   # flutter
   export PATH=/usr/local/flutter/bin:$PATH
 
-  #dart 
+  # dart 
   export PATH="$PATH":"$HOME/.pub-cache/bin"
 
-  #flutter_heyteacher_fastlane scripts
-  export PATH="$PATH":"<INSTALLATION_DIR>flutter_heyteacher_fastlane/scripts"
-
-  # flutter mapbox token for maven compiler created here https://console.mapbox.com/account/access-tokens/
-  export SDK_REGISTRY_TOKEN=<public_token>
-
-  # setup for `Firestore App Distribution` in `~/.flutter/` 
-  export GOOGLE_APPLICATION_CREDENTIALS=<path_of_app_distribution_json>
+  # flutter_heyteacher_meta scripts
+  export PATH="$PATH":"<INSTALLATION_DIR>flutter_heyteacher_meta/scripts"
   ```
 
 ### Visual Studio Code
@@ -158,7 +152,7 @@ install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Co
 
   ```bash
   # alias for fastlane inside flutter projects
-  alias fl='<PRJ_INSTALLATION_DIR>/flutter_heyteacher_fastlane/scripts/fl.sh'
+  alias fl='<PRJ_INSTALLATION_DIR>/flutter_heyteacher_meta/scripts/fl.sh'
   ```
 
   `fl` is an alias of `fl.sh` command.
@@ -303,6 +297,13 @@ After setup the environment run from root project directory and create the proje
   
   ```bash
   ~/.flutter/<YOUR_PROJECT>-app_distribution.json
+  ```
+
+- setup your `~/.bashrc`
+
+  ```bash
+  # setup for `Firestore App Distribution` in `~/.flutter/` 
+  export GOOGLE_APPLICATION_CREDENTIALS=<path_of_app_distribution_json>
   ```
 
 - run `firebase login:ci` and copy the token generated
@@ -679,7 +680,7 @@ can be gererated using script:
 From the root of your project, run:
 
 ```bash
-dart run flutter_heyteacher_fastlane:version major|minor|patch|build|show|show-build [--dry-run]
+dart run flutter_heyteacher_meta:version major|minor|patch|build|show|show-build [--dry-run]
 ```
 
 - `major`,`minor`, `patch` increment the version in your `pubsec.yaml`.
@@ -708,12 +709,12 @@ automatically update build version every run/debug execution of your code:
                         "command": "dart",
                         "args": [
                                 "run",
-                                "flutter_heyteacher_fastlane:version",
+                                "flutter_heyteacher_meta:version",
                                 "build"
                         ],
                         "group": "build",
                         "problemMatcher": [],
-                        "label": "dart: run flutter_heyteacher_fastlane:version build",
+                        "label": "dart: run flutter_heyteacher_meta:version build",
                         "detail": "increment version build number",
                         "presentation": {
                                 "close": true,
@@ -734,5 +735,5 @@ automatically update build version every run/debug execution of your code:
   ```json
   ...
     
-    "preLaunchTask": "dart: run flutter_heyteacher_fastlane:version build"
+    "preLaunchTask": "dart: run flutter_heyteacher_meta:version build"
   ```
