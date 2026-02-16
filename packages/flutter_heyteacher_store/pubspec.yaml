@@ -29,7 +29,6 @@ dev_dependencies:
   fake_cloud_firestore: ^4.0.0
   firebase_auth_mocks: ^0.15.1
   flutter_heyteacher_meta:
-    path: ../flutter_heyteacher_meta
   flutter_secure_storage: ^10.0.0
   flutter_test:
     sdk: flutter
