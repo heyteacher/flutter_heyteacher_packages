@@ -1,14 +1,6 @@
 # Uncomment the line if you want fastlane to automatically update itself
 #update_fastlane
 
-desc "fl build\n\tBuild flutter artifacts and rebuild pubspec.lock"
-lane :build do
-  Dir.chdir("../") do
-    sh("rm -rf pubspec.lock")
-    sh("flutter pub upgrade")
-  end
-end
-
 desc "fl docweb\n\trun local webserver on generated doc"
 lane :docweb do
   Dir.chdir("../") do
@@ -65,7 +57,7 @@ lane :bump do
   push_to_git_remote
 end
 
-desc "fl release [version:major|minor|patch] [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release and merge branch into main"
+desc "fl release version:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release, merge branch into main and creates a github release"
 lane :release do|options|
   if options[:merge] == nil || options[:merge] == true
     puts "create pull request"

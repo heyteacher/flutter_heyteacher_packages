@@ -5,12 +5,6 @@ default_platform(:android)
 
 platform :android do
 
-  desc "fl launch\n\tlaunch on device"
-  lane :launch do
-    increment_flutter_build_number
-    sh("flutter run")
-  end
-
   desc "fl appbundle\n\tclean and build application `build/app/outputs/bundle/release/app-release.aab`"
   lane :appbundle do
     sh("flutter build bundle")
