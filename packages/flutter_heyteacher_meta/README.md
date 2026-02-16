@@ -6,6 +6,7 @@ A Flutter meta project with utilities for Flutter packages and applications.
 
 - [Flutter Heyteacher Meta](#flutter-heyteacher-meta)
   - [Table of Contents](#table-of-contents)
+  - [Installing](#installing)
   - [Environment Setup](#environment-setup)
     - [Node JS](#node-js)
     - [Firebase CLI](#firebase-cli)
@@ -16,6 +17,13 @@ A Flutter meta project with utilities for Flutter packages and applications.
     - [FastLane](#fastlane)
   - [Create a flutter project](#create-a-flutter-project)
     - [Configure FastLane Lanes](#configure-fastlane-lanes)
+  - [`git` utilities](#git-utilities)
+    - [checkout](#checkout)
+    - [release](#release)
+    - [bump](#bump)
+    - [`git` conventional commit](#git-conventional-commit)
+    - [avoid commit on `main` branch](#avoid-commit-on-main-branch)
+    - [example: release a patch](#example-release-a-patch)
   - [Add Firebase to a app flutter project](#add-firebase-to-a-app-flutter-project)
   - [Release app](#release-app)
     - [Sign app](#sign-app)
@@ -30,12 +38,41 @@ A Flutter meta project with utilities for Flutter packages and applications.
   - [Firebase Hosting](#firebase-hosting)
     - [Deploy default `site`](#deploy-default-site)
     - [Alternative sites](#alternative-sites)
+  - [documentation utilities](#documentation-utilities)
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
   - [Dart Builders](#dart-builders)
+  - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
+  - [`ffmpeg` utilities](#ffmpeg-utilities)
   - [localization utils](#localization-utils)
   - [command-line utility `version`](#command-line-utility-version)
   
+## Installing
+
+- clone the project from github at the same directory of your packages:
+  
+  ```bash
+  git clone https://github.com/heyteacher/flutter_heyteacher_meta.git
+  ```
+
+- setup environment following instruction [Environment Setup](#environment-setup)
+
+- configure your projects based on type:
+  
+  - for packages:
+  
+    ```bash
+    configure_flutter_package.sh
+    ```
+
+  - for flutter application
+
+    ```bash
+    configure_flutter_app.sh
+    ```
+
+- test all works fine, running `fl` will show command avaiable  
+
 ## Environment Setup
 
 Instructions for setup environment installing all software needed to develop a
@@ -212,6 +249,119 @@ After setup the environment run from root project directory and create the proje
 
   - `firebase_app_distribution_service_credentials_file` the Firebase App
      Distribution service credentials file name
+
+## `git` utilities
+
+`checkout` and `release` commands with git `hooks` for `conventional commit` and `avoid commit on main branch` helps you to work properly with versions, git branches, git tags and github releases.
+
+`bump` command commit `pubspec.lock` and `pubspec.yaml`  after a bump version on dependencies without create a new version and without create new release.
+
+### checkout
+
+To checkout the latest remote branch already created remotely (i.e. in `github project` ) run:
+
+```bash
+fl checkout
+```
+
+This command run a `git fetch` and run a `git chechout` to the latest branch fetched.
+
+### release
+
+After you commit and push your changes into the branch you can release to `main` branch using this command:
+
+```bash
+fl release version:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]
+```
+
+- `version`: increments the version into `pubspec.yaml`, for example:
+  - `major`: move version from `1.0.0` to `2.0.0`
+  - `minor`: move version from `1.0.0` to `1.1.0`
+  - `patch`: move version from `1.0.0` to `1.0.1`
+- `suffix`: (optional) add a mnemonic suffix to git `tag` greated
+- `merge`: (optional, default `true`) make the marge to `main` branch
+- `github`: (optional, default `false`) create the github release
+and update the `CHANGELOG.md`
+
+These command make several tasks:
+
+- increments the version into `pubspec.yaml`
+- create a `github release` and update `CHANGELOG.md` (if `github` param is `true)  
+- create a `pull request` and merge changes into `main` branch, checkout the `main` branch and delete the branch merged (if `merge` param is `true)  
+- create a git `tag`
+
+There are who checks implemented as `git-hooks`:
+
+- conventional commit
+- avoid commit on `main` branch
+
+### bump
+
+```bash
+fl bump
+```
+
+commits `pubspec.lock` and `pubspec.yaml`  without generate a new version and without create a new release.
+
+### `git` conventional commit
+
+The commit message should follow che [conventional commit](https://www.conventionalcommits.org/en/v1.0.0) specification:
+
+```text
+<type>[optional scope]: <description>
+```
+
+where `<type>` MUST be one of:
+
+- `build`: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- `chore`: (updating grunt tasks etc; no production code change)
+- `ci`: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- `docs`: Documentation only changes
+- `feat`: A new feature
+- `fix`: A bug fix
+- `perf`: A code change that improves performance
+- `refactor`: A code change that neither fixes a bug nor adds a feature
+- `style`: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- `test`: Adding missing tests or correcting existing tests
+
+### avoid commit on `main` branch
+
+`main` branch is the default branch and user cannot be commit directly on it, but only merge are allowed.
+
+If you try to commit on `main` this message is show
+
+```text
+You can't commit directly to main branch
+```
+
+### example: release a patch
+
+- if you create an `github issue` and a branch on `github`
+
+  ```bash
+  fl checkout
+  ```
+
+  otherwise create a branch locally and push it to remote
+
+  ```bash
+  git branch hotfix
+  git push -u origin hotfix
+  ```
+
+- make changes to your code, commit and push changes to branch
+  
+  ```bash
+  git add .
+  git commit -m "fix: fix bug ..."
+  git push
+  ```
+
+- release the patch merging chenges to `main` branch and create a `github release`
+  
+  ```bash
+  fl release version:patch github:true
+  ```
 
 ## Add Firebase to a app flutter project
 
@@ -543,6 +693,20 @@ To delete an alternative site:
 firebase hosting:sites:delete <Alternative Site Id>
 ```
 
+## documentation utilities
+
+```bash
+fl doc
+```
+
+Generates dart documentation, run a local web server on `http://localhost:8080` and open a browser on it.
+
+```bash
+fl docweb
+```
+
+Run a local web server on `http://localhost:8080` and open a browser on project documentation already generatd
+
 ## Launcher Icon
 
 - modify 'assets/icon/icon.png' and 'assets/icon/background.png'
@@ -558,6 +722,12 @@ firebase hosting:sites:delete <Alternative Site Id>
 - run
 
   ```bash
+  flutter_splash.sh
+  ```
+
+  an alias of:
+
+  ```bash
   dart run flutter_native_splash:create
   ```
 
@@ -571,9 +741,49 @@ The builders like:
 
 can be gererated using script:
 
-  ```bash
-  dart_builders.sh
-  ```
+```bash
+dart_builders.sh
+```
+
+## `webcrypto` setup for tests
+
+Flutter tests which use `webcrypto` need to be compiled locally running this command:
+
+```bash
+flutter_webcrypto_setup
+```
+
+an alias of:
+
+```bash
+dart run webcrypto:setup
+```
+
+## `ffmpeg` utilities
+
+`ffmpeg_cmd` is a bash script with utilites for `crop`, `cut`, `estract` and `concat`.
+
+```bash
+ffmpeg_cmd.sh
+```
+
+Usage:
+
+- crop
+  
+  `ffmpeg_cmd.sh crop <input_video> <output_video> <width_in_px> <height_in_px> <x_in_px> <y_in_px>`
+
+- cut
+  
+  `ffmpeg_cmd.sh cut  <input_video> <output_video> <start_in_sec> <end_in_sec>`
+
+- extract
+  
+  `ffmpeg_cmd.sh extract <input_video> <output_video> <start_in_sec> <end_in_sec>`
+
+- concat
+
+  `ffmpeg_cmd.sh concat <input_video_1> <input_video_2> [input_video_3 ...] <output_video> <fade_duration_in_sec>`
 
 ## localization utils
 
