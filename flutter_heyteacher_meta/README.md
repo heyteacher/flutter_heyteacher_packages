@@ -1,6 +1,15 @@
 # Flutter Heyteacher Meta
 
-A Flutter meta project with utilities for Flutter packages and applications.
+A Flutter meta project implementing utilities for Flutter `package` and `app` project.
+
+- environment setup instructions for `app` and `package` projects and `Firebase` setup `app` projects
+- `git` utilities for manage versions and releases
+- release app in `Google Play` and `Firebase App Distribution`
+- integration test and `Firebase Test Lab` utilities
+- backup and restore `Firestore` utilities
+- `localization` setup instructions
+- documentation utilities
+- `Launcher Icon`, `Splash`, `dart builder`, `ffmpeg`, `webcrypto` utilities
 
 ## Table of Contents
 
@@ -24,10 +33,10 @@ A Flutter meta project with utilities for Flutter packages and applications.
     - [`git` conventional commit](#git-conventional-commit)
     - [avoid commit on `main` branch](#avoid-commit-on-main-branch)
     - [example: release a patch](#example-release-a-patch)
-  - [Add Firebase to a app flutter project](#add-firebase-to-a-app-flutter-project)
+  - [`Firebase` setup for `app` flutter project](#firebase-setup-for-app-flutter-project)
   - [Release app](#release-app)
     - [Sign app](#sign-app)
-    - [App Distribution](#app-distribution)
+    - [Firebase App Distribution](#firebase-app-distribution)
     - [Google Play](#google-play)
   - [Integration Test](#integration-test)
     - [Firebase Test Lab](#firebase-test-lab)
@@ -38,14 +47,14 @@ A Flutter meta project with utilities for Flutter packages and applications.
   - [Firebase Hosting](#firebase-hosting)
     - [Deploy default `site`](#deploy-default-site)
     - [Alternative sites](#alternative-sites)
+  - [`localization` setup](#localization-setup)
   - [documentation utilities](#documentation-utilities)
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
   - [Dart Builders](#dart-builders)
-  - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
   - [`ffmpeg` utilities](#ffmpeg-utilities)
-  - [localization utils](#localization-utils)
   - [command-line utility `version`](#command-line-utility-version)
+  - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
   
 ## Installing
 
@@ -264,7 +273,7 @@ To checkout the latest remote branch already created remotely (i.e. in `github p
 fl checkout
 ```
 
-This command run a `git fetch` and run a `git chechout` to the latest branch fetched.
+This command run a `git fetch` and run a `git checkout` to the latest branch fetched.
 
 ### release
 
@@ -289,11 +298,6 @@ These command make several tasks:
 - create a `github release` and update `CHANGELOG.md` (if `github` param is `true)  
 - create a `pull request` and merge changes into `main` branch, checkout the `main` branch and delete the branch merged (if `merge` param is `true)  
 - create a git `tag`
-
-There are who checks implemented as `git-hooks`:
-
-- conventional commit
-- avoid commit on `main` branch
 
 ### bump
 
@@ -363,7 +367,7 @@ You can't commit directly to main branch
   fl release version:patch github:true
   ```
 
-## Add Firebase to a app flutter project
+## `Firebase` setup for `app` flutter project
 
 - login in firebase and install flutterfire
 
@@ -439,7 +443,7 @@ You can't commit directly to main branch
 
 - link Google Cloud project to Google Play console follow istructions <https://developer.android.com/google/play/integrity/setup>
 
-### App Distribution
+### Firebase App Distribution
   
 - follow istructions <https://firebase.google.com/docs/app-distribution/android/distribute-fastlane?apptype=aab>
 
@@ -452,7 +456,7 @@ You can't commit directly to main branch
 - setup your `~/.bashrc`
 
   ```bash
-  # setup for `Firestore App Distribution` in `~/.flutter/` 
+  # setup for `Firebase App Distribution` in `~/.flutter/` 
   export GOOGLE_APPLICATION_CREDENTIALS=<path_of_app_distribution_json>
   ```
 
@@ -476,7 +480,7 @@ You can't commit directly to main branch
 
 - create the app and publish for internal test in Google Play following instructions <https://support.google.com/googleplay/android-developer/answer/9859152?hl=en>
 
-- Link Firestore App Distribution to Google Play account following instructions <https://support.google.com/firebase/answer/6392038>
+- Link Firebase App Distribution to Google Play account following instructions <https://support.google.com/firebase/answer/6392038>
 
 - run fastlane
 
@@ -693,99 +697,7 @@ To delete an alternative site:
 firebase hosting:sites:delete <Alternative Site Id>
 ```
 
-## documentation utilities
-
-```bash
-fl doc
-```
-
-Generates dart documentation, run a local web server on `http://localhost:8080` and open a browser on it.
-
-```bash
-fl docweb
-```
-
-Run a local web server on `http://localhost:8080` and open a browser on project documentation already generatd
-
-## Launcher Icon
-
-- modify 'assets/icon/icon.png' and 'assets/icon/background.png'
-- run
-
-  ```bash
-  dart run flutter_launcher_icons
-  ```
-
-## Splash
-
-- modify 'assets/splash.png'
-- run
-
-  ```bash
-  flutter_splash.sh
-  ```
-
-  an alias of:
-
-  ```bash
-  dart run flutter_native_splash:create
-  ```
-
-## Dart Builders
-
-The builders like:
-
-- [json_serializable](https://pub.dev/packages/json_serializable)
-- [copy_with_extension](https://pub.dev/packages/copy_with_extension)
-- [mockito](https://pub.dev/packages/mockito)
-
-can be gererated using script:
-
-```bash
-dart_builders.sh
-```
-
-## `webcrypto` setup for tests
-
-Flutter tests which use `webcrypto` need to be compiled locally running this command:
-
-```bash
-flutter_webcrypto_setup
-```
-
-an alias of:
-
-```bash
-dart run webcrypto:setup
-```
-
-## `ffmpeg` utilities
-
-`ffmpeg_cmd` is a bash script with utilites for `crop`, `cut`, `estract` and `concat`.
-
-```bash
-ffmpeg_cmd.sh
-```
-
-Usage:
-
-- crop
-  
-  `ffmpeg_cmd.sh crop <input_video> <output_video> <width_in_px> <height_in_px> <x_in_px> <y_in_px>`
-
-- cut
-  
-  `ffmpeg_cmd.sh cut  <input_video> <output_video> <start_in_sec> <end_in_sec>`
-
-- extract
-  
-  `ffmpeg_cmd.sh extract <input_video> <output_video> <start_in_sec> <end_in_sec>`
-
-- concat
-
-  `ffmpeg_cmd.sh concat <input_video_1> <input_video_2> [input_video_3 ...] <output_video> <fade_duration_in_sec>`
-
-## localization utils
+## `localization` setup
 
 - install packages
 
@@ -885,6 +797,84 @@ Usage:
   FlutterHeyteacherUtilsLocalizations.of(context)!.userNotAutenticated
   ```
 
+## documentation utilities
+
+```bash
+fl doc
+```
+
+Generates dart documentation, run a local web server on `http://localhost:8080` and open a browser on it.
+
+```bash
+fl docweb
+```
+
+Run a local web server on `http://localhost:8080` and open a browser on project documentation already generatd
+
+## Launcher Icon
+
+- modify 'assets/icon/icon.png' and 'assets/icon/background.png'
+- run
+
+  ```bash
+  dart run flutter_launcher_icons
+  ```
+
+## Splash
+
+- modify 'assets/splash.png'
+- run
+
+  ```bash
+  flutter_splash.sh
+  ```
+
+  an alias of:
+
+  ```bash
+  dart run flutter_native_splash:create
+  ```
+
+## Dart Builders
+
+The builders like:
+
+- [json_serializable](https://pub.dev/packages/json_serializable)
+- [copy_with_extension](https://pub.dev/packages/copy_with_extension)
+- [mockito](https://pub.dev/packages/mockito)
+
+can be gererated using script:
+
+```bash
+dart_builders.sh
+```
+
+## `ffmpeg` utilities
+
+`ffmpeg_cmd` is a bash script with utilites for `crop`, `cut`, `estract` and `concat`.
+
+```bash
+ffmpeg_cmd.sh
+```
+
+Usage:
+
+- crop
+  
+  `ffmpeg_cmd.sh crop <input_video> <output_video> <width_in_px> <height_in_px> <x_in_px> <y_in_px>`
+
+- cut
+  
+  `ffmpeg_cmd.sh cut  <input_video> <output_video> <start_in_sec> <end_in_sec>`
+
+- extract
+  
+  `ffmpeg_cmd.sh extract <input_video> <output_video> <start_in_sec> <end_in_sec>`
+
+- concat
+
+  `ffmpeg_cmd.sh concat <input_video_1> <input_video_2> [input_video_3 ...] <output_video> <fade_duration_in_sec>`
+
 ## command-line utility `version`
 
 From the root of your project, run:
@@ -947,3 +937,17 @@ automatically update build version every run/debug execution of your code:
     
     "preLaunchTask": "dart: run flutter_heyteacher_meta:version build"
   ```
+
+## `webcrypto` setup for tests
+
+Flutter tests which use `webcrypto` need to be compiled locally running this command:
+
+```bash
+flutter_webcrypto_setup
+```
+
+an alias of:
+
+```bash
+dart run webcrypto:setup
+```
