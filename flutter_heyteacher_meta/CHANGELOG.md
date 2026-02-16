@@ -1,3 +1,15 @@
+<a id="2.0.1+260216114"></a>
+# [2.0.1+260216114](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.0.1+260216114) - 2026-02-16
+
+## What's Changed
+* 490 refactor rename flutter heyteacher fastlane into flutter heyteacher meta bis by [@heyteacher](https://github.com/heyteacher) in [#9](https://github.com/heyteacher/flutter_heyteacher_meta/pull/9)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.0.0+260215111...2.0.1+260216114
+
+[Changes][2.0.1+260216114]
+
+
 <a id="2.0.0+260215111"></a>
 # [2.0.0+260215111](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.0.0+260215111) - 2026-02-15
 
@@ -72,6 +84,7 @@
 [Changes][1.0.1+260129184_create_release_on_fl_release]
 
 
+[2.0.1+260216114]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.0.0+260215111...2.0.1+260216114
 [2.0.0+260215111]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/1.2.1+260208140...2.0.0+260215111
 [1.2.1+260208140]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/1.1.1+260203145_fix_typo_mayor_with_major_version_command...1.2.1+260208140
 [1.1.1+260203145_fix_typo_mayor_with_major_version_command]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/1.1.0+260202164_fl_checkout_fl_release_with_merge...1.1.1+260203145_fix_typo_mayor_with_major_version_command
