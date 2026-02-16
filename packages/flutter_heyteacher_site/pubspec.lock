@@ -493,7 +493,7 @@ packages:
       path: "../flutter_heyteacher_meta"
       relative: true
     source: path
-    version: "2.0.0+260215111"
+    version: "2.0.1+260216114"
   flutter_heyteacher_text_to_speech:
     dependency: transitive
     description:
