@@ -490,10 +490,11 @@ packages:
   flutter_heyteacher_meta:
     dependency: "direct dev"
     description:
-      path: "../flutter_heyteacher_meta"
-      relative: true
-    source: path
-    version: "2.0.1+260216114"
+      name: flutter_heyteacher_meta
+      sha256: "2db09001f152f3006d246d9e2aa3410374e5d98c6768975553dea728e502a97e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0+260216145"
   flutter_heyteacher_text_to_speech:
     dependency: transitive
     description:
