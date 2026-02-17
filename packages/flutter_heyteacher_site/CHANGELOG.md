@@ -1,3 +1,15 @@
+<a id="1.7.0+260217130"></a>
+# [1.7.0+260217130](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.7.0+260217130) - 2026-02-17
+
+## What's Changed
+* feat: log Google Analytics  custom event `play_video` by [@heyteacher](https://github.com/heyteacher) in [#15](https://github.com/heyteacher/flutter_heyteacher_site/pull/15)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.6.0+260217110...1.7.0+260217130
+
+[Changes][1.7.0+260217130]
+
+
 <a id="1.6.0+260217110"></a>
 # [1.6.0+260217110](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.6.0+260217110) - 2026-02-17
 
@@ -111,6 +123,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[1.7.0+260217130]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.6.0+260217110...1.7.0+260217130
 [1.6.0+260217110]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.2+260209130...1.6.0+260217110
 [1.4.2+260209130]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.1+260206125_bump_deps_versions...1.4.2+260209130
 [1.4.1+260206125_bump_deps_versions]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.0+260203132_add_up_down_scroller...1.4.1+260206125_bump_deps_versions
