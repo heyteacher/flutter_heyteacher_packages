@@ -14,6 +14,7 @@ dependencies:
   flutter_cookie_consent: ^1.0.3
   flutter_heyteacher_utils:
     path: ../flutter_heyteacher_utils
+  logging: ^1.3.0
   markdown_widget:
     path: ../packages/markdown_widget
   scroll_to_index:
