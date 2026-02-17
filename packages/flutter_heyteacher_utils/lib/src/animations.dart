@@ -289,7 +289,8 @@ class BlinkingTextState extends State<BlinkingText> {
     _timer?.cancel();
     super.dispose();
   }
-@override
+
+  @override
   Widget build(BuildContext context) {
     return widget.animated
         ? TweenAnimationBuilder<double>(
@@ -312,7 +313,7 @@ class BlinkingTextState extends State<BlinkingText> {
 }
 
 /// Shows a Text with (fade in/out) animation
-class AnimateText extends StatelessWidget {
+class AnimateText extends StatefulWidget {
   /// Creates a [AnimateText] widget.
   ///
   /// The [text] to be displayed is required.
@@ -350,14 +351,32 @@ class AnimateText extends StatelessWidget {
   final bool visibleOnStart;
 
   @override
-  Widget build(BuildContext context) => animated
+  State<AnimateText> createState() => _AnimateTextState();
+}
+
+class _AnimateTextState extends State<AnimateText> {
+  String? _oldTest;
+
+  bool _isToAnimate() {
+    if (!widget.animated) {
+      return false;
+    }
+    if (_oldTest == widget.text) {
+      return false;
+    }
+    _oldTest = widget.text;
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) => _isToAnimate()
       ? TweenAnimationBuilder<double>(
           key: UniqueKey(),
           tween: Tween<double>(
-            begin: visibleOnStart ? 1 : 0,
-            end: visibleOnStart ? 0 : 1,
+            begin: widget.visibleOnStart ? 1 : 0,
+            end: widget.visibleOnStart ? 0 : 1,
           ),
-          duration: Duration(milliseconds: durationInMs),
+          duration: Duration(milliseconds: widget.durationInMs),
           curve: Curves.easeInOut,
           builder: (context, opacity, child) =>
               Opacity(opacity: opacity, child: _text),
@@ -365,5 +384,6 @@ class AnimateText extends StatelessWidget {
       : _text;
 
   /// A getter that builds the static [Text] widget.
-  Text get _text => Text(text, style: style, textAlign: textAlign);
+  Text get _text =>
+      Text(widget.text, style: widget.style, textAlign: widget.textAlign);
 }
