@@ -1,3 +1,16 @@
+<a id="1.6.0+260217110"></a>
+# [1.6.0+260217110](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.6.0+260217110) - 2026-02-17
+
+## What's Changed
+* refactor: rename `flutter_heyteacher_fastlane` into `flutter_heyteacher_meta` by [@heyteacher](https://github.com/heyteacher) in [#13](https://github.com/heyteacher/flutter_heyteacher_site/pull/13)
+* 457 feat google analytics log event on catalog click by [@heyteacher](https://github.com/heyteacher) in [#14](https://github.com/heyteacher/flutter_heyteacher_site/pull/14)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.2+260209130...1.6.0+260217110
+
+[Changes][1.6.0+260217110]
+
+
 <a id="1.4.2+260209130"></a>
 # [1.4.2+260209130](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.4.2+260209130) - 2026-02-09
 
@@ -98,6 +111,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[1.6.0+260217110]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.2+260209130...1.6.0+260217110
 [1.4.2+260209130]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.1+260206125_bump_deps_versions...1.4.2+260209130
 [1.4.1+260206125_bump_deps_versions]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.0+260203132_add_up_down_scroller...1.4.1+260206125_bump_deps_versions
 [1.4.0+260203132_add_up_down_scroller]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.3.1+260202145_fix_accent_char_reload_on_change_lang...1.4.0+260203132_add_up_down_scroller
