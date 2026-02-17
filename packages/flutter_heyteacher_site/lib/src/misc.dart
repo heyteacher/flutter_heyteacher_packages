@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
+import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
 /// A _Get In On Google Play_ button.
@@ -21,11 +24,16 @@ class GetItOnGooglePlayButton extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.all(4),
     child: InkWell(
-      onTap: () => launchUrl(
-        Uri.https('play.google.com', '/store/apps/details', {
-          'id': _appId,
-        }),
-      ),
+      onTap: () async {
+        await GoogleAnalitycsViewModel.instance.logCustomEvent(
+          name: 'get_it_on_google_play',
+        );
+        unawaited(launchUrl(
+          Uri.https('play.google.com', '/store/apps/details', {
+            'id': _appId,
+          }),
+        ));
+      },
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: switch (_screenSize) {
