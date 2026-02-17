@@ -1,3 +1,16 @@
+<a id="1.48.0+260217110"></a>
+# [1.48.0+260217110](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.48.0+260217110) - 2026-02-17
+
+## What's Changed
+* refactor: rename `flutter_heyteacher_fastlane` into `flutter_heyteacher_meta` by [@heyteacher](https://github.com/heyteacher) in [#58](https://github.com/heyteacher/flutter_heyteacher_utils/pull/58)
+* feat: save if is enabled and log event invocation by [@heyteacher](https://github.com/heyteacher) in [#59](https://github.com/heyteacher/flutter_heyteacher_utils/pull/59)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.46.0+260214102...1.48.0+260217110
+
+[Changes][1.48.0+260217110]
+
+
 <a id="1.46.0+260214102"></a>
 # [1.46.0+260214102](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.46.0+260214102) - 2026-02-14
 
@@ -212,6 +225,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.48.0+260217110]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.46.0+260214102...1.48.0+260217110
 [1.46.0+260214102]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.4+260209130...1.46.0+260214102
 [1.45.4+260209130]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.3+260207180...1.45.4+260209130
 [1.45.3+260207180]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.2+260207112...1.45.3+260207180
