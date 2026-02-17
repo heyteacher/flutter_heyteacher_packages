@@ -8,7 +8,8 @@ import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:markdown_widget/config/all.dart';
 import 'package:markdown_widget/widget/all.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:updown_arrow_scroller/updown_arrow_scroller.dart' show UpDownArrowScroller;
+import 'package:updown_arrow_scroller/updown_arrow_scroller.dart'
+    show UpDownArrowScroller;
 import 'package:url_launcher/url_launcher.dart';
 
 /// The markdown view loading markdown page from assets
@@ -19,10 +20,14 @@ class MarkdownView extends StatefulWidget {
   /// [LocaleViewModel.locale].
   const MarkdownView({
     required String page,
+    String Function(BuildContext)? markdownAppendixCallback,
     super.key,
-  }) : _page = page;
+  }) : _page = page,
+       _markdownAppendixCallback = markdownAppendixCallback;
 
   final String _page;
+
+  final String Function(BuildContext)? _markdownAppendixCallback;
 
   @override
   State<MarkdownView> createState() => _MarkdownViewState();
@@ -41,6 +46,8 @@ class _MarkdownViewState extends State<MarkdownView> {
 
   StreamSubscription<Locale>? _localeStreamSubscription;
 
+  Iterable<String> _headerRows = [];
+
   @override
   void initState() {
     super.initState();
@@ -54,6 +61,14 @@ class _MarkdownViewState extends State<MarkdownView> {
       'assets/pages/${LocaleViewModel.instance.locale.languageCode}/'
       '${widget._page}.md',
     );
+    if (mounted) {
+      _markdownContents +=
+          widget._markdownAppendixCallback?.call(context) ?? '';
+    }
+    _headerRows = _markdownContents
+        .split('\n')
+        .where((row) => row.contains('# '));
+    _tocController.setTocList(_tocList);
     unawaited(_localeStreamSubscription?.cancel());
     _localeStreamSubscription = LocaleViewModel.instance.localeStream.listen(
       _init,
@@ -66,28 +81,6 @@ class _MarkdownViewState extends State<MarkdownView> {
     unawaited(_localeStreamSubscription?.cancel());
     _tocController.dispose();
     super.dispose();
-  }
-
-  void _initHeaderIndexes() {
-    _tocController.setTocList(_tocList);
-    final tocWidgetIndexes = _tocList.map(
-      (toc) => toc.widgetIndex,
-    );
-    final headerRows = _markdownContents
-        .split('\n')
-        .where((row) => row.contains('# '));
-    for (var i = 0; i < headerRows.length; i++) {
-      final title = headerRows
-          .elementAt(i)
-          .toLowerCase()
-          .split('# ')
-          .last
-          .replaceAll(' ', '-')
-          .replaceAll('_', '')
-          .replaceAll('(', '')
-          .replaceAll(')', '');
-      _headerIndexes['#$title'] = tocWidgetIndexes.elementAt(i);
-    }
   }
 
   @override
@@ -103,6 +96,7 @@ class _MarkdownViewState extends State<MarkdownView> {
   Widget _buildMarkdownWidget() {
     _tocList.clear();
     _headerIndexes.clear();
+    unawaited(_init(context));
     return UpDownArrowScroller(
       childScrollController: _autoScrollController,
       child: MarkdownWidget(
@@ -120,6 +114,16 @@ class _MarkdownViewState extends State<MarkdownView> {
                   tocListIndex: listLength,
                 ),
               );
+              final title = _headerRows
+                  .elementAt(listLength)
+                  .toLowerCase()
+                  .split('# ')
+                  .last
+                  .replaceAll(' ', '-')
+                  .replaceAll('_', '')
+                  .replaceAll('(', '')
+                  .replaceAll(')', '');
+              _headerIndexes['#$title'] = index;
             }
           },
         ),
@@ -147,9 +151,6 @@ class _MarkdownViewState extends State<MarkdownView> {
   );
 
   void _jumpToParagraph(String value) {
-    if (_headerIndexes.isEmpty) {
-      _initHeaderIndexes();
-    }
     final decoded = Uri.decodeQueryComponent(value);
     if (_headerIndexes[decoded] == null) return;
     _tocController.jumpToWidgetIndex(_headerIndexes[decoded]!);
