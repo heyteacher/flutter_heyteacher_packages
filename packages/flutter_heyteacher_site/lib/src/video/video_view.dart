@@ -3,6 +3,7 @@ import 'dart:async' show StreamController, unawaited;
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_site/src/misc.dart';
 import 'package:flutter_heyteacher_site/src/video/video_data.dart';
+import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 import 'package:flutter_heyteacher_utils/widgets.dart';
 import 'package:video_player/video_player.dart';
@@ -149,6 +150,13 @@ class _VideoPlayState extends State<_VideoPlay> {
     await _videoPlayerController.play();
     setState(() {});
     _videoPlayerController.addListener(() => setState(() {}));
+    unawaited(GoogleAnalitycsViewModel.instance.logCustomEvent(
+      name: 'play_video',
+      parameters: {
+        'url': widget._videolData.url,
+        'title': widget._videolData.title,
+      },
+    ));
   }
 
   @override
