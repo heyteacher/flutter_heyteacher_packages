@@ -1,23 +1,89 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_site/src/hero_carousel/hero_carousel_data.dart';
+import 'package:flutter_heyteacher_site/src/slide/slide_data.dart';
 import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
 import 'package:flutter_heyteacher_utils/theme.dart';
 
+/// The slide Sliver .
+class SlideSliver extends StatefulWidget {
+  /// The constructor  of the [SlideSliver] for [slides]
+  const SlideSliver({required List<SlideData> slides, super.key})
+    : _slides = slides;
+
+  final List<SlideData> _slides;
+
+  @override
+  /// Creates the state for the [SlideSliver] based on the platform.
+  ///
+  State<SlideSliver> createState() => _SlideSliverState();
+}
+
+class _SlideSliverState
+    extends
+        AdaptiveState<
+          SlideSliver,
+          _AbstractLiveSlideSliverState,
+          List<SlideData>
+        > {
+  @override
+  _AbstractLiveSlideSliverState createAdaptiveState() =>
+      _AbstractLiveSlideSliverState();
+
+  @override
+  List<SlideData> get params => widget._slides;
+}
+
+class _AbstractLiveSlideSliverState
+    extends AbstractAdaptiveState<List<SlideData>> {
+  @override
+  Widget build(BuildContext context) => SliverGrid(
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: _crossAxisCount,
+      crossAxisSpacing: _spacing,
+      mainAxisSpacing: _spacing,
+      mainAxisExtent: MediaQuery.sizeOf(context).height / 2,
+    ),
+    delegate: SliverChildListDelegate(
+      widget.params
+          .map(
+            (e) => Padding(
+              padding: EdgeInsetsGeometry.symmetric(
+                horizontal: _spacing,
+              ),
+              child: _SlideCard(e),
+            ),
+          )
+          .toList(),
+    ),
+  );
+
+  double get _spacing => switch (widget.screenSize) {
+    ScreenSize.small => 8,
+    ScreenSize.medium => 32,
+    ScreenSize.large => 64,
+  };
+
+  int get _crossAxisCount => switch (widget.screenSize) {
+    ScreenSize.small => 1,
+    ScreenSize.medium => 1,
+    ScreenSize.large => 2,
+  };
+}
+
 /// A responsive carousel view that adapts to different screen sizes.
-class HeroCarouselView extends StatefulWidget {
-  /// Creates an instance of [HeroCarouselView].
-  const HeroCarouselView({
-    required Iterable<HeroCarouselItemData> heroCarouselItems,
+class SlideCarouselView extends StatefulWidget {
+  /// Creates an instance of [SlideCarouselView].
+  const SlideCarouselView({
+    required Iterable<SlideData> slides,
     double? maxHeight,
     double? aspectRatio,
     super.key,
   }) : _maxHeight = maxHeight,
        _aspectRatio = aspectRatio,
-       _heroCarouselItems = heroCarouselItems;
+       _slides = slides;
 
-  final Iterable<HeroCarouselItemData> _heroCarouselItems;
+  final Iterable<SlideData> _slides;
 
   final double? _maxHeight;
   final double? _aspectRatio;
@@ -27,46 +93,46 @@ class HeroCarouselView extends StatefulWidget {
   ///
   /// This method is called by the Flutter framework to create the
   /// [State] object for this widget.
-  State<HeroCarouselView> createState() => _HeroCarouselViewState();
+  State<SlideCarouselView> createState() => _SlideCarouselViewState();
 }
 
-class _HeroCarouselViewState
+class _SlideCarouselViewState
     extends
         AdaptiveState<
-          HeroCarouselView,
-          _AbstractHeroCarouselViewState,
+          SlideCarouselView,
+          _AbstractSlideCarouselViewState,
           ({
-            Iterable<HeroCarouselItemData> heroCarouselItems,
+            Iterable<SlideData> slides,
             double? maxHeight,
             double? aspectRatio,
           })
         > {
   @override
-  _AbstractHeroCarouselViewState createAdaptiveState() =>
-      _AbstractHeroCarouselViewState();
+  _AbstractSlideCarouselViewState createAdaptiveState() =>
+      _AbstractSlideCarouselViewState();
 
   @override
   ({
-    Iterable<HeroCarouselItemData> heroCarouselItems,
+    Iterable<SlideData> slides,
     double? maxHeight,
     double? aspectRatio,
   })
   get params => (
-    heroCarouselItems: widget._heroCarouselItems,
+    slides: widget._slides,
     maxHeight: widget._maxHeight,
     aspectRatio: widget._aspectRatio,
   );
 }
 
-/// The abstract state for [HeroCarouselView].
+/// The abstract state for [SlideCarouselView].
 ///
 /// Manages the automatic scrolling timer, user interaction handling,
 /// and the underlying [CarouselView].
-class _AbstractHeroCarouselViewState
+class _AbstractSlideCarouselViewState
     extends
         AbstractAdaptiveState<
           ({
-            Iterable<HeroCarouselItemData> heroCarouselItems,
+            Iterable<SlideData> slides,
             double? maxHeight,
             double? aspectRatio,
           })
@@ -84,8 +150,7 @@ class _AbstractHeroCarouselViewState
   ///
   /// Loops back to the beginning if it reaches the end.
   int get _nextIndex => _currentIndex =
-      _currentIndex ==
-          widget.params.heroCarouselItems.length - widget.flexWeights.length
+      _currentIndex == widget.params.slides.length - widget.flexWeights.length
       ? 0
       : _currentIndex + widget.flexWeights.length;
 
@@ -93,7 +158,7 @@ class _AbstractHeroCarouselViewState
   ///
   /// Loops to the end if it's at the beginning.
   int get _prevIndex => _currentIndex = _currentIndex == 0
-      ? widget.params.heroCarouselItems.length - widget.flexWeights.length
+      ? widget.params.slides.length - widget.flexWeights.length
       : _currentIndex - widget.flexWeights.length;
 
   @override
@@ -148,13 +213,7 @@ class _AbstractHeroCarouselViewState
           itemSnapping: true,
           shrinkExtent: MediaQuery.of(context).size.width,
           flexWeights: widget.flexWeights,
-          children: widget.params.heroCarouselItems
-              .map(
-                (screenshotCarouselItem) => _HeroLayoutCard(
-                  screenshotCarouselItem: screenshotCarouselItem,
-                ),
-              )
-              .toList(),
+          children: widget.params.slides.map(_SlideCard.new).toList(),
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -185,122 +244,135 @@ class _AbstractHeroCarouselViewState
 }
 
 /// A widget that displays an image with a title and subtitle overlay,
-/// typically used within a carousel or hero section.
-class _HeroLayoutCard extends StatelessWidget {
-  /// Creates a card that displays an image and some text in a "hero" layout.
+class _SlideCard extends StatelessWidget {
+  /// Creates a card that displays an image and some text.
   ///
-  /// The [screenshotCarouselItem] parameter is required and provides the data
+  /// The [slideData] parameter is required and provides the data
   /// for the card.
-  const _HeroLayoutCard({
-    required HeroCarouselItemData screenshotCarouselItem,
-  }) : _screenshotCarouselItem = screenshotCarouselItem;
+  const _SlideCard(
+    SlideData slideData, {
+    super.key,
+  }) : _slideData = slideData;
 
-  /// The [HeroCarouselItemData] object containing the title, subtitle,
+  /// The [SlideData] object containing the title, subtitle,
   /// and path for the image displayed in this card.
   ///
   /// This field is private and accessed via the constructor parameter.
   /// It holds all the necessary data to render the card's content.
-  final HeroCarouselItemData _screenshotCarouselItem;
+  final SlideData _slideData;
 
   @override
-  /// Builds the UI for the [_HeroLayoutCard].
+  /// Builds the UI for the [_SlideCard].
   ///
   /// It uses a [Stack] to layer an image with text overlay.
   /// The image is constrained and uses an [AssetImage].
   Widget build(BuildContext context) => Stack(
-    alignment: _screenshotCarouselItem.body != null
+    alignment: _slideData.body != null
         ? AlignmentDirectional.topStart
         : AlignmentDirectional.bottomStart,
     children: <Widget>[
       /// show body sentences
-      if (_screenshotCarouselItem.body != null)
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 8,
-            right: 8,
-            top: 60,
-            bottom: 2,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _screenshotCarouselItem.body!
-                .map(
-                  (row) => Expanded(
-                    child: Row(
-                      spacing: 16,
-                      children: [
-                        Icon(
-                          row.leadingIcon,
-                          color: row.leadingIconColor,
-                          size: Theme.of(
-                            context,
-                          ).textTheme.headlineLarge!.fontSize,
-                        ),
-                        Flexible(
-                          child: Text(
-                            row.text,
-                            style: Theme.of(
+      if (_slideData.body != null)
+        Card(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 8,
+              right: 8,
+              top: _slideData.subtitle != null ? 128 : 64,
+              bottom: 2,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: _slideData.body!
+                  .map(
+                    (row) => Expanded(
+                      child: Row(
+                        spacing: 16,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            row.leadingIcon,
+                            color: row.leadingIconColor,
+                            size: Theme.of(
                               context,
-                            ).textTheme.titleMedium,
+                            ).textTheme.headlineSmall!.fontSize,
                           ),
-                        ),
-                      ],
+                          Flexible(
+                            child: Text(
+                              textAlign: TextAlign.center,
+                              row.text,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.headlineSmall,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                  )
+                  .toList(),
+            ),
+          ),
+        )
+      // show image
+      else if (_slideData.imagePaths?.isNotEmpty ?? false)
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: _slideData.imagePaths!
+                .map(
+                  (imagePath) => Image(
+                    isAntiAlias: true,
+                    filterQuality: FilterQuality.high,
+                    height: MediaQuery.sizeOf(context).height / 2,
+                    image: AssetImage(imagePath),
                   ),
                 )
                 .toList(),
           ),
-        )
-      // show image
-      else if (_screenshotCarouselItem.imagePath?.isNotEmpty ?? false)
-        ClipRect(
-          child: OverflowBox(
-            maxWidth: MediaQuery.sizeOf(context).width * 7 / 8,
-            minWidth: MediaQuery.sizeOf(context).width * 7 / 8,
-            child: Image(image: AssetImage(_screenshotCarouselItem.imagePath!)),
-          ),
         ),
-      if (_screenshotCarouselItem.title != null)
+      if (_slideData.title != null)
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2),
+              padding: const EdgeInsets.only(top: 8),
               child: Text(
-                _screenshotCarouselItem.title!,
+                _slideData.title!,
                 overflow: TextOverflow.clip,
                 softWrap: false,
-                textAlign: _screenshotCarouselItem.body != null
+                textAlign: _slideData.body != null
                     ? TextAlign.center
                     : TextAlign.left,
                 style: Theme.of(
                   context,
-                ).textTheme.headlineMedium,
+                ).textTheme.headlineLarge,
               ),
             ),
-            if (_screenshotCarouselItem.subtitle?.isNotEmpty ?? false)
+            if (_slideData.subtitle?.isNotEmpty ?? false)
               Padding(
                 padding: const EdgeInsets.only(
                   left: 2,
                   right: 2,
-                  top: 16,
+                  top: 8,
                   bottom: 8,
                 ),
                 child: Text(
-                  _screenshotCarouselItem.subtitle!,
+                  _slideData.subtitle!,
                   overflow: TextOverflow.clip,
                   softWrap: true,
                   maxLines: 3,
-                  textAlign: _screenshotCarouselItem.body != null
+                  textAlign: _slideData.body != null
                       ? TextAlign.center
                       : TextAlign.left,
                   style: Theme.of(
                     context,
-                  ).textTheme.titleMedium,
+                  ).textTheme.headlineSmall,
                 ),
               ),
           ],
