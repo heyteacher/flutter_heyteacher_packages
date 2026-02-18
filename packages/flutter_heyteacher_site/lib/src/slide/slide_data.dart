@@ -1,16 +1,16 @@
 import 'package:flutter/widgets.dart';
 
-/// Holds metadata for the images displayed in the carousel.
-class HeroCarouselItemData {
-  /// Creates a new instance of [HeroCarouselItemData].
-  HeroCarouselItemData({
+/// Holds data for the images displayed into a slide.
+class SlideData {
+  /// Creates a new instance of [SlideData].
+  SlideData({
     this.title,
     this.subtitle,
-    this.imagePath,
+    this.imagePaths,
     this.body,
   }) : assert(title == null || title.isNotEmpty, 'title cannot be empty'),
        assert(
-         (imagePath?.isNotEmpty ?? false) || (body?.isNotEmpty ?? false),
+         (imagePaths?.isNotEmpty ?? false) || (body?.isNotEmpty ?? false),
          'imagePath or body must be provided',
        );
 
@@ -21,7 +21,7 @@ class HeroCarouselItemData {
   final String? subtitle;
 
   /// The image asset path.
-  final String? imagePath;
+  final Iterable<String>? imagePaths;
 
   /// The body as list of sentences
   final Iterable<({IconData leadingIcon, Color leadingIconColor, String text})>?
