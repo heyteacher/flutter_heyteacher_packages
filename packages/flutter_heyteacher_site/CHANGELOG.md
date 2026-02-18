@@ -1,3 +1,15 @@
+<a id="1.9.0+260218160"></a>
+# [1.9.0+260218160](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.9.0+260218160) - 2026-02-18
+
+## What's Changed
+* feat: rename `hero_carousel`  in `slide` and add `SlideSliver` widget by [@heyteacher](https://github.com/heyteacher) in [#17](https://github.com/heyteacher/flutter_heyteacher_site/pull/17)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.8.0+260217163...1.9.0+260218160
+
+[Changes][1.9.0+260218160]
+
+
 <a id="1.8.0+260217163"></a>
 # [1.8.0+260217163](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.8.0+260217163) - 2026-02-17
 
@@ -135,6 +147,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[1.9.0+260218160]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.8.0+260217163...1.9.0+260218160
 [1.8.0+260217163]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.7.0+260217130...1.8.0+260217163
 [1.7.0+260217130]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.6.0+260217110...1.7.0+260217130
 [1.6.0+260217110]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.4.2+260209130...1.6.0+260217110
