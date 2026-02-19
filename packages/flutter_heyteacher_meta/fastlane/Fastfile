@@ -49,7 +49,7 @@ lane :bump do
   end
   sh("git branch bump")
   sh("git checkout bump")
-  sh("git add -f ../pubspec.lock ../Gemfile.lock")
+  sh("git add -f ../pubspec.lock ../Gemfile.lock ../pubspec.yaml")
   sh("git commit -m \"build(deps): bump deps version\"")
   sh("git checkout main")
   sh("git merge bump")
