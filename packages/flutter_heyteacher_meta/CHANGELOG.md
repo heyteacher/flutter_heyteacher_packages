@@ -1,3 +1,15 @@
+<a id="2.1.1+260219100"></a>
+# [2.1.1+260219100](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.1.1+260219100) - 2026-02-19
+
+## What's Changed
+* fix: commit `pubspec.yaml` in `bump` lane, useful when when runs `flutter pub upgrade --major-versions` by [@heyteacher](https://github.com/heyteacher) in [#11](https://github.com/heyteacher/flutter_heyteacher_meta/pull/11)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.0+260216145...2.1.1+260219100
+
+[Changes][2.1.1+260219100]
+
+
 <a id="2.1.0+260216145"></a>
 # [2.1.0+260216145](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.1.0+260216145) - 2026-02-16
 
@@ -20,6 +32,7 @@
 [Changes][2.0.1+260216114]
 
 
+[2.1.1+260219100]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.0+260216145...2.1.1+260219100
 [2.1.0+260216145]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.0.1+260216114...2.1.0+260216145
 [2.0.1+260216114]: https://github.com/heyteacher/flutter_heyteacher_meta/tree/2.0.1+260216114
 
