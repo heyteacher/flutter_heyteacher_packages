@@ -619,10 +619,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_heyteacher_meta
-      sha256: "2db09001f152f3006d246d9e2aa3410374e5d98c6768975553dea728e502a97e"
+      sha256: "89cf7c308d4b020cb8b685a2ae178f63f8c25772b623d46b2c162452c7fe97d4"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0+260216145"
+    version: "2.1.1+260219100"
   flutter_heyteacher_text_to_speech:
     dependency: transitive
     description:
