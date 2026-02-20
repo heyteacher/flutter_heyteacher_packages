@@ -57,6 +57,15 @@ lane :bump do
   push_to_git_remote
 end
 
+desc "fl github_release \n\tCreates a github release and update CHANGELOG.md"
+lane :github_release do
+  tag = ""
+  Dir.chdir("../") do
+    tag = sh("dart run flutter_heyteacher_meta:version show")
+  end 
+  create_github_release(tag)
+end
+
 desc "fl release version:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release, merge branch into main and creates a github release"
 lane :release do|options|
   if options[:merge] == nil || options[:merge] == true
