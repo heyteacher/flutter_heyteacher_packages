@@ -1,3 +1,16 @@
+<a id="1.29.1+260220154"></a>
+# [1.29.1+260220154](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.29.1+260220154) - 2026-02-20
+
+## What's Changed
+* refactor: rename `flutter_heyteacher_fastlane` into `flutter_heyteacher_meta` by [@heyteacher](https://github.com/heyteacher) in [#21](https://github.com/heyteacher/flutter_heyteacher_store/pull/21)
+* fix: `batch` parameter of `delete`, `update` and `set` become `dynamic` to avoid add firestore dependencies by [@heyteacher](https://github.com/heyteacher) in [#22](https://github.com/heyteacher/flutter_heyteacher_store/pull/22)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.28.0+260214153...1.29.1+260220154
+
+[Changes][1.29.1+260220154]
+
+
 <a id="1.28.0+260214153"></a>
 # [1.28.0+260214153](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.28.0+260214153) - 2026-02-14
 
@@ -84,6 +97,7 @@
 [Changes][1.27.1+260118083_]
 
 
+[1.29.1+260220154]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.28.0+260214153...1.29.1+260220154
 [1.28.0+260214153]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.6+260206125_bump_deps_versions...1.28.0+260214153
 [1.27.6+260206125_bump_deps_versions]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1...1.27.6+260206125_bump_deps_versions
 [1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.4+260206081_apply_orderby_limit_only_if_not_eq_1...1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1
