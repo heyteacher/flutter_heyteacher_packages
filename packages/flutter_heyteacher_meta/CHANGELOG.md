@@ -1,3 +1,15 @@
+<a id="2.2.0+260220161"></a>
+# [2.2.0+260220161](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.2.0+260220161) - 2026-02-20
+
+## What's Changed
+* 539 featmeta add lane github release to generate a github release and update changelogmd by [@heyteacher](https://github.com/heyteacher) in [#12](https://github.com/heyteacher/flutter_heyteacher_meta/pull/12)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.1+260219100...2.2.0+260220161
+
+[Changes][2.2.0+260220161]
+
+
 <a id="2.1.1+260219100"></a>
 # [2.1.1+260219100](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.1.1+260219100) - 2026-02-19
 
@@ -32,6 +44,7 @@
 [Changes][2.0.1+260216114]
 
 
+[2.2.0+260220161]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.1+260219100...2.2.0+260220161
 [2.1.1+260219100]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.0+260216145...2.1.1+260219100
 [2.1.0+260216145]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.0.1+260216114...2.1.0+260216145
 [2.0.1+260216114]: https://github.com/heyteacher/flutter_heyteacher_meta/tree/2.0.1+260216114
