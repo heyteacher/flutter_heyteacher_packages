@@ -711,8 +711,9 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   ///
   /// If [batch] is not null, apply the `delete` operationto batch that will be
   /// esecuted by [firestore.WriteBatch.commit].
-  Future<void> delete(String id, {firestore.WriteBatch? batch}) async {
+  Future<void> delete(String id, {dynamic batch}) async {
     _logger.finer('<$runtimeType.delete>: $_detailsCollectionPathLog/$id');
+    batch as firestore.WriteBatch?; 
     _checkAuthenticated();
     if (_groupByFields != null && await exists(id)) {
       try {
@@ -775,9 +776,10 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   Future<void> set(
     DetailsDataType detailsData, {
     String? id,
-    firestore.WriteBatch? batch,
+    dynamic batch,
   }) async {
     id ??= detailsData.id;
+    batch as firestore.WriteBatch?;
     _logger.finer('<$runtimeType.set>: $_detailsCollectionPathLog/$id');
     _checkAuthenticated();
     DetailsDataType? oldDetailsData;
@@ -850,13 +852,13 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     String? id,
     dynamic batch,
   }) async {
+    id ??= document.id;
     _logger.finer(
       '<$runtimeType.update>: $_detailsCollectionPathLog/$id fields: $fields)',
     );
     if (fields.isEmpty) {
       throw InvalidFieldsUpdateException('$_detailsCollectionPathLog/$id');
     }
-    id ??= document.id;
     _checkAuthenticated();
     if (await exists(id)) {
       if (batch != null) {
@@ -891,14 +893,18 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
           throw ParentDataNullException(DetailsDataType.runtimeType);
         }
       }
-      // document not found, create it
+      // if batch in set, delegate thee caller to notify changes
+      if (batch == null) {
+        _storeCache?.set(id, document);
+        unawaited(notifyAggregatesChanges());
+      }
     } else {
-      unawaited(set(document, batch: batch as firestore.WriteBatch?));
-    }
-    // if batch in set, delegate thee caller to notify changes
-    if (batch == null) {
-      _storeCache?.set(id, document);
-      unawaited(notifyAggregatesChanges());
+    _logger.finer(
+      '<$runtimeType.update>: $_detailsCollectionPathLog/$id fields: $fields) '
+      ' document not found, create it with `set`',
+    );
+      // document not found, create it with `set`
+      unawaited(set(document, batch: batch));
     }
   }
 
@@ -1229,8 +1235,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
                 FirestoreData.fromFirestoreFactory<LightDataType>(
               snapshot.data()!,
             ),
-            toFirestore: (lightData, _) =>
-                lightData.toFirestore(null),
+            toFirestore: (lightData, _) => lightData.toFirestore(null),
           );
 
   /// Gets the collection reference for [DetailsDataType] applying
@@ -1242,8 +1247,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
                     FirestoreData.fromFirestoreFactory<DetailsDataType>(
                   snapshot.data()!,
                 ),
-                toFirestore: (detailsData, _) =>
-                    detailsData.toFirestore(null),
+                toFirestore: (detailsData, _) => detailsData.toFirestore(null),
               );
 
   /// Gets the collection path for [LightDataType] based on [_collection]
