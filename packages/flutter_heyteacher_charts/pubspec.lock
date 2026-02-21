@@ -491,7 +491,7 @@ packages:
       path: "../flutter_heyteacher_utils"
       relative: true
     source: path
-    version: "1.48.1+260217121"
+    version: "1.48.2+260221102"
   flutter_localizations:
     dependency: transitive
     description: flutter
@@ -1147,10 +1147,11 @@ packages:
   webcrypto:
     dependency: transitive
     description:
-      name: webcrypto
-      sha256: "6b43001c4110856ff7fa5e5e65e7b2d44bec1d8b54a4d84d5fa2c7622267c5c1"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: dcc7ba78c9721de56a800fda9a9e2bc759b9cad3
+      url: "https://github.com/google/webcrypto.dart.git"
+    source: git
     version: "0.6.0"
   win32:
     dependency: transitive
