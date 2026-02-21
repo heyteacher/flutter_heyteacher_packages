@@ -1,3 +1,15 @@
+<a id="1.29.2+260221102"></a>
+# [1.29.2+260221102](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.29.2+260221102) - 2026-02-21
+
+## What's Changed
+* 544 fixutils fix 16 kb page sizes issue upgrading webcrytpo by [@heyteacher](https://github.com/heyteacher) in [#23](https://github.com/heyteacher/flutter_heyteacher_store/pull/23)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.1+260220154...1.29.2+260221102
+
+[Changes][1.29.2+260221102]
+
+
 <a id="1.29.1+260220154"></a>
 # [1.29.1+260220154](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.29.1+260220154) - 2026-02-20
 
@@ -97,6 +109,7 @@
 [Changes][1.27.1+260118083_]
 
 
+[1.29.2+260221102]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.1+260220154...1.29.2+260221102
 [1.29.1+260220154]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.28.0+260214153...1.29.1+260220154
 [1.28.0+260214153]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.6+260206125_bump_deps_versions...1.28.0+260214153
 [1.27.6+260206125_bump_deps_versions]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.5+260206124_apply_orderby_limit_only_if_not_eq_1...1.27.6+260206125_bump_deps_versions
