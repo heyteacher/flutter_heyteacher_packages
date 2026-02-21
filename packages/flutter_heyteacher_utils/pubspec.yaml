@@ -44,7 +44,8 @@ dependencies:
   shared_preferences: ^2.5.3
   shared_preferences_platform_interface: ^2.4.1
   url_launcher: ^6.3.1
-  webcrypto: ^0.6.0
+  webcrypto:
+    git: https://github.com/google/webcrypto.dart.git
 
 dev_dependencies:
   build_runner: ^2.4.15
