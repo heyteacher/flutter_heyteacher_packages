@@ -1,3 +1,16 @@
+<a id="1.48.2+260221102"></a>
+# [1.48.2+260221102](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.48.2+260221102) - 2026-02-21
+
+## What's Changed
+* fix: update `AnimatedText` only if  text value changes by [@heyteacher](https://github.com/heyteacher) in [#60](https://github.com/heyteacher/flutter_heyteacher_utils/pull/60)
+* fix: upgrade `webcrypto` to git reps to fix 16 KB issue on release app in production by [@heyteacher](https://github.com/heyteacher) in [#61](https://github.com/heyteacher/flutter_heyteacher_utils/pull/61)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.48.0+260217110...1.48.2+260221102
+
+[Changes][1.48.2+260221102]
+
+
 <a id="1.48.0+260217110"></a>
 # [1.48.0+260217110](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.48.0+260217110) - 2026-02-17
 
@@ -225,6 +238,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.48.2+260221102]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.48.0+260217110...1.48.2+260221102
 [1.48.0+260217110]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.46.0+260214102...1.48.0+260217110
 [1.46.0+260214102]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.4+260209130...1.46.0+260214102
 [1.45.4+260209130]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.45.3+260207180...1.45.4+260209130
