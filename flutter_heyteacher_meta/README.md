@@ -1,6 +1,6 @@
 # Flutter Heyteacher Meta
 
-A Flutter meta project implementing utilities for Flutter `package` and `app` project.
+A Flutter meta project implementing utilities and best practices for Flutter `package` and `app` project avoiding `Copy & Paste` pattern.
 
 - environment setup instructions for `app` and `package` projects and `Firebase` setup `app` projects
 - `git` utilities for manage versions and releases
@@ -26,10 +26,27 @@ A Flutter meta project implementing utilities for Flutter `package` and `app` pr
     - [FastLane](#fastlane)
   - [Create a flutter project](#create-a-flutter-project)
     - [Configure FastLane Lanes](#configure-fastlane-lanes)
-  - [`git` utilities](#git-utilities)
+  - [`Fastlane` lines for `app` and `package` projects](#fastlane-lines-for-app-and-package-projects)
+    - [doc](#doc)
+    - [docweb](#docweb)
+    - [test](#test)
     - [checkout](#checkout)
     - [release](#release)
+    - [github\_release](#github_release)
     - [bump](#bump)
+  - [`Fastlane` lines for `app` projects](#fastlane-lines-for-app-projects)
+    - [appbundle](#appbundle)
+    - [integration\_test](#integration_test)
+    - [testlab](#testlab)
+    - [backup](#backup)
+    - [restore](#restore)
+    - [rm](#rm)
+    - [app\_distribution](#app_distribution)
+    - [playstore](#playstore)
+    - [playstore\_promote](#playstore_promote)
+    - [buildweb](#buildweb)
+    - [deployweb](#deployweb)
+  - [`git` utilities](#git-utilities)
     - [`git` conventional commit](#git-conventional-commit)
     - [avoid commit on `main` branch](#avoid-commit-on-main-branch)
     - [example: release a patch](#example-release-a-patch)
@@ -259,29 +276,55 @@ After setup the environment run from root project directory and create the proje
   - `firebase_app_distribution_service_credentials_file` the Firebase App
      Distribution service credentials file name
 
-## `git` utilities
+## `Fastlane` lines for `app` and `package` projects
 
-`checkout` and `release` commands with git `hooks` for `conventional commit` and `avoid commit on main branch` helps you to work properly with versions, git branches, git tags and github releases.
+Common `Fastlane` lines are provided to `app` and `package` projects. In details:
 
-`bump` command commit `pubspec.lock` and `pubspec.yaml`  after a bump version on dependencies without create a new version and without create new release.
+- generate dart documentation
+- checkout and release on `github`
+- run unit test
+
+### doc
+
+```bash
+fl doc
+```
+
+Generate the `dart` documentation and run webserver on <http://localhost:8080>
+
+### docweb
+
+```bash
+fl docweb
+```
+
+Runs local webserver on <http://localhost:8080>  with `dart` documentation
+
+### test
+
+```bash
+fl test
+```
+
+Run unit tests of the project.
 
 ### checkout
-
-To checkout the latest remote branch already created remotely (i.e. in `github project` ) run:
 
 ```bash
 fl checkout
 ```
 
+Checkout the latest remote branch already created remotely (i.e. in `github project` ).
+
 This command run a `git fetch` and run a `git checkout` to the latest branch fetched.
 
 ### release
 
-After you commit and push your changes into the branch you can release to `main` branch using this command:
-
 ```bash
 fl release version:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]
 ```
+
+After you commit and push your changes into the branch you can release to `main` branch using this command:
 
 - `version`: increments the version into `pubspec.yaml`, for example:
   - `major`: move version from `1.0.0` to `2.0.0`
@@ -299,13 +342,127 @@ These command make several tasks:
 - create a `pull request` and merge changes into `main` branch, checkout the `main` branch and delete the branch merged (if `merge` param is `true)  
 - create a git `tag`
 
+### github_release
+
+```bash
+fl github_release
+```
+
 ### bump
 
 ```bash
 fl bump
 ```
 
-commits `pubspec.lock` and `pubspec.yaml`  without generate a new version and without create a new release.
+Commits `pubspec.lock` and `pubspec.yaml`  without generate a new version and without create a new release.
+
+Creates a `github` release and update `CHANGELOG.md`
+
+## `Fastlane` lines for `app` projects
+
+Specific `Fastlane` lines are provided for `app`  projects. In details:
+
+- build `AAB`
+- run integration test locally or on `Firebase Test Lab`
+- backup and restore `Firestore` dababase
+- release application in `Google Play` and `Firebase App Distribution`
+- build and release web application in `Firebase Hosting`
+
+### appbundle
+
+```bash
+fl appbundle
+```
+
+Clean and build the application.
+
+When completed, the `AAB` is generate into `build/app/outputs/bundle/release/app-release.aab`.
+
+### integration_test
+
+```bash
+fl integration_test
+```
+
+Run integration tests of app project.
+
+### testlab
+
+```bash
+fl testlab
+```
+
+Run integration test of app project in `Firebase Test Lab`
+
+### backup
+
+```bash
+fl backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>]
+```
+
+Backup `Firestore` dababase on `snapshot` specified. If `database` isn't set use `(default)`
+
+### restore
+
+```bash
+fl restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>]
+ ```
+
+Restore `Firestore` dababase  `backup`. If `database` isn't set use `(default)`
+
+### rm
+
+```bash
+fl rm backup:<YYYY-MM-DDTHH:mm:ss_mi>
+```
+
+Remove `Firestore` dababase  `backup`
+
+### app_distribution
+
+```bash
+fl app_distribution
+```
+
+Build the release and publish app in `Google Play` via `Firebase App Distribution`
+
+### playstore
+
+```bash
+fl playstore track:production|beta|alpha|internal [upload_only:true|false]
+```
+
+Upload app in `Google Play` via `supply` on `track`. if `upload_only` is `true` upload app without build. (default `false`)
+
+### playstore_promote
+
+```bash
+fl playstore_promote from_track:beta|alpha|internal to_track:production|beta|alpha|internal
+```
+
+Promote a release in Google Play via `supply` from `from_track` to `to_track`.
+
+### buildweb
+
+```bash
+fl buildweb [version:profile|debug]
+```
+
+Build web and run local webserver on <http://localhost:8080>
+
+### deployweb
+
+```bash
+fl deployweb [release_type:release|profile|debug]
+```
+
+Deploy web in `Firabase Hosting` with release type `release_type` (default `release`)
+
+## `git` utilities
+
+[checkout](#checkout) and [release](#release) commands with git `hooks` for [`git` conventional commit](#git-conventional-commit) and [avoid commit on `main` branch](#avoid-commit-on-main-branch) helps you to work properly with versions, git branches, git tags and github releases.
+
+[bump](#bump) command commit `pubspec.lock` and `pubspec.yaml`  after a bump version on dependencies without create a new version and without create new release.
 
 ### `git` conventional commit
 
@@ -813,7 +970,39 @@ Run a local web server on `http://localhost:8080` and open a browser on project 
 
 ## Launcher Icon
 
-- modify 'assets/icon/icon.png' and 'assets/icon/background.png'
+- install [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons)
+  
+  ```bash
+  flutter pub add flutter_launcher_icons
+  ```
+  
+- create or modify 'assets/icon/icon.png' and 'assets/icon/background.png'
+
+- add configuration to `pubspec.yaml`
+
+```yaml
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: false
+  remove_alpha_ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "assets/icon/background.png"
+  adaptive_icon_foreground: "assets/icon/icon.png"
+  web:
+    generate: true
+    image_path: "assets/icon/icon.png"
+    background_color: "#000000"
+    theme_color: "#000000"
+  windows:
+    generate: true
+    image_path: "assets/icon/icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true 
+    image_path: "assets/icon/icon.png"
+```
+
 - run
 
   ```bash
@@ -822,7 +1011,25 @@ Run a local web server on `http://localhost:8080` and open a browser on project 
 
 ## Splash
 
-- modify 'assets/splash.png'
+- install [flutter_native_splash)](https://pub.dev/packages/flutter_native_splash)
+  
+  ```bash
+  flutter pub add flutter_native_splash
+  ```
+
+- create or modify 'assets/splash.png'
+
+ add configuration to `pubspec.yaml`
+
+  ```yaml
+  flutter_native_splash:
+  color: "#000000"
+  image: assets/splash.png
+  android_12:
+    image: assets/splash.png
+    color: "#000000"  
+  ```
+
 - run
 
   ```bash
