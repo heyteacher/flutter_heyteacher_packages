@@ -1,3 +1,15 @@
+<a id="2.2.1+260222212"></a>
+# [2.2.1+260222212](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.2.1+260222212) - 2026-02-22
+
+## What's Changed
+* docs: add `fastlane` lanes , `launcher icon` and `splash` documentation by [@heyteacher](https://github.com/heyteacher) in [#13](https://github.com/heyteacher/flutter_heyteacher_meta/pull/13)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.0+260220161...2.2.1+260222212
+
+[Changes][2.2.1+260222212]
+
+
 <a id="2.2.0+260220161"></a>
 # [2.2.0+260220161](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.2.0+260220161) - 2026-02-20
 
@@ -44,6 +56,7 @@
 [Changes][2.0.1+260216114]
 
 
+[2.2.1+260222212]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.0+260220161...2.2.1+260222212
 [2.2.0+260220161]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.1+260219100...2.2.0+260220161
 [2.1.1+260219100]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.0+260216145...2.1.1+260219100
 [2.1.0+260216145]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.0.1+260216114...2.1.0+260216145
