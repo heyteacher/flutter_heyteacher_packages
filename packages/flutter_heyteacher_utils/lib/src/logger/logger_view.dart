@@ -34,8 +34,7 @@ class LoggingRouter {
   /// Builds a [GoRoute] for the logger screen.
   static GoRoute builder() => GoRoute(
     path: path,
-    builder: (context, state) =>
-        const LoggerScreen(),
+    builder: (context, state) => const LoggerScreen(),
   );
 }
 
@@ -105,7 +104,7 @@ class _LoggerScreenState
   int get crossAxisCount => 1;
 
   @override
-  double get mainAxisExtent => 100;
+  double get mainAxisExtent => 85;
 
   @override
   Widget buildData(
@@ -249,45 +248,75 @@ class LogEntryCard extends StatelessWidget {
   Widget build(BuildContext context) => Card(
     color: _backgroundColor(_logEntry.level),
     child: ListTile(
-      leading: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(FormatterHelper.timeWithSecondsFormat(_logEntry.time)),
-          Text(
-            _logEntry.level.name,
-            style: TextStyle(
-              color: _backgroundColor(_logEntry.level)?.withValues(alpha: 0.8),
-            ),
-          ),
-        ],
-      ),
+      leading: _buildLeading(),
       title: Text(_logEntry.loggerName),
-      subtitle: Text(_logEntry.message),
-      isThreeLine: true,
-      trailing: _logEntry.error != null
-          ? IconButton(
-              icon: const Icon(Icons.info),
-              onPressed: () => showConfirmCancelDialog<void>(
-                context: context,
-                content: Text(
-                  '${_logEntry.error}\n\n'
-                  '${_logEntry.stackTrace ?? ''}',
-                ),
-              ),
-            )
+      subtitle: Text(
+        _logEntry.message,
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: _logEntry.message.length > 40 || _logEntry.error != null
+          ? _buildTrailing(context)
           : null,
     ),
   );
 
+  IconButton? _buildTrailing(BuildContext context) => IconButton(
+    icon: const Icon(Icons.info),
+    onPressed: () => showConfirmCancelDialog<void>(
+      backgroundColor: _backgroundColor(_logEntry.level),
+      context: context,
+      content: ListTile(
+        title: Text(
+          _logEntry.message,
+          style: TextStyle(
+            color: ThemeViewModel.instance.colorScheme.primary,
+          ),
+        ),
+        subtitle: _logEntry.error != null
+            ? Text(
+                '${_logEntry.error ?? ''}\n\n'
+                '${_logEntry.stackTrace ?? ''}',
+              )
+            : null,
+      ),
+    ),
+  );
+
+  Column _buildLeading() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(FormatterHelper.timeWithSecondsFormat(_logEntry.time)),
+        Text(
+          _logEntry.level.name,
+        ),
+      ],
+    );
+  }
+
   /// Determines the background color for a log entry based on its [Level].
   static Color? _backgroundColor(Level level) => switch (level) {
-    Level.SHOUT => ThemeViewModel.instance.redColor.withValues(alpha: 0.4),
-    Level.SEVERE => ThemeViewModel.instance.redColor.withValues(alpha: 0.4),
-    Level.WARNING => ThemeViewModel.instance.orangeColor.withValues(alpha: 0.4),
-    Level.CONFIG => ThemeViewModel.instance.orangeColor.withValues(alpha: 0.4),
-    Level.CONFIG => ThemeViewModel.instance.yellowColor.withValues(alpha: 0.4),
-    Level.INFO => ThemeViewModel.instance.greenColor.withValues(alpha: 0.4),
-    _ => ThemeViewModel.instance.blueColor.withValues(alpha: 0.4),
+    Level.SHOUT => ThemeViewModel.instance.themeBackgroundColor(
+      ThemeViewModel.instance.redColor,
+    ),
+    Level.SEVERE => ThemeViewModel.instance.themeBackgroundColor(
+      ThemeViewModel.instance.redColor,
+    ),
+    Level.WARNING => ThemeViewModel.instance.themeBackgroundColor(
+      ThemeViewModel.instance.orangeColor,
+    ),
+    Level.CONFIG => ThemeViewModel.instance.themeBackgroundColor(
+      ThemeViewModel.instance.orangeColor,
+    ),
+    Level.CONFIG => ThemeViewModel.instance.themeBackgroundColor(
+      ThemeViewModel.instance.yellowColor,
+    ),
+    Level.INFO => ThemeViewModel.instance.themeBackgroundColor(
+      ThemeViewModel.instance.greenColor,
+    ),
+    _ => ThemeViewModel.instance.themeBackgroundColor(
+      ThemeViewModel.instance.blueColor,
+    ),
   };
 }
 
