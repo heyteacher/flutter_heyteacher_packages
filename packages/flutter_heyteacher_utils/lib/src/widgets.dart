@@ -119,6 +119,7 @@ Future<bool> showConfirmCancelDialog<ObjectParamType>({
   Future<String?> Function(ObjectParamType?)? cancelCallback,
   VoidCallback? timeoutCallback,
   Duration? timeout,
+  Color? backgroundColor,
 }) async {
   assert(
     (timeoutCallback == null || timeout != null),
@@ -132,6 +133,7 @@ Future<bool> showConfirmCancelDialog<ObjectParamType>({
     builder: (context) {
       dialogContext = context;
       return AlertDialog(
+        backgroundColor: backgroundColor,
         title: title != null
             ? Padding(padding: const EdgeInsets.only(top: 8), child: title)
             : null,
