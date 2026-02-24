@@ -1,3 +1,16 @@
+<a id="1.29.1+260224124"></a>
+# [1.29.1+260224124](https://github.com/heyteacher/flutter_heyteacher_charts/releases/tag/1.29.1+260224124) - 2026-02-24
+
+## What's Changed
+* refactor: rename `flutter_heyteacher_fastlane` into `flutter_heyteacher_meta` by [@heyteacher](https://github.com/heyteacher) in [#14](https://github.com/heyteacher/flutter_heyteacher_charts/pull/14)
+* fix: `min*` and `max*` calculation corrected by [@heyteacher](https://github.com/heyteacher) in [#15](https://github.com/heyteacher/flutter_heyteacher_charts/pull/15)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.6+260209131...1.29.1+260224124
+
+[Changes][1.29.1+260224124]
+
+
 <a id="1.28.6+260209131"></a>
 # [1.28.6+260209131](https://github.com/heyteacher/flutter_heyteacher_charts/releases/tag/1.28.6+260209131) - 2026-02-09
 
@@ -57,6 +70,7 @@
 [Changes][1.28.3+260118083_]
 
 
+[1.29.1+260224124]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.6+260209131...1.29.1+260224124
 [1.28.6+260209131]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.5+260206125_remove_unnecessary_annotation...1.28.6+260209131
 [1.28.5+260206125_remove_unnecessary_annotation]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.4+260130092_move_fastlane_dev_dependencies...1.28.5+260206125_remove_unnecessary_annotation
 [1.28.4+260130092_move_fastlane_dev_dependencies]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.3+260118083_...1.28.4+260130092_move_fastlane_dev_dependencies
