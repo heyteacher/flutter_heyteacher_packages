@@ -227,9 +227,14 @@ abstract class ChartView extends StatelessWidget {
         final minYToUse = minY == null || minY > newMinY ? newMinY : minY;
         intervalYValue =
             interval(minYToUse, maxYToUse, minInterval: minIntervalY);
-        minYValue = ChartView.floorToInterval(minYToUse, intervalYValue);
-        maxYValue = ChartView.ceilToInterval(maxYToUse, intervalYValue) +
-            intervalYValue;
+        minYValue = min(
+          ChartView.floorToInterval(minYToUse, intervalYValue),
+          minYValue ?? 0,
+        );
+        maxYValue = max(
+          ChartView.ceilToInterval(maxYToUse, intervalYValue),
+          maxYValue ?? 0,
+        );
       } else {
         minYValue = 0;
         maxYValue = 0;
