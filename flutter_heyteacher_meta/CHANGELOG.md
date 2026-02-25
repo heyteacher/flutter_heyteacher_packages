@@ -1,3 +1,15 @@
+<a id="3.0.1+260225163"></a>
+# [3.0.1+260225163](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.0.1+260225163) - 2026-02-25
+
+## What's Changed
+* fix: typo in `configure_flutter_app` by [@heyteacher](https://github.com/heyteacher) in [#17](https://github.com/heyteacher/flutter_heyteacher_meta/pull/17)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.0+260225151...3.0.1+260225163
+
+[Changes][3.0.1+260225163]
+
+
 <a id="3.0.0+260225151"></a>
 # [3.0.0+260225151](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.0.0+260225151) - 2026-02-25
 
@@ -70,6 +82,7 @@
 [Changes][2.0.1+260216114]
 
 
+[3.0.1+260225163]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.0+260225151...3.0.1+260225163
 [3.0.0+260225151]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.1+260222212...3.0.0+260225151
 [2.2.1+260222212]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.0+260220161...2.2.1+260222212
 [2.2.0+260220161]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.1+260219100...2.2.0+260220161
