@@ -290,7 +290,7 @@ Common `Fastlane` lines are provided to `app` and `package` projects. In details
 fl doc
 ```
 
-Generate the `dart` documentation and run webserver on <http://localhost:8080>
+Generate the `dart` documentation and run webserver on `http://localhost:8080`
 
 ### docweb
 
@@ -298,7 +298,7 @@ Generate the `dart` documentation and run webserver on <http://localhost:8080>
 fl docweb
 ```
 
-Runs local webserver on <http://localhost:8080>  with `dart` documentation
+Runs local webserver on `http://localhost:8080`  with `dart` documentation
 
 ### test
 
@@ -448,7 +448,7 @@ Promote a release in Google Play via `supply` from `from_track` to `to_track`.
 fl buildweb [version:profile|debug]
 ```
 
-Build web and run local webserver on <http://localhost:8080>
+Build web and run local webserver on `http://localhost:8080`
 
 ### deployweb
 
@@ -596,7 +596,7 @@ You can't commit directly to main branch
   keytool -printcert -jarfile build/app/outputs/bundle/release/app-release.aab 
   ```
 
-- load SHA256 in firebase AppCheck section in (`appcheck/apps`)  (this istructi on doesn't work for <https://firebase.google.com/docs/app-check/android/play-integrity-provider> `Currently, the built-in Play Integrity provider only supports Android apps distributed by Google Play` and <https://stackoverflow.com/a/78698583/1123065>)
+- load SHA256 in firebase AppCheck section in (`appcheck/apps`)  (this istruction doesn't work for <https://firebase.google.com/docs/app-check/android/play-integrity-provider> `Currently, the built-in Play Integrity provider only supports Android apps distributed by Google Play` and <https://stackoverflow.com/a/78698583/1123065>)
 
 - link Google Cloud project to Google Play console follow istructions <https://developer.android.com/google/play/integrity/setup>
 
