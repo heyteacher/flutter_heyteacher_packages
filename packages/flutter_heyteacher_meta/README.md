@@ -22,10 +22,10 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
     - [Flutter](#flutter)
     - [Visual Studio Code](#visual-studio-code)
     - [Android Studio](#android-studio)
-    - [changelog-from-release](#changelog-from-release)
-    - [FastLane](#fastlane)
+    - [`changelog-from-release`](#changelog-from-release)
+    - [`FastLane`](#fastlane)
   - [Create a flutter project](#create-a-flutter-project)
-    - [Configure FastLane Lanes](#configure-fastlane-lanes)
+    - [Configure `FastLane` Lanes](#configure-fastlane-lanes)
   - [`Fastlane` lines for `app` and `package` projects](#fastlane-lines-for-app-and-package-projects)
     - [doc](#doc)
     - [docweb](#docweb)
@@ -75,10 +75,23 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   
 ## Installing
 
-- clone the project from github at the same directory of your packages:
+- install in cache `flutter_heyteacher_meta` package:
   
   ```bash
-  git clone https://github.com/heyteacher/flutter_heyteacher_meta.git
+  flutter pub cache add flutter_heyteacher_meta
+  ```
+
+  if you want configure [Visual Studio Code](#visual-studio-code) install in your project as dev dependecy  
+  
+  ```bash
+  flutter pub add dev:flutter_heyteacher_meta
+  ```
+
+  or add to your `pubspec.yaml`
+
+  ```yaml
+  dependencies:
+    flutter_heyteacher_meta: 
   ```
 
 - setup environment following instruction [Environment Setup](#environment-setup)
@@ -128,15 +141,61 @@ install flutter manually following instructions <https://docs.flutter.dev/instal
   export PATH=/usr/local/flutter/bin:$PATH
 
   # dart 
-  export PATH="$PATH":"$HOME/.pub-cache/bin"
+  export PATH="$HOME/.pub-cache/bin":$PATH
 
   # flutter_heyteacher_meta scripts
-  export PATH="$PATH":"<INSTALLATION_DIR>flutter_heyteacher_meta/scripts"
+  latest_meta_version=`ls $HOME/.pub-cache/hosted/pub.dev | grep flutter_heyteacher_meta |  tail -n 1`
+  project_meta_root="$HOME/.pub-cache/hosted/pub.dev/$latest_meta_version"
+  export PATH="$project_meta_root/scripts":$PATH
   ```
 
 ### Visual Studio Code
 
 install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
+
+You can configure you `vscode` to execute the [command-line utility `version`](#command-line-utility-version) in order to automatically update build version every run/debug execution of your code:
+
+- install `flutter_heyteacher_meta` package as dev dependency ad described in [Installing](#installing)
+
+- create/modify `.vscode/tasks.json` in the root of your project
+  
+  ```json
+  {
+        "version": "2.0.0",
+        "tasks": [
+                {
+                        "type": "dart",
+                        "command": "dart",
+                        "args": [
+                                "run",
+                                "flutter_heyteacher_meta:version",
+                                "build"
+                        ],
+                        "group": "build",
+                        "problemMatcher": [],
+                        "label": "dart: run flutter_heyteacher_meta:version build",
+                        "detail": "increment version build number",
+                        "presentation": {
+                                "close": true,
+                                "echo": false,
+                                "reveal": "silent",
+                                "focus": false,
+                                "panel": "shared",
+                                "showReuseMessage": false,
+                                "clear": false
+                        }
+                }
+        ]
+  }
+  ```
+
+- add `preLaunchTask` in your launch configurations '.vscode/launch.json'
+  
+  ```json
+  ...
+    
+    "preLaunchTask": "dart: run flutter_heyteacher_meta:version build"
+  ```
 
 ### Android Studio
 
@@ -151,7 +210,7 @@ install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Co
   export PATH=/usr/local/android-studio/jbr/bin/:$PATH
   ```
 
-### changelog-from-release
+### `changelog-from-release`
 
 - install `go`
   
@@ -185,7 +244,7 @@ install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Co
   changelog-from-release
   ```
 
-### FastLane
+### `FastLane`
 
 - install rbenv, ruby and bundler
 
@@ -215,7 +274,7 @@ install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Co
 
   ```bash
   # alias for fastlane inside flutter projects
-  alias fl='<PRJ_INSTALLATION_DIR>/flutter_heyteacher_meta/scripts/fl.sh'
+  alias fl='fl.sh'
   ```
 
   `fl` is an alias of `fl.sh` command.
@@ -252,7 +311,7 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   flutter create -t package <app project name>
   ```
 
-### Configure FastLane Lanes
+### Configure `FastLane` Lanes
 
 After setup the environment run from root project directory and create the project:
 
@@ -1101,49 +1160,6 @@ dart run flutter_heyteacher_meta:version major|minor|patch|build|show|show-build
 - `show` print the version in `pubsec.yaml`
 
 - `show-build` print only the build version from `pubsec.yaml`
-
-You can configure you `vscode` to execute the command with `build` in order to
-automatically update build version every run/debug execution of your code:
-
-- create/modify `.vscode/tasks.json` in the root of your project
-  
-  ```json
-  {
-        "version": "2.0.0",
-        "tasks": [
-                {
-                        "type": "dart",
-                        "command": "dart",
-                        "args": [
-                                "run",
-                                "flutter_heyteacher_meta:version",
-                                "build"
-                        ],
-                        "group": "build",
-                        "problemMatcher": [],
-                        "label": "dart: run flutter_heyteacher_meta:version build",
-                        "detail": "increment version build number",
-                        "presentation": {
-                                "close": true,
-                                "echo": false,
-                                "reveal": "silent",
-                                "focus": false,
-                                "panel": "shared",
-                                "showReuseMessage": false,
-                                "clear": false
-                        }
-                }
-        ]
-  }
-  ```
-
-- add `preLaunchTask` in your launch configurations '.vscode/launch.json'
-  
-  ```json
-  ...
-    
-    "preLaunchTask": "dart: run flutter_heyteacher_meta:version build"
-  ```
 
 ## `webcrypto` setup for tests
 
