@@ -9,15 +9,21 @@
 # sintax check.
 set -x
 set -e
+
+latest_meta_version=`ls $HOME/.pub-cache/hosted/pub.dev | grep flutter_heyteacher_meta |  tail -n 1`
+project_meta_root="$HOME/.pub-cache/hosted/pub.dev/$latest_meta_version"
+
 # configure ruby
-cp ../flutter_heyteacher_meta/Gemfile .
-cp ../flutter_heyteacher_meta/.ruby-version .
+cp $project_meta_root/Gemfile .
+echo "3.4.3" > .ruby-version 
 # configure fastlane importing lanes from flutter_heyteacher_meta
-cp -p ../flutter_heyteacher_meta/fastlane/Fastfile.template fastlane/Fastfile
+mkdir -p fastlane
+cp -p $project_meta_root/fastlane/Fastfile.template fastlane/Fastfile
 # configure git hooks
+mkdir -p .git/hooks
 cd .git/hooks
 # avoid commit on main branch
-ln -s -f -i ../../../flutter_heyteacher_meta/git-hooks/pre-commit
+ln -s -f -i $project_meta_root/git-hooks/pre-commit
 # conventional commit sintax check
-ln -s -f -i ../../../flutter_heyteacher_meta/git-hooks/commit-msg 
+ln -s -f -i $project_meta_root/git-hooks/commit-msg 
 cd -

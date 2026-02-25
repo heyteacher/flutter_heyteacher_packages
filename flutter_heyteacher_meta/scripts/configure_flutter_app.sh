@@ -6,12 +6,17 @@
 # for app and copy ruby environment files
 set -x
 set -e 
+
+latest_meta_version=`ls $HOME/.pub-cache/hosted/pub.dev | grep flutter_heyteacher_meta |  tail -n 1`
+project_meta_root="$HOME/.pub-cache/hosted/pub.dev/$latest_meta_version"
+
 # configure standard flutter package
-../flutter_heyteacher_meta/scripts/configure_flutter_package.sh
+$project_meta_root/scripts/configure_flutter_package.sh
 # add fastlane Pluginfile
-cp ../flutter_heyteacher_meta/fastlane/Pluginfile.template fastlane/Pluginfile
+cp  $project_meta_root/fastlane/Pluginfile.template fastlane/Pluginfile
 # configure fastlane Pluginfile in Gembile
 echo "" >> Gemfile
 echo "eval_gemfile(\"fastlane/Pluginfile\")" >> Gemfile
 # configure fastlane importing lanes from flutter_heyteacher_meta
-cp -p ../flutter_heyteacher_meta/fastlane/AppFastfile.template fastlane/Fastfile
+cp $project_meta_root/fastlane/AppFastfile.template fastlane/Fastfile
+fl
