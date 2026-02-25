@@ -1,3 +1,17 @@
+<a id="3.0.0+260225151"></a>
+# [3.0.0+260225151](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.0.0+260225151) - 2026-02-25
+
+## What's Changed
+* fix: remove link to `http://localhost:8080` due to `pub.dev` alert as insecure by [@heyteacher](https://github.com/heyteacher) in [#14](https://github.com/heyteacher/flutter_heyteacher_meta/pull/14)
+* fix(meta): `fl bump` do nothing if all files are committed without raising error by [@heyteacher](https://github.com/heyteacher) in [#15](https://github.com/heyteacher/flutter_heyteacher_meta/pull/15)
+* feat!: replace local git installation with pub cache installation by [@heyteacher](https://github.com/heyteacher) in [#16](https://github.com/heyteacher/flutter_heyteacher_meta/pull/16)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.1+260222212...3.0.0+260225151
+
+[Changes][3.0.0+260225151]
+
+
 <a id="2.2.1+260222212"></a>
 # [2.2.1+260222212](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/2.2.1+260222212) - 2026-02-22
 
@@ -56,6 +70,7 @@
 [Changes][2.0.1+260216114]
 
 
+[3.0.0+260225151]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.1+260222212...3.0.0+260225151
 [2.2.1+260222212]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.0+260220161...2.2.1+260222212
 [2.2.0+260220161]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.1+260219100...2.2.0+260220161
 [2.1.1+260219100]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.1.0+260216145...2.1.1+260219100
