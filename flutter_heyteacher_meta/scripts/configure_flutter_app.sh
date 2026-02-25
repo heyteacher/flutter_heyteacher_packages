@@ -19,4 +19,3 @@ echo "" >> Gemfile
 echo "eval_gemfile(\"fastlane/Pluginfile\")" >> Gemfile
 # configure fastlane importing lanes from flutter_heyteacher_meta
 cp $project_meta_root/fastlane/AppFastfile.template fastlane/Fastfile
-fl
