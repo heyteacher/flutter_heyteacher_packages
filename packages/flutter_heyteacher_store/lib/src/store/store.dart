@@ -610,8 +610,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     firestore.Query<DetailsDataType> retQuery = _detailsCollectionReference;
     // apply filter
     if (applyFilterBy && storeFilter != null) {
-      _logger.finer('($runtimeType.listDetailed): '
-          'storeFilter ${storeFilter!.toFirestore()}');
+      _logger.finest('($runtimeType.listDetailed): storeFilter $storeFilter');
       retQuery = retQuery.where(storeFilter!.toFirestore());
     }
     // apply order by
