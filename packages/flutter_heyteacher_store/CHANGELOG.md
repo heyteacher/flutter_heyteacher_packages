@@ -1,3 +1,15 @@
+<a id="1.29.3+260225090"></a>
+# [1.29.3+260225090](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.29.3+260225090) - 2026-02-25
+
+## What's Changed
+* fix: `storeFilter` logging in`Store.listDetails` by [@heyteacher](https://github.com/heyteacher) in [#24](https://github.com/heyteacher/flutter_heyteacher_store/pull/24)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.2+260221102...1.29.3+260225090
+
+[Changes][1.29.3+260225090]
+
+
 <a id="1.29.2+260221102"></a>
 # [1.29.2+260221102](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.29.2+260221102) - 2026-02-21
 
@@ -109,6 +121,7 @@
 [Changes][1.27.1+260118083_]
 
 
+[1.29.3+260225090]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.2+260221102...1.29.3+260225090
 [1.29.2+260221102]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.1+260220154...1.29.2+260221102
 [1.29.1+260220154]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.28.0+260214153...1.29.1+260220154
 [1.28.0+260214153]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.27.6+260206125_bump_deps_versions...1.28.0+260214153
