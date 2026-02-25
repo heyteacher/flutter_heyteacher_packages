@@ -1,3 +1,15 @@
+<a id="1.9.1+260225162"></a>
+# [1.9.1+260225162](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.9.1+260225162) - 2026-02-25
+
+## What's Changed
+* chore: use `flutter_heyteacher_meta` from pub cache by [@heyteacher](https://github.com/heyteacher) in [#18](https://github.com/heyteacher/flutter_heyteacher_site/pull/18)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.9.0+260218160...1.9.1+260225162
+
+[Changes][1.9.1+260225162]
+
+
 <a id="1.9.0+260218160"></a>
 # [1.9.0+260218160](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.9.0+260218160) - 2026-02-18
 
@@ -147,6 +159,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[1.9.1+260225162]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.9.0+260218160...1.9.1+260225162
 [1.9.0+260218160]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.8.0+260217163...1.9.0+260218160
 [1.8.0+260217163]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.7.0+260217130...1.8.0+260217163
 [1.7.0+260217130]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.6.0+260217110...1.7.0+260217130
