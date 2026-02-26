@@ -520,7 +520,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       retQuery = retQuery.where(storeFilter!.toFirestore());
     }
     // apply order by
-    if (applyOrderBy && orderByFields != null && limit != 1) {
+    if (applyOrderBy && orderByFields != null) {
       for (final orderbyField in orderByFields!.entries) {
         retQuery = retQuery.orderBy(
           orderbyField.key,
