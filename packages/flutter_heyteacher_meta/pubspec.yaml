@@ -1,6 +1,6 @@
 name: flutter_heyteacher_meta
 description: "A Flutter meta project implementing utilities for Flutter package and app project."
-version: 3.1.0+260226113
+version: 3.1.1+260226123
 repository: https://github.com/heyteacher/flutter_heyteacher_meta
 license: BSD 3-Clause
 issue_tracker: https://github.com/heyteacher/flutter_heyteacher_meta/issues
