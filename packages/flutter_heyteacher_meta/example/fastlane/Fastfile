@@ -9,4 +9,12 @@ platform :android do
   project_meta_root="#{home}/.pub-cache/hosted/pub.dev/#{latest_meta_version}"
 
   import("#{project_meta_root}/fastlane/Fastfile")
+
+  # set the Google Cloud Storage bucket name
+  #ENV["google_storage_backup_bucket"] = "gs://..."
+
+  # set the Firebase App Distribution service credentials file name
+  #ENV["firebase_app_distribution_service_credentials_file"] = "#{ENV["HOME"]}/.flutter/..."
+
+  import("#{project_meta_root}/fastlane/AppFastfile")
 end
