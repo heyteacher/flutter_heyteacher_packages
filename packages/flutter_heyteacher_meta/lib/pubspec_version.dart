@@ -21,4 +21,4 @@
 /// specified.
 library;
 
-export 'src/version.dart' show main;
+export 'src/pubspec_version.dart' show PubspecVersion, PubspecVersionCommand;
