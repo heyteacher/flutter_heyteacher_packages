@@ -1,3 +1,16 @@
+<a id="1.29.6+260226194"></a>
+# [1.29.6+260226194](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.29.6+260226194) - 2026-02-26
+
+## What's Changed
+* fix: remove `*.lock` ignored by [@heyteacher](https://github.com/heyteacher) in [#26](https://github.com/heyteacher/flutter_heyteacher_store/pull/26)
+* fix: remove skip on order by if `limit` is 1 by [@heyteacher](https://github.com/heyteacher) in [#27](https://github.com/heyteacher/flutter_heyteacher_store/pull/27)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.4+260225162...1.29.6+260226194
+
+[Changes][1.29.6+260226194]
+
+
 <a id="1.29.4+260225162"></a>
 # [1.29.4+260225162](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.29.4+260225162) - 2026-02-25
 
@@ -133,6 +146,7 @@
 [Changes][1.27.1+260118083_]
 
 
+[1.29.6+260226194]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.4+260225162...1.29.6+260226194
 [1.29.4+260225162]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.3+260225090...1.29.4+260225162
 [1.29.3+260225090]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.2+260221102...1.29.3+260225090
 [1.29.2+260221102]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.1+260220154...1.29.2+260221102
