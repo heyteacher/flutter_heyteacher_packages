@@ -309,13 +309,34 @@ After setup the environment run from root project directory and create the proje
   configure_flutter_app.sh
   ```
   
-  For utilize firebase backup and app distribution edit
-  `./fastlane/Fastfile` uncommenting and setup these environtment variables:
+  This scripts create a skeleton of `fastlane/metadata` mandatory for release
+  application in `Google Play`. So, before release the application you need to:
+  
+  - edit `fastlane/metadata/android/en-US/title.txt`
+  
+  - edit `fastlane/metadata/android/en-US/short_description.txt`
+  
+  - edit `fastlane/metadata/android/en-US/full_description.txt`
+  
+  - edit `fastlane/metadata/android/en-US/video.txt`
+  
+  - edit `fastlane/metadata/android/en-US/changelogs/default.txt`
+  
+  - edit `fastlane/metadata/android/en-US/images/icon.png`
+  
+  - edit `fastlane/metadata/android/en-US/images/featureGraphic.png`
+  
+  - add screenshots to `fastlane/metadata/android/en-US/images/phoneScreenshots`
+
+  For utilize `Firebase Firestore` backup and restore utilities, edit
+  `./fastlane/Fastfile` uncommenting and setup these environment variable:
 
   - `google_storage_backup_bucket` the Google Storage backup bucket name
 
-  - `firebase_app_distribution_service_credentials_file` the Firebase App
-     Distribution service credentials file name
+  For utilize `Firebase App Distribution`, edit
+  `./fastlane/Fastfile` uncommenting and setup these environment variable:
+
+  - `firebase_app_distribution_service_credentials_file` the `Firebase App Distribution` service credentials file name
 
 ## `Fastlane` lines for `app` and `package` projects
 
