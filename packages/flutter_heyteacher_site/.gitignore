@@ -32,3 +32,4 @@ migrate_working_dir/
 Gemfile.lock
 fastlane/README.md
 fastlane/report.xml
+Gemfile.lock
