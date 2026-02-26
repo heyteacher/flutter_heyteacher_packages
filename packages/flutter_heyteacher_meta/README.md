@@ -17,15 +17,14 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [Table of Contents](#table-of-contents)
   - [Installing](#installing)
   - [Environment Setup](#environment-setup)
-    - [Node JS](#node-js)
-    - [Firebase CLI](#firebase-cli)
     - [Flutter](#flutter)
     - [Visual Studio Code](#visual-studio-code)
     - [Android Studio](#android-studio)
     - [`changelog-from-release`](#changelog-from-release)
     - [`FastLane`](#fastlane)
+    - [Firebase CLI](#firebase-cli)
   - [Create a flutter project](#create-a-flutter-project)
-    - [Configure `FastLane` Lanes](#configure-fastlane-lanes)
+    - [Configure `FastLane`](#configure-fastlane)
   - [`Fastlane` lines for `app` and `package` projects](#fastlane-lines-for-app-and-package-projects)
     - [doc](#doc)
     - [docweb](#docweb)
@@ -75,13 +74,9 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   
 ## Installing
 
-- install in cache `flutter_heyteacher_meta` package:
-  
-  ```bash
-  flutter pub cache add flutter_heyteacher_meta
-  ```
+- setup environment following instruction [Environment Setup](#environment-setup)
 
-  if you want configure [Visual Studio Code](#visual-studio-code) install in your project as dev dependecy  
+- install `flutter_heyteacher_meta` as dev package into your `app` or `package` project:
   
   ```bash
   flutter pub add dev:flutter_heyteacher_meta
@@ -90,45 +85,17 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   or add to your `pubspec.yaml`
 
   ```yaml
-  dependencies:
+  dev_dependencies:
     flutter_heyteacher_meta: 
   ```
 
-- setup environment following instruction [Environment Setup](#environment-setup)
-
-- configure your projects based on type:
-  
-  - for packages:
-  
-    ```bash
-    configure_flutter_package.sh
-    ```
-
-  - for flutter application
-
-    ```bash
-    configure_flutter_app.sh
-    ```
+- follow instuctions in [Configure `FastLane`](#configure-fastlane) in order to configure a `app` or `package` project.
 
 - test all works fine, running `fl` will show command avaiable  
 
 ## Environment Setup
 
-Instructions for setup environment installing all software needed to develop a
-Flutter project.
-
-### Node JS
-
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-nvm install 22
-```
-
-### Firebase CLI
-
-```bash
-npm install -g firebase-tools
-```
+Instructions for setup environment installing all software needed to develop a Flutter project.
 
 ### Flutter
 
@@ -297,6 +264,21 @@ fi
 
 the execution `fl` in root project directory without paramenter show all `lanes` configured and how to use them.
 
+### Firebase CLI
+
+- install `nodeJs`
+  
+  ```bash
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+  nvm install 22
+  ```
+
+- install `firebase-tools`
+
+  ```bash
+  npm install -g firebase-tools
+  ```
+
 ## Create a flutter project
 
 - flutter app project:
@@ -311,7 +293,7 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   flutter create -t package <app project name>
   ```
 
-### Configure `FastLane` Lanes
+### Configure `FastLane`
 
 After setup the environment run from root project directory and create the project:
 
