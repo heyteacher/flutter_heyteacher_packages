@@ -46,3 +46,4 @@ app.*.map.json
 
 fastlane/report.xml
 fastlane/README.md
+/android/.kotlin
