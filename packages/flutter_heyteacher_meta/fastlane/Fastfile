@@ -53,7 +53,7 @@ lane :bump do
     end
     sh("git branch bump")
     sh("git checkout bump")
-    sh("git add -f ../pubspec.lock ../Gemfile.lock ../pubspec.yaml")
+    sh("git add ../pubspec.*")
     sh("git commit -m \"build(deps): bump deps version\"")
     sh("git checkout main")
     sh("git merge bump")
@@ -110,7 +110,7 @@ def _make_release(version, suffix, create_github_release)
   puts "commit pubspec.yaml"
   sh("git branch tag")
   sh("git checkout tag")
-  sh("git add -f ../pubspec.*")
+  sh("git add ../pubspec.yaml")
   sh("git commit -m \"build(deps): bump deps version to #{tag}\"")
   sh("git checkout main")
   sh("git merge tag")
