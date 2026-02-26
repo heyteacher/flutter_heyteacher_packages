@@ -19,3 +19,5 @@ echo "" >> Gemfile
 echo "eval_gemfile(\"fastlane/Pluginfile\")" >> Gemfile
 # configure fastlane importing lanes from flutter_heyteacher_meta
 cp $project_meta_root/fastlane/AppFastfile.template fastlane/Fastfile
+# copy fastlane/metadata directory adding missing file without replace existing
+cp -R --update=none $project_meta_root/fastlane/metadata  fastlane/
