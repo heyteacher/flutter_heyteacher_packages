@@ -13,6 +13,9 @@ set -e
 latest_meta_version=`ls $HOME/.pub-cache/hosted/pub.dev | grep flutter_heyteacher_meta |  tail -n 1`
 project_meta_root="$HOME/.pub-cache/hosted/pub.dev/$latest_meta_version"
 
+# install flutter_heyteacher_meta as dev dependency
+flutter pub add dev:flutter_heyteacher_meta
+
 # configure ruby
 cp $project_meta_root/Gemfile .
 echo "3.4.3" > .ruby-version 
