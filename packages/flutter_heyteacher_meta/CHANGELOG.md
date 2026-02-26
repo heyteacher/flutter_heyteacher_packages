@@ -1,3 +1,15 @@
+<a id="3.1.1+260226123"></a>
+# [3.1.1+260226123](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.1.1+260226123) - 2026-02-26
+
+## What's Changed
+* 568 fixmeta dont commit pubspeclock if package project type by [@heyteacher](https://github.com/heyteacher) in [#19](https://github.com/heyteacher/flutter_heyteacher_meta/pull/19)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.1.0+260226113...3.1.1+260226123
+
+[Changes][3.1.1+260226123]
+
+
 <a id="3.1.0+260226113"></a>
 # [3.1.0+260226113](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.1.0+260226113) - 2026-02-26
 
@@ -94,6 +106,7 @@
 [Changes][2.0.1+260216114]
 
 
+[3.1.1+260226123]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.1.0+260226113...3.1.1+260226123
 [3.1.0+260226113]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.1+260225163...3.1.0+260226113
 [3.0.1+260225163]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.0+260225151...3.0.1+260225163
 [3.0.0+260225151]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.1+260222212...3.0.0+260225151
