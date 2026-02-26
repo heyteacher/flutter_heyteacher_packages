@@ -1,3 +1,15 @@
+<a id="3.1.2+260226154"></a>
+# [3.1.2+260226154](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.1.2+260226154) - 2026-02-26
+
+## What's Changed
+* 555 fixmeta add fastlanemetadata directory and document how to compile and correct readme install section by [@heyteacher](https://github.com/heyteacher) in [#20](https://github.com/heyteacher/flutter_heyteacher_meta/pull/20)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.1.1+260226123...3.1.2+260226154
+
+[Changes][3.1.2+260226154]
+
+
 <a id="3.1.1+260226123"></a>
 # [3.1.1+260226123](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.1.1+260226123) - 2026-02-26
 
@@ -106,6 +118,7 @@
 [Changes][2.0.1+260216114]
 
 
+[3.1.2+260226154]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.1.1+260226123...3.1.2+260226154
 [3.1.1+260226123]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.1.0+260226113...3.1.1+260226123
 [3.1.0+260226113]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.1+260225163...3.1.0+260226113
 [3.0.1+260225163]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.0+260225151...3.0.1+260225163
