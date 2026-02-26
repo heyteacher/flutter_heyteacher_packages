@@ -1,3 +1,15 @@
+<a id="3.1.0+260226113"></a>
+# [3.1.0+260226113](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.1.0+260226113) - 2026-02-26
+
+## What's Changed
+* 552 featmeta reorganize code add unit tests and example application by [@heyteacher](https://github.com/heyteacher) in [#18](https://github.com/heyteacher/flutter_heyteacher_meta/pull/18)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.1+260225163...3.1.0+260226113
+
+[Changes][3.1.0+260226113]
+
+
 <a id="3.0.1+260225163"></a>
 # [3.0.1+260225163](https://github.com/heyteacher/flutter_heyteacher_meta/releases/tag/3.0.1+260225163) - 2026-02-25
 
@@ -82,6 +94,7 @@
 [Changes][2.0.1+260216114]
 
 
+[3.1.0+260226113]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.1+260225163...3.1.0+260226113
 [3.0.1+260225163]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/3.0.0+260225151...3.0.1+260225163
 [3.0.0+260225151]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.1+260222212...3.0.0+260225151
 [2.2.1+260222212]: https://github.com/heyteacher/flutter_heyteacher_meta/compare/2.2.0+260220161...2.2.1+260222212
