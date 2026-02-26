@@ -270,10 +270,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "15a7db352c8fc6a4d2bc475ba901c25b39fe7157541da4c16eacce6f8be83e49"
+      sha256: "6f6b30cba0301e7b38f32bdc9a6bdae6f5921a55f0a1eb9450e1e6515645dbb2"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.5"
+    version: "3.1.6"
   dbus:
     dependency: transitive
     description:
@@ -619,10 +619,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_heyteacher_meta
-      sha256: "3f364fd753cf15f6e4f8b4667056e20414dc58a757f8b81e932aa871acb5b46c"
+      sha256: "2bccc09cb6522ba156c59d38570a2640a3d8f1a8cb86742b566188b58fd62d12"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1+260225163"
+    version: "3.1.0+260226113"
   flutter_heyteacher_text_to_speech:
     dependency: transitive
     description:
