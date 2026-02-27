@@ -1,3 +1,16 @@
+<a id="1.49.0+105"></a>
+# [1.49.0+105](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.49.0+105) - 2026-02-27
+
+## What's Changed
+* fix: remove `*.lock` ignored by [@heyteacher](https://github.com/heyteacher) in [#64](https://github.com/heyteacher/flutter_heyteacher_utils/pull/64)
+* build(deps): bump deps to v1.49.0+104 by [@heyteacher](https://github.com/heyteacher) in [#65](https://github.com/heyteacher/flutter_heyteacher_utils/pull/65)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.48.4+260225161...1.49.0+105
+
+[Changes][1.49.0+105]
+
+
 <a id="1.48.4+260225161"></a>
 # [1.48.4+260225161](https://github.com/heyteacher/flutter_heyteacher_utils/releases/tag/1.48.4+260225161) - 2026-02-25
 
@@ -262,6 +275,7 @@
 [Changes][1.39.1+260118082_]
 
 
+[1.49.0+105]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.48.4+260225161...1.49.0+105
 [1.48.4+260225161]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.48.3+260223115...1.48.4+260225161
 [1.48.3+260223115]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.48.2+260221102...1.48.3+260223115
 [1.48.2+260221102]: https://github.com/heyteacher/flutter_heyteacher_utils/compare/1.48.0+260217110...1.48.2+260221102
