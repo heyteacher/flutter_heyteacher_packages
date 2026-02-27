@@ -1,3 +1,16 @@
+<a id="v1.9.3+101"></a>
+# [v1.9.3+101](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/v1.9.3+101) - 2026-02-27
+
+## What's Changed
+* fix: remove `*.lock` ignored by [@heyteacher](https://github.com/heyteacher) in [#19](https://github.com/heyteacher/flutter_heyteacher_site/pull/19)
+* 573 featmeta replace build with a counter and add prefix v to release by [@heyteacher](https://github.com/heyteacher) in [#20](https://github.com/heyteacher/flutter_heyteacher_site/pull/20)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.9.1+260225162...v1.9.3+101
+
+[Changes][v1.9.3+101]
+
+
 <a id="1.9.1+260225162"></a>
 # [1.9.1+260225162](https://github.com/heyteacher/flutter_heyteacher_site/releases/tag/1.9.1+260225162) - 2026-02-25
 
@@ -159,6 +172,7 @@
 [Changes][1.1.1+260118083_]
 
 
+[v1.9.3+101]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.9.1+260225162...v1.9.3+101
 [1.9.1+260225162]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.9.0+260218160...1.9.1+260225162
 [1.9.0+260218160]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.8.0+260217163...1.9.0+260218160
 [1.8.0+260217163]: https://github.com/heyteacher/flutter_heyteacher_site/compare/1.7.0+260217130...1.8.0+260217163
