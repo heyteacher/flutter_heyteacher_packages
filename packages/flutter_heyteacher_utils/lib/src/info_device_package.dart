@@ -50,18 +50,16 @@ class DevicePackageInfoCard extends StatelessWidget {
         icon: const Icon(Icons.smartphone),
         onPressed: InfoDevicePackageViewModel.instance._incrementTapCounter,
       ),
-      title: FutureBuilder(
-        future: InfoDevicePackageViewModel.instance.deviceInfo,
-        builder: (_, deviceSnapshot) => Text(
-          '${FlutterHeyteacherUtilsLocalizations.of(context)!.id}'
-          '${deviceSnapshot.data}',
-        ),
-      ),
-      subtitle: FutureBuilder<String>(
+      title: FutureBuilder<String>(
         future: InfoDevicePackageViewModel.instance.packageVersion,
         builder: (_, devicePackageSnapshot) => Text(
-          '${FlutterHeyteacherUtilsLocalizations.of(context)!.version}'
-          '${devicePackageSnapshot.data}',
+          devicePackageSnapshot.data ?? '',
+        ),
+      ),
+      subtitle: FutureBuilder(
+        future: InfoDevicePackageViewModel.instance.deviceInfo,
+        builder: (_, deviceSnapshot) => Text(
+          'id: ${deviceSnapshot.data}',
         ),
       ),
       trailing: IconButton(
@@ -129,7 +127,7 @@ class InfoDevicePackageViewModel {
     final deviceInfoPlugin = DeviceInfoPlugin();
     if (PlatformHelper.isWeb) {
       final webDeviceInfo = await deviceInfoPlugin.webBrowserInfo;
-      return (!kDebugMode)? 'ua-${webDeviceInfo.userAgent}': 'ua-debug';
+      return (!kDebugMode) ? 'ua-${webDeviceInfo.userAgent}' : 'ua-debug';
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
