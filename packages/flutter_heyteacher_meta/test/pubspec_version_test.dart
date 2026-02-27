@@ -18,10 +18,10 @@ void main() {
       final newVersion = await PubspecVersion.instance.version(
         versionCommand: PubspecVersionCommand.major,
       );
-      expect(newVersion, '2.0.0+5');
+      expect(newVersion, '2.0.0+2');
       expect(
         await PubspecVersion.instance.pubspecFile.readAsString(),
-        contains('version: 2.0.0+5'),
+        contains('version: 2.0.0+2'),
       );
     });
 
@@ -29,10 +29,10 @@ void main() {
       final newVersion = await PubspecVersion.instance.version(
         versionCommand: PubspecVersionCommand.minor,
       );
-      expect(newVersion, '1.3.0+5');
+      expect(newVersion, '1.1.0+2');
       expect(
         await PubspecVersion.instance.pubspecFile.readAsString(),
-        contains('version: 1.3.0+5'),
+        contains('version: 1.1.0+2'),
       );
     });
 
@@ -40,10 +40,10 @@ void main() {
       final newVersion = await PubspecVersion.instance.version(
         versionCommand: PubspecVersionCommand.patch,
       );
-      expect(newVersion, '1.2.4+5');
+      expect(newVersion, '1.0.1+2');
       expect(
         await PubspecVersion.instance.pubspecFile.readAsString(),
-        contains('version: 1.2.4+5'),
+        contains('version: 1.0.1+2'),
       );
     });
 
@@ -51,10 +51,10 @@ void main() {
       final newVersion = await PubspecVersion.instance.version(
         versionCommand: PubspecVersionCommand.build,
       );
-      expect(newVersion, '1.2.3+5');
+      expect(newVersion, '1.0.0+2');
       expect(
         await PubspecVersion.instance.pubspecFile.readAsString(),
-        contains('version: 1.2.3+5'),
+        contains('version: 1.0.0+2'),
       );
     });
 
@@ -62,11 +62,11 @@ void main() {
       final currentVersion = await PubspecVersion.instance.version(
         versionCommand: PubspecVersionCommand.show,
       );
-      expect(currentVersion, '1.2.3+4');
+      expect(currentVersion, '1.0.0+1');
       // Ensure file content hasn't changed
       expect(
         await PubspecVersion.instance.pubspecFile.readAsString(),
-        contains('version: 1.2.3+4'),
+        contains('version: 1.0.0+1'),
       );
     });
 
@@ -74,7 +74,7 @@ void main() {
       final buildNumber = await PubspecVersion.instance.version(
         versionCommand: PubspecVersionCommand.showBuild,
       );
-      expect(buildNumber, '4');
+      expect(buildNumber, '1');
     });
 
     test('dryRun does not update the file', () async {
@@ -83,11 +83,11 @@ void main() {
         dryRun: true,
       );
       // Returns the calculated version
-      expect(newVersion, '2.0.0+5');
+      expect(newVersion, '2.0.0+2');
       // File should still have the old version
       expect(
         await PubspecVersion.instance.pubspecFile.readAsString(),
-        contains('version: 1.2.3+4'),
+        contains('version: 1.0.0+1'),
       );
     });
   });
