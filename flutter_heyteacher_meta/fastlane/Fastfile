@@ -68,13 +68,18 @@ lane :github_release do
   Dir.chdir("../") do
     version = sh("dart run flutter_heyteacher_meta:version show")
   end 
-  create_github_release(version)
+  create_github_release("v#{version}")
 end
 
 desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release, merge branch into main and creates a github release"
 lane :release do|options|
   if !["major", "minor", "patch"].include?(options[:semver])
     puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"
+    exit(1)
+  end
+  currentBranch = sh("git branch --show-current").strip!  
+  if currentBranch == "main"
+    puts "current branch must not be \"main\""
     exit(1)
   end
   sh("git pull")
@@ -84,21 +89,14 @@ lane :release do|options|
     version = sh("dart run flutter_heyteacher_meta:version #{options[:semver]}")
     # append tag suffix if set
     if options[:suffix] != nil && options[:suffix] != ""
-      version = "v#{version}-#{options[:suffix]}"
-    else 
-      version = "v#{version}"
+      version = "#{version}-#{options[:suffix]}"
     end
   end
   increment_build
   # commit bump and push remote
   puts "commit pubspec.yaml"
-  sh("git branch tag")
-  sh("git checkout tag")
   sh("git add ../pubspec.yaml")
   sh("git commit -m \"build(deps): bump deps to #{version}\"")
-  sh("git checkout main")
-  sh("git merge tag")
-  sh("git branch tag -d")
   push_to_git_remote
   if options[:merge] == nil || options[:merge] == true
     puts "create pull request on github"
@@ -110,11 +108,10 @@ lane :release do|options|
   end
   puts "make release #{version} release github #{options[:github]}"
   if options[:github] == true
-    puts "create github release for#{version}"
-    create_github_release(version)
+    puts "create github release for #{version}"
+    create_github_release("v#{version}")
   else 
     puts "create local tag #{version}"
-    add_git_tag(tag: version)
   end
 end
 
