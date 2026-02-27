@@ -79,17 +79,17 @@ lane :release do|options|
   end
   sh("git pull")
   test
-  increment_build
   version = ""
   Dir.chdir("../") do
     version = sh("dart run flutter_heyteacher_meta:version #{options[:semver]}")
     # append tag suffix if set
-    if suffix != nil && suffix != ""
-      version = "v#{version}-#{suffix}"
+    if options[:suffix] != nil && options[:suffix] != ""
+      version = "v#{version}-#{options[:suffix]}"
     else 
       version = "v#{version}"
     end
   end
+  increment_build
   # commit bump and push remote
   puts "commit pubspec.yaml"
   sh("git branch tag")
