@@ -1,3 +1,16 @@
+<a id="v1.29.3+260227153"></a>
+# [v1.29.3+260227153](https://github.com/heyteacher/flutter_heyteacher_text_to_speech/releases/tag/v1.29.3+260227153) - 2026-02-27
+
+## What's Changed
+* fix: remove `*.lock` ignored by [@heyteacher](https://github.com/heyteacher) in [#16](https://github.com/heyteacher/flutter_heyteacher_text_to_speech/pull/16)
+* 573 featmeta replace build with a counter and add prefix v to release by [@heyteacher](https://github.com/heyteacher) in [#17](https://github.com/heyteacher/flutter_heyteacher_text_to_speech/pull/17)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/compare/1.29.1+260225161...v1.29.3+260227153
+
+[Changes][v1.29.3+260227153]
+
+
 <a id="1.29.1+260225161"></a>
 # [1.29.1+260225161](https://github.com/heyteacher/flutter_heyteacher_text_to_speech/releases/tag/1.29.1+260225161) - 2026-02-25
 
@@ -58,6 +71,7 @@
 [Changes][1.28.1+260118082_]
 
 
+[v1.29.3+260227153]: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/compare/1.29.1+260225161...v1.29.3+260227153
 [1.29.1+260225161]: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/compare/1.28.3+260206125_remove_unnecessary_annotation...1.29.1+260225161
 [1.28.3+260206125_remove_unnecessary_annotation]: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/compare/1.28.2+260130085_remove_fastlane_dependency...1.28.3+260206125_remove_unnecessary_annotation
 [1.28.2+260130085_remove_fastlane_dependency]: https://github.com/heyteacher/flutter_heyteacher_text_to_speech/compare/1.28.1+260118082_...1.28.2+260130085_remove_fastlane_dependency
