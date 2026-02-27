@@ -1,3 +1,15 @@
+<a id="v1.29.7+1001"></a>
+# [v1.29.7+1001](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/v1.29.7+1001) - 2026-02-27
+
+## What's Changed
+* 573 featmeta replace build with a counter and add prefix v to release by [@heyteacher](https://github.com/heyteacher) in [#28](https://github.com/heyteacher/flutter_heyteacher_store/pull/28)
+
+
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.6+260226194...v1.29.7+1001
+
+[Changes][v1.29.7+1001]
+
+
 <a id="1.29.6+260226194"></a>
 # [1.29.6+260226194](https://github.com/heyteacher/flutter_heyteacher_store/releases/tag/1.29.6+260226194) - 2026-02-26
 
@@ -146,6 +158,7 @@
 [Changes][1.27.1+260118083_]
 
 
+[v1.29.7+1001]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.6+260226194...v1.29.7+1001
 [1.29.6+260226194]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.4+260225162...1.29.6+260226194
 [1.29.4+260225162]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.3+260225090...1.29.4+260225162
 [1.29.3+260225090]: https://github.com/heyteacher/flutter_heyteacher_store/compare/1.29.2+260221102...1.29.3+260225090
