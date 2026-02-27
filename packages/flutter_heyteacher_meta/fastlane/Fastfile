@@ -64,77 +64,66 @@ end
 
 desc "fl github_release \n\tCreates a github release and update CHANGELOG.md"
 lane :github_release do
-  tag = ""
+  version = ""
   Dir.chdir("../") do
-    tag = sh("dart run flutter_heyteacher_meta:version show")
+    version = sh("dart run flutter_heyteacher_meta:version show")
   end 
-  create_github_release(tag)
+  create_github_release(version)
 end
 
-desc "fl release version:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release, merge branch into main and creates a github release"
+desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release, merge branch into main and creates a github release"
 lane :release do|options|
+  if !["major", "minor", "patch"].include?(options[:semver])
+    puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"
+    exit(1)
+  end
+  sh("git pull")
+  test
+  increment_build
+  version = ""
+  Dir.chdir("../") do
+    version = sh("dart run flutter_heyteacher_meta:version #{options[:semver]}")
+    # append tag suffix if set
+    if suffix != nil && suffix != ""
+      version = "v#{version}-#{suffix}"
+    else 
+      version = "v#{version}"
+    end
+  end
+  # commit bump and push remote
+  puts "commit pubspec.yaml"
+  sh("git branch tag")
+  sh("git checkout tag")
+  sh("git add ../pubspec.yaml")
+  sh("git commit -m \"build(deps): bump deps to #{version}\"")
+  sh("git checkout main")
+  sh("git merge tag")
+  sh("git branch tag -d")
+  push_to_git_remote
   if options[:merge] == nil || options[:merge] == true
-    puts "create pull request"
+    puts "create pull request on github"
     sh("gh pr create --fill-verbose")
     puts "wait 1 second in order new pull request will be available on github API"
     sleep(1)
     puts "merge pull request"
     sh("gh pr merge -m -d --auto")
   end
-  puts "make release #{options[:version]} suffix #{options[:suffix]} github #{options[:github]}"
-  _make_release(
-    options[:version], 
-    options[:suffix], 
-    options[:github]
-  )
-end
-
-# release e version tagging in git 
-# Params:
-# +version+:: semver (major|minor|patch)
-# +suffix+:: mnemonic tag suffix (may be nil)
-# +create_github_release+:: if true, create a github release (true|false)
-def _make_release(version, suffix, create_github_release)
-  increment_flutter_build_number
-  test
-  tag = ""
-  Dir.chdir("../") do
-    tag = sh("dart run flutter_heyteacher_meta:version #{version}")
-    # append tag suffix if set
-    if suffix != nil && suffix != ""
-      tag = "#{tag}_#{suffix}"
-    end
-  end
-  # commit bump and push remote
-  sh("git pull")
-  puts "commit pubspec.yaml"
-  sh("git branch tag")
-  sh("git checkout tag")
-  sh("git add ../pubspec.yaml")
-  sh("git commit -m \"build(deps): bump deps version to #{tag}\"")
-  sh("git checkout main")
-  sh("git merge tag")
-  sh("git branch tag -d")
-  push_to_git_remote
-  # generate a release
-  if create_github_release == true
-    create_github_release(tag)
+  puts "make release #{version} release github #{options[:github]}"
+  if options[:github] == true
+    puts "create github release for#{version}"
+    create_github_release(version)
   else 
-    # add tag and puth remote
-    puts "create tag #{tag}"
-    add_git_tag(tag: tag)
-    push_git_tags(tag: tag)
+    puts "create local tag #{version}"
+    add_git_tag(tag: version)
   end
 end
 
 # create a git hub release
 # Params:
-# +name+:: the release name
-# +suffix+:: mnemonic tag suffix (may be nil)
-# +create_github_release+:: if true, create a github release (true|false)
-def create_github_release(name)
-  puts "create github release #{name}"
-  sh("gh release create #{name} --generate-notes")
+# +version+:: the version to release
+def create_github_release(version)
+  puts "create github release #{version}"
+  sh("gh release create #{version} --generate-notes")
   puts "wait 1 second in order new release will be available on github API"
   sleep(1)
   Dir.chdir("../") do
@@ -148,15 +137,16 @@ def create_github_release(name)
   end 
   sh("git branch release")
   sh("git checkout release")
-  puts "commit CHANGELOG.md with release #{name}"
-  git_commit(path: "CHANGELOG.md", message: "docs: update CHANGELOG.md with release #{name}")
+  puts "commit CHANGELOG.md with release #{version}"
+  git_commit(path: "CHANGELOG.md", message: "docs: update CHANGELOG.md with release #{version}")
   sh("git checkout main")
   sh("git merge release")
   sh("git branch release -d")
   push_to_git_remote
 end
 
-def increment_flutter_build_number 
+# increment build number
+def increment_build
   Dir.chdir("../") do
     sh("dart run flutter_heyteacher_meta:version build")
   end
