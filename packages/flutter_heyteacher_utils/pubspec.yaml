@@ -1,6 +1,6 @@
 name: flutter_heyteacher_utils
 description: "A heyteacher flutter package which implements common utilies"
-version: 1.48.5+260226124
+version: 1.49.0+102
 publish_to: none
 
 environment:
@@ -52,6 +52,9 @@ dev_dependencies:
   fake_async: ^1.3.1 # Or latest
   firebase_auth_mocks: ^0.15.1
   flutter_heyteacher_meta:
+    git: 
+      url: https://github.com/heyteacher/flutter_heyteacher_meta.git
+      ref: 573-featmeta-remove-buildnumber-from-version    
   flutter_test:
     sdk: flutter
   json_serializable: ^6.10.0
