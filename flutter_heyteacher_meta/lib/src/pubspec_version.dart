@@ -10,8 +10,8 @@
 ///
 /// - `major|minor|patch`: Increments the respective version component and
 ///   resets subsequent components to 0.
-/// - `build`: Updates the build number to a format `yyMMddHHm` (9 digits).
-/// - `show`: Prints the full current version string (e.g., "1.2.3+001").
+/// - `build`: Updates the build number (e.g. 456).
+/// - `show`: Prints the full current version string (e.g., "1.2.3+345").
 /// - `show-build`: Prints only the current build number.
 /// - `--dry-run`: Shows the new version without modifying `pubspec.yaml`.
 ///
@@ -23,8 +23,6 @@ library;
 
 import 'dart:io';
 
-import 'package:clock/clock.dart';
-import 'package:intl/intl.dart';
 import 'package:yaml_edit/yaml_edit.dart';
 
 /// The version commands
@@ -83,11 +81,6 @@ class PubspecVersion {
 
   static set instance(PubspecVersion value) => _instance = value;
 
-  static const _majorRegexIndex = 0;
-  static const _minorRegexIndex = 1;
-  static const _patchRegexIndex = 2;
-  static const _buildRegexIndex = 3;
-
   /// Dispose
   void dispose() {}
 
@@ -98,8 +91,6 @@ class PubspecVersion {
     required PubspecVersionCommand versionCommand,
     bool dryRun = false,
   }) async {
-    final buildNumberDateFormat = DateFormat('yyMMddHHmm');
-    final pubspecFile = getPubspecFile();
     final yamlEditor = YamlEditor(await pubspecFile.readAsString());
     final regex = RegExp(r'^(\d+)\.(\d+)\.(\d+)\s?(\+(\d+))?$');
     final curretVersion = yamlEditor.parseAt(['version']).value as String;
@@ -108,42 +99,38 @@ class PubspecVersion {
         .allMatches(curretVersion)
         .firstOrNull
         ?.groups([
-          _majorRegexIndex + 1,
-          _minorRegexIndex + 1,
-          _patchRegexIndex + 1,
-          _buildRegexIndex + 1,
+          PubspecVersionCommand.major.index + 1,
+          PubspecVersionCommand.minor.index + 1,
+          PubspecVersionCommand.patch.index + 1,
+          PubspecVersionCommand.build.index + 1,
         ]);
     switch (versionCommand) {
       case PubspecVersionCommand.major:
-        _incrementVersion(currentVersionRegexed, _majorRegexIndex);
-        _setVersion(currentVersionRegexed, _minorRegexIndex, '0');
-        _setVersion(currentVersionRegexed, _patchRegexIndex, '0');
+        _incrementVersion(currentVersionRegexed, PubspecVersionCommand.major);
+        _setVersion(currentVersionRegexed, PubspecVersionCommand.minor, '0');
+        _setVersion(currentVersionRegexed, PubspecVersionCommand.patch, '0');
       case PubspecVersionCommand.minor:
-        _incrementVersion(currentVersionRegexed, _minorRegexIndex);
-        _setVersion(currentVersionRegexed, _patchRegexIndex, '0');
+        _incrementVersion(currentVersionRegexed, PubspecVersionCommand.minor);
+        _setVersion(currentVersionRegexed, PubspecVersionCommand.patch, '0');
       case PubspecVersionCommand.patch:
-        _incrementVersion(currentVersionRegexed, _patchRegexIndex);
+        _incrementVersion(currentVersionRegexed, PubspecVersionCommand.patch);
       case PubspecVersionCommand.build:
         break;
       case PubspecVersionCommand.show:
         return curretVersion;
       case PubspecVersionCommand.showBuild:
-        return currentVersionRegexed?[_buildRegexIndex]?.substring(1);
+        return currentVersionRegexed?[PubspecVersionCommand.build.index]
+            ?.substring(1);
     }
-
-    /// Updated build number with current date in 9-digit format YYMMddHHm
-    /// (android build number limited to 2100000000)
-    _setVersion(
-      currentVersionRegexed,
-      _buildRegexIndex,
-      buildNumberDateFormat.format(clock.now()).substring(0, 9),
-    );
+    if (currentVersionRegexed?[PubspecVersionCommand.build.index] != null) {
+      _incrementVersion(currentVersionRegexed, PubspecVersionCommand.build);
+    }
     // update version in yaml
     final newVersion =
-        '${currentVersionRegexed![_majorRegexIndex]}.'
-        '${currentVersionRegexed[_minorRegexIndex]}.'
-        '${currentVersionRegexed[_patchRegexIndex]}'
-        '+${currentVersionRegexed[_buildRegexIndex]}';
+        '${currentVersionRegexed![PubspecVersionCommand.major.index]}.'
+        '${currentVersionRegexed[PubspecVersionCommand.minor.index]}.'
+        '${currentVersionRegexed[PubspecVersionCommand.patch.index]}'
+        '+${currentVersionRegexed[PubspecVersionCommand.build.index]}';
     if (!dryRun) {
       yamlEditor.update(['version'], newVersion);
       // write pubsec.yaml
@@ -153,7 +140,7 @@ class PubspecVersion {
   }
 
   /// Returns the pubspec.yaml [File].
-  File getPubspecFile() {
+  File get pubspecFile {
     final pubspecFile = File('pubspec.yaml').existsSync()
         // run on root project
         ? File('pubspec.yaml')
@@ -162,16 +149,23 @@ class PubspecVersion {
     return pubspecFile;
   }
 
-  /// Increments the version component at the given [index] in the [version]
+  /// Increments the version component at the given [command] in the [version]
   /// list.
-  void _incrementVersion(List<String?>? version, int index) {
-    final value = (int.parse(version![index]!) + 1).toString();
-    _setVersion(version, index, value);
+  void _incrementVersion(
+    List<String?>? version,
+    PubspecVersionCommand command,
+  ) {
+    final value = (int.parse(version![command.index]!) + 1).toString();
+    _setVersion(version, command, value);
   }
 
-  /// Sets the version component at the given [index] in the [version] list
+  /// Sets the version component at the given [command] in the [version] list
   /// to the specified [value].
-  void _setVersion(List<String?>? version, int index, String value) {
-    version![index] = value;
+  void _setVersion(
+    List<String?>? version,
+    PubspecVersionCommand command,
+    String value,
+  ) {
+    version![command.index] = value;
   }
 }

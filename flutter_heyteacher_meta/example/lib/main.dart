@@ -1,8 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_meta/pubspec_version.dart';
+import 'package:flutter_heyteacher_meta/fake_pubspec_version.dart'
+    show FakePubspecVersion;
+import 'package:flutter_heyteacher_meta/pubspec_version.dart'
+    show PubspecVersionCommand;
 
 void main() {
   runApp(const MyApp());
@@ -36,9 +38,9 @@ class _MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<_MyHomePage> {
-  String? _version = '1.0.0';
-  String? _build = '202601010';
-  final _fakePubspecVersion = _FakePubspecVersion();
+  String? _version;
+  String? _build;
+  final _fakePubspecVersion = FakePubspecVersion();
 
   Future<void> _pubspecVersion(PubspecVersionCommand command) async {
     debugPrint('<_pubspecVersion>: command $command');
@@ -74,12 +76,12 @@ class _MyHomePageState extends State<_MyHomePage> {
           const Text('pubspec.yaml version'),
           Text(
             '$_version',
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.displayLarge,
           ),
           const Text('pubspec.yaml build'),
           Text(
             '$_build',
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
         ],
       ),
@@ -93,7 +95,7 @@ class _MyHomePageState extends State<_MyHomePage> {
           tooltip: 'Major',
           backgroundColor: Colors.greenAccent,
           child: const Text(
-            '+\nMajor',
+            'Major',
             textAlign: TextAlign.center,
           ),
         ),
@@ -102,7 +104,7 @@ class _MyHomePageState extends State<_MyHomePage> {
           tooltip: 'Minor',
           backgroundColor: Colors.yellowAccent,
           child: const Text(
-            '+\nMinor',
+            'Minor',
             textAlign: TextAlign.center,
           ),
         ),
@@ -111,30 +113,20 @@ class _MyHomePageState extends State<_MyHomePage> {
           tooltip: 'Patch',
           backgroundColor: Colors.redAccent,
           child: const Text(
-            '+\nPatch',
+            'Patch',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        FloatingActionButton(
+          onPressed: () => _pubspecVersion(PubspecVersionCommand.build),
+          tooltip: 'Build',
+          backgroundColor: Colors.blueAccent,
+          child: const Text(
+            'Build',
             textAlign: TextAlign.center,
           ),
         ),
       ],
     ),
   );
-}
-
-class _FakePubspecVersion extends PubspecVersion {
-  _FakePubspecVersion() {
-    tempDir = Directory.systemTemp.createTempSync();
-    pubspecFile = File('${tempDir.path}/pubspec.yaml');
-    pubspecFile.writeAsStringSync('name: test_pkg\nversion: 1.0.0+202601010');
-  }
-
-  late Directory tempDir;
-  late File pubspecFile;
-
-  @override
-  void dispose() {
-    tempDir.deleteSync(recursive: true);
-  }
-
-  @override
-  File getPubspecFile() => pubspecFile;
 }
