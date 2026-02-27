@@ -8,7 +8,7 @@ platform :android do
   desc "fl appbundle\n\tclean and build application `build/app/outputs/bundle/release/app-release.aab`"
   lane :appbundle do
     sh("flutter build bundle")
-    increment_flutter_build_number
+    increment_build
     # increment build number before build the release
     sh("flutter build appbundle")  
   end
@@ -161,7 +161,7 @@ platform :android do
   desc "fl buildweb [version:profile|debug]\n\tbuild web and run local webserver on it"
   lane :buildweb do|options|
     test
-    increment_flutter_build_number
+    increment_build
     version = ""
     if (options[:version] == "profile" || options[:version] == "debug")
         version = "--#{options[:version]}"
