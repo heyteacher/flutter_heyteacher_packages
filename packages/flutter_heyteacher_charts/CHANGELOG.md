@@ -1,14 +1,14 @@
-<a id="v1.29.4+260227154"></a>
-# [v1.29.4+260227154](https://github.com/heyteacher/flutter_heyteacher_charts/releases/tag/v1.29.4+260227154) - 2026-02-27
+<a id="v1.29.4+100"></a>
+# [v1.29.4+100](https://github.com/heyteacher/flutter_heyteacher_charts/releases/tag/v1.29.4+100) - 2026-02-27
 
 ## What's Changed
 * fix: remove `*.lock` ignored by [@heyteacher](https://github.com/heyteacher) in [#17](https://github.com/heyteacher/flutter_heyteacher_charts/pull/17)
 * 573 featmeta replace build with a counter and add prefix v to release by [@heyteacher](https://github.com/heyteacher) in [#18](https://github.com/heyteacher/flutter_heyteacher_charts/pull/18)
 
 
-**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.29.2+260225162...v1.29.4+260227154
+**Full Changelog**: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.29.2+260225162...v1.29.4+100
 
-[Changes][v1.29.4+260227154]
+[Changes][v1.29.4+100]
 
 
 <a id="1.29.2+260225162"></a>
@@ -95,7 +95,7 @@
 [Changes][1.28.3+260118083_]
 
 
-[v1.29.4+260227154]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.29.2+260225162...v1.29.4+260227154
+[v1.29.4+100]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.29.2+260225162...v1.29.4+100
 [1.29.2+260225162]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.29.1+260224124...1.29.2+260225162
 [1.29.1+260224124]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.6+260209131...1.29.1+260224124
 [1.28.6+260209131]: https://github.com/heyteacher/flutter_heyteacher_charts/compare/1.28.5+260206125_remove_unnecessary_annotation...1.28.6+260209131
