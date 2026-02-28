@@ -110,9 +110,6 @@ lane :release do|options|
   if options[:github] == true
     puts "create github release for #{version}"
     create_github_release("v#{version}")
-  else 
-    puts "create local tag #{version}"
-    add_git_tag(tag: version)
   end
 end
 
