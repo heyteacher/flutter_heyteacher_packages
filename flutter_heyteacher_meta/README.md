@@ -20,8 +20,9 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
     - [Flutter](#flutter)
     - [Visual Studio Code](#visual-studio-code)
     - [Android Studio](#android-studio)
-    - [`changelog-from-release`](#changelog-from-release)
+    - [`auto-changelog`](#auto-changelog)
     - [`FastLane`](#fastlane)
+    - [`nodeJs`](#nodejs)
     - [Firebase CLI](#firebase-cli)
   - [Create a flutter project](#create-a-flutter-project)
     - [Configure `FastLane`](#configure-fastlane)
@@ -177,38 +178,23 @@ You can configure you `vscode` to execute the [command-line utility `version`](#
   export PATH=/usr/local/android-studio/jbr/bin/:$PATH
   ```
 
-### `changelog-from-release`
+### `auto-changelog`
 
-- install `go`
-  
-- install `changelog-from-release`
+`auto-changelog` is an utility which generate `CHANGELOG.md` automatically based
+on `commits`, `pull requests` and `tags`.
 
-  ```bash
-  go install github.com/rhysd/changelog-from-release/v3@latest
-  ```
+- install `npm` as described in [`nodeJs`](#nodejs)
 
-- set the classpath of go binaries
+- install `auto-changelog`
 
   ```bash
-  export PATH="$PATH":"$HOME/go/bin"  
-  ```
-
-- create a github `personal access token` and set on GITHUB_TOKEN env variable
-
-  ```bash
-  export GITHUB_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  ```
-
-- authenticate on `gh` whith the same token
-
-  ```bash
-  gh auth login --with-token
+  npm install -g auto-changelog
   ```
 
 - test the command
 
   ```bash
-  changelog-from-release
+  auto-changelog
   ```
 
 ### `FastLane`
@@ -264,7 +250,7 @@ fi
 
 the execution `fl` in root project directory without paramenter show all `lanes` configured and how to use them.
 
-### Firebase CLI
+### `nodeJs`
 
 - install `nodeJs`
   
@@ -272,6 +258,8 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
   nvm install 22
   ```
+
+### Firebase CLI
 
 - install `firebase-tools`
 
