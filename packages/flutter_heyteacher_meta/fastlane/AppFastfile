@@ -26,8 +26,8 @@ platform :android do
     end
   end
 
-  desc "fl backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>]\n\tbackup dababase firestore on snapshot specified. If database isn't set use (default)"
-  lane :backup do |options|
+  desc "fl firestore_backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>]\n\tbackup dababase firestore on snapshot specified. If database isn't set use (default)"
+  lane :firestore_backup do |options|
      snapshotTime = ""
     if options[:snapshot] != nil
     # set the snapshot time from disaster recovery
@@ -41,25 +41,25 @@ platform :android do
     sh("gcloud firestore export #{ENV["google_storage_backup_bucket"]} #{snapshotTime} --database='#{database}'")
   end
    
-  desc "fl restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>]\n\trestore firestore backup into database specified. If database isn't set use (default)"
-  lane :restore do |options|
+  desc "fl firestore_restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>]\n\trestore firestore backup into database specified. If database isn't set use (default)"
+  lane :firestore_restore do |options|
     database = "(default)"
     if options[:database] != nil
       database = options[:database]
     end
     if options[:backup] == nil
       sh("gcloud storage ls #{ENV["google_storage_backup_bucket"]}")
-      puts "usage: fl restore backup:<YYYY-MM-DDTHH:mm:ss_mi>"
+      puts "usage: fl firestore_restore backup:<YYYY-MM-DDTHH:mm:ss_mi>"
     else
       sh("gcloud firestore import #{ENV["google_storage_backup_bucket"]}/#{options[:backup]} --database='#{database}'")
     end
   end
 
-  desc "fl rm backup:<YYYY-MM-DDTHH:mm:ss_mi>\n\tdelete firestore backup"
-  lane :rm do |options|
+  desc "fl firestore_remove_backup backup:<YYYY-MM-DDTHH:mm:ss_mi>\n\tdelete firestore backup"
+  lane :firestore_remove_backup do |options|
     if options[:backup] == nil
       sh("gcloud storage ls #{ENV["google_storage_backup_bucket"]}")
-      puts "usage: fl rm backup:<YYYY-MM-DDTHH:mm:ss_mi>"
+      puts "usage: fl firestore_remove_backup backup:<YYYY-MM-DDTHH:mm:ss_mi>"
     else
       sh("gcloud storage rm -R #{ENV["google_storage_backup_bucket"]}/#{options[:backup]}")
     end

@@ -37,9 +37,9 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
     - [appbundle](#appbundle)
     - [integration\_test](#integration_test)
     - [testlab](#testlab)
-    - [backup](#backup)
-    - [restore](#restore)
-    - [rm](#rm)
+    - [firestore\_backup](#firestore_backup)
+    - [firestore\_restore](#firestore_restore)
+    - [firestore\_remove\_backup](#firestore_remove_backup)
     - [app\_distribution](#app_distribution)
     - [playstore](#playstore)
     - [playstore\_promote](#playstore_promote)
@@ -456,29 +456,31 @@ fl testlab
 
 Run integration test of app project in `Firebase Test Lab`
 
-### backup
+### firestore_backup
 
 ```bash
-fl backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>]
+fl firestore_backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>]
 ```
 
-Backup `Firestore` dababase on `snapshot` specified. If `database` isn't set use `(default)`
+Backup `Firestore` dababase. if `snapshot` is set, create backup at time specified. If `database` isn't set use `(default)`. For details [`Firestore` backup, restore and Point-in-time recovery](#firestore-backup-restore-and-point-in-time-recovery).
 
-### restore
+### firestore_restore
 
 ```bash
-fl restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>]
+fl firestore_restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>]
  ```
 
-Restore `Firestore` dababase  `backup`. If `database` isn't set use `(default)`
+Restore `Firestore` dababase to specified `backup`. If `database` isn't set use `(default)`.
+For details [`Firestore` backup, restore and Point-in-time recovery](#firestore-backup-restore-and-point-in-time-recovery).
 
-### rm
+### firestore_remove_backup
 
 ```bash
-fl rm backup:<YYYY-MM-DDTHH:mm:ss_mi>
+fl firestore_remove_backup backup:<YYYY-MM-DDTHH:mm:ss_mi>
 ```
 
-Remove `Firestore` dababase  `backup`
+Remove `Firestore` dababase `backup` specified.
+For details [`Firestore` backup, restore and Point-in-time recovery](#firestore-backup-restore-and-point-in-time-recovery).
 
 ### app_distribution
 
@@ -798,9 +800,9 @@ create the bucket `<PROJECT_NAME>-backups` which hosts backups here: <https://co
 You can restore the database snapshot since last 15 days specifying `snapshot-time` in ISO 8601 format.
 
 ```bash
-fl backup snapshot:<YYYY-MM-DDTHH:mm:ss.00Z>
+fl firestore_backup snapshot:<YYYY-MM-DDTHH:mm:ss.00Z>
 # restore the backup <YYYY-MM-DDTHH:mm:ss_mi> already created
-fl restore <YYYY-MM-DDTHH:mm:ss_mi>
+fl firestore_restore <YYYY-MM-DDTHH:mm:ss_mi>
 ```
 
 ### Backup and Restore database
@@ -808,25 +810,25 @@ fl restore <YYYY-MM-DDTHH:mm:ss_mi>
 - create a backup of current firestore database
 
   ```bash
-  fl backup
+  fl firestore_backup
   ```
 
 - restore a firestore backup
 
   ```bash
   # list all backups
-  fl restore 
+  fl firestore_restore 
   # restore a backup
-  fl restore <YYYY-MM-DDTHH:mm:ss_mi>
+  fl firestore_restore <YYYY-MM-DDTHH:mm:ss_mi>
   ```
 
 - remove a firestore backup
 
   ```hash
   # list all backups
-  fl restore 
+  fl firestore_restore 
   # remove backup
-  fl rm <YYYY-MM-DDTHH:mm:ss_mi>
+  fl firestore_remove_backup <YYYY-MM-DDTHH:mm:ss_mi>
   ```
 
 ## Firebase Hosting
