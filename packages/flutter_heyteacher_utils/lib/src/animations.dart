@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_utils/src/widgets.dart';
 
-/// An abstract `State` class for creating a paginated `SliverAnimatedGrid` that
-/// is populated from a `Stream`.
+/// An abstract [State] for creating a paginated [SliverAnimatedList] or 
+/// [SliverAnimatedGrid] that is populated from a `Stream`.
 ///
 /// It simplifies the common pattern of displaying a grid of data that is
 /// fetched in pages as the user scrolls down. It also handles real-time
 /// updates, such as inserting new items at the top of the grid with an
 /// animation.
-abstract class PagingSliverAnimatedGridState<D, T extends StatefulWidget>
+abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
     extends State<T> {
   /// The current list of data items displayed in the gruid.
   @protected
@@ -26,10 +26,32 @@ abstract class PagingSliverAnimatedGridState<D, T extends StatefulWidget>
   /// of the grid.
   late int _limit = pageSize;
 
-  /// A global key for the [SliverAnimatedGridState] to manage its state,
+  /// A global key for the [SliverAnimatedGrid] to manage its state,
   /// such as inserting or removing items.
-  final GlobalKey<SliverAnimatedGridState> _gridGlobalKey =
+  final GlobalKey<SliverAnimatedGridState> _sliverGridGlobalKey =
       GlobalKey<SliverAnimatedGridState>();
+
+  /// A global key for the [SliverAnimatedList] to manage its state,
+  /// such as inserting or removing items.
+  final GlobalKey<SliverAnimatedListState> _sliverListGlobalKey =
+      GlobalKey<SliverAnimatedListState>();
+
+  void _removeItem(int index, AnimatedRemovedItemBuilder builder) =>
+      crossAxisCount == 1
+      ? _sliverListGlobalKey.currentState?.removeItem(index, builder)
+      : _sliverGridGlobalKey.currentState?.removeItem(index, builder);
+
+  bool get _currentStateIsNotNull => crossAxisCount == 1
+      ? _sliverListGlobalKey.currentState != null
+      : _sliverGridGlobalKey.currentState != null;
+
+  void _insertItem(int index) => crossAxisCount == 1
+      ? _sliverListGlobalKey.currentState?.insertItem(index)
+      : _sliverGridGlobalKey.currentState?.insertItem(index);
+
+  void _insertAllItems(int index, int length) => crossAxisCount == 1
+      ? _sliverListGlobalKey.currentState?.insertAllItems(index, length)
+      : _sliverGridGlobalKey.currentState?.insertAllItems(index, length);
 
   /// The subscription to the data stream.
   StreamSubscription<Iterable<D>>? _streamSubscription;
@@ -107,8 +129,8 @@ abstract class PagingSliverAnimatedGridState<D, T extends StatefulWidget>
       //     'dataList from initData not null, set state _loading false');
       setState(() => _loading = false);
       await Future<dynamic>.delayed(const Duration(seconds: 1));
-      if (mounted && _gridGlobalKey.currentState != null) {
-        _gridGlobalKey.currentState?.insertAllItems(0, dataList!.length);
+      if (mounted && _currentStateIsNotNull) {
+        _insertAllItems(0, dataList!.length);
       }
     }
     unawaited(_updateStreamSubscription?.cancel());
@@ -132,27 +154,37 @@ abstract class PagingSliverAnimatedGridState<D, T extends StatefulWidget>
           hasScrollBody: false,
           child: ProgressIndicatorView(),
         )
+      : crossAxisCount == 1
+      ? SliverAnimatedList(
+          key: _sliverListGlobalKey,
+          initialItemCount: dataList?.length ?? 0,
+          itemBuilder: (context, index, animation) =>
+              (dataList?.isNotEmpty ?? false) && (dataList?.length ?? 0) > index
+              ? buildData(index, animation: animation)
+              : const SizedBox.shrink(),
+        )
       : SliverAnimatedGrid(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             mainAxisExtent: mainAxisExtent,
+            mainAxisSpacing: crossAxisCount == 2 ? 8 : 16,
+            crossAxisSpacing: crossAxisCount == 2 ? 8 : 16
           ),
-          key: _gridGlobalKey,
+          key: _sliverGridGlobalKey,
           initialItemCount: dataList?.length ?? 0,
           itemBuilder: (context, index, animation) =>
-              dataList?.isNotEmpty ?? false
+              (dataList?.isNotEmpty ?? false) && (dataList?.length ?? 0) > index
               ? buildData(index, animation: animation)
               : const SizedBox.shrink(),
         );
 
   /// Animates the deletion of an item at the given [index].
   @protected
-  Future<void> animateDeleteData(int index) async =>
-      _gridGlobalKey.currentState?.removeItem(
-        index,
-        (context, animation) =>
-            buildData(index, animation: animation, removing: true),
-      );
+  Future<void> animateDeleteData(int index) async => _removeItem(
+    index,
+    (context, animation) =>
+        buildData(index, animation: animation, removing: true),
+  );
 
   /// Subscribes to the data [stream] and handles list updates.
   Future<void> updateDataList({bool incrementsLimit = false}) async {
@@ -161,10 +193,13 @@ abstract class PagingSliverAnimatedGridState<D, T extends StatefulWidget>
     }
     unawaited(_streamSubscription?.cancel());
     _streamSubscription = stream(limit: _limit).listen((newDataList) {
-      final changedIndexes = _compare(
-        oldList: dataList ?? [],
-        newList: newDataList.toList(),
-      )..forEach((index) => _gridGlobalKey.currentState?.insertItem(index));
+      final changedIndexes =
+          _compare(
+            oldList: dataList ?? [],
+            newList: newDataList.toList(),
+          )..forEach(
+            _insertItem,
+          );
       // add new item at the end of list, scrollo down e litte bit
       if (changedIndexes.isNotEmpty &&
           (dataList?.length ?? 0) > 0 &&

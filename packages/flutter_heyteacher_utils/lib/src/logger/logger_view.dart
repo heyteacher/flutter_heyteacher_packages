@@ -77,7 +77,7 @@ class LoggerCard extends StatelessWidget {
 /// A screen that displays a paginated and filterable list of log messages.
 ///
 /// This screen allows users to view logs, filter them by level and textcontent,
-/// and refresh the view. It uses a [PagingSliverAnimatedGridState] to
+/// and refresh the view. It uses a [PagingSliverAnimatedState] to
 /// efficiently handle large numbers of log entries.
 class LoggerScreen extends StatefulWidget {
   /// Creates a [LoggerScreen].
@@ -89,7 +89,7 @@ class LoggerScreen extends StatefulWidget {
 }
 
 class _LoggerScreenState
-    extends PagingSliverAnimatedGridState<LogEntry, LoggerScreen> {
+    extends PagingSliverAnimatedState<LogEntry, LoggerScreen> {
   /// The currently selected [Level] to filter logs by. If null, no filter is
   /// applied.
   late ScrollController _scrollController;
@@ -250,13 +250,8 @@ class LogEntryCard extends StatelessWidget {
     child: ListTile(
       leading: _buildLeading(),
       title: Text(_logEntry.loggerName),
-      subtitle: Text(
-        _logEntry.message,
-        overflow: TextOverflow.ellipsis,
-      ),
-      trailing: _logEntry.message.length > 40 || _logEntry.error != null
-          ? _buildTrailing(context)
-          : null,
+      subtitle: Text(_logEntry.message),
+      trailing: _logEntry.error != null ? _buildTrailing(context) : null,
     ),
   );
 
@@ -266,18 +261,8 @@ class LogEntryCard extends StatelessWidget {
       backgroundColor: _backgroundColor(_logEntry.level),
       context: context,
       content: ListTile(
-        title: Text(
-          _logEntry.message,
-          style: TextStyle(
-            color: ThemeViewModel.instance.colorScheme.primary,
-          ),
-        ),
-        subtitle: _logEntry.error != null
-            ? Text(
-                '${_logEntry.error ?? ''}\n\n'
-                '${_logEntry.stackTrace ?? ''}',
-              )
-            : null,
+        title: Text(_logEntry.error ?? ''),
+        subtitle: Text(_logEntry.stackTrace ?? ''),
       ),
     ),
   );
