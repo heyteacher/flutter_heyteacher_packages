@@ -39,8 +39,7 @@ class GoAuthRoute {
     Future<void> Function()? fakeSignIn,
   }) => GoRoute(
     path: 'auth',
-    builder: (context, state) =>
-        const SizedBox.shrink(),
+    builder: (context, state) => const SizedBox.shrink(),
     routes: <RouteBase>[
       GoRoute(
         name: AuthRouterName.signIn.name,
@@ -138,6 +137,7 @@ abstract class ScaffoldNavigationShell extends StatelessWidget {
             decoration: _bottomNavigationBarDecoration,
 
             child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
               showUnselectedLabels: true,
               // Here, the items of BottomNavigationBar are hard coded. In a
               // real world scenario, the items would most likely be generated
