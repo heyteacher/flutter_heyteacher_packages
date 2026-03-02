@@ -61,6 +61,7 @@ lane :release do|options|
   end
   sh("git pull")
   test
+  increment_build
   version = ""
   Dir.chdir("../") do
     version = sh("dart run flutter_heyteacher_meta:version #{options[:semver]}")
@@ -69,7 +70,6 @@ lane :release do|options|
       version = "#{version}-#{options[:suffix]}"
     end
   end
-  increment_build
   # commit bump and push remote
   puts "commit pubspec.yaml"
   sh("git add ../pubspec.yaml")
