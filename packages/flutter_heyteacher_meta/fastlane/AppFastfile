@@ -13,6 +13,29 @@ platform :android do
     sh("flutter build appbundle")  
   end
   
+  desc "fl bump\n\tCommits pubspec.lock"
+  lane :bump do
+    gitStatus = sh("git status")
+    gitStatusLastLine= gitStatus.lines.last
+    if gitStatusLastLine.include? "nothing to commit, working tree clean"
+      puts "no changes to commit"
+    else
+      currentBranch = sh("git branch --show-current").strip!  
+      if currentBranch != "main"
+        puts "current branch must be \"main\", found \"#{currentBranch}\""
+        exit(1)
+      end
+      sh("git branch bump")
+      sh("git checkout bump")
+      sh("git add ../pubspec.*")
+      sh("git commit -m \"build(deps): bump deps version\"")
+      sh("git checkout main")
+      sh("git merge bump")
+      sh("git branch bump -d")
+      push_to_git_remote
+    end
+  end
+
   desc "fl integration_test\n\tRun integration tests"
   lane :integration_test do
     sh("flutter driver --driver=test_driver/main_test.dart --target=integration_test/main.dart")
