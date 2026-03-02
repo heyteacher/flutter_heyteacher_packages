@@ -110,6 +110,19 @@ void main() {
     });
     test('store should contains 2 tracks filtered by startTime in 2023',
         () async {
+      TrackStore.instance.storeFilter = LogicalStoreFilter(
+        logicalOperator: LogicalOperator.and,
+        filter1: ValueStoreFilter(
+          field: 'startTime',
+          operator: Operator.isGreaterThanOrEqualTo,
+          value: DateTime(2023),
+        ),
+        filter2: ValueStoreFilter(
+          field: 'startTime',
+          operator: Operator.isLessThan,
+          value: DateTime(2024),
+        ),
+      );
       expect(
         (await TrackStore.instance.list()).length,
         2,
@@ -303,6 +316,19 @@ void main() {
       );
     });
     test('aggregateStream after filter', () async {
+      TrackStore.instance.storeFilter = LogicalStoreFilter(
+        logicalOperator: LogicalOperator.and,
+        filter1: ValueStoreFilter(
+          field: 'startTime',
+          operator: Operator.isGreaterThanOrEqualTo,
+          value: DateTime(2024),
+        ),
+        filter2: ValueStoreFilter(
+          field: 'startTime',
+          operator: Operator.isLessThan,
+          value: DateTime(2025),
+        ),
+      );
       final list = await TrackStore.instance.list();
       expect(list.length, 2, reason: 'list length after filter wrong');
       unawaited(TrackStore.instance.notifyAggregatesChanges());
