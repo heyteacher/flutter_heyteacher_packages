@@ -96,7 +96,7 @@ end
 def create_github_release(version)
   Dir.chdir("../") do
     puts "generate CHANGELOG.md with auto-changelog"
-    sh("auto-changelog -u -v #{version} --ignore-commit-pattern docs\(CHANGELOG\)*")
+    sh("auto-changelog -u -v #{version} --ignore-commit-pattern docs\\(CHANGELOG\\)*")
   end
   sh("git branch release")
   sh("git checkout release")
