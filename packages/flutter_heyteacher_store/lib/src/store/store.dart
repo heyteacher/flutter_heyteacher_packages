@@ -248,7 +248,15 @@ enum OrderDirection {
 /// - [value] the aggregate values
 class GroupByResult extends Equatable implements Comparable<GroupByResult> {
   /// Creates a group-by result.
-  const GroupByResult({required this.groupByFields, required this.value});
+  const GroupByResult({
+    required this.groupByFields,
+    required this.value,
+    required this.key,
+  });
+
+  /// the key representing the group-by fields
+  @visibleForTesting
+  final String key;
 
   /// map which contains group by field and the field value
   final Map<String, String> groupByFields;
@@ -257,11 +265,11 @@ class GroupByResult extends Equatable implements Comparable<GroupByResult> {
   final Comparable<dynamic> value;
 
   @override
-  List<Object?> get props => [groupByFields, value];
+  List<Object?> get props => [key, value];
 
   @override
   int compareTo(GroupByResult other) {
-    return other.value.compareTo(value);
+    return other.key.compareTo(key);
   }
 }
 
@@ -712,7 +720,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// esecuted by [firestore.WriteBatch.commit].
   Future<void> delete(String id, {dynamic batch}) async {
     _logger.finer('<$runtimeType.delete>: $_detailsCollectionPathLog/$id');
-    batch as firestore.WriteBatch?; 
+    batch as firestore.WriteBatch?;
     _checkAuthenticated();
     if (_groupByFields != null && await exists(id)) {
       try {
@@ -898,10 +906,10 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
         unawaited(notifyAggregatesChanges());
       }
     } else {
-    _logger.finer(
-      '<$runtimeType.update>: $_detailsCollectionPathLog/$id fields: $fields) '
-      ' document not found, create it with `set`',
-    );
+      _logger.finer(
+        '<$runtimeType.update>: $_detailsCollectionPathLog/$id fields: $fields) '
+        ' document not found, create it with `set`',
+      );
       // document not found, create it with `set`
       unawaited(set(document, batch: batch));
     }
@@ -950,6 +958,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     if (groupByKey == null) return null;
     final iterable = groupByKey.entries.map(
       (mapEntry) => GroupByResult(
+        key: mapEntry.key,
         groupByFields: _splitGroupByFields(mapEntry.key)!,
         value: mapEntry.value as Comparable<dynamic>,
       ),
@@ -1210,11 +1219,9 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     GroupByResult a,
     GroupByResult b, {
     required OrderDirection groupByFieldsOrder,
-  }) {
-    // compare each groupByField returning when comparison differs
-    return a.compareTo(b) *
-        (groupByFieldsOrder == OrderDirection.desc ? -1 : 1);
-  }
+  }) =>
+      // compare each groupByField returning when comparison differs
+      a.compareTo(b) * (groupByFieldsOrder == OrderDirection.desc ? 1 : -1);
 
   /// Check is user is autentichate.
   ///

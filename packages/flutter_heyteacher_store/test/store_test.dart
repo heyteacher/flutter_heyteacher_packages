@@ -67,23 +67,22 @@ void main() {
     TrackStore.instance = TrackStore(firebaseFirestore: firestore);
 
     // initialize
-    final trackStore = TrackStore.instance;
 
-    await trackStore.set(
+    await TrackStore.instance.set(
       TrackData(
         startTime: DateTime.parse('2024-02-27 13:27:56'),
         stopTime: DateTime.parse('2024-02-27 14:27:56'),
         distance: 10000,
       ),
     );
-    await trackStore.set(
+    await TrackStore.instance.set(
       TrackData(
         startTime: DateTime.parse('2024-04-27 13:27:56'),
         stopTime: DateTime.parse('2024-04-27 14:27:56'),
         distance: 20000,
       ),
     );
-    await trackStore.set(
+    await TrackStore.instance.set(
       TrackData(
         startTime: DateTime.parse('2023-07-12 17:15:22'),
         stopTime: DateTime.parse('2023-07-12 20:15:22'),
@@ -92,7 +91,7 @@ void main() {
             .encrypt('100'),
       ),
     );
-    await trackStore.set(
+    await TrackStore.instance.set(
       TrackData(
         startTime: DateTime.parse('2023-09-12 17:15:22'),
         stopTime: DateTime.parse('2023-09-12 20:15:22'),
@@ -103,27 +102,16 @@ void main() {
 
   group('track list, filter group:', () {
     test('store should contains 4 tracks', () async {
-      final trackStore = TrackStore.instance;
-      expect((await trackStore.list()).length, 4, reason: 'wrong store size');
+      expect(
+        (await TrackStore.instance.list()).length,
+        4,
+        reason: 'wrong store size',
+      );
     });
     test('store should contains 2 tracks filtered by startTime in 2023',
         () async {
-      final trackStore = TrackStore.instance
-        ..storeFilter = LogicalStoreFilter(
-          logicalOperator: LogicalOperator.and,
-          filter1: ValueStoreFilter(
-            field: 'startTime',
-            operator: Operator.isGreaterThanOrEqualTo,
-            value: DateTime(2023),
-          ),
-          filter2: ValueStoreFilter(
-            field: 'startTime',
-            operator: Operator.isLessThan,
-            value: DateTime(2024),
-          ),
-        );
       expect(
-        (await trackStore.list()).length,
+        (await TrackStore.instance.list()).length,
         2,
         reason: 'wrong store size after filtering',
       );
@@ -131,25 +119,22 @@ void main() {
   });
   group('track exists and get:', () {
     test('store contains 20230712_171522', () async {
-      final trackStore = TrackStore.instance;
       expect(
-        await trackStore.exists('20230712_171522'),
+        await TrackStore.instance.exists('20230712_171522'),
         true,
         reason: "track does't exists",
       );
     });
     test("store track doesn't exist after delete", () async {
-      final trackStore = TrackStore.instance;
-      await trackStore.delete('20230712_171522');
+      await TrackStore.instance.delete('20230712_171522');
       expect(
-        await trackStore.exists('20230712_171522'),
+        await TrackStore.instance.exists('20230712_171522'),
         false,
         reason: 'track exists',
       );
     });
     test('store get track and check fields', () async {
-      final trackStore = TrackStore.instance;
-      final trackData = await trackStore.get('20230712_171522');
+      final trackData = await TrackStore.instance.get('20230712_171522');
       expect(trackData.avgBpm != null, true, reason: 'avgBpm is null ');
       expect(
         await E2EEViewModel.instance(AuthViewModel.instance.uid)
@@ -164,11 +149,11 @@ void main() {
 
   group('track update group:', () {
     test('update', () async {
-      final trackStore = TrackStore.instance;
-      var trackData =
-          (await trackStore.get('20230712_171522')).copyWith.avgRpm(80);
-      await trackStore.update(trackData, fields: ['avgRpm']);
-      trackData = await trackStore.get('20230712_171522');
+      var trackData = (await TrackStore.instance.get('20230712_171522'))
+          .copyWith
+          .avgRpm(80);
+      await TrackStore.instance.update(trackData, fields: ['avgRpm']);
+      trackData = await TrackStore.instance.get('20230712_171522');
       expect(trackData.avgRpm, 80, reason: 'avgRpm wrong');
       expect(
         await E2EEViewModel.instance(AuthViewModel.instance.uid)
@@ -185,24 +170,23 @@ void main() {
         avgRpm: 80,
         distance: 0,
       );
-      final trackStore = TrackStore.instance;
-      await trackStore.set(trackData);
+      await TrackStore.instance.set(trackData);
 
-      trackData = await trackStore.get('20230712_171522');
+      trackData = await TrackStore.instance.get('20230712_171522');
       expect(trackData.avgRpm, 80, reason: 'avgRpm wrong');
       expect(trackData.avgBpm, null, reason: 'avgBpm wrong');
       expect(trackData.distance, 0, reason: 'distance wrong');
     });
     test('update single field', () async {
-      final trackStore = TrackStore.instance;
-      var trackData = await trackStore.get('20230712_171522');
+      var trackData = await TrackStore.instance.get('20230712_171522');
       trackData = TrackData(
         startTime: DateTime.parse('2023-07-12 17:15:22'),
         avgRpm: 80,
         distance: 30000,
       );
-      await trackStore.update(trackData, fields: ['avgRpm', 'distance']);
-      trackData = await trackStore.get('20230712_171522');
+      await TrackStore.instance
+          .update(trackData, fields: ['avgRpm', 'distance']);
+      trackData = await TrackStore.instance.get('20230712_171522');
       expect(trackData.avgRpm, 80, reason: 'avgRpm wrong');
       expect(
         await E2EEViewModel.instance(AuthViewModel.instance.uid)
@@ -217,14 +201,13 @@ void main() {
 
   group('track groupByCounter group:', () {
     test('groupByCounter years check map', () async {
-      final trackStore = TrackStore.instance;
       expect(
-        (await trackStore.groupBy())?.length,
+        (await TrackStore.instance.groupBy())?.length,
         2,
         reason: 'years wrong size',
       );
       expect(
-        (await trackStore.groupBy())
+        (await TrackStore.instance.groupBy())
             ?.where((e) => e.groupByFields['year'] == '2023')
             .first
             .value,
@@ -232,7 +215,7 @@ void main() {
         reason: 'year 2023 wrong size',
       );
       expect(
-        (await trackStore.groupBy())
+        (await TrackStore.instance.groupBy())
             ?.where((e) => e.groupByFields['year'] == '2024')
             .first
             .value,
@@ -241,15 +224,15 @@ void main() {
       );
     });
     test('groupByCounter years check  map after add new track', () async {
-      final trackStore = TrackStore.instance;
-      await trackStore.set(TrackData(startTime: DateTime(2020), distance: 0));
+      await TrackStore.instance
+          .set(TrackData(startTime: DateTime(2020), distance: 0));
       expect(
-        (await trackStore.groupBy())!.length,
+        (await TrackStore.instance.groupBy())!.length,
         3,
         reason: 'years wrong size',
       );
       expect(
-        (await trackStore.groupBy())!
+        (await TrackStore.instance.groupBy())!
             .where((e) => e.groupByFields['year'] == '2020')
             .first
             .value,
@@ -257,7 +240,7 @@ void main() {
         reason: 'year 2020 wrong size',
       );
       expect(
-        (await trackStore.groupBy())!
+        (await TrackStore.instance.groupBy())!
             .where((e) => e.groupByFields['year'] == '2023')
             .first
             .value,
@@ -265,7 +248,7 @@ void main() {
         reason: 'year 2023 wrong size',
       );
       expect(
-        (await trackStore.groupBy())!
+        (await TrackStore.instance.groupBy())!
             .where((e) => e.groupByFields['year'] == '2024')
             .first
             .value,
@@ -273,12 +256,23 @@ void main() {
         reason: 'year 2024 wrong size',
       );
     });
+    test('track groupByCounter order of keys', () async {
+      expect(
+        (await TrackStore.instance.groupBy())?.map((e) => e.key),
+        ['2023', '2024'],
+      );
+      expect(
+        (await TrackStore.instance
+                .groupBy(groupByFieldsOrderDirection: OrderDirection.desc))
+            ?.map((e) => e.key),
+        ['2024', '2023'],
+      );
+    });
   });
   group('track aggregateStream group:', () {
     test('aggregateStream check', () async {
-      final trackStore = TrackStore.instance;
-      unawaited(trackStore.notifyAggregatesChanges());
-      final aggregate = await trackStore.aggregateStream.first;
+      unawaited(TrackStore.instance.notifyAggregatesChanges());
+      final aggregate = await TrackStore.instance.aggregateStream.first;
       expect(aggregate.count, 4, reason: 'aggregate count wrong');
       expect(aggregate.getSum('distance'), 90000, reason: 'sum distance wrong');
       expect(
@@ -288,15 +282,14 @@ void main() {
       );
     });
     test('aggregateStream after add track', () async {
-      final trackStore = TrackStore.instance;
-      await trackStore.set(
+      await TrackStore.instance.set(
         TrackData(
           startTime: DateTime.parse('2020-04-23 08:12:44'),
           stopTime: DateTime.parse('2020-04-23 09:12:44'),
           distance: 20000,
         ),
       );
-      final aggregate = await trackStore.aggregateStream.first;
+      final aggregate = await TrackStore.instance.aggregateStream.first;
       expect(aggregate.count, 5, reason: 'aggregate count wrong');
       expect(
         aggregate.getSum('distance'),
@@ -310,24 +303,10 @@ void main() {
       );
     });
     test('aggregateStream after filter', () async {
-      final trackStore = TrackStore.instance
-        ..storeFilter = LogicalStoreFilter(
-          logicalOperator: LogicalOperator.and,
-          filter1: ValueStoreFilter(
-            field: 'startTime',
-            operator: Operator.isGreaterThanOrEqualTo,
-            value: DateTime(2024),
-          ),
-          filter2: ValueStoreFilter(
-            field: 'startTime',
-            operator: Operator.isLessThan,
-            value: DateTime(2025),
-          ),
-        );
-      final list = await trackStore.list();
+      final list = await TrackStore.instance.list();
       expect(list.length, 2, reason: 'list length after filter wrong');
-      unawaited(trackStore.notifyAggregatesChanges());
-      final aggregate = await trackStore.aggregateStream.first;
+      unawaited(TrackStore.instance.notifyAggregatesChanges());
+      final aggregate = await TrackStore.instance.aggregateStream.first;
       expect(aggregate.count, 2, reason: 'aggregate count wrong');
       expect(aggregate.getSum('distance'), 30000, reason: 'sum distance wrong');
       expect(
@@ -340,25 +319,30 @@ void main() {
 
   group('track empty notEmpty group:', () {
     test('not empty check', () async {
-      final trackStore = TrackStore.instance;
-      expect(await trackStore.notEmpty(), true, reason: 'notEmpty wrong');
-      expect(await trackStore.empty(), false, reason: 'empty wrong');
+      expect(
+        await TrackStore.instance.notEmpty(),
+        true,
+        reason: 'notEmpty wrong',
+      );
+      expect(await TrackStore.instance.empty(), false, reason: 'empty wrong');
     });
     test('empty check', () async {
-      final trackStore = TrackStore.instance;
-      for (final baseTrackData in await trackStore.list()) {
-        await trackStore.delete(baseTrackData.id);
+      for (final baseTrackData in await TrackStore.instance.list()) {
+        await TrackStore.instance.delete(baseTrackData.id);
       }
-      expect(await trackStore.notEmpty(), false, reason: 'notEmpty wrong');
-      expect(await trackStore.empty(), true, reason: 'empty wrong');
+      expect(
+        await TrackStore.instance.notEmpty(),
+        false,
+        reason: 'notEmpty wrong',
+      );
+      expect(await TrackStore.instance.empty(), true, reason: 'empty wrong');
     });
   });
 
   tearDown(() async {
-    final trackStore = TrackStore.instance..storeFilter = null;
-    await trackStore.notifyAggregatesChanges();
-    for (final baseTrackData in await trackStore.list()) {
-      await trackStore.delete(baseTrackData.id);
+    await TrackStore.instance.notifyAggregatesChanges();
+    for (final baseTrackData in await TrackStore.instance.list()) {
+      await TrackStore.instance.delete(baseTrackData.id);
     }
   });
 }
