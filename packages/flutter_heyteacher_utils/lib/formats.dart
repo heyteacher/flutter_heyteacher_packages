@@ -6,6 +6,8 @@
 /// human-readable duration strings.
 library;
 
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_heyteacher_utils/context_helper.dart';
 import 'package:flutter_heyteacher_utils/locale.dart';
@@ -31,30 +33,37 @@ class FormatterHelper {
   static final DateFormat _machineTimeFormatter = DateFormat('HHmmss');
 
   /// Formatter for date and time (e.g., "dd/MM/yyyy HH:mm").
-  static final DateFormat _dateTimeFormatter = DateFormat('dd/MM/yyyy HH:mm');
+  static DateFormat get _dateTimeFormatter =>
+      DateFormat.yMd(LocaleViewModel.instance.locale.toLanguageTag())..add_jm();
 
   /// Formatter for date only (e.g., "dd/MM/yyyy").
-  static final DateFormat _dateFormatter = DateFormat('dd/MM/yyyy');
+  static DateFormat get _dateFormatter =>
+      DateFormat.yMd(LocaleViewModel.instance.locale.toLanguageTag());
 
   /// Formatter for date only (e.g., "dd/MM").
-  static final DateFormat _ddMMFormatter = DateFormat('dd/MM');
+  static DateFormat get _ddMMFormatter =>
+      DateFormat.Md(LocaleViewModel.instance.locale.toLanguageTag());
 
   /// Formatter for time with seconds (e.g., "HH:mm:ss").
-  static final DateFormat _timeFormatter = DateFormat('HH:mm');
+  static DateFormat get _timeFormatter =>
+      DateFormat.jm(LocaleViewModel.instance.locale.toLanguageTag());
 
   /// Formatter for time with seconds (e.g., "HH:mm:ss").
-  static final DateFormat _timeWithSecondsFormatter = DateFormat('HH:mm:ss');
+  static DateFormat get _timeWithSecondsFormatter =>
+      DateFormat.jms(LocaleViewModel.instance.locale.toLanguageTag());
 
   /// Formatter for date and time with seconds (e.g., "dd/MM/yyyy HH:mm:ss").
-  static final DateFormat _dateTimeWithSecondsFormatter = DateFormat(
-    'dd/MM/yyyy HH:mm:ss',
-  );
+  static DateFormat get _dateTimeWithSecondsFormatter =>
+      DateFormat.yMd(LocaleViewModel.instance.locale.toLanguageTag()).add_jms();
 
   /// Formatter for integers (e.g., "0").
   static final NumberFormat _intFormatter = NumberFormat('0');
 
   /// Formatter for doubles with one decimal place (e.g., "0.0").
-  static final NumberFormat _doubleFormatter = NumberFormat('0.0');
+  static NumberFormat get _doubleFormatter => NumberFormat.decimalPatternDigits(
+    locale: LocaleViewModel.instance.locale.toLanguageTag(),
+    decimalDigits: 1,
+  );
 
   /// Formats a [DateTime] into a machine-readable string `yyyyMMdd_HHmmss`.
   /// Returns [defaultValue] if [dateTime] is null.
@@ -170,10 +179,10 @@ class FormatterHelper {
   /// Returns an empty string if [duration] is null.
   /// - [speakHours]: If `true`, hours are included in the output
   ///   (e.g., "one hours two minutes"). if `false` format minutes only.
-  ///   (e.g., "seventy minutes fortyfive seconds"). 
+  ///   (e.g., "seventy minutes fortyfive seconds").
   ///   Defaults to `true`.
   /// - [speakSeconds]: If `true`, seconds are included in the output
-  ///   (e.g., "one hours two minutes and three seconds"). 
+  ///   (e.g., "one hours two minutes and three seconds").
   ///   Defaults to `true`.
   static Future<String> formatDurationTts(
     Duration? duration, {

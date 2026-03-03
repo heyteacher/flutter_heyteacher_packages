@@ -38,9 +38,6 @@ void main() {
           FlutterHeyteacherUtilsLocalizations.delegate,
           // Add other delegates if needed (e.g., GlobalMaterialLocalizations)
         ],
-        supportedLocales: const [
-          Locale('en', ''), // Add supported locales
-        ],
         home: InheritedGoRouter(
           goRouter: mockGoRouter,
           child: ErrorView(error, stackTrace),

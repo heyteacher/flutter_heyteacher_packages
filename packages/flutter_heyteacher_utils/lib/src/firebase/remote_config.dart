@@ -27,8 +27,8 @@ enum FlutterHeyteacherUtilsSharedPreferencesKeys {
   /// executing workers in a separate isolate.
   fhuExecWorkerInIsolate,
 
-  /// The key for storing the user's selected language code (e.g., 'en', 'it').
-  fhuLocale,
+  /// The key for storing the user's selected country code (e.g., 'GB', 'US').
+  fhuCountryCode,
 
   /// The key for storing the logging level.
   /// Note: This seems to be unused in favor of [htuLoggerLevelName] and
