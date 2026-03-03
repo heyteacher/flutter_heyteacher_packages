@@ -283,23 +283,32 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
       ),
       confirmCallback: initialValue != null
           ? (_) async {
-            await Clipboard.setData(ClipboardData(text: initialValue));
-            return null;
-          }
+              await Clipboard.setData(ClipboardData(text: initialValue));
+              return null;
+            }
           : (_) async {
+              final i10n = FlutterHeyteacherUtilsLocalizations.of(context)!;
+              // split - trim each line - jon
+              // the only way to remove special chars in Copy & Paste
+              // from a rich text editor (Word, Writer)
+              secretJwkJson = secretJwkJson!
+                  .split('\n')
+                  .map((e) => e.trim())
+                  .join();
               await E2EEViewModel.instance(
                 AuthViewModel.instance.uid,
-              ).importSecretJwkJson(secretJwkJson!);
+              ).importSecretJwkJson(
+                secretJwkJson!,
+              );
               if (mounted) setState(() {});
               widget._secretKeyImportedCallback();
-              return null;
+              return i10n.encryptionSecretKeyImported;
             },
       content: TextFormField(
         controller: _secretKeyTextEditingController,
         minLines: 10,
-        maxLines: 20,
-        // expands: true,
-        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        keyboardType: TextInputType.text,
         onChanged: (value) => secretJwkJson = value,
         decoration: InputDecoration(
           isDense: true,
@@ -321,7 +330,6 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
       ).exportSecretJwkJson(),
     ),
   );
-
 
   Future<void> _showQrCodeScanner() async {
     // get localized confirm question message before async invocation
