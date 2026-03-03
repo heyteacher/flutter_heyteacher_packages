@@ -6,6 +6,7 @@ import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_spe
 import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
 import 'package:flutter_heyteacher_utils/src/theme.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A  [Card] wrap of [ListTile] a [LocaleWrap] with TTS speak test.
@@ -228,6 +229,7 @@ class LocaleViewModel {
         FlutterHeyteacherUtilsSharedPreferencesKeys.fhuCountryCode.name,
       ),
     );
+    await initializeDateFormatting();
     _localeStreamController.sink.add(_locale);
   }
 
