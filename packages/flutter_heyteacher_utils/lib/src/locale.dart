@@ -86,23 +86,23 @@ class LocaleWrap extends StatefulWidget {
 class LocaleWrapState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Wrap(
-    alignment: WrapAlignment.center,
+    spacing: 4,
+    runSpacing: 4,
+    alignment: WrapAlignment.spaceEvenly,
     children: LocaleViewModel.instance.supportedLocales
         .map<Widget>(
           (locale) => ChoiceChip(
             padding: EdgeInsets.zero,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 4),
             side: BorderSide.none,
             showCheckmark: false,
-            label: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxHeight: 20,
-                maxWidth: 20,
-              ),
-              child: Image(
-                image: AssetImage(
-                  'assets/locale/${locale.countryCode}.png',
-                  package: 'flutter_heyteacher_utils',
-                ),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            label: Image(
+              height: 16,
+              width: 16,
+              image: AssetImage(
+                'assets/locale/${locale.countryCode}.png',
+                package: 'flutter_heyteacher_utils',
               ),
             ),
             selected: locale == LocaleViewModel.instance.locale,
