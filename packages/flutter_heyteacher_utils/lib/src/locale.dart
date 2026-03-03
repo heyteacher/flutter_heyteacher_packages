@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart';
+import 'package:flutter_heyteacher_utils/formats.dart';
 import 'package:flutter_heyteacher_utils/src/firebase/remote_config.dart';
-import 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_heyteacher_utils/src/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A  [Card] wrap of [ListTile] a [LocaleWrap] with TTS speak test.
@@ -31,13 +31,41 @@ class LocaleCard extends StatelessWidget {
               _onTextToSpeechPressed?.call(context) ??
               unawaited(
                 TTSViewModel.instance.speak(
-                  'Hello World, this is a test. Current locale is '
-                  '${LocaleViewModel.instance.locale.languageCode}',
+                  'Hello World, this is a test. Language is '
+                  '${LocaleViewModel.instance.locale.languageCode}, '
+                  'country is ${LocaleViewModel.instance.locale.languageCode}',
                   checkTTSThreshold: false,
                 ),
               ),
         ),
         title: const LocaleWrap(),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: StreamBuilder(
+            stream: LocaleViewModel.instance.localeStream,
+            builder: (_, _) => RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: '',
+                children: [
+                  TextSpan(
+                    text: FormatterHelper.dateTimeFormat(
+                      DateTime(2020, 6, 30, 22),
+                    ),
+                    style: TextStyle(
+                      color: ThemeViewModel.instance.orangeColor,
+                    ),
+                  ),
+                  const TextSpan(text: '  '),
+                  TextSpan(
+                    text: FormatterHelper.doubleFormat(12.34),
+                    style: TextStyle(color: ThemeViewModel.instance.blueColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -59,50 +87,35 @@ class LocaleWrapState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Wrap(
     alignment: WrapAlignment.center,
-    children:
-        [
-              ...FlutterHeyteacherUtilsLocalizations.supportedLocales,
-              const Locale('en', 'US'),
-              const Locale('en', 'CA'),
-              const Locale('pt', 'BR'),
-              const Locale('es', 'AR'),
-            ]
-            .map<Widget>(
-              (locale) => ChoiceChip(
-                padding: EdgeInsets.zero,
-                side: BorderSide.none,
-                showCheckmark: false,
-                label: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxHeight: 20,
-                    maxWidth: 20,
-                  ),
-                  child: Image(
-                    image: AssetImage(
-                      'assets/locale/${_flagCode(locale)}.png',
-                      package: 'flutter_heyteacher_utils',
-                    ),
-                  ),
-                ),
-                selected: locale == LocaleViewModel.instance.locale,
-                onSelected: (selected) {
-                  setState(
-                    () => LocaleViewModel.instance.locale = selected
-                        ? locale
-                        : null,
-                  );
-                },
+    children: LocaleViewModel.instance.supportedLocales
+        .map<Widget>(
+          (locale) => ChoiceChip(
+            padding: EdgeInsets.zero,
+            side: BorderSide.none,
+            showCheckmark: false,
+            label: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxHeight: 20,
+                maxWidth: 20,
               ),
-            )
-            .toList(),
+              child: Image(
+                image: AssetImage(
+                  'assets/locale/${locale.countryCode}.png',
+                  package: 'flutter_heyteacher_utils',
+                ),
+              ),
+            ),
+            selected: locale == LocaleViewModel.instance.locale,
+            onSelected: (selected) {
+              setState(
+                () =>
+                    LocaleViewModel.instance.locale = selected ? locale : null,
+              );
+            },
+          ),
+        )
+        .toList(),
   );
-
-  String _flagCode(Locale locale) =>
-      locale.countryCode ??
-      switch (locale.languageCode) {
-        'en' => 'UK',
-        _ => locale.languageCode.toUpperCase(),
-      };
 }
 
 /// Manages the application's selected [Locale] for localization.
@@ -125,23 +138,37 @@ class LocaleViewModel {
   /// Private constructor for the singleton.
   /// Initializes the model by attempting to load the persisted locale from
   /// `SharedPreferencesAsync`.
-  LocaleViewModel._() {
-    // Load the saved locale from SharedPreferences
-    unawaited(_initLocale());
-  }
+  LocaleViewModel._();
+
+  Iterable<Locale> _supportedLocales = [
+    _availableLocales['US']!,
+  ];
+
+  /// Returns the supported locales for the app.
+  ///
+  /// The supported locale are set calling [initLocale].
+  Iterable<Locale> get supportedLocales => _supportedLocales;
+
+  /// the supported locales for the app
+  static const Map<String, Locale> _availableLocales = {
+    'AR': Locale.fromSubtags(languageCode: 'es', countryCode: 'AR'),
+    'BR': Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
+    'CA': Locale.fromSubtags(languageCode: 'en', countryCode: 'CA'),
+    'DE': Locale.fromSubtags(languageCode: 'de', countryCode: 'DE'),
+    'ES': Locale.fromSubtags(languageCode: 'es', countryCode: 'ES'),
+    'FR': Locale.fromSubtags(languageCode: 'fr', countryCode: 'FR'),
+    'GB': Locale.fromSubtags(languageCode: 'en', countryCode: 'GB'),
+    'IT': Locale.fromSubtags(languageCode: 'it', countryCode: 'IT'),
+    'PT': Locale.fromSubtags(languageCode: 'pt', countryCode: 'PT'),
+    'US': Locale.fromSubtags(languageCode: 'en', countryCode: 'US'),
+  };
 
   static final Locale _defaultLocale =
-      FlutterHeyteacherUtilsLocalizations.supportedLocales.singleWhereOrNull(
-        (locale) => locale.languageCode.startsWith(
-          Intl.getCurrentLocale().substring(0, 2),
-        ),
-      ) ??
-      FlutterHeyteacherUtilsLocalizations.supportedLocales.singleWhereOrNull(
-        (locale) => locale.languageCode.startsWith(
-          'en',
-        ),
-      ) ??
-      FlutterHeyteacherUtilsLocalizations.supportedLocales.first;
+      LocaleViewModel._availableLocales[PlatformDispatcher
+          .instance
+          .locale
+          .countryCode] ??
+      _availableLocales['US']!;
 
   static LocaleViewModel? _instance;
 
@@ -164,10 +191,11 @@ class LocaleViewModel {
   /// Finally, yields [newLocale] to the [localeStream]
   set locale(Locale? newLocale) {
     _locale = newLocale ?? _defaultLocale;
+    assert(_locale.countryCode != null, 'country code cannot be null');
     unawaited(
       SharedPreferencesAsync().setString(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.fhuLocale.name,
-        _locale.languageCode,
+        FlutterHeyteacherUtilsSharedPreferencesKeys.fhuCountryCode.name,
+        _locale.countryCode!,
       ),
     );
     _localeStreamController.sink.add(_locale);
@@ -183,22 +211,29 @@ class LocaleViewModel {
   /// is updated.
   Stream<Locale> get localeStream => _localeStreamController.stream.distinct();
 
-  Locale _localeFromLanguageCode([String? languageCode]) => languageCode == null
-      ? _defaultLocale
-      : FlutterHeyteacherUtilsLocalizations.supportedLocales
-                .where(
-                  (locale) =>
-                      locale.languageCode.toLowerCase() ==
-                      languageCode.toLowerCase(),
-                )
-                .firstOrNull ??
-            _defaultLocale;
-
-  Future<void> _initLocale() async {
-    final languageCode = await SharedPreferencesAsync().getString(
-      FlutterHeyteacherUtilsSharedPreferencesKeys.fhuLocale.name,
+  /// Initializes supported locales and current locale.
+  /// 
+  /// set the supported locales from [supportedCountries] and set current 
+  /// locale loading from [SharedPreferences]
+  Future<void> initLocale({
+    Iterable<String> supportedCountries = const ['US'],
+  }) async {
+    _supportedLocales = supportedCountries.map(
+      (country) => _localeFromCountryCode(
+        countryCode: country,
+      ),
     );
-    _locale = _localeFromLanguageCode(languageCode);
+    _locale = _localeFromCountryCode(
+      countryCode: await SharedPreferencesAsync().getString(
+        FlutterHeyteacherUtilsSharedPreferencesKeys.fhuCountryCode.name,
+      ),
+    );
     _localeStreamController.sink.add(_locale);
   }
+
+  Locale _localeFromCountryCode({
+    required String? countryCode,
+  }) => countryCode == null
+      ? _defaultLocale
+      : _availableLocales[countryCode] ?? _defaultLocale;
 }
