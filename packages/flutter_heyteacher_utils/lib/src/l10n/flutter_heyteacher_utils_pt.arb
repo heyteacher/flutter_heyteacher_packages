@@ -1,0 +1,121 @@
+{
+  "@@locale": "pt",
+  "account": "Conta",
+  "@account": {},
+  "userNotAuthenticated": "Usuário não autenticado",
+  "@userNotAuthenticated": {},
+  "notAuthenticated": "Não autenticado",
+  "@notAuthenticated": {},
+  "errorOnRetrieveData": "Erro ao recuperar dados",
+  "@errorOnRetrieveData": {},
+  "timeoutOnRetrieveData": "Tempo limite ao recuperar dados",
+  "@timeoutOnRetrieveData": {},
+  "confirm": "Confirmar",
+  "@confirm": {},
+  "areYouSureToConfirmTheAction": "Tem certeza de que deseja confirmar a ação?",
+  "@areYouSureToConfirmTheAction": {},
+  "encryptionPassphraseIsEmptySetIt": "A Frase Criptográfica está vazia, defina-a",
+  "@encryptionPassphraseIsEmptySetIt": {},
+  "missingEncryptionSecretKeyImportIt": "Chave Criptográfica ausente, importe-a",
+  "@missingEncryptionSecretKeyImportIt": {},
+  "errorOnEncryptionCheckPassphrase": "Erro na criptografia, verifique a Frase Criptográfica",
+  "@errorOnEncryptionCheckPassphrase": {},
+  "errorOnDecryptionCheckPassphrase": "Erro na descriptografia, verifique a Frase Criptográfica",
+  "@errorOnDecryptionCheckPassphrase": {},
+  "id": "ID: ",
+  "@id": {},
+  "version": "Versão: ",
+  "@version": {},
+  "askSupport": "Pedir suporte",
+  "@askSupport": {},
+  "askSupportFor": "Pedir suporte para: ",
+  "@askSupportFor": {},
+  "logging": "Registro",
+  "@logging": {},
+  "loggingLevel": "Nível de registro",
+  "@loggingLevel": {},
+  "areYouSureToChangeEncryptionPassphrase": "Se você alterar a Frase Criptográfica, não poderá acessar os dados criptografados com a frase secreta antiga.\n\nTem certeza de que deseja alterar a Frase Criptográfica?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Se você importar uma chave Criptográfica, a chave antiga será substituída e os dados criptografados com a chave antiga serão perdidos.\n\nTem certeza de que deseja importar a chave Criptográfica?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Chave Criptográfica importada",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Senha",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Chave Criptográfica",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Digitalize o código QR com outro dispositivo ou armazene-o em um local seguro.\nO código QR é criptografado com a Frase Criptográfica.\nVocê deve definir a mesma Frase Criptográfica no novo dispositivo.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "errorWorkflowTaskAlreadyInitialized": "Tarefa de fluxo de trabalho já inicializada",
+  "@errorWorkflowTaskAlreadyInitialized": {},
+  "errorWorkflowNotInitialized": "Fluxo de trabalho não inicializado",
+  "@errorWorkflowNotInitialized": {},
+  "contentUnavailableOfflineRetryWhenOnline": "Conteúdo indisponível offline.\n\nTente novamente quando o dispositivo estiver conectado à internet.",
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "deleteUserData": "Agendar exclusão de dados do usuário",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "Você confirma a exclusão dos seus dados de usuário?\nCuidado! Esta ação não pode ser desfeita até depois de {expireDateTime}.",
+  "@doYouConfirmDeletionUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "restoreUserData": "Restaurar dados do usuário",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "Você agendou a exclusão dos seus dados de usuário para {expireDateTime}.\nVocê confirma o cancelamento da exclusão agendada?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "task": "Tarefa",
+  "@task": {},
+  "description": "Descrição",
+  "@description": {},
+  "tasks": "Tarefas",
+  "@tasks": {},
+  "skip": "Pular",
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo offline. Peça suporte quando o dispositivo estiver conectado à internet.",
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "defaultValue": "Padrão: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "nSeconds": "{nSeconds, plural, =0{0 seg} =1{1 seg} other{{nSeconds} segs}}",
+  "@nSeconds": {
+    "placeholders": {
+      "nSeconds": {}
+    }
+  },
+  "search": "Pesquisar",
+  "@search": {},
+  "enableLogsStorage": "Habilitar armazenamento de logs",
+  "@enableLogsStorage": {},
+  "nMinutes": "{minutes, plural, =0{0 minutos} =1{1 minuto} other{{minutes} minutos}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 horas} =1{1 hora} other{{hours} horas}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
+}

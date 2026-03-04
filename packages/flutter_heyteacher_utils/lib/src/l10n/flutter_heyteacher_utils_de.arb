@@ -1,0 +1,121 @@
+{
+  "@@locale": "de",
+  "account": "Konto",
+  "@account": {},
+  "userNotAuthenticated": "Benutzer nicht authentifiziert",
+  "@userNotAuthenticated": {},
+  "notAuthenticated": "Nicht authentifiziert",
+  "@notAuthenticated": {},
+  "errorOnRetrieveData": "Fehler beim Abrufen von Daten",
+  "@errorOnRetrieveData": {},
+  "timeoutOnRetrieveData": "Zeitüberschreitung beim Abrufen von Daten",
+  "@timeoutOnRetrieveData": {},
+  "confirm": "Bestätigen",
+  "@confirm": {},
+  "areYouSureToConfirmTheAction": "Möchten Sie die Aktion wirklich bestätigen?",
+  "@areYouSureToConfirmTheAction": {},
+  "encryptionPassphraseIsEmptySetIt": "Verschlüsselungspassphrase ist leer, bitte festlegen",
+  "@encryptionPassphraseIsEmptySetIt": {},
+  "missingEncryptionSecretKeyImportIt": "Fehlender Kryptografischen Schlüssel, bitte importieren",
+  "@missingEncryptionSecretKeyImportIt": {},
+  "errorOnEncryptionCheckPassphrase": "Fehler bei der Verschlüsselung, überprüfen Sie die Verschlüsselungspassphrase",
+  "@errorOnEncryptionCheckPassphrase": {},
+  "errorOnDecryptionCheckPassphrase": "Fehler bei der Entschlüsselung, überprüfen Sie die Verschlüsselungspassphrase",
+  "@errorOnDecryptionCheckPassphrase": {},
+  "id": "ID: ",
+  "@id": {},
+  "version": "Version: ",
+  "@version": {},
+  "askSupport": "Support anfragen",
+  "@askSupport": {},
+  "askSupportFor": "Support anfragen für: ",
+  "@askSupportFor": {},
+  "logging": "Protokollierung",
+  "@logging": {},
+  "loggingLevel": "Protokollierungsstufe",
+  "@loggingLevel": {},
+  "areYouSureToChangeEncryptionPassphrase": "Wenn Sie die Verschlüsselungspassphrase ändern, können Sie nicht mehr auf Daten zugreifen, die mit der alten Passphrase verschlüsselt wurden.\n\nMöchten Sie die Verschlüsselungspassphrase wirklich ändern?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Wenn Sie einen Kryptografischen Schlüssel importieren, wird der alte Schlüssel überschrieben und mit dem alten Schlüssel verschlüsselte Daten gehen verloren.\n\nMöchten Sie den Kryptografischen Schlüssel wirklich importieren?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Kryptografischen Schlüssel importiert",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Passwort",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Kryptografischen Schlüssel",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scannen Sie den QR-Code mit einem anderen Gerät oder speichern Sie ihn an einem sicheren Ort.\nDer QR-Code ist mit der Verschlüsselungspassphrase verschlüsselt.\nSie müssen auf dem neuen Gerät dieselbe Verschlüsselungspassphrase festlegen.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "errorWorkflowTaskAlreadyInitialized": "Workflow-Aufgabe bereits initialisiert",
+  "@errorWorkflowTaskAlreadyInitialized": {},
+  "errorWorkflowNotInitialized": "Workflow nicht initialisiert",
+  "@errorWorkflowNotInitialized": {},
+  "contentUnavailableOfflineRetryWhenOnline": "Inhalt offline nicht verfügbar.\n\nVersuchen Sie es erneut, wenn das Gerät mit dem Internet verbunden ist.",
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "deleteUserData": "Löschung der Benutzerdaten planen",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "Bestätigen Sie die Löschung Ihrer Benutzerdaten?\nSeien Sie vorsichtig! Diese Aktion kann erst nach {expireDateTime} rückgängig gemacht werden.",
+  "@doYouConfirmDeletionUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "restoreUserData": "Benutzerdaten wiederherstellen",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "Sie haben die Löschung Ihrer Benutzerdaten für {expireDateTime} geplant.\nBestätigen Sie, dass Sie die geplante Löschung abbrechen möchten?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "task": "Aufgabe",
+  "@task": {},
+  "description": "Beschreibung",
+  "@description": {},
+  "tasks": "Aufgaben",
+  "@tasks": {},
+  "skip": "Überspringen",
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Gerät offline. Support anfragen, wenn das Gerät mit dem Internet verbunden ist.",
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "defaultValue": "Standard: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "nSeconds": "{nSeconds, plural, =0{0 Sek.} =1{1 Sek.} other{{nSeconds} Sek.}}",
+  "@nSeconds": {
+    "placeholders": {
+      "nSeconds": {}
+    }
+  },
+  "search": "Suchen",
+  "@search": {},
+  "enableLogsStorage": "Protokollspeicherung aktivieren",
+  "@enableLogsStorage": {},
+  "nMinutes": "{minutes, plural, =0{0 Minuten} =1{1 Minute} other{{minutes} Minuten}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 Stunden} =1{1 Stunde} other{{hours} Stunden}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
+}

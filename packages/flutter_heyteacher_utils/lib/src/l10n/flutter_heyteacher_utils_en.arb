@@ -1,0 +1,121 @@
+{
+  "@@locale": "en",
+  "account": "Account",
+  "@account": {},
+  "userNotAuthenticated": "User not authenticated",
+  "@userNotAuthenticated": {},
+  "notAuthenticated": "Not Authenticated",
+  "@notAuthenticated": {},
+  "errorOnRetrieveData": "Error on retrieve Data",
+  "@errorOnRetrieveData": {},
+  "timeoutOnRetrieveData": "Timeout on retrieve data",
+  "@timeoutOnRetrieveData": {},
+  "confirm": "Confirm",
+  "@confirm": {},
+  "areYouSureToConfirmTheAction": "Are you sure to confirm the action?",
+  "@areYouSureToConfirmTheAction": {},
+  "encryptionPassphraseIsEmptySetIt": "Encryption Passphrase is empty, set it",
+  "@encryptionPassphraseIsEmptySetIt": {},
+  "missingEncryptionSecretKeyImportIt": "Missing Encryption Key, import it",
+  "@missingEncryptionSecretKeyImportIt": {},
+  "errorOnEncryptionCheckPassphrase": "Error on encryption, check the Encryption Passphrase",
+  "@errorOnEncryptionCheckPassphrase": {},
+  "errorOnDecryptionCheckPassphrase": "Error on decryption, check the Encryption Passphrase",
+  "@errorOnDecryptionCheckPassphrase": {},
+  "id": "Id: ",
+  "@id": {},
+  "version": "Version: ",
+  "@version": {},
+  "askSupport": "Ask Support",
+  "@askSupport": {},
+  "askSupportFor": "Ask support for: ",
+  "@askSupportFor": {},
+  "logging": "Logging",
+  "@logging": {},
+  "loggingLevel": "Logging Level",
+  "@loggingLevel": {},
+  "areYouSureToChangeEncryptionPassphrase": "If you change the Encryption Passphrase, you will not be able to access data encrypted with the old passphrase.\n\nAre you sure you want to change the Encryption Passphrase?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "If you import an Encryption Key, the old key will be overridden and data encrypted with the old key will be lost.\n\nAre you sure you want to import the Encryption Key?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Encryption Key imported",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Passphrase",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Encryption Key",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scan the QR code with another device or store it in a secure place.\nThe QR code is encrypted with the Encryption Passphrase.\nYou must set the same Encryption Passphrase on the new device.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "errorWorkflowTaskAlreadyInitialized": "Workflow task already initialized",
+  "@errorWorkflowTaskAlreadyInitialized": {},
+  "errorWorkflowNotInitialized": "Workflow not initialized",
+  "@errorWorkflowNotInitialized": {},
+  "contentUnavailableOfflineRetryWhenOnline": "Content unavailable offline.\n\nRetry when the device is connected to the internet.",
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "deleteUserData": "Schedule deletion User Data",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "Do you confirm the deletion of your user data?\nBe careful! This action cannot be undone until after {expireDateTime}.",
+  "@doYouConfirmDeletionUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "restoreUserData": "Restore User Data",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "You sheduled the deletion of your user data on {expireDateTime}.\nDo you confirm to cancel the deletion scheduled?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "task": "Task",
+  "@task": {},
+  "description": "Description",
+  "@description": {},
+  "tasks": "Tasks",
+  "@tasks": {},
+  "skip": "Skip",
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Device offline. Ask support when the device is connected to the internet.",
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "defaultValue": "Default: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "nSeconds": "{nSeconds, plural, =0{0 seconds} =1{1 second} other{{nSeconds} seconds}}",
+  "@nSeconds": {
+    "placeholders": {
+      "nSeconds": {}
+    }
+  },
+  "search": "Search",
+  "@search": {},
+  "enableLogsStorage": "Enable Logs Storage",
+  "@enableLogsStorage": {},
+  "nMinutes": "{minutes, plural, =0{0 minutes} =1{1 minute} other{{minutes} minutes}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 hour} =1{1 hour} other{{hours} hours}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
+}

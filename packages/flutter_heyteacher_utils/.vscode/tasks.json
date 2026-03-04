@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dart",
+			"command": "dart",
+			"args": [
+				"run",
+				"flutter_heyteacher_meta:version",
+				"build"
+			],
+			"group": "build",
+			"problemMatcher": [],
+			"label": "dart: run flutter_heyteacher_meta:version build",
+			"detail": "increment version build number",
+			"presentation": {
+				"close": true,
+				"echo": false,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": false
+			}
+		}
+	]
+}

@@ -1,0 +1,121 @@
+{
+  "@@locale": "it",
+  "account": "Account",
+  "@account": {},
+  "userNotAuthenticated": "Utente non autenticato",
+  "@userNotAuthenticated": {},
+  "notAuthenticated": "Non autenticato",
+  "@notAuthenticated": {},
+  "errorOnRetrieveData": "Errore nel recupero dei dati",
+  "@errorOnRetrieveData": {},
+  "timeoutOnRetrieveData": "Timeout nel recupero dei dati",
+  "@timeoutOnRetrieveData": {},
+  "confirm": "Conferma",
+  "@confirm": {},
+  "areYouSureToConfirmTheAction": "Sei sicuro di voler confermare l'azione?",
+  "@areYouSureToConfirmTheAction": {},
+  "encryptionPassphraseIsEmptySetIt": "La password di crittografia è vuota, impostala",
+  "@encryptionPassphraseIsEmptySetIt": {},
+  "missingEncryptionSecretKeyImportIt": "Chiave Crittografica mancante, importala",
+  "@missingEncryptionSecretKeyImportIt": {},
+  "errorOnEncryptionCheckPassphrase": "Errore di crittografia, controlla la password di crittografia",
+  "@errorOnEncryptionCheckPassphrase": {},
+  "errorOnDecryptionCheckPassphrase": "Errore di decrittografia, controlla la password di crittografia",
+  "@errorOnDecryptionCheckPassphrase": {},
+  "id": "ID: ",
+  "@id": {},
+  "version": "Versione: ",
+  "@version": {},
+  "askSupport": "Chiedi supporto",
+  "@askSupport": {},
+  "askSupportFor": "Chiedi supporto per: ",
+  "@askSupportFor": {},
+  "logging": "Registrazione",
+  "@logging": {},
+  "loggingLevel": "Livello di registrazione",
+  "@loggingLevel": {},
+  "areYouSureToChangeEncryptionPassphrase": "Se modifichi la password crittografica, non potrai più accedere ai dati crittografati con la vecchia passphrase.\n\nSei sicuro di voler modificare la password crittografica?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Se importi una chiave crittografica, la vecchia chiave verrà sovrascritta e i dati crittografati con la vecchia chiave andranno persi.\n\nSei sicuro di voler importare la chiave crittografica?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Chiave crittografica importata",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Password",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Chiave Crittografica",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro.\nIl codice QR è crittografato con la password crittografica.\nDevi impostare la stessa password crittografica sul nuovo dispositivo.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "errorWorkflowTaskAlreadyInitialized": "Attività del flusso di lavoro già inizializzata",
+  "@errorWorkflowTaskAlreadyInitialized": {},
+  "errorWorkflowNotInitialized": "Flusso di lavoro non inizializzato",
+  "@errorWorkflowNotInitialized": {},
+  "contentUnavailableOfflineRetryWhenOnline": "Contenuto non disponibile offline.\n\nRiprova quando il dispositivo è connesso a internet.",
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "deleteUserData": "Pianifica eliminazione dati utente",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "Confermi l'eliminazione dei tuoi dati utente?\nAttenzione! Questa azione non può essere annullata fino a dopo {expireDateTime}.",
+  "@doYouConfirmDeletionUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "restoreUserData": "Ripristina dati utente",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "Hai pianificato l'eliminazione dei tuoi dati utente per il {expireDateTime}.\nConfermi di voler annullare l'eliminazione pianificata?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "task": "Attività",
+  "@task": {},
+  "description": "Descrizione",
+  "@description": {},
+  "tasks": "Attività",
+  "@tasks": {},
+  "skip": "Salta",
+  "@skip": {},
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a internet.",
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "defaultValue": "Predefinito: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "nSeconds": "{nSeconds, plural, =0{0 sec} =1{1 sec} other{{nSeconds} sec}}",
+  "@nSeconds": {
+    "placeholders": {
+      "nSeconds": {}
+    }
+  },
+  "search": "Cerca",
+  "@search": {},
+  "enableLogsStorage": "Abilita archiviazione log",
+  "@enableLogsStorage": {},
+  "nMinutes": "{minutes, plural, =0{0 minuti} =1{1 minuto} other{{minutes} minuti}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 ore} =1{1 ora} other{{hours} ore}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
+}
