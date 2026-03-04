@@ -1,0 +1,5 @@
+arb-dir: lib/src/l10n
+template-arb-file: flutter_heyteacher_text_to_speech_en.arb
+output-localization-file: flutter_heyteacher_text_to_speech.dart
+output-class: FlutterHeyteacherTextToSpeechLocalizations
+untranslated-messages-file: untranslated-messages.txt
