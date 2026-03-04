@@ -86,7 +86,8 @@ lane :release do|options|
   puts "make release #{version} release github #{options[:github]}"
   if options[:github] == true
     puts "create github release for #{version}"
-    create_github_release("v#{version}")
+    package_name = sh("basename `pwd`")
+    create_github_release("#{package_name}-#{version}")
   end
 end
 
