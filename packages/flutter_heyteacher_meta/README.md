@@ -104,7 +104,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 
 - [auto-changelog](https://github.com/cookpete/auto-changelog): Command line tool for generating a changelog from git tags and commit history
 
-- [vscode-markdownlint](http://github.com/DavidAnson/vscode-markdownlint): Markdown/CommonMark linting and style checking for Visual Studio Code
+- [vscode-markdownlint](https://github.com/DavidAnson/vscode-markdownlint): Markdown/CommonMark linting and style checking for Visual Studio Code
 
 - [vscode-markdown](https://github.com/yzhang-gh/vscode-markdown): All you need for Markdown (keyboard shortcuts, table of contents, auto preview and more).
 
@@ -418,7 +418,7 @@ These command make several tasks:
 - create a `pull request` and merge changes into `main` branch
 - checkout the `main` branch
 - delete the branch merged (if `merge` param is `true)  
-- create a git `tag`
+- create a git `tag` named `{package-name}-{version}`
 
 ### github_release
 
