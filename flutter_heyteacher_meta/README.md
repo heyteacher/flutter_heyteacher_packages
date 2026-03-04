@@ -16,6 +16,8 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 - [Flutter Heyteacher Meta](#flutter-heyteacher-meta)
   - [Table of Contents](#table-of-contents)
   - [Installing](#installing)
+  - [Credits](#credits)
+  - [Requirements](#requirements)
   - [Environment Setup](#environment-setup)
     - [Flutter](#flutter)
     - [Visual Studio Code](#visual-studio-code)
@@ -58,7 +60,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [Integration Test](#integration-test)
     - [Firebase Test Lab](#firebase-test-lab)
   - [`Firestore` backup, restore and Point-in-time recovery](#firestore-backup-restore-and-point-in-time-recovery)
-    - [install gcloud](#install-gcloud)
+    - [install `gcloud`](#install-gcloud)
     - [Restore a Point-in-time Recovery (PITR)](#restore-a-point-in-time-recovery-pitr)
     - [Backup and Restore database](#backup-and-restore-database)
   - [Firebase Hosting](#firebase-hosting)
@@ -92,11 +94,35 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 
 - follow instuctions in [Configure `FastLane`](#configure-fastlane) in order to configure a `app` or `package` project.
 
-- test all works fine, running `fl` will show command avaiable  
+- test all works fine, running `fl` will show command avaiable
+
+## Credits
+
+- [yaml_edit](https://pub.dev/packages/yaml_edit): A library for YAML manipulation while preserving comments
+
+- [very_good_analysis](https://pub.dev/packages/very_good_analysis): This package provides lint rules for Dart and Flutter which are used at `Very Good Ventures`
+
+- [auto-changelog](https://github.com/cookpete/auto-changelog): Command line tool for generating a changelog from git tags and commit history
+
+- [vscode-markdownlint](http://github.com/DavidAnson/vscode-markdownlint): Markdown/CommonMark linting and style checking for Visual Studio Code
+
+- [vscode-markdown](https://github.com/yzhang-gh/vscode-markdown): All you need for Markdown (keyboard shortcuts, table of contents, auto preview and more).
+
+## Requirements
+
+- a shell terminal on `Linux`, `MacOS` or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) on `Windows`
+
+- `git` 1.7.2 or later
+
+- a `GitHub` account
+
+- `gh` 2.46.0 or later (GitHub CLI)
+
+- other software and utilities as described in [Environment Setup](#environment-setup)
 
 ## Environment Setup
 
-Instructions for setup environment installing all software needed to develop a Flutter project.
+Instructions for setup environment installing all software needed to develop a `Flutter` project.
 
 ### Flutter
 
@@ -180,7 +206,7 @@ You can configure you `vscode` to execute the [command-line utility `version`](#
 
 ### `auto-changelog`
 
-`auto-changelog` is an utility which generate `CHANGELOG.md` automatically based
+[auto-changelog](https://github.com/cookpete/auto-changelog) is an utility which generate `CHANGELOG.md` automatically based
 on `commits`, `pull requests` and `tags`.
 
 - install `npm` as described in [`nodeJs`](#nodejs)
@@ -366,17 +392,17 @@ fl checkout
 
 Checkout the latest remote branch already created remotely (i.e. in `github project` ).
 
-This command run a `git fetch` and run a `git checkout` to the latest branch fetched.
+Runs `git fetch` and `git checkout` to the latest branch fetched.
 
 ### release
 
 ```bash
-fl release version:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]
+fl release semver:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]
 ```
 
-After you commit and push your changes into the branch you can release to `main` branch using this command:
+Release to `main` branch after you commit and push your changes into your branch.
 
-- `version`: increments the version into `pubspec.yaml`, for example:
+- `semver`: increments the version into `pubspec.yaml` following [Semantic Versioning](https://semver.org/), for example:
   - `major`: move version from `1.0.0` to `2.0.0`
   - `minor`: move version from `1.0.0` to `1.1.0`
   - `patch`: move version from `1.0.0` to `1.0.1`
@@ -389,7 +415,9 @@ These command make several tasks:
 
 - increments the version into `pubspec.yaml`
 - create a `github release` and update `CHANGELOG.md` (if `github` param is `true)  
-- create a `pull request` and merge changes into `main` branch, checkout the `main` branch and delete the branch merged (if `merge` param is `true)  
+- create a `pull request` and merge changes into `main` branch
+- checkout the `main` branch
+- delete the branch merged (if `merge` param is `true)  
 - create a git `tag`
 
 ### github_release
@@ -397,6 +425,8 @@ These command make several tasks:
 ```bash
 fl github_release
 ```
+
+Create a `github release` and update `CHANGELOG.md`
 
 ### bump
 
@@ -766,7 +796,9 @@ The lane `fl testlab` run commands above
 
 ## `Firestore` backup, restore and Point-in-time recovery
 
-### install gcloud
+### install `gcloud`
+
+With `Google Cloud CLI` you can manage command line `Gogle Cloud` services.
 
 ```bash
 sudo apt-get install apt-transport-https ca-certificates gnupg curl
