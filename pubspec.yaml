@@ -1,0 +1,10 @@
+name: _
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+workspace:
+  - packages/flutter_heyteacher_utils
+  - packages/flutter_heyteacher_text_to_speech
+
