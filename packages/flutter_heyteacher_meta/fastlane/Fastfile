@@ -98,7 +98,6 @@ def create_github_release(version)
     puts "generate CHANGELOG.md with auto-changelog"
     sh("auto-changelog -u -v #{version} --ignore-commit-pattern  \"docs\\(CHANGELOG\\)|build\\(deps\\): bump\"")
   end
-  exit(0)
   sh("git branch release")
   sh("git checkout release")
   puts "commit CHANGELOG.md with release #{version}"
