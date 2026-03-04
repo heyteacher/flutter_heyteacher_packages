@@ -42,10 +42,12 @@ end
 desc "fl github_release \n\tCreates a github release and update CHANGELOG.md"
 lane :github_release do
   version = ""
+  package_name = ""
   Dir.chdir("../") do
     version = sh("dart run flutter_heyteacher_meta:version show")
+    package_name = sh("basename `pwd`").strip!
   end 
-  create_github_release("v#{version}")
+  create_github_release("#{package_name}-#{version}")
 end
 
 desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release, merge branch into main and creates a github release"
@@ -86,7 +88,10 @@ lane :release do|options|
   puts "make release #{version} release github #{options[:github]}"
   if options[:github] == true
     puts "create github release for #{version}"
-    package_name = sh("basename `pwd`")
+    package_name = ""
+    Dir.chdir("../") do
+      package_name = sh("basename `pwd`").strip!
+    end
     create_github_release("#{package_name}-#{version}")
   end
 end
