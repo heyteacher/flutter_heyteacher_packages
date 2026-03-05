@@ -42,12 +42,10 @@ end
 desc "fl github_release \n\tCreates a github release and update CHANGELOG.md"
 lane :github_release do
   version = ""
-  package_name = ""
   Dir.chdir("../") do
     version = sh("dart run flutter_heyteacher_meta:version show")
-    package_name = sh("basename `pwd`").strip!
   end 
-  create_github_release("#{package_name}-#{version}")
+  create_github_release(version)
 end
 
 desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release, merge branch into main and creates a github release"
@@ -88,11 +86,7 @@ lane :release do|options|
   puts "make release #{version} release github #{options[:github]}"
   if options[:github] == true
     puts "create github release for #{version}"
-    package_name = ""
-    Dir.chdir("../") do
-      package_name = sh("basename `pwd`").strip!
-    end
-    create_github_release("#{package_name}-#{version}")
+    create_github_release(version)
   end
 end
 
@@ -100,28 +94,32 @@ end
 # Params:
 # +version+:: the version to release
 def create_github_release(version)
+  package_name = ""
+  Dir.chdir("../") do
+    package_name = sh("basename `pwd`").strip!
+  end
   Dir.chdir("../") do
     puts "generate CHANGELOG.md with auto-changelog"
-    sh("auto-changelog -u -v #{version} --ignore-commit-pattern  \"docs\\(CHANGELOG\\)|build\\(deps\\): bump\"")
+    sh("auto-changelog -u -v #{package_name}-#{version} --tag-prefix #{package_name}- --ignore-commit-pattern  \"docs\\(CHANGELOG\\)|build\\(deps\\): bump\"")
   end
   sh("git branch release")
   sh("git checkout release")
-  puts "commit CHANGELOG.md with release #{version}"
+  puts "commit CHANGELOG.md with release #{package_name}-#{version}"
   git_commit(
     path: "CHANGELOG.md", 
-    message: "docs(CHANGELOG): update CHANGELOG.md with release #{version}"
+    message: "docs(CHANGELOG): update CHANGELOG.md with release #{package_name}-#{version}"
   )
   sh("git checkout main")
   sh("git merge release")
   sh("git branch release -d")
   push_to_git_remote
   # add tag and put remote
-  puts "create tag #{version}"
-  add_git_tag(tag: version)
-  push_git_tags(tag: version)
+  puts "create tag #{package_name}-#{version}"
+  add_git_tag(tag: "#{package_name}-#{version}")
+  push_git_tags(tag: "#{package_name}-#{version}")
   # create release with notes
-  puts "create github release #{version}"
-  sh("gh release create #{version} --generate-notes")
+  puts "create github release #{package_name}-#{version}"
+  sh("gh release create #{package_name}-#{version} --generate-notes")
 end
 
 # increment build number
