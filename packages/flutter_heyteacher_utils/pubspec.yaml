@@ -1,6 +1,6 @@
 name: flutter_heyteacher_utils
 description: "A heyteacher flutter package which implements common utilies"
-version: 1.49.9+123
+version: 1.49.10+125
 publish_to: none
 
 environment:
@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_text_to_speech:
+    path: ../flutter_heyteacher_text_to_speech   
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^10.0.0
