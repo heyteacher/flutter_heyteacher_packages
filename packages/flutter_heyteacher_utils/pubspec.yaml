@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_text_to_speech:
+    path: ../flutter_heyteacher_text_to_speech   
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^10.0.0
