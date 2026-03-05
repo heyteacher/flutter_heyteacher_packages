@@ -15,7 +15,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_utils:
-    path: ../flutter_heyteacher_utils
+    path: ../flutter_heyteacher_packages/packages//flutter_heyteacher_utils
 
 dev_dependencies:
   flutter_heyteacher_meta:
