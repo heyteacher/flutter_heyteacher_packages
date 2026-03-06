@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_firebase/firebase.dart';
+import 'package:flutter_heyteacher_locale/locale.dart' show FlutterHeyteacherLocaleLocalizations;
 import 'package:flutter_heyteacher_text_to_speech/src/l10n/flutter_heyteacher_text_to_speech.dart';
 import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,7 +46,7 @@ class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
                 .enableTextToSpeech,
           ),
           subtitle: Text(
-            FlutterHeyteacherTextToSpeechLocalizations.of(context)!
+            FlutterHeyteacherLocaleLocalizations.of(context)!
                 .defaultValue(
               RemoteConfigViewModel.instance.getBool(
                 TTSRemoteConfigKeys.ttsEnable.name,
