@@ -40,7 +40,7 @@ Firebase Firestore library using [generics](https://dart.dev/language/generics|g
 * Import the library in your code
 
   ```dart
-  import 'package:flutter_heyteacher_utils/firebase/firestore/store.dart';
+  import 'package:flutter_heyteacher_store/firebase/firestore/store.dart';
   ```
 
 * Extends the `abstract` `class` [Store] supplying configuration parameters.

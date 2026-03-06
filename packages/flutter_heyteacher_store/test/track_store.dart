@@ -1,8 +1,8 @@
 import 'package:clock/clock.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:flutter_heyteacher_e2ee/e2ee.dart';
+import 'package:flutter_heyteacher_platform/platform.dart';
 import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
-import 'package:flutter_heyteacher_utils/e2ee.dart';
-import 'package:flutter_heyteacher_utils/platform_helper.dart';
 import 'package:intl/intl.dart';
 
 part 'track_store.g.dart';

@@ -205,14 +205,15 @@
 library;
 
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel, UserNotAuthenticatedException;
+import 'package:flutter_heyteacher_connectivity/connectivity.dart';
 import 'package:flutter_heyteacher_store/src/store/store_filters.dart';
-import 'package:flutter_heyteacher_utils/connectivity.dart';
-import 'package:flutter_heyteacher_utils/firebase.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
