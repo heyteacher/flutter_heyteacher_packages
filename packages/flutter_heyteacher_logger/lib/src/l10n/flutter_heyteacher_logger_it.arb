@@ -4,12 +4,6 @@
   "@logging": {},
   "loggingLevel": "Livello di registrazione",
   "@loggingLevel": {},
-  "defaultValue": "Predefinito: {defaultValue}",
-  "@defaultValue": {
-    "placeholders": {
-      "defaultValue": {}
-    }
-  },
   "search": "Cerca",
   "@search": {},
   "enableLogsStorage": "Abilita archiviazione log",
