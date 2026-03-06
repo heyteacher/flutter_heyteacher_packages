@@ -29,5 +29,17 @@
         }
       }
     }
-  }
+  },
+  "defaultValue": "Standard: {defaultValue}",  
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "skip": "Überspringen",
+  "@skip": {},
+  "description": "Beschreibung",
+  "@description": {},
+    "contentUnavailableOfflineRetryWhenOnline": "Inhalt offline nicht verfügbar.\n\nVersuchen Sie es erneut, wenn das Gerät mit dem Internet verbunden ist.",
+  "@contentUnavailableOfflineRetryWhenOnline": {}
 }

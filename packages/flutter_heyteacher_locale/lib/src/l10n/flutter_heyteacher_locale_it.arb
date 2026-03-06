@@ -29,5 +29,17 @@
         }
       }
     }
-  }
+  },
+  "defaultValue": "Predefinito: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "skip": "Salta",
+  "@skip": {},
+  "description": "Descrizione",
+  "@description": {},
+  "contentUnavailableOfflineRetryWhenOnline": "Contenuto non disponibile offline.\n\nRiprova quando il dispositivo è connesso a internet.",
+  "@contentUnavailableOfflineRetryWhenOnline": {}
 }
