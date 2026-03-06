@@ -31,5 +31,17 @@
         }
       }
     }
-  }
+  },
+  "defaultValue": "Predeterminado: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "skip": "Omitir",
+  "@skip": {},
+  "description": "Descripción",
+  "@description": {},
+ "contentUnavailableOfflineRetryWhenOnline": "Contenido no disponible sin conexión.\n\nIntente de nuevo cuando el dispositivo esté conectado a internet.",
+  "@contentUnavailableOfflineRetryWhenOnline": {}
 }
