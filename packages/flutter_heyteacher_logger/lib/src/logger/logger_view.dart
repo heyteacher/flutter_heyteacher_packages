@@ -345,7 +345,7 @@ class _LoggingLevelDropDownMenuCardState
         FlutterHeyteacherLoggerLocalizations.of(context)!.loggingLevel,
       ),
       subtitle: Text(
-        FlutterHeyteacherLoggerLocalizations.of(context)!.defaultValue(
+        FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
           RemoteConfigViewModel.instance.getString(
             FHURemoteConfigKeys.levelName,
           ),
@@ -411,7 +411,7 @@ class _EnableLogsStorageChoiceCardState
         FlutterHeyteacherLoggerLocalizations.of(context)!.enableLogsStorage,
       ),
       subtitle: Text(
-        FlutterHeyteacherLoggerLocalizations.of(context)!.defaultValue(
+        FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
           RemoteConfigViewModel.instance.getBool(
             FHURemoteConfigKeys.enableLogsStorage.name,
           ),
