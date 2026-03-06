@@ -88,6 +88,8 @@ lane :release do|options|
     puts "create github release for #{version}"
     create_github_release(version)
   end
+  puts "run pub get to update dependencies"
+  sh("dart pub get")
 end
 
 # create a git hub release
