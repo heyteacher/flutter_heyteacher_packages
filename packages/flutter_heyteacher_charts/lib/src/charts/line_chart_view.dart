@@ -5,8 +5,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_charts/src/charts/chart_data.dart';
 import 'package:flutter_heyteacher_charts/src/charts/chart_view.dart';
-import 'package:flutter_heyteacher_utils/formats.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
+import 'package:flutter_heyteacher_locale/locale.dart';
+import 'package:flutter_heyteacher_views/views.dart';
 
 /// A chart widget that displays data as one or more lines.
 ///
