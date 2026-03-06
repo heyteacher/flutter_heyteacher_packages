@@ -958,9 +958,9 @@ firebase hosting:sites:delete <Alternative Site Id>
 
   ```yaml
   arb-dir: lib/src/l10n
-  template-arb-file: flutter_heyteacher_utils_en.arb
-  output-localization-file: flutter_heyteacher_utils.dart
-  output-class: FlutterHeyteacherUtilsLocalizations
+  template-arb-file: flutter_heyteacher_locale_en.arb
+  output-localization-file: flutter_heyteacher_locale.dart
+  output-class: FlutterHeyteacherLocaleLocalizations
   output-dir: lib/src/l10n
   untranslated-messages-file: untranslated-messages.txt
   ```
@@ -969,11 +969,11 @@ firebase hosting:sites:delete <Alternative Site Id>
 
   ```bash
   mkdir lib/l10n
-  touch lib/l10n/flutter_heyteacher_utils_en.arb
-  touch lib/l10n/flutter_heyteacher_utils_it.arb
+  touch lib/l10n/flutter_heyteacher_locale_en.arb
+  touch lib/l10n/flutter_heyteacher_locale_it.arb
   ```
 
-- insert in `flutter_heyteacher_utils_en.arb` the translation
+- insert in `flutter_heyteacher_locale_en.arb` the translation
 
 - commit `untranslated-messages.txt` the file containing localized strings to be
   translated, this file should be always empty
@@ -983,7 +983,7 @@ firebase hosting:sites:delete <Alternative Site Id>
   git commit -m "chore: localized strings to be translated, this file should be always empty"
   ```
 
-- insert localized string into `flutter_heyteacher_utils_en.arb`
+- insert localized string into `flutter_heyteacher_locale_en.arb`
 
   ```json
   {
@@ -1008,7 +1008,7 @@ firebase hosting:sites:delete <Alternative Site Id>
 - create a file `lib/localizations.dart` containing the export
 
   ```dart
-  export 'package:flutter_heyteacher_utils/src/l10n/flutter_heyteacher_utils.dart' show FlutterHeyteacherUtilsLocalizations;
+  export 'package:flutter_heyteacher_locale/src/l10n/flutter_heyteacher_locale.dart' show FlutterHeyteacherLocaleLocalizations;
   ```
 
 - add delegate to your app
@@ -1019,7 +1019,7 @@ firebase hosting:sites:delete <Alternative Site Id>
       .
       .
       .
-      FlutterHeyteacherUtilsLocalizations.delegate,
+      FlutterHeyteacherLocaleLocalizations.delegate,
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,
       GlobalCupertinoLocalizations.delegate,
@@ -1031,11 +1031,11 @@ firebase hosting:sites:delete <Alternative Site Id>
 - import and use in your code
 
   ```dart
-  import 'package:flutter_heyteacher_utils/localizations.dart';
+  import 'package:flutter_heyteacher_locale/localizations.dart';
   .
   .
   .
-  FlutterHeyteacherUtilsLocalizations.of(context)!.userNotAutenticated
+  FlutterHeyteacherLocaleLocalizations.of(context)!.userNotAutenticated
   ```
 
 ## documentation utilities
