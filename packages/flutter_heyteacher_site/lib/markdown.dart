@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
-import 'package:flutter_heyteacher_utils/locale.dart' show LocaleViewModel;
-import 'package:flutter_heyteacher_utils/theme.dart';
+import 'package:flutter_heyteacher_locale/locale.dart' show LocaleViewModel;
+import 'package:flutter_heyteacher_views/views.dart';
 import 'package:markdown_widget/config/all.dart';
 import 'package:markdown_widget/widget/all.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
