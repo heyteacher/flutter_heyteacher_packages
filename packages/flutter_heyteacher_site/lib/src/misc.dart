@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_utils/adaptive_layout.dart';
-import 'package:flutter_heyteacher_utils/firebase.dart';
+import 'package:flutter_heyteacher_firebase/firebase.dart';
+import 'package:flutter_heyteacher_views/views.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
 /// A _Get In On Google Play_ button.

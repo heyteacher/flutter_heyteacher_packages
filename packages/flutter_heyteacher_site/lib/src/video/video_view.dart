@@ -1,11 +1,10 @@
 import 'dart:async' show StreamController, unawaited;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_firebase/firebase.dart';
 import 'package:flutter_heyteacher_site/src/misc.dart';
 import 'package:flutter_heyteacher_site/src/video/video_data.dart';
-import 'package:flutter_heyteacher_utils/firebase.dart';
-import 'package:flutter_heyteacher_utils/theme.dart';
-import 'package:flutter_heyteacher_utils/widgets.dart';
+import 'package:flutter_heyteacher_views/views.dart';
 import 'package:video_player/video_player.dart';
 
 /// A sliver grid that displays videos.
