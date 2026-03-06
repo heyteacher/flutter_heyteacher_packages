@@ -21,8 +21,5 @@
     "placeholders": {
       "expireDateTime": {}
     }
-  },
-    "contentUnavailableOfflineRetryWhenOnline": "Inhalt offline nicht verfügbar.\n\nVersuchen Sie es erneut, wenn das Gerät mit dem Internet verbunden ist.",
-  "@contentUnavailableOfflineRetryWhenOnline": {}
-
+  }
 }
