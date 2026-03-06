@@ -1,6 +1,6 @@
 name: flutter_heyteacher_views
 description: "The flutter heyteacher package for views layer"
-version: 2.0.0+126
+version: 2.0.1+128
 homepage:
 publish_to: none
 environment:
@@ -22,6 +22,8 @@ dependencies:
     path: ../flutter_heyteacher_auth
   flutter_heyteacher_firebase:
     path: ../flutter_heyteacher_firebase
+  flutter_heyteacher_locale:
+    path: ../flutter_heyteacher_locale
   flutter_heyteacher_platform:
     path: ../flutter_heyteacher_platform
   go_router: ^17.1.0

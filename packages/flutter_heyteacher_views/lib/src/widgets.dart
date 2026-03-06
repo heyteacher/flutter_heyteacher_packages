@@ -24,6 +24,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_heyteacher_auth/auth.dart';
+import 'package:flutter_heyteacher_locale/locale.dart' show FlutterHeyteacherLocaleLocalizations;
 import 'package:flutter_heyteacher_views/src/router.dart';
 import 'package:flutter_heyteacher_views/src/theme.dart';
 import 'package:go_router/go_router.dart';
@@ -504,7 +505,7 @@ class ErrorView extends StatelessWidget {
               Expanded(
                 child: Align(
                   child: Text(
-                    FlutterHeyteacherAuthLocalizations.of(
+                    FlutterHeyteacherLocaleLocalizations.of(
                       context,
                     )!.contentUnavailableOfflineRetryWhenOnline,
                     textAlign: TextAlign.center,
