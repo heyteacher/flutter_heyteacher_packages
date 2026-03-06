@@ -1,0 +1,23 @@
+{
+  "@@locale": "it",
+  "encryptionPassphraseIsEmptySetIt": "La password di crittografia è vuota, impostala",
+  "@encryptionPassphraseIsEmptySetIt": {},
+  "missingEncryptionSecretKeyImportIt": "Chiave Crittografica mancante, importala",
+  "@missingEncryptionSecretKeyImportIt": {},
+  "errorOnEncryptionCheckPassphrase": "Errore di crittografia, controlla la password di crittografia",
+  "@errorOnEncryptionCheckPassphrase": {},
+  "errorOnDecryptionCheckPassphrase": "Errore di decrittografia, controlla la password di crittografia",
+  "@errorOnDecryptionCheckPassphrase": {},
+  "areYouSureToChangeEncryptionPassphrase": "Se modifichi la password crittografica, non potrai più accedere ai dati crittografati con la vecchia passphrase.\n\nSei sicuro di voler modificare la password crittografica?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Se importi una chiave crittografica, la vecchia chiave verrà sovrascritta e i dati crittografati con la vecchia chiave andranno persi.\n\nSei sicuro di voler importare la chiave crittografica?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Chiave crittografica importata",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Password",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Chiave Crittografica",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scansiona il codice QR con un altro dispositivo o conservalo in un luogo sicuro.\nIl codice QR è crittografato con la password crittografica.\nDevi impostare la stessa password crittografica sul nuovo dispositivo.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {}
+}

@@ -1,0 +1,33 @@
+{
+  "@@locale": "it",
+  "nSeconds": "{nSeconds, plural, =0{0 sec} =1{1 sec} other{{nSeconds} sec}}",
+  "@nSeconds": {
+    "placeholders": {
+      "nSeconds": {}
+    }
+  },
+  "nMinutes": "{minutes, plural, =0{0 minuti} =1{1 minuto} other{{minutes} minuti}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 ore} =1{1 ora} other{{hours} ore}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
+}

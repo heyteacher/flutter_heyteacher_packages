@@ -1,7 +1,27 @@
 # `flutter_heyteacher_packages`
 
-The `Flutter` @heyteacher monorepo packages collection:
+The `Flutter` @heyteacher `monorepo` packages collection:
 
-- [flutter_heyteacher_utils](packages/flutter_heyteacher_utils): A collection of common utilities (classes, helpers widgets, functions, etc..) that are used in [flutter] `heyteacher` apps, in order to mantain a unique and autoritative version of implementation avoiding the `copy-and-paste` pattern, and decoupling dependencies like firebase
+- [flutter_heyteacher_auth](packages/flutter_heyteacher_auth)
 
-- [flutter_heyteacher_text_to_speech](packages/flutter_heyteacher_text_to_speech): `Text-to-Speech` utilities
+- [flutter_heyteacher_connectivity](packages/flutter_heyteacher_connectivity)
+
+- [flutter_heyteacher_e2ee](packages/flutter_heyteacher_e2ee)
+
+- [flutter_heyteacher_firebase](packages/flutter_heyteacher_firebase/)
+
+- [flutter_heyteacher_locale](packages/flutter_heyteacher_locale)
+
+- [flutter_heyteacher_logger](packages/flutter_heyteacher_logger)
+
+- [flutter_heyteacher_heyteacher_math](packages/flutter_heyteacher_math)
+
+- [flutter_heyteacher_platform](packages/flutter_heyteacher_platform)
+
+- [flutter_heyteacher_text_to_speech](packages/flutter_heyteacher_text_to_speech)
+
+- [flutter_heyteacher_timer_workflow](packages/flutter_heyteacher_timer_workflow)
+
+- [flutter_heyteacher_views](packages/flutter_heyteacher_views)
+
+- [flutter_heyteacher_worker](packages/flutter_heyteacher_worker)

@@ -1,0 +1,934 @@
+/// A collection of reusable Flutter widgets and utility functions,
+/// likely intended to streamline UI development within the Flutter application.
+///
+/// * [FutureStreamBuilder] builder: cleverly combines a [FutureBuilder] with
+///   a [StreamBuilder].
+///
+/// * [showSnackBar] function: displays a SnackBar
+///
+/// * [showConfirmCancelDialog] function: displays a
+///    standard `AlertDialog` to ask the user for confirmation or cancellation
+///    of an action.
+///
+/// * [ProgressIndicatorView] widget: displays a [CircularProgressIndicator]
+///    centered on the screen.
+///
+/// * [ErrorView] widget: displays different error states to the user.
+library;
+
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_heyteacher_auth/auth.dart';
+import 'package:flutter_heyteacher_views/src/router.dart';
+import 'package:flutter_heyteacher_views/src/theme.dart';
+import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
+
+/// A [StreamBuilder] initialized with a [FutureBuilder].
+///
+/// It first waits for the [future] (an asynchronous operation that completes
+/// once) to provide an initial piece of data. Once that future completes
+/// successfully and has data, it then uses that data as the initialData for an
+/// inner [StreamBuilder]. This StreamBuilder then listens to the provided
+/// [stream] for ongoing updates.
+///
+/// Useful when you need to fetch an initial state (e.g., from a database or
+/// API) and then subscribe to real-time updates for that same data.
+class FutureStreamBuilder<T> extends FutureBuilder<T> {
+  /// Creates a [FutureStreamBuilder].
+  const FutureStreamBuilder({
+    required super.future,
+    required this.stream,
+    required super.builder,
+    super.key,
+  });
+
+  ///  the [stream] parameter of [StreamBuilder]
+  final Stream<T> stream;
+
+  @override
+  AsyncWidgetBuilder<T> get builder =>
+      (context, futureSnapshot) => futureSnapshot.hasData
+      ? StreamBuilder(
+          stream: stream,
+          initialData: futureSnapshot.data,
+          builder: super.builder,
+        )
+      : super.builder(context, futureSnapshot);
+}
+
+/// Easily display a [SnackBar] (a brief message shown at the bottom of the
+/// screen).
+///
+/// It takes the [BuildContext], the [message] to display, an optional
+/// [duration] (in seconds), and a boolean [error] flag to show message in
+/// red as an error (othersise in green for succes message)
+void showSnackBar({
+  required BuildContext? context,
+  required String message,
+  int? duration,
+  bool error = false,
+}) => context != null
+    ? ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(
+            seconds:
+                duration ??
+                FirebaseRemoteConfig.instance.getInt(
+                  'snackBarDurationInSeconds',
+                ),
+          ),
+          backgroundColor: error
+              ? ThemeViewModel.instance.colorScheme.onError
+              : ThemeViewModel.instance.greenColor,
+          content: Text(
+            message,
+            style: TextStyle(
+              color: error
+                  ? ThemeViewModel.instance.colorScheme.error
+                  : ThemeViewModel.instance.colorScheme.onPrimary,
+            ),
+          ),
+        ),
+      )
+    : null;
+
+/// Displays a standard [AlertDialog] to ask the user for confirmation or
+/// cancellation of an action.
+///
+/// It takes the [context], a [confirmCallback] (executed if the user
+/// confirms) and [cancelCallback] (executed if the user cancels), a [param]
+/// of type [ObjectParamType] passed to callbacks, the [title] and the [content]
+/// of dialog.
+///
+/// If [timeout] is provided, show a [ProgressIndicatorWidget] and close the
+/// dialog when [timeout] reached.
+///
+/// If [timeoutCallback] is provided, call them when [timeout] reached.
+Future<bool> showConfirmCancelDialog<ObjectParamType>({
+  required BuildContext context,
+  required Widget content,
+  Widget? title,
+  ObjectParamType? param,
+  Future<String?> Function(ObjectParamType?)? confirmCallback,
+  Future<String?> Function(ObjectParamType?)? cancelCallback,
+  VoidCallback? timeoutCallback,
+  Duration? timeout,
+  Color? backgroundColor,
+}) async {
+  assert(
+    (timeoutCallback == null || timeout != null),
+    'if timeoutCallback provided, also timeout must be provided',
+  );
+  final logger = Logger('showConfirmCancelDialog')
+    ..finer('<showConfirmCancelDialog>:');
+  BuildContext? dialogContext;
+  final confirm = await showDialog<bool>(
+    context: context,
+    builder: (context) {
+      dialogContext = context;
+      return AlertDialog(
+        backgroundColor: backgroundColor,
+        title: title != null
+            ? Padding(padding: const EdgeInsets.only(top: 8), child: title)
+            : null,
+        content: Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: content,
+        ),
+        actions: <Widget>[
+          if (timeout != null)
+            ProgressIndicatorWidget(
+              timeout: timeout,
+              showCountdown: true,
+              constraints: const BoxConstraints(
+                maxHeight: 15,
+                maxWidth: 15,
+                minHeight: 15,
+                minWidth: 15,
+              ),
+              onTimeout: () => dialogContext != null
+                  ? SchedulerBinding.instance.addPostFrameCallback((_) {
+                      Navigator.of(dialogContext!).pop(false);
+                      timeoutCallback?.call();
+                    })
+                  : null,
+            ),
+
+          IconButton(
+            key: const ValueKey('ib_dialog_no'),
+            icon: Icon(Icons.close, color: ThemeViewModel.instance.redColor),
+            onPressed: () =>
+                // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(dialogContext!).pop(false);
+                  dialogContext = null;
+                }),
+          ),
+          if (confirmCallback != null)
+            IconButton(
+              key: const ValueKey('ib_dialog_yes'),
+              icon: const Icon(Icons.check),
+              onPressed:
+                  () => // https://stackoverflow.com/questions/55618717/error-thrown-on-navigator-pop-until-debuglocked-is-not-true
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    Navigator.of(dialogContext!).pop(true);
+                    dialogContext = null;
+                  }),
+            ),
+        ],
+      );
+    },
+  );
+  if (confirm != null) {
+    if (confirm) {
+      logger.finer('(showConfirmCancelDialog): Confirm');
+      String? message;
+      var errorRaised = false;
+      try {
+        message = await confirmCallback?.call(param);
+      } catch (error, stackTrace) {
+        errorRaised = true;
+        message = error.toString();
+        logger.severe(
+          '(showConfirmCancelDialog): error',
+          error,
+          stackTrace,
+        );
+        rethrow;
+      } finally {
+        if (context.mounted && message != null) {
+          showSnackBar(
+            context: context,
+            message: message,
+            error: errorRaised,
+          );
+        }
+      }
+    } else {
+      logger.finer('(showConfirmCancelDialog): cancel');
+      unawaited(cancelCallback?.call(param));
+    }
+  }
+  return confirm ?? false;
+}
+
+/// An icon button that displays an informational dialog when tapped.
+///
+/// This widget shows an `info` icon. When the user taps on it, a dialog
+/// is displayed using [showConfirmCancelDialog], showing the provided [title]
+/// and [content]. It's a convenient way to provide more detailed information
+/// without cluttering the main UI.
+class TooltipIconButton extends StatelessWidget {
+  /// Creates a [TooltipIconButton].
+  const TooltipIconButton({
+    required this.content,
+    super.key,
+    this.title,
+    this.iconSize = 14,
+    this.iconColor,
+  });
+
+  /// The optional title widget to display at the top of the dialog.
+  final Widget? title;
+
+  /// The main content widget to display in the dialog.
+  final Widget content;
+
+  /// The size of the info icon.
+  ///
+  /// Defaults to 14.
+  final double iconSize;
+
+  /// The color of the info icon.
+  ///
+  /// Defaults to the theme's `onSurface` color.
+  final Color? iconColor;
+
+  @override
+  Widget build(BuildContext context) => InkResponse(
+    child: Padding(
+      padding: const EdgeInsets.only(left: 3, top: 3),
+      child: Icon(
+        Icons.info,
+        size: iconSize,
+        color: iconColor ?? ThemeViewModel.instance.colorScheme.onSurface,
+      ),
+    ),
+    onTap: () => showConfirmCancelDialog<void>(
+      context: context,
+      title: title ?? const SizedBox.shrink(),
+      content: content,
+    ),
+  );
+}
+
+/// A [CircularProgressIndicator] constrained to a [constraints].
+///
+/// Typically used to indicate that some background processing or data loading
+/// is happening.
+///
+/// After a specified [timeout], it can display an alternative
+/// [timeoutWidget] and trigger an [onTimeout] callback.
+///
+/// If [showCountdown], show the countdown inside indicator
+class ProgressIndicatorWidget extends StatefulWidget {
+  /// Creates a [ProgressIndicatorWidget].
+  const ProgressIndicatorWidget({
+    super.key,
+    this.timeout = const Duration(seconds: 15),
+    this.timeoutWidget,
+    this.showCountdown = false,
+    this.onTimeout,
+    this.constraints = const BoxConstraints(
+      minHeight: 20,
+      minWidth: 20,
+      maxHeight: 20,
+      maxWidth: 20,
+    ),
+    this.padding,
+  });
+
+  /// The duration to wait before the progress indicator times out.
+  ///
+  /// Defaults to 15 seconds.
+  final Duration timeout;
+
+  /// An optional widget to display after the [timeout] duration has passed.
+  /// If null, a [SizedBox.shrink] is shown.
+  final Widget? timeoutWidget;
+
+  /// An optional callback to be executed when the timeout is reached.
+  final VoidCallback? onTimeout;
+
+  /// Optional constraints to apply to the [CircularProgressIndicator].
+  final BoxConstraints constraints;
+
+  /// Optional padding to apply to the [CircularProgressIndicator].99
+  final EdgeInsets? padding;
+
+  /// If true, show the countdown inside indicator
+  final bool showCountdown;
+
+  @override
+  State<ProgressIndicatorWidget> createState() =>
+      _ProgressIndicatorWidgetState();
+}
+
+class _ProgressIndicatorWidgetState extends State<ProgressIndicatorWidget> {
+  late int _countdownInSec;
+  Timer? _countdownTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _countdownInSec = widget.timeout.inSeconds;
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(
+      const Duration(seconds: 1),
+      (_) => setState(() {
+        _countdownInSec--;
+        if (_countdownInSec <= 0) {
+          _countdownTimer?.cancel();
+        }
+        setState(() => _countdownInSec <= 0);
+        if (_countdownInSec <= 0) {
+          widget.onTimeout?.call();
+        }
+      }),
+    );
+  }
+
+  @override
+  void dispose() {
+    _countdownTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => _countdownInSec <= 0
+      ? widget.timeoutWidget ?? const SizedBox.shrink()
+      : CircularProgressIndicator(
+          constraints: widget.constraints,
+          value: widget.showCountdown
+              ? _countdownInSec / widget.timeout.inSeconds
+              : null,
+          padding: widget.padding,
+        );
+}
+
+/// A centered view of [ProgressIndicatorWidget] constrained to
+/// a [constraints].
+///
+/// Typically used to indicate that some background processing or data loading
+/// is happening.
+///
+/// After a specified [timeout], it can display an alternative
+/// [timeoutWidget] and trigger an [onTimeout] callback.
+///
+/// If [showCountdown], show the countdown inside indicator.
+class ProgressIndicatorView extends StatelessWidget {
+  /// Creates a [ProgressIndicatorView].
+  const ProgressIndicatorView({
+    super.key,
+    this.timeout = const Duration(seconds: 15),
+    this.timeoutWidget,
+    this.showCountdown = false,
+    this.onTimeout,
+    this.constraints = const BoxConstraints(
+      minHeight: 200,
+      minWidth: 200,
+      maxHeight: 200,
+      maxWidth: 200,
+    ),
+    this.padding,
+  });
+
+  /// The duration to wait before the progress indicator times out.
+  ///
+  /// Defaults to 15 seconds.
+  final Duration timeout;
+
+  /// An optional widget to display after the [timeout] duration has passed.
+  /// If null, a [SizedBox.shrink] is shown.
+  final Widget? timeoutWidget;
+
+  /// An optional callback to be executed when the timeout is reached.
+  final VoidCallback? onTimeout;
+
+  /// Optional constraints to apply to the [ProgressIndicatorWidget].
+  final BoxConstraints constraints;
+
+  /// Optional padding to apply to the [ProgressIndicatorWidget].
+  final EdgeInsets? padding;
+
+  /// If true, show the countdown inside indicator
+  final bool showCountdown;
+
+  @override
+  Widget build(BuildContext context) => Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ProgressIndicatorWidget(
+          constraints: constraints,
+          padding: padding,
+          showCountdown: showCountdown,
+          timeout: timeout,
+          timeoutWidget: timeoutWidget,
+          onTimeout: onTimeout,
+        ),
+      ],
+    ),
+  );
+}
+
+/// A widget that displays a user-friendly screen for different error states.
+///
+/// It handles specific [FirebaseException] codes to provide contextual
+/// feedback and actions:
+/// - `permission-denied`: Shows a "user not authenticated" message and a login
+///   button to navigate to the sign-in screen.
+/// - `unavailable`: Informs the user they are offline and should retry when
+///   a connection is available.
+///
+/// For all other errors, it displays the error's string representation.
+/// The error and stack trace are also logged using `Logger`.
+class ErrorView extends StatelessWidget {
+  /// Creates an [ErrorView] to display information about an [error].
+  ///
+  /// The [stackTrace] is also logged for debugging purposes.
+  ErrorView(this.error, this.stackTrace, {super.key}) {
+    _logger.severe('<ErrorView>', error, stackTrace);
+  }
+  static final _logger = Logger('ErrorView');
+
+  /// The error object to be displayed.
+  ///
+  /// This is typically an [Exception] or [Error].
+  final Object? error;
+
+  /// The stack trace associated with the [error].
+  ///
+  /// This is used for logging and debugging.
+  final StackTrace? stackTrace;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(),
+    body: _isFirebaseExceptionCode('permission-denied')
+        ? Column(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    FlutterHeyteacherAuthLocalizations.of(
+                      context,
+                    )!.userNotAuthenticated,
+                    style: _errorStyleContent(context),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: IconButton(
+                    key: const ValueKey('ic_login'),
+                    icon: Icon(
+                      Icons.login,
+                      size: Theme.of(context).textTheme.displayMedium!.fontSize,
+                    ),
+                    color: Theme.of(context).iconTheme.color,
+                    onPressed: () async {
+                      unawaited(
+                        GoRouter.of(
+                          context,
+                        ).pushNamed(AuthRouterName.signIn.name),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          )
+        : _isFirebaseExceptionCode('unavailable')
+        ? Column(
+            children: [
+              Expanded(
+                child: Align(
+                  child: Text(
+                    FlutterHeyteacherAuthLocalizations.of(
+                      context,
+                    )!.contentUnavailableOfflineRetryWhenOnline,
+                    textAlign: TextAlign.center,
+                    style: _errorStyleContent(context),
+                  ),
+                ),
+              ),
+            ],
+          )
+        : Column(
+            children: [
+              Expanded(
+                child: Align(
+                  child: Text(
+                    error.toString(),
+                    textAlign: TextAlign.center,
+                    style: _errorStyleContent(context),
+                  ),
+                ),
+              ),
+            ],
+          ),
+  );
+
+  bool _isFirebaseExceptionCode(String code) =>
+      error == null ||
+      (error is FirebaseException &&
+          (error! as FirebaseException).code == code);
+
+  TextStyle _errorStyleContent(BuildContext context) => Theme.of(context)
+      .textTheme
+      .headlineMedium!
+      .copyWith(color: ThemeViewModel.instance.colorScheme.onError);
+}
+
+/// a Generics implementation of [DropdownMenu].
+class GenericsDropDownMenu<T> extends StatefulWidget {
+  /// Creates a generic dropdown menu.
+  const GenericsDropDownMenu({
+    required String label,
+    required void Function(T?, {int? index}) onSelected,
+    required List<({Icon? icon, String label, T value})> values,
+    super.key,
+    List<String> deniedValues = const [],
+    T? initialSelection,
+    bool enableFilter = true,
+    bool enableSearch = false,
+    void Function(String, {int? index})? addCallback,
+    int? index,
+    bool isDense = false,
+    double height = 40,
+    double? width,
+    double menuHeight = 300,
+    IconData trailingIcon = Icons.filter_list,
+  }) : _onSelected = onSelected,
+       _values = values,
+       _initialSelection = initialSelection,
+       _enableFilter = enableFilter,
+       _enableSearch = enableSearch,
+       _addCallback = addCallback,
+       _index = index,
+       _isDense = isDense,
+       _height = height,
+       _width = width,
+       _menuHeight = menuHeight,
+       _deniedValues = deniedValues,
+       _trailingIcon = trailingIcon,
+       _label = label;
+  final String _label;
+
+  /// The callback that is called when a new item is selected.
+  final void Function(T?, {int? index}) _onSelected;
+
+  /// The list of items to display in the dropdown menu.
+  final List<({String label, T value, Icon? icon})> _values;
+
+  /// The initially selected value.
+  final T? _initialSelection;
+
+  /// Whether to enable filtering of the dropdown menu entries.
+  final bool _enableFilter;
+
+  /// Whether to enable searching of the dropdown menu entries.
+  final bool _enableSearch;
+
+  /// A callback to add a new item to the dropdown menu.
+  final void Function(String, {int? index})? _addCallback;
+
+  /// An optional index to pass to the [_onSelected] and [_addCallback]
+  /// callbacks.
+  final int? _index;
+
+  /// Whether the dropdown menu is dense.
+  final bool _isDense;
+
+  /// The height of the dropdown menu.
+  final double _height;
+
+  /// The width of the dropdown menu.
+  final double? _width;
+
+  /// The height of the dropdown menu's list of entries.
+  final double _menuHeight;
+
+  /// A list of values that are not allowed to be added.
+  final List<String> _deniedValues;
+
+  /// The icon to display on the right side of the dropdown menu.
+  final IconData _trailingIcon;
+
+  @override
+  State<GenericsDropDownMenu<T>> createState() =>
+      _GenericsDropDownMenuState<T>();
+}
+
+class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
+  bool _enableAddTag = false;
+  String? _filter;
+  String? _querySearch;
+  final FocusNode _focusNode = FocusNode();
+  List<DropdownMenuEntry<T?>>? _lastFilteredEntries;
+
+  ({String? label, T? value, Icon? icon})? _value;
+
+  @override
+  void initState() {
+    super.initState();
+    _value = widget._values.firstWhereOrNull(
+      (record) => record.value == widget._initialSelection,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => DropdownMenu<T?>(
+    focusNode: _focusNode,
+    label: Text(widget._label, style: const TextStyle(fontSize: 11)),
+    initialSelection: widget._initialSelection,
+    onSelected: _preOnSelected,
+    enableSearch: widget._enableSearch,
+    searchCallback: widget._enableSearch ? _searchCallback : null,
+    requestFocusOnTap: widget._enableFilter || widget._enableSearch,
+    enableFilter: widget._enableFilter,
+    filterCallback: widget._enableFilter ? _filterCallback : null,
+    leadingIcon: widget._addCallback != null && _enableAddTag
+        ? IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add))
+        : null,
+    trailingIcon: Icon(widget._trailingIcon, applyTextScaling: true),
+    textStyle: Theme.of(
+      context,
+    ).textTheme.labelSmall!.copyWith(color: _value?.icon?.color),
+    width: widget._width,
+    menuHeight: widget._menuHeight,
+    dropdownMenuEntries: [
+      DropdownMenuEntry<T?>(value: null, label: ''),
+      ...widget._values.map(
+        (record) => DropdownMenuEntry<T?>(
+          label: record.label,
+          value: record.value,
+          leadingIcon: record.icon,
+        ),
+      ),
+    ],
+    inputDecorationTheme: InputDecorationTheme(
+      contentPadding: const EdgeInsets.only(left: 4),
+      isDense: widget._isDense,
+      constraints: BoxConstraints.tight(Size.fromHeight(widget._height)),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+    ),
+  );
+
+  Future<void> _preAddCallback() async {
+    if (_filter != null || _querySearch != null) {
+      final newValue = _filter ?? _querySearch;
+      if (widget._deniedValues.contains(newValue)) {
+        showSnackBar(
+          context: context,
+          message: 'cannot add denied value $newValue ',
+          error: true,
+        );
+      } else {
+        widget._addCallback?.call(newValue!, index: widget._index);
+      }
+      _focusNode.unfocus();
+      setState(() {
+        _enableAddTag = false;
+      });
+    }
+  }
+
+  void _preOnSelected(T? value) {
+    _value = widget._values.firstWhereOrNull((record) => record.value == value);
+    widget._onSelected(value, index: widget._index);
+    _focusNode.unfocus();
+  }
+
+  List<DropdownMenuEntry<T?>> _filterCallback(
+    List<DropdownMenuEntry<T?>> entries,
+    String filter,
+  ) {
+    _filter = filter;
+    final filteredEntries = [
+      DropdownMenuEntry<T?>(value: null, label: ''),
+      ...entries.where(
+        (entry) =>
+            entry.value != null &&
+            entry.value!.toString().toLowerCase().contains(
+              _filter!.toLowerCase(),
+            ),
+      ),
+    ];
+    if ((_filter?.isNotEmpty ?? false) &&
+        _lastFilteredEntries?.length != filteredEntries.length) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => setState(() {
+          _enableAddTag =
+              (_filter?.isNotEmpty ?? false) && filteredEntries.length == 1;
+        }),
+      );
+    }
+    _lastFilteredEntries = filteredEntries;
+    return filteredEntries;
+  }
+
+  int? _searchCallback(List<DropdownMenuEntry<T?>> entries, String query) {
+    _querySearch = query;
+    for (var i = 0; i < entries.length; i++) {
+      final entry = entries[i];
+      if (entry.value != null &&
+          (_querySearch?.isNotEmpty ?? false) &&
+          entry.value!.toString().toLowerCase().contains(
+            _querySearch!.toLowerCase(),
+          )) {
+        if (mounted) {
+          _enableAddTag = false;
+        }
+        return i;
+      }
+    }
+    if (_querySearch?.isNotEmpty ?? false) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => setState(() {
+          _enableAddTag = true;
+        }),
+      );
+    }
+    return null;
+  }
+}
+
+/// A floating action button with text and an icon.
+class FloatingActionTextIconButtom extends StatelessWidget {
+  /// Creates a floating action button with text and an icon.
+  const FloatingActionTextIconButtom({
+    required this.text,
+    required this.iconData,
+    required this.onPressed,
+    super.key,
+    this.fabKey,
+    this.backgroundColor,
+  });
+
+  /// An optional key for the floating action button.
+  final Key? fabKey;
+
+  /// The text to display below the icon.
+  final String text;
+
+  /// The icon to display.
+  final IconData iconData;
+
+  /// The background color of the button.
+  final Color? backgroundColor;
+
+  /// The callback that is called when the button is tapped.
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 1),
+    child: SizedBox(
+      height: 88,
+      width: 88,
+      child: FloatingActionButton(
+        key: fabKey,
+        // heroTag must be set unique in app for each FloatingActionButton
+        // to avoid warning introduce by go_router
+        heroTag: '${iconData}HeroTag',
+        backgroundColor: backgroundColor,
+        onPressed: onPressed,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          direction: Axis.vertical,
+          alignment: WrapAlignment.end,
+          children: [
+            Icon(size: 72, iconData),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.labelSmall!.fontSize,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+/// An abstract base class for creating views with a table-like layout.
+///
+/// Provides a set of protected helper methods for creating consistently
+/// styled text widgets and dividers, intended for use within a [Table]
+/// or similar layout.
+abstract class TableView extends StatelessWidget {
+  /// Creates a [TableView].
+  const TableView({super.key});
+
+  @protected
+  /// Creates a styled [Text] widget for labels within the table.
+  Widget labelText(
+    String text, {
+    TextAlign textAlign = TextAlign.right,
+    TextStyle? style,
+    Widget? tooltip,
+  }) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4),
+    child: Wrap(
+      alignment: textAlign == TextAlign.right
+          ? WrapAlignment.end
+          : WrapAlignment.start,
+      children: [
+        if (tooltip != null && textAlign == TextAlign.right)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: tooltip,
+          ),
+        Text(text, textAlign: textAlign, style: style),
+        if (tooltip != null && textAlign == TextAlign.left)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: tooltip,
+          ),
+      ],
+    ),
+  );
+
+  @protected
+  /// Creates a value [Text] widget with a blue color.
+  Widget valueTextBlue(
+    BuildContext context,
+    String text, {
+    TextAlign textAlign = TextAlign.left,
+  }) => valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance.blueColor,
+    textAlign: textAlign,
+  );
+
+  @protected
+  /// Creates a value [Text] widget with an orange color.
+  Widget valueTextOrange(
+    BuildContext context,
+    String text, {
+    TextAlign textAlign = TextAlign.left,
+  }) => valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance.orangeColor,
+    textAlign: textAlign,
+  );
+
+  @protected
+  /// Creates a value [Text] widget with a red color.
+  Widget valueTextRed(
+    BuildContext context,
+    String text, {
+    TextAlign textAlign = TextAlign.left,
+  }) => valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance.redColor,
+    textAlign: textAlign,
+  );
+
+  @protected
+  /// Creates a value [Text] widget with a yellow color.
+  Widget valueTextYellow(
+    BuildContext context,
+    String text, {
+    TextAlign textAlign = TextAlign.left,
+  }) => valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance.yellowColor,
+    textAlign: textAlign,
+  );
+
+  @protected
+  /// Creates a value [Text] widget with a green color.
+  Widget valueTextGreen(
+    BuildContext context,
+    String text, {
+    TextAlign textAlign = TextAlign.left,
+  }) => valueText(
+    context,
+    text,
+    color: ThemeViewModel.instance.greenColor,
+    textAlign: textAlign,
+  );
+
+  /// A private helper to create a styled [Text] widget for displaying values.
+  @protected
+  Widget valueText(
+    BuildContext context,
+    String text, {
+    TextAlign textAlign = TextAlign.left,
+    Color? color,
+  }) => Padding(
+    padding: const EdgeInsets.only(left: 4, right: 4),
+    child: Text(text, textAlign: textAlign, style: _textStyle(context, color)),
+  );
+
+  /// Returns a [TextStyle] for value widgets, based on the current theme.
+  TextStyle _textStyle(BuildContext context, Color? color) =>
+      Theme.of(context).textTheme.labelLarge!.copyWith(color: color);
+}

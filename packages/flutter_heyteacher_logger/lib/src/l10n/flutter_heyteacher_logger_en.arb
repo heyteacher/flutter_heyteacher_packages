@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+  "logging": "Logging",
+  "@logging": {},
+  "loggingLevel": "Logging Level",
+  "@loggingLevel": {},
+  "defaultValue": "Default: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "search": "Search",
+  "@search": {},
+  "enableLogsStorage": "Enable Logs Storage",
+  "@enableLogsStorage": {}
+}

@@ -1,0 +1,27 @@
+{
+  "@@locale": "es",
+  "account": "Cuenta",
+  "@account": {},
+  "userNotAuthenticated": "Usuario no autenticado",
+  "@userNotAuthenticated": {},
+  "notAuthenticated": "No autenticado",
+  "@notAuthenticated": {},
+  "deleteUserData": "Programar eliminación de datos de usuario",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "¿Confirma la eliminación de sus datos de usuario?\n¡Tenga cuidado! Esta acción no se puede deshacer hasta después de {expireDateTime}.",
+  "@doYouConfirmDeletionUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "restoreUserData": "Restaurar datos de usuario",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "Ha programado la eliminación de sus datos de usuario para {expireDateTime}.\n¿Confirma que desea cancelar la eliminación programada?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+ "contentUnavailableOfflineRetryWhenOnline": "Contenido no disponible sin conexión.\n\nIntente de nuevo cuando el dispositivo esté conectado a internet.",
+  "@contentUnavailableOfflineRetryWhenOnline": {}
+ }

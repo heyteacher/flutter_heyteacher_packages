@@ -1,0 +1,35 @@
+{
+  "@@locale": "es",
+ "nSeconds": "{nSeconds, plural, =0{0 seg} =1{1 seg} other{{nSeconds} segs}}",
+  "@nSeconds": {
+    "placeholders": {
+      "nSeconds": {}
+    }
+  },
+  "enableLogsStorage": "Habilitar almacenamiento de registros",
+  "@enableLogsStorage": {},
+  "nMinutes": "{minutes, plural, =0{0 minutos} =1{1 minuto} other{{minutes} minutos}}",
+  "@nMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  },
+  "nHours": "{hours, plural, =0{0 horas} =1{1 hora} other{{hours} horas}}",
+  "@nHours": {
+    "placeholders": {
+      "hours": {
+        "type": "num",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 0
+        }
+      }
+    }
+  }
+}

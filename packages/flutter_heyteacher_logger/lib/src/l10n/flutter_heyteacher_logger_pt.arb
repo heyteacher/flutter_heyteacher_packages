@@ -1,0 +1,17 @@
+{
+  "@@locale": "pt",
+  "logging": "Registro",
+  "@logging": {},
+  "loggingLevel": "Nível de registro",
+  "@loggingLevel": {},
+  "defaultValue": "Padrão: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "search": "Pesquisar",
+  "@search": {},
+  "enableLogsStorage": "Habilitar armazenamento de logs",
+  "@enableLogsStorage": {}
+}

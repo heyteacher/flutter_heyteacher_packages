@@ -11,5 +11,10 @@ class FlutterHeyteacherTextToSpeechLocalizationsEs
       : super(locale);
 
   @override
+  String defaultValue(Object defaultValue) {
+    return 'Predeterminado: $defaultValue';
+  }
+
+  @override
   String get enableTextToSpeech => 'Enable Text to Speech';
 }

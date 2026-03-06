@@ -1,0 +1,17 @@
+{
+  "@@locale": "de",
+  "logging": "Protokollierung",
+  "@logging": {},
+  "loggingLevel": "Protokollierungsstufe",
+  "@loggingLevel": {},
+  "defaultValue": "Standard: {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "search": "Suchen",
+  "@search": {},
+  "enableLogsStorage": "Protokollspeicherung aktivieren",
+  "@enableLogsStorage": {}
+}

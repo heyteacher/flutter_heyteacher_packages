@@ -1,5 +1,11 @@
 {
     "@@locale": "fr",
+    "defaultValue": "Par défaut : {defaultValue}",
+    "@defaultValue": {
+        "placeholders": {
+            "defaultValue": {}
+        }
+    },
     "enableTextToSpeech": "Enable Text to Speech",
     "@enableTextToSpeech": {}
 }

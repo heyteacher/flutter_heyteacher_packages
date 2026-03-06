@@ -1,0 +1,23 @@
+{
+  "@@locale": "de",
+  "encryptionPassphraseIsEmptySetIt": "Verschlüsselungspassphrase ist leer, bitte festlegen",
+  "@encryptionPassphraseIsEmptySetIt": {},
+  "missingEncryptionSecretKeyImportIt": "Fehlender Kryptografischen Schlüssel, bitte importieren",
+  "@missingEncryptionSecretKeyImportIt": {},
+  "errorOnEncryptionCheckPassphrase": "Fehler bei der Verschlüsselung, überprüfen Sie die Verschlüsselungspassphrase",
+  "@errorOnEncryptionCheckPassphrase": {},
+  "errorOnDecryptionCheckPassphrase": "Fehler bei der Entschlüsselung, überprüfen Sie die Verschlüsselungspassphrase",
+  "@errorOnDecryptionCheckPassphrase": {},
+  "areYouSureToChangeEncryptionPassphrase": "Wenn Sie die Verschlüsselungspassphrase ändern, können Sie nicht mehr auf Daten zugreifen, die mit der alten Passphrase verschlüsselt wurden.\n\nMöchten Sie die Verschlüsselungspassphrase wirklich ändern?",
+  "@areYouSureToChangeEncryptionPassphrase": {},
+  "areYouSureToImportEncryptionSecretKey": "Wenn Sie einen Kryptografischen Schlüssel importieren, wird der alte Schlüssel überschrieben und mit dem alten Schlüssel verschlüsselte Daten gehen verloren.\n\nMöchten Sie den Kryptografischen Schlüssel wirklich importieren?",
+  "@areYouSureToImportEncryptionSecretKey": {},
+  "encryptionSecretKeyImported": "Kryptografischen Schlüssel importiert",
+  "@encryptionSecretKeyImported": {},
+  "encryptionPassphrase": "Passwort",
+  "@encryptionPassphrase": {},
+  "encryptionSecretKey": "Kryptografischen Schlüssel",
+  "@encryptionSecretKey": {},
+  "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scannen Sie den QR-Code mit einem anderen Gerät oder speichern Sie ihn an einem sicheren Ort.\nDer QR-Code ist mit der Verschlüsselungspassphrase verschlüsselt.\nSie müssen auf dem neuen Gerät dieselbe Verschlüsselungspassphrase festlegen.",
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {}
+}

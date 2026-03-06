@@ -1,0 +1,17 @@
+{
+  "@@locale": "fr",
+  "logging": "Journalisation",
+  "@logging": {},
+  "loggingLevel": "Niveau de journalisation",
+  "@loggingLevel": {},
+  "defaultValue": "Par défaut : {defaultValue}",
+  "@defaultValue": {
+    "placeholders": {
+      "defaultValue": {}
+    }
+  },
+  "search": "Rechercher",
+  "@search": {},
+  "enableLogsStorage": "Activer le stockage des journaux",
+  "@enableLogsStorage": {}
+}

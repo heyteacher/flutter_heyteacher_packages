@@ -107,6 +107,12 @@ abstract class FlutterHeyteacherTextToSpeechLocalizations {
     Locale('pt')
   ];
 
+  /// No description provided for @defaultValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Default: {defaultValue}'**
+  String defaultValue(Object defaultValue);
+
   /// No description provided for @enableTextToSpeech.
   ///
   /// In en, this message translates to:

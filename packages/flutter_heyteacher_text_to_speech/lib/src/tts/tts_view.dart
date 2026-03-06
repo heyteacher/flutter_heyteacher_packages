@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_firebase/firebase.dart';
 import 'package:flutter_heyteacher_text_to_speech/src/l10n/flutter_heyteacher_text_to_speech.dart';
 import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_data.dart';
-import 'package:flutter_heyteacher_utils/firebase.dart';
-import 'package:flutter_heyteacher_utils/locale.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A card widget with a switch to enable or disable Text-To-Speech (TTS).
@@ -46,7 +45,8 @@ class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
                 .enableTextToSpeech,
           ),
           subtitle: Text(
-            FlutterHeyteacherUtilsLocalizations.of(context)!.defaultValue(
+            FlutterHeyteacherTextToSpeechLocalizations.of(context)!
+                .defaultValue(
               RemoteConfigViewModel.instance.getBool(
                 TTSRemoteConfigKeys.ttsEnable.name,
               ),

@@ -1,0 +1,28 @@
+{
+  "@@locale": "de",
+  "account": "Konto",
+  "@account": {},
+  "userNotAuthenticated": "Benutzer nicht authentifiziert",
+  "@userNotAuthenticated": {},
+  "notAuthenticated": "Nicht authentifiziert",
+  "@notAuthenticated": {},
+  "deleteUserData": "Löschung der Benutzerdaten planen",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "Bestätigen Sie die Löschung Ihrer Benutzerdaten?\nSeien Sie vorsichtig! Diese Aktion kann erst nach {expireDateTime} rückgängig gemacht werden.",
+  "@doYouConfirmDeletionUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "restoreUserData": "Benutzerdaten wiederherstellen",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "Sie haben die Löschung Ihrer Benutzerdaten für {expireDateTime} geplant.\nBestätigen Sie, dass Sie die geplante Löschung abbrechen möchten?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+    "contentUnavailableOfflineRetryWhenOnline": "Inhalt offline nicht verfügbar.\n\nVersuchen Sie es erneut, wenn das Gerät mit dem Internet verbunden ist.",
+  "@contentUnavailableOfflineRetryWhenOnline": {}
+
+}

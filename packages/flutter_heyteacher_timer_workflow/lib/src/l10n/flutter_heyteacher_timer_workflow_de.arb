@@ -1,0 +1,7 @@
+{
+  "@@locale": "de",
+  "errorWorkflowTaskAlreadyInitialized": "Workflow-Aufgabe bereits initialisiert",
+  "@errorWorkflowTaskAlreadyInitialized": {},
+  "errorWorkflowNotInitialized": "Workflow nicht initialisiert",
+  "@errorWorkflowNotInitialized": {}
+}

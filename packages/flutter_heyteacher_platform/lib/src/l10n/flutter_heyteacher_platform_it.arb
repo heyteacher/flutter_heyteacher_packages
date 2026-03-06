@@ -1,0 +1,9 @@
+{
+  "@@locale": "it",
+  "askSupport": "Chiedi supporto",
+  "@askSupport": {},
+  "askSupportFor": "Chiedi supporto per: ",
+  "@askSupportFor": {},
+  "deviceOfflineAskSupportWhenOnline": "Dispositivo offline. Chiedi supporto quando il dispositivo è connesso a internet.",
+  "@deviceOfflineAskSupportWhenOnline": {}
+}

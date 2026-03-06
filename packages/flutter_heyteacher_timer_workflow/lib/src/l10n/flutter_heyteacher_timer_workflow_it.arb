@@ -1,0 +1,7 @@
+{
+  "@@locale": "it",
+  "errorWorkflowTaskAlreadyInitialized": "Attività del flusso di lavoro già inizializzata",
+  "@errorWorkflowTaskAlreadyInitialized": {},
+  "errorWorkflowNotInitialized": "Flusso di lavoro non inizializzato",
+  "@errorWorkflowNotInitialized": {}
+}

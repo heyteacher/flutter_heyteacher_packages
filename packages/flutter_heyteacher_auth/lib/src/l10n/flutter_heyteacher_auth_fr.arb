@@ -1,0 +1,27 @@
+{
+  "@@locale": "fr",
+  "account": "Compte",
+  "@account": {},
+  "userNotAuthenticated": "Utilisateur non authentifié",
+  "@userNotAuthenticated": {},
+  "notAuthenticated": "Non authentifié",
+  "@notAuthenticated": {},
+  "deleteUserData": "Planifier la suppression des données utilisateur",
+  "@deleteUserData": {},
+  "doYouConfirmDeletionUserData": "Confirmez-vous la suppression de vos données utilisateur ?\nAttention ! Cette action ne peut pas être annulée avant le {expireDateTime}.",
+  "@doYouConfirmDeletionUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "restoreUserData": "Restaurer les données utilisateur",
+  "@restoreUserData": {},
+  "doYouConfirmRestoringUserData": "Vous avez planifié la suppression de vos données utilisateur pour le {expireDateTime}.\nConfirmez-vous l'annulation de la suppression planifiée ?",
+  "@doYouConfirmRestoringUserData": {
+    "placeholders": {
+      "expireDateTime": {}
+    }
+  },
+  "contentUnavailableOfflineRetryWhenOnline": "Contenu indisponible hors ligne.\n\nRéessayez lorsque l'appareil est connecté à internet.",
+  "@contentUnavailableOfflineRetryWhenOnline": {}
+}

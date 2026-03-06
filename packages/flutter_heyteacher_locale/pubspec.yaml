@@ -1,0 +1,36 @@
+name: flutter_heyteacher_locale
+description: "The flutter heyteacher package for locale utilities."
+version: 2.0.0+126
+homepage:
+publish_to: none # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=1.17.0"
+
+resolution: workspace
+
+dependencies:
+  clock: ^1.1.2
+  flutter:
+    sdk: flutter
+  flutter_heyteacher_firebase:
+    path: ../flutter_heyteacher_firebase
+  flutter_heyteacher_platform:
+    path: ../flutter_heyteacher_platform
+  flutter_heyteacher_text_to_speech:
+    path: ../flutter_heyteacher_text_to_speech
+  flutter_heyteacher_views:
+    path: ../flutter_heyteacher_views
+  intl: ^0.20.2
+  shared_preferences: ^2.5.4
+
+dev_dependencies:
+  flutter_heyteacher_meta: ^4.4.4+128
+  flutter_test:
+    sdk: flutter
+ 
+flutter:
+  generate: true
+  assets:
+    - assets/locale/
