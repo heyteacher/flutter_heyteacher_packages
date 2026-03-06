@@ -22,6 +22,8 @@ dependencies:
     path: ../flutter_heyteacher_auth
   flutter_heyteacher_firebase:
     path: ../flutter_heyteacher_firebase
+  flutter_heyteacher_locale:
+    path: ../flutter_heyteacher_locale
   flutter_heyteacher_platform:
     path: ../flutter_heyteacher_platform
   go_router: ^17.1.0
