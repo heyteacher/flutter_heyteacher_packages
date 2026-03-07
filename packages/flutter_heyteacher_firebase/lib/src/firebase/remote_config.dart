@@ -61,21 +61,6 @@ enum FHURemoteConfigKeys {
   /// workers in a separate isolate.
   execWorkerInIsolate,
 
-  /// The UID of a user for whom the logger level should be set to `FINEST`.
-  loggerUIDRootLevelFinest,
-
-  /// The default logger level name for debug builds.
-  loggerDebugRootLevelName,
-
-  /// The default logger level name for release builds.
-  loggerRootLevelName,
-
-  /// The default logger level value for debug builds.
-  loggerDebugRootLevelValue,
-
-  /// The default logger level value for release builds.
-  loggerRootLevelValue,
-
   /// A boolean flag to enable or disable log storage via remote config.
   enableLogsStorage,
 
@@ -100,16 +85,6 @@ enum FHURemoteConfigKeys {
 
   /// Web Demo E2EE Secret Key
   webDemoE2EESecretKey;
-
-  /// Gets the appropriate remote config key for the logger level name based on
-  /// the build mode (`kDebugMode`).
-  static String get levelName =>
-      kDebugMode ? loggerDebugRootLevelName.name : loggerRootLevelName.name;
-
-  /// Gets the appropriate remote config key for the logger level value based on
-  /// the build mode (`kDebugMode`).
-  static String get levelValue =>
-      kDebugMode ? loggerDebugRootLevelValue.name : loggerRootLevelValue.name;
 }
 
 /// A view model for managing Firebase Remote Config.
