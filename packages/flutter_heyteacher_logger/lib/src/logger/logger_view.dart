@@ -13,7 +13,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
 import 'package:flutter_heyteacher_locale/locale.dart';
 import 'package:flutter_heyteacher_logger/logger.dart';
 import 'package:flutter_heyteacher_logger/src/logger/logger_data.dart';
@@ -116,24 +115,24 @@ class _LoggerScreenState
 
   @override
   Future<Iterable<LogEntry>?> initData() async =>
-      LoggerViewModel.instance().logs(descending: true, limit: pageSize);
+      LoggerViewModel.instance.logs(descending: true, limit: pageSize);
 
   @override
   ScrollController get scrollController => _scrollController;
 
   @override
-  Stream<Iterable<LogEntry>> stream({required int limit}) =>
-      LoggerViewModel.instance()
-          .logs(
-            notSavedLogEntry: LoggerViewModel.instance().notSavedLogEntries,
-            descending: true,
-            limit: limit,
-          )
-          .asStream();
+  Stream<Iterable<LogEntry>> stream({required int limit}) => LoggerViewModel
+      .instance
+      .logs(
+        notSavedLogEntry: LoggerViewModel.instance.notSavedLogEntries,
+        descending: true,
+        limit: limit,
+      )
+      .asStream();
 
   @override
   @protected
-  Stream<void> get updateStream => LoggerViewModel.instance().updateStream;
+  Stream<void> get updateStream => LoggerViewModel.instance.updateStream;
 
   /// Builds the UI for the logger screen.
   @override
@@ -176,7 +175,7 @@ class _LoggerScreenState
                     )!.search,
                     labelStyle: Theme.of(context).textTheme.labelSmall,
                   ),
-                  onChanged: LoggerViewModel.instance().updateFilterText,
+                  onChanged: LoggerViewModel.instance.updateFilterText,
                 ),
               ),
               DropdownMenu<Level?>(
@@ -197,7 +196,7 @@ class _LoggerScreenState
                 trailingIcon: const Icon(Icons.filter_list),
                 // Updates the _filterLevel and rebuilds the UI when a new
                 // level is selected.
-                onSelected: LoggerViewModel.instance().updateFilterLevel,
+                onSelected: LoggerViewModel.instance.updateFilterLevel,
                 dropdownMenuEntries:
                     [
                           null,
@@ -221,7 +220,7 @@ class _LoggerScreenState
               // add refresh button to reload logs
               IconButton(
                 icon: const Icon(Icons.refresh),
-                onPressed: LoggerViewModel.instance().refresh,
+                onPressed: LoggerViewModel.instance.refresh,
               ),
             ],
           ),
@@ -333,7 +332,7 @@ class _LoggingLevelDropDownMenuCardState
   }
 
   Future<void> _init(_) async {
-    _level = await LoggerViewModel.instance().level;
+    _level = await LoggerViewModel.instance.level;
     setState(() {});
   }
 
@@ -346,9 +345,7 @@ class _LoggingLevelDropDownMenuCardState
       ),
       subtitle: Text(
         FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
-          RemoteConfigViewModel.instance.getString(
-            FHURemoteConfigKeys.levelName,
-          ),
+          LoggerViewModel.instance.defaultLevel.name,
         ),
       ),
       trailing: GenericsDropDownMenu<Level>(
@@ -365,7 +362,7 @@ class _LoggingLevelDropDownMenuCardState
   );
 
   void _onSelected(Level? level, {int? index}) {
-    unawaited(LoggerViewModel.instance().setLevel(level, index: index));
+    unawaited(LoggerViewModel.instance.setLevel(level, index: index));
     widget._onChanged();
   }
 }
@@ -385,9 +382,6 @@ class EnableLogsStorageChoiceCard extends StatefulWidget {
 
 class _EnableLogsStorageChoiceCardState
     extends State<EnableLogsStorageChoiceCard> {
-  final bool _defaultEnableLogsStorage = RemoteConfigViewModel.instance.getBool(
-    FHURemoteConfigKeys.enableLogsStorage.name,
-  );
   bool? _enableLogsStorage;
 
   @override
@@ -397,41 +391,38 @@ class _EnableLogsStorageChoiceCardState
   }
 
   Future<void> _init(_) async {
-    _enableLogsStorage = await SharedPreferencesAsync().getBool(
-      FlutterHeyteacherUtilsSharedPreferencesKeys.htuEnableLogsStorage.name,
-    );
+    _enableLogsStorage = await LoggerViewModel.instance.enableLogsStorage;
     setState(() {});
   }
 
   @override
-  Widget build(BuildContext context) => Card(
-    child: ListTile(
-      leading: const Icon(Icons.speaker_phone),
-      title: Text(
-        FlutterHeyteacherLoggerLocalizations.of(context)!.enableLogsStorage,
-      ),
-      subtitle: Text(
-        FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
-          RemoteConfigViewModel.instance.getBool(
-            FHURemoteConfigKeys.enableLogsStorage.name,
-          ),
-        ),
-      ),
-      trailing: Switch(
-        // This bool value toggles the switch.
-        value: _enableLogsStorage ?? _defaultEnableLogsStorage,
-        onChanged: (value) {
-          setState(() => _enableLogsStorage = value);
-          unawaited(
-            SharedPreferencesAsync().setBool(
-              FlutterHeyteacherUtilsSharedPreferencesKeys
-                  .htuEnableLogsStorage
-                  .name,
-              value,
+  Widget build(BuildContext context) => _enableLogsStorage == null
+      ? const ProgressIndicatorWidget()
+      : Card(
+          child: ListTile(
+            leading: const Icon(Icons.speaker_phone),
+            title: Text(
+              FlutterHeyteacherLoggerLocalizations.of(
+                context,
+              )!.enableLogsStorage,
             ),
-          );
-        },
-      ),
-    ),
-  );
+            subtitle: Text(
+              FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
+                LoggerViewModel.instance.defaultEnableLogsStorage,
+              ),
+            ),
+            trailing: Switch(
+              // This bool value toggles the switch.
+              value: _enableLogsStorage!,
+              onChanged: (value) {
+                setState(() => _enableLogsStorage = value);
+                unawaited(
+                  LoggerViewModel.instance.setEnableLogsStorage(
+                    enableLogsStorage: value,
+                  ),
+                );
+              },
+            ),
+          ),
+        );
 }
