@@ -171,7 +171,7 @@ class InfoDevicePackageViewModel {
   /// If `enableLogsStorage` is false, returns "Logs storage disabled" message
   /// instead.
   Future<String> storeLogs({DateTime? startTime}) async {
-    if (!await LoggerViewModel.instance().enableLogsStorage) {
+    if (!await LoggerViewModel.instance.enableLogsStorage) {
       _logger.finer('enableLogsStorage is false, return null');
       return 'Logs storage disabled';
     }
@@ -189,7 +189,7 @@ class InfoDevicePackageViewModel {
         '$machineStartDateTime-$machineStopTime'
         '-${InfoDevicePackageViewModel.instance.identifierInfo}.log.gz';
 
-    final content = await LoggerViewModel.instance().logs2Text(
+    final content = await LoggerViewModel.instance.logs2Text(
       startTime: startTime?.subtract(const Duration(seconds: 10)),
     );
     unawaited(
