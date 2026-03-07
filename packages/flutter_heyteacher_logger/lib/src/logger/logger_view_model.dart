@@ -6,10 +6,7 @@ import 'dart:math';
 
 import 'package:clock/clock.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_heyteacher_auth/auth.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
 import 'package:flutter_heyteacher_locale/locale.dart';
 import 'package:flutter_heyteacher_logger/src/logger/logger_data.dart';
 import 'package:flutter_heyteacher_platform/platform.dart';
@@ -17,6 +14,21 @@ import 'package:flutter_heyteacher_worker/worker.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// Keys for values stored in `SharedPreferences`.
+///
+/// This enum standardizes the keys used for local data persistence, preventing
+/// typos and making it easier to manage stored preferences.
+enum _SharedPreferencesKeys {
+  /// The name of the locally overridden logger level.
+  htuLoggerLevelName,
+
+  /// The value of the locally overridden logger level.
+  htuLoggerLevelValue,
+
+  /// A boolean flag to enable or disable log storage locally.
+  htuEnableLogsStorage,
+}
 
 /// Manages the application's logging configuration and stores log records.
 ///
@@ -28,7 +40,18 @@ class LoggerViewModel {
   /// Private constructor for the singleton pattern.
   /// Initializes the logger configuration.
   LoggerViewModel._();
+
   final Logger _logger = Logger('LoggerViewModel');
+
+  Level _defaultLevel = Level.FINER;
+
+  /// The default logging level.
+  Level get defaultLevel => _defaultLevel;
+
+  bool _defaultEnableLogsStorage = false;
+
+  /// Whether log storage is enabled by default.
+  bool get defaultEnableLogsStorage => _defaultEnableLogsStorage;
 
   StreamSubscription<LogRecord>? _loggerSubscription;
   StreamSubscription<LogRecord>? _loggerForTestSubscription;
@@ -57,20 +80,12 @@ class LoggerViewModel {
   Level? _filterLevel;
   String? _filterText;
 
-  /// The name for the `FINEST` log level.
-  static const String finestLoggerName = 'FINEST';
-
-  /// The value for the `FINEST` log level.
-  static const int finestLoggerValue = 300;
-
   /// Provides the singleton instance of [LoggerViewModel].
   ///
   /// If an instance doesn't exist, it creates one.
   /// If [initialize] is `true` create one anywhere else.
   // ignore: prefer_constructors_over_static_methods
-  static LoggerViewModel instance({bool initialize = false}) => initialize
-      ? _instance = LoggerViewModel._()
-      : _instance ??= LoggerViewModel._();
+  static LoggerViewModel get instance => _instance ??= LoggerViewModel._();
 
   /// Disposes of the [LoggerViewModel] by canceling the logger subscription.
   ///
@@ -85,7 +100,7 @@ class LoggerViewModel {
   }
 
   /// Configures the root logger for the application.
-  ///
+  /// 
   /// Sets the logger's level based on `kDebugMode` and Firebase Remote Config.
   /// It then attaches  a listener that processes log records to:
   /// 1. Print formatted logs to the console if `kDebugMode` is true.
@@ -95,19 +110,43 @@ class LoggerViewModel {
   ///    Message, error, and stack trace are truncated to 100 characters for
   ///    Firebase.
   ///
-  /// If [reset] is true, it clears the temporary log directory.
-  Future<void> initialize({bool reset = true, bool reconfigure = false}) async {
-    _logger.finer('<initialize>: reset $reset');
+  /// Set the default level to [defaultLevel] if not null and set the default
+  /// enable logs storage to [defaultEnableLogsStorage] if not null.
+  ///
+  /// If [reconfigure] is `true`, reload configuration.
+  ///
+  /// If [clearTemporaryLog] is true, it clears the temporary log directory.
+  Future<void> initialize({
+    bool clearTemporaryLog = true,
+    bool reconfigure = false,
+    Level? defaultLevel,
+    bool? defaultEnableLogsStorage,
+  }) async {
+    _logger.finer(
+      '<initialize>: clearTemporaryLog $clearTemporaryLog '
+      'reconfigure $reconfigure defaultLevel $defaultLevel '
+      'defaultEnableLogsStorage $defaultEnableLogsStorage',
+    );
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured && !reconfigure) {
       _logger.finer(
-        '(initialize): reset $reset reconfigure $reconfigure. '
-        'Already configured',
+      '<initialize>: clearTemporaryLog $clearTemporaryLog '
+      'reconfigure $reconfigure defaultLevel $defaultLevel '
+      'defaultEnableLogsStorage $defaultEnableLogsStorage. Already configured',
       );
       return;
     }
     _alreadyConfigured = true;
+    // set default level
+    if (defaultLevel != null) {
+      _defaultLevel = defaultLevel;
+    }
+    // set default enable logs storage
+    if (defaultEnableLogsStorage != null) {
+      _defaultEnableLogsStorage = defaultEnableLogsStorage;
+    }
+    // listen flutter errors
     FlutterError.onError = (details) {
       _logger.severe(
         '(FlutterError.onError) ${details.summary}',
@@ -115,10 +154,9 @@ class LoggerViewModel {
         details.stack,
       );
     };
-
     // if reset is true, delete all logs in the temporary directory except last
     // day
-    if (reset) {
+    if (clearTemporaryLog) {
       final toDateTime = DateTime(
         clock.now().year,
         clock.now().month,
@@ -126,7 +164,7 @@ class LoggerViewModel {
       );
       developer.log(
         'flutter() ${clock.now().toIso8601String()} (initialize): '
-        'reset $reset reconfigure $reconfigure. '
+        'reset $clearTemporaryLog reconfigure $reconfigure. '
         'Reset all logs before $toDateTime',
       );
       final resetLogsWorker = Worker(resetLogsWorkerIsolate);
@@ -142,11 +180,9 @@ class LoggerViewModel {
         }),
       );
     }
-
     // Set the root logger's level based on debug mode and Firebase Remote
     // Config.
     Logger.root.level = await level;
-
     // Asynchronously fetch package version and device information.
     final version = await InfoDevicePackageViewModel.instance.packageVersion;
     final deviceInfo = await InfoDevicePackageViewModel.instance.deviceInfo;
@@ -207,24 +243,14 @@ class LoggerViewModel {
   /// 3. The default level from Firebase Remote Config for the current
   ///    build mode.
   Future<Level> get level async => Level(
-    await _sharedPrefsLoggerName ??
-        ((FirebaseRemoteConfig.instance.getString(
-                  FHURemoteConfigKeys.loggerUIDRootLevelFinest.name,
-                ) ==
-                AuthViewModel.instance.uid)
-            ? finestLoggerName
-            : FirebaseRemoteConfig.instance.getString(
-                FHURemoteConfigKeys.levelName,
-              )),
-    (await _sharedPrefsLoggerValue) ??
-        ((FirebaseRemoteConfig.instance.getString(
-                  FHURemoteConfigKeys.loggerUIDRootLevelFinest.name,
-                ) ==
-                AuthViewModel.instance.uid)
-            ? finestLoggerValue
-            : FirebaseRemoteConfig.instance.getInt(
-                FHURemoteConfigKeys.levelValue,
-              )),
+    await SharedPreferencesAsync().getString(
+          _SharedPreferencesKeys.htuLoggerLevelName.name,
+        ) ??
+        _defaultLevel.name,
+    await SharedPreferencesAsync().getInt(
+          _SharedPreferencesKeys.htuLoggerLevelValue.name,
+        ) ??
+        _defaultLevel.value,
   );
 
   /// Sets the logger level locally, overriding the remote config.
@@ -235,18 +261,18 @@ class LoggerViewModel {
   Future<void> setLevel(Level? level, {int? index}) async {
     if (level == null) {
       await SharedPreferencesAsync().remove(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelName.name,
+        _SharedPreferencesKeys.htuLoggerLevelName.name,
       );
       await SharedPreferencesAsync().remove(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelValue.name,
+        _SharedPreferencesKeys.htuLoggerLevelValue.name,
       );
     } else {
       await SharedPreferencesAsync().setString(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelName.name,
+        _SharedPreferencesKeys.htuLoggerLevelName.name,
         level.name,
       );
       await SharedPreferencesAsync().setInt(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelValue.name,
+        _SharedPreferencesKeys.htuLoggerLevelValue.name,
         level.value,
       );
     }
@@ -259,21 +285,23 @@ class LoggerViewModel {
   /// it falls back to the value from Firebase Remote Config.
   Future<bool> get enableLogsStorage async =>
       (await SharedPreferencesAsync().getBool(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.htuEnableLogsStorage.name,
+        _SharedPreferencesKeys.htuEnableLogsStorage.name,
       )) ??
-      RemoteConfigViewModel.instance.getBool(
-        FHURemoteConfigKeys.enableLogsStorage.name,
-      );
+      _defaultEnableLogsStorage;
 
-  Future<String?> get _sharedPrefsLoggerName async =>
-      SharedPreferencesAsync().getString(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelName.name,
+  /// Set if log storage is enabled.
+  Future<void> setEnableLogsStorage({bool? enableLogsStorage}) async {
+    if (enableLogsStorage != null) {
+      await SharedPreferencesAsync().setBool(
+        _SharedPreferencesKeys.htuEnableLogsStorage.name,
+        enableLogsStorage,
       );
-
-  Future<int?> get _sharedPrefsLoggerValue async =>
-      SharedPreferencesAsync().getInt(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.htuLoggerLevelValue.name,
+    } else {
+      await SharedPreferencesAsync().remove(
+        _SharedPreferencesKeys.htuEnableLogsStorage.name,
       );
+    }
+  }
 
   Future<void> _logEntry(
     LogEntry entry, {
@@ -586,7 +614,7 @@ Future<void> writeLogsWorkerIsolate(Iterable<LogEntry> logEntries) async {
   if (logEntries.isEmpty) {
     return;
   }
-  final tmpLogDir = await LoggerViewModel.instance()._tmpLogsDir;
+  final tmpLogDir = await LoggerViewModel.instance._tmpLogsDir;
   final filename = FormatterHelper.machineDateTimeFormat(
     clock.now().toLocal(),
   );
@@ -610,7 +638,7 @@ Future<int> resetLogsWorkerIsolate(DateTime toDateTime) async {
     'toDateTime $toDateTime ',
   );
   final logsToBeDelated =
-      (await LoggerViewModel.instance()._logFiles(descending: false)).where(
+      (await LoggerViewModel.instance._logFiles(descending: false)).where(
         (fileSystemEntity) =>
             fileSystemEntity.statSync().modified.isBefore(toDateTime),
       )..forEach(_deleteFile);
@@ -642,7 +670,7 @@ Future<String> logs2TextWorkerIsolate(
   })
   input,
 ) async =>
-    (await LoggerViewModel.instance().logs(
+    (await LoggerViewModel.instance.logs(
           startTime: input.startTime,
           filterLevel: input.filterLevel,
           notSavedLogEntry: input.notSavedEntries,

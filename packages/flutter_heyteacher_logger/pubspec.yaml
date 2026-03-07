@@ -1,6 +1,6 @@
 name: flutter_heyteacher_logger
 description: "The flutter heyteacher package for logger utilities."
-version: 2.0.1+128
+version: 2.0.2+130
 homepage:
 publish_to: none
 environment:
@@ -18,8 +18,6 @@ dependencies:
     sdk: flutter
   flutter_heyteacher_auth:
     path: ../flutter_heyteacher_auth
-  flutter_heyteacher_firebase:
-    path: ../flutter_heyteacher_firebase
   flutter_heyteacher_locale:
     path: ../flutter_heyteacher_locale
   flutter_heyteacher_platform:
