@@ -10,9 +10,7 @@ import 'dart:async';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
 import 'package:logging/logging.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Keys for values stored in `SharedPreferences`.
 ///
@@ -23,26 +21,8 @@ enum FlutterHeyteacherUtilsSharedPreferencesKeys {
   /// 'dark', 'system').
   fhuThemeMode,
 
-  /// The key for a boolean flag to override the remote config setting for
-  /// executing workers in a separate isolate.
-  fhuExecWorkerInIsolate,
-
   /// The key for storing the user's selected country code (e.g., 'GB', 'US').
   fhuCountryCode,
-
-  /// The key for storing the logging level.
-  /// Note: This seems to be unused in favor of [htuLoggerLevelName] and
-  /// [htuLoggerLevelValue].
-  fhuLoggingLevel,
-
-  /// The name of the locally overridden logger level.
-  htuLoggerLevelName,
-
-  /// The value of the locally overridden logger level.
-  htuLoggerLevelValue,
-
-  /// A boolean flag to enable or disable log storage locally.
-  htuEnableLogsStorage,
 
   /// Indicates whether the Firebase Cloud Messaging background handler needs
   /// to be initialized.
@@ -56,13 +36,6 @@ enum FHURemoteConfigKeys {
 
   /// The minimum fetch interval in minutes for Firebase Remote Config.
   remoteConfigMinimumFetchIntervalInMinutes,
-
-  /// A boolean flag to override the remote config setting for executing
-  /// workers in a separate isolate.
-  execWorkerInIsolate,
-
-  /// A boolean flag to enable or disable log storage via remote config.
-  enableLogsStorage,
 
   /// Expire duration in days
   expireDurationInDays,
@@ -160,21 +133,6 @@ class RemoteConfigViewModel {
     }
   }
 
-  /// Determines whether workers should run in a separate isolate.
-  ///
-  /// Checks for a local override in `SharedPreferences` first. If not present,
-  /// it falls back to the value from Remote Config. This is not supported on
-  /// the web.
-  Future<bool> get execWorkerInIsolate async =>
-      PlatformHelper.isNotWeb &&
-      (await SharedPreferencesAsync().getBool(
-            FlutterHeyteacherUtilsSharedPreferencesKeys
-                .fhuExecWorkerInIsolate
-                .name,
-          ) ??
-          RemoteConfigViewModel.instance.getBool(
-            FHURemoteConfigKeys.execWorkerInIsolate.name,
-          ));
 
   /// Gets an integer value from Remote Config for the given [key].
   int getInt(String key) => _remoteConfig.getInt(key);
