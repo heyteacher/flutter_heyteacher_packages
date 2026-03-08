@@ -15,10 +15,6 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_heyteacher_firebase:
-    path: ../flutter_heyteacher_firebase 
-  flutter_heyteacher_platform:
-    path: ../flutter_heyteacher_platform
   logging: ^1.3.0
 
 dev_dependencies:

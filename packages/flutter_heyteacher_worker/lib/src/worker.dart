@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:isolate';
 import 'package:clock/clock.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
 import 'package:logging/logging.dart';
 
 /// The Isolate worker type.
@@ -53,8 +53,7 @@ final class Worker<I, O> {
   /// Only if not already initialized and `execWorkerInIsolate` in Remote Config
   /// is `false`
   Future<void> initialize() async {
-    if (_sendPort == null &&
-        await RemoteConfigViewModel.instance.execWorkerInIsolate) {
+    if (_sendPort == null) {
       _logger.finest(
         '(${_workerIsolate.runtimeType}.initialize): _sendPort is null and '
         'execWorkerInIsolate is true, spawn',
@@ -72,8 +71,7 @@ final class Worker<I, O> {
     I input,
   ) async {
     try {
-      if (!await RemoteConfigViewModel.instance.execWorkerInIsolate ||
-          PlatformHelper.isFlutterTest) {
+      if (!kIsWeb && Platform.environment.containsKey('FLUTTER_TEST')) {
         _logger.finest(
           '(${_workerIsolate.runtimeType}.execute): execWorkerInIsolate '
           'is false or in test mode, execute in main thread',
