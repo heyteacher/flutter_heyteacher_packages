@@ -6,20 +6,6 @@
   "@userNotAuthenticated": {},
   "notAuthenticated": "Not Authenticated",
   "@notAuthenticated": {},
-  "deleteUserData": "Schedule deletion User Data",
-  "@deleteUserData": {},
-  "doYouConfirmDeletionUserData": "Do you confirm the deletion of your user data?\nBe careful! This action cannot be undone until after {expireDateTime}.",
-  "@doYouConfirmDeletionUserData": {
-    "placeholders": {
-      "expireDateTime": {}
-    }
-  },
-  "restoreUserData": "Restore User Data",
-  "@restoreUserData": {},
-  "doYouConfirmRestoringUserData": "You sheduled the deletion of your user data on {expireDateTime}.\nDo you confirm to cancel the deletion scheduled?",
-  "@doYouConfirmRestoringUserData": {
-    "placeholders": {
-      "expireDateTime": {}
-    }
-  }
+  "deleteUserData": "Deletion User Data",
+  "@deleteUserData": {}
 }

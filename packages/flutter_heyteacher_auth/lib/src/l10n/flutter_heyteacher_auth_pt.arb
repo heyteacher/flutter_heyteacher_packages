@@ -6,20 +6,6 @@
   "@userNotAuthenticated": {},
   "notAuthenticated": "Não autenticado",
   "@notAuthenticated": {},
-  "deleteUserData": "Agendar exclusão de dados do usuário",
-  "@deleteUserData": {},
-  "doYouConfirmDeletionUserData": "Você confirma a exclusão dos seus dados de usuário?\nCuidado! Esta ação não pode ser desfeita até depois de {expireDateTime}.",
-  "@doYouConfirmDeletionUserData": {
-    "placeholders": {
-      "expireDateTime": {}
-    }
-  },
-  "restoreUserData": "Restaurar dados do usuário",
-  "@restoreUserData": {},
-  "doYouConfirmRestoringUserData": "Você agendou a exclusão dos seus dados de usuário para {expireDateTime}.\nVocê confirma o cancelamento da exclusão agendada?",
-  "@doYouConfirmRestoringUserData": {
-    "placeholders": {
-      "expireDateTime": {}
-    }
-  }
+  "deleteUserData": "Excluir dados do usuário",
+  "@deleteUserData": {}
 }
