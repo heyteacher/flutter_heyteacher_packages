@@ -6,20 +6,6 @@
   "@userNotAuthenticated": {},
   "notAuthenticated": "Non autenticato",
   "@notAuthenticated": {},
-  "deleteUserData": "Pianifica eliminazione dati utente",
-  "@deleteUserData": {},
-  "doYouConfirmDeletionUserData": "Confermi l'eliminazione dei tuoi dati utente?\nAttenzione! Questa azione non può essere annullata fino a dopo {expireDateTime}.",
-  "@doYouConfirmDeletionUserData": {
-    "placeholders": {
-      "expireDateTime": {}
-    }
-  },
-  "restoreUserData": "Ripristina dati utente",
-  "@restoreUserData": {},
-  "doYouConfirmRestoringUserData": "Hai pianificato l'eliminazione dei tuoi dati utente per il {expireDateTime}.\nConfermi di voler annullare l'eliminazione pianificata?",
-  "@doYouConfirmRestoringUserData": {
-    "placeholders": {
-      "expireDateTime": {}
-    }
-  }
+  "deleteUserData": "Elimina dati utente",
+  "@deleteUserData": {}
 }
