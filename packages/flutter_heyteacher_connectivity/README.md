@@ -1,39 +1,59 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Flutter HeyTeacher Connectivity
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+A Flutter package responsible for managing network connectivity status within the HeyTeacher ecosystem.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+This package provides utilities to monitor internet connection status, offering both one-time checks and continuous monitoring via streams.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- **Connectivity Monitoring**: Real-time detection of network connectivity changes.
+- **Status Stream**: Listen to connectivity updates via a `Stream<bool>`.
+- **Instant Check**: Verify current connection status using `connected` or `notConnected` futures.
+- **Ecosystem Integration**: Designed to work seamlessly with other packages of flutter_heyteacher_packages.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Add `flutter_heyteacher_connectivity` as a dependency in your `pubspec.yaml` file.
 
-```dart
-const like = 'sample';
+```yaml
+dependencies:
+  flutter_heyteacher_connectivity: ^2.0.0
 ```
 
-## Additional information
+Import the package in your Dart code:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+import 'package:flutter_heyteacher_connectivity/flutter_heyteacher_connectivity.dart';
+```
+
+### Check Connectivity
+
+You can check if the device is currently connected:
+
+```dart
+final connectivity = ConnectivityViewModel();
+
+if (await connectivity.connected) {
+  print('Device is connected');
+}
+
+if (await connectivity.notConnected) {
+  print('Device is offline');
+}
+```
+
+### Listen to Changes
+
+Subscribe to the stream to receive updates when connectivity status changes:
+
+```dart
+connectivity.stream.listen((isConnected) {
+  if (isConnected) {
+    print('Back online');
+  } else {
+    print('Lost connection');
+  }
+});
+```
+
+A complete app example can be found in [example app](example)
