@@ -48,7 +48,11 @@ class LoggerViewModel {
   /// The default logging level.
   Level get defaultLevel => _defaultLevel;
 
+  /// Whether log storage is enabled by default
   bool _defaultEnableLogsStorage = false;
+
+  /// Whether enable firebase analytics is enabled.
+  bool _enableFirebaseAnalytics = false;
 
   /// Whether log storage is enabled by default.
   bool get defaultEnableLogsStorage => _defaultEnableLogsStorage;
@@ -100,7 +104,7 @@ class LoggerViewModel {
   }
 
   /// Configures the root logger for the application.
-  /// 
+  ///
   /// Sets the logger's level based on `kDebugMode` and Firebase Remote Config.
   /// It then attaches  a listener that processes log records to:
   /// 1. Print formatted logs to the console if `kDebugMode` is true.
@@ -116,24 +120,29 @@ class LoggerViewModel {
   /// If [reconfigure] is `true`, reload configuration.
   ///
   /// If [clearTemporaryLog] is true, it clears the temporary log directory.
+  ///
+  /// If [enableFirebaseAnalytics] is true, sent events to Firebase Analytics.
   Future<void> initialize({
     bool clearTemporaryLog = true,
     bool reconfigure = false,
     Level? defaultLevel,
     bool? defaultEnableLogsStorage,
+    bool? enableFirebaseAnalytics,
   }) async {
     _logger.finer(
       '<initialize>: clearTemporaryLog $clearTemporaryLog '
       'reconfigure $reconfigure defaultLevel $defaultLevel '
-      'defaultEnableLogsStorage $defaultEnableLogsStorage',
+      'defaultEnableLogsStorage $defaultEnableLogsStorage'
+      'enableFirebaseAnalytics $enableFirebaseAnalytics',
     );
     // already configured, do nothing
     // Prevents re-configuration if already done.
     if (_alreadyConfigured && !reconfigure) {
       _logger.finer(
-      '<initialize>: clearTemporaryLog $clearTemporaryLog '
-      'reconfigure $reconfigure defaultLevel $defaultLevel '
-      'defaultEnableLogsStorage $defaultEnableLogsStorage. Already configured',
+        '<initialize>: clearTemporaryLog $clearTemporaryLog '
+        'reconfigure $reconfigure defaultLevel $defaultLevel '
+        'defaultEnableLogsStorage $defaultEnableLogsStorage '
+        'enableFirebaseAnalytics $enableFirebaseAnalytics. Already configured',
       );
       return;
     }
@@ -145,6 +154,10 @@ class LoggerViewModel {
     // set default enable logs storage
     if (defaultEnableLogsStorage != null) {
       _defaultEnableLogsStorage = defaultEnableLogsStorage;
+    }
+    // set enable firebase analytics
+    if (enableFirebaseAnalytics != null) {
+      _enableFirebaseAnalytics = enableFirebaseAnalytics;
     }
     // listen flutter errors
     FlutterError.onError = (details) {
@@ -331,31 +344,33 @@ class LoggerViewModel {
     // Send the log event to Firebase Analytics.
     // Message, error, and stacktrace are limited to 100 characters for
     // Firebase.
-    unawaited(
-      FirebaseAnalytics.instance.logEvent(
-        name: 'logger',
-        parameters: {
-          'time': entry.time.toLocal().toIso8601String(),
-          'version': version,
-          'device': deviceInfo,
-          'level': entry.level.name,
-          'kDebugMode': kDebugMode.toString(),
-          'name': entry.loggerName,
-          'message':
-              // Truncate message to 100 characters for Firebase.
-              entry.message.substring(0, min(entry.message.length, 100)),
-          if (entry.error != null)
-            // Truncate error to 100 characters for Firebase.
-            'error': error.substring(0, min(error.length, 100)).trim(),
-          if (entry.stackTrace != null)
-            // Truncate stack trace to 100 characters for Firebase.
-            'stackTrace': stackTrace
-                .substring(0, min(stackTrace.length, 100))
-                .trim(),
-          'uid': identifierInfo,
-        },
-      ),
-    );
+    if (_enableFirebaseAnalytics) {
+      unawaited(
+        FirebaseAnalytics.instance.logEvent(
+          name: 'logger',
+          parameters: {
+            'time': entry.time.toLocal().toIso8601String(),
+            'version': version,
+            'device': deviceInfo,
+            'level': entry.level.name,
+            'kDebugMode': kDebugMode.toString(),
+            'name': entry.loggerName,
+            'message':
+                // Truncate message to 100 characters for Firebase.
+                entry.message.substring(0, min(entry.message.length, 100)),
+            if (entry.error != null)
+              // Truncate error to 100 characters for Firebase.
+              'error': error.substring(0, min(error.length, 100)).trim(),
+            if (entry.stackTrace != null)
+              // Truncate stack trace to 100 characters for Firebase.
+              'stackTrace': stackTrace
+                  .substring(0, min(stackTrace.length, 100))
+                  .trim(),
+            'uid': identifierInfo,
+          },
+        ),
+      );
+    }
     // write log into file system
     unawaited(_writeLogEntry(entry));
   }
