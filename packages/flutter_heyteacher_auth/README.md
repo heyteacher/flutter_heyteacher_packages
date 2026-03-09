@@ -1,39 +1,112 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Flutter HeyTeacher Auth
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+A Flutter package responsible for managing authentication within the HeyTeacher ecosystem.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+This package provides the necessary utilities and repositories to handle user sessions, including Google Sign-In and a demo authentication mode.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- **Authentication Management**: Handle user sign-in and sign-out flows using [Firebase Authentication](https://firebase.google.com/docs/auth).
+- **Google Sign-In**: Integrated support for authenticating users via Google.
+- **User Management**: Utilities for managing user profiles and scheduling account deletion.
+- **Demo Mode**: `Fake` authentication support for demonstration and testing purposes without requiring real credentials with [firebase_auth_mocks](https://pub.dev/packages/firebase_auth_mocks).
+- **Ecosystem Integration**: Designed to work seamlessly with other packages of [flutter_heyteacher_packages](https://github.com/heyteacher/flutter_heyteacher_packages)
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Configure [Firebase Authentication](https://firebase.google.com/docs/auth) and link to your app following documentation [firebase setup for app flutter project](https://pub.dev/packages/flutter_heyteacher_meta#firebase-setup-for-app-flutter-project).
 
-```dart
-const like = 'sample';
+Add `flutter_heyteacher_auth` as a dependency in your `pubspec.yaml` file.
+
+```yaml
+dependencies:
+  flutter_heyteacher_auth: ^2.0.1
 ```
 
-## Additional information
+Import the package in your Dart code:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart';
+```
+
+In your main function, initialize auth
+
+```dart
+Future<void> main() async {
+  // ensureInitialized
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
+```
+
+in your App widget, instanziate `MaterialApp.router` configuring router config
+with `GoRoute`
+
+```dart
+  Widget build(BuildContext context) => MaterialApp.router(
+    .
+    .
+    ,
+    localizationsDelegates: const [
+      FlutterHeyteacherAuthLocalizations.delegate,
+    ],
+    routerConfig: GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const _MyHomePage(
+            title: 'Your home page',
+          ),
+          routes: [
+            GoAuthRoute.builder(
+              landingRoutePath: '/'
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+```
+
+A complete app example can be found in [example](example)
+
+## Delete User Data
+
+User Data deletion is delegate to the application which uses `flutter_heyteacher_auth`.
+
+In order to use `Delete User Data` feature you need:
+
+- in `initialize` enable delete user data:
+
+  ```dart
+  AuthViewModel.initialize(enableDeleteUserData: true);
+  ```
+
+- in `AccountCard` set `deleteAccountCallback` and `deleteAccountConfirmMessage`
+
+  ```dart
+  AccountCard(
+    deleteAccountConfirmMessage: 'Are you sure to delete your user data?',
+    deleteAccountCallback: () async {
+      // insert here your logic to delete user data
+      showSnackBar(context: context, message: 'content');
+    },
+  ),
+  ```
+
+### Mock Firestore Authentication
+
+In unit tests and example applications you can mock [Firebase Authentication](https://firebase.google.com/docs/auth) with [firebase_auth_mocks](https://pub.dev/packages/firebase_auth_mocks):
+
+```dart
+  // Mock Firebase Authentication
+  final mockFirebaseAuth = MockFirebaseAuth(
+    mockUser: MockUser(
+      uid: 'testuid',
+      email: 'test@example.com',
+      displayName: 'Test User',
+    ),
+  );
+  //initialize Auth with MockFirebaseAuth
+  AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: mockFirebaseAuth);
+```
