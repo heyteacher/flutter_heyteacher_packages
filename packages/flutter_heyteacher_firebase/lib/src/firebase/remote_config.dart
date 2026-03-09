@@ -37,9 +37,6 @@ enum FHURemoteConfigKeys {
   /// The minimum fetch interval in minutes for Firebase Remote Config.
   remoteConfigMinimumFetchIntervalInMinutes,
 
-  /// Expire duration in days
-  expireDurationInDays,
-
   /// The interval in minutes for the Firebase Cloud Messaging background task.
   fmcIntervalInMinutes,
 
