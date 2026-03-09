@@ -517,7 +517,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.2+131"
+    version: "2.0.4+135"
   flutter_heyteacher_connectivity:
     dependency: transitive
     description:
@@ -531,7 +531,7 @@ packages:
       path: "../../flutter_heyteacher_firebase"
       relative: true
     source: path
-    version: "2.0.1+128"
+    version: "2.0.2+130"
   flutter_heyteacher_locale:
     dependency: transitive
     description:
@@ -545,7 +545,7 @@ packages:
       path: "../../flutter_heyteacher_logger"
       relative: true
     source: path
-    version: "2.0.3+132"
+    version: "2.0.4+134"
   flutter_heyteacher_meta:
     dependency: "direct dev"
     description:
@@ -581,7 +581,7 @@ packages:
       path: "../../flutter_heyteacher_worker"
       relative: true
     source: path
-    version: "2.0.0+126"
+    version: "2.0.3+132"
   flutter_localizations:
     dependency: transitive
     description: flutter
