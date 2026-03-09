@@ -1,6 +1,6 @@
 name: flutter_heyteacher_worker
 description: "The flutter heyteacher package for worker utilities."
-version: 2.0.2+130
+version: 2.0.3+132
 homepage:
 publish_to: none # Remove this line if you wish to publish to pub.dev
 
