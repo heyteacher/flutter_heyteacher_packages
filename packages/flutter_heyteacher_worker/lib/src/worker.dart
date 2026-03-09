@@ -50,12 +50,11 @@ final class Worker<I, O> {
 
   /// Initializes worker.
   ///
-  /// Only if not already initialized and `execWorkerInIsolate` in Remote Config
-  /// is `false`
+  /// Only if not web and not flutter tests.
   Future<void> initialize() async {
     if (_sendPort == null &&
         !kIsWeb &&
-        Platform.environment.containsKey('FLUTTER_TEST')) {
+        !Platform.environment.containsKey('FLUTTER_TEST')) {
       _logger.finest(
         '(${_workerIsolate.runtimeType}.initialize): _sendPort is null and '
         'not web or flutter test, spawn',
@@ -73,10 +72,10 @@ final class Worker<I, O> {
     I input,
   ) async {
     try {
-      if (!kIsWeb && Platform.environment.containsKey('FLUTTER_TEST')) {
+      if (kIsWeb || Platform.environment.containsKey('FLUTTER_TEST')) {
         _logger.finest(
-          '(${_workerIsolate.runtimeType}.execute): execWorkerInIsolate '
-          'is false or in test mode, execute in main thread',
+          '(${_workerIsolate.runtimeType}.execute): plaftorm web '
+          'or unit test, execute in main thread, not in Isolate',
         );
         return (
           output: await _workerIsolate.call(input),
