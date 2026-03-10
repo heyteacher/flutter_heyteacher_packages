@@ -1,39 +1,61 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# flutter_heyteacher_e2ee
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter package for managing End-to-End Encryption (E2EE) workflows, specifically designed for the [Flutter HeyTeacher ecosystem](../../). This package handles the generation, storage, and management of cryptographic keys and Additional Authenticated Data (AAD).
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- **Key Generation**: Generate cryptographically secure secret keys using `AES-GCM` encryption.
+- **JWK Support**: Export and import keys using the `JSON Web Key` (`JWK`) standard.
+- **Secure Storage**: Integrated support for persisting keys using `flutter_secure_storage`.
+- **AAD Management**: Specific handling for Additional Authenticated Data to ensure integrity.
+- **QR Code Utilities**: Helpers for managing key exchange or backup via QR codes.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter_heyteacher_e2ee: ^2.0.0
+```
+
+`flutter_heyteacher_e2ee` use `flutter_heyteacher_auth`, so read [flutter_heyteacher_auth](../flutter_heyteacher_auth/) in order to configure authentication.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Here is a basic example of how to initialize the view model and generate a key.
 
 ```dart
-const like = 'sample';
+import 'package:flutter_heyteacher_e2ee/e2ee.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+void main() async {
+
+  try {
+    // generate Master Secret Key
+    E2EEViewModel.masterSecretKeyJwk = await E2EEViewModel.generateSecretKeyJwk();
+
+    // set AAD (aka Password)
+    await E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD('jd&76h%d');
+
+    // encrypt text in JSON format
+    final e2eeValue = await E2EEViewModel.instance(
+        _AuthViewModel.instance.uid,
+      ).encrypt('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+
+    print('Encrypted Text: ${jsonEncode(e2eeValue.toJson())}}');
+
+    // decrypt text
+    final decryptedText = await E2EEViewModel.instance(
+        _AuthViewModel.instance.uid,
+      ).decrypt(e2eeValue);
+
+    print('Encrypted Text: ${decryptedText}');
+
+  } catch (e) {
+    print('Error managing keys: $e');
+  }
+}
 ```
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+A complete app example can be found in [example](example)
