@@ -67,35 +67,29 @@ class E2EEViewModel {
   /// Asynchronously checks if the user's secret key is not currently stored.
   Future<bool> get secretKeyNotStored async => !await secretKeyStored;
 
-  static String? _debugSecretKey;
-
-  static String? _debugPassword;
+  static String? _debugSecretKeyJWK;
 
   static String? _masterSecretKeyJwk;
 
   /// Set master secret key JWK
-  static set masterSecretKeyJwk(
-   String masterSecretKeyJwk,
-  ) {
+  static set masterSecretKeyJwk(String masterSecretKeyJwk) {
     _masterSecretKeyJwk = masterSecretKeyJwk;
   }
 
   @visibleForTesting
   /// Get master secret key JWK
-  static String get masterSecretKeyJwk => _masterSecretKeyJwk!;
+  static String? get masterSecretKeyJwk => _masterSecretKeyJwk;
 
-
-  /// Initialize debug with [debugSecretKey] and [debugPassword]
-  static void initializeDebug({
-    required String debugSecretKey,
-    required String debugPassword,
-  }) {
-    _debugSecretKey = debugSecretKey;
-    _debugPassword = debugPassword;
+  /// Set debug password
+  static set debugSecretKeyJWK(String debugSecretKeyJWK) {
+    _debugSecretKeyJWK = debugSecretKeyJWK;
   }
 
-  bool get _debug =>
-      PlatformHelper.isWeb && _debugSecretKey != null && _debugPassword != null;
+  @visibleForTesting
+  /// Get master secret key JWK
+  static String? get debugSecretKeyJWK => _debugSecretKeyJWK;
+
+  bool get _debug => PlatformHelper.isWeb && _debugSecretKeyJWK != null;
 
   /// the secure storage instance
   @visibleForTesting
@@ -255,9 +249,9 @@ class E2EEViewModel {
   /// The [aadValue] (typically a user-provided passphrase) is stored securely.
   /// Requires the user to be authenticated.
   ///
-  /// If [generate] is true, a random AAD value is generated instead of using
+  /// If [aadValue] is null, generate a ramdom string and set it
   /// the provided [aadValue].
-  Future<void> setAAD({String? aadValue, bool generate = false}) async {
+  Future<void> setAAD([String? aadValue]) async {
     _logger.finer('<setAAD>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
@@ -267,7 +261,7 @@ class E2EEViewModel {
     final secureStorage = await _secureStorage;
     await secureStorage.write(
       key: aadKey,
-      value: generate ? _generateAADValue() : aadValue,
+      value: aadValue ?? _generateAADValue(),
     );
   }
 
@@ -282,12 +276,9 @@ class E2EEViewModel {
       return null;
     }
     if (_debug) {
+      // if debug and aad not set, generate a random AAD
       final aad = await (await _secureStorage).read(key: aadKey);
-      if (aad == null || aad.isEmpty) {
-        return _debugPassword;
-      } else {
-        return aad;
-      }
+      return (aad == null || aad.isEmpty) ? _generateAADValue() : aad;
     } else {
       // try to read from secure storage
       final aad = await (await _secureStorage).read(key: aadKey);
@@ -388,10 +379,8 @@ class E2EEViewModel {
     final secureStorage = await _secureStorage;
     // Generate a new random AES-GCM secret key for AES-256.
     final secretKey = await AesGcmSecretKey.generateKey(256);
-    // save into storage
-    final secretJwk = await secretKey.exportJsonWebKey();
     // encode json the jwk
-    final secretJwkJson = jsonEncode(secretJwk);
+    final secretJwkJson = jsonEncode(await secretKey.exportJsonWebKey());
     if (isToStore) {
       // write the jwk json into storage
       await secureStorage.write(key: secretKeyKey, value: secretJwkJson);
@@ -401,6 +390,11 @@ class E2EEViewModel {
     }
     return secretKey;
   }
+
+  /// Generate a Secret Key anr returns the JWK in JSON format.
+  static Future<String> generateSecretKeyJwk() async => jsonEncode(
+    await (await AesGcmSecretKey.generateKey(256)).exportJsonWebKey(),
+  );
 
   /// Reads the user's secret key from secure storage and returns it as an
   ///  [AesGcmSecretKey].
@@ -424,7 +418,7 @@ class E2EEViewModel {
           '(_readSecretKey): secretJwkJson null and '
           '_useE2EEWebDebugSecretKey true, read secret key from remote config',
         );
-        secretJwkJson = await importSecretJwkJson(_debugSecretKey!);
+        secretJwkJson = await importSecretJwkJson(_debugSecretKeyJWK!);
       }
       if (secretJwkJson != null) {
         // found, decode the json jwk

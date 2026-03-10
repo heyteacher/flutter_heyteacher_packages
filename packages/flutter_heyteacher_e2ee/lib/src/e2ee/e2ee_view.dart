@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel, FlutterHeyteacherAuthLocalizations;
-import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_view_model.dart' show E2EEViewModel;
+import 'package:flutter_heyteacher_auth/auth.dart'
+    show AuthViewModel, FlutterHeyteacherAuthLocalizations;
+import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_view_model.dart'
+    show E2EEViewModel;
 import 'package:flutter_heyteacher_e2ee/src/l10n/flutter_heyteacher_e2ee.dart';
 import 'package:flutter_heyteacher_platform/platform.dart';
-import 'package:flutter_heyteacher_views/views.dart' show ProgressIndicatorView, ThemeViewModel, showConfirmCancelDialog;
+import 'package:flutter_heyteacher_views/views.dart'
+    show ProgressIndicatorView, ThemeViewModel, showConfirmCancelDialog;
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -87,7 +90,7 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
           confirmCallback: (_) async {
             await E2EEViewModel.instance(
               AuthViewModel.instance.uid,
-            ).setAAD(aadValue: value);
+            ).setAAD(value);
             _warningAlreadyShowed = true;
             widget.setPassphraseCallback();
             return null;
@@ -104,9 +107,7 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
         ),
       );
     } else {
-      await E2EEViewModel.instance(
-        AuthViewModel.instance.uid,
-      ).setAAD(aadValue: value);
+      await E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD(value);
       widget.setPassphraseCallback();
     }
   }
@@ -123,12 +124,12 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
 ///   (on mobile) or by pasting the key data (on non-mobile platforms).
 class E2EESecretKeyCard extends StatefulWidget {
   /// Creates an [E2EESecretKeyCard].
-  const E2EESecretKeyCard({
-    required void Function() secretKeyImportedCallback,
-    required Key e2eePassphraseKey,
+  E2EESecretKeyCard({
+    VoidCallback? secretKeyImportedCallback,
+    Key? e2eePassphraseKey,
     super.key,
-  }) : _e2eePassphraseKey = e2eePassphraseKey,
-       _secretKeyImportedCallback = secretKeyImportedCallback;
+  }) : _e2eePassphraseKey = e2eePassphraseKey ?? GlobalKey(),
+       _secretKeyImportedCallback = secretKeyImportedCallback ?? (() {});
 
   /// A callback that is invoked after the secret key has been successfully
   /// imported.
