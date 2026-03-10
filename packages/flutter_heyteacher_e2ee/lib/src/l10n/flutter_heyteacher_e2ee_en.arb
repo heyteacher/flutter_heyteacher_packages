@@ -19,5 +19,7 @@
   "encryptionSecretKey": "Encryption Key",
   "@encryptionSecretKey": {},
   "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scan the QR code with another device or store it in a secure place.\nThe QR code is encrypted with the Encryption Passphrase.\nYou must set the same Encryption Passphrase on the new device.",
-  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {}
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "missingMasterSecretKeyJwk": "Missing Master Secret Key JWK, E2EE not initialized",
+  "@missingMasterSecretKeyJwk": {}
 }

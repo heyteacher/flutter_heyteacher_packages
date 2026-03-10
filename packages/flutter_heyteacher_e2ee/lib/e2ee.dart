@@ -6,6 +6,8 @@ export 'src/e2ee/e2ee_view_model.dart'
         E2EEViewModel,
         ErrorOnDecryptException,
         ErrorOnEncryptException,
-        MissingEncryptionSecretKeyException;
+        MissingEncryptionSecretKeyException,
+        MissingMasterSecretKeyJwkException;
 
-export 'src/l10n/flutter_heyteacher_e2ee.dart' show FlutterHeyteacherE2EELocalizations;
+export 'src/l10n/flutter_heyteacher_e2ee.dart'
+    show FlutterHeyteacherE2EELocalizations;
