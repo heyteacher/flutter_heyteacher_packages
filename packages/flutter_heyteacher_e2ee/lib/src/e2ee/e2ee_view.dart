@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel, FlutterHeyteacherAuthLocalizations;
-import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_view_model.dart' show E2EEViewModel;
+import 'package:flutter_heyteacher_auth/auth.dart'
+    show AuthViewModel, FlutterHeyteacherAuthLocalizations;
+import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_view_model.dart'
+    show E2EEViewModel;
 import 'package:flutter_heyteacher_e2ee/src/l10n/flutter_heyteacher_e2ee.dart';
 import 'package:flutter_heyteacher_platform/platform.dart';
-import 'package:flutter_heyteacher_views/views.dart' show ProgressIndicatorView, ThemeViewModel, showConfirmCancelDialog;
+import 'package:flutter_heyteacher_views/views.dart'
+    show ProgressIndicatorView, ThemeViewModel, showConfirmCancelDialog;
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -28,7 +31,7 @@ class _E2EEPassphraseTextField extends StatefulWidget {
   final FocusNode focusNode;
 
   /// A callback that is invoked after the passphrase has been successfully set.
-  final VoidCallback setPassphraseCallback;
+  final VoidCallback? setPassphraseCallback;
 
   @override
   State<_E2EEPassphraseTextField> createState() => _E2EEPassphraseCard();
@@ -37,44 +40,65 @@ class _E2EEPassphraseTextField extends StatefulWidget {
 class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
   bool _passphraseVisibility = false;
   bool _warningAlreadyShowed = false;
+
+  bool _authenticated = AuthViewModel.instance.autenticated;
+  String? _aad;
+
+  StreamSubscription<dynamic>? _authStremSubscription;
+
   @override
-  Widget build(BuildContext context) => FutureBuilder(
-    future: E2EEViewModel.instance(AuthViewModel.instance.uid).getAAD(),
-    builder: (_, aadSnapshot) => StreamBuilder<dynamic>(
-      stream: AuthViewModel.instance.stateChangesStream,
-      builder: (_, userSnapshot) => TextField(
-        focusNode: widget.focusNode,
-        enabled: userSnapshot.hasData,
-        onChanged: (value) async =>
-            _setPassphrase(value, oldValue: aadSnapshot.data),
-        obscureText:
-            !_passphraseVisibility && (aadSnapshot.data?.isNotEmpty ?? false),
-        decoration: InputDecoration(
-          isDense: true,
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: ThemeViewModel.instance.colorScheme.onSurface,
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          suffixIcon: IconButton(
-            icon: Icon(
-              _passphraseVisibility ? Icons.visibility_off : Icons.visibility,
-            ),
-            onPressed: () => setState(
-              () => _passphraseVisibility = !_passphraseVisibility,
-            ),
-          ),
-          labelText: FlutterHeyteacherE2EELocalizations.of(
-            context,
-          )!.encryptionPassphrase,
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_init);
+  }
+
+  Future<void> _init(_) async {
+    // read AAD
+    _aad = await E2EEViewModel.instance(AuthViewModel.instance.uid).getAAD();
+    setState(() {});
+    // listen for auth changes
+    unawaited(_authStremSubscription?.cancel());
+    _authStremSubscription = AuthViewModel.instance.stateChangesStream.listen(
+      (user) => setState(() => _authenticated = user != null),
+    );
+  }
+
+  @override
+  void dispose() {
+    unawaited(_authStremSubscription?.cancel());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => TextField(
+    focusNode: widget.focusNode,
+    enabled: _authenticated,
+    onChanged: (value) async => _setPassphrase(value, oldValue: _aad),
+    obscureText: !_passphraseVisibility && (_aad?.isNotEmpty ?? false),
+    decoration: InputDecoration(
+      isDense: true,
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: ThemeViewModel.instance.colorScheme.onSurface,
         ),
-        controller: TextEditingController(text: aadSnapshot.data ?? ''),
+        borderRadius: BorderRadius.circular(8),
       ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      suffixIcon: IconButton(
+        icon: Icon(
+          _passphraseVisibility ? Icons.visibility_off : Icons.visibility,
+        ),
+        onPressed: () => setState(
+          () => _passphraseVisibility = !_passphraseVisibility,
+        ),
+      ),
+      labelText: FlutterHeyteacherE2EELocalizations.of(
+        context,
+      )!.encryptionPassphrase,
     ),
+    controller: TextEditingController(text: _aad ?? ''),
   );
 
   Future<void> _setPassphrase(String value, {String? oldValue}) async {
@@ -87,9 +111,10 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
           confirmCallback: (_) async {
             await E2EEViewModel.instance(
               AuthViewModel.instance.uid,
-            ).setAAD(aadValue: value);
+            ).setAAD(value);
             _warningAlreadyShowed = true;
-            widget.setPassphraseCallback();
+            _aad = value;
+            widget.setPassphraseCallback?.call();
             return null;
           },
           cancelCallback: (_) async {
@@ -104,10 +129,9 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
         ),
       );
     } else {
-      await E2EEViewModel.instance(
-        AuthViewModel.instance.uid,
-      ).setAAD(aadValue: value);
-      widget.setPassphraseCallback();
+      await E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD(value);
+      _aad = value;
+      widget.setPassphraseCallback?.call();
     }
   }
 }
@@ -124,17 +148,17 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
 class E2EESecretKeyCard extends StatefulWidget {
   /// Creates an [E2EESecretKeyCard].
   const E2EESecretKeyCard({
-    required void Function() secretKeyImportedCallback,
-    required Key e2eePassphraseKey,
+    VoidCallback? secretKeyImportedCallback,
+    Key? e2eePassphraseKey,
     super.key,
   }) : _e2eePassphraseKey = e2eePassphraseKey,
        _secretKeyImportedCallback = secretKeyImportedCallback;
 
   /// A callback that is invoked after the secret key has been successfully
   /// imported.
-  final VoidCallback _secretKeyImportedCallback;
+  final VoidCallback? _secretKeyImportedCallback;
 
-  final Key _e2eePassphraseKey;
+  final Key? _e2eePassphraseKey;
 
   @override
   State<E2EESecretKeyCard> createState() => _E2EESecretKeyCardState();
@@ -299,7 +323,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                 secretJwkJson!,
               );
               if (mounted) setState(() {});
-              widget._secretKeyImportedCallback();
+              widget._secretKeyImportedCallback?.call();
               return i10n.encryptionSecretKeyImported;
             },
       content: TextFormField(
@@ -392,7 +416,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
               AuthViewModel.instance.uid,
             ).importSecretJwkJson(secretJwkJson!);
             setState(() {});
-            widget._secretKeyImportedCallback();
+            widget._secretKeyImportedCallback?.call();
             return successMessage;
           },
         ),

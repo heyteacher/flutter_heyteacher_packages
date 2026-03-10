@@ -10,7 +10,7 @@
 /// - Secure storage of the user's secret key.
 /// - Use of Additional Authenticated Data (AAD), often a user-provided
 /// passphrase.
-/// - Export/import of the secret key, itself encrypted with a master key (e.g., from Remote Config).
+/// - Export/import of the secret key, itself encrypted with a master key.
 /// - Custom exceptions for specific E2EE-related errors.
 library;
 
@@ -18,12 +18,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:firebase_remote_config/firebase_remote_config.dart' show FirebaseRemoteConfig;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_auth/auth.dart';
 import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_data.dart';
 import 'package:flutter_heyteacher_e2ee/src/l10n/flutter_heyteacher_e2ee.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
 import 'package:flutter_heyteacher_platform/platform.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logging/logging.dart';
@@ -41,6 +39,16 @@ class E2EEViewModel {
   E2EEViewModel._(this._uid);
   final _logger = Logger('E2EEViewModel');
 
+  // Singleton instance
+  static final Map<String?, E2EEViewModel?> _instances = {};
+
+  /// Provides the singleton instance of the [E2EEViewModel] manager.
+  // ignore: prefer_constructors_over_static_methods
+  static E2EEViewModel instance(String? uid) =>
+      _instances[uid] ??= E2EEViewModel._(uid);
+
+  final String? _uid;
+
   /// Key used in secure storage for the Additional Authenticated Data (AAD).
   /// Uniquely identifies the AAD for the current authenticated user.
   @visibleForTesting
@@ -54,27 +62,34 @@ class E2EEViewModel {
 
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
-      _useE2EEWebDebugSecretKey ||
-      await (await _secureStorage).containsKey(key: secretKeyKey);
-
-  bool get _useE2EEWebDebugSecretKey =>
-      PlatformHelper.isWeb &&
-      RemoteConfigViewModel.instance
-          .getString(FHURemoteConfigKeys.webDemoE2EESecretKey.name)
-          .isNotEmpty;
+      _debug || await (await _secureStorage).containsKey(key: secretKeyKey);
 
   /// Asynchronously checks if the user's secret key is not currently stored.
   Future<bool> get secretKeyNotStored async => !await secretKeyStored;
 
-  // Singleton instance
-  static final Map<String?, E2EEViewModel?> _instances = {};
+  static String? _debugSecretKeyJWK;
 
-  final String? _uid;
+  static String? _masterSecretKeyJwk;
 
-  /// Provides the singleton instance of the [E2EEViewModel] manager.
-  // ignore: prefer_constructors_over_static_methods
-  static E2EEViewModel instance(String? uid) =>
-      _instances[uid] ??= E2EEViewModel._(uid);
+  /// Set master secret key JWK
+  static set masterSecretKeyJwk(String masterSecretKeyJwk) {
+    _masterSecretKeyJwk = masterSecretKeyJwk;
+  }
+
+  @visibleForTesting
+  /// Get master secret key JWK
+  static String? get masterSecretKeyJwk => _masterSecretKeyJwk;
+
+  /// Set debug password
+  static set debugSecretKeyJWK(String debugSecretKeyJWK) {
+    _debugSecretKeyJWK = debugSecretKeyJWK;
+  }
+
+  @visibleForTesting
+  /// Get master secret key JWK
+  static String? get debugSecretKeyJWK => _debugSecretKeyJWK;
+
+  bool get _debug => PlatformHelper.isWeb && _debugSecretKeyJWK != null;
 
   /// the secure storage instance
   @visibleForTesting
@@ -234,9 +249,9 @@ class E2EEViewModel {
   /// The [aadValue] (typically a user-provided passphrase) is stored securely.
   /// Requires the user to be authenticated.
   ///
-  /// If [generate] is true, a random AAD value is generated instead of using
+  /// If [aadValue] is null, generate a ramdom string and set it
   /// the provided [aadValue].
-  Future<void> setAAD({String? aadValue, bool generate = false}) async {
+  Future<void> setAAD([String? aadValue]) async {
     _logger.finer('<setAAD>:');
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
@@ -246,7 +261,7 @@ class E2EEViewModel {
     final secureStorage = await _secureStorage;
     await secureStorage.write(
       key: aadKey,
-      value: generate ? _generateAADValue() : aadValue,
+      value: aadValue ?? _generateAADValue(),
     );
   }
 
@@ -260,17 +275,10 @@ class E2EEViewModel {
       _logger.warning('(getAAD): user not authenticated');
       return null;
     }
-    if (PlatformHelper.isWeb) {
+    if (_debug) {
+      // if debug and aad not set, generate a random AAD
       final aad = await (await _secureStorage).read(key: aadKey);
-      if (aad == null || aad.isEmpty) {
-        final e2eeWebDebugPassword = RemoteConfigViewModel.instance.getString(
-          FHURemoteConfigKeys.webDemoPassword.name,
-        );
-        await setAAD(aadValue: e2eeWebDebugPassword);
-        return e2eeWebDebugPassword;
-      } else {
-        return aad;
-      }
+      return (aad == null || aad.isEmpty) ? _generateAADValue() : aad;
     } else {
       // try to read from secure storage
       final aad = await (await _secureStorage).read(key: aadKey);
@@ -287,7 +295,7 @@ class E2EEViewModel {
   /// Exports the user's secret key as a JSON string.
   ///
   /// The secret key (in JWK format) is first encrypted using a master secret
-  /// key (retrieved from Firebase Remote Config) before being returned as a
+  /// key before being returned as a
   /// JSON representation of an [E2EEValue]. This allows for secure backup or
   /// transfer of the key.
   Future<String> exportSecretJwkJson() async {
@@ -371,10 +379,8 @@ class E2EEViewModel {
     final secureStorage = await _secureStorage;
     // Generate a new random AES-GCM secret key for AES-256.
     final secretKey = await AesGcmSecretKey.generateKey(256);
-    // save into storage
-    final secretJwk = await secretKey.exportJsonWebKey();
     // encode json the jwk
-    final secretJwkJson = jsonEncode(secretJwk);
+    final secretJwkJson = jsonEncode(await secretKey.exportJsonWebKey());
     if (isToStore) {
       // write the jwk json into storage
       await secureStorage.write(key: secretKeyKey, value: secretJwkJson);
@@ -384,6 +390,11 @@ class E2EEViewModel {
     }
     return secretKey;
   }
+
+  /// Generate a Secret Key anr returns the JWK in JSON format.
+  static Future<String> generateSecretKeyJwk() async => jsonEncode(
+    await (await AesGcmSecretKey.generateKey(256)).exportJsonWebKey(),
+  );
 
   /// Reads the user's secret key from secure storage and returns it as an
   ///  [AesGcmSecretKey].
@@ -402,16 +413,12 @@ class E2EEViewModel {
       // try to read secret key from secure storage
       var secretJwkJson = await secureStorage.read(key: secretKeyKey);
       // if not found, try to read from remote config `e2eeWebDebugSecretKey`
-      if (secretJwkJson == null && _useE2EEWebDebugSecretKey) {
+      if (secretJwkJson == null && _debug) {
         _logger.info(
           '(_readSecretKey): secretJwkJson null and '
           '_useE2EEWebDebugSecretKey true, read secret key from remote config',
         );
-        secretJwkJson = await importSecretJwkJson(
-          RemoteConfigViewModel.instance.getString(
-            FHURemoteConfigKeys.webDemoE2EESecretKey.name,
-          ),
-        );
+        secretJwkJson = await importSecretJwkJson(_debugSecretKeyJWK!);
       }
       if (secretJwkJson != null) {
         // found, decode the json jwk
@@ -435,9 +442,16 @@ class E2EEViewModel {
       _logger.severe('(_readMasterSecretKey): user not authenticated');
       throw UserNotAuthenticatedException();
     }
+    if (_masterSecretKeyJwk == null || _masterSecretKeyJwk!.isEmpty) {
+      _logger.severe(
+        '(_readMasterSecretKey): E2EE not initialized, '
+        'master secret key jw not found',
+      );
+      throw MissingMasterSecretKeyJwkException();
+    }
     // decode the json jwk
     return _readSecretKeyFromJwkJson(
-      FirebaseRemoteConfig.instance.getString('masterSecretKeyJwk'),
+      _masterSecretKeyJwk!,
     );
   }
 
@@ -529,6 +543,23 @@ class MissingEncryptionSecretKeyException implements Exception {
       )!.missingEncryptionSecretKeyImportIt;
     } else {
       return 'Missing Encryption Secret Key, import it';
+    }
+  }
+}
+
+/// Exception thrown when decryption is attempted but the required secret key
+/// is not found in secure storage.
+class MissingMasterSecretKeyJwkException implements Exception {
+  /// Returns a localized error message prompting the user to import their
+  /// secret key.
+  @override
+  String toString() {
+    if (ContextHelper.context != null) {
+      return FlutterHeyteacherE2EELocalizations.of(
+        ContextHelper.context!,
+      )!.missingMasterSecretKeyJwk;
+    } else {
+      return 'Missing Master Secret Key JWK';
     }
   }
 }

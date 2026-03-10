@@ -39,11 +39,7 @@ void main() {
 
   // initialize Auth with MockFirebaseAuth
   AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
-  unawaited(
-    E2EEViewModel.instance(
-      AuthViewModel.instance.uid,
-    ).setAAD(aadValue: 'aadValue'),
-  );
+  unawaited(E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD());
 
   group('secret key', () {
     test('generate secret key ,encrypt an decrypt with master key', () async {
@@ -52,15 +48,19 @@ void main() {
         AuthViewModel.instance.uid,
       ).generateSecretKey(isToStore: false);
       debugPrint(
-        'masterSecretJwkJson:\n\n'
-        '${jsonEncode(await masterSecretKey.exportJsonWebKey())}',
+        '\naad: ${await E2EEViewModel.instance(AuthViewModel.instance.uid,
+        ).getAAD()}\n',
+      );
+      debugPrint(
+        'masterSecretJwkJson:\n'
+        '${jsonEncode(await masterSecretKey.exportJsonWebKey())}\n',
       );
       // generate a secret key
       final secretKey = await E2EEViewModel.instance(
         AuthViewModel.instance.uid,
       ).generateSecretKey(isToStore: false);
       final secretJwkJson = jsonEncode(await secretKey.exportJsonWebKey());
-      const aad = '/&/8678bhnogvd6&/=gB097';
+      //const aad = '/&/8678bhnogvd6&/=gB097';
       // encrypt with master key
       final encryptedSecretE2EEValue =
           await E2EEViewModel.instance(
@@ -68,11 +68,11 @@ void main() {
           ).encrypt(
             secretJwkJson,
             esternalSecretKey: masterSecretKey,
-            externalAAD: aad,
+            //externalAAD: aad,
           );
       debugPrint(
         'encryptedSecretE2EEValue:\n'
-        '\n${jsonEncode(encryptedSecretE2EEValue)}',
+        '${jsonEncode(encryptedSecretE2EEValue)}\n',
       );
       // decrypt with master key
       final decryptedSecretJwkJson =
@@ -81,7 +81,7 @@ void main() {
           ).decrypt(
             encryptedSecretE2EEValue,
             esternalSecretKey: masterSecretKey,
-            externalAAD: aad,
+            //externalAAD: aad,
           );
       // check if it's the same
       expect(secretJwkJson, decryptedSecretJwkJson);

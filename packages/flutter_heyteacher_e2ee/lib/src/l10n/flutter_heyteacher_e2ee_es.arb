@@ -19,5 +19,7 @@
   "encryptionSecretKey": "Clave Criptográfica",
   "@encryptionSecretKey": {},
   "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Escanee el código QR con otro dispositivo o guárdelo en un lugar seguro.\nEl código QR está cifrado con la frase de contraseña.\nDebe establecer la misma frase de contraseña en el nuevo dispositivo.",
-  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {}
+  "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
+  "missingMasterSecretKeyJwk": "Falta la clave secreta maestra JWK, E2EE no inicializado",
+  "@missingMasterSecretKeyJwk": {}
 }

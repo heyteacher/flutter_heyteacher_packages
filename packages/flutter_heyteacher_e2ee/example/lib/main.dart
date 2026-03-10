@@ -1,0 +1,186 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart'
+    show MockFirebaseAuth, MockUser;
+import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_auth/auth.dart'
+    show AuthViewModel, FlutterHeyteacherAuthLocalizations;
+import 'package:flutter_heyteacher_e2ee/e2ee.dart'
+    show
+        E2EESecretKeyCard,
+        E2EEValue,
+        E2EEViewModel,
+        FlutterHeyteacherE2EELocalizations;
+import 'package:flutter_heyteacher_views/views.dart'
+    show ThemeViewModel, showSnackBar;
+
+const ({String uid, String email,String displayName, String password})_user = (
+  displayName: 'Test User',
+  uid: 'testuid',
+  email: 'test@example.com',
+  password: 'testpassword',
+);
+
+Future<void> main() async {
+  // ensureInitialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //initialize Auth with MockFirebaseAuth
+  AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: MockFirebaseAuth(
+    mockUser: MockUser(
+      uid: _user.uid,
+      email: _user.email,
+      displayName: _user.displayName,
+    ),
+  ));
+  // sign in
+  await AuthViewModel.instance.signInWithEmailAndPassword(
+    email: _user.email,
+    password: _user.password,
+  );
+
+  // generate Master Secret Key
+  E2EEViewModel.masterSecretKeyJwk = await E2EEViewModel.generateSecretKeyJwk();
+  // set Secret Key
+  await E2EEViewModel.instance(_user.uid).setAAD('jd&76h%d');
+
+  runApp(const MyApp());
+}
+
+/// This Widget is the main application widget.
+class MyApp extends StatelessWidget {
+  /// Creates the [MyApp].
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+    theme: ThemeViewModel.instance.lightTheme,
+    darkTheme: ThemeViewModel.instance.darkTheme,
+    themeMode: ThemeMode.dark,
+    localizationsDelegates: const [
+      FlutterHeyteacherAuthLocalizations.delegate,
+      FlutterHeyteacherE2EELocalizations.delegate,
+    ],
+    home: const _MyHomePage(),
+  );
+}
+
+class _MyHomePage extends StatefulWidget {
+  const _MyHomePage();
+
+  @override
+  State<_MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<_MyHomePage> {
+  final TextEditingController _secretKeyTextEditingController =
+      TextEditingController();
+
+  String? _plainText =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+      'Quisque gravida condimentum dui, non vestibulum ipsum gravida ac. '
+      'Donec ultrices risus ac libero tincidunt, nec interdum libero '
+      'condimentum';
+
+  E2EEValue? _e2eeValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _secretKeyTextEditingController.text = _plainText!;
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: const Text('Flutter Heyteacher E2EE')),
+    body: Padding(
+      padding: const EdgeInsets.only(top: 32),
+      child: Column(
+        spacing: 16,
+        children: [
+          const E2EESecretKeyCard(),
+          TextFormField(
+            controller: _secretKeyTextEditingController,
+            minLines: 20,
+            maxLines: null,
+            keyboardType: TextInputType.text,
+            onChanged: (value) => _plainText = value,
+            decoration: InputDecoration(
+              isDense: true,
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: ThemeViewModel.instance.colorScheme.onSurface,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+          Row(
+            spacing: 8,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              OutlinedButton(
+                onPressed: _plainText == null ? null : _encryptText,
+                child: const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text('ENCRYPT'),
+                ),
+              ),
+              OutlinedButton(
+                onPressed: _e2eeValue == null ? null : _decryptText,
+                child: const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text('DECRYPT'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+
+  Future<void> _decryptText() async {
+    try {
+      _plainText = await E2EEViewModel.instance(
+        _user.uid,
+      ).decrypt(_e2eeValue!);
+      _secretKeyTextEditingController.text = _plainText!;
+      _e2eeValue = null;
+      setState(() {});
+    } on Exception catch (e) {
+      if (mounted) {
+        showSnackBar(
+          context: context,
+          message: e.toString(),
+          duration: 5,
+          error: true,
+        );
+      }
+    }
+  }
+
+  Future<void> _encryptText() async {
+    try {
+      _e2eeValue = await E2EEViewModel.instance(
+        _user.uid,
+      ).encrypt(_plainText!);
+      _secretKeyTextEditingController.text = jsonEncode(
+        _e2eeValue!.toJson(),
+      );
+      _plainText = null;
+      setState(() {});
+    } on Exception catch (e) {
+      if (mounted) {
+        showSnackBar(
+          context: context,
+          message: e.toString(),
+          duration: 5,
+          error: true,
+        );
+      }
+    }
+  }
+}
