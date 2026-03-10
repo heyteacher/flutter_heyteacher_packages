@@ -51,10 +51,7 @@ void main() {
     AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
 
     // set AAD
-    unawaited(
-      E2EEViewModel.instance(AuthViewModel.instance.uid)
-          .setAAD(aadValue: 'aadValue'),
-    );
+    unawaited(E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD());
 
     // mock firestore with mock authentication
     final firestore =
