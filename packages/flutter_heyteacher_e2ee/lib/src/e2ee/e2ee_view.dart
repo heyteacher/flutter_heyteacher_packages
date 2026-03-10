@@ -31,7 +31,7 @@ class _E2EEPassphraseTextField extends StatefulWidget {
   final FocusNode focusNode;
 
   /// A callback that is invoked after the passphrase has been successfully set.
-  final VoidCallback setPassphraseCallback;
+  final VoidCallback? setPassphraseCallback;
 
   @override
   State<_E2EEPassphraseTextField> createState() => _E2EEPassphraseCard();
@@ -40,44 +40,65 @@ class _E2EEPassphraseTextField extends StatefulWidget {
 class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
   bool _passphraseVisibility = false;
   bool _warningAlreadyShowed = false;
+
+  bool _authenticated = AuthViewModel.instance.autenticated;
+  String? _aad;
+
+  StreamSubscription<dynamic>? _authStremSubscription;
+
   @override
-  Widget build(BuildContext context) => FutureBuilder(
-    future: E2EEViewModel.instance(AuthViewModel.instance.uid).getAAD(),
-    builder: (_, aadSnapshot) => StreamBuilder<dynamic>(
-      stream: AuthViewModel.instance.stateChangesStream,
-      builder: (_, userSnapshot) => TextField(
-        focusNode: widget.focusNode,
-        enabled: userSnapshot.hasData,
-        onChanged: (value) async =>
-            _setPassphrase(value, oldValue: aadSnapshot.data),
-        obscureText:
-            !_passphraseVisibility && (aadSnapshot.data?.isNotEmpty ?? false),
-        decoration: InputDecoration(
-          isDense: true,
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: ThemeViewModel.instance.colorScheme.onSurface,
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          suffixIcon: IconButton(
-            icon: Icon(
-              _passphraseVisibility ? Icons.visibility_off : Icons.visibility,
-            ),
-            onPressed: () => setState(
-              () => _passphraseVisibility = !_passphraseVisibility,
-            ),
-          ),
-          labelText: FlutterHeyteacherE2EELocalizations.of(
-            context,
-          )!.encryptionPassphrase,
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_init);
+  }
+
+  Future<void> _init(_) async {
+    // read AAD
+    _aad = await E2EEViewModel.instance(AuthViewModel.instance.uid).getAAD();
+    setState(() {});
+    // listen for auth changes
+    unawaited(_authStremSubscription?.cancel());
+    _authStremSubscription = AuthViewModel.instance.stateChangesStream.listen(
+      (user) => setState(() => _authenticated = user != null),
+    );
+  }
+
+  @override
+  void dispose() {
+    unawaited(_authStremSubscription?.cancel());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => TextField(
+    focusNode: widget.focusNode,
+    enabled: _authenticated,
+    onChanged: (value) async => _setPassphrase(value, oldValue: _aad),
+    obscureText: !_passphraseVisibility && (_aad?.isNotEmpty ?? false),
+    decoration: InputDecoration(
+      isDense: true,
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: ThemeViewModel.instance.colorScheme.onSurface,
         ),
-        controller: TextEditingController(text: aadSnapshot.data ?? ''),
+        borderRadius: BorderRadius.circular(8),
       ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      suffixIcon: IconButton(
+        icon: Icon(
+          _passphraseVisibility ? Icons.visibility_off : Icons.visibility,
+        ),
+        onPressed: () => setState(
+          () => _passphraseVisibility = !_passphraseVisibility,
+        ),
+      ),
+      labelText: FlutterHeyteacherE2EELocalizations.of(
+        context,
+      )!.encryptionPassphrase,
     ),
+    controller: TextEditingController(text: _aad ?? ''),
   );
 
   Future<void> _setPassphrase(String value, {String? oldValue}) async {
@@ -92,7 +113,8 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
               AuthViewModel.instance.uid,
             ).setAAD(value);
             _warningAlreadyShowed = true;
-            widget.setPassphraseCallback();
+            _aad = value;
+            widget.setPassphraseCallback?.call();
             return null;
           },
           cancelCallback: (_) async {
@@ -108,7 +130,8 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
       );
     } else {
       await E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD(value);
-      widget.setPassphraseCallback();
+      _aad = value;
+      widget.setPassphraseCallback?.call();
     }
   }
 }
@@ -124,18 +147,18 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
 ///   (on mobile) or by pasting the key data (on non-mobile platforms).
 class E2EESecretKeyCard extends StatefulWidget {
   /// Creates an [E2EESecretKeyCard].
-  E2EESecretKeyCard({
+  const E2EESecretKeyCard({
     VoidCallback? secretKeyImportedCallback,
     Key? e2eePassphraseKey,
     super.key,
-  }) : _e2eePassphraseKey = e2eePassphraseKey ?? GlobalKey(),
-       _secretKeyImportedCallback = secretKeyImportedCallback ?? (() {});
+  }) : _e2eePassphraseKey = e2eePassphraseKey,
+       _secretKeyImportedCallback = secretKeyImportedCallback;
 
   /// A callback that is invoked after the secret key has been successfully
   /// imported.
-  final VoidCallback _secretKeyImportedCallback;
+  final VoidCallback? _secretKeyImportedCallback;
 
-  final Key _e2eePassphraseKey;
+  final Key? _e2eePassphraseKey;
 
   @override
   State<E2EESecretKeyCard> createState() => _E2EESecretKeyCardState();
@@ -300,7 +323,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
                 secretJwkJson!,
               );
               if (mounted) setState(() {});
-              widget._secretKeyImportedCallback();
+              widget._secretKeyImportedCallback?.call();
               return i10n.encryptionSecretKeyImported;
             },
       content: TextFormField(
@@ -393,7 +416,7 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
               AuthViewModel.instance.uid,
             ).importSecretJwkJson(secretJwkJson!);
             setState(() {});
-            widget._secretKeyImportedCallback();
+            widget._secretKeyImportedCallback?.call();
             return successMessage;
           },
         ),
