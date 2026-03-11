@@ -1,4 +1,4 @@
-# flutter_heyteacher_auth example app
+# flutter_heyteacher_connectivity example app
 
 A Flutter Heyteacher Connectivity example app.
 
