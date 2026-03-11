@@ -22,7 +22,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
     - [Flutter](#flutter)
     - [Visual Studio Code](#visual-studio-code)
     - [Android Studio](#android-studio)
-    - [`auto-changelog`](#auto-changelog)
+    - [`git-cliff`](#git-cliff)
     - [`FastLane`](#fastlane)
     - [`nodeJs`](#nodejs)
     - [Firebase CLI](#firebase-cli)
@@ -102,7 +102,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 
 - [very_good_analysis](https://pub.dev/packages/very_good_analysis): This package provides lint rules for Dart and Flutter which are used at `Very Good Ventures`
 
-- [auto-changelog](https://github.com/cookpete/auto-changelog): Command line tool for generating a changelog from git tags and commit history
+- [git-cliff](https://git-cliff.org/): Command line tool for generating a changelog from git tags and commit history
 
 - [vscode-markdownlint](https://github.com/DavidAnson/vscode-markdownlint): Markdown/CommonMark linting and style checking for Visual Studio Code
 
@@ -204,23 +204,23 @@ You can configure you `vscode` to execute the [command-line utility `version`](#
   export PATH=/usr/local/android-studio/jbr/bin/:$PATH
   ```
 
-### `auto-changelog`
+### `git-cliff`
 
-[auto-changelog](https://github.com/cookpete/auto-changelog) is an utility which generate `CHANGELOG.md` automatically based
-on `commits`, `pull requests` and `tags`.
+[git-cliff](https://git-cliff.org/) is an utility which generate `CHANGELOG.md` automatically based
+on git `commits` and `tags`.
 
 - install `npm` as described in [`nodeJs`](#nodejs)
 
-- install `auto-changelog`
+- install `git-cliff`
 
   ```bash
-  npm install -g auto-changelog
+  npm install -g git-cliff
   ```
 
 - test the command
 
   ```bash
-  auto-changelog
+  git-cliff --help
   ```
 
 ### `FastLane`

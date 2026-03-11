@@ -101,8 +101,8 @@ def create_github_release(version)
     package_name = sh("basename `pwd`").strip!
   end
   Dir.chdir("../") do
-    puts "generate CHANGELOG.md with auto-changelog"
-    sh("auto-changelog -u -v #{package_name}-#{version} --tag-prefix #{package_name}- --ignore-commit-pattern  \"docs\\(CHANGELOG\\)|build\\(deps\\): bump\"")
+    puts "generate CHANGELOG.md with git-cliff"
+    sh("git-cliff -t #{package_name}-#{version} -o CHANGELOG.md")
   end
   sh("git branch release")
   sh("git checkout release")
