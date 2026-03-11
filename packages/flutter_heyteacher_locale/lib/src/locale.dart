@@ -2,12 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
 import 'package:flutter_heyteacher_locale/locale.dart';
 import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart';
 import 'package:flutter_heyteacher_views/views.dart' show ThemeViewModel;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// Keys for values stored in `SharedPreferences`.
+///
+/// This enum standardizes the keys used for local data persistence, preventing
+/// typos and making it easier to manage stored preferences.
+enum _SharedPreferencesKeys {
+
+  /// The key for storing the user's selected country code (e.g., 'GB', 'US').
+  fhuCountryCode,
+}
 
 /// A  [Card] wrap of [ListTile] a [LocaleWrap] with TTS speak test.
 class LocaleCard extends StatelessWidget {
@@ -195,7 +204,7 @@ class LocaleViewModel {
     assert(_locale.countryCode != null, 'country code cannot be null');
     unawaited(
       SharedPreferencesAsync().setString(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.fhuCountryCode.name,
+        _SharedPreferencesKeys.fhuCountryCode.name,
         _locale.countryCode!,
       ),
     );
@@ -226,7 +235,7 @@ class LocaleViewModel {
     );
     _locale = _localeFromCountryCode(
       countryCode: await SharedPreferencesAsync().getString(
-        FlutterHeyteacherUtilsSharedPreferencesKeys.fhuCountryCode.name,
+        _SharedPreferencesKeys.fhuCountryCode.name,
       ),
     );
     await initializeDateFormatting();
