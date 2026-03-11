@@ -21,7 +21,5 @@ export 'src/firebase/crashlytics.dart' show CrashlyticsViewModel;
 export 'src/firebase/google_analytics.dart' show GoogleAnalitycsViewModel;
 export 'src/firebase/remote_config.dart'
     show
-        FHURemoteConfigKeys,
-        FlutterHeyteacherUtilsSharedPreferencesKeys,
         RemoteConfigViewModel;
 export 'src/firebase/storage.dart' show StorageViewModel;

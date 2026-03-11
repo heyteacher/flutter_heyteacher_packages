@@ -17,12 +17,6 @@ import 'package:logging/logging.dart';
 /// This enum standardizes the keys used for local data persistence, preventing
 /// typos and making it easier to manage stored preferences.
 enum FlutterHeyteacherUtilsSharedPreferencesKeys {
-  /// The key for storing the user's selected theme mode (e.g., 'light',
-  /// 'dark', 'system').
-  fhuThemeMode,
-
-  /// The key for storing the user's selected country code (e.g., 'GB', 'US').
-  fhuCountryCode,
 
   /// Indicates whether the Firebase Cloud Messaging background handler needs
   /// to be initialized.
@@ -42,19 +36,6 @@ enum FHURemoteConfigKeys {
 
   /// The Firebase Cloud Messaging topic name to subscribe to.
   fcmTopicName,
-
-  /// The web demo user
-  webDemoUser,
-
-  /// The web demo  password also user for End-to-End Encryption (E2EE)
-  /// passphrase.
-  webDemoPassword,
-
-  /// The backup databaseId
-  backupDatabaseId,
-
-  /// Web Demo E2EE Secret Key
-  webDemoE2EESecretKey;
 }
 
 /// A view model for managing Firebase Remote Config.
@@ -129,7 +110,6 @@ class RemoteConfigViewModel {
       _logger.severe('(initialize): error', error, stackTrace);
     }
   }
-
 
   /// Gets an integer value from Remote Config for the given [key].
   int getInt(String key) => _remoteConfig.getInt(key);
