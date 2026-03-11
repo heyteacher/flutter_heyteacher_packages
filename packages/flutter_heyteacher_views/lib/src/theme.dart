@@ -14,8 +14,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// Keys for values stored in `SharedPreferences`.
+///
+/// This enum standardizes the keys used for local data persistence, preventing
+/// typos and making it easier to manage stored preferences.
+enum _SharedPreferencesKeys {
+  /// The key for storing the user's selected theme mode (e.g., 'light',
+  /// 'dark', 'system').
+  fhuThemeMode,
+}
 
 /// A [ListTile] widget that allows users to select the application's
 /// [ThemeMode].
@@ -173,7 +182,7 @@ class ThemeViewModel {
     unawaited(
       SharedPreferencesAsync()
           .getString(
-            FlutterHeyteacherUtilsSharedPreferencesKeys.fhuThemeMode.name,
+            _SharedPreferencesKeys.fhuThemeMode.name,
           )
           .then((
             themeModeName,
@@ -373,7 +382,7 @@ class ThemeViewModel {
   Future<void> setThemeMode(ThemeMode themeMode) async {
     _themeMode = themeMode;
     await SharedPreferencesAsync().setString(
-      FlutterHeyteacherUtilsSharedPreferencesKeys.fhuThemeMode.name,
+      _SharedPreferencesKeys.fhuThemeMode.name,
       themeMode.name,
     );
     _themeStreamController.sink.add(theme);
