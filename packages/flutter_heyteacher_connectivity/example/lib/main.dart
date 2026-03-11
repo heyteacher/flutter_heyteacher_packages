@@ -19,18 +19,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'Flutter Heyteacher Connectivity',
     theme: ThemeViewModel.instance.lightTheme,
     darkTheme: ThemeViewModel.instance.darkTheme,
     themeMode: ThemeMode.dark,
-    home: const _MyHomePage(title: 'Flutter Heyteacher Connectivity'),
+    home: const _MyHomePage(),
   );
 }
 
 class _MyHomePage extends StatefulWidget {
-  const _MyHomePage({required this.title});
-
-  final String title;
+  const _MyHomePage();
 
   @override
   State<_MyHomePage> createState() => _MyHomePageState();
@@ -40,7 +37,7 @@ class _MyHomePageState extends State<_MyHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text(widget.title),
+      title: const Text('Flutter Heyteacher Connectivity'),
     ),
     body: Padding(
       padding: const EdgeInsets.only(top: 32),
@@ -59,7 +56,6 @@ class _MyHomePageState extends State<_MyHomePage> {
                   true => Badge(
                     label: Text(
                       'ON',
-
                       style: Theme.of(
                         context,
                       ).textTheme.bodyLarge!.copyWith(color: Colors.white),
