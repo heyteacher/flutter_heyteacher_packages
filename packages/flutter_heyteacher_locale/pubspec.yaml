@@ -1,6 +1,6 @@
 name: flutter_heyteacher_locale
 description: "The flutter heyteacher package for locale utilities."
-version: 2.0.2+130
+version: 2.0.3+132
 homepage:
 publish_to: none # Remove this line if you wish to publish to pub.dev
 
@@ -14,8 +14,6 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_heyteacher_firebase:
-    path: ../flutter_heyteacher_firebase
   flutter_heyteacher_platform:
     path: ../flutter_heyteacher_platform
   flutter_heyteacher_text_to_speech:
