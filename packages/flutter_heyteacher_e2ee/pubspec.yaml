@@ -34,7 +34,6 @@ dependencies:
     git: https://github.com/google/webcrypto.dart.git
 
 dev_dependencies:
-  firebase_auth_mocks: ^0.15.1
   flutter_heyteacher_meta: ^4.4.4+128
   flutter_test:
     sdk: flutter

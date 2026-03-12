@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel;
 import 'package:flutter_heyteacher_e2ee/e2ee.dart';
@@ -16,29 +15,18 @@ import 'package:package_info_plus/package_info_plus.dart';
 /// flutter pub run webcrypto:setup
 /// ```
 void main() {
-  const userId = 'testuid';
-  const userEmail = 'test@example.com';
-  const userDisplayName = 'Test User';
-
   WidgetsFlutterBinding.ensureInitialized();
   PackageInfoPlusLinuxPlugin.registerWith();
   FlutterSecureStorage.setMockInitialValues({});
   PackageInfoPlusLinuxPlugin.registerWith();
-  // mock authentication
-  final auth = MockFirebaseAuth(
-    mockUser: MockUser(
-      uid: userId,
-      email: userEmail,
-      displayName: userDisplayName,
-    ),
-  );
   // mock sign-in
   unawaited(
-    auth.signInWithEmailAndPassword(email: userEmail, password: userEmail),
+    AuthViewModel.instance.signInWithEmailAndPassword(
+      email: 'test@example.com',
+      password: "doesn't matter",
+    ),
   );
 
-  // initialize Auth with MockFirebaseAuth
-  AuthViewModel.instance = AuthViewModel();
   unawaited(E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD());
 
   group('secret key', () {
@@ -48,7 +36,8 @@ void main() {
         AuthViewModel.instance.uid,
       ).generateSecretKey(isToStore: false);
       debugPrint(
-        '\naad: ${await E2EEViewModel.instance(AuthViewModel.instance.uid,
+        '\naad: ${await E2EEViewModel.instance(
+          AuthViewModel.instance.uid,
         ).getAAD()}\n',
       );
       debugPrint(
