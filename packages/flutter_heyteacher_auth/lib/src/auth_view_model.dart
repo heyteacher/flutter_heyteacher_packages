@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart'
+    show MockFirebaseAuth, MockUser;
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_heyteacher_auth/auth.dart';
 import 'package:flutter_heyteacher_platform/platform.dart';
 import 'package:logging/logging.dart';
@@ -16,20 +19,35 @@ import 'package:logging/logging.dart';
 /// It can be initialized with a real or mocked [FirebaseAuth] instance.
 class AuthViewModel {
   /// Private constructor for the singleton.
-  /// Initializes [_firebaseAuth] with either the provided [mockedFirebaseAuth]
+  /// Initializes [_firebaseAuth] with either the provided [MockFirebaseAuth]
   /// or the default [FirebaseAuth.instance].
   /// Configures [GoogleProvider] if not using a mocked instance.
   //@visibleForTesting
-  AuthViewModel({FirebaseAuth? mockedFirebaseAuth}) {
-    // if [mockedFirebaseAuth] is null, inizialize with real FirebaseAuth
-    //and configure provider
-    if (mockedFirebaseAuth == null) {
+  AuthViewModel() {
+    try {
       _googleProvider = GoogleProvider(
-        clientId: FirebaseRemoteConfig.instance.getString('authGoogleClientId'),
+        clientId: FirebaseRemoteConfig.instance.getString(
+          'authGoogleClientId',
+        ),
       );
       FirebaseUIAuth.configureProviders([_googleProvider!]);
+      _firebaseAuth = FirebaseAuth.instance;
+    //
+    // ignore: avoid_catches_without_on_clauses
+    } catch (_) {
+      _logger.warning(
+        '(AuthViewModel): no firebase, mock authentication with uid "testuid". '
+        'Do not use in production mode',
+      );
+      // Mock Firebase Authentication
+      _firebaseAuth = MockFirebaseAuth(
+        mockUser: MockUser(
+          uid: 'testuid',
+          email: 'test@example.com',
+          displayName: 'Test User',
+        ),
+      );
     }
-    _firebaseAuth = mockedFirebaseAuth ?? FirebaseAuth.instance;
   }
   static final _logger = Logger('AuthViewModel');
   late final FirebaseAuth _firebaseAuth;
@@ -81,6 +99,13 @@ class AuthViewModel {
       _logger.severe('(signOut): failed', error, stackTrace);
     }
   }
+
+  /// Gets the authForFakeFirestore
+  @visibleForTesting
+  Stream<Map<String, dynamic>?> get authForFakeFirestore =>
+      _firebaseAuth is MockFirebaseAuth
+      ? _firebaseAuth.authForFakeFirestore
+      : const Stream.empty();
 
   /// Gets the currently authenticated Firebase [User].
   ///
