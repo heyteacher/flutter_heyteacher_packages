@@ -28,7 +28,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  firebase_auth_mocks: ^0.15.1
   flutter:
     sdk: flutter
   flutter_heyteacher_auth:

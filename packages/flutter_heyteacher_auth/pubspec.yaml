@@ -1,6 +1,6 @@
 name: flutter_heyteacher_auth
 description: "The flutter heyteacher package for authentication utilities."
-version: 2.0.4+135
+version: 2.0.5+137
 homepage:
 publish_to: none
 
@@ -13,6 +13,7 @@ resolution: workspace
 dependencies:
   clock: ^1.1.2
   firebase_auth: ^6.2.0
+  firebase_auth_mocks: ^0.15.1
   firebase_remote_config: ^6.2.0
   firebase_ui_auth: ^3.0.1
   firebase_ui_oauth_google: ^2.0.1

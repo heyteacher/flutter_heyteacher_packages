@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart'
-    show MockFirebaseAuth, MockUser;
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_auth/auth.dart'
     show AccountCard, AuthViewModel, FlutterHeyteacherAuthLocalizations;
@@ -14,16 +12,6 @@ import 'package:url_launcher/url_launcher.dart' show launchUrl;
 Future<void> main() async {
   // ensureInitialized
   WidgetsFlutterBinding.ensureInitialized();
-  // Mock Firebase Authentication
-  final mockFirebaseAuth = MockFirebaseAuth(
-    mockUser: MockUser(
-      uid: 'testuid',
-      email: 'test@example.com',
-      displayName: 'Test User',
-    ),
-  );
-  //initialize Auth with MockFirebaseAuth
-  AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: mockFirebaseAuth);
   // Logging
   await LoggerViewModel.instance.initialize();
   runApp(const MyApp());

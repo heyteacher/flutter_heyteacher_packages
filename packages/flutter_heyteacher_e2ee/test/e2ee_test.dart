@@ -38,7 +38,7 @@ void main() {
   );
 
   // initialize Auth with MockFirebaseAuth
-  AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
+  AuthViewModel.instance = AuthViewModel();
   unawaited(E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD());
 
   group('secret key', () {
