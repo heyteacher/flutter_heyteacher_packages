@@ -1,6 +1,6 @@
 name: flutter_heyteacher_logger
 description: "The flutter heyteacher package for logger utilities."
-version: 2.0.4+134
+version: 2.0.5+136
 homepage:
 publish_to: none
 environment:
