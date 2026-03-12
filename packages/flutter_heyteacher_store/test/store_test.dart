@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel;
 import 'package:flutter_heyteacher_connectivity/connectivity.dart';
@@ -20,9 +19,7 @@ import 'track_store.dart';
 
 @GenerateNiceMocks([MockSpec<ConnectivityViewModel>()])
 void main() {
-  const userId = 'testuid';
   const userEmail = 'test@example.com';
-  const userDisplayName = 'Test User';
 
   setUp(() async {
     final connectivityViewModel = MockConnectivityViewModel();
@@ -34,28 +31,18 @@ void main() {
     WidgetsFlutterBinding.ensureInitialized();
     FlutterSecureStorage.setMockInitialValues({});
     PackageInfoPlusLinuxPlugin.registerWith();
-    // mock authentication
-    final auth = MockFirebaseAuth(
-      mockUser: MockUser(
-        uid: userId,
-        email: userEmail,
-        displayName: userDisplayName,
-      ),
-    );
     // mock sign-in
     unawaited(
-      auth.signInWithEmailAndPassword(email: userEmail, password: userEmail),
+      AuthViewModel.instance
+          .signInWithEmailAndPassword(email: userEmail, password: userEmail),
     );
-
-    // initialize Auth with MockFirebaseAuth
-    AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: auth);
 
     // set AAD
     unawaited(E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD());
 
     // mock firestore with mock authentication
-    final firestore =
-        FakeFirebaseFirestore(authObject: auth.authForFakeFirestore);
+    final firestore = FakeFirebaseFirestore(
+        authObject: AuthViewModel.instance.authForFakeFirestore,);
     TrackStore.instance = TrackStore(firebaseFirestore: firestore);
 
     // initialize
