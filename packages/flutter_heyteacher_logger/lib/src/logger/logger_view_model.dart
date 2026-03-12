@@ -200,7 +200,12 @@ class LoggerViewModel {
     final version = await InfoDevicePackageViewModel.instance.packageVersion;
     final deviceInfo = await InfoDevicePackageViewModel.instance.deviceInfo;
     // Get the unique identifier for the device/user.
-    final identifierInfo = InfoDevicePackageViewModel.instance.identifierInfo;
+    var identifierInfo = 'guest';
+    try {
+      identifierInfo = InfoDevicePackageViewModel.instance.identifierInfo;
+    } on Exception catch (_) {
+      _logger.info('no auth, idenfitierInfo is guest');
+    }
     // initialize WriteLogsWorker in order to manage concurrent execution into
     // a single isolate
     unawaited(_writeLogsWorker.initialize());
@@ -473,29 +478,31 @@ class LoggerViewModel {
     if (filteredNotSavedLogEntries != null) {
       logEntries.addAll(filteredNotSavedLogEntries);
     }
-    // load log files from recent to old
-    for (final file in await _logFiles(descending: descending)) {
-      // load log entries from file and filter by level and add to log entries
-      final logEntriesToAdd = _fromJson(file)
-          .where(
-            (logEntry) => _filterLog(
-              loggerName: logEntry.loggerName,
-              message: logEntry.message,
-              time: logEntry.time,
-              level: logEntry.level,
-              error: logEntry.error,
-              stackTrace: logEntry.stackTrace,
-              filterLevel: filterLevel,
-              filterText: _filterText,
-              filterStartTime: startTime,
-            ),
-          )
-          .toList();
-      // add));
-      logEntries.addAll(logEntriesToAdd);
-      // if limit is reached, break
-      if (limit != null && logEntries.length >= limit) {
-        break;
+    if (PlatformHelper.isNotWeb) {
+      // load log files from recent to old
+      for (final file in await _logFiles(descending: descending)) {
+        // load log entries from file and filter by level and add to log entries
+        final logEntriesToAdd = _fromJson(file)
+            .where(
+              (logEntry) => _filterLog(
+                loggerName: logEntry.loggerName,
+                message: logEntry.message,
+                time: logEntry.time,
+                level: logEntry.level,
+                error: logEntry.error,
+                stackTrace: logEntry.stackTrace,
+                filterLevel: filterLevel,
+                filterText: _filterText,
+                filterStartTime: startTime,
+              ),
+            )
+            .toList();
+        // add));
+        logEntries.addAll(logEntriesToAdd);
+        // if limit is reached, break
+        if (limit != null && logEntries.length >= limit) {
+          break;
+        }
       }
     }
     // sublist log entries to limit if set and sort descending by time
@@ -509,8 +516,9 @@ class LoggerViewModel {
   Future<void> _writeLogEntry(LogEntry logEntry) async {
     //developer.log('flutter () <_writeLogEntry>:');
     try {
-      if (notSavedLogEntries.length == 1000 ||
-          logEntry.level.value >= Level.SEVERE.value) {
+      if (PlatformHelper.isNotWeb &&
+          (notSavedLogEntries.length == 1000 ||
+              logEntry.level.value >= Level.SEVERE.value)) {
         final response = await _writeLogsWorker.execute(notSavedLogEntries);
         if (response.error != null) {
           _logger.severe(

@@ -1,39 +1,119 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# flutter_heyteacher_logger
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter package that provides UI components and a model for viewing and managing application logs. This package is specifically designed for the [Flutter HeyTeacher ecosystem](../../).
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- **Log Viewing & Filtering**: A dedicated `LoggerScreen` to display, filter, and search through log messages.
+- **Easy Access**: A convenient `LoggerCard` widget for easy navigation to the logger screen.
+- **Centralized Log Management**: The `LoggerViewModel` captures, configures, and stores logs in-memory.
+- **Firebase Integration**: Dynamically set log levels using Firebase Remote Config and forward structured logs to Firebase Analytics.
+- **UI Components**: Includes widgets like `EnableLogsStorageChoiceCard` and `LoggingLevelDropDownMenuCard` for user interaction.
+- **Routing**: Pre-configured routing for the logger UI with `LoggingRouter`.
+- **Localization**: Support for localizations via `FlutterHeyteacherLoggerLocalizations`.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter_heyteacher_logger: ^1.0.0
+```
+
+This package relies on Firebase for remote configuration of log levels and for analytics. Ensure your Flutter project is correctly configured with Firebase.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Here is a basic example of how to use the logger UI components.
+
+### Initialization
+
+First, initialize the `LoggerViewModel`. This is typically done at the start of your application.
 
 ```dart
-const like = 'sample';
+import 'package:flutter_heyteacher_logger/logger.dart';
+
+void main() async {
+  // ... other initializations
+
+  // Initialize LoggerViewModel
+  // It will start capturing logs based on the configuration.
+  await LoggerViewModel.instance.initialize();
+
+  runApp(MyApp());
+}
+
+/// This Widget is the main application widget.
+class MyApp extends StatelessWidget {
+  .
+  .
+  .
+  @override
+  Widget build(BuildContext context) => MaterialApp.router(
+    .
+    .
+    .
+    localizationsDelegates: const [
+      FlutterHeyteacherLoggerLocalizations.delegate,
+    ],
+    routerConfig: GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const _MyHomePage(),
+          routes: [
+            LoggingRouter.builder(),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 ```
 
-## Additional information
+### UI Components
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+To allow users to view logs, you can use the `LoggerCard` which navigates to the `LoggerScreen` on tap.
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_logger/logger.dart';
+
+class SettingsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Settings'),
+      ),
+      body: ListView(
+        children: [
+          // ... other settings
+          LoggerCard(''),
+        ],
+      ),
+    );
+  }
+}
+```
+
+### Logging Messages
+
+To log messages from anywhere in your application, use the `Logger` instance from the `LoggerViewModel`.
+
+```dart
+import 'package:flutter_heyteacher_logger/logger.dart';
+
+void doSomething() {
+  final logger = Logger('doSomething');
+
+  logger.info('This is an informational message.');
+  logger.warning('This is a warning message.');
+  try {
+    throw Exception('Something went wrong!');
+  } catch (e, s) {
+    logger.severe('An error occurred', e, s);
+  }
+}
+```
