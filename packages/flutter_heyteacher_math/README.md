@@ -1,39 +1,52 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# flutter_heyteacher_math
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter package containing mathematical utilities and algorithms, designed for the [Flutter HeyTeacher ecosystem](../../).
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- **Moving Average**: Utilities to calculate Simple, Exponential, and Weighted moving averages for data sets.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add the package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  flutter_heyteacher_math: ^1.0.0
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### Moving Average
+
+The package provides the `MovingAverage` class to calculate different types of moving averages.
+
+#### Simple Moving Average
 
 ```dart
-const like = 'sample';
+import 'package:flutter_heyteacher_math/math.dart';
+
+final data = [10.0, 12.0, 11.0, 15.0, 14.0, 16.0];
+final period = 3;
+
+final result = MovingAverage.simple(data, period);
+// result: [10.0, 11.0, 11.0, 12.666..., 13.333..., 15.0]
 ```
 
-## Additional information
+#### Exponential Moving Average
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+import 'package:flutter_heyteacher_math/math.dart';
+
+final result = MovingAverage.exponential(data, period);
+// result: [10.0, 11.0, 11.0, 13.0, 13.5, 14.75]
+```
+
+#### Weighted Moving Average
+
+```dart
+import 'package:flutter_heyteacher_math/math.dart';
+
+final result = MovingAverage.weighted(data, period);
+// result: [10.0, 11.333..., 11.166..., 13.166..., 13.833..., 15.166...]
+```
