@@ -1,6 +1,6 @@
 name: flutter_heyteacher_timer_workflow
 description: "The flutter heyteacher package for timer workflow"
-version: 2.0.0+126
+version: 2.0.1+128
 homepage:
 publish_to: none # Remove this line if you wish to publish to pub.dev
 
