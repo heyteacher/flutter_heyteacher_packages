@@ -1,3 +1,12 @@
+## [flutter_heyteacher_store-1.29.14+1016] - 2026-03-12
+
+### 🐛 Bug Fixes
+
+- Remove `firebase_auth_mocks` dependency
+
+### 💼 Other
+
+- *(deps)* Bump deps to 1.29.14+1016
 ## [flutter_heyteacher_store-1.29.13+1014] - 2026-03-12
 
 ### 🐛 Bug Fixes
@@ -8,6 +17,10 @@
 
 - *(deps)* Bump deps to 1.29.12+1012
 - *(deps)* Bump deps to 1.29.13+1014
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.13+1014
 
 ### 🧪 Testing
 
