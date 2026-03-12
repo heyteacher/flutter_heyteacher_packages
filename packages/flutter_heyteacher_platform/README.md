@@ -1,39 +1,24 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Flutter Heyteacher Platform
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+This package contains platform-specific utilities, UI components, and localization support for the Heyteacher project.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+This package exports the following modules via `platform.dart`:
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- **Context Management**: `ContextHelper` provides utility methods for interacting with `BuildContext`.
+- **Device Information**:
+  - `DevicePackageInfoCard`: A widget to display device and package information.
+  - `InfoDevicePackageViewModel`: The view model backing the device info card.
+- **Localization**: `FlutterHeyteacherPlatformLocalizations` handles localized strings specific to platform features.
+- **Platform Utilities**: `PlatformHelper` offers methods to handle platform-specific behaviors.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Import the main library file to access the components:
 
 ```dart
-const like = 'sample';
+import 'package:flutter_heyteacher_platform/platform.dart';
 ```
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Refer to the individual source files in `lib/src/` for detailed implementation logic.
