@@ -19,7 +19,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_auth/auth.dart';
 import 'package:flutter_heyteacher_connectivity/connectivity.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart' show RemoteConfigViewModel, StorageViewModel;
+import 'package:flutter_heyteacher_firebase/firebase.dart'
+    show StorageViewModel;
 import 'package:flutter_heyteacher_locale/locale.dart';
 import 'package:flutter_heyteacher_logger/logger.dart';
 import 'package:flutter_heyteacher_platform/platform.dart';
@@ -37,7 +38,10 @@ import 'package:url_launcher/url_launcher.dart';
 /// It shows the device type, version, and a button to ask for support.
 class DevicePackageInfoCard extends StatelessWidget {
   /// Creates a [DevicePackageInfoCard].
-  const DevicePackageInfoCard({super.key});
+  const DevicePackageInfoCard({required String supportEmail, super.key})
+    : _supportEmail = supportEmail;
+
+  final String _supportEmail;
 
   @override
   Widget build(BuildContext context) => Card(
@@ -60,8 +64,10 @@ class DevicePackageInfoCard extends StatelessWidget {
         ),
       ),
       trailing: IconButton(
-        onPressed: () =>
-            InfoDevicePackageViewModel.instance._askSupport(context),
+        onPressed: () => InfoDevicePackageViewModel.instance._askSupport(
+          context: context,
+          supportEmail: _supportEmail,
+        ),
         icon: const Icon(Icons.support),
         tooltip: FlutterHeyteacherPlatformLocalizations.of(context)!.askSupport,
       ),
@@ -208,11 +214,10 @@ class InfoDevicePackageViewModel {
   /// - A subject line indicating the app name.
   /// - A body containing the user's identifier, device information, and app
   ///   version, formatted for easy support.
-  Future<void> _askSupport(BuildContext context) async {
-    assert(
-      RemoteConfigViewModel.instance.getString('supportEmail').isNotEmpty,
-      'supportEmail is empty',
-    );
+  Future<void> _askSupport({
+    required BuildContext context,
+    required String supportEmail,
+  }) async {
     final i10n = FlutterHeyteacherPlatformLocalizations.of(context)!;
     if (await ConnectivityViewModel.instance.notConnected && context.mounted) {
       showSnackBar(
@@ -240,7 +245,7 @@ class InfoDevicePackageViewModel {
         '\n';
     final uri = Uri(
       scheme: 'mailto',
-      path: RemoteConfigViewModel.instance.getString('supportEmail'),
+      path: supportEmail,
       query: 'subject=$subject&body=${Uri.encodeFull(body)}',
     );
     unawaited(launchUrl(uri));
