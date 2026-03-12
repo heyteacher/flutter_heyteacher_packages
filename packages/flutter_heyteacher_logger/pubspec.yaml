@@ -13,7 +13,6 @@ dependencies:
   clock: ^1.1.2
   equatable: ^2.0.8
   firebase_analytics: ^12.1.3
-  firebase_remote_config: ^6.2.0
   flutter:
     sdk: flutter
   flutter_heyteacher_auth:
