@@ -12,27 +12,20 @@ import 'package:flutter_heyteacher_e2ee/e2ee.dart'
 import 'package:flutter_heyteacher_views/views.dart'
     show ThemeViewModel, showSnackBar;
 
-const ({String uid, String email,String displayName, String password})_user = (
-  displayName: 'Test User',
-  uid: 'testuid',
-  email: 'test@example.com',
-  password: 'testpassword',
-);
-
 Future<void> main() async {
   // ensureInitialized
   WidgetsFlutterBinding.ensureInitialized();
 
   // sign in
   await AuthViewModel.instance.signInWithEmailAndPassword(
-    email: _user.email,
-    password: _user.password,
+    email: 'test@example.com',
+    password: "doesn't matter",
   );
 
   // generate Master Secret Key
   E2EEViewModel.masterSecretKeyJwk = await E2EEViewModel.generateSecretKeyJwk();
   // set Secret Key
-  await E2EEViewModel.instance(_user.uid).setAAD('jd&76h%d');
+  await E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD('jd&76h%d');
 
   runApp(const MyApp());
 }
@@ -134,7 +127,7 @@ class _MyHomePageState extends State<_MyHomePage> {
   Future<void> _decryptText() async {
     try {
       _plainText = await E2EEViewModel.instance(
-        _user.uid,
+        AuthViewModel.instance.uid,
       ).decrypt(_e2eeValue!);
       _secretKeyTextEditingController.text = _plainText!;
       _e2eeValue = null;
@@ -154,7 +147,7 @@ class _MyHomePageState extends State<_MyHomePage> {
   Future<void> _encryptText() async {
     try {
       _e2eeValue = await E2EEViewModel.instance(
-        _user.uid,
+        AuthViewModel.instance.uid,
       ).encrypt(_plainText!);
       _secretKeyTextEditingController.text = jsonEncode(
         _e2eeValue!.toJson(),

@@ -1,6 +1,6 @@
 name: flutter_heyteacher_e2ee
 description: "The flutter heyteacher package for End-2-End Encryption utilities."
-version: 2.0.1+128
+version: 2.0.2+130
 homepage:
 publish_to: none
 
@@ -34,7 +34,6 @@ dependencies:
     git: https://github.com/google/webcrypto.dart.git
 
 dev_dependencies:
-  firebase_auth_mocks: ^0.15.1
   flutter_heyteacher_meta: ^4.4.4+128
   flutter_test:
     sdk: flutter
