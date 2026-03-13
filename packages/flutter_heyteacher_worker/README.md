@@ -1,39 +1,52 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Flutter Heyteacher Worker
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+This package provides a [generics](https://dart.dev/language/generics) `Worker<I,O>` class to run long-running tasks in a background isolate, preventing the UI from freezing. It simplifies the process of offloading computation from the main thread.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+The implementation is based on [Robust ports example](https://dart.dev/language/isolates#robust-ports-example) described in [Dart Isolates](https://dart.dev/language/isolates) official documentation.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- **`Worker<I, O>`**: A [generics](https://dart.dev/language/generics) class that manages the lifecycle of a long-running isolate.
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+> [!IMPORTANT]
+>The `Worker<I, O>` will not spawn a real isolate on the `web` plaftorm or during `Flutter tests`.
+>
+>**In `web` and `Flutter tests` environments, the task will be executed on the main thread instead**.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Import the main library file to access the components:
 
 ```dart
-const like = 'sample';
+import 'package:flutter_heyteacher_worker/worker.dart';
 ```
 
-## Additional information
+To use `Worker<I, O>`, you need to:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+- define a top-level or static function that matches the signature `Future<O> function(I input)`
+- pass it to the `Worker` constructor.
+
+### Example
+
+Here is a simple example of how to use the `Worker<I, O>` to perform a computation in a background isolate.
+
+```dart
+// 1. Define your worker logic as a top-level or static function.
+// This function will be executed in the background isolate.
+// `I` is the input type is `String` 
+// `O` is the output type is `int`.
+Future<int> calculateStringLength(String input) async {
+  // Simulate a heavy computation
+  await Future.delayed(const Duration(seconds: 1));
+  return input.length;
+}
+
+Future<void> runWorker() async {
+  final worker = Worker<String, int>(calculateStringLength);
+  final result = await worker.execute('hello worker');
+
+  print('Result from worker: ${result.output}'); // Result from worker: 12
+
+  worker.close();
+}
+```

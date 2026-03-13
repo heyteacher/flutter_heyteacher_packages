@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 
 /// The Isolate worker type.
-typedef WorkerIsolate<I, O> = Future<O> Function(I input);
+typedef _WorkerIsolate<I, O> = Future<O> Function(I input);
 
 /// An abstract class for creating a long-running isolate that can handle
 /// multiple requests.
@@ -39,7 +39,7 @@ final class Worker<I, O> {
   Worker(this._workerIsolate);
   static final Logger _logger = Logger('Worker');
 
-  final WorkerIsolate<I, O> _workerIsolate;
+  final _WorkerIsolate<I, O> _workerIsolate;
 
   SendPort? _sendPort;
   ReceivePort? _receivePort;

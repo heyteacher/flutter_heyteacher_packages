@@ -1,1 +1,1 @@
-export 'src/worker.dart' show Worker, WorkerIsolate;
+export 'src/worker.dart' show Worker;
