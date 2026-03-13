@@ -4,7 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_locale/locale.dart';
 import 'package:flutter_heyteacher_text_to_speech/text_to_speech.dart';
-import 'package:flutter_heyteacher_views/views.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_views/views.dart'
+    show ProgressIndicatorWidget, ThemeViewModel;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +19,7 @@ enum _SharedPreferencesKeys {
 }
 
 /// A  [Card] wrap of [ListTile] a [LocaleWrap] with TTS speak test.
-class LocaleCard extends StatelessWidget {
+class LocaleCard extends StatefulWidget {
   /// Creates a [LocaleCard].
   const LocaleCard({
     Future<void> Function(BuildContext)? onTextToSpeechPressed,
@@ -28,57 +29,74 @@ class LocaleCard extends StatelessWidget {
   final Future<void> Function(BuildContext context)? _onTextToSpeechPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        key: const ValueKey('lt_fhu_locale'),
-        leading: const Icon(Icons.language),
-        trailing: IconButton(
-          alignment: Alignment.topRight,
-          icon: const Icon(Icons.volume_up),
-          onPressed: () =>
-              _onTextToSpeechPressed?.call(context) ??
-              unawaited(
-                TTSViewModel.instance().speak(
-                  FlutterHeyteacherLocaleLocalizations.of(context)!.ttsTest(
-                    LocaleViewModel.instance.locale.languageCode,
-                    LocaleViewModel.instance.locale.countryCode ?? '',
+  State<LocaleCard> createState() => _LocaleCardState();
+}
+
+class _LocaleCardState extends State<LocaleCard> {
+  bool _loading = false;
+
+  @override
+  Widget build(BuildContext context) => Card(
+    child: ListTile(
+      key: const ValueKey('lt_fhu_locale'),
+      leading: const Icon(Icons.language),
+      trailing: _loading
+          ? const Padding(
+              padding: EdgeInsets.only(left: 12, right: 16),
+              child: ProgressIndicatorWidget(),
+            )
+          : IconButton(
+              alignment: Alignment.topRight,
+              iconSize: 24,
+              icon: const Icon(Icons.volume_up),
+              onPressed: () async {
+                setState(() => _loading = true);
+                widget._onTextToSpeechPressed?.call(context) ??
+                    unawaited(
+                      TTSViewModel.instance().speak(
+                        FlutterHeyteacherLocaleLocalizations.of(
+                          context,
+                        )!.ttsTest(
+                          LocaleViewModel.instance.locale.languageCode,
+                          LocaleViewModel.instance.locale.countryCode ?? '',
+                        ),
+                        checkTTSThreshold: false,
+                      ),
+                    );
+                await Future<void>.delayed(const Duration(seconds: 5));
+                setState(() => _loading = false);
+              },
+            ),
+      title: const LocaleWrap(),
+      subtitle: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: StreamBuilder(
+          stream: LocaleViewModel.instance.localeStream,
+          builder: (_, _) => RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: '',
+              children: [
+                TextSpan(
+                  text: FormatterHelper.dateTimeFormat(
+                    DateTime(2020, 6, 30, 22),
                   ),
-                  checkTTSThreshold: false,
+                  style: TextStyle(
+                    color: ThemeViewModel.instance.orangeColor,
+                  ),
                 ),
-              ),
-        ),
-        title: const LocaleWrap(),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: StreamBuilder(
-            stream: LocaleViewModel.instance.localeStream,
-            builder: (_, _) => RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: '',
-                children: [
-                  TextSpan(
-                    text: FormatterHelper.dateTimeFormat(
-                      DateTime(2020, 6, 30, 22),
-                    ),
-                    style: TextStyle(
-                      color: ThemeViewModel.instance.orangeColor,
-                    ),
-                  ),
-                  const TextSpan(text: '  '),
-                  TextSpan(
-                    text: FormatterHelper.doubleFormat(12.34),
-                    style: TextStyle(color: ThemeViewModel.instance.blueColor),
-                  ),
-                ],
-              ),
+                const TextSpan(text: '  '),
+                TextSpan(
+                  text: FormatterHelper.doubleFormat(12.34),
+                  style: TextStyle(color: ThemeViewModel.instance.blueColor),
+                ),
+              ],
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 /// A [Wrap] widget that allows users to select the application's [Locale].
