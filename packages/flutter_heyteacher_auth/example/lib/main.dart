@@ -11,7 +11,6 @@ import 'package:flutter_heyteacher_logger/logger.dart' show LoggerViewModel;
 import 'package:flutter_heyteacher_views/views.dart'
     show ThemeViewModel, showSnackBar;
 import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
-import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
 Future<void> main() async {
   // ensureInitialized
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => MaterialApp.router(
-    title: 'Flutter Heyteacher Auth',
     theme: ThemeViewModel.instance.lightTheme,
     darkTheme: ThemeViewModel.instance.darkTheme,
     themeMode: ThemeMode.dark,
@@ -40,9 +38,7 @@ class MyApp extends StatelessWidget {
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => const _MyHomePage(
-            title: 'Flutter Heyteacher Auth',
-          ),
+          builder: (context, state) => const _MyHomePage(),
           routes: [
             GoAuthRoute.builder(
               landingRoutePath: '/',
@@ -66,9 +62,7 @@ class MyApp extends StatelessWidget {
 }
 
 class _MyHomePage extends StatefulWidget {
-  const _MyHomePage({required this.title});
-
-  final String title;
+  const _MyHomePage();
 
   @override
   State<_MyHomePage> createState() => _MyHomePageState();
@@ -78,7 +72,7 @@ class _MyHomePageState extends State<_MyHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text(widget.title),
+      title: const Text('Flutter Heyteacher Auth'),
     ),
     body: Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -106,50 +100,52 @@ class _MyHomePageState extends State<_MyHomePage> {
                     color: ThemeViewModel.instance.colorScheme.onSurface,
                   ),
                   children: [
-                    const TextSpan(text: 'This example uses\n\n'),
-                    WidgetSpan(
-                      child: InkWell(
-                        onTap: () => launchUrl(
-                          Uri.https(
-                            'pub.dev',
-                            '/packages/firebase_auth_mocks',
+                    TextSpan(
+                      text: AuthViewModel.instance.autenticated
+                          ? 'User Authenticated'
+                          : 'User Not Authenticated',
+                      style: Theme.of(context).textTheme.headlineMedium!
+                          .copyWith(
+                            color: AuthViewModel.instance.autenticated
+                                ? ThemeViewModel.instance.greenColor
+                                : ThemeViewModel.instance.redColor,
                           ),
-                        ),
-                        child: Text(
-                          'MockFirebaseAuth',
-                          style: Theme.of(context).textTheme.headlineMedium!
-                              .copyWith(
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ),
                     ),
                     const TextSpan(
-                      text:
-                          '\n\nto simulate firebase authentication with only '
-                          'one user registered:\n\n',
+                      text: '\nuid: ',
+                    ),
+                    TextSpan(
+                      text: AuthViewModel.instance.user?.uid ?? 'none',
+                      style: const TextStyle(fontStyle: FontStyle.italic)
+                          .copyWith(
+                            color: AuthViewModel.instance.autenticated
+                                ? ThemeViewModel.instance.greenColor
+                                : ThemeViewModel.instance.redColor,
+                          ),
                     ),
                     const TextSpan(
-                      text: 'user name: ',
+                      text: '\nuser name: ',
+                    ),
+                    TextSpan(
+                      text: AuthViewModel.instance.user?.displayName ?? 'none',
+                      style: const TextStyle(fontStyle: FontStyle.italic)
+                          .copyWith(
+                            color: AuthViewModel.instance.autenticated
+                                ? ThemeViewModel.instance.greenColor
+                                : ThemeViewModel.instance.redColor,
+                          ),
                     ),
                     const TextSpan(
-                      text: 'Test User\n',
-                      style: TextStyle(fontStyle: FontStyle.italic),
+                      text: '\nemail: ',
                     ),
-                    const TextSpan(
-                      text: 'email: ',
-                    ),
-                    const TextSpan(
-                      text: 'test@example.com\n',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    const TextSpan(
-                      text: 'password: ',
-                    ),
-                    const TextSpan(
-                      text: 'password',
-                      style: TextStyle(fontStyle: FontStyle.italic),
+                    TextSpan(
+                      text: AuthViewModel.instance.user?.email ?? 'none',
+                      style: const TextStyle(fontStyle: FontStyle.italic)
+                          .copyWith(
+                            color: AuthViewModel.instance.autenticated
+                                ? ThemeViewModel.instance.greenColor
+                                : ThemeViewModel.instance.redColor,
+                          ),
                     ),
                   ],
                 ),
