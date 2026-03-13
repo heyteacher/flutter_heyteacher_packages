@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
-import 'package:flutter_heyteacher_locale/locale.dart' show FlutterHeyteacherLocaleLocalizations;
+import 'package:flutter_heyteacher_locale/locale.dart'
+    show FlutterHeyteacherLocaleLocalizations;
 import 'package:flutter_heyteacher_text_to_speech/src/l10n/flutter_heyteacher_text_to_speech.dart';
-import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_data.dart';
+import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// A card widget with a switch to enable or disable Text-To-Speech (TTS).
@@ -31,9 +31,7 @@ class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
   }
 
   Future<void> _init(Duration _) async {
-    _enableTTS = await SharedPreferencesAsync().getBool(
-      TTSPreferencesKeys.htuTtsEnableTTS.name,
-    );
+    _enableTTS = await TTSViewModel.instance().enabled;
     setState(() {});
   }
 
@@ -46,27 +44,16 @@ class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
                 .enableTextToSpeech,
           ),
           subtitle: Text(
-            FlutterHeyteacherLocaleLocalizations.of(context)!
-                .defaultValue(
-              RemoteConfigViewModel.instance.getBool(
-                TTSRemoteConfigKeys.ttsEnable.name,
-              ),
+            FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
+              TTSViewModel.defaultEnabled,
             ),
           ),
           trailing: Switch(
             // This bool value toggles the switch.
-            value: _enableTTS ??
-                RemoteConfigViewModel.instance.getBool(
-                  TTSRemoteConfigKeys.ttsEnable.name,
-                ),
+            value: _enableTTS ?? TTSViewModel.defaultEnabled,
             onChanged: (value) {
               setState(() => _enableTTS = value);
-              unawaited(
-                SharedPreferencesAsync().setBool(
-                  TTSPreferencesKeys.htuTtsEnableTTS.name,
-                  value,
-                ),
-              );
+              unawaited(TTSViewModel.instance().setEnabled(enabled: value));
             },
           ),
         ),

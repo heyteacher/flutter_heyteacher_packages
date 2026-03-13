@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:clock/clock.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
 import 'package:flutter_heyteacher_locale/locale.dart';
 import 'package:flutter_heyteacher_platform/platform.dart';
 import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_data.dart';
@@ -30,6 +29,12 @@ class TTSViewModel {
   }
   static final _logger = Logger('TTSViewModel');
 
+  static bool _defaultEnabled = true;
+  static int _thresholdInSeconds = 5;
+
+  /// if TTS is enabled by default
+  static bool get defaultEnabled => _defaultEnabled;
+
   late FlutterTts _textToSpeech;
 
   String? _previousTextSpeaked;
@@ -42,7 +47,19 @@ class TTSViewModel {
 
   /// The singleton instance of [TTSViewModel].
   // ignore: prefer_constructors_over_static_methods
-  static TTSViewModel get instance => _instance ??= TTSViewModel._();
+  static TTSViewModel instance({
+    bool? defaultEnabled,
+    int? thresholdInSeconds,
+  }) {
+    if (defaultEnabled != null) {
+      _defaultEnabled = defaultEnabled;
+    }
+    if (thresholdInSeconds != null) {
+      _thresholdInSeconds = thresholdInSeconds;
+    }
+    _instance ??= TTSViewModel._();
+    return _instance!;
+  }
 
   /// Disposes of the resources used by the view model.
   ///
@@ -54,13 +71,18 @@ class TTSViewModel {
 
   /// Checks if Text-To-Speech is enabled.
   ///
-  /// It first checks the user's preference in [SharedPreferencesAsync]. If not
-  /// set, it falls back to the value from [RemoteConfigViewModel].
+  /// It first checks the user's preference in [SharedPreferencesAsync].
   Future<bool> get enabled async =>
       (await SharedPreferencesAsync().getBool(
         TTSPreferencesKeys.htuTtsEnableTTS.name,
       )) ??
-      RemoteConfigViewModel.instance.getBool('enableTTS');
+      _defaultEnabled;
+
+  /// Set Text-To-Speech is enabled in the user's preference 
+  /// in [SharedPreferencesAsync].
+  Future<void> setEnabled({required bool enabled}) async =>
+      SharedPreferencesAsync()
+          .setBool(TTSPreferencesKeys.htuTtsEnableTTS.name, enabled);
 
   /// Speaks the given [text] using the TTS engine.
   ///
@@ -81,15 +103,13 @@ class TTSViewModel {
       _logger.finer("(speak): ignore text equals to previous text '$text'");
       return;
     }
-    final ttsThresholdInSeconds = RemoteConfigViewModel.instance
-        .getInt(TTSRemoteConfigKeys.ttsThresholdInSeconds.name);
     if (checkTTSThreshold &&
         _previousTextSpeakedDateTime != null &&
         clock.now().difference(_previousTextSpeakedDateTime!) <
-            Duration(seconds: ttsThresholdInSeconds)) {
+            Duration(seconds: _thresholdInSeconds)) {
       _logger.finer("(speak): ignore text '$text' too close to previous "
           "speaked at '$_previousTextSpeakedDateTime' "
-          'ttsThresholdInSeconds $ttsThresholdInSeconds');
+          'thresholdInSeconds $_thresholdInSeconds');
       return;
     }
     _previousTextSpeaked = text;
