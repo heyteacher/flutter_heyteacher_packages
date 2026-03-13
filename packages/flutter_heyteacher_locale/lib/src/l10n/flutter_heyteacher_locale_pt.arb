@@ -41,5 +41,6 @@
   "description": "Descrição",
   "@description": {},
   "contentUnavailableOfflineRetryWhenOnline": "Conteúdo indisponível offline.\n\nTente novamente quando o dispositivo estiver conectado à internet.",
-  "@contentUnavailableOfflineRetryWhenOnline": {}
+  "@contentUnavailableOfflineRetryWhenOnline": {},
+  "ttsTest": "Este é um teste. A língua é {languageCode}, o país é {countryCode}"
 }

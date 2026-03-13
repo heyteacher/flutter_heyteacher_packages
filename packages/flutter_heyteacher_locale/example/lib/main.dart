@@ -28,7 +28,7 @@ Future<void> main() async {
       'US',
     ],
   );
-
+  // initialise TTS
   runApp(const MyApp());
 }
 
