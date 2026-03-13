@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_locale/locale.dart';
-import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart';
+import 'package:flutter_heyteacher_text_to_speech/text_to_speech.dart';
 import 'package:flutter_heyteacher_views/views.dart' show ThemeViewModel;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// This enum standardizes the keys used for local data persistence, preventing
 /// typos and making it easier to manage stored preferences.
 enum _SharedPreferencesKeys {
-
   /// The key for storing the user's selected country code (e.g., 'GB', 'US').
   fhuCountryCode,
 }
@@ -40,10 +39,11 @@ class LocaleCard extends StatelessWidget {
           onPressed: () =>
               _onTextToSpeechPressed?.call(context) ??
               unawaited(
-                TTSViewModel.instance.speak(
-                  'Hello World, this is a test. Language is '
-                  '${LocaleViewModel.instance.locale.languageCode}, '
-                  'country is ${LocaleViewModel.instance.locale.languageCode}',
+                TTSViewModel.instance().speak(
+                  FlutterHeyteacherLocaleLocalizations.of(context)!.ttsTest(
+                    LocaleViewModel.instance.locale.languageCode,
+                    LocaleViewModel.instance.locale.countryCode ?? '',
+                  ),
                   checkTTSThreshold: false,
                 ),
               ),
@@ -222,8 +222,8 @@ class LocaleViewModel {
   Stream<Locale> get localeStream => _localeStreamController.stream.distinct();
 
   /// Initializes supported locales and current locale.
-  /// 
-  /// set the supported locales from [supportedCountries] and set current 
+  ///
+  /// set the supported locales from [supportedCountries] and set current
   /// locale loading from [SharedPreferences]
   Future<void> initLocale({
     Iterable<String> supportedCountries = const ['US'],
