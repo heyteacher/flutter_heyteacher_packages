@@ -72,11 +72,11 @@ class TTSViewModel {
   /// Checks if Text-To-Speech is enabled.
   ///
   /// It first checks the user's preference in [SharedPreferencesAsync].
-  Future<bool> get enabled async =>
-      (await SharedPreferencesAsync().getBool(
+  Future<bool> get enabled async => !PlatformHelper.isFlutterTest &&
+      ((await SharedPreferencesAsync().getBool(
         TTSPreferencesKeys.htuTtsEnableTTS.name,
       )) ??
-      _defaultEnabled;
+      _defaultEnabled);
 
   /// Set Text-To-Speech is enabled in the user's preference 
   /// in [SharedPreferencesAsync].
