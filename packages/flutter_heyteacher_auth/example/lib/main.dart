@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_auth/auth.dart'
-    show AccountCard, AuthViewModel, FlutterHeyteacherAuthLocalizations;
+    show
+        AccountCard,
+        AuthViewModel,
+        FlutterHeyteacherAuthLocalizations,
+        GoAuthRoute;
 import 'package:flutter_heyteacher_logger/logger.dart' show LoggerViewModel;
 import 'package:flutter_heyteacher_views/views.dart'
-    show GoAuthRoute, ThemeViewModel, showSnackBar;
+    show ThemeViewModel, showSnackBar;
 import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 

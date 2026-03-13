@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart'; // For FirebaseException
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseException;
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_auth/auth.dart' show FlutterHeyteacherAuthLocalizations;
+import 'package:flutter_heyteacher_auth/auth.dart' show AuthRouterName, FlutterHeyteacherAuthLocalizations;
 import 'package:flutter_heyteacher_platform/platform.dart';
 import 'package:flutter_heyteacher_views/views.dart';
 import 'package:flutter_test/flutter_test.dart';

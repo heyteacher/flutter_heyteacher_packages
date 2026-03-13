@@ -18,14 +18,12 @@ library;
 
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseException;
 import 'package:collection/collection.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_heyteacher_auth/auth.dart';
+import 'package:flutter_heyteacher_auth/auth.dart' show AuthRouterName, FlutterHeyteacherAuthLocalizations;
 import 'package:flutter_heyteacher_locale/locale.dart' show FlutterHeyteacherLocaleLocalizations;
-import 'package:flutter_heyteacher_views/src/router.dart';
 import 'package:flutter_heyteacher_views/src/theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -80,9 +78,7 @@ void showSnackBar({
           duration: Duration(
             seconds:
                 duration ??
-                FirebaseRemoteConfig.instance.getInt(
-                  'snackBarDurationInSeconds',
-                ),
+                5
           ),
           backgroundColor: error
               ? ThemeViewModel.instance.colorScheme.onError

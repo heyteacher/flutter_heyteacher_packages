@@ -17,3 +17,4 @@ export 'src/auth_view_model.dart'
     show AuthViewModel, UserNotAuthenticatedException;
 export 'src/l10n/flutter_heyteacher_auth.dart'
     show FlutterHeyteacherAuthLocalizations;
+export 'src/route.dart' show AuthRouterName,GoAuthRoute;
