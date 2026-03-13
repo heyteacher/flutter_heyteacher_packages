@@ -1,3 +1,12 @@
+## [flutter_heyteacher_text_to_speech-2.0.5+136] - 2026-03-13
+
+### 🐛 Bug Fixes
+
+- In `flutter test' env `TTS` is disable always
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.5+136
 ## [flutter_heyteacher_text_to_speech-2.0.4+134] - 2026-03-13
 
 ### 🐛 Bug Fixes
@@ -12,6 +21,7 @@
 
 - Add `example` app
 - Add documentation to `README.md`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_text_to_speech-2.0.4+134
 ## [flutter_heyteacher_text_to_speech-2.0.3+132] - 2026-03-06
 
 ### 🐛 Bug Fixes
