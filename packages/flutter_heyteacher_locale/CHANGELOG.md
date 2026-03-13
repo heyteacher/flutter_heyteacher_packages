@@ -1,4 +1,10 @@
-## [flutter_heyteacher_locale-2.0.3+132] - 2026-03-11
+## [flutter_heyteacher_locale-2.0.3+132] - 2026-03-13
+
+### 🐛 Bug Fixes
+
+- Localize `ttsTest` string and `TTSViewModel.instance` now is a method instead of getter
+- Add progress indicator for 5 seconds on press speak button
+## [flutter_heyteacher_locale-2.0.3+132] - 2026-03-13
 
 ### 🐛 Bug Fixes
 
@@ -11,6 +17,7 @@
 ### 📚 Documentation
 
 - Add `example` app and documentation in `README.md`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_locale-2.0.3+132
 ## [flutter_heyteacher_locale-2.0.2+130] - 2026-03-11
 
 ### 🐛 Bug Fixes
