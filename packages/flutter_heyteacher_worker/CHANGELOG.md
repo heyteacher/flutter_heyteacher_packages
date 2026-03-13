@@ -1,3 +1,16 @@
+## [flutter_heyteacher_worker-2.0.5+136] - 2026-03-13
+
+### 🐛 Bug Fixes
+
+- Remove export of `WorkerIsolate` and renamed in `_WorkerIsolate`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.5+136
+
+### 📚 Documentation
+
+- Add documentation in `README.md`
 ## [flutter_heyteacher_worker-2.0.4+134] - 2026-03-12
 
 ### 🐛 Bug Fixes
@@ -7,6 +20,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.4+134
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_worker-2.0.4+134
 ## [flutter_heyteacher_worker-2.0.3+132] - 2026-03-09
 
 ### 🐛 Bug Fixes
