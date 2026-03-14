@@ -24,10 +24,18 @@ class AdaptiveScaffold extends StatefulWidget {
   final Widget drawler;
 
   /// The expanded of the screen
-  final Widget Function() bodyForLargeBuilder;
+  final Widget Function({
+    required int crossAxisCount,
+    required ScreenSize screenSize,
+  })
+  bodyForLargeBuilder;
 
   /// The expanded of the screen
-  final Widget Function() bodyForSmallBuilder;
+  final Widget Function({
+    required int crossAxisCount,
+    required ScreenSize screenSize,
+  })
+  bodyForSmallBuilder;
 
   /// The floating action button of the screen
   final FloatingActionButton? floatingActionButton;
@@ -44,8 +52,16 @@ class _AdaptiveScaffoldState
           ({
             Widget? title,
             List<Widget> actions,
-            Widget Function() bodyForLargeBuilder,
-            Widget Function() bodyForSmallBuilder,
+            Widget Function({
+              required int crossAxisCount,
+              required ScreenSize screenSize,
+            })
+            bodyForLargeBuilder,
+            Widget Function({
+              required int crossAxisCount,
+              required ScreenSize screenSize,
+            })
+            bodyForSmallBuilder,
             FloatingActionButton? floatingActionButton,
             Widget drawler,
           })
@@ -58,8 +74,16 @@ class _AdaptiveScaffoldState
   ({
     Widget? title,
     List<Widget> actions,
-    Widget Function() bodyForLargeBuilder,
-    Widget Function() bodyForSmallBuilder,
+    Widget Function({
+      required int crossAxisCount,
+      required ScreenSize screenSize,
+    })
+    bodyForLargeBuilder,
+    Widget Function({
+      required int crossAxisCount,
+      required ScreenSize screenSize,
+    })
+    bodyForSmallBuilder,
     FloatingActionButton? floatingActionButton,
     Widget drawler,
   })
@@ -79,8 +103,10 @@ class _AbstractAdaptiveScaffoldState
           ({
             Widget? title,
             List<Widget> actions,
-            Widget Function() bodyForLargeBuilder,
-            Widget Function() bodyForSmallBuilder,
+            Widget Function({int crossAxisCount, ScreenSize screenSize})
+            bodyForLargeBuilder,
+            Widget Function({int crossAxisCount, ScreenSize screenSize})
+            bodyForSmallBuilder,
             FloatingActionButton? floatingActionButton,
             Widget drawler,
           })
@@ -107,7 +133,10 @@ class _AbstractAdaptiveScaffoldState
                     title: widget.params.title,
                     actions: widget.params.actions,
                   ),
-            body: widget.params.bodyForLargeBuilder.call(),
+            body: widget.params.bodyForLargeBuilder.call(
+              crossAxisCount: widget.crossAxisCount,
+              screenSize: widget.screenSize,
+            ),
             floatingActionButton: widget.params.floatingActionButton,
           ),
         ),
@@ -115,7 +144,10 @@ class _AbstractAdaptiveScaffoldState
     ),
     // ScreenSize.medium and ScreenSize.small
     _ => Scaffold(
-      body: widget.params.bodyForSmallBuilder.call(),
+      body: widget.params.bodyForSmallBuilder.call(
+        crossAxisCount: widget.crossAxisCount,
+        screenSize: widget.screenSize,
+      ),
       appBar: widget.params.title == null && widget.params.actions.isEmpty
           ? null
           : AppBar(title: widget.params.title, actions: widget.params.actions),
