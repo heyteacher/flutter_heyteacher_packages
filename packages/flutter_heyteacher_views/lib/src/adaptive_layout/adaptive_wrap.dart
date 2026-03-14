@@ -1,3 +1,5 @@
+import 'dart:math' show max;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_platform/platform.dart';
 
@@ -37,39 +39,43 @@ class AdaptiveWrap extends StatelessWidget {
     alignment: _alignment,
     children: _children
         .map(
-          (child) => ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: _width(context),
-              maxHeight: _height(context),
+          (child) => LayoutBuilder(
+            builder: (context, constraints) => ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: _width(
+                  context: context,
+                  parentWidth: constraints.maxWidth,
+                ),
+                maxHeight: _height(
+                  context: context,
+                  parentHeight: constraints.maxHeight,
+                ),
+              ),
+              child: child,
             ),
-            child: child,
           ),
         )
         .toList(),
   );
 
-  double _width(BuildContext context) {
-    assert(_crossAxisCount > 0, 'columns must be greater than 0');
-    return _direction == Axis.horizontal
-        ? (MediaQuery.of(context).size.width -
-                  (MediaQuery.of(context).orientation ==
-                              Orientation.landscape &&
-                          PlatformHelper.isMobile
-                      ? AppBar().preferredSize.shortestSide
-                      : 0) -
-                  _runSpacing * (_crossAxisCount - 1)) /
-              _crossAxisCount
-        : double.infinity;
-  }
+  double _width({required BuildContext context, required double parentWidth}) =>
+      _direction == Axis.horizontal
+      ? (parentWidth -
+                (MediaQuery.of(context).orientation == Orientation.landscape &&
+                        PlatformHelper.isMobile
+                    ? AppBar().preferredSize.shortestSide
+                    : 0) -
+                _spacing * (_crossAxisCount - 1)) /
+            max(_crossAxisCount, 1)
+      : double.infinity;
 
-  double _height(BuildContext context) {
-    assert(_crossAxisCount > 0, 'columns must be greater than 0');
-    return _direction == Axis.vertical
-        ? (MediaQuery.of(context).size.height -
-                  _runSpacing * (_crossAxisCount - 1)) /
-              _crossAxisCount
-        : double.infinity;
-  }
+  double _height({
+    required BuildContext context,
+    required double parentHeight,
+  }) => _direction == Axis.vertical
+      ? (parentHeight - _runSpacing * (max(_crossAxisCount, 1) - 1)) /
+            max(_crossAxisCount, 1)
+      : double.infinity;
 }
 
 /// Create a Sliver Adaptive with remaining items centered
