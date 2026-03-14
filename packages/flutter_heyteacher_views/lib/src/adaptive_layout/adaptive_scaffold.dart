@@ -103,9 +103,15 @@ class _AbstractAdaptiveScaffoldState
           ({
             Widget? title,
             List<Widget> actions,
-            Widget Function({int crossAxisCount, ScreenSize screenSize})
+            Widget Function({
+              required int crossAxisCount,
+              required ScreenSize screenSize,
+            })
             bodyForLargeBuilder,
-            Widget Function({int crossAxisCount, ScreenSize screenSize})
+            Widget Function({
+              required int crossAxisCount,
+              required ScreenSize screenSize,
+            })
             bodyForSmallBuilder,
             FloatingActionButton? floatingActionButton,
             Widget drawler,
