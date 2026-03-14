@@ -15,7 +15,7 @@ import 'package:go_router/go_router.dart';
 /// Builds the navigation shell for the app by building a Scaffold, where child
 /// is placed in the body of the Scaffold.
 ///
-abstract class ScaffoldNavigationShell extends StatelessWidget {
+class ScaffoldNavigationShell extends StatelessWidget {
   /// Constructs an [ScaffoldNavigationShell].
   ///
   /// [navigationShell] is placed into the body of scaffold, and a bottom
@@ -48,7 +48,7 @@ abstract class ScaffoldNavigationShell extends StatelessWidget {
   /// A callback to determine if navigation to the initial location of a branch
   /// should occur when the currently active item is tapped again.
   /// Returns `true` to navigate to the initial location, `false` otherwise.
-  bool onTapInitialLocation(int index);
+  bool onTapInitialLocation(int index) => false;
 
   // #docregion configuration-custom-shell
   @override
