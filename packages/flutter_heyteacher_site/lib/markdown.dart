@@ -92,7 +92,10 @@ class _MarkdownViewState extends State<MarkdownView> {
     ),
   );
 
-  Widget _buildMarkdownWidget() {
+  Widget _buildMarkdownWidget({
+    required int crossAxisCount,
+    required ScreenSize screenSize,
+  }) {
     _tocList.clear();
     _headerIndexes.clear();
     unawaited(_init(context));
