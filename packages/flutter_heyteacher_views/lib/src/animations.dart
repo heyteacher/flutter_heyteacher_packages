@@ -305,11 +305,11 @@ class BlinkingText extends StatefulWidget {
   final TextAlign? textAlign;
 
   @override
-  BlinkingTextState createState() => BlinkingTextState();
+  State<BlinkingText> createState() => _BlinkingTextState();
 }
 
 /// The state for the [BlinkingText] widget, which manages the animation timer.
-class BlinkingTextState extends State<BlinkingText> {
+class _BlinkingTextState extends State<BlinkingText> {
   bool _isVisible = false;
   Timer? _timer;
 
