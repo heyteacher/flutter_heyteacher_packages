@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/src/widgets.dart';
 
-/// An abstract [State] for creating a paginated [SliverAnimatedList] or 
+/// An abstract [State] for creating a paginated [SliverAnimatedList] or
 /// [SliverAnimatedGrid] that is populated from a `Stream`.
 ///
 /// It simplifies the common pattern of displaying a grid of data that is
@@ -20,11 +20,41 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
   @protected
   int get pageSize => 10;
 
+  /// the cross axis (columns or rows) count
+  @protected
+  int get crossAxisCount => 1;
+
+  /// the main axis (height or width) extent
+  double get mainAxisExtent => 85;
+
+  /// The [ScrollController] attached to the scroll view containing the list.
+  ///
+  /// This is used to detect when the user has scrolled to the end of the list
+  /// to trigger pagination.
+  @protected
+  ScrollController get scrollController;
+
+  /// The stream of data for the list.
+  ///
+  /// This method is called to get the stream of items to display. The [limit]
+  /// parameter should be used to control the number of items fetched.
+  @protected
+  Stream<Iterable<D>> stream({required int limit});
+
+  /// The stream which notify that widget should be updated.
+  ///
+  /// Inform widget that needed to be updated. Tipically a new filter is
+  /// applied.
+  @protected
+  Stream<void> get updateStream;
+
   /// The current limit for the number of items to fetch from the [stream].
   ///
   /// This value is increased by [pageSize] when the user scrolls to the end
   /// of the grid.
   late int _limit = pageSize;
+
+  bool _loading = true;
 
   /// A global key for the [SliverAnimatedGrid] to manage its state,
   /// such as inserting or removing items.
@@ -57,29 +87,6 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
   StreamSubscription<Iterable<D>>? _streamSubscription;
   StreamSubscription<void>? _updateStreamSubscription;
 
-  bool _loading = true;
-
-  /// The [ScrollController] attached to the scroll view containing the list.
-  ///
-  /// This is used to detect when the user has scrolled to the end of the list
-  /// to trigger pagination.
-  @protected
-  ScrollController get scrollController;
-
-  /// The stream of data for the list.
-  ///
-  /// This method is called to get the stream of items to display. The [limit]
-  /// parameter should be used to control the number of items fetched.
-  @protected
-  Stream<Iterable<D>> stream({required int limit});
-
-  /// The stream which notify that widget should be updated.
-  ///
-  /// Inform widget that needed to be updated. Tipically a new filter is
-  /// applied.
-  @protected
-  Stream<void> get updateStream;
-
   /// Builds the widget for a single item in the list.
   ///
   /// The [index] is the position of the item in [dataList], and the
@@ -104,13 +111,6 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
     return null;
   }
 
-  /// the cross axis (columns or rows) count
-  @protected
-  int get crossAxisCount;
-
-  /// the main axis (height or width) extent
-  double get mainAxisExtent;
-
   @override
   void initState() {
     super.initState();
@@ -125,7 +125,7 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
     dataList = (await initData())?.toList();
     if (dataList != null) {
       // debugPrint(
-      //     'PagingSliverAnimatedGridState.initPostFrame(): $runtimeType '
+      //     'PagingSliverAnimatedState.initPostFrame(): $runtimeType '
       //     'dataList from initData not null, set state _loading false');
       setState(() => _loading = false);
       await Future<dynamic>.delayed(const Duration(seconds: 1));
@@ -136,7 +136,7 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
     unawaited(_updateStreamSubscription?.cancel());
     _updateStreamSubscription = updateStream.listen((_) => updateDataList());
     unawaited(updateDataList());
-    _checkScollPosition();
+    await _checkScollPosition();
     scrollController.addListener(_checkScollPosition);
   }
 
@@ -168,7 +168,7 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
             crossAxisCount: crossAxisCount,
             mainAxisExtent: mainAxisExtent,
             mainAxisSpacing: crossAxisCount == 2 ? 8 : 16,
-            crossAxisSpacing: crossAxisCount == 2 ? 8 : 16
+            crossAxisSpacing: crossAxisCount == 2 ? 8 : 16,
           ),
           key: _sliverGridGlobalKey,
           initialItemCount: dataList?.length ?? 0,
@@ -205,13 +205,13 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
           (dataList?.length ?? 0) > 0 &&
           changedIndexes.last >= (dataList?.length ?? 0)) {
         Future.delayed(
-          const Duration(milliseconds: 500),
+          const Duration(milliseconds: _scrollDelayInMilliseconds),
           () => scrollController.animateTo(
             min(
               scrollController.offset + 200,
               max(scrollController.position.maxScrollExtent, 0),
             ),
-            duration: const Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: _scrollDelayInMilliseconds),
             curve: Curves.fastOutSlowIn,
           ),
         );
@@ -237,21 +237,29 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
       // to be built to set it to false
       if (_loading) {
         // debugPrint(
-        //     'PagingSliverAnimatedGridState.updateDataList(): $runtimeType '
+        //     'PagingSliverAnimatedState.updateDataList(): $runtimeType '
         //     'set state _loading to false');
         setState(() => _loading = false);
       }
     });
   }
 
+  static const int _scrollDelayInMilliseconds = 500;
+
   /// Checks the scroll position to trigger pagination.
-  void _checkScollPosition() {
+  Future<void> _checkScollPosition() async {
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
         (dataList == null || _limit == (dataList!.length))) {
       // debugPrint(
-      //  'PagingSliverAnimatedGridState._checkScollPosition(): $runtimeType '
+      //  'PagingSliverAnimatedState._checkScollPosition(): $runtimeType '
       //   '_limit $_limit dataList.length ${dataList?.length}. UPDATE');
       _limit += pageSize;
+
+      /// wait a little bit in order to rebuild UI and avoid
+      /// extends limit twice and load unnecessary data
+      await Future<dynamic>.delayed(
+        const Duration(milliseconds: _scrollDelayInMilliseconds),
+      );
       unawaited(updateDataList());
     }
   }
