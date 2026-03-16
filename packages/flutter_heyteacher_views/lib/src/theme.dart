@@ -340,7 +340,7 @@ class ThemeViewModel {
   })
   _defaultLightColorScheme = (
     primary: Colors.black,
-    disabled: Colors.grey.shade700,
+    disabled: Colors.grey.shade500,
     onPrimary: Colors.white,
     secondary: Colors.grey.shade900,
     onSecondary: Colors.white70,
