@@ -1,8 +1,8 @@
 import 'package:example/src/adaptive_layout/adaptive_layout_screen.dart';
 import 'package:example/src/adaptive_layout/adaptive_state.dart';
-import 'package:example/src/adaptive_layout/paging_sliver_animated_state_screen.dart';
 import 'package:example/src/adaptive_layout/wrap_scaffold.dart';
-import 'package:example/src/animations_screen.dart';
+import 'package:example/src/animations/animations_screen.dart';
+import 'package:example/src/animations/paging_sliver_animated_state_screen.dart';
 import 'package:example/src/theme_screen.dart';
 import 'package:example/src/widgets/error_screen.dart';
 import 'package:example/src/widgets/progress_indicator_screen.dart';
