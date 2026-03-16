@@ -557,17 +557,21 @@ class ThemeViewModel {
         onSurfaceVariant: onSurfaceVariant,
       ),
       tabBarTheme: TabBarThemeData(
-        dividerColor: Colors.transparent,
+        dividerColor: onSurface,
+        indicatorColor: Colors.transparent,
         unselectedLabelColor: disabled,
       ),
       textButtonTheme: const TextButtonThemeData(
         style: ButtonStyle(
-          minimumSize: WidgetStatePropertyAll(Size(2, 2)),
+          textStyle: WidgetStatePropertyAll(
+            TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          minimumSize: const WidgetStatePropertyAll(Size(4, 4)),
           textStyle: const WidgetStatePropertyAll(
             TextStyle(
               fontWeight: FontWeight.bold,
@@ -580,26 +584,20 @@ class ThemeViewModel {
       badgeTheme: BadgeThemeData(backgroundColor: onError, textColor: error),
       appBarTheme: const AppBarTheme(iconTheme: IconThemeData(size: 40)),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        elevation: 0,
-
         selectedItemColor: primary,
         unselectedItemColor: disabled,
         backgroundColor: onPrimary,
       ),
-      cardTheme: CardThemeData(elevation: 8, color: surfaceContainer),
+      cardTheme: CardThemeData(color: surfaceContainer),
       carouselViewTheme: CarouselViewThemeData(
         backgroundColor: surfaceContainer,
       ),
       snackBarTheme: const SnackBarThemeData(
-        //contentTextStyle: TextStyle(color: surface),
         insetPadding: EdgeInsets.all(20),
-        elevation: 20,
-        //backgroundColor: surface
+        contentTextStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.transparent,
-      ),
-      /* dark theme settings */
     );
   }
 
