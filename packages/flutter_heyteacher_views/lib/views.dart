@@ -7,5 +7,5 @@ export 'src/animations.dart' show AnimateText, BlinkingText, PagingSliverAnimate
 export 'src/color_to_int32_extension.dart' show ColorEx;
 export 'src/router.dart' show ScaffoldNavigationShell;
 export 'src/theme.dart' show ThemeCard, ThemeCardState, ThemeViewModel;
-export 'src/tutorial.dart' show TutorialContentAlignment, TutorialItemContent, TutorialViewModel;
+export 'src/tutorial.dart' show TutorialContentAlignment, TutorialViewModel;
 export 'src/widgets.dart' show ErrorView, FloatingActionTextIconButtom, FutureStreamBuilder, GenericsDropDownMenu, ProgressIndicatorView, ProgressIndicatorWidget, TableView, TooltipIconButton, showConfirmCancelDialog, showSnackBar;

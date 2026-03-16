@@ -48,7 +48,7 @@ class TutorialViewModel {
       TutorialItem(
         globalKey: globalKey,
         color: Colors.black.withValues(alpha: 0.8),
-        child: TutorialItemContent(
+        child: _TutorialItemContent(
           title: title,
           content: content,
           alignment: alignment,
@@ -122,12 +122,11 @@ enum TutorialContentAlignment {
 ///
 /// It typically includes a [title] and [content] text, along with
 /// "Skip onboarding" and "Next" buttons.
-class TutorialItemContent extends StatelessWidget {
-  /// Creates a [TutorialItemContent] widget.
-  TutorialItemContent({
+class _TutorialItemContent extends StatelessWidget {
+  /// Creates a [_TutorialItemContent] widget.
+  _TutorialItemContent({
     required this.title,
     required this.content,
-    super.key,
     this.alignment = TutorialContentAlignment.center,
   }) : assert(
          title.isNotEmpty && content.isNotEmpty,
