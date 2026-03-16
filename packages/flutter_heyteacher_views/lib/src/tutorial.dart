@@ -70,12 +70,12 @@ class TutorialViewModel {
     bool forceRestart = false,
   }) async {
     _logger.finer('<start>: screenName $screenName');
-    if (!forceRestart && (
-            (await SharedPreferencesAsync().getBool(
+    if (!forceRestart &&
+        ((await SharedPreferencesAsync().getBool(
                   '$screenName-tutorial-completed',
                 ) ??
                 false) ||
-        _started)) {
+            _started)) {
       return;
     }
     _started = true;
@@ -178,7 +178,9 @@ class _TutorialItemContent extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10),
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -192,7 +194,9 @@ class _TutorialItemContent extends StatelessWidget {
                 child: Text(
                   textAlign: TextAlign.center,
                   content,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Colors.white,
+                ),
                 ),
               ),
             ],
