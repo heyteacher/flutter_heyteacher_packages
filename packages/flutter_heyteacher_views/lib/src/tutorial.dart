@@ -66,14 +66,16 @@ class TutorialViewModel {
   /// It logs a message when the tutorial is completed.
   Future<void> start(
     BuildContext context,
-    String screenName,
-  ) async {
+    String screenName, {
+    bool forceRestart = false,
+  }) async {
     _logger.finer('<start>: screenName $screenName');
-    if ((await SharedPreferencesAsync().getBool(
-              '$screenName-tutorial-completed',
-            ) ??
-            false) ||
-        _started) {
+    if (!forceRestart && (
+            (await SharedPreferencesAsync().getBool(
+                  '$screenName-tutorial-completed',
+                ) ??
+                false) ||
+        _started)) {
       return;
     }
     _started = true;
