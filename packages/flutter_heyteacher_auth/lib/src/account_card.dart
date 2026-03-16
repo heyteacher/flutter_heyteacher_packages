@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_auth/src/auth_view_model.dart';
 import 'package:flutter_heyteacher_auth/src/l10n/flutter_heyteacher_auth.dart';
+import 'package:flutter_heyteacher_auth/src/route.dart' show AuthRouterName;
 import 'package:flutter_heyteacher_views/views.dart';
 import 'package:go_router/go_router.dart';
 

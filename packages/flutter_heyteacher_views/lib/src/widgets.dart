@@ -18,14 +18,14 @@ library;
 
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseException;
 import 'package:collection/collection.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_heyteacher_auth/auth.dart';
-import 'package:flutter_heyteacher_locale/locale.dart' show FlutterHeyteacherLocaleLocalizations;
-import 'package:flutter_heyteacher_views/src/router.dart';
+import 'package:flutter_heyteacher_auth/auth.dart'
+    show AuthRouterName, FlutterHeyteacherAuthLocalizations;
+import 'package:flutter_heyteacher_locale/locale.dart'
+    show FlutterHeyteacherLocaleLocalizations;
 import 'package:flutter_heyteacher_views/src/theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
@@ -77,13 +77,7 @@ void showSnackBar({
 }) => context != null
     ? ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          duration: Duration(
-            seconds:
-                duration ??
-                FirebaseRemoteConfig.instance.getInt(
-                  'snackBarDurationInSeconds',
-                ),
-          ),
+          duration: Duration(seconds: duration ?? 5),
           backgroundColor: error
               ? ThemeViewModel.instance.colorScheme.onError
               : ThemeViewModel.instance.greenColor,
@@ -441,27 +435,30 @@ class ProgressIndicatorView extends StatelessWidget {
 /// For all other errors, it displays the error's string representation.
 /// The error and stack trace are also logged using `Logger`.
 class ErrorView extends StatelessWidget {
-  /// Creates an [ErrorView] to display information about an [error].
+  /// Creates an [ErrorView] to display information about an [_error].
   ///
-  /// The [stackTrace] is also logged for debugging purposes.
-  ErrorView(this.error, this.stackTrace, {super.key}) {
-    _logger.severe('<ErrorView>', error, stackTrace);
+  /// The [_stackTrace] is also logged for debugging purposes.
+  ErrorView(this._error, this._stackTrace, {String title = '', super.key})
+    : _title = title {
+    _logger.severe('<ErrorView>', _error, _stackTrace);
   }
   static final _logger = Logger('ErrorView');
 
   /// The error object to be displayed.
   ///
   /// This is typically an [Exception] or [Error].
-  final Object? error;
+  final Object? _error;
 
-  /// The stack trace associated with the [error].
+  /// The stack trace associated with the [_error].
   ///
   /// This is used for logging and debugging.
-  final StackTrace? stackTrace;
+  final StackTrace? _stackTrace;
+
+  final String _title;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(),
+    appBar: AppBar(title: Text(_title)),
     body: _isFirebaseExceptionCode('permission-denied')
         ? Column(
             children: [
@@ -520,7 +517,7 @@ class ErrorView extends StatelessWidget {
               Expanded(
                 child: Align(
                   child: Text(
-                    error.toString(),
+                    _error.toString(),
                     textAlign: TextAlign.center,
                     style: _errorStyleContent(context),
                   ),
@@ -531,9 +528,7 @@ class ErrorView extends StatelessWidget {
   );
 
   bool _isFirebaseExceptionCode(String code) =>
-      error == null ||
-      (error is FirebaseException &&
-          (error! as FirebaseException).code == code);
+      _error == null || (_error is FirebaseException && _error.code == code);
 
   TextStyle _errorStyleContent(BuildContext context) => Theme.of(context)
       .textTheme

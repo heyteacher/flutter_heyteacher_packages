@@ -48,7 +48,7 @@ class TutorialViewModel {
       TutorialItem(
         globalKey: globalKey,
         color: Colors.black.withValues(alpha: 0.8),
-        child: TutorialItemContent(
+        child: _TutorialItemContent(
           title: title,
           content: content,
           alignment: alignment,
@@ -66,14 +66,16 @@ class TutorialViewModel {
   /// It logs a message when the tutorial is completed.
   Future<void> start(
     BuildContext context,
-    String screenName,
-  ) async {
+    String screenName, {
+    bool forceRestart = false,
+  }) async {
     _logger.finer('<start>: screenName $screenName');
-    if ((await SharedPreferencesAsync().getBool(
-              '$screenName-tutorial-completed',
-            ) ??
-            false) ||
-        _started) {
+    if (!forceRestart &&
+        ((await SharedPreferencesAsync().getBool(
+                  '$screenName-tutorial-completed',
+                ) ??
+                false) ||
+            _started)) {
       return;
     }
     _started = true;
@@ -120,12 +122,11 @@ enum TutorialContentAlignment {
 ///
 /// It typically includes a [title] and [content] text, along with
 /// "Skip onboarding" and "Next" buttons.
-class TutorialItemContent extends StatelessWidget {
-  /// Creates a [TutorialItemContent] widget.
-  TutorialItemContent({
+class _TutorialItemContent extends StatelessWidget {
+  /// Creates a [_TutorialItemContent] widget.
+  _TutorialItemContent({
     required this.title,
     required this.content,
-    super.key,
     this.alignment = TutorialContentAlignment.center,
   }) : assert(
          title.isNotEmpty && content.isNotEmpty,
@@ -177,7 +178,9 @@ class TutorialItemContent extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10),
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -191,7 +194,9 @@ class TutorialItemContent extends StatelessWidget {
                 child: Text(
                   textAlign: TextAlign.center,
                   content,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Colors.white,
+                ),
                 ),
               ),
             ],
