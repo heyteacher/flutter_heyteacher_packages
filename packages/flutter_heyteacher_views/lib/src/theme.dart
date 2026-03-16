@@ -557,7 +557,7 @@ class ThemeViewModel {
         onSurfaceVariant: onSurfaceVariant,
       ),
       tabBarTheme: TabBarThemeData(
-        dividerColor: onSurface,
+        dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
         unselectedLabelColor: disabled,
       ),
