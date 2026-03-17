@@ -11,7 +11,7 @@ latest_meta_version=`ls $HOME/.pub-cache/hosted/pub.dev | grep flutter_heyteache
 project_meta_root="$HOME/.pub-cache/hosted/pub.dev/$latest_meta_version"
 
 # configure standard flutter package
-$project_meta_root/scripts/configure_flutter_package.sh
+$project_meta_root/tool/configure_flutter_package.sh
 # add fastlane Pluginfile
 cp  $project_meta_root/fastlane/Pluginfile.template fastlane/Pluginfile
 # configure fastlane Pluginfile in Gembile

@@ -14,7 +14,7 @@ latest_meta_version=`ls $HOME/.pub-cache/hosted/pub.dev | grep flutter_heyteache
 project_meta_root="$HOME/.pub-cache/hosted/pub.dev/$latest_meta_version"
 
 # configure git hooks
-$project_meta_root/scripts/configure_git_hooks.sh
+$project_meta_root/tool/configure_git_hooks.sh
 
 # install flutter_heyteacher_meta as dev dependency
 flutter pub add dev:flutter_heyteacher_meta
