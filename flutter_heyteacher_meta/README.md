@@ -162,12 +162,12 @@ You can configure you `vscode` to execute the [command-line utility `version`](#
                         "command": "dart",
                         "args": [
                                 "run",
-                                "flutter_heyteacher_meta:version",
+                                "dartsemver",
                                 "build"
                         ],
                         "group": "build",
                         "problemMatcher": [],
-                        "label": "dart: run flutter_heyteacher_meta:version build",
+                        "label": "dart: run dartsemver build",
                         "detail": "increment version build number",
                         "presentation": {
                                 "close": true,
@@ -188,7 +188,7 @@ You can configure you `vscode` to execute the [command-line utility `version`](#
   ```json
   ...
     
-    "preLaunchTask": "dart: run flutter_heyteacher_meta:version build"
+    "preLaunchTask": "dart: run flutter_heyteacher_meta:dartsemver build"
   ```
 
 ### Android Studio
@@ -1171,7 +1171,7 @@ Usage:
 From the root of your project, run:
 
 ```bash
-dart run flutter_heyteacher_meta:version major|minor|patch|build|show|show-build [--dry-run]
+dart run flutter_heyteacher_meta:dartsemver major|minor|patch|build|show|show-build [--dry-run]
 ```
 
 - `major`,`minor`, `patch` increment the version in your `pubsec.yaml`.

@@ -6,8 +6,7 @@
 ///
 /// Usage:
 /// ```bash
-/// dart run flutter_heyteacher_meta:version major|minor|patch|build|show|
-///                                           show-build [--dry-run]
+/// dartsemver major|minor|patch|build|show|show-build [--dry-run]
 /// ```
 ///
 /// - `major|minor|patch`: Increments the respective version component and
