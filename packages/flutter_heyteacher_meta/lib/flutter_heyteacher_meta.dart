@@ -21,4 +21,5 @@
 /// specified.
 library;
 
-export 'src/pubspec_version.dart' show PubspecVersion, PubspecVersionCommand;
+export 'src/fake_pubspec_version.dart' show FakePubspecVersion;
+export 'src/pubspec_version.dart' show PubspecVersionCommand;
