@@ -96,16 +96,12 @@ Future<void> configureFlutterApp() async {
       toPath: 'fastlane/Pluginfile',
     );
     await _createFile(
-      fromPath: '../assets/fastlane/Fastfile',
-      toPath: 'fastlane/Fastfile',
-    );
-    await _createFile(
       fromPath: '../assets/fastlane/AppFastfile',
-      toPath: 'fastlane/AppFastfile',
+      toPath: 'fastlane/Fastfile',
     );
     await copyPath(
       await _getSourceFilePath('../assets/fastlane/metadata'),
-      'fastlane',
+      'fastlane/metadata',
     );
     stdout.write('fastlane/metadata/ created\n');
   } on Exception catch (e) {
@@ -122,7 +118,6 @@ Future<void> _createFile({
   final destFile = File(toPath);
   if (destFile.existsSync()) {
     await destFile.delete();
-    stdout.write('$toPath deleted\n');
   }
   await destFile.create(recursive: true);
   await sourceFile.copy(destFile.path);
