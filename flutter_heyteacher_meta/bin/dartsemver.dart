@@ -6,8 +6,7 @@
 ///
 /// Usage:
 /// ```bash
-/// dart run flutter_heyteacher_meta:version major|minor|patch|build|show|
-///                                           show-build [--dry-run]
+/// dartsemver major|minor|patch|build|show|show-build [--dry-run]
 /// ```
 ///
 /// - `major|minor|patch`: Increments the respective version component and
@@ -23,4 +22,6 @@
 /// is specified.
 library;
 
-export '../lib/main.dart' show main;
+import 'package:flutter_heyteacher_meta/src/commands.dart';
+
+void main(List<String> arguments) => dartSemver(arguments);
