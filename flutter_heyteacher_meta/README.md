@@ -27,6 +27,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
     - [`nodeJs`](#nodejs)
     - [Firebase CLI](#firebase-cli)
   - [Create a flutter project](#create-a-flutter-project)
+    - [Configure `monorepo`](#configure-monorepo)
     - [Configure `FastLane`](#configure-fastlane)
   - [`Fastlane` lines for `app` and `package` projects](#fastlane-lines-for-app-and-package-projects)
     - [doc](#doc)
@@ -72,7 +73,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [Splash](#splash)
   - [Dart Builders](#dart-builders)
   - [`ffmpeg` utilities](#ffmpeg-utilities)
-  - [command-line utility `version`](#command-line-utility-version)
+  - [command-line utility `dartsemver`](#command-line-utility-dartsemver)
   - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
   
 ## Installing
@@ -147,7 +148,7 @@ install flutter manually following instructions <https://docs.flutter.dev/instal
 
 install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
 
-You can configure you `vscode` to execute the [command-line utility `version`](#command-line-utility-version) in order to automatically update build version every run/debug execution of your code:
+You can configure you `vscode` to execute the [command-line utility `dartsemver`](#command-line-utility-dartsemver) in order to automatically update build version every run/debug execution of your code:
 
 - install `flutter_heyteacher_meta` package as dev dependency ad described in [Installing](#installing)
 
@@ -295,6 +296,8 @@ the execution `fl` in root project directory without paramenter show all `lanes`
 
 ## Create a flutter project
 
+After setup the environment run from root project directory and create the project:
+
 - flutter app project:
 
   ```bash
@@ -307,20 +310,32 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   flutter create -t package <app project name>
   ```
 
+### Configure `monorepo`
+
+From the root of `monorepo` project directory run:
+
+  ```bash
+  flutter_heyteacher_meta:configure_git_hooks
+  ```
+
+This configure the git hooks as described in [`git` utilities](#git-utilities).
+
 ### Configure `FastLane`
 
-After setup the environment run from root project directory and create the project:
+From root project directory or inside each packages of a `monorepo` project run:
+
+-and create the project:
 
 - for flutter packages:
 
   ```bash
-  configure_flutter_package.sh
+  flutter_heyteacher_meta:configure_flutter_package
   ```
 
 - for flutter app
   
   ```bash
-  configure_flutter_app.sh
+  flutter_heyteacher_meta:configure_flutter_app
   ```
   
   This scripts create a skeleton of `fastlane/metadata` mandatory for release
@@ -1166,7 +1181,7 @@ Usage:
 
   `ffmpeg_cmd.sh concat <input_video_1> <input_video_2> [input_video_3 ...] <output_video> <fade_duration_in_sec>`
 
-## command-line utility `version`
+## command-line utility `dartsemver`
 
 From the root of your project, run:
 
