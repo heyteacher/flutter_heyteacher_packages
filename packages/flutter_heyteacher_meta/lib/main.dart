@@ -14,7 +14,7 @@ void main(List<String> arguments) async {
     );
   } on Exception catch (_) {
     stdout.write(
-      '\nusage dart version.dart major|minor|patch|build|show|show-build '
+      '\nusage: dartsemver major|minor|patch|build|show|show-build '
       '[--dry-run]\n\n',
     );
   }
