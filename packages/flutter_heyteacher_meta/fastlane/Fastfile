@@ -43,7 +43,7 @@ desc "fl github_release \n\tCreates a github release and update CHANGELOG.md"
 lane :github_release do
   version = ""
   Dir.chdir("../") do
-    version = sh("dartsemver show")
+    version = sh("dart run flutter_heyteacher_meta:dartsemver show")
   end 
   create_github_release(version)
 end
@@ -64,7 +64,7 @@ lane :release do|options|
   increment_build
   version = ""
   Dir.chdir("../") do
-    version = sh("dartsemver #{options[:semver]}")
+    version = sh("dart run flutter_heyteacher_meta:dartsemver #{options[:semver]}")
     # append tag suffix if set
     if options[:suffix] != nil && options[:suffix] != ""
       version = "#{version}-#{options[:suffix]}"
@@ -127,6 +127,6 @@ end
 # increment build number
 def increment_build
   Dir.chdir("../") do
-    sh("dartsemver build")
+    sh("dart run flutter_heyteacher_meta:dartsemver build")
   end
 end
