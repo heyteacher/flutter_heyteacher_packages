@@ -1,3 +1,12 @@
+## [flutter_heyteacher_meta-6.0.0+134] - 2026-03-17
+
+### 🐛 Bug Fixes
+
+- Regenerate version
+
+### 💼 Other
+
+- *(deps)* Bump deps to 6.0.0+134
 ## [flutter_heyteacher_meta-7.0.0+142] - 2026-03-17
 
 ### 🚀 Features
@@ -25,6 +34,7 @@
 - Update documentation adding `monorepo` section  and the new dart commands `configure_*`
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.0+140
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-6.0.0+140
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.0+142
 ## [flutter_heyteacher_meta-5.0.0+132] - 2026-03-11
 
 ### 🚀 Features
