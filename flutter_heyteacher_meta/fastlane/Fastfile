@@ -1,7 +1,7 @@
 # Uncomment the line if you want fastlane to automatically update itself
 #update_fastlane
 
-desc "fl docweb\n\trun local webserver on generated doc"
+desc "fl docweb - run local webserver on generated doc"
 lane :docweb do
   Dir.chdir("../") do
     # open browser http://localhost:8080 and run local webserver
@@ -9,7 +9,7 @@ lane :docweb do
   end
 end
 
-desc "fl doc\n\tgenerate doc and run webserver"
+desc "fl doc - generate doc and run webserver"
 lane :doc do
   Dir.chdir("../") do
     # generate doc
@@ -19,14 +19,14 @@ lane :doc do
   end
 end
 
-desc "fl test\n\tRun tests"
+desc "fl test - Run tests"
 lane :test do
   Dir.chdir("../") do
     sh("flutter test")
   end
 end
 
-desc "fl checkout \n\tcheckout last branch created"
+desc "fl checkout - checkout last branch created"
 lane :checkout do
   puts "fetch repository getting output in gitFetch"
   gitFetch = sh("git fetch 2>&1 | grep branch")
@@ -39,7 +39,7 @@ lane :checkout do
   sh("git checkout #{branch}")
 end
 
-desc "fl github_release \n\tCreates a github release and update CHANGELOG.md"
+desc "fl github_release - Creates a github release and update CHANGELOG.md"
 lane :github_release do
   version = ""
   Dir.chdir("../") do
@@ -48,7 +48,7 @@ lane :github_release do
   create_github_release(version)
 end
 
-desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [github:false|true]\n\tCreates new release, merge branch into main and creates a github release"
+desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [github:false|true] - Creates new release, merge branch into main and creates a github release"
 lane :release do|options|
   if !["major", "minor", "patch"].include?(options[:semver])
     puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"

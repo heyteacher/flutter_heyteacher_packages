@@ -5,7 +5,7 @@ default_platform(:android)
 
 platform :android do
 
-  desc "fl appbundle\n\tclean and build application `build/app/outputs/bundle/release/app-release.aab`"
+  desc "fl appbundle - clean and build application `build/app/outputs/bundle/release/app-release.aab`"
   lane :appbundle do
     sh("flutter build bundle")
     increment_build
@@ -13,7 +13,7 @@ platform :android do
     sh("flutter build appbundle")  
   end
   
-  desc "fl bump\n\tCommits pubspec.lock"
+  desc "fl bump - Commits pubspec.lock"
   lane :bump do
     gitStatus = sh("git status")
     gitStatusLastLine= gitStatus.lines.last
@@ -36,12 +36,12 @@ platform :android do
     end
   end
 
-  desc "fl integration_test\n\tRun integration tests"
+  desc "fl integration_test - Run integration tests"
   lane :integration_test do
     sh("flutter driver --driver=test_driver/main_test.dart --target=integration_test/main.dart")
   end
 
-  desc "fl testlab\n\tRun integration test in Firebase Test Lab"
+  desc "fl testlab - Run integration test in Firebase Test Lab"
   lane :testlab do
     Dir.chdir("../android/") do
       sh("./firebaseTestLabBuild.sh")
@@ -49,7 +49,7 @@ platform :android do
     end
   end
 
-  desc "fl firestore_backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>]\n\tbackup dababase firestore on snapshot specified. If database isn't set use (default)"
+  desc "fl firestore_backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>] - backup dababase firestore on snapshot specified. If database isn't set use (default)"
   lane :firestore_backup do |options|
      snapshotTime = ""
     if options[:snapshot] != nil
@@ -64,7 +64,7 @@ platform :android do
     sh("gcloud firestore export #{ENV["google_storage_backup_bucket"]} #{snapshotTime} --database='#{database}'")
   end
    
-  desc "fl firestore_restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>]\n\trestore firestore backup into database specified. If database isn't set use (default)"
+  desc "fl firestore_restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>] - restore firestore backup into database specified. If database isn't set use (default)"
   lane :firestore_restore do |options|
     database = "(default)"
     if options[:database] != nil
@@ -78,7 +78,7 @@ platform :android do
     end
   end
 
-  desc "fl firestore_remove_backup backup:<YYYY-MM-DDTHH:mm:ss_mi>\n\tdelete firestore backup"
+  desc "fl firestore_remove_backup backup:<YYYY-MM-DDTHH:mm:ss_mi> - delete firestore backup"
   lane :firestore_remove_backup do |options|
     if options[:backup] == nil
       sh("gcloud storage ls #{ENV["google_storage_backup_bucket"]}")
@@ -88,7 +88,7 @@ platform :android do
     end
   end
 
-  desc "fl app_distribution\n\tbuild the release and publish app in Google Play via `Firebase App Distribution`"
+  desc "fl app_distribution - build the release and publish app in Google Play via `Firebase App Distribution`"
   lane :app_distribution do
     # generate AAB
     appbundle
@@ -118,7 +118,7 @@ platform :android do
     puts "release #{release}"
   end
 
-  desc "fl playstore_promote from_track:beta|alpha|internal to_track:production|beta|alpha|internal\n\tpromote a release in Google Play via `supply`"
+  desc "fl playstore_promote from_track:beta|alpha|internal to_track:production|beta|alpha|internal - promote a release in Google Play via `supply`"
   lane :playstore_promote do |options|
     upload_to_play_store(
       track: options[:from_track],
@@ -132,7 +132,7 @@ platform :android do
     )
   end
 
-  desc "fl playstore track:production|beta|alpha|internal [upload_only:true|false]\n\tupload app to Google Play via `supply`"
+  desc "fl playstore track:production|beta|alpha|internal [upload_only:true|false] - upload app to Google Play via `supply`"
   lane :playstore do |options|
     # read version and build number
     version = ""
@@ -181,7 +181,7 @@ platform :android do
     )
   end
 
-  desc "fl buildweb [version:profile|debug]\n\tbuild web and run local webserver on it"
+  desc "fl buildweb [version:profile|debug] - build web and run local webserver on it"
   lane :buildweb do|options|
     test
     increment_build
@@ -198,7 +198,7 @@ platform :android do
     end
   end
 
-  desc "fl deployweb [release_type:release|profile|debug]\n\tdeploy web in firabase hosting"
+  desc "fl deployweb [release_type:release|profile|debug] - deploy web in firabase hosting"
   lane :deployweb do|options|
     test
     # release type: release, profile or debug  (default release)
