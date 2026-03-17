@@ -137,10 +137,10 @@ install flutter manually following instructions <https://docs.flutter.dev/instal
   # dart 
   export PATH="$HOME/.pub-cache/bin":$PATH
 
-  # flutter_heyteacher_meta scripts
+  # flutter_heyteacher_meta tool
   latest_meta_version=`ls $HOME/.pub-cache/hosted/pub.dev | grep flutter_heyteacher_meta |  tail -n 1`
   project_meta_root="$HOME/.pub-cache/hosted/pub.dev/$latest_meta_version"
-  export PATH="$project_meta_root/scripts":$PATH
+  export PATH="$project_meta_root/tool":$PATH
   ```
 
 ### Visual Studio Code
