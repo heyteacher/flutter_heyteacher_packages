@@ -1,3 +1,0 @@
-<en-US>
-	1.0.0+260101000: insert here change logs descrition of release
-</en-US>
