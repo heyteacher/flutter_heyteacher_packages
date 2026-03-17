@@ -1,14 +1,5 @@
 ## [flutter_heyteacher_meta-6.0.0+134] - 2026-03-17
 
-### 🐛 Bug Fixes
-
-- Regenerate version
-
-### 💼 Other
-
-- *(deps)* Bump deps to 6.0.0+134
-## [flutter_heyteacher_meta-7.0.0+142] - 2026-03-17
-
 ### 🚀 Features
 
 - [**breaking**] Rename `scripts` folder in `tool`.  **BREAKING CHANGE**  Edit `~./bashrc` line `export PATH="$project_meta_root/scripts":$PATH` with `export PATH="$project_meta_root/tool":$PATH`
@@ -22,12 +13,16 @@
 - Remote `\n\t` in lanes description
 - Corrected version
 - Remove `fastlane/metadata`
+- Regenerate version
+- Regenerate version
 
 ### 💼 Other
 
 - *(deps)* Bump deps to 6.0.0+138
 - *(deps)* Bump deps to 7.0.0+140
 - *(deps)* Bump deps to 7.0.0+142
+- *(deps)* Bump deps to 6.0.0+134
+- *(deps)* Bump deps to 6.0.0+134
 
 ### 📚 Documentation
 
@@ -35,6 +30,7 @@
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.0+140
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-6.0.0+140
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.0+142
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-6.0.0+134
 ## [flutter_heyteacher_meta-5.0.0+132] - 2026-03-11
 
 ### 🚀 Features
