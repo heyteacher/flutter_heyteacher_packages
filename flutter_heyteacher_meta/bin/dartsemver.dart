@@ -22,4 +22,6 @@
 /// is specified.
 library;
 
-export '../lib/main.dart' show main;
+import 'package:flutter_heyteacher_meta/src/commands.dart';
+
+void main(List<String> arguments) => dartSemver(arguments);

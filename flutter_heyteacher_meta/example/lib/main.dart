@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_meta/fake_pubspec_version.dart'
-    show FakePubspecVersion;
-import 'package:flutter_heyteacher_meta/pubspec_version.dart'
-    show PubspecVersionCommand;
+import 'package:flutter_heyteacher_meta/flutter_heyteacher_meta.dart'
+    show FakePubspecVersion, PubspecVersionCommand;
 
 void main() {
   runApp(const MyApp());
