@@ -1,3 +1,25 @@
+## [flutter_heyteacher_meta-7.0.0+140] - 2026-03-17
+
+### 🚀 Features
+
+- [**breaking**] Rename `scripts` folder in `tool`.  **BREAKING CHANGE**  Edit `~./bashrc` line `export PATH="$project_meta_root/scripts":$PATH` with `export PATH="$project_meta_root/tool":$PATH`
+- [**breaking**] Rename `version.dart` in `dartsemver.dart` and make `executables` in `pubspec.yaml`
+- [**breaking**] `configure_git_hooks`, `configure_flutter_package` and `configure_flutter_app` become dart commands and resource file moved into `assets` directory
+
+### 🐛 Bug Fixes
+
+- Remove `dartsemver` from executable. Run instead `dart run flutter_heyteacher_meta:dartsemver show`
+- Corrected `configure_flutter_app` copying `AppFastfile`,  corrected destination path of `metadata` and corrected `AppGemfile`
+- Remote `\n\t` in lanes description
+
+### 💼 Other
+
+- *(deps)* Bump deps to 6.0.0+138
+- *(deps)* Bump deps to 7.0.0+140
+
+### 📚 Documentation
+
+- Update documentation adding `monorepo` section  and the new dart commands `configure_*`
 ## [flutter_heyteacher_meta-5.0.0+132] - 2026-03-11
 
 ### 🚀 Features
@@ -7,6 +29,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 5.0.0+132
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-5.0.0+132
 ## [flutter_heyteacher_meta-4.4.5+130] - 2026-03-06
 
 ### 🐛 Bug Fixes
