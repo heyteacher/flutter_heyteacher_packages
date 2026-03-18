@@ -41,7 +41,7 @@ dependencies:
   
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^4.4.5+130
+  flutter_heyteacher_meta: ^6.0.0+134
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.0.0
