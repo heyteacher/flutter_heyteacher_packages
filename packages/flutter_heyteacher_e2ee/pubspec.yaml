@@ -34,7 +34,7 @@ dependencies:
     git: https://github.com/google/webcrypto.dart.git
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^4.4.4+128
+  flutter_heyteacher_meta: ^6.0.0+134
   flutter_test:
     sdk: flutter
 
