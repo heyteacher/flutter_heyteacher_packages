@@ -1,0 +1,9 @@
+{
+  "@@locale": "en",
+  "online": "Online",
+  "@online": {},
+  "offline": "Offline",
+  "@offline": {},
+  "connectivityStatus": "Connectivity Status",
+  "@connectivityStatus": {}
+}

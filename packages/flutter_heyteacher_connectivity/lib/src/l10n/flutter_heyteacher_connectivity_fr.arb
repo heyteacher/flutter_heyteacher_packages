@@ -1,0 +1,6 @@
+{
+  "@@locale": "fr",
+  "online": "En ligne",
+  "offline": "Hors ligne",
+  "connectivityStatus": "État de la connectivité"
+}

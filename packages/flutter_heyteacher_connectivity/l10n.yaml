@@ -1,0 +1,6 @@
+arb-dir: lib/src/l10n
+template-arb-file: flutter_heyteacher_connectivity_en.arb
+output-localization-file: flutter_heyteacher_connectivity.dart
+output-class: FlutterHeyteacherConnectivityLocalizations
+output-dir: lib/src/l10n
+untranslated-messages-file: untranslated-messages.txt
