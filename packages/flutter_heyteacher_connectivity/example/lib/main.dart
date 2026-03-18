@@ -2,12 +2,29 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_connectivity/connectivity.dart';
-import 'package:flutter_heyteacher_views/views.dart'
-    show FutureStreamBuilder, ThemeViewModel;
+import 'package:flutter_heyteacher_locale/locale.dart'
+    show FlutterHeyteacherLocaleLocalizations, LocaleViewModel, LocaleWrap;
+import 'package:flutter_heyteacher_views/views.dart' show ThemeViewModel;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   // ensureInitialized
   WidgetsFlutterBinding.ensureInitialized();
+  // initialize locale
+  await LocaleViewModel.instance.initLocale(
+    supportedCountries: [
+      'AR',
+      'BR',
+      'CA',
+      'DE',
+      'ES',
+      'FR',
+      'GB',
+      'IT',
+      'PT',
+      'US',
+    ],
+  );
   runApp(const MyApp());
 }
 
@@ -18,11 +35,23 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    theme: ThemeViewModel.instance.lightTheme,
-    darkTheme: ThemeViewModel.instance.darkTheme,
-    themeMode: ThemeMode.dark,
-    home: const _MyHomePage(),
+  Widget build(BuildContext context) => StreamBuilder(
+    stream: LocaleViewModel.instance.localeStream,
+    builder: (context, asyncSnapshot) => MaterialApp(
+      theme: ThemeViewModel.instance.lightTheme,
+      darkTheme: ThemeViewModel.instance.darkTheme,
+      themeMode: ThemeMode.dark,
+      home: const _MyHomePage(),
+      locale: asyncSnapshot.data,
+      supportedLocales: LocaleViewModel.instance.supportedLocales,
+      localizationsDelegates: const [
+        FlutterHeyteacherConnectivityLocalizations.delegate,
+        FlutterHeyteacherLocaleLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+    ),
   );
 }
 
@@ -43,38 +72,10 @@ class _MyHomePageState extends State<_MyHomePage> {
       padding: const EdgeInsets.only(top: 32),
       child: Column(
         children: [
-          Card(
-            child: ListTile(
-              leading: const Icon(
-                Icons.wifi,
-              ),
-              title: const Text('App Connectivity Status'),
-              trailing: FutureStreamBuilder(
-                future: ConnectivityViewModel.instance.connected,
-                stream: ConnectivityViewModel.instance.stream,
-                builder: (context, snapshot) => switch (snapshot.data) {
-                  true => Badge(
-                    label: Text(
-                      'ON',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyLarge!.copyWith(color: Colors.white),
-                    ),
-                    backgroundColor: ThemeViewModel.instance.greenColor,
-                  ),
-                  false => Badge(
-                    label: Text(
-                      'OFF',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyLarge!.copyWith(color: Colors.white),
-                    ),
-                    backgroundColor: ThemeViewModel.instance.redColor,
-                  ),
-                  null => const CircularProgressIndicator(),
-                },
-              ),
-            ),
+          const ConnectivityCard(),
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: LocaleWrap(),
           ),
           Expanded(
             child: Center(
