@@ -1,3 +1,13 @@
+## [flutter_heyteacher_connectivity-2.1.0+132] - 2026-03-18
+
+### 🚀 Features
+
+- Add `ConnectivityCard`
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions
+- *(deps)* Bump deps to 2.1.0+132
 ## [flutter_heyteacher_connectivity-2.0.2+130] - 2026-03-11
 
 ### 🐛 Bug Fixes
@@ -7,6 +17,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.2+130
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_connectivity-2.0.2+130
 ## [flutter_heyteacher_connectivity-2.0.1+128] - 2026-03-09
 
 ### 💼 Other
