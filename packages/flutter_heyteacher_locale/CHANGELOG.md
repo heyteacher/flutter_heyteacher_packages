@@ -1,3 +1,14 @@
+## [flutter_heyteacher_locale-2.0.5+136] - 2026-03-19
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions
+- *(deps)* Upgrade major versions
+- *(deps)* Bump deps to 2.0.5+136
+
+### 🎨 Styling
+
+- Enhange light theme managing colors based on mode
 ## [flutter_heyteacher_locale-2.0.4+134] - 2026-03-13
 
 ### 🐛 Bug Fixes
@@ -12,6 +23,7 @@
 ### 📚 Documentation
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_locale-2.0.3+132
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_locale-2.0.4+134
 ## [flutter_heyteacher_locale-2.0.3+132] - 2026-03-11
 
 ### 🐛 Bug Fixes
