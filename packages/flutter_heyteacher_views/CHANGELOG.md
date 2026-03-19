@@ -1,3 +1,14 @@
+## [flutter_heyteacher_views-2.0.4+134] - 2026-03-19
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions
+- *(deps)* Upgrade major versions
+- *(deps)* Bump deps to 2.0.4+134
+
+### 🎨 Styling
+
+- Enhange light theme managing colors based on mode
 ## [flutter_heyteacher_views-2.0.3+132] - 2026-03-16
 
 ### 🐛 Bug Fixes
@@ -26,6 +37,7 @@
 
 - Add `example` app
 - Add documentation to `README.md`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.0.3+132
 ## [flutter_heyteacher_views-2.0.2+130] - 2026-03-11
 
 ### 🐛 Bug Fixes
