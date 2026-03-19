@@ -35,6 +35,23 @@ class LocaleCard extends StatefulWidget {
 class _LocaleCardState extends State<LocaleCard> {
   bool _loading = false;
 
+  StreamSubscription<ThemeData>? _themeStreamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_themeStreamSubscription?.cancel());
+    _themeStreamSubscription = ThemeViewModel.instance.themeStream.listen(
+      (themeData) => setState(() => {}),
+    );
+  }
+
+  @override
+  void dispose() {
+    unawaited(_themeStreamSubscription?.cancel());
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) => Card(
     child: ListTile(
