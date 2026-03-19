@@ -257,9 +257,6 @@ class ThemeViewModel {
   /// The emitted value is typically `null` and serves as a notification.
   Stream<ThemeData> get themeStream => _themeStreamController.stream.distinct();
 
-  /// A red color that adapts to the current theme (light/dark).
-  Color get redColor => isLight ? Colors.red.shade700 : Colors.red.shade300;
-
   /// Returns true if theme mode is light
   bool get isLight =>
       _themeMode == ThemeMode.light ||
@@ -268,35 +265,52 @@ class ThemeViewModel {
   /// Returns true if theme mode is dark
   bool get isDark => !isLight;
 
+  /// A gray color that adapts to the current theme (light/dark).
+  Color get greyColor => isLight ? Colors.grey.shade600 : Colors.grey.shade400;
+
+  /// A dark grey color that adapts to the current theme (light/dark).
+  Color get darkGreyColor =>
+      isLight ? Colors.grey.shade900 : Colors.grey.shade600;
+
+  /// A cyan color that adapts to the current theme (light/dark).
+  Color get cyanColor => isLight ? Colors.cyan.shade800 : Colors.cyan.shade200;
+
   /// A blue color that adapts to the current theme (light/dark).
-  Color get blueColor => isLight ? Colors.blue.shade700 : Colors.blue.shade300;
-
-  /// A yellow color that adapts to the current theme (light/dark).
-  Color get yellowColor =>
-      isLight ? Colors.yellow.shade700 : Colors.yellow.shade300;
-
-  /// A green color that adapts to the current theme (light/dark).
-  Color get greenColor =>
-      isLight ? Colors.green.shade700 : Colors.green.shade300;
-
-  /// An orange color that adapts to the current theme (light/dark).
-  Color get orangeColor =>
-      isLight ? Colors.orange.shade700 : Colors.orange.shade300;
+  Color get blueColor => isLight ? Colors.blue.shade800 : Colors.blue.shade200;
 
   /// A purple color that adapts to the current theme (light/dark).
   Color get purpleColor =>
-      isLight ? Colors.purple.shade700 : Colors.purple.shade300;
+      isLight ? Colors.purple.shade800 : Colors.purple.shade200;
 
   /// A deep purple color that adapts to the current theme (light/dark).
   Color get deepPurpleColor =>
-      isLight ? Colors.deepPurple.shade700 : Colors.deepPurple.shade300;
+      isLight ? Colors.deepPurple.shade800 : Colors.deepPurple.shade200;
 
-  /// A deep purple color that adapts to the current theme (light/dark).
-  Color get greyColor => isLight ? Colors.grey.shade700 : Colors.grey.shade400;
+  /// A green color that adapts to the current theme (light/dark).
+  Color get greenColor =>
+      isLight ? Colors.green.shade800 : Colors.green.shade200;
 
-  /// A deep purple color that adapts to the current theme (light/dark).
-  Color get darkGreyColor =>
-      isLight ? Colors.grey.shade900 : Colors.grey.shade600;
+  /// A yellow color that adapts to the current theme (light/dark).
+  Color get yellowColor =>
+      isLight ? Colors.yellow.shade800 : Colors.yellow.shade200;
+
+  /// An orange color that adapts to the current theme (light/dark).
+  Color get orangeColor =>
+      isLight ? Colors.orange.shade800 : Colors.orange.shade200;
+
+  /// An deep orange color that adapts to the current theme (light/dark).
+  Color get deepOrangeColor =>
+      isLight ? Colors.deepOrange.shade800 : Colors.deepOrange.shade200;
+
+  /// A amber color that adapts to the current theme (light/dark).
+  Color get amberColor =>
+      isLight ? Colors.amber.shade700 : Colors.amber.shade300;
+
+  /// A red color that adapts to the current theme (light/dark).
+  Color get redColor => isLight ? Colors.red.shade700 : Colors.red.shade300;
+
+  /// An pink color that adapts to the current theme (light/dark).
+  Color get pinkColor => isLight ? Colors.pink.shade800 : Colors.pink.shade200;
 
   static final ({
     Color primary,
@@ -313,7 +327,7 @@ class ThemeViewModel {
   })
   _defaultDarkColorScheme = (
     primary: Colors.white,
-    disabled: Colors.white38,
+    disabled: Colors.grey.shade700,
     onPrimary: Colors.black,
     secondary: Colors.white70,
     onSecondary: Colors.grey.shade900,
@@ -340,15 +354,15 @@ class ThemeViewModel {
   })
   _defaultLightColorScheme = (
     primary: Colors.black,
-    disabled: Colors.grey.shade500,
+    disabled: Colors.grey.shade700,
     onPrimary: Colors.white,
     secondary: Colors.grey.shade900,
     onSecondary: Colors.white70,
     error: Colors.white,
     onError: Colors.red,
-    surface: Colors.white.withValues(alpha: 0.8),
+    surface: Colors.grey.shade400,
     onSurface: Colors.grey.shade900,
-    surfaceContainer: Colors.grey.shade300,
+    surfaceContainer: Color.lerp(Colors.grey.shade400, Colors.white, 0.3)!,
     onSurfaceVariant: Colors.black,
   );
 
@@ -586,12 +600,9 @@ class ThemeViewModel {
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         selectedItemColor: primary,
         unselectedItemColor: disabled,
-        backgroundColor: onPrimary,
-      ),
-      cardTheme: CardThemeData(color: surfaceContainer),
-      carouselViewTheme: CarouselViewThemeData(
         backgroundColor: surfaceContainer,
       ),
+      cardTheme: CardThemeData(color: surfaceContainer),
       snackBarTheme: const SnackBarThemeData(
         insetPadding: EdgeInsets.all(20),
         contentTextStyle: TextStyle(
