@@ -96,7 +96,7 @@ class AuthViewModel {
       );
       _logger.info('(signInWithEmailAndPassword): email $email. Success');
     } on Exception catch (error, stackTrace) {
-      _logger.severe('(signOut): failed', error, stackTrace);
+      _logger.severe('(signInWithEmailAndPassword): failed', error, stackTrace);
     }
   }
 
