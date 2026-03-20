@@ -1,3 +1,12 @@
+## [flutter_heyteacher_meta-6.0.1+136] - 2026-03-20
+
+### 💼 Other
+
+- *(deps)* Bump deps to 6.0.1+136
+
+### 📚 Documentation
+
+- Remove `ffmpeg_cmd` docs and add  migration to `monorepo` guide
 ## [flutter_heyteacher_meta-6.0.0+134] - 2026-03-17
 
 ### 🚀 Features
@@ -30,6 +39,7 @@
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.0+140
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-6.0.0+140
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.0+142
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-6.0.0+134
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-6.0.0+134
 ## [flutter_heyteacher_meta-5.0.0+132] - 2026-03-11
 
