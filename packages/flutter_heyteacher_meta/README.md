@@ -3,13 +3,17 @@
 A Flutter meta project implementing utilities and best practices for Flutter `package` and `app` project avoiding `Copy & Paste` pattern.
 
 - environment setup instructions for `app` and `package` projects and `Firebase` setup `app` projects
-- `git` utilities for manage versions and releases
+- `Fastlane` lines for `app` and `package` projects
+- `dartsemver` command for manage dart version following [Semantic Versioning](https://semver.org/)
+- `git` utilities for manage versions and releases and `conventional commit`
 - release app in `Google Play` and `Firebase App Distribution`
-- integration test and `Firebase Test Lab` utilities
+- `Integration Test` and `Firebase Test Lab` utilities
 - backup and restore `Firestore` utilities
+- `Firebase Hosting` utilities
 - `localization` setup instructions
-- documentation utilities
-- `Launcher Icon`, `Splash`, `dart builder`, `ffmpeg`, `webcrypto` utilities
+- dart `doc` utilities
+- `Launcher Icon`, `Splash`, `dart builder`, `webcrypto` utilities
+- migration guide for `monorepo` project
 
 ## Table of Contents
 
@@ -26,6 +30,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
     - [`FastLane`](#fastlane)
     - [`nodeJs`](#nodejs)
     - [Firebase CLI](#firebase-cli)
+  - [`dartsemver` dart command](#dartsemver-dart-command)
   - [Create a flutter project](#create-a-flutter-project)
     - [Configure `monorepo`](#configure-monorepo)
     - [Configure `FastLane`](#configure-fastlane)
@@ -71,10 +76,9 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [documentation utilities](#documentation-utilities)
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
-  - [Dart Builders](#dart-builders)
-  - [`ffmpeg` utilities](#ffmpeg-utilities)
-  - [command-line utility `dartsemver`](#command-line-utility-dartsemver)
   - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
+  - [Dart Builders](#dart-builders)
+  - [migration to `monorepo` project](#migration-to-monorepo-project)
   
 ## Installing
 
@@ -108,6 +112,8 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 - [vscode-markdownlint](https://github.com/DavidAnson/vscode-markdownlint): Markdown/CommonMark linting and style checking for Visual Studio Code
 
 - [vscode-markdown](https://github.com/yzhang-gh/vscode-markdown): All you need for Markdown (keyboard shortcuts, table of contents, auto preview and more).
+
+- [git-filter-repo](https://github.com/newren/git-filter-repo): Quickly rewrite git repository history (filter-branch replacement). Used in [migration to `monorepo` project](#migration-to-monorepo-project)
 
 ## Requirements
 
@@ -148,7 +154,7 @@ install flutter manually following instructions <https://docs.flutter.dev/instal
 
 install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
 
-You can configure you `vscode` to execute the [command-line utility `dartsemver`](#command-line-utility-dartsemver) in order to automatically update build version every run/debug execution of your code:
+You can configure you `vscode` to execute the [`dartsemver` dart command](#dartsemver-dart-command) in order to automatically update build version every run/debug execution of your code:
 
 - install `flutter_heyteacher_meta` package as dev dependency ad described in [Installing](#installing)
 
@@ -196,7 +202,7 @@ You can configure you `vscode` to execute the [command-line utility `dartsemver`
 
 - install  `Android Studio`
 
-- setup your `~/.bashrc` with this env variables and alias
+- setup your `~/.bashrc` with this env variables
 
   ```bash
   #android studio
@@ -247,35 +253,20 @@ on git `commits` and `tags`.
 - install fastlane via bundle
 
   ```bash
-  bundle update
+  bundle update --local
   ```
 
-- setup your `~/.bash_aliases` with this fl alias
+- run command to show all lanes installed
 
   ```bash
-  # alias for fastlane inside flutter projects
-  alias fl='fl.sh'
+  bundle exec fastlane lanes
+  ```  
+
+- setup your `~/.bash_aliases` with `fl` alias:
+
+  ```bash
+  alias fl='bundle exec fastlane'
   ```
-
-  `fl` is an alias of `fl.sh` command.
-
-```bash
-#!/bin/bash
-#
-# Run FastLane Lanes.
-#
-# Executed without paramenter show lanes available and documentation 
-if [[ -z ${@} ]] 
-then
-    # show lanes avalilable and documentation
-    bundle exec fastlane lanes
-else
-    # run lane 
-    bundle exec fastlane $@
-fi  
-```
-
-the execution `fl` in root project directory without paramenter show all `lanes` configured and how to use them.
 
 ### `nodeJs`
 
@@ -293,6 +284,26 @@ the execution `fl` in root project directory without paramenter show all `lanes`
   ```bash
   npm install -g firebase-tools
   ```
+
+## `dartsemver` dart command
+
+From the root of your project, run:
+
+```bash
+dart run flutter_heyteacher_meta:dartsemver major|minor|patch|build|show|show-build [--dry-run]
+```
+
+- `major`,`minor`, `patch` increment the version in your `pubsec.yaml`.
+  `--dry-run` show how the version will be changed without modify `pubsec.yaml`
+
+- `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on
+  the current time.
+  
+- `dry-run` show how the version will be changed without modify `pubsec.yaml`
+
+- `show` print the version in `pubsec.yaml`
+
+- `show-build` print only the build version from `pubsec.yaml`
 
 ## Create a flutter project
 
@@ -315,7 +326,7 @@ After setup the environment run from root project directory and create the proje
 From the root of `monorepo` project directory run:
 
   ```bash
-  flutter_heyteacher_meta:configure_git_hooks
+  dart run flutter_heyteacher_meta:configure_git_hooks
   ```
 
 This configure the git hooks as described in [`git` utilities](#git-utilities).
@@ -329,13 +340,13 @@ From root project directory or inside each packages of a `monorepo` project run:
 - for flutter packages:
 
   ```bash
-  flutter_heyteacher_meta:configure_flutter_package
+  dart run flutter_heyteacher_meta:configure_flutter_package
   ```
 
 - for flutter app
   
   ```bash
-  flutter_heyteacher_meta:configure_flutter_app
+  dart run flutter_heyteacher_meta:configure_flutter_app
   ```
   
   This scripts create a skeleton of `fastlane/metadata` mandatory for release
@@ -1108,6 +1119,12 @@ flutter_launcher_icons:
   dart run flutter_launcher_icons
   ```
 
+- setup your `~/.bash_aliases` with `flutter_launcher_icons` alias:
+
+  ```bash
+  alias flutter_launcher_icons='dart run flutter_launcher_icons'
+  ```
+
 ## Splash
 
 - install [flutter_native_splash)](https://pub.dev/packages/flutter_native_splash)
@@ -1132,13 +1149,33 @@ flutter_launcher_icons:
 - run
 
   ```bash
-  flutter_splash.sh
+  flutter_splash
   ```
 
   an alias of:
 
   ```bash
   dart run flutter_native_splash:create
+  ```
+
+- setup your `~/.bash_aliases` with `flutter_splash` alias:
+
+  ```bash
+  alias flutter_splash='dart run flutter_native_splash:create'
+  ```
+
+## `webcrypto` setup for tests
+
+Flutter tests which use `webcrypto` need to be compiled locally running this command:
+
+```bash
+dart run webcrypto:setup
+```
+
+setup your `~/.bash_aliases` with `flutter_webcrypto_setup` alias:
+
+  ```bash
+  alias flutter_webcrypto_setup='dart run webcrypto:setup'  
   ```
 
 ## Dart Builders
@@ -1152,65 +1189,131 @@ The builders like:
 can be gererated using script:
 
 ```bash
-dart_builders.sh
+dart run build_runner build
 ```
 
-## `ffmpeg` utilities
+setup your `~/.bash_aliases` with `dart_builders` alias:
 
-`ffmpeg_cmd` is a bash script with utilites for `crop`, `cut`, `estract` and `concat`.
+  ```bash
+  alias dart_builders='dart run build_runner build'
+  ```
 
-```bash
-ffmpeg_cmd.sh
-```
+## migration to `monorepo` project
 
-Usage:
+This procedure migrate a repository into a `monorepo` project.
 
-- crop
+Based on [Migrating Git from multirepo to monorepo without losing history](https://developers.netlify.com/guides/migrating-git-from-multirepo-to-monorepo-without-losing-history/)
+
+- install `git-repo-filter`
   
-  `ffmpeg_cmd.sh crop <input_video> <output_video> <width_in_px> <height_in_px> <x_in_px> <y_in_px>`
+  ```bash
+  cd /usr/local
+  git clone https://github.com/newren/git-filter-repo.git
+  ```
 
-- cut
-  
-  `ffmpeg_cmd.sh cut  <input_video> <output_video> <start_in_sec> <end_in_sec>`
+- setup your `~/.bash_aliases` with `git-repo-filter` alias:
 
-- extract
-  
-  `ffmpeg_cmd.sh extract <input_video> <output_video> <start_in_sec> <end_in_sec>`
+  ```bash
+  alias git-repo-filter='/usr/local/git-repo-filter/git-repo-filter'
+  ```
 
-- concat
+- go to `<monorepo>` folder, create and checkout `integrate-monorepo` branch:
 
-  `ffmpeg_cmd.sh concat <input_video_1> <input_video_2> [input_video_3 ...] <output_video> <fade_duration_in_sec>`
+  ```bash
+  cd <root_project_folder>/<monorepo>/
+  ```
 
-## command-line utility `dartsemver`
+- configure git hooks of `<monorepo>` project as described in [Configure `monorepo`](#configure-monorepo)
 
-From the root of your project, run:
+  ```bash
+  dart run flutter_heyteacher_meta:configure_git_hooks
+  ```
 
-```bash
-dart run flutter_heyteacher_meta:dartsemver major|minor|patch|build|show|show-build [--dry-run]
-```
+- create and checkout `integrate-monorepo` branch:
 
-- `major`,`minor`, `patch` increment the version in your `pubsec.yaml`.
-  `--dry-run` show how the version will be changed without modify `pubsec.yaml`
+  ```bash
+  git checkout -b integrate-monorepo
+  ```
 
-- `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on
-  the current time.
-  
-- `dry-run` show how the version will be changed without modify `pubsec.yaml`
+- for each `<repository>` you want migrate into `<monorepo>`:
 
-- `show` print the version in `pubsec.yaml`
+  - clone the `<repository>` of github `<account>` in `/tmp`:
 
-- `show-build` print only the build version from `pubsec.yaml`
+    ```bash
+    cd /tmp
+    git clone https://github.com/<account>/<repository>.git
+    ```
 
-## `webcrypto` setup for tests
+  - go to `<repository>` folder and move all files to `<package>` subdirectory:
 
-Flutter tests which use `webcrypto` need to be compiled locally running this command:
+    ```bash
+    cd <repository>
+    git-filter-repo --to-subdirectory-filter <package>
+    ```
 
-```bash
-flutter_webcrypto_setup
-```
+  - remove reference of `<repository>` in all commits:
 
-an alias of:
+    ```bash
+    git-filter-repo --commit-callback '
+    msg = commit.message.decode("utf-8")
+    newmsg = re.sub("\(#(?=\d+\))", "(<account>/<repository>#", msg)
+    commit.message = newmsg.encode("utf-8")
+    '
+    ```
 
-```bash
-dart run webcrypto:setup
-```
+- go to `<monorepo>` folder, create and checkout `integrate-monorepo` branch:
+
+  ```bash
+  cd <root_project_folder>/<monorepo>/
+  ```
+
+- for each `<repository>` you want migrate into `<monorepo>`:
+
+  - add remote `temp_<repository>` linked to temporary `repository` folder:
+
+    ```bash
+    git remote add temp_<site> /tmp/<repository>
+    ```
+
+  - fetch and merge to `main`:
+
+    ```bash
+    git fetch temp_<site>
+    git merge temp_<site>/main --allow-unrelated-histories
+    ```
+
+  - remove remote `temp_<repository>` and directory `/tmp/<repository>`
+
+    ```bash
+      git remote rm temp_<site> 
+      rm -fr /tmp/<repository>
+    ```
+
+  - add `<package>` to `<workspace>` section in `pubspec.yaml`:
+
+    ```yaml
+    workspace:
+    .
+    .
+    - <package>
+    ```
+
+  - add `resolution: workspace` to `<package>/pubspec.yaml`
+
+    ```yaml
+    .
+    .
+    resolution: workspace
+    .
+    .
+    ```
+
+  - commit changes into `integrate-monorepo` branch
+
+- test your package migrated then merge `integrate-monorepo` to `main` branch and remove `integrate-monorepo` branch
+
+  ```bash
+  git checkout main
+  git merge integrate-monorepo 
+  git branch -d integrate-monorepo
+  ```
