@@ -1,3 +1,12 @@
+## [flutter_heyteacher_site-1.9.8+112] - 2026-03-21
+
+### 🐛 Bug Fixes
+
+- Manage correctly the `MarkdownConfig` based on theme mode and refresh on theme mode changed
+
+### 💼 Other
+
+- *(deps)* Bump deps to 1.9.8+112
 ## [flutter_heyteacher_site-1.9.7+110] - 2026-03-16
 
 ### 🐛 Bug Fixes
@@ -7,6 +16,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 1.9.7+110
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_site-1.9.7+110
 ## [flutter_heyteacher_site-1.9.6+108] - 2026-03-06
 
 ### 💼 Other
