@@ -47,6 +47,8 @@ class _MarkdownViewState extends State<MarkdownView> {
 
   Iterable<String> _headerRows = [];
 
+  StreamSubscription<ThemeData>? _themeStreamSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -73,12 +75,17 @@ class _MarkdownViewState extends State<MarkdownView> {
       _init,
     );
     setState(() {});
+    unawaited(_themeStreamSubscription?.cancel());
+    _themeStreamSubscription = ThemeViewModel.instance.themeStream.listen(
+      (themeData) => setState(() => {}),
+    );
   }
 
   @override
   void dispose() {
     unawaited(_localeStreamSubscription?.cancel());
     _tocController.dispose();
+    unawaited(_themeStreamSubscription?.cancel());
     super.dispose();
   }
 
@@ -129,15 +136,19 @@ class _MarkdownViewState extends State<MarkdownView> {
             }
           },
         ),
-        config: MarkdownConfig.darkConfig.copy(
-          configs: [
-            _paragraphLinkConfig,
-            if (ThemeViewModel.instance.isDark)
-              PreConfig.darkConfig.copy(wrapper: _codeWrapper)
-            else
-              const PreConfig().copy(wrapper: _codeWrapper),
-          ],
-        ),
+        config: ThemeViewModel.instance.isDark
+            ? MarkdownConfig.darkConfig.copy(
+                configs: [
+                  _paragraphLinkConfig,
+                  PreConfig.darkConfig.copy(wrapper: _codeWrapper),
+                ],
+              )
+            : MarkdownConfig.defaultConfig.copy(
+                configs: [
+                  _paragraphLinkConfig,
+                  const PreConfig().copy(wrapper: _codeWrapper),
+                ],
+              ),
         padding: const EdgeInsets.all(8),
         tocController: _tocController,
         data: _markdownContents,
