@@ -2,8 +2,8 @@
 /// theme persistence, and dynamic theme updates.
 ///
 /// This library provides:
-/// - [ThemeCard]: A widget for users to select between light, dark, or system
-///   default themes.
+/// - [ThemeModeCard] and [ThemeModeButton]: A widget for users to select 
+///   between light, dark, or system default themes.
 /// - [ThemeViewModel]: A singleton class responsible for holding the current
 ///   theme state, persisting user preferences, providing theme data, and
 ///    broadcasting theme changes.
@@ -26,25 +26,53 @@ enum _SharedPreferencesKeys {
   fhuThemeMode,
 }
 
+/// The theme mode button.
+class ThemeModeButton extends StatefulWidget {
+  /// Creates the theme mode button.
+  const ThemeModeButton({
+    super.key,
+  });
+
+  @override
+  State<ThemeModeButton> createState() => _ThemeModeButtonState();
+}
+
+class _ThemeModeButtonState extends State<ThemeModeButton> {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        ThemeViewModel.instance.isDark ? Icons.light_mode : Icons.dark_mode,
+      ),
+      onPressed: () async {
+        await ThemeViewModel.instance.setThemeMode(
+          ThemeViewModel.instance.isDark ? ThemeMode.light : ThemeMode.dark,
+        );
+        setState(() {});
+      },
+    );
+  }
+}
+
 /// A [ListTile] widget that allows users to select the application's
 /// [ThemeMode].
 ///
 /// It presents [ChoiceChip] options for system, dark, and light themes.
 /// Changes are propagated through the [ThemeViewModel] singleton.
-class ThemeCard extends StatefulWidget {
-  /// Creates a [ThemeCard].
-  const ThemeCard({super.key});
+class ThemeModeCard extends StatefulWidget {
+  /// Creates a [ThemeModeCard].
+  const ThemeModeCard({super.key});
 
   @override
-  State<ThemeCard> createState() => ThemeCardState<ThemeCard>();
+  State<ThemeModeCard> createState() => ThemeModeCardState<ThemeModeCard>();
 }
 
-/// The state for [ThemeCard], which builds the UI for theme selection.
+/// The state for [ThemeModeCard], which builds the UI for theme selection.
 ///
 /// This class is generic (`<T extends StatefulWidget>`) to allow it to be
 /// extended by other state classes that may want to override its behavior,
 /// such as the `onSelected` method.
-class ThemeCardState<T extends StatefulWidget> extends State<T> {
+class ThemeModeCardState<T extends StatefulWidget> extends State<T> {
   @override
   Widget build(BuildContext context) => Card(
     child: ListTile(
