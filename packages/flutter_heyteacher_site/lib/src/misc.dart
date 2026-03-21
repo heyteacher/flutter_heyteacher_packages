@@ -37,9 +37,9 @@ class GetItOnGooglePlayButton extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: switch (_screenSize) {
-            ScreenSize.small => 160,
-            ScreenSize.medium => 230,
-            ScreenSize.large => 270,
+            ScreenSize.small => 150,
+            ScreenSize.medium => 225,
+            ScreenSize.large => 275,
           },
         ),
         child: const Image(
