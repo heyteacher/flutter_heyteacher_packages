@@ -5,40 +5,57 @@ import 'package:flutter_heyteacher_views/views.dart';
 class AdaptiveScaffold extends StatefulWidget {
   /// Creates a [AdaptiveScaffold].
   const AdaptiveScaffold({
-    required this.drawler,
-    required this.bodyForLargeBuilder,
-    required this.bodyForSmallBuilder,
-    this.title,
-    this.actions = const [],
-    this.floatingActionButton,
+    required Widget Function({
+      required int crossAxisCount,
+      required ScreenSize screenSize,
+    })
+    bodyForLargeBuilder,
+    required Widget Function({
+      required int crossAxisCount,
+      required ScreenSize screenSize,
+    })
+    bodyForSmallBuilder,
+    AppBar? appBar,
+    Widget? drawler,
+    FloatingActionButton? floatingActionButton,
+    List<Widget>? persistentFooterButtons,
+    AlignmentDirectional? persistentFooterAlignment,
+    BoxDecoration? persistentFooterDecoration,
     super.key,
-  });
+  }) : _appBar = appBar,
+       _drawler = drawler,
+       _bodyForLargeBuilder = bodyForLargeBuilder,
+       _bodyForSmallBuilder = bodyForSmallBuilder,
+       _floatingActionButton = floatingActionButton,
+       _persistentFooterDecoration = persistentFooterDecoration,
+       _persistentFooterAlignment = persistentFooterAlignment,
+       _persistentFooterButtons = persistentFooterButtons;
 
   /// The title of the screen
-  final Widget? title;
-
-  /// The actions of the screen
-  final List<Widget> actions;
+  final AppBar? _appBar;
 
   /// The drawer of the screen
-  final Widget drawler;
+  final Widget? _drawler;
 
-  /// The expanded of the screen
+  /// The body for large screen
   final Widget Function({
     required int crossAxisCount,
     required ScreenSize screenSize,
   })
-  bodyForLargeBuilder;
+  _bodyForLargeBuilder;
 
-  /// The expanded of the screen
+  ///  The body for small screen
   final Widget Function({
     required int crossAxisCount,
     required ScreenSize screenSize,
   })
-  bodyForSmallBuilder;
+  _bodyForSmallBuilder;
 
   /// The floating action button of the screen
-  final FloatingActionButton? floatingActionButton;
+  final FloatingActionButton? _floatingActionButton;
+  final List<Widget>? _persistentFooterButtons;
+  final AlignmentDirectional? _persistentFooterAlignment;
+  final BoxDecoration? _persistentFooterDecoration;
 
   @override
   State<AdaptiveScaffold> createState() => _AdaptiveScaffoldState();
@@ -50,8 +67,7 @@ class _AdaptiveScaffoldState
           AdaptiveScaffold,
           _AbstractAdaptiveScaffoldState,
           ({
-            Widget? title,
-            List<Widget> actions,
+            AppBar? appBar,
             Widget Function({
               required int crossAxisCount,
               required ScreenSize screenSize,
@@ -63,7 +79,10 @@ class _AdaptiveScaffoldState
             })
             bodyForSmallBuilder,
             FloatingActionButton? floatingActionButton,
-            Widget drawler,
+            Widget? drawler,
+            List<Widget>? persistentFooterButtons,
+            AlignmentDirectional? persistentFooterAlignment,
+            BoxDecoration? persistentFooterDecoration,
           })
         > {
   @override
@@ -72,8 +91,7 @@ class _AdaptiveScaffoldState
 
   @override
   ({
-    Widget? title,
-    List<Widget> actions,
+    AppBar? appBar,
     Widget Function({
       required int crossAxisCount,
       required ScreenSize screenSize,
@@ -85,15 +103,20 @@ class _AdaptiveScaffoldState
     })
     bodyForSmallBuilder,
     FloatingActionButton? floatingActionButton,
-    Widget drawler,
+    Widget? drawler,
+    List<Widget>? persistentFooterButtons,
+    AlignmentDirectional? persistentFooterAlignment,
+    BoxDecoration? persistentFooterDecoration,
   })
   get params => (
-    title: widget.title,
-    actions: widget.actions,
-    bodyForLargeBuilder: widget.bodyForLargeBuilder,
-    bodyForSmallBuilder: widget.bodyForSmallBuilder,
-    floatingActionButton: widget.floatingActionButton,
-    drawler: widget.drawler,
+    appBar: widget._appBar,
+    bodyForLargeBuilder: widget._bodyForLargeBuilder,
+    bodyForSmallBuilder: widget._bodyForSmallBuilder,
+    floatingActionButton: widget._floatingActionButton,
+    drawler: widget._drawler,
+    persistentFooterButtons: widget._persistentFooterButtons,
+    persistentFooterAlignment: widget._persistentFooterAlignment,
+    persistentFooterDecoration: widget._persistentFooterDecoration,
   );
 }
 
@@ -101,8 +124,7 @@ class _AbstractAdaptiveScaffoldState
     extends
         AbstractAdaptiveState<
           ({
-            Widget? title,
-            List<Widget> actions,
+            AppBar? appBar,
             Widget Function({
               required int crossAxisCount,
               required ScreenSize screenSize,
@@ -114,18 +136,22 @@ class _AbstractAdaptiveScaffoldState
             })
             bodyForSmallBuilder,
             FloatingActionButton? floatingActionButton,
-            Widget drawler,
+            Widget? drawler,
+            List<Widget>? persistentFooterButtons,
+            AlignmentDirectional? persistentFooterAlignment,
+            BoxDecoration? persistentFooterDecoration,
           })
         > {
   @override
   Widget build(BuildContext context) => switch (widget.screenSize) {
     ScreenSize.large => Row(
       children: [
-        Drawer(
-          shape: const RoundedRectangleBorder(),
-          width: MediaQuery.sizeOf(context).width * 0.3,
-          child: widget.params.drawler,
-        ),
+        if (widget.params.drawler != null)
+          Drawer(
+            shape: const RoundedRectangleBorder(),
+            width: MediaQuery.sizeOf(context).width * 0.3,
+            child: widget.params.drawler,
+          ),
         VerticalDivider(
           width: 1,
           thickness: 1,
@@ -133,12 +159,7 @@ class _AbstractAdaptiveScaffoldState
         ),
         Expanded(
           child: Scaffold(
-            appBar: widget.params.title == null && widget.params.actions.isEmpty
-                ? null
-                : AppBar(
-                    title: widget.params.title,
-                    actions: widget.params.actions,
-                  ),
+            appBar: widget.params.appBar,
             body: widget.params.bodyForLargeBuilder.call(
               crossAxisCount: widget.crossAxisCount,
               screenSize: widget.screenSize,
@@ -154,10 +175,13 @@ class _AbstractAdaptiveScaffoldState
         crossAxisCount: widget.crossAxisCount,
         screenSize: widget.screenSize,
       ),
-      appBar: widget.params.title == null && widget.params.actions.isEmpty
-          ? null
-          : AppBar(title: widget.params.title, actions: widget.params.actions),
+      appBar: widget.params.appBar,
       floatingActionButton: widget.params.floatingActionButton,
+      persistentFooterButtons: widget.params.persistentFooterButtons,
+      persistentFooterAlignment:
+          widget.params.persistentFooterAlignment ??
+          AlignmentDirectional.center,
+      persistentFooterDecoration: widget.params.persistentFooterDecoration,
     ),
   };
 }
