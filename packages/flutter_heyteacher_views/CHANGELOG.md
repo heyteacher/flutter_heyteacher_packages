@@ -1,3 +1,12 @@
+## [flutter_heyteacher_views-2.1.1+138] - 2026-03-21
+
+### 🐛 Bug Fixes
+
+- Pass `AppBar` and `persistentFooter` parameters to `AdaptiveScaffold`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.1.1+138
 ## [flutter_heyteacher_views-2.1.0+136] - 2026-03-21
 
 ### 🚀 Features
@@ -7,6 +16,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.1.0+136
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.1.0+136
 ## [flutter_heyteacher_views-2.0.4+134] - 2026-03-19
 
 ### 💼 Other
