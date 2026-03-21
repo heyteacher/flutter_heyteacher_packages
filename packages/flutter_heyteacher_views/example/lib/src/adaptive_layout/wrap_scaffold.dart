@@ -8,7 +8,7 @@ class WrapAndScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AdaptiveScaffold(
-    title: const Text('Adaptive Wrap and Scaffold'),
+    appBar: AppBar(title: const Text('Adaptive Wrap and Scaffold')),
     drawler: const Placeholder(
       child: Text('Drawer'),
     ),
