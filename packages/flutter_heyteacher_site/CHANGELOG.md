@@ -1,3 +1,12 @@
+## [flutter_heyteacher_site-1.9.9+114] - 2026-03-21
+
+### 🐛 Bug Fixes
+
+- Enhance size of `GetItOnGooglePlayButton`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 1.9.9+114
 ## [flutter_heyteacher_site-1.9.8+112] - 2026-03-21
 
 ### 🐛 Bug Fixes
@@ -7,6 +16,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 1.9.8+112
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_site-1.9.8+112
 ## [flutter_heyteacher_site-1.9.7+110] - 2026-03-16
 
 ### 🐛 Bug Fixes
