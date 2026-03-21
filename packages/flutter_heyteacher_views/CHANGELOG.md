@@ -1,3 +1,12 @@
+## [flutter_heyteacher_views-2.1.0+136] - 2026-03-21
+
+### 🚀 Features
+
+- Add `ThemeModeButton` and rename `ThemeCard` in `ThemeModeCard`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.1.0+136
 ## [flutter_heyteacher_views-2.0.4+134] - 2026-03-19
 
 ### 💼 Other
@@ -5,6 +14,10 @@
 - *(deps)* Upgrade major versions
 - *(deps)* Upgrade major versions
 - *(deps)* Bump deps to 2.0.4+134
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.0.4+134
 
 ### 🎨 Styling
 
