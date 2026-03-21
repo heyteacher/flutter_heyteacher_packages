@@ -49,7 +49,7 @@ class _ThemeScreenState extends State<ThemeScreen>
         children: [
           const Padding(
             padding: EdgeInsets.only(bottom: 32),
-            child: ThemeCard(),
+            child: ThemeModeCard(),
           ),
           Card(
             child: ListTile(

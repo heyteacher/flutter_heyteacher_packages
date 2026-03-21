@@ -8,7 +8,7 @@ A Flutter package providing a collection of reusable UI widgets, adaptive layout
 - **Common Widgets**: A set of pre-built widgets for common UI patterns, including `ErrorView`, `ProgressIndicatorView`, `TableView`, and more.
 - **Adaptive Layout**: Easily create responsive UIs that adapt to different screen sizes with `AdaptiveScaffold`,  `AdaptiveWrap` and `AdaptiveState`.
 - **Animations Utilities**: Includes `PagingSliverAnimatedState`, `BlinkingText` and `AnimatedText`.
-- **Theme Management**: Simple theme switching and management capabilities with `ThemeViewModel`.
+- **Theme Management**: Simple theme switching and management capabilities with `ThemeViewModel` and widget to change theme mode (`ThemeModeButton`, `ThemeCard`)
 - **Tutorials**: A `TutorialViewModel` to help guide users through your app's features.
 - **Handy Utilities**: dialogs (`showConfirmCancelDialog`), snackbars (`showSnackBar`), and extensions.
 
@@ -47,4 +47,4 @@ The [example](./example/) app show how to use the widgets and utilities provided
 
   - [Paging Sliver Animated State](./example/lib/src/animations/paging_sliver_animated_state_screen.dart)
 
-- [Theme](./example/lib/src/theme_screen.dart): `ThemeCard` for change theme mode between `Dark`,  `Light` and `System`
+- [Theme](./example/lib/src/theme_screen.dart): `ThemeModeButton` and `ThemeCard` for change theme mode between `Dark`,  `Light` and `System`
