@@ -1,3 +1,16 @@
+## [flutter_heyteacher_meta-7.0.0+138] - 2026-03-23
+
+### 🚀 Features
+
+- [**breaking**] Integrate `forgejo` and necome forge indipendent supporting forgejo public instances
+
+### 🐛 Bug Fixes
+
+- Add new line `\` in `detect_forge`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 7.0.0+138
 ## [flutter_heyteacher_meta-6.0.1+136] - 2026-03-20
 
 ### 💼 Other
@@ -7,6 +20,7 @@
 ### 📚 Documentation
 
 - Remove `ffmpeg_cmd` docs and add  migration to `monorepo` guide
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-6.0.1+136
 ## [flutter_heyteacher_meta-6.0.0+134] - 2026-03-17
 
 ### 🚀 Features
