@@ -39,16 +39,16 @@ lane :checkout do
   sh("git checkout #{branch}")
 end
 
-desc "fl github_release - Creates a github release and update CHANGELOG.md"
-lane :github_release do
+desc "fl forge_release - Creates a forge release and update CHANGELOG.md"
+lane :forge_release do
   version = ""
   Dir.chdir("../") do
     version = sh("dart run flutter_heyteacher_meta:dartsemver show")
   end 
-  create_github_release(version)
+  create_forge_release(version)
 end
 
-desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [github:false|true] - Creates new release, merge branch into main and creates a github release"
+desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [forge:false|true] - Creates new release, merge branch into main and creates a forge release"
 lane :release do|options|
   if !["major", "minor", "patch"].include?(options[:semver])
     puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"
@@ -76,26 +76,63 @@ lane :release do|options|
   sh("git commit -m \"build(deps): bump deps to #{version}\"")
   push_to_git_remote
   if options[:merge] == nil || options[:merge] == true
-    puts "create pull request on github"
-    sh("gh pr create --fill-verbose")
-    puts "wait 1 second in order new pull request will be available on github API"
-    sleep(1)
-    puts "merge pull request"
-    sh("gh pr merge -m -d --auto")
+    forge_merge
   end
-  puts "make release #{version} release github #{options[:github]}"
-  if options[:github] == true
-    puts "create github release for #{version}"
-    create_github_release(version)
+  puts "make release #{version} release forge #{options[:forge]}"
+  if options[:forge] == true
+    puts "create forge release for #{version}"
+    create_forge_release(version)
   end
   puts "run pub get to update dependencies"
   sh("dart pub get")
 end
 
-# create a git hub release
+##
+# Detects forge
+# @return: [String]  `github`, `forgejo`
+# @raise: Exception if no github or forgejo detected
+def detect_forge()
+  url_forge = sh("git remote get-url --push origin").strip!  
+  if url_forge.include? "https://github.com/"
+   return "github"
+  elsif url_forge.start_with?("https://codeberg.org/") 
+    || url_forge.start_with?("https://bolha.dev/")
+    || url_forge.start_with?("https://codefloe.com/")
+    || url_forge.start_with?("https://git.gay/")
+    || url_forge.start_with?("https://git.kaki87.net/")
+    || url_forge.start_with?("https://opencommit.eu/")
+    || url_forge.start_with?("https://git.pub.solar/")
+   return "forgejo"
+  else
+    raise Exception.new('no github or forgejo detected')
+  end
+end
+
+##
+# Merge branch to main repo
 # Params:
-# +version+:: the version to release
-def create_github_release(version)
+def forge_merge()
+  forge = detect_forge 
+  puts "create pull request on #{forge}"
+  if forge == "github"
+    sh("gh pr create --fill-verbose")
+  elsif forge == "forgejo"
+    sh("fj pr create --autofill")
+  end
+  puts "wait 1 second in order new pull request will be available on #{forge}"
+  sleep(1)
+  puts "merge pull request on #{forge}"
+  if forge == "github"
+    sh("gh pr merge -m -d --auto")
+  elsif forge == "forgejo"
+    sh("pr merge --delete")
+  end
+end
+
+##
+# Create a release on forge
+# @param: [String, #version] the version to release
+def create_forge_release(version)
   package_name = ""
   Dir.chdir("../") do
     package_name = sh("basename `pwd`").strip!
@@ -120,11 +157,17 @@ def create_github_release(version)
   add_git_tag(tag: "#{package_name}-#{version}")
   push_git_tags(tag: "#{package_name}-#{version}")
   # create release with notes
-  puts "create github release #{package_name}-#{version}"
+  puts "create forge release #{package_name}-#{version}"
+  forge = detect_forge 
+  if forge == "github"
   sh("gh release create #{package_name}-#{version} --generate-notes")
+  elsif forge == "forgejo"
+    sh("fj create release --tag #{package_name}-#{version}")
+  end
 end
 
-# increment build number
+##
+## Increments build number
 def increment_build
   Dir.chdir("../") do
     sh("dart run flutter_heyteacher_meta:dartsemver build")
