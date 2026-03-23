@@ -1372,18 +1372,23 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
   fj auth login
   ```
 
-- create a new repository in `forgejo` public instance. For example for [Codeberg](https://codeberg.org):
-
-```bash
-fj repo create flutter_heyteacher_meta
-
-```
-
 - create/update remote `origin` to your `forgejo` public instance. For example for [Codeberg](https://codeberg.org):
 
   ```bash
   git remote remove origin
   git remote add origin https://codeberg.org/heyteacher/flutter_heyteacher_meta.git
+  ```
+
+- create a new repository in `forgejo` public instance. For example for [Codeberg](https://codeberg.org):
+
+  ```bash
+  fj repo create flutter_heyteacher_meta
+  ```
+
+- enable `releases` in `https://<forge_plaftorm>/<account>/<repository>/settings/units`. For example for [Codeberg](https://codeberg.org):
+  
+  ```txt
+  https://codeberg.org/heyteacher/flutter_heyteacher_meta/settings/units
   ```
 
 - set the `upstream` to `origin main`
@@ -1395,5 +1400,5 @@ fj repo create flutter_heyteacher_meta
 - push local tags to remote
 
   ```bash
-  git push --tags <tagname>
+  git push origin tag <tagname>
   ```
