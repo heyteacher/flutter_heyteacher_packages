@@ -1,3 +1,20 @@
+## [flutter_heyteacher_meta-7.0.2+142] - 2026-03-23
+
+### 🐛 Bug Fixes
+
+- Corrected `merge` invocation for `forgejo`
+- In `forge_merge` checkout `main` branch
+- Remove`squash` method in `fj pr merge'
+
+### 💼 Other
+
+- *(deps)* Bump deps to 7.0.1+140
+- *(deps)* Bump deps to 7.0.2+142
+
+### 📚 Documentation
+
+- Make indipendent from `forge` provider and add a guide for migrate from `Github` to  `forgejo` public instance
+- Update `repository`, `issue_tracker`, `homepage` and `documentation`
 ## [flutter_heyteacher_meta-7.0.0+138] - 2026-03-23
 
 ### 🚀 Features
@@ -11,6 +28,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 7.0.0+138
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.0+138
 ## [flutter_heyteacher_meta-6.0.1+136] - 2026-03-20
 
 ### 💼 Other
