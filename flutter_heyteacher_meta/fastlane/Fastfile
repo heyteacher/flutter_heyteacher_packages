@@ -94,15 +94,15 @@ end
 def detect_forge()
   url_forge = sh("git remote get-url --push origin").strip!  
   if url_forge.include? "https://github.com/"
-   return "github"
-  elsif url_forge.start_with?("https://codeberg.org/") 
-    || url_forge.start_with?("https://bolha.dev/")
-    || url_forge.start_with?("https://codefloe.com/")
-    || url_forge.start_with?("https://git.gay/")
-    || url_forge.start_with?("https://git.kaki87.net/")
-    || url_forge.start_with?("https://opencommit.eu/")
-    || url_forge.start_with?("https://git.pub.solar/")
-   return "forgejo"
+    return "github"
+  elsif url_forge.start_with?("https://codeberg.org/") \
+        || url_forge.start_with?("https://bolha.dev/") \
+        || url_forge.start_with?("https://codefloe.com/") \
+        || url_forge.start_with?("https://git.gay/") \
+        || url_forge.start_with?("https://git.kaki87.net/") \
+        || url_forge.start_with?("https://opencommit.eu/") \
+        || url_forge.start_with?("https://git.pub.solar/")
+    return "forgejo"
   else
     raise Exception.new('no github or forgejo detected')
   end
