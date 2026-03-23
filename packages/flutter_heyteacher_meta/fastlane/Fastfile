@@ -159,12 +159,10 @@ def create_forge_release(version)
   add_git_tag(tag: "#{package_name}-#{version}")
   push_git_tags(tag: "#{package_name}-#{version}")
   # create release with notes
-  puts "create forge release #{package_name}-#{version}"
   forge = detect_forge 
   if forge == "github"
-  sh("gh release create #{package_name}-#{version} --generate-notes")
-  elsif forge == "forgejo"
-    sh("fj create release --tag #{package_name}-#{version}")
+    puts "create forge release #{package_name}-#{version}"
+    sh("gh release create #{package_name}-#{version} --generate-notes")
   end
 end
 
