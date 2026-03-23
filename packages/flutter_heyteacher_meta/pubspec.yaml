@@ -7,7 +7,7 @@ issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_meta/issues
 homepage: https://codeberg.org/heyteacher/flutter_heyteacher_meta/issues
 documentation: https://codeberg.org/heyteacher/flutter_heyteacher_meta/issues
 topics: [firebase,fastlane,firestore]
-funding: [https://github.com/sponsors/heyteacher]
+funding: [https://liberapay.com/heyteacher]
 
 environment:
   sdk: ^3.9.2
