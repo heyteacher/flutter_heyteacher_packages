@@ -1,3 +1,16 @@
+## [flutter_heyteacher_meta-7.0.3+144] - 2026-03-23
+
+### 🐛 Bug Fixes
+
+- Remove release creation with `forgejo CLI`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 7.0.3+144
+
+### 📚 Documentation
+
+- Fix `funding` link
 ## [flutter_heyteacher_meta-7.0.2+142] - 2026-03-23
 
 ### 🐛 Bug Fixes
@@ -15,6 +28,7 @@
 
 - Make indipendent from `forge` provider and add a guide for migrate from `Github` to  `forgejo` public instance
 - Update `repository`, `issue_tracker`, `homepage` and `documentation`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.2+142
 ## [flutter_heyteacher_meta-7.0.0+138] - 2026-03-23
 
 ### 🚀 Features
