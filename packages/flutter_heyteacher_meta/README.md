@@ -40,7 +40,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
     - [test](#test)
     - [checkout](#checkout)
     - [release](#release)
-    - [github\_release](#github_release)
+    - [forge\_release](#forge_release)
     - [bump](#bump)
   - [`Fastlane` lines for `app` projects](#fastlane-lines-for-app-projects)
     - [appbundle](#appbundle)
@@ -79,6 +79,8 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
   - [Dart Builders](#dart-builders)
   - [migration to `monorepo` project](#migration-to-monorepo-project)
+  - [Appendice](#appendice)
+    - [Migrate from `Github` to  `forgejo` public instance](#migrate-from-github-to--forgejo-public-instance)
   
 ## Installing
 
@@ -121,9 +123,23 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 
 - `git` 1.7.2 or later
 
-- a `GitHub` account
+- an account into your preferred [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance.
+  Supported `forge` are:
 
-- `gh` 2.46.0 or later (GitHub CLI)
+  - any `forgejo` public instances, for example:
+    - [Codeberg](https://codeberg.org)
+    - [bolha.dev](https://bolha.dev)
+    - [CodeFloe](https://codefloe.com)
+    - [git.gay](https://git.gay)
+    - [KaKi's git](https://git.kaki87.net)
+    - [OpenCommit](https://opencommit.eu)
+    - [pub.solar](https://git.pub.solar)
+  - [Github](https://github.com)
+
+- The `forge-cli` for your specific `forge` instance.
+
+  - for any `forgejo` public instances : [forgejo-cli](https://codeberg.org/forgejo-contrib/forgejo-cli)
+  - for `Github`: `gh` 2.46.0 or later [GitHub CLI](https://cli.github.com/)
 
 - other software and utilities as described in [Environment Setup](#environment-setup)
 
@@ -383,7 +399,7 @@ From root project directory or inside each packages of a `monorepo` project run:
 Common `Fastlane` lines are provided to `app` and `package` projects. In details:
 
 - generate dart documentation
-- checkout and release on `github`
+- checkout and release on your [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance
 - run unit test
 
 ### doc
@@ -423,7 +439,7 @@ Runs `git fetch` and `git checkout` to the latest branch fetched.
 ### release
 
 ```bash
-fl release semver:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [github:false|true]
+fl release semver:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [forge:false|true]
 ```
 
 Release to `main` branch after you commit and push your changes into your branch.
@@ -434,25 +450,25 @@ Release to `main` branch after you commit and push your changes into your branch
   - `patch`: move version from `1.0.0` to `1.0.1`
 - `suffix`: (optional) add a mnemonic suffix to git `tag` greated
 - `merge`: (optional, default `true`) make the marge to `main` branch
-- `github`: (optional, default `false`) create the github release
+- `forge`: (optional, default `false`) create the release into your `forge` instance
 and update the `CHANGELOG.md`
 
 These command make several tasks:
 
 - increments the version into `pubspec.yaml`
-- create a `github release` and update `CHANGELOG.md` (if `github` param is `true)  
+- create a `release` into your `forge` instance and update `CHANGELOG.md` (if `forge` param is `true)  
 - create a `pull request` and merge changes into `main` branch
 - checkout the `main` branch
 - delete the branch merged (if `merge` param is `true)  
 - create a git `tag` named `{package-name}-{version}`
 
-### github_release
+### forge_release
 
 ```bash
-fl github_release
+fl forge_release
 ```
 
-Create a `github release` and update `CHANGELOG.md`
+Create a `release` into your `forge` instance and update `CHANGELOG.md`
 
 ### bump
 
@@ -462,7 +478,7 @@ fl bump
 
 Commits `pubspec.lock` and `pubspec.yaml`  without generate a new version and without create a new release.
 
-Creates a `github` release and update `CHANGELOG.md`
+Creates a `release` into your `forge` instance and update `CHANGELOG.md`
 
 ## `Fastlane` lines for `app` projects
 
@@ -568,7 +584,7 @@ Deploy web in `Firabase Hosting` with release type `release_type` (default `rele
 
 ## `git` utilities
 
-[checkout](#checkout) and [release](#release) commands with git `hooks` for [`git` conventional commit](#git-conventional-commit) and [avoid commit on `main` branch](#avoid-commit-on-main-branch) helps you to work properly with versions, git branches, git tags and github releases.
+[checkout](#checkout) and [release](#release) commands with git `hooks` for [`git` conventional commit](#git-conventional-commit) and [avoid commit on `main` branch](#avoid-commit-on-main-branch) helps you to work properly with versions, git branches, git tags and releases.
 
 [bump](#bump) command commit `pubspec.lock` and `pubspec.yaml`  after a bump version on dependencies without create a new version and without create new release.
 
@@ -605,7 +621,7 @@ You can't commit directly to main branch
 
 ### example: release a patch
 
-- if you create an `github issue` and a branch on `github`
+- if you create an `issue` and a branch on your [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance
 
   ```bash
   fl checkout
@@ -626,10 +642,10 @@ You can't commit directly to main branch
   git push
   ```
 
-- release the patch merging chenges to `main` branch and create a `github release`
+- release the patch merging changes to `main` branch and create a `release` into your [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance
   
   ```bash
-  fl release version:patch github:true
+  fl release version:patch forge:true
   ```
 
 ## `Firebase` setup for `app` flutter project
@@ -1237,7 +1253,7 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
 
 - for each `<repository>` you want migrate into `<monorepo>`:
 
-  - clone the `<repository>` of github `<account>` in `/tmp`:
+  - clone the `<repository>` from `<account>` of your preferred [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance in `/tmp`:
 
     ```bash
     cd /tmp
@@ -1316,4 +1332,68 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
   git checkout main
   git merge integrate-monorepo 
   git branch -d integrate-monorepo
+  ```
+
+## Appendice
+
+### Migrate from `Github` to  `forgejo` public instance
+
+- install `forgejo-cli`
+
+  ```bash
+  cargo install forgejo-cli
+  # or
+  brew install forgejo-cli
+  ```
+
+- download and install `git-credential-oauth`
+
+  ```bash
+  cd /tmp
+  wget https://github.com/hickford/git-credential-oauth/releases/download/v0.11.0/git-credential-oauth_0.11.0_linux_amd64.tar.gz
+  tar -xtvf git-credential-oauth_0.11.0_linux_amd64.tar.gz
+  sudo cp git-credential-oauth /usr/local/bin/
+  ```
+
+- configure `credential` your `~/.gitconfig` per your `forgejo` public instance, for example for [Codeberg](https://codeberg.org):
+  Note `oauthClientId` is a hard coded value valid fal all `forgejo` public instance provider
+
+  ```txt
+  [credential "https://codeberg.org"]
+        helper = oauth
+        oauthClientId = a4792ccc-144e-407e-86c9-5e7d8d9c3269
+        oauthAuthURL = /login/oauth/authorize
+        oauthTokenURL = /login/oauth/access_token
+  ```
+
+- authenticate in `forgejo` public instance
+
+  ```bash
+  fj auth login
+  ```
+
+- create a new repository in `forgejo` public instance. For example for [Codeberg](https://codeberg.org):
+
+```bash
+fj repo create flutter_heyteacher_meta
+
+```
+
+- create/update remote `origin` to your `forgejo` public instance. For example for [Codeberg](https://codeberg.org):
+
+  ```bash
+  git remote remove origin
+  git remote add origin https://codeberg.org/heyteacher/flutter_heyteacher_meta.git
+  ```
+
+- set the `upstream` to `origin main`
+
+  ```bash
+  git push --set-upstream origin main
+  ```
+
+- push local tags to remote
+
+  ```bash
+  git push --tags <tagname>
   ```

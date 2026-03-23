@@ -125,7 +125,7 @@ def forge_merge()
   if forge == "github"
     sh("gh pr merge -m -d --auto")
   elsif forge == "forgejo"
-    sh("pr merge --delete")
+    sh("fj pr merge --delete")
   end
 end
 
