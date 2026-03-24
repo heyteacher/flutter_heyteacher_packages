@@ -1,9 +1,9 @@
 name: flutter_heyteacher_auth
-description: "The flutter heyteacher package for authentication utilities."
-version: 2.0.9+146
+description: "The flutter heyteacher package for authentication utilities: UI widgets, stream, sign in and sign out"
+version: 2.0.10+148
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_auth
 license: BSD 3-Clause
-issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
 homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_auth
 documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_auth
 topics: [flutter, firebase, auth, oauth, google]
