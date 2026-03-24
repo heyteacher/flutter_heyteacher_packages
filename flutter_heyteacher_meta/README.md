@@ -1346,20 +1346,22 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
   brew install forgejo-cli
   ```
 
-- download and install `git-credential-oauth`
+- install `git-credential-oauth` choising your preferred method from  <https://github.com/hickford/git-credential-oauth?tab=readme-ov-file#installation>. For example
 
   ```bash
-  cd /tmp
-  wget https://github.com/hickford/git-credential-oauth/releases/download/v0.11.0/git-credential-oauth_0.11.0_linux_amd64.tar.gz
-  tar -xtvf git-credential-oauth_0.11.0_linux_amd64.tar.gz
-  sudo cp git-credential-oauth /usr/local/bin/
+  # add go to uour path
+  export PATH="$PATH":"$HOME/go/bin"
+  go install github.com/hickford/git-credential-oauth@latest
+  # check if installed correctly
+  git credential-oauth
   ```
 
 - configure `credential` your `~/.gitconfig` per your `forgejo` public instance, for example for [Codeberg](https://codeberg.org):
-  Note `oauthClientId` is a hard coded value valid fal all `forgejo` public instance provider
+  Note `oauthClientId` is a hard coded value valid fal all `forgejo` public instance provider. Add cache configuration, for instance one day (86400 seconds):
 
   ```txt
   [credential "https://codeberg.org"]
+        helper = cache --timeout 86400
         helper = oauth
         oauthClientId = a4792ccc-144e-407e-86c9-5e7d8d9c3269
         oauthAuthURL = /login/oauth/authorize
