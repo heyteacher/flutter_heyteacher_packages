@@ -163,6 +163,9 @@ def create_forge_release(version)
   if forge == "github"
     puts "create forge release #{package_name}-#{version}"
     sh("gh release create #{package_name}-#{version} --generate-notes")
+  elsif forge == "forgejo"
+    puts "create forge release #{package_name}-#{version}"
+    sh("fj release create --tag #{package_name}-#{version} #{package_name}-#{version}")
   end
 end
 
