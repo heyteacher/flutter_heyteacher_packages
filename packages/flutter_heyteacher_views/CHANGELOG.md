@@ -1,3 +1,20 @@
+## [flutter_heyteacher_views-2.1.2+140] - 2026-03-24
+
+### 🚀 Features
+
+- Add examples to dart workspace and add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.1.2+140
+
+### 🚜 Refactor
+
+- `lib/flutter_heyteacher_*.dart` must match the name of package
+
+### 📚 Documentation
+
+- Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
 ## [flutter_heyteacher_views-2.1.1+138] - 2026-03-21
 
 ### 🐛 Bug Fixes
@@ -7,6 +24,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.1.1+138
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.1.1+138
 ## [flutter_heyteacher_views-2.1.0+136] - 2026-03-21
 
 ### 🚀 Features
