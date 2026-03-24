@@ -1,3 +1,21 @@
+## [flutter_heyteacher_worker-2.0.6+138] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Corrected logging message
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions
+- *(deps)* Bump deps to 2.0.6+138
+
+### 🚜 Refactor
+
+- `lib/flutter_heyteacher_*.dart` must match the name of package
+
+### 📚 Documentation
+
+- Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
 ## [flutter_heyteacher_worker-2.0.5+136] - 2026-03-13
 
 ### 🐛 Bug Fixes
@@ -11,6 +29,7 @@
 ### 📚 Documentation
 
 - Add documentation in `README.md`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_worker-2.0.5+136
 ## [flutter_heyteacher_worker-2.0.4+134] - 2026-03-12
 
 ### 🐛 Bug Fixes
