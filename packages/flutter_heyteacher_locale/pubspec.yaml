@@ -22,6 +22,8 @@ dependencies:
   flutter_heyteacher_platform: any
   flutter_heyteacher_text_to_speech: any
   flutter_heyteacher_views: any
+  flutter_localizations:
+    sdk: flutter
   intl: ^0.20.2
   shared_preferences: ^2.5.4
 

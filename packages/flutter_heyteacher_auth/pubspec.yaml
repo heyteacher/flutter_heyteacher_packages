@@ -1,6 +1,6 @@
 name: flutter_heyteacher_auth
 description: "The flutter heyteacher package for authentication utilities."
-version: 2.0.8+144
+version: 2.0.9+146
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_auth
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
@@ -29,7 +29,10 @@ dependencies:
   flutter_heyteacher_locale: any
   flutter_heyteacher_platform: any
   flutter_heyteacher_views: any
+  flutter_localizations:
+    sdk: flutter
   go_router: ^17.1.0
+  intl: ^0.20.2
   logging: ^1.3.0
 
 dev_dependencies:
