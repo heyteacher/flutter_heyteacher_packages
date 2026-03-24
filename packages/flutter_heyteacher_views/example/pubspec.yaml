@@ -1,4 +1,4 @@
-name: example
+name: flutter_heyteacher_views_example
 description: "Flutter Heyteacher Views example app."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -21,6 +21,8 @@ version: 1.0.0+1
 environment:
   sdk: ^3.11.0
 
+resolution: workspace
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -33,12 +35,11 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
-  flutter_heyteacher_views:
-    path: ../../flutter_heyteacher_views
+  flutter_heyteacher_views: any
   go_router: ^17.1.0
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^6.0.0+134
+  flutter_heyteacher_meta: ^7.0.3+144
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.0.0

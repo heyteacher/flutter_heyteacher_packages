@@ -1,14 +1,14 @@
-import 'package:example/src/adaptive_layout/adaptive_layout_screen.dart';
-import 'package:example/src/adaptive_layout/adaptive_state.dart';
-import 'package:example/src/adaptive_layout/wrap_scaffold.dart';
-import 'package:example/src/animations/animations_screen.dart';
-import 'package:example/src/animations/paging_sliver_animated_state_screen.dart';
-import 'package:example/src/theme_screen.dart';
-import 'package:example/src/widgets/error_screen.dart';
-import 'package:example/src/widgets/progress_indicator_screen.dart';
-import 'package:example/src/widgets/widgets_screen.dart' show WidgetsScreen;
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views_example/src/adaptive_layout/adaptive_layout_screen.dart' show AdaptiveLayoutScreen;
+import 'package:flutter_heyteacher_views_example/src/adaptive_layout/adaptive_state.dart' show AdaptiveStateScreen;
+import 'package:flutter_heyteacher_views_example/src/adaptive_layout/wrap_scaffold.dart' show WrapAndScaffold;
+import 'package:flutter_heyteacher_views_example/src/animations/animations_screen.dart' show AnimationsScreen;
+import 'package:flutter_heyteacher_views_example/src/animations/paging_sliver_animated_state_screen.dart' show PagingSliverAnimatedStateScreen;
+import 'package:flutter_heyteacher_views_example/src/theme_screen.dart' show ThemeScreen;
+import 'package:flutter_heyteacher_views_example/src/widgets/error_screen.dart' show ErrorScreen;
+import 'package:flutter_heyteacher_views_example/src/widgets/progress_indicator_screen.dart' show ProgressIndicatorScreen;
+import 'package:flutter_heyteacher_views_example/src/widgets/widgets_screen.dart';
 import 'package:go_router/go_router.dart';
 
 /// Defines the named routes and their corresponding paths for the application's
