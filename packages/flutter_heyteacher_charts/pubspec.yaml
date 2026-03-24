@@ -1,6 +1,6 @@
 name: flutter_heyteacher_charts
 description: "A heyteacher flutter package for create charts"
-version: 1.29.6+104
+version: 1.29.7+106
 publish_to: none
 
 environment:
