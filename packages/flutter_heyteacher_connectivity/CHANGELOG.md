@@ -1,3 +1,8 @@
+## [flutter_heyteacher_connectivity-2.1.3+138] - 2026-03-24
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.1.3+138
 ## [flutter_heyteacher_connectivity-2.1.2+136] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -7,6 +12,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.1.2+136
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_connectivity-2.1.2+136
 ## [flutter_heyteacher_connectivity-2.1.1+134] - 2026-03-24
 
 ### 🚀 Features
