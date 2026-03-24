@@ -3,7 +3,7 @@ description: "The flutter heyteacher package for End-2-End Encryption utilities.
 version: 2.0.5+137
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_e2ee
 license: BSD 3-Clause
-issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
 homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_e2ee
 documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_e2ee
 topics: [flutter, e2ee]
@@ -18,13 +18,13 @@ resolution: workspace
 dependencies:
   archive: ^4.0.9
   equatable: ^2.0.8
-  firebase_remote_config: ^6.2.0
+  firebase_remote_config: ^6.3.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: any
-  flutter_heyteacher_locale: any
-  flutter_heyteacher_platform: any
-  flutter_heyteacher_views: any
+  flutter_heyteacher_auth: ^2.0.9+146
+  flutter_heyteacher_locale: ^2.0.7+140
+  flutter_heyteacher_platform: ^2.0.4+134
+  flutter_heyteacher_views: ^2.1.2+140
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^10.0.0

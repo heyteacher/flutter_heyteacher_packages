@@ -16,23 +16,23 @@ environment:
 resolution: workspace
 
 dependencies:
-  clock: ^1.1.1
+  clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_heyteacher_locale: any
-  flutter_heyteacher_platform: any
+  flutter_heyteacher_locale: ^2.0.7+140
+  flutter_heyteacher_platform: ^2.0.4+134
   flutter_localizations:
     sdk: flutter
-  flutter_tts: ^4.2.2
+  flutter_tts: ^4.2.5
   intl: ^0.20.2
   logging: ^1.3.0
-  shared_preferences: ^2.5.3
+  shared_preferences: ^2.5.4
 
 dev_dependencies:
   flutter_heyteacher_meta: ^7.0.3+144
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^10.0.0
+  very_good_analysis: ^10.2.0
 
 flutter:
   generate: true
