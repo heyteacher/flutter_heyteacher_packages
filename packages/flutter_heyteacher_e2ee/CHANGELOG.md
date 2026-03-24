@@ -1,3 +1,22 @@
+## [flutter_heyteacher_e2ee-2.0.3+132] - 2026-03-24
+
+### 🚀 Features
+
+- Add examples to dart workspace and add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions
+- *(deps)* Upgrade major versions
+- *(deps)* Bump deps to 2.0.3+132
+
+### 🚜 Refactor
+
+- `lib/flutter_heyteacher_*.dart` must match the name of package
+
+### 📚 Documentation
+
+- Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
 ## [flutter_heyteacher_e2ee-2.0.2+130] - 2026-03-12
 
 ### 🐛 Bug Fixes
@@ -8,6 +27,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.2+130
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_e2ee-2.0.2+130
 ## [flutter_heyteacher_e2ee-2.0.1+128] - 2026-03-10
 
 ### 🐛 Bug Fixes
