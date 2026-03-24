@@ -1,6 +1,6 @@
 name: flutter_heyteacher_auth
 description: "The flutter heyteacher package for authentication utilities."
-version: 2.0.7+141
+version: 2.0.7+142
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_auth
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues

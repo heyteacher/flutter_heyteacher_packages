@@ -16,9 +16,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  app_tutorial:
-    # ignore: invalid_dependency
-    git: https://github.com/heyteacher/app_tutorial.git
+  app_tutorial: ^1.0.6
   cloud_firestore: ^6.1.3
   collection: ^1.19.1
   flutter:

@@ -1,8 +1,8 @@
-## [flutter_heyteacher_auth-2.0.7+141] - 2026-03-24
+## [flutter_heyteacher_auth-2.0.7+142] - 2026-03-24
 
 ### 💼 Other
 
-- *(deps)* Bump deps to 2.0.7+141
+- *(deps)* Bump deps to 2.0.7+142
 
 ### 🚜 Refactor
 

@@ -1,9 +1,9 @@
-## [flutter_heyteacher_firebase-2.0.6+138] - 2026-03-24
+## [flutter_heyteacher_firebase-2.0.6+139] - 2026-03-24
 
 ### 💼 Other
 
 - *(deps)* Upgrade major versions
-- *(deps)* Bump deps to 2.0.6+138
+- *(deps)* Bump deps to 2.0.6+139
 
 ### 🚜 Refactor
 

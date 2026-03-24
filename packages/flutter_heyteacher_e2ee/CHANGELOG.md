@@ -1,4 +1,4 @@
-## [flutter_heyteacher_e2ee-2.0.3+132] - 2026-03-24
+## [flutter_heyteacher_e2ee-2.0.3+133] - 2026-03-24
 
 ### 🚀 Features
 
@@ -8,7 +8,7 @@
 
 - *(deps)* Upgrade major versions
 - *(deps)* Upgrade major versions
-- *(deps)* Bump deps to 2.0.3+132
+- *(deps)* Bump deps to 2.0.3+133
 
 ### 🚜 Refactor
 
