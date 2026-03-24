@@ -3,7 +3,7 @@ description: "The flutter heyteacher package for math utilities."
 version: 2.0.2+130
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_math
 license: BSD 3-Clause
-issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
 homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_math
 documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_math
 topics: [flutter, moving-average, moving-average-simple, moving-average-exponential, moving-average-weighted]
