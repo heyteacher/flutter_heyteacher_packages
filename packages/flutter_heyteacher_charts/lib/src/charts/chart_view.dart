@@ -5,7 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_charts/src/charts/bar_chart_view.dart';
 import 'package:flutter_heyteacher_charts/src/charts/chart_data.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 
 /// An abstract base class for creating various chart widgets using the
 /// `fl_chart` package.
