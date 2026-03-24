@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_connectivity/src/connectivity_view_model.dart';
 import 'package:flutter_heyteacher_connectivity/src/l10n/flutter_heyteacher_connectivity.dart';
-import 'package:flutter_heyteacher_views/views.dart'
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show FutureStreamBuilder, ThemeViewModel;
 
 /// The Card which show connectivity status.

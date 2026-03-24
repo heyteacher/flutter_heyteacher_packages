@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:clock/clock.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_heyteacher_locale/locale.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_data.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:intl/intl.dart';

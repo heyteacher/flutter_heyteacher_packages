@@ -22,9 +22,9 @@ import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseException;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_heyteacher_auth/auth.dart'
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
     show AuthRouterName, FlutterHeyteacherAuthLocalizations;
-import 'package:flutter_heyteacher_locale/locale.dart'
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart'
     show FlutterHeyteacherLocaleLocalizations;
 import 'package:flutter_heyteacher_views/src/theme.dart';
 import 'package:go_router/go_router.dart';

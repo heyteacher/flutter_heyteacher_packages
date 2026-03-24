@@ -11,9 +11,9 @@ import 'dart:typed_data';
 
 import 'package:clock/clock.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_heyteacher_auth/auth.dart';
-import 'package:flutter_heyteacher_locale/locale.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:logging/logging.dart';
 
 /// A view model for managing file uploads to Firebase Cloud Storage.

@@ -24,7 +24,7 @@ The package provides the `MovingAverage` class to calculate different types of m
 #### Simple Moving Average
 
 ```dart
-import 'package:flutter_heyteacher_math/math.dart';
+import 'package:flutter_heyteacher_math/flutter_heyteacher_math.dart';
 
 final data = [10.0, 12.0, 11.0, 15.0, 14.0, 16.0];
 final period = 3;
@@ -36,7 +36,7 @@ final result = MovingAverage.simple(data, period);
 #### Exponential Moving Average
 
 ```dart
-import 'package:flutter_heyteacher_math/math.dart';
+import 'package:flutter_heyteacher_math/flutter_heyteacher_math.dart';
 
 final result = MovingAverage.exponential(data, period);
 // result: [10.0, 11.0, 11.0, 13.0, 13.5, 14.75]
@@ -45,7 +45,7 @@ final result = MovingAverage.exponential(data, period);
 #### Weighted Moving Average
 
 ```dart
-import 'package:flutter_heyteacher_math/math.dart';
+import 'package:flutter_heyteacher_math/flutter_heyteacher_math.dart';
 
 final result = MovingAverage.weighted(data, period);
 // result: [10.0, 11.333..., 11.166..., 13.166..., 13.833..., 15.166...]

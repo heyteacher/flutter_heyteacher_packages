@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_views/views.dart'
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show PagingSliverAnimatedState;
 
 /// A screen that displays a paginated list of sample records.

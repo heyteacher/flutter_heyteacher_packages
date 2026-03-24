@@ -1,7 +1,7 @@
 import 'dart:math' show max;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 
 /// Adaptive [Wrap] based to the screen size.
 class AdaptiveWrap extends StatelessWidget {

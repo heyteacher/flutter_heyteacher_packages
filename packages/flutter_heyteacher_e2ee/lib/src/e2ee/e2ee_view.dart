@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_heyteacher_auth/auth.dart'
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
     show AuthViewModel, FlutterHeyteacherAuthLocalizations;
 import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_view_model.dart'
     show E2EEViewModel;
 import 'package:flutter_heyteacher_e2ee/src/l10n/flutter_heyteacher_e2ee.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
-import 'package:flutter_heyteacher_views/views.dart'
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show ProgressIndicatorView, ThemeViewModel, showConfirmCancelDialog;
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';

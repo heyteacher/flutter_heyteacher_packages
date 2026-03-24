@@ -1,7 +1,7 @@
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_heyteacher_locale/locale.dart';
-import 'package:flutter_heyteacher_timer_workflow/timer_workflow.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
+import 'package:flutter_heyteacher_timer_workflow/flutter_heyteacher_timer_workflow.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logging/logging.dart';
 

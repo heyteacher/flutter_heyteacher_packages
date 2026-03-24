@@ -32,7 +32,7 @@ Here is a basic example of how to use the logger UI components.
 First, initialize the `LoggerViewModel`. This is typically done at the start of your application.
 
 ```dart
-import 'package:flutter_heyteacher_logger/logger.dart';
+import 'package:flutter_heyteacher_logger/flutter_heyteacher_logger.dart';
 
 void main() async {
   // ... other initializations
@@ -78,7 +78,7 @@ To allow users to view logs, you can use the `LoggerCard` which navigates to the
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_logger/logger.dart';
+import 'package:flutter_heyteacher_logger/flutter_heyteacher_logger.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -103,7 +103,7 @@ class SettingsScreen extends StatelessWidget {
 To log messages from anywhere in your application, use the `Logger` instance from the `LoggerViewModel`.
 
 ```dart
-import 'package:flutter_heyteacher_logger/logger.dart';
+import 'package:flutter_heyteacher_logger/flutter_heyteacher_logger.dart';
 
 void doSomething() {
   final logger = Logger('doSomething');

@@ -1,5 +1,5 @@
 import 'package:clock/clock.dart';
-import 'package:flutter_heyteacher_locale/locale.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
 import 'package:flutter_heyteacher_locale/src/date_helpers.dart' show RelativeDay;
 import 'package:flutter_test/flutter_test.dart';
 

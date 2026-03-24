@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
-import 'package:flutter_heyteacher_views/views.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeViewModel;
 
 Future<void> main() async {
   // ensureInitialized

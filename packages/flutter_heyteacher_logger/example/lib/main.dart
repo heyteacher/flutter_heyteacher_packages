@@ -4,13 +4,13 @@ import 'dart:async';
 //     show MockFirebaseAuth, MockUser;
 import 'package:flutter/material.dart';
 //import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel;
-import 'package:flutter_heyteacher_logger/logger.dart'
+import 'package:flutter_heyteacher_logger/flutter_heyteacher_logger.dart'
     show
         FlutterHeyteacherLoggerLocalizations,
         LoggerCard,
         LoggerViewModel,
         LoggingRouter;
-import 'package:flutter_heyteacher_views/views.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeViewModel;
 import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
 import 'package:logging/logging.dart' show Level, Logger;
 
