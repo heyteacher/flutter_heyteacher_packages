@@ -1,3 +1,17 @@
+## [flutter_heyteacher_math-2.0.2+130] - 2026-03-24
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions
+- *(deps)* Bump deps to 2.0.2+130
+
+### 🚜 Refactor
+
+- `lib/flutter_heyteacher_*.dart` must match the name of package
+
+### 📚 Documentation
+
+- Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
 ## [flutter_heyteacher_math-2.0.1+128] - 2026-03-12
 
 ### 💼 Other
@@ -7,6 +21,7 @@
 ### 📚 Documentation
 
 - Add documentation to `README.md`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_math-2.0.1+128
 ## [flutter_heyteacher_math-2.0.0+126] - 2026-03-06
 
 ### 🚀 Features
