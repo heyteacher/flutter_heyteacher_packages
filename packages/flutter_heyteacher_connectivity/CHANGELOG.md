@@ -1,3 +1,12 @@
+## [flutter_heyteacher_connectivity-2.1.2+136] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- L10n deps
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.1.2+136
 ## [flutter_heyteacher_connectivity-2.1.1+134] - 2026-03-24
 
 ### 🚀 Features
@@ -17,6 +26,7 @@
 
 - Remove `path` on `Installation` instruction
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_connectivity-2.1.1+134
 ## [flutter_heyteacher_connectivity-2.1.0+132] - 2026-03-18
 
 ### 🚀 Features
