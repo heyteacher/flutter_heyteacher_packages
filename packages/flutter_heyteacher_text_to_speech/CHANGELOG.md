@@ -1,3 +1,14 @@
+## [flutter_heyteacher_text_to_speech-2.0.8+142] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Remove from `.gitignore`  i10n generated dart files
+- L10n deps
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.7+140
+- *(deps)* Bump deps to 2.0.8+142
 ## [flutter_heyteacher_text_to_speech-2.0.6+138] - 2026-03-24
 
 ### 🚀 Features
@@ -17,6 +28,7 @@
 ### 📚 Documentation
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_text_to_speech-2.0.6+138
 ## [flutter_heyteacher_text_to_speech-2.0.5+136] - 2026-03-13
 
 ### 🐛 Bug Fixes
