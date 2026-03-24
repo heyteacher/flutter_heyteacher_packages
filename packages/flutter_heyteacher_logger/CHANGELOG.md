@@ -1,3 +1,13 @@
+## [flutter_heyteacher_logger-2.0.8+142] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Tighten deps
+- Pubspec metadata corrected
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.8+142
 ## [flutter_heyteacher_logger-2.0.7+140] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -8,6 +18,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.7+140
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_logger-2.0.7+140
 ## [flutter_heyteacher_logger-2.0.6+138] - 2026-03-24
 
 ### 🚀 Features
