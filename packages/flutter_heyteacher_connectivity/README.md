@@ -15,8 +15,6 @@ Add the dependency to your `pubspec.yaml`:
 ```yaml
 dependencies:
   flutter_heyteacher_connectivity:
-    path: ../flutter_heyteacher_connectivity # If using local path in monorepo
-    # or git dependency
 ```
 
 ## Usage
