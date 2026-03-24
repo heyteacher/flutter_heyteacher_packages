@@ -1,3 +1,13 @@
+## [flutter_heyteacher_timer_workflow-2.0.4+134] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Tighten deps
+- Pubspec metadata corrected
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.4+134
 ## [flutter_heyteacher_timer_workflow-2.0.3+132] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -8,6 +18,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.3+132
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_timer_workflow-2.0.3+132
 ## [flutter_heyteacher_timer_workflow-2.0.2+130] - 2026-03-24
 
 ### 💼 Other
