@@ -1,8 +1,13 @@
 name: flutter_heyteacher_timer_workflow
 description: "The flutter heyteacher package for timer workflow"
 version: 2.0.1+128
-homepage:
-publish_to: none # Remove this line if you wish to publish to pub.dev
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_workflow
+license: BSD 3-Clause
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_workflow
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_workflow
+topics: [flutter, timer, workflow, timer-workflow]
+funding: [https://liberapay.com/heyteacher]
 
 environment:
   sdk: ^3.11.0
@@ -13,14 +18,12 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_heyteacher_locale:
-    path: ../flutter_heyteacher_locale
-  flutter_heyteacher_platform:
-    path: ../flutter_heyteacher_platform
+  flutter_heyteacher_locale: any
+  flutter_heyteacher_platform: any
 
 dev_dependencies:
   fake_async: ^1.3.3
-  flutter_heyteacher_meta: ^6.0.0+134
+  flutter_heyteacher_meta: ^7.0.3+144
   flutter_test:
     sdk: flutter
   logging: ^1.3.0

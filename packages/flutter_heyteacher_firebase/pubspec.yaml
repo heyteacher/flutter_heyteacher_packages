@@ -1,8 +1,13 @@
 name: flutter_heyteacher_firebase
 description: "The flutter heyteacher package for Firebase utilities."
 version: 2.0.5+136
-homepage:
-publish_to: none
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_firebase
+license: BSD 3-Clause
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_firebase
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_firebase
+topics: [flutter, firebase, firestore]
+funding: [https://liberapay.com/heyteacher]
 
 environment:
   sdk: ^3.11.0
@@ -20,17 +25,14 @@ dependencies:
   firebase_storage: ^13.1.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth:
-    path: ../flutter_heyteacher_auth
-  flutter_heyteacher_locale:
-    path: ../flutter_heyteacher_locale
-  flutter_heyteacher_platform:
-    path: ../flutter_heyteacher_platform
+  flutter_heyteacher_auth: any
+  flutter_heyteacher_locale: any
+  flutter_heyteacher_platform: any
   logging: ^1.3.0
   shared_preferences: ^2.5.4
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^6.0.0+134
+  flutter_heyteacher_meta: ^7.0.3+144
   flutter_test:
     sdk: flutter
 

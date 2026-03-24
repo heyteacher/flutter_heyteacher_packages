@@ -1,5 +1,12 @@
 name: _
+description: "the flutter ecosystem created by heyteacher"
 publish_to: none
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages
+license: BSD 3-Clause
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages
+topics: [flutter, e2ee, firebase, locale, logger]
 
 environment:
   sdk: ^3.11.0
@@ -7,4 +14,6 @@ environment:
 workspace:
   # ignore: path_does_not_exist
   - packages/*
+  # ignore: path_does_not_exist
+  - packages/*/example
 

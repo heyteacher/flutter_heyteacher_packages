@@ -1,8 +1,13 @@
 name: flutter_heyteacher_locale
 description: "The flutter heyteacher package for locale utilities."
 version: 2.0.5+136
-homepage:
-publish_to: none # Remove this line if you wish to publish to pub.dev
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_locale
+license: BSD 3-Clause
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_locale
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_locale
+topics: [flutter, locale, localizations]
+funding: [https://liberapay.com/heyteacher]
 
 environment:
   sdk: ^3.11.0
@@ -14,17 +19,14 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_heyteacher_platform:
-    path: ../flutter_heyteacher_platform
-  flutter_heyteacher_text_to_speech:
-    path: ../flutter_heyteacher_text_to_speech
-  flutter_heyteacher_views:
-    path: ../flutter_heyteacher_views
+  flutter_heyteacher_platform: any
+  flutter_heyteacher_text_to_speech: any
+  flutter_heyteacher_views: any
   intl: ^0.20.2
   shared_preferences: ^2.5.4
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^6.0.0+134
+  flutter_heyteacher_meta: ^7.0.3+144
   flutter_test:
     sdk: flutter
  

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:example/src/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views_example/src/app_router.dart' show AppRouteName;
 import 'package:go_router/go_router.dart';
 
 /// This Widget is the main application widget.
