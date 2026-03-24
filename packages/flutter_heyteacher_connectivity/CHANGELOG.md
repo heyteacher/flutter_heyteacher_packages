@@ -1,3 +1,22 @@
+## [flutter_heyteacher_connectivity-2.1.1+134] - 2026-03-24
+
+### 🚀 Features
+
+- Add examples to dart workspace and add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions
+- *(deps)* Bump deps to 2.1.1+134
+
+### 🚜 Refactor
+
+- `lib/flutter_heyteacher_*.dart` must match the name of package
+
+### 📚 Documentation
+
+- Remove `path` on `Installation` instruction
+- Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
 ## [flutter_heyteacher_connectivity-2.1.0+132] - 2026-03-18
 
 ### 🚀 Features
@@ -8,6 +27,10 @@
 
 - *(deps)* Upgrade major versions
 - *(deps)* Bump deps to 2.1.0+132
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_connectivity-2.1.0+132
 ## [flutter_heyteacher_connectivity-2.0.2+130] - 2026-03-11
 
 ### 🐛 Bug Fixes
