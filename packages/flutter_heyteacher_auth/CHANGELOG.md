@@ -1,3 +1,24 @@
+## [flutter_heyteacher_auth-2.0.6+139] - 2026-03-24
+
+### 🚀 Features
+
+- Add examples to dart workspace and add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+
+### 🐛 Bug Fixes
+
+- Move `AuthRouterName` and `GoAuthRoute` to `flutter_heyteacher_auth` from `flutter_heyteacher_views` and remove unused dependencies in `flutter_heyteacher_views`
+- Remove `MockFIrebaseAuth` link and show `authenticated` and authenticated user info
+- Corrected logging message
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions
+- *(deps)* Upgrade major versions
+- *(deps)* Bump deps to 2.0.6+139
+
+### 📚 Documentation
+
+- Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
 ## [flutter_heyteacher_auth-2.0.5+137] - 2026-03-12
 
 ### 🐛 Bug Fixes
@@ -9,6 +30,10 @@
 
 - *(deps)* Bump deps version
 - *(deps)* Bump deps to 2.0.5+137
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_auth-2.0.5+137
 ## [flutter_heyteacher_auth-2.0.4+135] - 2026-03-09
 
 ### 🐛 Bug Fixes
