@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_site/src/slide/slide_data.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 
 /// The slide Sliver .
 class SlideSliver extends StatefulWidget {
