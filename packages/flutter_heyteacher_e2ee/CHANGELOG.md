@@ -1,4 +1,17 @@
-## [flutter_heyteacher_e2ee-2.0.3+133] - 2026-03-24
+## [flutter_heyteacher_e2ee-2.0.4+135] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Remove from `.gitignore`  i10n generated dart files
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.4+135
+
+### ⚙️ Miscellaneous Tasks
+
+- Publish on `pub.dev`
+## [flutter_heyteacher_e2ee-2.0.3+132] - 2026-03-24
 
 ### 🚀 Features
 
@@ -8,7 +21,7 @@
 
 - *(deps)* Upgrade major versions
 - *(deps)* Upgrade major versions
-- *(deps)* Bump deps to 2.0.3+133
+- *(deps)* Bump deps to 2.0.3+132
 
 ### 🚜 Refactor
 
@@ -17,6 +30,7 @@
 ### 📚 Documentation
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_e2ee-2.0.3+132
 ## [flutter_heyteacher_e2ee-2.0.2+130] - 2026-03-12
 
 ### 🐛 Bug Fixes
