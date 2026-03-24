@@ -1,3 +1,12 @@
+## [flutter_heyteacher_e2ee-2.0.6+139] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Tighten deps
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.6+139
 ## [flutter_heyteacher_e2ee-2.0.5+137] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -7,6 +16,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.5+137
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_e2ee-2.0.5+137
 ## [flutter_heyteacher_e2ee-2.0.4+135] - 2026-03-24
 
 ### 🐛 Bug Fixes
