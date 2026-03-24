@@ -18,7 +18,7 @@ This package exports the following modules via `platform.dart`:
 Import the main library file to access the components:
 
 ```dart
-import 'package:flutter_heyteacher_platform/platform.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 ```
 
 Refer to the individual source files in `lib/src/` for detailed implementation logic.

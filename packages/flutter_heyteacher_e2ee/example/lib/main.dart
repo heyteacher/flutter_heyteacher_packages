@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_auth/auth.dart'
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
     show AuthViewModel, FlutterHeyteacherAuthLocalizations;
-import 'package:flutter_heyteacher_e2ee/e2ee.dart'
+import 'package:flutter_heyteacher_e2ee/flutter_heyteacher_e2ee.dart'
     show
         E2EESecretKeyCard,
         E2EEValue,
         E2EEViewModel,
         FlutterHeyteacherE2EELocalizations;
-import 'package:flutter_heyteacher_views/views.dart'
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show ThemeViewModel, showSnackBar;
 
 Future<void> main() async {

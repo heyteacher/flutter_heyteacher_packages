@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_locale/locale.dart'
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart'
     show FlutterHeyteacherLocaleLocalizations;
 import 'package:flutter_heyteacher_text_to_speech/src/l10n/flutter_heyteacher_text_to_speech.dart';
 import 'package:flutter_heyteacher_text_to_speech/src/tts/tts_view_model.dart';

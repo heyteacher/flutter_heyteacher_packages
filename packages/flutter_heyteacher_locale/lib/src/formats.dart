@@ -11,7 +11,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_heyteacher_locale/src/l10n/flutter_heyteacher_locale.dart';
 import 'package:flutter_heyteacher_locale/src/locale.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:intl/intl.dart';
 
 /// A utility class providing static methods and pre-configured formatters for

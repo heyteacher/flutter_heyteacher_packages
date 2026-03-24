@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_locale/locale.dart';
-import 'package:flutter_heyteacher_views/views.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeViewModel;
 import 'package:flutter_localizations/flutter_localizations.dart'
     show
         GlobalCupertinoLocalizations,

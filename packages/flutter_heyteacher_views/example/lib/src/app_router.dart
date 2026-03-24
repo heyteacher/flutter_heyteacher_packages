@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 import 'package:flutter_heyteacher_views_example/src/adaptive_layout/adaptive_layout_screen.dart' show AdaptiveLayoutScreen;
 import 'package:flutter_heyteacher_views_example/src/adaptive_layout/adaptive_state.dart' show AdaptiveStateScreen;
 import 'package:flutter_heyteacher_views_example/src/adaptive_layout/wrap_scaffold.dart' show WrapAndScaffold;

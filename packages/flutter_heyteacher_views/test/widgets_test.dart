@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseException;
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_auth/auth.dart' show AuthRouterName, FlutterHeyteacherAuthLocalizations;
-import 'package:flutter_heyteacher_platform/platform.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart' show AuthRouterName, FlutterHeyteacherAuthLocalizations;
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';

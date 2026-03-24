@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel;
-import 'package:flutter_heyteacher_e2ee/e2ee.dart';
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart' show AuthViewModel;
+import 'package:flutter_heyteacher_e2ee/flutter_heyteacher_e2ee.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';

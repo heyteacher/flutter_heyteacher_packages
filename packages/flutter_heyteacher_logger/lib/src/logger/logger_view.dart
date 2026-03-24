@@ -13,11 +13,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_locale/locale.dart';
-import 'package:flutter_heyteacher_logger/logger.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
+import 'package:flutter_heyteacher_logger/flutter_heyteacher_logger.dart';
 import 'package:flutter_heyteacher_logger/src/logger/logger_data.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';

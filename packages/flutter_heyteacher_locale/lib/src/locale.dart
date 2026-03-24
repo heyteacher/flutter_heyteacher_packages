@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_locale/locale.dart';
-import 'package:flutter_heyteacher_text_to_speech/text_to_speech.dart';
-import 'package:flutter_heyteacher_views/views.dart'
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
+import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show ProgressIndicatorWidget, ThemeViewModel;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';

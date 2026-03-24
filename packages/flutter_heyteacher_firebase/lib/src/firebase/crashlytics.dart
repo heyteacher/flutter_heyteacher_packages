@@ -10,7 +10,7 @@ import 'dart:async';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 
 /// A view model for managing Firebase Crashlytics initialization and
 /// configuration.

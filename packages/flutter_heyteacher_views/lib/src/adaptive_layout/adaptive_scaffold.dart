@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 
 /// A widget that adapts to the current display size, displaying a [Drawer],
 class AdaptiveScaffold extends StatefulWidget {

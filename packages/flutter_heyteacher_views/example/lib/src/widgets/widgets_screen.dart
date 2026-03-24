@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 import 'package:flutter_heyteacher_views_example/src/app_router.dart' show AppRouteName;
 import 'package:go_router/go_router.dart';
 

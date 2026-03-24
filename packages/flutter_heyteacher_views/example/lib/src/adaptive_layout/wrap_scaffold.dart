@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 
 /// This Widget is the main application widget.
 class WrapAndScaffold extends StatelessWidget {

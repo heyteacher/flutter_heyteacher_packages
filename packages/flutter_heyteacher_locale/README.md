@@ -29,7 +29,7 @@ Initialize the `LocaleViewModel` at the start of your application to load saved 
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_locale/locale.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -109,7 +109,7 @@ LocaleViewModel.instance.locale = const Locale('it', 'IT');
 Use `FormatterHelper` for consistent formatting across your app.
 
 ```dart
-import 'package:flutter_heyteacher_locale/locale.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
 
 final now = DateTime.now();
 

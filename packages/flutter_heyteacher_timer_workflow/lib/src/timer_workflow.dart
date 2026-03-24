@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_heyteacher_platform/platform.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:flutter_heyteacher_timer_workflow/src/l10n/flutter_heyteacher_timer_workflow.dart';
 
 /// Represents the possible states of a [TimerWorkflow].
