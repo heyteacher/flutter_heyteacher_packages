@@ -1,7 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:flutter_heyteacher_e2ee/e2ee.dart';
-import 'package:flutter_heyteacher_platform/platform.dart';
+import 'package:flutter_heyteacher_e2ee/flutter_heyteacher_e2ee.dart';
+import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
 import 'package:intl/intl.dart';
 
