@@ -1,6 +1,6 @@
 name: flutter_heyteacher_platform
 description: "The flutter heyteacher package for plaftorm utilities."
-version: 2.0.3+132
+version: 2.0.4+134
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_platform
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
