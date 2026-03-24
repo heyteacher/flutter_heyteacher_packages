@@ -1,3 +1,13 @@
+## [flutter_heyteacher_timer_workflow-2.0.3+132] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Remove from `.gitignore`  i10n generated dart files
+- L10n deps
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.3+132
 ## [flutter_heyteacher_timer_workflow-2.0.2+130] - 2026-03-24
 
 ### 💼 Other
@@ -12,6 +22,7 @@
 ### 📚 Documentation
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_timer_workflow-2.0.2+130
 ## [flutter_heyteacher_timer_workflow-2.0.1+128] - 2026-03-12
 
 ### 💼 Other
