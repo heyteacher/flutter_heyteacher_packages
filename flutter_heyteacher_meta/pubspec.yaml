@@ -1,11 +1,11 @@
 name: flutter_heyteacher_meta
 description: "A Flutter meta project implementing utilities for Flutter package and app project."
-version: 7.0.3+144
+version: 7.0.4+146
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_meta
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_meta/issues
-homepage: https://codeberg.org/heyteacher/flutter_heyteacher_meta/issues
-documentation: https://codeberg.org/heyteacher/flutter_heyteacher_meta/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_meta
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_meta
 topics: [firebase,fastlane,firestore]
 funding: [https://liberapay.com/heyteacher]
 
