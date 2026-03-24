@@ -1,12 +1,29 @@
-## [flutter_heyteacher_auth-2.0.7+142] - 2026-03-24
+## [flutter_heyteacher_auth-2.0.8+144] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Remove from `.gitignore`  i10n generated dart files
 
 ### 💼 Other
 
-- *(deps)* Bump deps to 2.0.7+142
+- *(deps)* Bump deps to 2.0.8+144
+
+### ⚙️ Miscellaneous Tasks
+
+- Publish on `pub.dev`
+## [flutter_heyteacher_auth-2.0.7+141] - 2026-03-24
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.7+141
 
 ### 🚜 Refactor
 
 - `lib/flutter_heyteacher_*.dart` must match the name of package
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_auth-2.0.7+141
 ## [flutter_heyteacher_auth-2.0.6+139] - 2026-03-24
 
 ### 🚀 Features
