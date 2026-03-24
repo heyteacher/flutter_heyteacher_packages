@@ -1,3 +1,18 @@
+## [flutter_heyteacher_meta-7.0.4+146] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Restore release creation for 'forgejo'
+- Corrected `homepage`, 'documentation'
+
+### 💼 Other
+
+- *(deps)* Bump deps to 7.0.4+146
+
+### 📚 Documentation
+
+- Update migration guide from `Github` to `forgejo` public instance
+- Update `git-credential-oauth` installation linking github page with instruction and adding `go` installation as example. Add cache configuration to `~/.gitconfig`
 ## [flutter_heyteacher_meta-7.0.3+144] - 2026-03-23
 
 ### 🐛 Bug Fixes
@@ -11,6 +26,7 @@
 ### 📚 Documentation
 
 - Fix `funding` link
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.3+144
 ## [flutter_heyteacher_meta-7.0.2+142] - 2026-03-23
 
 ### 🐛 Bug Fixes
