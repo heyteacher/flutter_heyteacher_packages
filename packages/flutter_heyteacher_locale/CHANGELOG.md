@@ -1,3 +1,13 @@
+## [flutter_heyteacher_locale-2.0.7+140] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Remove from `.gitignore`  i10n generated dart files
+- L10n deps
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.7+140
 ## [flutter_heyteacher_locale-2.0.6+138] - 2026-03-24
 
 ### 🚀 Features
@@ -15,6 +25,7 @@
 ### 📚 Documentation
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_locale-2.0.6+138
 ## [flutter_heyteacher_locale-2.0.5+136] - 2026-03-19
 
 ### 💼 Other
