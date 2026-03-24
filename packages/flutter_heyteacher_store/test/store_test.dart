@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel;
-import 'package:flutter_heyteacher_connectivity/connectivity.dart';
-import 'package:flutter_heyteacher_e2ee/e2ee.dart';
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart' show AuthViewModel;
+import 'package:flutter_heyteacher_connectivity/flutter_heyteacher_connectivity.dart';
+import 'package:flutter_heyteacher_e2ee/flutter_heyteacher_e2ee.dart';
 import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
