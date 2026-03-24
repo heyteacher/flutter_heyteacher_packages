@@ -13,6 +13,7 @@
 
 - Update migration guide from `Github` to `forgejo` public instance
 - Update `git-credential-oauth` installation linking github page with instruction and adding `go` installation as example. Add cache configuration to `~/.gitconfig`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.4+146
 ## [flutter_heyteacher_meta-7.0.3+144] - 2026-03-23
 
 ### 🐛 Bug Fixes
