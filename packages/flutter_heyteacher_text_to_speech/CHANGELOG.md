@@ -1,3 +1,13 @@
+## [flutter_heyteacher_text_to_speech-2.0.9+144] - 2026-03-24
+
+### 🐛 Bug Fixes
+
+- Tighten deps
+- Pubspec metadata corrected
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.9+144
 ## [flutter_heyteacher_text_to_speech-2.0.8+142] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -9,6 +19,10 @@
 
 - *(deps)* Bump deps to 2.0.7+140
 - *(deps)* Bump deps to 2.0.8+142
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_text_to_speech-2.0.8+142
 ## [flutter_heyteacher_text_to_speech-2.0.6+138] - 2026-03-24
 
 ### 🚀 Features
