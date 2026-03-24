@@ -1,7 +1,13 @@
 name: flutter_heyteacher_math
 description: "The flutter heyteacher package for math utilities."
 version: 2.0.1+128
-homepage:
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_math
+license: BSD 3-Clause
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_connectivity/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_math
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_math
+topics: [flutter, moving-average, moving-average-simple, moving-average-exponential, moving-average-weighted]
+funding: [https://liberapay.com/heyteacher]
 
 environment:
   sdk: ^3.11.0
@@ -14,7 +20,7 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^6.0.0+134
+  flutter_heyteacher_meta: ^7.0.3+144
   flutter_test:
     sdk: flutter
 
