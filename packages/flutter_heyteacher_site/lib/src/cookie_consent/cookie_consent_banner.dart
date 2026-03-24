@@ -5,7 +5,7 @@ import 'package:flutter_cookie_consent/flutter_cookie_consent.dart';
 import 'package:flutter_cookie_consent/ui/flutter_cookie_consent_banner.dart';
 import 'package:flutter_heyteacher_site/src/cookie_consent/cookie_consent_view_model.dart';
 import 'package:flutter_heyteacher_site/src/l10n/flutter_heyteacher_site.dart';
-import 'package:flutter_heyteacher_views/views.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 
 /// The Cookie consent banner.
 class CookieConsentBanner extends StatefulWidget {

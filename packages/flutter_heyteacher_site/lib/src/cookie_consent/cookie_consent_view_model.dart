@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_cookie_consent/flutter_cookie_consent.dart';
-import 'package:flutter_heyteacher_firebase/firebase.dart';
+import 'package:flutter_heyteacher_firebase/flutter_heyteacher_firebase.dart';
 import 'package:logging/logging.dart';
 
 /// The cookie consent view model.

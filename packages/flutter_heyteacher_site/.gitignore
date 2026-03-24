@@ -33,4 +33,3 @@ Gemfile.lock
 fastlane/README.md
 fastlane/report.xml
 Gemfile.lock
-lib/src/l10n/*.dart
