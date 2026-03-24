@@ -1,3 +1,12 @@
+## [flutter_heyteacher_auth-2.0.7+141] - 2026-03-24
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.7+141
+
+### 🚜 Refactor
+
+- `lib/flutter_heyteacher_*.dart` must match the name of package
 ## [flutter_heyteacher_auth-2.0.6+139] - 2026-03-24
 
 ### 🚀 Features
@@ -19,6 +28,7 @@
 ### 📚 Documentation
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_auth-2.0.6+139
 ## [flutter_heyteacher_auth-2.0.5+137] - 2026-03-12
 
 ### 🐛 Bug Fixes
