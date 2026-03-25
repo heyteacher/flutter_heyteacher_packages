@@ -1,17 +1,19 @@
 name: flutter_heyteacher_meta
-description: "A Flutter meta project implementing utilities for Flutter package and app project."
+description: "A Flutter meta project implementing utilities and best practices for Flutter package and app project avoiding Copy & Paste pattern"
 version: 7.0.5+148
-repository: https://codeberg.org/heyteacher/flutter_heyteacher_meta
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_meta
 license: BSD 3-Clause
-issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_meta/issues
-homepage: https://codeberg.org/heyteacher/flutter_heyteacher_meta
-documentation: https://codeberg.org/heyteacher/flutter_heyteacher_meta
-topics: [firebase,fastlane,firestore]
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_meta
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_meta
+topics: [fastlane, semver, flutter, firebase, firestore]
 funding: [https://liberapay.com/heyteacher]
 
 environment:
   sdk: ^3.9.2
   flutter: ">=1.17.0"
+
+resolution: workspace
 
 dependencies:
   clock: ^1.1.2

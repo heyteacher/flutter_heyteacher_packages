@@ -78,8 +78,8 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [Splash](#splash)
   - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
   - [Dart Builders](#dart-builders)
-  - [migration to `monorepo` project](#migration-to-monorepo-project)
   - [Appendice](#appendice)
+    - [migration to `monorepo` project](#migration-to-monorepo-project)
     - [Migrate from `Github` to  `forgejo` public instance](#migrate-from-github-to--forgejo-public-instance)
   
 ## Installing
@@ -1212,9 +1212,12 @@ setup your `~/.bash_aliases` with `dart_builders` alias:
 
   ```bash
   alias dart_builders='dart run build_runner build'
+
   ```
 
-## migration to `monorepo` project
+## Appendice
+
+### migration to `monorepo` project
 
 This procedure migrate a repository into a `monorepo` project.
 
@@ -1260,11 +1263,11 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
     git clone https://github.com/<account>/<repository>.git
     ```
 
-  - go to `<repository>` folder and move all files to `<package>` subdirectory:
+  - go to `<repository>` folder and move all files to `<package>` subdirectory and add prefix `<package>-` to tags:
 
     ```bash
     cd <repository>
-    git-filter-repo --to-subdirectory-filter <package>
+    git-filter-repo --to-subdirectory-filter <package> --tag-name '':'<package>-'
     ```
 
   - remove reference of `<repository>` in all commits:
@@ -1288,20 +1291,20 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
   - add remote `temp_<repository>` linked to temporary `repository` folder:
 
     ```bash
-    git remote add temp_<site> /tmp/<repository>
+    git remote add temp_<repository> /tmp/<repository>
     ```
 
   - fetch and merge to `main`:
 
     ```bash
-    git fetch temp_<site>
-    git merge temp_<site>/main --allow-unrelated-histories
+    git fetch temp_<repository>
+    git merge temp_<repository>/main --allow-unrelated-histories
     ```
 
   - remove remote `temp_<repository>` and directory `/tmp/<repository>`
 
     ```bash
-      git remote rm temp_<site> 
+      git remote rm temp_<repository> 
       rm -fr /tmp/<repository>
     ```
 
@@ -1333,8 +1336,6 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
   git merge integrate-monorepo 
   git branch -d integrate-monorepo
   ```
-
-## Appendice
 
 ### Migrate from `Github` to  `forgejo` public instance
 
