@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+
+commit_msg=$(cat .git/COMMIT_EDITMSG)
+
+test "" != "$(egrep '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([[:alnum:]._-]+\))?(!)?: ([[:space:][:print:]]*)+([[:space:][:print:]]*)' "$1")" || {
+    echo >&2 "Commit message:"
+    echo >&2 ""
+    echo >&2 "\t$commit_msg"
+    echo >&2 ""
+    echo >&2 "must agree conventional commit specification:"
+    echo >&2 ""
+    echo >&2 "<type>[optional scope]: <description>"
+    echo >&2 ""
+    echo >&2 "where <type> MUST be one of:"
+    echo >&2 ""
+    echo >&2 "   build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)"
+    echo >&2 "   chore: (updating grunt tasks etc; no production code change)"
+    echo >&2 "   ci: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)"
+    echo >&2 "   docs: Documentation only changes"
+    echo >&2 "   feat: A new feature"
+    echo >&2 "   fix: A bug fix"
+    echo >&2 "   perf: A code change that improves performance"
+    echo >&2 "   refactor: A code change that neither fixes a bug nor adds a feature"
+    echo >&2 "   style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)"
+    echo >&2 "   test: Adding missing tests or correcting existing tests"
+    exit 1
+}

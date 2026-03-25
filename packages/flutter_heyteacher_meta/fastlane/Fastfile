@@ -1,0 +1,180 @@
+# Uncomment the line if you want fastlane to automatically update itself
+#update_fastlane
+
+desc "fl docweb - run local webserver on generated doc"
+lane :docweb do
+  Dir.chdir("../") do
+    # open browser http://localhost:8080 and run local webserver
+    sh("dart pub global run dhttpd --path doc/api & open http://localhost:8080")
+  end
+end
+
+desc "fl doc - generate doc and run webserver"
+lane :doc do
+  Dir.chdir("../") do
+    # generate doc
+    sh("dart doc")
+    # run local webserver
+    docweb
+  end
+end
+
+desc "fl test - Run tests"
+lane :test do
+  Dir.chdir("../") do
+    sh("flutter test")
+  end
+end
+
+desc "fl checkout - checkout last branch created"
+lane :checkout do
+  puts "fetch repository getting output in gitFetch"
+  gitFetch = sh("git fetch 2>&1 | grep branch")
+  gitFetchLastLine= gitFetch.lines.last
+
+  puts "get the branch name from #{gitFetchLastLine}"
+  branch=gitFetchLastLine.split(" ")[3]
+
+  puts "checkout branch #{branch} then pull"
+  sh("git checkout #{branch}")
+end
+
+desc "fl forge_release - Creates a forge release and update CHANGELOG.md"
+lane :forge_release do
+  version = ""
+  Dir.chdir("../") do
+    version = sh("dart run flutter_heyteacher_meta:dartsemver show")
+  end 
+  create_forge_release(version)
+end
+
+desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [forge:false|true] - Creates new release, merge branch into main and creates a forge release"
+lane :release do|options|
+  if !["major", "minor", "patch"].include?(options[:semver])
+    puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"
+    exit(1)
+  end
+  currentBranch = sh("git branch --show-current").strip!  
+  if currentBranch == "main"
+    puts "current branch must not be \"main\""
+    exit(1)
+  end
+  sh("git pull")
+  test
+  increment_build
+  version = ""
+  Dir.chdir("../") do
+    version = sh("dart run flutter_heyteacher_meta:dartsemver #{options[:semver]}")
+    # append tag suffix if set
+    if options[:suffix] != nil && options[:suffix] != ""
+      version = "#{version}-#{options[:suffix]}"
+    end
+  end
+  # commit bump and push remote
+  puts "commit pubspec.yaml"
+  sh("git add ../pubspec.yaml")
+  sh("git commit -m \"build(deps): bump deps to #{version}\"")
+  push_to_git_remote
+  if options[:merge] == nil || options[:merge] == true
+    forge_merge
+  end
+  puts "make release #{version} release forge #{options[:forge]}"
+  if options[:forge] == true
+    puts "create forge release for #{version}"
+    create_forge_release(version)
+  end
+  puts "run pub get to update dependencies"
+  sh("dart pub get")
+end
+
+##
+# Detects forge
+# @return: [String]  `github`, `forgejo`
+# @raise: Exception if no github or forgejo detected
+def detect_forge()
+  url_forge = sh("git remote get-url --push origin").strip!  
+  if url_forge.include? "https://github.com/"
+    return "github"
+  elsif url_forge.start_with?("https://codeberg.org/") \
+        || url_forge.start_with?("https://bolha.dev/") \
+        || url_forge.start_with?("https://codefloe.com/") \
+        || url_forge.start_with?("https://git.gay/") \
+        || url_forge.start_with?("https://git.kaki87.net/") \
+        || url_forge.start_with?("https://opencommit.eu/") \
+        || url_forge.start_with?("https://git.pub.solar/")
+    return "forgejo"
+  else
+    raise Exception.new('no github or forgejo detected')
+  end
+end
+
+##
+# Merge branch to main repo
+# Params:
+def forge_merge()
+  forge = detect_forge 
+  puts "create pull request on #{forge}"
+  if forge == "github"
+    sh("gh pr create --fill-verbose")
+  elsif forge == "forgejo"
+    sh("fj pr create --autofill")
+  end
+  puts "wait 1 second in order new pull request will be available on #{forge}"
+  sleep(1)
+  puts "merge pull request on #{forge}"
+  if forge == "github"
+    sh("gh pr merge -m -d --auto")
+  elsif forge == "forgejo"
+    sh("fj pr merge --delete")
+    sh("git checkout main")
+    sh("git pull")
+  end
+end
+
+##
+# Create a release on forge
+# @param: [String, #version] the version to release
+def create_forge_release(version)
+  package_name = ""
+  Dir.chdir("../") do
+    package_name = sh("basename `pwd`").strip!
+  end
+  Dir.chdir("../") do
+    puts "generate CHANGELOG.md with git-cliff"
+    sh("git-cliff -t #{package_name}-#{version} -o CHANGELOG.md")
+  end
+  sh("git branch release")
+  sh("git checkout release")
+  puts "commit CHANGELOG.md with release #{package_name}-#{version}"
+  git_commit(
+    path: "CHANGELOG.md", 
+    message: "docs(CHANGELOG): update CHANGELOG.md with release #{package_name}-#{version}"
+  )
+  sh("git checkout main")
+  sh("git merge release")
+  sh("git branch release -d")
+  push_to_git_remote
+  # add tag and put remote
+  puts "create tag #{package_name}-#{version}"
+  add_git_tag(tag: "#{package_name}-#{version}")
+  push_git_tags(tag: "#{package_name}-#{version}")
+  # create release with notes
+  forge = detect_forge 
+  if forge == "github"
+    puts "create forge release #{package_name}-#{version}"
+    sh("gh release create #{package_name}-#{version} --generate-notes")
+  elsif forge == "forgejo"
+    puts "wait 2 second in order tag #{package_name}-#{version} will be available on #{forge}"
+    sleep(2)
+    puts "create forge release #{package_name}-#{version}"
+    sh("fj release create --tag #{package_name}-#{version} #{package_name}-#{version}")
+  end
+end
+
+##
+## Increments build number
+def increment_build
+  Dir.chdir("../") do
+    sh("dart run flutter_heyteacher_meta:dartsemver build")
+  end
+end
