@@ -1,3 +1,16 @@
+## [flutter_heyteacher_meta-7.0.5+148] - 2026-03-25
+
+### 🐛 Bug Fixes
+
+- Waith 2 second before create release in `forgejo` public instance
+
+### 💼 Other
+
+- *(deps)* Bump deps to 7.0.5+148
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.4+146
 ## [flutter_heyteacher_meta-7.0.4+146] - 2026-03-24
 
 ### 🐛 Bug Fixes
