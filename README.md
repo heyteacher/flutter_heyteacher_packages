@@ -1,6 +1,8 @@
 # `flutter_heyteacher_packages`
 
-The `Flutter` eco-system created by @heyteacher. A [Pub workspace](https://dart.dev/tools/pub/workspaces) (`monorepo`) packages collection:
+The `Flutter` ecosystem created by @heyteacher. A [Pub workspace](https://dart.dev/tools/pub/workspaces) (`monorepo`) packages collection:
+
+- [flutter_heyteacher_meta](flutter_heyteacher_meta): meta project implementing utilities and best practices for Flutter `package` and `app` project avoiding `Copy & Paste pattern`
 
 - [flutter_heyteacher_auth](packages/flutter_heyteacher_auth): authentication utilities via [Firebase Authentication](https://firebase.google.com/docs/auth)
 
