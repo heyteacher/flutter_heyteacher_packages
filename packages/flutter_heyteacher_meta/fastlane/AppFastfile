@@ -1,0 +1,233 @@
+# Uncomment the line if you want fastlane to automatically update itself
+#update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  desc "fl appbundle - clean and build application `build/app/outputs/bundle/release/app-release.aab`"
+  lane :appbundle do
+    sh("flutter build bundle")
+    increment_build
+    # increment build number before build the release
+    sh("flutter build appbundle")  
+  end
+  
+  desc "fl bump - Commits pubspec.lock"
+  lane :bump do
+    gitStatus = sh("git status")
+    gitStatusLastLine= gitStatus.lines.last
+    if gitStatusLastLine.include? "nothing to commit, working tree clean"
+      puts "no changes to commit"
+    else
+      currentBranch = sh("git branch --show-current").strip!  
+      if currentBranch != "main"
+        puts "current branch must be \"main\", found \"#{currentBranch}\""
+        exit(1)
+      end
+      sh("git branch bump")
+      sh("git checkout bump")
+      sh("git add ../pubspec.*")
+      sh("git commit -m \"build(deps): bump deps version\"")
+      sh("git checkout main")
+      sh("git merge bump")
+      sh("git branch bump -d")
+      push_to_git_remote
+    end
+  end
+
+  desc "fl integration_test - Run integration tests"
+  lane :integration_test do
+    sh("flutter driver --driver=test_driver/main_test.dart --target=integration_test/main.dart")
+  end
+
+  desc "fl testlab - Run integration test in Firebase Test Lab"
+  lane :testlab do
+    Dir.chdir("../android/") do
+      sh("./firebaseTestLabBuild.sh")
+      sh("gcloud firebase test android run --type instrumentation  --use-orchestrator --app=../build/app/outputs/apk/debug/app-debug.apk --test=../build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=MediumPhone.arm,version=33,locale=en,orientation=portrait")
+    end
+  end
+
+  desc "fl firestore_backup [snapshot:YYYY-MM-DDTHH:mm:ss.00Z] [database:<database>] - backup dababase firestore on snapshot specified. If database isn't set use (default)"
+  lane :firestore_backup do |options|
+     snapshotTime = ""
+    if options[:snapshot] != nil
+    # set the snapshot time from disaster recovery
+    snapshotTime = "--snapshot-time=#{options[:snapshot]}"
+    end
+    database = "(default)"
+    if options[:database] != nil
+      database = options[:database]
+    end
+    # export to google storage
+    sh("gcloud firestore export #{ENV["google_storage_backup_bucket"]} #{snapshotTime} --database='#{database}'")
+  end
+   
+  desc "fl firestore_restore backup:<YYYY-MM-DDTHH:mm:ss_mi> [database:<database>] - restore firestore backup into database specified. If database isn't set use (default)"
+  lane :firestore_restore do |options|
+    database = "(default)"
+    if options[:database] != nil
+      database = options[:database]
+    end
+    if options[:backup] == nil
+      sh("gcloud storage ls #{ENV["google_storage_backup_bucket"]}")
+      puts "usage: fl firestore_restore backup:<YYYY-MM-DDTHH:mm:ss_mi>"
+    else
+      sh("gcloud firestore import #{ENV["google_storage_backup_bucket"]}/#{options[:backup]} --database='#{database}'")
+    end
+  end
+
+  desc "fl firestore_remove_backup backup:<YYYY-MM-DDTHH:mm:ss_mi> - delete firestore backup"
+  lane :firestore_remove_backup do |options|
+    if options[:backup] == nil
+      sh("gcloud storage ls #{ENV["google_storage_backup_bucket"]}")
+      puts "usage: fl firestore_remove_backup backup:<YYYY-MM-DDTHH:mm:ss_mi>"
+    else
+      sh("gcloud storage rm -R #{ENV["google_storage_backup_bucket"]}/#{options[:backup]}")
+    end
+  end
+
+  desc "fl app_distribution - build the release and publish app in Google Play via `Firebase App Distribution`"
+  lane :app_distribution do
+    # generate AAB
+    appbundle
+    #load appId
+    require "json"
+    firebaseJsonData = JSON.load File.open "../firebase.json"
+    appId = firebaseJsonData["flutter"]["platforms"]["android"]["default"]["appId"] 
+    #load firebaseCliToken
+    firebaseCliTokenJsonData = JSON.load File.open "#{ENV["HOME"]}/.flutter/firebase_cli_token.json"
+    firebaseCliToken = firebaseCliTokenJsonData["firebase_cli_token"]
+    # read version
+    version = ""
+    Dir.chdir("../") do
+      version = sh("dart run flutter_heyteacher_meta:dartsemver show")
+    end 
+    puts "appId #{appId} version #{version}"
+    # build_android_app is a built-in fastlane action.
+    release = firebase_app_distribution(
+        app: appId,
+        firebase_cli_token: firebaseCliToken,
+        groups: "bt-tester",
+        service_credentials_file: ENV["firebase_app_distribution_service_credentials_file"],
+        android_artifact_path:"build/app/outputs/bundle/release/app-release.aab",
+        release_notes: version,
+        android_artifact_type: "AAB",
+    )
+    puts "release #{release}"
+  end
+
+  desc "fl playstore_promote from_track:beta|alpha|internal to_track:production|beta|alpha|internal - promote a release in Google Play via `supply`"
+  lane :playstore_promote do |options|
+    upload_to_play_store(
+      track: options[:from_track],
+      track_promote_to: options[:to_track],
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "fl playstore track:production|beta|alpha|internal [upload_only:true|false] - upload app to Google Play via `supply`"
+  lane :playstore do |options|
+    # read version and build number
+    version = ""
+    buildNumber = ""
+    Dir.chdir("../") do
+      version = sh("dart run flutter_heyteacher_meta:dartsemver show")
+      buildNumber = sh("dart run flutter_heyteacher_meta:dartsemver show-build")
+      # edit release notes 
+      if options[:upload_only] != true
+        release_note_file = File.open('fastlane/metadata/android/en-US/changelogs/default.txt');
+        release_note_data = File.read release_note_file;
+        release_note_file.close;
+        puts "\nActual release notes #{release_note_data}"
+        release_notes_text = UI.input("Enter release notes for version #{version}:")
+        release_note_data = "<en-US>\n\t#{version}: #{release_notes_text}\n</en-US>"
+        File.write('fastlane/metadata/android/en-US/changelogs/default.txt',release_note_data)
+      end
+    end
+    # commit release notes
+    if options[:upload_only] != true
+      sh("git branch release_note")
+      sh("git checkout release_note")
+      puts "commit release notes for version #{version}"
+      git_commit(
+        path: "fastlane/metadata/android/en-US/changelogs/default.txt", 
+        message: "docs: release notes for version #{version}")
+      sh("git checkout main")
+      sh("git merge release_note")
+      sh("git branch release_note -d")
+      push_to_git_remote
+    end
+    # generate AAB
+    puts "Upload only #{options[:upload_only]}"
+    if options[:upload_only] != true
+       puts "generate AAB"
+       appbundle
+    end
+    # upload app on play store
+    puts "upload to playstore track #{options[:track]}"
+    upload_to_play_store(
+      version_code: buildNumber,
+      rollout: "1",
+      release_status: "completed", 
+      track: options[:track], 
+      aab: "./build/app/outputs/bundle/release/app-release.aab"
+    )
+  end
+
+  desc "fl buildweb [version:profile|debug] - build web and run local webserver on it"
+  lane :buildweb do|options|
+    test
+    increment_build
+    version = ""
+    if (options[:version] == "profile" || options[:version] == "debug")
+        version = "--#{options[:version]}"
+    end 
+    Dir.chdir("../") do
+      sh("flutter build web --no-wasm-dry-run #{version}")
+      appendBuildWebAssets
+      buildNumber = sh("dart run flutter_heyteacher_meta:dartsemver show-build")
+      # open browser http://localhost:8080 and run local webserver
+      sh("dart pub global run dhttpd --path build/web & open http://localhost:8080?b=#{buildNumber}")
+    end
+  end
+
+  desc "fl deployweb [release_type:release|profile|debug] - deploy web in firabase hosting"
+  lane :deployweb do|options|
+    test
+    # release type: release, profile or debug  (default release)
+    release_type = "--release"
+    if (options[:release_type] != nil)
+      release_type = "--#{options[:release_type]}"
+    end
+    Dir.chdir("../") do
+      # build
+      puts "build #{release_type}"
+      sh("flutter build web --no-wasm-dry-run #{release_type}")
+      appendBuildWebAssets
+      # deploy
+      puts "deploy"
+      sh("firebase deploy --only hosting")
+    end
+  end
+end
+
+# add suffix ?b=<build> to assets in index.html and manifest.json
+def appendBuildWebAssets
+  buildNumber = sh("dart run flutter_heyteacher_meta:dartsemver show-build")
+  # Source - https://stackoverflow.com/a/3502884
+  # Posted by Jim Kane, modified by community. See post 'Timeline' for change history
+  # Retrieved 2025-12-28, License - CC BY-SA 3.0
+  sh("ruby -pi -e \"gsub(/flutter_bootstrap.js/, 'flutter_bootstrap.js?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/manifest.json/, 'manifest.json?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/favicon.png/, 'favicon.png?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/Icon-192.png/, 'Icon-192.png?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/x.png/, 'x.png?b=#{buildNumber}')\" build/web/index.html")
+  sh("ruby -pi -e \"gsub(/.png/, '.png?b=#{buildNumber}')\" build/web/manifest.json")
+end  
