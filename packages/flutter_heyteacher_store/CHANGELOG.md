@@ -1,3 +1,9 @@
+## [flutter_heyteacher_store-1.29.17+1022] - 2026-03-25
+
+### 💼 Other
+
+- *(deps)* Upgrade `fake_cloud_firestore` with fix of incompatibility with `cloud_firestore 6.2.0`
+- *(deps)* Bump deps to 1.29.17+1022
 ## [flutter_heyteacher_store-1.29.16+1020] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -14,6 +20,10 @@
 ### 🚜 Refactor
 
 - `flutter_heyteacher_*` published on `pub.dev`
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.16+1020
 ## [flutter_heyteacher_store-1.29.14+1016] - 2026-03-12
 
 ### 🐛 Bug Fixes
