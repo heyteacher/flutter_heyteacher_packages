@@ -1,3 +1,14 @@
+## [flutter_heyteacher_platform-2.0.5+136] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Tighten deps
+- Pubspec metadata corrected
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.5+136
 ## [flutter_heyteacher_platform-2.0.4+134] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -8,6 +19,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.4+134
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_platform-2.0.4+134
 ## [flutter_heyteacher_platform-2.0.3+132] - 2026-03-24
 
 ### 🚀 Features
