@@ -1,3 +1,16 @@
+## [flutter_heyteacher_meta-7.1.0+152] - 2026-03-26
+
+### 🚀 Features
+
+- Create branch on issue number and add `closes #issue' on commit before merging. On merge delete local branch
+
+### 🐛 Bug Fixes
+
+- Corrected commit message on update `pubspec.yaml`
+
+### 💼 Other
+
+- Update version to 7.1.0+152 which closes #49
 ## [flutter_heyteacher_meta-7.0.6+150] - 2026-03-25
 
 ### 🚀 Features
@@ -181,6 +194,7 @@
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.4+146
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.4+146
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.5+148
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.6+150
 
 ### 🧪 Testing
 
