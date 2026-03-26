@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeViewModel;
-import 'package:flutter_heyteacher_views_example/src/app_router.dart' show AppRouter;
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
+    show ThemeViewModel;
+import 'package:flutter_heyteacher_views_example/src/app_router.dart'
+    show AppRouter;
 
 Future<void> main() async {
   // ensureInitialized
@@ -19,13 +21,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => StreamBuilder(
     stream: ThemeViewModel.instance.themeStream,
-    builder: (_, _) => MaterialApp.router(
+    builder: (_, asyncSnapshot) => MaterialApp.router(
       theme: ThemeViewModel.instance.lightTheme,
       darkTheme: ThemeViewModel.instance.darkTheme,
-      themeMode: ThemeViewModel.instance.themeMode,
+      themeMode: asyncSnapshot.data?.themeMode,
       title: 'Flutter Demo',
       localizationsDelegates: const [],
       routerConfig: AppRouter.instance.router,
+      debugShowCheckedModeBanner: false,
     ),
   );
 }
