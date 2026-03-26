@@ -1,6 +1,6 @@
 name: flutter_heyteacher_views
 description: "The flutter heyteacher package for views layer containing layout, widgets, theme utilities and routing utilities"
-version: 3.0.0+142
+version: 3.0.1+144
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_views
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
