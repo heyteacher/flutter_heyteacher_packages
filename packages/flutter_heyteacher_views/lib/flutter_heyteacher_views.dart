@@ -8,8 +8,10 @@ export 'src/animations.dart'
     show AnimateText, BlinkingText, PagingSliverAnimatedState;
 export 'src/color_to_int32_extension.dart' show ColorEx;
 export 'src/router.dart' show ScaffoldNavigationShell;
-export 'src/theme.dart'
-    show ThemeModeButton, ThemeModeCard, ThemeModeCardState, ThemeViewModel;
+export 'src/theme/theme_view.dart'
+    show ThemeModeButton, ThemeModeCard, ThemeModeCardState;
+export 'src/theme/theme_view_model.dart' show ThemeViewModel;
+
 export 'src/tutorial.dart' show TutorialContentAlignment, TutorialViewModel;
 export 'src/widgets.dart'
     show
