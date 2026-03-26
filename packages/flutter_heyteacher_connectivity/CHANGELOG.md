@@ -1,8 +1,23 @@
+## [flutter_heyteacher_connectivity-2.1.4+140] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Tighten deps
+- Pubspec metadata corrected
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.1.4+140
 ## [flutter_heyteacher_connectivity-2.1.3+138] - 2026-03-24
 
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.1.3+138
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_connectivity-2.1.3+138
 ## [flutter_heyteacher_connectivity-2.1.2+136] - 2026-03-24
 
 ### 🐛 Bug Fixes
