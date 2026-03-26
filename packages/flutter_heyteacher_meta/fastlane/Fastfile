@@ -53,7 +53,7 @@ lane :forge_release do
   create_forge_release(version)
 end
 
-desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [forge:false|true] - Creates new release, merge branch into main and creates a forge release"
+desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [forge:true|false] [publish:false|true]- Creates new release, merge branch into main and creates a forge release"
 lane :release do|options|
   if !["major", "minor", "patch"].include?(options[:semver])
     puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"
@@ -84,9 +84,13 @@ lane :release do|options|
     forge_merge(currentBranch)
   end
   puts "make release #{version} release forge #{options[:forge]}"
-  if options[:forge] == true
+  if options[:forge] == nil || options[:forge] == true
     puts "create forge release for #{version}"
     create_forge_release(version)
+  end
+  if options[:publish] == true
+    puts "publish on pub.dev"
+    sh("dart pub publish -f")
   end
   puts "run pub get to update dependencies"
   sh("dart pub get")
