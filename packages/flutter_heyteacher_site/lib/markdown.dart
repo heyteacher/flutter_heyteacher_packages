@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart' show LocaleViewModel;
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart'
+    show LocaleViewModel;
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 import 'package:markdown_widget/config/all.dart';
 import 'package:markdown_widget/widget/all.dart';
@@ -47,7 +48,8 @@ class _MarkdownViewState extends State<MarkdownView> {
 
   Iterable<String> _headerRows = [];
 
-  StreamSubscription<ThemeData>? _themeStreamSubscription;
+  StreamSubscription<({ThemeData themeData, ThemeMode themeMode})>?
+  _themeStreamSubscription;
 
   @override
   void initState() {
