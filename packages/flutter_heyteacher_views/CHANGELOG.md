@@ -1,3 +1,14 @@
+## [flutter_heyteacher_views-3.0.0+144] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- [**breaking**] Load correctly theme mode from shared prefs and `themeStream` sends `themeMod`. Split `ThemeViewModel` from views
+- Add `ThemeModeButton` to scafold action
+- Set `ThemeMode` from `ThemeViewModel.instance.themeStream`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 3.0.0+144
 ## [flutter_heyteacher_views-2.1.3+142] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -8,6 +19,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.1.3+142
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.1.3+142
 
 ### ⚙️ Miscellaneous Tasks
 
