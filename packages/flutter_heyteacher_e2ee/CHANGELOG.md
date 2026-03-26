@@ -1,3 +1,12 @@
+## [flutter_heyteacher_e2ee-2.0.7+141] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.7+141
 ## [flutter_heyteacher_e2ee-2.0.6+139] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -7,6 +16,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.6+139
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_e2ee-2.0.6+139
 ## [flutter_heyteacher_e2ee-2.0.5+137] - 2026-03-24
 
 ### 🐛 Bug Fixes
