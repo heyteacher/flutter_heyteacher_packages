@@ -18,7 +18,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_heyteacher_logger: ^1.0.0
+  flutter_heyteacher_logger:
 ```
 
 This package relies on Firebase for remote configuration of log levels and for analytics. Ensure your Flutter project is correctly configured with Firebase.

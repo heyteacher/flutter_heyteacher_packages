@@ -31,7 +31,7 @@ Add `flutter_heyteacher_firebase` to your `pubspec.yaml` dependencies:
 
 ```yaml
 dependencies:
-  flutter_heyteacher_firebase: ^2.0.4+134
+  flutter_heyteacher_firebase: 
 ```
 
 Then, run `flutter pub get` to install the package.

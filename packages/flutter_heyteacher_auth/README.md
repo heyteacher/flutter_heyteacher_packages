@@ -20,7 +20,7 @@ Add `flutter_heyteacher_auth` as a dependency in your `pubspec.yaml` file.
 
 ```yaml
 dependencies:
-  flutter_heyteacher_auth: ^2.0.1
+  flutter_heyteacher_auth: 
 ```
 
 Import the package in your Dart code:

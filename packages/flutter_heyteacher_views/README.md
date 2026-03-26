@@ -18,7 +18,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_heyteacher_views: ^1.0.0 # Replace with the latest version
+  flutter_heyteacher_views:
 ```
 
 Then, run `flutter pub get`.
