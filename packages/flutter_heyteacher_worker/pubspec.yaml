@@ -23,7 +23,7 @@ dependencies:
   logging: ^1.3.0
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.0.3+144
+  flutter_heyteacher_meta:
   flutter_test:
     sdk: flutter
 

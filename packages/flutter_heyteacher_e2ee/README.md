@@ -16,7 +16,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_heyteacher_e2ee: ^2.0.0
+  flutter_heyteacher_e2ee: 
 ```
 
 `flutter_heyteacher_e2ee` use `flutter_heyteacher_auth`, so read [flutter_heyteacher_auth](../flutter_heyteacher_auth/) in order to configure authentication.

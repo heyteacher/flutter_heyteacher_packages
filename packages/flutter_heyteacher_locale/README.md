@@ -16,7 +16,7 @@ Add the package and `flutter_localizations` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_heyteacher_locale: ^1.0.0
+  flutter_heyteacher_locale:
   flutter_localizations:
     sdk: flutter
 ```
