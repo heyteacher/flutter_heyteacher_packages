@@ -1,3 +1,15 @@
+## [flutter_heyteacher_locale-2.0.8+142] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Tighten deps
+- Pubspec metadata corrected
+- `ThemeViewModel.instance.themeStream` now send `ThemeData` and `ThemeMode`
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.8+142
 ## [flutter_heyteacher_locale-2.0.7+140] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -8,6 +20,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.7+140
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_locale-2.0.7+140
 ## [flutter_heyteacher_locale-2.0.6+138] - 2026-03-24
 
 ### 🚀 Features
