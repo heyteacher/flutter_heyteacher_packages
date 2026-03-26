@@ -24,6 +24,14 @@ dependencies:
   url_launcher: ^6.3.2
   video_player: ^2.10.0
 
+dependency_overrides:
+  flutter_heyteacher_firebase:
+    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_firebase
+  flutter_heyteacher_locale:
+    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_locale
+  flutter_heyteacher_views:
+    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_views
+
 dev_dependencies:
   flutter_heyteacher_meta:
   flutter_test:
