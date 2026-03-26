@@ -1,8 +1,21 @@
+## [flutter_heyteacher_text_to_speech-2.0.11+148] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.11+148
 ## [flutter_heyteacher_text_to_speech-2.0.10+146] - 2026-03-24
 
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.10+146
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_text_to_speech-2.0.10+146
 ## [flutter_heyteacher_text_to_speech-2.0.9+144] - 2026-03-24
 
 ### 🐛 Bug Fixes
