@@ -1,9 +1,24 @@
-## [flutter_heyteacher_firebase-2.0.6+139] - 2026-03-24
+## [flutter_heyteacher_firebase-2.0.7+141] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Tighten deps
+- Pubspec metadata corrected
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.7+141
+
+### ⚙️ Miscellaneous Tasks
+
+- Publish on `pub.dev`
+## [flutter_heyteacher_firebase-2.0.6+138] - 2026-03-24
 
 ### 💼 Other
 
 - *(deps)* Upgrade major versions
-- *(deps)* Bump deps to 2.0.6+139
+- *(deps)* Bump deps to 2.0.6+138
 
 ### 🚜 Refactor
 
@@ -12,6 +27,7 @@
 ### 📚 Documentation
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_firebase-2.0.6+138
 ## [flutter_heyteacher_firebase-2.0.5+136] - 2026-03-11
 
 ### 💼 Other
