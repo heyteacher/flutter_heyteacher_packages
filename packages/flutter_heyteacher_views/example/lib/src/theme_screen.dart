@@ -30,7 +30,8 @@ class _ThemeScreenState extends State<ThemeScreen>
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: const Text('Theme'),
+      title: const Text('Flutter Heyteacher Views'),
+      actions: const [ThemeModeButton()]
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     floatingActionButton: Row(

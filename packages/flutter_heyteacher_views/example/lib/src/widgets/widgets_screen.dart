@@ -100,6 +100,7 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       title: const Text('Flutter Heyteacher Views'),
+      actions: const [ThemeModeButton()]
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     floatingActionButton: Row(
