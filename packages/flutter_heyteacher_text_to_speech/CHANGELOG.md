@@ -1,3 +1,12 @@
+## [flutter_heyteacher_text_to_speech-2.0.12+150] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+
+### 💼 Other
+
+- Update version to 2.0.12+150 which closes #53
 ## [flutter_heyteacher_text_to_speech-2.0.11+148] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +16,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.11+148
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_text_to_speech-2.0.11+148
 ## [flutter_heyteacher_text_to_speech-2.0.10+146] - 2026-03-24
 
 ### 💼 Other
