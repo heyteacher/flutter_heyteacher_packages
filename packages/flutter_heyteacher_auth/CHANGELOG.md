@@ -1,3 +1,12 @@
+## [flutter_heyteacher_auth-2.0.11+150] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.11+150
 ## [flutter_heyteacher_auth-2.0.10+148] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -8,6 +17,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.10+148
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_auth-2.0.10+148
 ## [flutter_heyteacher_auth-2.0.9+146] - 2026-03-24
 
 ### 🐛 Bug Fixes
