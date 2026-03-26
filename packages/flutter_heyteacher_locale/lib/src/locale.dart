@@ -35,7 +35,8 @@ class LocaleCard extends StatefulWidget {
 class _LocaleCardState extends State<LocaleCard> {
   bool _loading = false;
 
-  StreamSubscription<ThemeData>? _themeStreamSubscription;
+  StreamSubscription<({ThemeData themeData, ThemeMode themeMode})>?
+  _themeStreamSubscription;
 
   @override
   void initState() {
