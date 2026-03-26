@@ -1,6 +1,7 @@
 import 'dart:async' show unawaited;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeModeButton;
 import 'package:flutter_heyteacher_views_example/src/app_router.dart' show AppRouteName;
 import 'package:go_router/go_router.dart' show GoRouter;
 
@@ -11,10 +12,11 @@ class AdaptiveLayoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Adaptive Layout'),
+   appBar: AppBar(
+      title: const Text('Flutter Heyteacher Views'),
+      actions: const [ThemeModeButton()]
     ),
-    body: ListView(
+     body: ListView(
       padding: const EdgeInsets.only(top: 8),
       children: [
         Card(

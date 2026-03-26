@@ -1,19 +1,7 @@
-/// Manages application-wide theming, including theme selection UI,
-/// theme persistence, and dynamic theme updates.
-///
-/// This library provides:
-/// - [ThemeModeCard] and [ThemeModeButton]: A widget for users to select 
-///   between light, dark, or system default themes.
-/// - [ThemeViewModel]: A singleton class responsible for holding the current
-///   theme state, persisting user preferences, providing theme data, and
-///    broadcasting theme changes.
-///
-library;
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:logging/logging.dart' show Logger;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Keys for values stored in `SharedPreferences`.
@@ -24,117 +12,6 @@ enum _SharedPreferencesKeys {
   /// The key for storing the user's selected theme mode (e.g., 'light',
   /// 'dark', 'system').
   fhuThemeMode,
-}
-
-/// The theme mode button.
-class ThemeModeButton extends StatefulWidget {
-  /// Creates the theme mode button.
-  const ThemeModeButton({
-    super.key,
-  });
-
-  @override
-  State<ThemeModeButton> createState() => _ThemeModeButtonState();
-}
-
-class _ThemeModeButtonState extends State<ThemeModeButton> {
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(
-        ThemeViewModel.instance.isDark ? Icons.light_mode : Icons.dark_mode,
-      ),
-      onPressed: () async {
-        await ThemeViewModel.instance.setThemeMode(
-          ThemeViewModel.instance.isDark ? ThemeMode.light : ThemeMode.dark,
-        );
-        setState(() {});
-      },
-    );
-  }
-}
-
-/// A [ListTile] widget that allows users to select the application's
-/// [ThemeMode].
-///
-/// It presents [ChoiceChip] options for system, dark, and light themes.
-/// Changes are propagated through the [ThemeViewModel] singleton.
-class ThemeModeCard extends StatefulWidget {
-  /// Creates a [ThemeModeCard].
-  const ThemeModeCard({super.key});
-
-  @override
-  State<ThemeModeCard> createState() => ThemeModeCardState<ThemeModeCard>();
-}
-
-/// The state for [ThemeModeCard], which builds the UI for theme selection.
-///
-/// This class is generic (`<T extends StatefulWidget>`) to allow it to be
-/// extended by other state classes that may want to override its behavior,
-/// such as the `onSelected` method.
-class ThemeModeCardState<T extends StatefulWidget> extends State<T> {
-  @override
-  Widget build(BuildContext context) => Card(
-    child: ListTile(
-      leading: const Icon(Icons.contrast),
-      title: Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 2,
-        children: [
-          SegmentedButton<ThemeMode?>(
-            emptySelectionAllowed: true,
-            showSelectedIcon: false,
-            style: ButtonStyle(
-              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-            ),
-            segments: <ButtonSegment<ThemeMode>>[
-              ButtonSegment<ThemeMode>(
-                value: ThemeMode.system,
-                label: Text(ThemeMode.system.name),
-              ),
-              ButtonSegment<ThemeMode>(
-                value: ThemeMode.dark,
-                label: Text(ThemeMode.dark.name),
-                icon: const Icon(
-                  Icons.dark_mode,
-                ),
-              ),
-              ButtonSegment<ThemeMode>(
-                value: ThemeMode.light,
-                label: Text(ThemeMode.light.name),
-                icon: const Icon(
-                  Icons.light_mode,
-                ),
-              ),
-            ],
-            selected: <ThemeMode>{ThemeViewModel.instance.themeMode},
-            onSelectionChanged: onSelected,
-          ),
-        ],
-      ),
-    ),
-  );
-
-  /// Called when a [ChoiceChip] is selected.
-  ///
-  /// Updates the [ThemeViewModel] with the [newSelection]. If [newSelection]
-  /// is null (which can happen if a chip is deselected, though not in this
-  /// specific UI setup),
-  /// it defaults to [ThemeMode.system].
-  ///
-  /// - [newSelection]: The [ThemeMode] selected by the user.
-  @protected
-  void onSelected(Set<ThemeMode?> newSelection) => setState(() {
-    unawaited(
-      ThemeViewModel.instance.setThemeMode(
-        newSelection.first ?? ThemeMode.system,
-      ),
-    );
-  });
 }
 
 /// Manages the application's theme, including light and dark modes,
@@ -195,8 +72,7 @@ class ThemeViewModel {
     })
     lightColorScheme,
   }) : _lightColorScheme = lightColorScheme,
-       _darkColorScheme = darkColorScheme,
-       _themeMode = ThemeMode.system {
+       _darkColorScheme = darkColorScheme {
     // initialize dark and light theme
     darkTheme = _themeData(
       themeMode: ThemeMode.dark,
@@ -206,24 +82,16 @@ class ThemeViewModel {
       themeMode: ThemeMode.dark,
       colorScheme: _lightColorScheme,
     );
-
     unawaited(
-      SharedPreferencesAsync()
-          .getString(
-            _SharedPreferencesKeys.fhuThemeMode.name,
-          )
-          .then((
-            themeModeName,
-          ) {
-            _themeMode =
-                ThemeMode.values
-                    .where((element) => element.name == themeModeName)
-                    .firstOrNull ??
-                ThemeMode.system;
-            _themeStreamController.sink.add(theme);
-          }),
+      themeMode.then(
+        (themeMode) =>
+            _logger.info('<costructor>: themeMode ${themeMode.name}'),
+      ),
     );
   }
+
+  static final _logger = Logger('ThemeViewModel');
+
   final ({
     Color primary,
     Color disabled,
@@ -267,23 +135,21 @@ class ThemeViewModel {
   /// Otherwise, it uses the explicitly set light or dark theme.
   ThemeData get theme => isLight ? lightTheme : darkTheme;
 
-  ThemeMode _themeMode;
-
-  /// The current selected [ThemeMode].
-  ///
-  /// Defaults to [ThemeMode.system] if no theme has been explicitly set or
-  /// loaded.
-  ThemeMode get themeMode => _themeMode;
+  ThemeMode? _themeMode;
 
   /// A stream controller to broadcast theme changes.
-  final StreamController<ThemeData> _themeStreamController =
-      StreamController<ThemeData>.broadcast();
+  final StreamController<({ThemeData themeData, ThemeMode themeMode})>
+  _themeStreamController =
+      StreamController<
+        ({ThemeData themeData, ThemeMode themeMode})
+      >.broadcast();
 
   /// A stream that emits an event whenever the theme changes.
   ///
   /// Widgets can listen to this stream to rebuild when the theme is updated.
   /// The emitted value is typically `null` and serves as a notification.
-  Stream<ThemeData> get themeStream => _themeStreamController.stream.distinct();
+  Stream<({ThemeData themeData, ThemeMode themeMode})> get themeStream =>
+      _themeStreamController.stream.distinct();
 
   /// Returns true if theme mode is light
   bool get isLight =>
@@ -416,18 +282,56 @@ class ThemeViewModel {
   ColorScheme get colorScheme =>
       isDark ? darkTheme.colorScheme : lightTheme.colorScheme;
 
+  /// The current selected [ThemeMode].
+  ///
+  /// Defaults to [ThemeMode.system] if no theme has been explicitly set in 
+  /// shared preferences.
+  Future<ThemeMode> get themeMode async {
+    _logger.finer('<themeMode>:');
+    if (_themeMode != null) {
+      _logger.finer(
+        '(themeMode): already initialized themeMode ${_themeMode!.name}',
+      );
+      return _themeMode!;
+    }
+    /// check for persisted theme mode in shared preferences
+    final themeModeName = await SharedPreferencesAsync().getString(
+      _SharedPreferencesKeys.fhuThemeMode.name,
+    );
+    _logger.finer(
+      '(themeMode): themeMode from shared preferences $themeModeName',
+    );
+    /// initialize theme mode from shared preferences
+    _themeMode =
+        ThemeMode.values
+            .where((element) => element.name == themeModeName)
+            .firstOrNull ??
+        ThemeMode.system;
+    // emit theme and theme mode initialized to listeners
+    _themeStreamController.sink.add((
+      themeData: theme,
+      themeMode: _themeMode!,
+    ));
+    _logger.info('(themeMode): initialized themeMode ${_themeMode!.name}');
+    return _themeMode!;
+  }
+
   /// Sets the application's [ThemeMode] to the provided [themeMode].
   ///
   /// This new [themeMode] is persisted to [SharedPreferences]
   /// (via `SharedPreferencesAsync`)
   /// and the new theme is emitted on the [themeStream] to notify listeners.
   Future<void> setThemeMode(ThemeMode themeMode) async {
+    _logger.info('<setThemeMode>: themeMode ${themeMode.name}}');
     _themeMode = themeMode;
     await SharedPreferencesAsync().setString(
       _SharedPreferencesKeys.fhuThemeMode.name,
       themeMode.name,
     );
-    _themeStreamController.sink.add(theme);
+    _themeStreamController.sink.add((
+      themeData: theme,
+      themeMode: themeMode,
+    ));
   }
 
   /// Resets the light and dark themes to their initial default color schemes.
@@ -437,6 +341,7 @@ class ThemeViewModel {
   /// given. An event is emitted on the [themeStream].
   /// An event is emitted on the [themeStream].
   void setDefault() {
+    _logger.info('<setDefault>:');
     darkTheme = _themeData(
       themeMode: ThemeMode.dark,
       colorScheme: _darkColorScheme,
@@ -445,7 +350,10 @@ class ThemeViewModel {
       themeMode: ThemeMode.light,
       colorScheme: _lightColorScheme,
     );
-    _themeStreamController.sink.add(theme);
+    _themeStreamController.sink.add((
+      themeData: theme,
+      themeMode: _themeMode ?? ThemeMode.system,
+    ));
   }
 
   /// Updates the theme with new color values.
@@ -465,6 +373,7 @@ class ThemeViewModel {
     ({Color light, Color dark})? onSurfaceVariant,
     ({Color light, Color dark})? surfaceContainer,
   }) {
+    _logger.info('<update>:');
     final lightColorScheme = (
       primary: primary?.light,
       disabled: disabled?.light,
@@ -499,7 +408,10 @@ class ThemeViewModel {
       themeMode: ThemeMode.dark,
       colorScheme: darkColorScheme,
     );
-    _themeStreamController.sink.add(theme);
+    _themeStreamController.sink.add((
+      themeData: theme,
+      themeMode: _themeMode ?? ThemeMode.system,
+    ));
   }
 
   /// Calculates a suitable foreground color based on a given [color]

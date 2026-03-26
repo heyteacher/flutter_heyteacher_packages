@@ -19,10 +19,11 @@ class _AnimationsScreenState extends State<AnimationsScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Animations'),
+   appBar: AppBar(
+      title: const Text('Flutter Heyteacher Views'),
+      actions: const [ThemeModeButton()]
     ),
-    body: ListView(
+     body: ListView(
       padding: const EdgeInsets.only(top: 8),
       children: [
         Card(

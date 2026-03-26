@@ -26,7 +26,8 @@ import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
     show AuthRouterName, FlutterHeyteacherAuthLocalizations;
 import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart'
     show FlutterHeyteacherLocaleLocalizations;
-import 'package:flutter_heyteacher_views/src/theme.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
+    show ThemeViewModel;
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
