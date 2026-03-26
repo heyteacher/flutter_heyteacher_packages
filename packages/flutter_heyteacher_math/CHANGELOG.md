@@ -1,3 +1,13 @@
+## [flutter_heyteacher_math-2.0.3+132] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Pubspec metadata corrected
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.3+132
 ## [flutter_heyteacher_math-2.0.2+130] - 2026-03-24
 
 ### 💼 Other
@@ -12,6 +22,7 @@
 ### 📚 Documentation
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_math-2.0.2+130
 ## [flutter_heyteacher_math-2.0.1+128] - 2026-03-12
 
 ### 💼 Other
