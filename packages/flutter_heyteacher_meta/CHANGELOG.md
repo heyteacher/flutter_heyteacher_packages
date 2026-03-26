@@ -1,3 +1,12 @@
+## [flutter_heyteacher_meta-7.2.0+154] - 2026-03-26
+
+### 🚀 Features
+
+- Add `publish` param to  `release` lane and set `forge` default to `true`
+
+### 💼 Other
+
+- Update version to 7.2.0+154 which closes #40
 ## [flutter_heyteacher_meta-7.1.0+152] - 2026-03-26
 
 ### 🚀 Features
@@ -11,6 +20,10 @@
 ### 💼 Other
 
 - Update version to 7.1.0+152 which closes #49
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_meta-7.1.0+152
 ## [flutter_heyteacher_meta-7.0.6+150] - 2026-03-25
 
 ### 🚀 Features
