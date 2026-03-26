@@ -17,6 +17,12 @@ dependencies:
   flutter_heyteacher_locale:
   flutter_heyteacher_views:
 
+dependency_overrides:
+  flutter_heyteacher_locale:
+    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_locale
+  flutter_heyteacher_views:
+    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_views
+
 dev_dependencies:
   flutter_heyteacher_meta:
   flutter_test:
