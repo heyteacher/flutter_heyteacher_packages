@@ -1,3 +1,12 @@
+## [flutter_heyteacher_locale-2.0.9+144] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+
+### 💼 Other
+
+- Update version to 2.0.9+144 which closes #56
 ## [flutter_heyteacher_locale-2.0.8+142] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -10,6 +19,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.8+142
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_locale-2.0.8+142
 ## [flutter_heyteacher_locale-2.0.7+140] - 2026-03-24
 
 ### 🐛 Bug Fixes
