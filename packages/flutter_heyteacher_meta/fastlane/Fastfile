@@ -78,7 +78,7 @@ lane :release do|options|
   # commit bump and push remote
   puts "commit pubspec.yaml with new version #{version}"
   sh("git add ../pubspec.yaml")
-  sh("git commit -m \"build: update version to #{version}\" which closes ##{currentBranch}")
+  sh("git commit -m \"build: update version to #{version} which closes ##{currentBranch}\"")
   push_to_git_remote
   if options[:merge] == nil || options[:merge] == true
     forge_merge(currentBranch)
