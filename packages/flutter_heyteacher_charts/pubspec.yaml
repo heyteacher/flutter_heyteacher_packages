@@ -1,6 +1,6 @@
 name: flutter_heyteacher_charts
 description: "A heyteacher flutter package for create charts"
-version: 1.29.7+106
+version: 1.29.8+108
 publish_to: none
 
 environment:
@@ -16,6 +16,12 @@ dependencies:
     sdk: flutter
   flutter_heyteacher_locale:
   flutter_heyteacher_views:
+
+dependency_overrides:
+  flutter_heyteacher_locale:
+    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_locale
+  flutter_heyteacher_views:
+    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_views
 
 dev_dependencies:
   flutter_heyteacher_meta:
