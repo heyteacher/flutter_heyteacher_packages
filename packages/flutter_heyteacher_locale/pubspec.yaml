@@ -1,6 +1,6 @@
 name: flutter_heyteacher_locale
 description: "The flutter heyteacher package for locale utilities: UI widgets, formats and language selection"
-version: 2.0.8+142
+version: 2.0.9+144
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_locale
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
