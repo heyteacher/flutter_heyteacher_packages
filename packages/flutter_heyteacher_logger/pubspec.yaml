@@ -1,6 +1,6 @@
 name: flutter_heyteacher_logger
 description: "The flutter heyteacher package for logger utilities."
-version: 2.0.9+144
+version: 2.0.10+146
 
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_logger
 license: BSD 3-Clause
