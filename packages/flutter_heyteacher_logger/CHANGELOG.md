@@ -1,3 +1,12 @@
+## [flutter_heyteacher_logger-2.0.9+144] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 2.0.9+144
 ## [flutter_heyteacher_logger-2.0.8+142] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -8,6 +17,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.8+142
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_logger-2.0.8+142
 ## [flutter_heyteacher_logger-2.0.7+140] - 2026-03-24
 
 ### 🐛 Bug Fixes
