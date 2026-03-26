@@ -1,3 +1,12 @@
+## [flutter_heyteacher_views-3.0.0+142] - 2026-03-26
+
+### 🐛 Bug Fixes
+
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+
+### 💼 Other
+
+- *(deps)* Bump deps to 3.0.0+142
 ## [flutter_heyteacher_views-3.0.0+144] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -9,6 +18,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 3.0.0+144
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-3.0.0+144
 ## [flutter_heyteacher_views-2.1.3+142] - 2026-03-24
 
 ### 🐛 Bug Fixes
