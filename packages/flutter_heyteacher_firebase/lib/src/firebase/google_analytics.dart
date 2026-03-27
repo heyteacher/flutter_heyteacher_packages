@@ -30,7 +30,20 @@ class GoogleAnalitycsViewModel {
   Future<void> set({required bool enable}) async {
     _logger.info('<set>: enable $enable');
     _enabled = enable;
-    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(enable);
+
+    try {
+      await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(enable);
+    }
+    // on web `FirebaseException` is threated as  JavaScriptObject raising error
+    // type 'FirebaseException' is not a subtype of type 'JavaScriptObject'
+    // so catch all possible exception
+    // ignore: avoid_catches_without_on_clauses
+    catch (e) {
+      _logger.warning(
+        '(set): enable $enable. Failed, probably firebase not configured',
+        e,
+      );
+    }
   }
 
   /// Logs an event with the given [name] and [parameters].
