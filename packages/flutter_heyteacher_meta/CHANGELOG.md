@@ -1,3 +1,16 @@
+## [flutter_heyteacher_meta-7.2.1+156] - 2026-03-27
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+
+### 💼 Other
+
+- Update version to 7.2.1+156 which closes #62
+
+### 📚 Documentation
+
+- Add usage example to release a new version and close an issue
 ## [flutter_heyteacher_meta-7.2.0+154] - 2026-03-26
 
 ### 🚀 Features
@@ -7,6 +20,10 @@
 ### 💼 Other
 
 - Update version to 7.2.0+154 which closes #40
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_meta-7.2.0+154
 ## [flutter_heyteacher_meta-7.1.0+152] - 2026-03-26
 
 ### 🚀 Features
