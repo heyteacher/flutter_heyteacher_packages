@@ -34,7 +34,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [Create a flutter project](#create-a-flutter-project)
     - [Configure `monorepo`](#configure-monorepo)
     - [Configure `FastLane`](#configure-fastlane)
-  - [`Fastlane` lines for `app` and `package` projects](#fastlane-lines-for-app-and-package-projects)
+  - [`Fastlane` lines for `dart` projects](#fastlane-lines-for-dart-projects)
     - [doc](#doc)
     - [docweb](#docweb)
     - [test](#test)
@@ -57,7 +57,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [`git` utilities](#git-utilities)
     - [`git` conventional commit](#git-conventional-commit)
     - [avoid commit on `main` branch](#avoid-commit-on-main-branch)
-    - [example: release a patch](#example-release-a-patch)
+  - [example: release a new version and close an issue](#example-release-a-new-version-and-close-an-issue)
   - [`Firebase` setup for `app` flutter project](#firebase-setup-for-app-flutter-project)
   - [Release app](#release-app)
     - [Sign app](#sign-app)
@@ -394,9 +394,9 @@ From root project directory or inside each packages of a `monorepo` project run:
 
   - `firebase_app_distribution_service_credentials_file` the `Firebase App Distribution` service credentials file name
 
-## `Fastlane` lines for `app` and `package` projects
+## `Fastlane` lines for `dart` projects
 
-Common `Fastlane` lines are provided to `app` and `package` projects. In details:
+Common `Fastlane` lines are provided to a `dart` project, either `app` or `package`. In details:
 
 - generate dart documentation
 - checkout and release on your [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance
@@ -429,20 +429,22 @@ Run unit tests of the project.
 ### checkout
 
 ```bash
-fl checkout
+fl checkout [issue:<issue_number>]
 ```
 
-Checkout the latest remote branch already created remotely (i.e. in `github project` ).
+If <issue_number> is set, create, checkout and push remotely a new branch with name <issue_number>.
 
-Runs `git fetch` and `git checkout` to the latest branch fetched.
+Else if <issue_number> is not set, checkout the latest remote branch already created remotely on forge (runs `git fetch` and `git checkout` to the latest branch fetched).
+
+- `issue`: the issue <issue_number> you want to fix/implement in branch created
 
 ### release
 
 ```bash
-fl release semver:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [forge:false|true]
+fl release semver:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [forge:false|true] [publish:false|true]
 ```
 
-Release to `main` branch after you commit and push your changes into your branch.
+Creates new release, merge branch into main and creates a forge release.
 
 - `semver`: increments the version into `pubspec.yaml` following [Semantic Versioning](https://semver.org/), for example:
   - `major`: move version from `1.0.0` to `2.0.0`
@@ -450,17 +452,23 @@ Release to `main` branch after you commit and push your changes into your branch
   - `patch`: move version from `1.0.0` to `1.0.1`
 - `suffix`: (optional) add a mnemonic suffix to git `tag` greated
 - `merge`: (optional, default `true`) make the marge to `main` branch
-- `forge`: (optional, default `false`) create the release into your `forge` instance
+- `forge`: (optional, default `true`) create the release into your `forge` instance
+- `publish`: (optional, default `publish`) publish to `pub.dev`
+
 and update the `CHANGELOG.md`
 
 These command make several tasks:
 
 - increments the version into `pubspec.yaml`
-- create a `release` into your `forge` instance and update `CHANGELOG.md` (if `forge` param is `true)  
-- create a `pull request` and merge changes into `main` branch
-- checkout the `main` branch
-- delete the branch merged (if `merge` param is `true)  
-- create a git `tag` named `{package-name}-{version}`
+- if `merge` param is `true`
+  - create a `pull request` and merge changes into `main` branch
+  - checkout the `main` branch
+  - delete the branch merged  
+- if `forge` param is `true`
+  - create a git `tag` named `{package-name}-{version}`
+  - create a `release` into your `forge` instance and update `CHANGELOG.md`
+- if `publish` is `true`
+  - publish on `pub.dev`
 
 ### forge_release
 
@@ -619,19 +627,23 @@ If you try to commit on `main` this message is show
 You can't commit directly to main branch
 ```
 
-### example: release a patch
+## example: release a new version and close an issue
 
-- if you create an `issue` and a branch on your [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance
+- Create the issue `#<issue_number>` on your preferred [forge](https://en.wikipedia.org/wiki/Forge_(software)) public instance (i.e. `Codeberg` or `Github`)
+
+- run `fl checkout` to create a new brach with name <issue_number>
 
   ```bash
-  fl checkout
+  fl checkout <issue_number>
   ```
 
-  otherwise create a branch locally and push it to remote
+  otherwise create a branch remotely in forge and `fl checkout` without parameter
+
+  or create a branch locally and push it to remote
 
   ```bash
-  git branch hotfix
-  git push -u origin hotfix
+  git branch <issue_number>
+  git push -u origin <issue_number>
   ```
 
 - make changes to your code, commit and push changes to branch
@@ -642,11 +654,16 @@ You can't commit directly to main branch
   git push
   ```
 
-- release the patch merging changes to `main` branch and create a `release` into your [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance
+- release the patch merging changes to `main` branch and create a `release` into your [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance,
+  close the issue `#<issue_number>` in `forge` instance and relese in `pub.dev`
   
   ```bash
-  fl release version:patch forge:true
+  fl release version:patch publish:true
   ```
+
+  > [!NOTE]
+  > the issue `#<issue_number>` is close automatically in `forge` instance because when `pubspec.yaml` is committed with new version, the commit message
+  > contains the sentences `closes #<issue_number>`
 
 ## `Firebase` setup for `app` flutter project
 
