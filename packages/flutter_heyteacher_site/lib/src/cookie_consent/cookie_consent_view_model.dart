@@ -37,11 +37,16 @@ class CookieConsentViewModel {
   }
 
   /// Checks the cookie consent status.
-  Future<bool> get enabled async {
+  /// 
+  /// If unclicked, returns null, otherwide returns if has consent or not.
+  Future<bool?> get enabled async {
     _logger.finer('<enabled>:');
     await initialize();
-    _logger.finer('(enabled): returns ${_cookieConsent!.hasConsent}');
-    return _cookieConsent!.hasConsent;
+    final enabled = _cookieConsent!.shouldShowBanner
+        ? null
+        : _cookieConsent!.hasConsent;
+    _logger.finer('(enabled): returns $enabled');
+    return enabled;
   }
 
   /// Sets the cookie consent status to [enable].

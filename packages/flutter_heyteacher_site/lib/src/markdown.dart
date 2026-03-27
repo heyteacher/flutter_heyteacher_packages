@@ -88,6 +88,7 @@ class _MarkdownViewState extends State<MarkdownView> {
     unawaited(_localeStreamSubscription?.cancel());
     _tocController.dispose();
     unawaited(_themeStreamSubscription?.cancel());
+    _autoScrollController.dispose();
     super.dispose();
   }
 

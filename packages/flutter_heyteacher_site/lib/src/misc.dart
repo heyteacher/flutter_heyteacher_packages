@@ -6,20 +6,39 @@ import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
 /// A _Get In On Google Play_ button.
-class GetItOnGooglePlayButton extends StatelessWidget {
+class GetItOnGooglePlayButton extends StatefulWidget {
   /// Creates a [GetItOnGooglePlayButton].
   ///
   /// [appId] on Play Store must be speficied
   const GetItOnGooglePlayButton({
     required String appId,
-    required ScreenSize screenSize,
     super.key,
-  }) : _screenSize = screenSize,
-       _appId = appId;
+  }) : _appId = appId;
 
   final String _appId;
-  final ScreenSize _screenSize;
+ 
+  @override
+  State<GetItOnGooglePlayButton> createState() =>
+      _GetItOnGooglePlayButtonState();
+}
 
+class _GetItOnGooglePlayButtonState
+    extends
+        AdaptiveState<
+          GetItOnGooglePlayButton,
+          _AbstractGetItOnGooglePlayButtonState,
+          String
+        > {
+  @override
+  _AbstractGetItOnGooglePlayButtonState createAdaptiveState() =>
+      _AbstractGetItOnGooglePlayButtonState();
+
+  @override
+  String get params => widget._appId;
+}
+
+class _AbstractGetItOnGooglePlayButtonState
+    extends AbstractAdaptiveState<String> {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.all(4),
@@ -28,15 +47,17 @@ class GetItOnGooglePlayButton extends StatelessWidget {
         await GoogleAnalitycsViewModel.instance.logCustomEvent(
           name: 'get_it_on_google_play',
         );
-        unawaited(launchUrl(
-          Uri.https('play.google.com', '/store/apps/details', {
-            'id': _appId,
-          }),
-        ));
+        unawaited(
+          launchUrl(
+            Uri.https('play.google.com', '/store/apps/details', {
+              'id': widget.params,
+            }),
+          ),
+        );
       },
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxWidth: switch (_screenSize) {
+          maxWidth: switch (widget.screenSize) {
             ScreenSize.small => 150,
             ScreenSize.medium => 225,
             ScreenSize.large => 275,
@@ -45,6 +66,7 @@ class GetItOnGooglePlayButton extends StatelessWidget {
         child: const Image(
           image: AssetImage(
             'assets/images/GetItOnGooglePlay_Badge_Web_color_English.png',
+              package: 'flutter_heyteacher_site',
           ),
         ),
       ),
@@ -52,22 +74,27 @@ class GetItOnGooglePlayButton extends StatelessWidget {
   );
 }
 
-/// The leading Icon
+/// The leading Icon.
+///
+/// show the logo `assetIconPath` (default  `assets/images/icon.png`)
 class LeadingIcon extends StatelessWidget {
-  /// Creates a [LeadingIcon].
-  const LeadingIcon({super.key, void Function()? onPressed})
-    : _onPressed = onPressed;
+  /// Creates a [LeadingIcon] with imaged stored in [assetIconPath]
+  /// (default  `assets/images/icon.png`)
+  const LeadingIcon({
+    String assetIconPath = 'assets/images/icon.png',
+    super.key,
+    void Function()? onPressed,
+  }) : _assetIconPath = assetIconPath,
+       _onPressed = onPressed;
 
   final VoidCallback? _onPressed;
+
+  final String _assetIconPath;
 
   @override
   Widget build(BuildContext context) => InkWell(
     onTap: _onPressed,
-    child: const Image(
-      image: AssetImage(
-        'assets/images/icon.png',
-      ),
-    ),
+    child: Image(image: AssetImage(_assetIconPath)),
   );
 }
 

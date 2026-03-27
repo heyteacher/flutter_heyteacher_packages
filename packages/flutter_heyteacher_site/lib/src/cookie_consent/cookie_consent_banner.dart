@@ -8,9 +8,19 @@ import 'package:flutter_heyteacher_site/src/l10n/flutter_heyteacher_site.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 
 /// The Cookie consent banner.
+///
+/// If set, `callback({enabled: bool })` is called when user accept or decline
 class CookieConsentBanner extends StatefulWidget {
   /// create instance of [CookieConsentBanner]
-  const CookieConsentBanner({super.key});
+  ///
+  /// if set, [callback] is called when user accept or decline
+  ///
+  const CookieConsentBanner({
+    void Function({required bool enabled})? callback,
+    super.key,
+  }) : _callback = callback;
+
+  final void Function({required bool enabled})? _callback;
 
   @override
   State<CookieConsentBanner> createState() => _CookieConsentBannerState();
@@ -62,10 +72,9 @@ class _CookieConsentBannerState extends State<CookieConsentBanner> {
       ) ??
       const SizedBox.shrink();
 
-  void _setCookieConsent(bool enable) {
-    unawaited(
-      CookieConsentViewModel.instance.set(enable: enable),
-    );
+  Future<void> _setCookieConsent(bool enable) async {
+    await CookieConsentViewModel.instance.set(enable: enable);
+    widget._callback?.call(enabled: enable);
   }
 
   ButtonStyle _cookieConsentButtonStyle() => ButtonStyle(
