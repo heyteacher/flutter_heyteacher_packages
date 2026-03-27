@@ -1,3 +1,25 @@
+## [flutter_heyteacher_site-1.10.0+120] - 2026-03-27
+
+### 🚀 Features
+
+- Add `callback` to `CookieConsentBanner` invoked on user choice
+- `enable` return `null` is no choice is made
+
+### 🐛 Bug Fixes
+
+- GetItOnGooglePlayButton: move `GetItOnGooglePlay_Badge_Web_color_English.png` into package assets and adapt layout size. LeadingIcon: add`assetIconPath' parameter
+- Dispose `AutoScrollController` on `MarkdownView` dispose
+- Expose on functionalities from the single dat file `flutter_heyteacher_site.dart`
+- Add `GetItOnGooglePlay_Badge_Web_color_English.png` to assets
+
+### 💼 Other
+
+- Update version to 1.10.0+120 which closes #2
+
+### 📚 Documentation
+
+- Add `example` application
+- Add `README.md`
 ## [flutter_heyteacher_site-1.9.11+118] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -8,6 +30,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 1.9.11+118
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_site-1.9.11+118
 ## [flutter_heyteacher_site-1.9.10+116] - 2026-03-24
 
 ### 💼 Other
