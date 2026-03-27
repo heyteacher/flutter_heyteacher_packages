@@ -1,3 +1,13 @@
+## [flutter_heyteacher_firebase-2.0.8+143] - 2026-03-27
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+- Catch exception and log warnig if firebase in `GoogleAnalitycsViewModel`
+
+### 💼 Other
+
+- Update version to 2.0.8+143 which closes #64
 ## [flutter_heyteacher_firebase-2.0.7+141] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -9,6 +19,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.7+141
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_firebase-2.0.7+141
 
 ### ⚙️ Miscellaneous Tasks
 
