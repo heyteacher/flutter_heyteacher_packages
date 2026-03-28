@@ -33,14 +33,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_connectivity: ^2.1.4+140
-  flutter_heyteacher_locale: ^2.0.8+142 
-  flutter_heyteacher_views: ^3.0.0+142 
+  flutter_heyteacher_locale: ^2.0.9+144 
+  flutter_heyteacher_views: ^3.0.1+144 
   flutter_localizations:
     sdk: flutter
   
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.2.0+154
+  flutter_heyteacher_meta: ^7.2.1+156
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0

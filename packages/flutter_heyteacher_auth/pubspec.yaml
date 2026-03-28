@@ -25,10 +25,10 @@ dependencies:
   firebase_ui_oauth_google: ^2.0.1
   flutter:
     sdk: flutter
-  flutter_heyteacher_firebase: ^2.0.7+141 
-  flutter_heyteacher_locale: ^2.0.8+142
+  flutter_heyteacher_firebase: ^2.0.8+143 
+  flutter_heyteacher_locale: ^2.0.9+144
   flutter_heyteacher_platform: ^2.0.5+136 
-  flutter_heyteacher_views: ^3.0.0+142 
+  flutter_heyteacher_views: ^3.0.1+144 
   flutter_localizations:
     sdk: flutter
   go_router: ^17.1.0
@@ -36,7 +36,7 @@ dependencies:
   logging: ^1.3.0
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.2.0+154
+  flutter_heyteacher_meta: ^7.2.1+156
   flutter_test:
     sdk: flutter
 
