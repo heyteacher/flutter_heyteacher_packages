@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart'
     show LocaleViewModel;
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
-import 'package:markdown_widget/config/all.dart';
-import 'package:markdown_widget/widget/all.dart';
+import 'package:markdown_widget_flutter_heyteacher/config/all.dart';
+import 'package:markdown_widget_flutter_heyteacher/widget/all.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:updown_arrow_scroller/updown_arrow_scroller.dart'
+import 'package:updown_arrow_scroller_flutter_heyteacher/updown_arrow_scroller_flutter_heyteacher.dart'
     show UpDownArrowScroller;
 import 'package:url_launcher/url_launcher.dart';
 
