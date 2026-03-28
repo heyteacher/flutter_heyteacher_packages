@@ -1,0 +1,12 @@
+{
+  "@@locale": "en",
+ "cookieSettings": "Cookie Settings",
+  "@cookieSettings": {},
+  "cookieMessage": "This website collects cookies to deliver better user experience.\nFor more information, visit our Cookies Policy.",
+  "@cookieMessage": {},
+  "accept": "Accept",
+  "@accept": {},
+  "decline": "Decline",
+  "@decline": {},
+  "settings": "Settings",
+  "@settings": {}}
