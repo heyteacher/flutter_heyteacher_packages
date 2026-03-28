@@ -23,6 +23,9 @@ dependencies:
   flutter_heyteacher_firebase: ^2.0.8+143
   flutter_heyteacher_locale: ^2.0.9+144
   flutter_heyteacher_views: ^3.0.1+144
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
   logging: ^1.3.0
   markdown_widget_flutter_heyteacher: ^2.4.0+1 
   scroll_to_index: ^3.0.1
