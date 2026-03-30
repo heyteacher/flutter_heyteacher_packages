@@ -1,4 +1,4 @@
-## [flutter_heyteacher_store-1.29.20+1028] - 2026-03-30
+## [flutter_heyteacher_store-2.0.0+1030] - 2026-03-30
 
 ### 🐛 Bug Fixes
 
@@ -7,6 +7,11 @@
 ### 💼 Other
 
 - Update version to 1.29.20+1028 which closes #4
+- Update version to 2.0.0+1030 which closes #4
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_store-1.29.20+1028
 ## [flutter_heyteacher_store-1.29.19+1026] - 2026-03-30
 
 ### 💼 Other
