@@ -216,4 +216,4 @@ static UserStore get instance {
 
 ## Example
 
-The complete example can be found in [`track_store.dart`](test/track_store.dart) inside [`unit tests`](test/store_test.dart)
+The complete app example can be found in [`example`](example) directory.
