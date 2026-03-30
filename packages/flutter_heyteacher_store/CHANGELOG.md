@@ -1,3 +1,14 @@
+## [flutter_heyteacher_store-1.29.19+1026] - 2026-03-30
+
+### 💼 Other
+
+- *(deps)* Tight dependencies versions
+- Update version to 1.29.19+1026 which closes #2
+
+### 📚 Documentation
+
+- *(store)* Add `example` app
+- Change link of example to `example` app directory
 ## [flutter_heyteacher_store-1.29.18+1024] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +18,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 1.29.18+1024
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.18+1024
 ## [flutter_heyteacher_store-1.29.17+1022] - 2026-03-25
 
 ### 💼 Other
