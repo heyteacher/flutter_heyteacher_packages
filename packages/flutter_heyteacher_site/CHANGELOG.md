@@ -1,3 +1,19 @@
+## [flutter_heyteacher_site-1.10.1+122] - 2026-03-30
+
+### 💼 Other
+
+- Update version to 1.10.1+122 which closes #66
+
+### 🚜 Refactor
+
+- Merge remote-tracking branch 'temp_site/main' into 66
+- Use `markdown_widget_flutter_heyteacher`  and `updown_arrow_scroller_flutter_heyteacher` forks published on `pub.dev`
+- Move `flutter_heyteacher_site` on `flutter_heyteacher_packages` and publish on `pub.dev`
+- Add `flutter_localizations` and `intl` in order to publish on `pub.dev` (validation fails otherwise...)
+
+### 📚 Documentation
+
+- Add BSD 3-Clause License `LICENSE`
 ## [flutter_heyteacher_site-1.10.0+120] - 2026-03-27
 
 ### 🚀 Features
@@ -20,6 +36,7 @@
 
 - Add `example` application
 - Add `README.md`
+- Update changelog generated for flutter_heyteacher_site-1.10.0+120
 ## [flutter_heyteacher_site-1.9.11+118] - 2026-03-26
 
 ### 🐛 Bug Fixes
