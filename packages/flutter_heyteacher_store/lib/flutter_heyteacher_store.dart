@@ -1,6 +1,7 @@
 
 export 'src/store/store.dart'
     show
+        AggregatationType,
         DocumentNotFoundException,
         FirestoreData,
         GroupByResult,

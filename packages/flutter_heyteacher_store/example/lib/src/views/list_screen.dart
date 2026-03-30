@@ -45,12 +45,12 @@ class _ListScreenState extends State<ListScreen> {
                 aggregatesAsyncSnapshot.data?.getSum(
                   'distanceInMeters',
                 ),
-              )} meters ',
-
-              // TODO(heyteacher): fix average aggregate
-              // 'avg distance ${aggregatesAsyncSnapshot.data?.getAverage(
-              //   'distanceInMeters',
-              // )} ',
+              )} meters, '
+              'avg distance ${FormatterHelper.intFormat(
+                aggregatesAsyncSnapshot.data?.getAverage(
+                  'distanceInMeters',
+                ),
+              )} meters',
             ),
           ),
           const Divider(),
@@ -78,7 +78,7 @@ class _ListScreenState extends State<ListScreen> {
                                 )} meters \n'
                                 'duration  ${FormatterHelper.formatDuration(
                                   trackData.durationInMilliseconds,
-                                  showSeconds: true
+                                  showSeconds: true,
                                 )}',
                               ),
                               onTap: () => GoRouter.of(context).pushNamed(

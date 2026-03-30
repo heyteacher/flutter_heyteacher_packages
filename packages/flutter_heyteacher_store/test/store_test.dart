@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart' show AuthViewModel;
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
+    show AuthViewModel;
 import 'package:flutter_heyteacher_connectivity/flutter_heyteacher_connectivity.dart';
 import 'package:flutter_heyteacher_e2ee/flutter_heyteacher_e2ee.dart';
 import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
@@ -42,7 +43,8 @@ void main() {
 
     // mock firestore with mock authentication
     final firestore = FakeFirebaseFirestore(
-        authObject: AuthViewModel.instance.authForFakeFirestore,);
+      authObject: AuthViewModel.instance.authForFakeFirestore,
+    );
     TrackStore.instance = TrackStore(firebaseFirestore: firestore);
 
     // initialize
@@ -58,7 +60,7 @@ void main() {
       TrackData(
         startTime: DateTime.parse('2024-04-27 13:27:56'),
         stopTime: DateTime.parse('2024-04-27 14:27:56'),
-        distance: 20000,
+        distance: 10000,
       ),
     );
     await TrackStore.instance.set(
@@ -266,18 +268,28 @@ void main() {
       unawaited(TrackStore.instance.notifyAggregatesChanges());
       final aggregate = await TrackStore.instance.aggregateStream.first;
       expect(aggregate.count, 4, reason: 'aggregate count wrong');
-      expect(aggregate.getSum('distance'), 90000, reason: 'sum distance wrong');
+      expect(aggregate.getSum('distance'), 80000, reason: 'sum distance wrong');
+      expect(
+        aggregate.getAverage('distance'),
+        20000,
+        reason: 'average distance wrong',
+      );
       expect(
         aggregate.getSum('duration'),
         8 * 3600 * 1000,
         reason: 'sum duration wrong',
+      );
+      expect(
+        aggregate.getAverage('duration'),
+        2 * 3600 * 1000,
+        reason: 'average duration wrong',
       );
     });
     test('aggregateStream after add track', () async {
       await TrackStore.instance.set(
         TrackData(
           startTime: DateTime.parse('2020-04-23 08:12:44'),
-          stopTime: DateTime.parse('2020-04-23 09:12:44'),
+          stopTime: DateTime.parse('2020-04-23 10:12:44'),
           distance: 20000,
         ),
       );
@@ -285,13 +297,18 @@ void main() {
       expect(aggregate.count, 5, reason: 'aggregate count wrong');
       expect(
         aggregate.getSum('distance'),
-        90000 + 20000,
+        80000 + 20000,
         reason: 'sum distance wrong',
       );
       expect(
         aggregate.getSum('duration'),
-        (8 + 1) * 3600 * 1000,
+        (8 + 2) * 3600 * 1000,
         reason: 'sum duration wrong',
+      );
+      expect(
+        aggregate.getAverage('duration'),
+        2 * 3600 * 1000,
+        reason: 'average duration wrong',
       );
     });
     test('aggregateStream after filter', () async {
@@ -313,11 +330,18 @@ void main() {
       unawaited(TrackStore.instance.notifyAggregatesChanges());
       final aggregate = await TrackStore.instance.aggregateStream.first;
       expect(aggregate.count, 2, reason: 'aggregate count wrong');
-      expect(aggregate.getSum('distance'), 30000, reason: 'sum distance wrong');
+      expect(aggregate.getSum('distance'), 20000, reason: 'sum distance wrong');
+      expect(aggregate.getAverage('distance'), 10000,
+          reason: 'avg distance wrong',);
       expect(
         aggregate.getSum('duration'),
         2 * 3600 * 1000,
         reason: 'sum duration wrong',
+      );
+      expect(
+        aggregate.getAverage('duration'),
+        3600 * 1000,
+        reason: 'aggregate duration wrong',
       );
     });
   });

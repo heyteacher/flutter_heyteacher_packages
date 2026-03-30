@@ -211,12 +211,24 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart' show AuthViewModel, UserNotAuthenticatedException;
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
+    show AuthViewModel, UserNotAuthenticatedException;
 import 'package:flutter_heyteacher_connectivity/flutter_heyteacher_connectivity.dart';
 import 'package:flutter_heyteacher_store/src/store/store_filters.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synchronized/synchronized.dart';
+
+/// Aggregation type enumeration.
+///
+/// Defines [sum] and [average] constants used to aggregate date
+enum AggregatationType {
+  /// sum aggregation
+  sum,
+
+  /// average aggregation
+  average
+}
 
 /// Order enumeration.
 ///
@@ -434,7 +446,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   Map<String, OrderDirection>? orderByFields;
 
   /// list of field to be aggregate.
-  List<String>? aggregateFields;
+  List<({String field, AggregatationType aggregatationType})>? aggregateFields;
 
   /// the filter to apply in [Store.query].
   StoreFilter? storeFilter;
@@ -967,7 +979,11 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     if (aggregateFields == null || aggregateFields!.isEmpty) return null;
     final aggregateParams = <firestore.AggregateField?>[
       for (var i = 0; i < 29; i++)
-        aggregateFields!.length > i ? firestore.sum(aggregateFields![i]) : null,
+        aggregateFields!.length > i
+            ? aggregateFields![i].aggregatationType == AggregatationType.sum
+                ? firestore.sum(aggregateFields![i].field)
+                : firestore.average(aggregateFields![i].field)
+            : null,
     ];
     _logger.finest('($runtimeType.aggregates): not null');
     return query()

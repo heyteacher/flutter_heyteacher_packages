@@ -94,7 +94,12 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
           userProfile: true,
           cacheEnabled: false,
           orderByFields: {'startTime': OrderDirection.desc},
-          aggregateFields: ['distance', 'duration'],
+          aggregateFields: [
+            (field: 'distance', aggregatationType: AggregatationType.sum),
+            (field: 'distance', aggregatationType: AggregatationType.average),
+            (field: 'duration', aggregatationType: AggregatationType.sum),
+            (field: 'duration', aggregatationType: AggregatationType.average),
+          ],
           fromFirestoreFactory: BaseTrackData.fromFirestore,
           detailsFromFirestoreFactory: TrackData.fromFirestore,
           groupByFields: {
