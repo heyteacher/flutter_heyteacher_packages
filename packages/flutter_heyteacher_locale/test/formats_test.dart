@@ -10,6 +10,7 @@ void main() {
       expect(FormatterHelper.intFormat(123), '123');
       expect(FormatterHelper.intFormat(0), '0');
       expect(FormatterHelper.intFormat(-5), '-5');
+      expect(FormatterHelper.intFormat(123456789), '123,456,789');
     });
 
     test('FormatterHelper.doubleFormatter has correct pattern', () {
@@ -19,6 +20,7 @@ void main() {
       expect(FormatterHelper.doubleFormat(0.0), '0.0');
       expect(FormatterHelper.doubleFormat(-5.67), '-5.7'); // Rounds
       expect(FormatterHelper.doubleFormat(10), '10.0');
+      expect(FormatterHelper.doubleFormat(123456789.09), '123,456,789.1');
     });
   });
 
@@ -28,6 +30,10 @@ void main() {
         FormatterHelper.machineDateTimeParse('20241231_235959'),
         DateTime(2024, 12, 31, 23, 59, 59),
       );
+    });
+    test('FormatterHelper.intParse has correct pattern', () {
+      expect(FormatterHelper.intParse('2024'), 2024);
+      expect(FormatterHelper.intParse('2,024'), 2024);
     });
   });
 
