@@ -1,3 +1,13 @@
+## [flutter_heyteacher_locale-2.0.10+146] - 2026-03-30
+
+### 🐛 Bug Fixes
+
+- `intFormat` returns int formatted with thousand separator
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- Update version to 2.0.10+146 which closes #68
 ## [flutter_heyteacher_locale-2.0.9+144] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +17,10 @@
 ### 💼 Other
 
 - Update version to 2.0.9+144 which closes #56
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_locale-2.0.9+144
 ## [flutter_heyteacher_locale-2.0.8+142] - 2026-03-26
 
 ### 🐛 Bug Fixes
