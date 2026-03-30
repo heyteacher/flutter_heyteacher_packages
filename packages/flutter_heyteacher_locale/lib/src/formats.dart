@@ -58,7 +58,10 @@ class FormatterHelper {
       DateFormat.yMd(LocaleViewModel.instance.locale.toLanguageTag()).add_jms();
 
   /// Formatter for integers (e.g., "0").
-  static final NumberFormat _intFormatter = NumberFormat('0');
+  static final NumberFormat _intFormatter = NumberFormat.decimalPatternDigits(
+    locale: LocaleViewModel.instance.locale.toLanguageTag(),
+    decimalDigits: 0,
+  );
 
   /// Formatter for doubles with one decimal place (e.g., "0.0").
   static NumberFormat get _doubleFormatter => NumberFormat.decimalPatternDigits(
