@@ -1,3 +1,12 @@
+## [flutter_heyteacher_store-1.29.20+1028] - 2026-03-30
+
+### 🐛 Bug Fixes
+
+- [**breaking**] Add `AggregationType` (`sum` or `average`)  to `aggregateFields` items
+
+### 💼 Other
+
+- Update version to 1.29.20+1028 which closes #4
 ## [flutter_heyteacher_store-1.29.19+1026] - 2026-03-30
 
 ### 💼 Other
@@ -9,6 +18,7 @@
 
 - *(store)* Add `example` app
 - Change link of example to `example` app directory
+- Update changelog generated for flutter_heyteacher_store-1.29.19+1026
 ## [flutter_heyteacher_store-1.29.18+1024] - 2026-03-26
 
 ### 🐛 Bug Fixes
