@@ -432,11 +432,11 @@ Run unit tests of the project.
 fl checkout [issue:<issue_number>]
 ```
 
-If <issue_number> is set, create, checkout and push remotely a new branch with name <issue_number>.
+If <issue_number> is set, create, check if exists issue #<issue_number>, checkout and push remotely a new branch with name <issue_number>.
 
-Else if <issue_number> is not set, checkout the latest remote branch already created remotely on forge (runs `git fetch` and `git checkout` to the latest branch fetched).
+Else if <issue_number> is not set, show open issues in repository and ask to insert the <issue_number>, then check if exists issue #<issue_number>, checkout and push remotely a new branch with name <issue_number>.
 
-- `issue`: the issue <issue_number> you want to fix/implement in branch created
+- `issue`: the issue <issue_number> you want to fix/implement in branch created. The issue #<issue_number> must exists in repository and must be open.
 
 ### release
 
