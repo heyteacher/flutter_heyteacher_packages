@@ -5,7 +5,6 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart'
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart';
 import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:logging/logging.dart';
@@ -101,7 +100,6 @@ class AuthViewModel {
   }
 
   /// Gets the authForFakeFirestore
-  @visibleForTesting
   Stream<Map<String, dynamic>?> get authForFakeFirestore =>
       _firebaseAuth is MockFirebaseAuth
       ? _firebaseAuth.authForFakeFirestore

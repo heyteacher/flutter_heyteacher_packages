@@ -22,6 +22,8 @@ The `Flutter` ecosystem created by @heyteacher. A [Pub workspace](https://dart.d
 
 - [flutter_heyteacher_site](packages/flutter_heyteacher_site): A set of standardized UI components and utilities for building websites and landing pages
 
+- [flutter_heyteacher_store](packages/flutter_heyteacher_store): a `Firebase Firestore` library using [generics](https://dart.dev/language/generics|generics)
+
 - [flutter_heyteacher_text_to_speech](packages/flutter_heyteacher_text_to_speech): `Text-to-Speech` (`TTS`) functionalities
 
 - [flutter_heyteacher_timer_workflow](packages/flutter_heyteacher_timer_workflow): functionalities to manage timer-based workflows
