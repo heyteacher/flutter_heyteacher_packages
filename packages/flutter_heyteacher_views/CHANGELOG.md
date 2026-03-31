@@ -1,3 +1,12 @@
+## [flutter_heyteacher_views-3.0.3+148] - 2026-03-31
+
+### 🐛 Bug Fixes
+
+- *(ThemeViewModel)* `Null check operator` on yield `themeMode` in theme changes
+
+### 💼 Other
+
+- Update version to 3.0.3+148 which closes #73
 ## [flutter_heyteacher_views-3.0.2+146] - 2026-03-31
 
 ### 🐛 Bug Fixes
@@ -9,6 +18,10 @@
 - *(deps)* Bump deps to 3.0.1+144
 - *(deps)* Bump dependencies
 - Update version to 3.0.2+146 which closes #77
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_views-3.0.2+146
 ## [flutter_heyteacher_views-3.0.0+142] - 2026-03-26
 
 ### 🐛 Bug Fixes
