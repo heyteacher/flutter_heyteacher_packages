@@ -76,9 +76,13 @@ lane :release do|options|
     end
   end
   # commit bump and push remote
-  puts "commit pubspec.yaml with new version #{version}"
+  package_name = ""
+  Dir.chdir("../") do
+    package_name = sh("basename `pwd`").strip!
+  end
+  puts "commit #{package_name} pubspec.yaml with new version #{version}"
   sh("git add ../pubspec.yaml")
-  sh("git commit -m \"build: update version to #{version} which closes ##{currentBranch}\"")
+  sh("git commit -m \"build(#{package_name}): update version to #{version} which closes ##{currentBranch}\"")
   push_to_git_remote
   if options[:merge] == nil || options[:merge] == true
     forge_merge(currentBranch)
@@ -158,7 +162,7 @@ def create_forge_release(version)
   puts "commit CHANGELOG.md generated for #{package_name}-#{version}"
   git_commit(
     path: "CHANGELOG.md", 
-    message: "docs: update changelog generated for #{package_name}-#{version}"
+    message: "docs(#{package_name}): update `CHANGELOG.md` with #{package_name}-#{version}"
   )
   sh("git checkout main")
   sh("git merge release")
