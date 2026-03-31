@@ -1,3 +1,12 @@
+## [flutter_heyteacher_meta-7.2.2+158] - 2026-03-31
+
+### 🐛 Bug Fixes
+
+- Update commits adding `scope` as package name
+
+### 💼 Other
+
+- *(flutter_heyteacher_meta)* Update version to 7.2.2+158 which closes #79
 ## [flutter_heyteacher_meta-7.2.1+156] - 2026-03-27
 
 ### 🐛 Bug Fixes
@@ -11,6 +20,7 @@
 ### 📚 Documentation
 
 - Add usage example to release a new version and close an issue
+- Update changelog generated for flutter_heyteacher_meta-7.2.1+156
 ## [flutter_heyteacher_meta-7.2.0+154] - 2026-03-26
 
 ### 🚀 Features
