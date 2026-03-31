@@ -1,3 +1,12 @@
+## [flutter_heyteacher_store-2.0.1+1032] - 2026-03-31
+
+### 💼 Other
+
+- Update version to 2.0.1+1032 which closes #7
+
+### 📚 Documentation
+
+- Update example on `README.md` with new `aggregateFields` type with `aggregateType` and add `fake_cloud_firestore` configuration
 ## [flutter_heyteacher_store-2.0.0+1030] - 2026-03-30
 
 ### 🐛 Bug Fixes
@@ -12,6 +21,7 @@
 ### 📚 Documentation
 
 - Update changelog generated for flutter_heyteacher_store-1.29.20+1028
+- Update changelog generated for flutter_heyteacher_store-2.0.0+1030
 ## [flutter_heyteacher_store-1.29.19+1026] - 2026-03-30
 
 ### 💼 Other
