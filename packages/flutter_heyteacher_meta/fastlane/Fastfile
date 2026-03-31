@@ -28,20 +28,38 @@ end
 
 desc "fl checkout [issue:<issue>] - checkout lastest branch created or create new branch on <issue>"
 lane :checkout do|options|
-  if options[:issue] == nil || options[:issue] == ""
-    puts "fetch repository getting output in gitFetch"
-    gitFetch = sh("git fetch 2>&1 | grep branch")
-    gitFetchLastLine= gitFetch.lines.last
-    puts "get the branch name from #{gitFetchLastLine}"
-    branch=gitFetchLastLine.split(" ")[3]
-    puts "checkout branch #{branch}"
-    sh("git checkout #{branch}")  
-  elsif  
-    puts "create and checkout branch #{options[:issue]}"
-    sh("git checkout -b #{options[:issue]}")
-    puts "push branch #{options[:issue]} to origin"
-    sh("git push --set-upstream origin #{options[:issue]}")
+  issue_number = options[:issue]
+  forge = detect_forge 
+
+  if issue_number == nil || issue_number == ""
+    puts "show open issues in #{forge}"
+    if forge == "github"
+      sh("gh issue list")
+    elsif forge == "forgejo"
+      sh("fj issue search");
+    end
+    issue_number = UI.input("Enter the issue number (without #):")
+  end  
+  puts "check issue #{issue_number} exists in #{forge}"
+  if forge == "github"
+    sh("gh issue list")
+    found_issues = sh("gh issue list --search \"state:open #{issue_number}\"").strip!;
+    if found_issues.start_with?("no issues")
+      puts "issue #{issue_number} not found in #{forge}"
+      exit(1)
+    end
+  elsif forge == "forgejo"
+    found_issues = sh("fj issue search #{issue_number}").strip!;
+    if found_issues.start_with?("0")
+      puts "issue #{issue_number} not found in #{forge}"
+      exit(1)
+    end
   end
+  puts "issue #{issue_number} found in #{forge}"
+  puts "create and checkout branch #{issue_number}"
+  sh("git checkout -b #{issue_number}")
+  puts "push branch #{issue_number} to origin"
+  sh("git push --set-upstream origin #{issue_number}")
 end
 
 desc "fl forge_release - Creates a forge release and update CHANGELOG.md"
