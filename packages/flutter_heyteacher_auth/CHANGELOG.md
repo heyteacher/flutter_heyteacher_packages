@@ -1,3 +1,14 @@
+## [flutter_heyteacher_auth-2.0.12+152] - 2026-03-31
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+- Make `authForFakeFirestore` public in order to be used in `example` apps
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- Update version to 2.0.12+152 which closes #74
 ## [flutter_heyteacher_auth-2.0.11+150] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +18,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.11+150
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_auth-2.0.11+150
 ## [flutter_heyteacher_auth-2.0.10+148] - 2026-03-24
 
 ### 🐛 Bug Fixes
