@@ -1,10 +1,19 @@
 name: flutter_heyteacher_store
-description: "A heyteacher flutter package for genetrics firestore implementation"
+description: "A heyteacher flutter package for genetics firestore implementation"
 version: 2.0.1+1032
-publish_to: none # Remove this line if you wish to publish to pub.dev
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_store
+license: BSD 3-Clause
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_store
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_store
+topics: [firestore, firebase, flutter]
+funding: [https://liberapay.com/heyteacher]
+
 environment:
   sdk: ^3.6.2
   flutter: ">=1.17.0"
+
+resolution: workspace
 
 dependencies:
   clock: ^1.1.2
@@ -26,18 +35,6 @@ dependencies:
   mockito: ^5.6.4
   shared_preferences: ^2.5.5
   synchronized: ^3.4.0
-
-dependency_overrides:
-  flutter_heyteacher_auth:
-    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_auth
-  flutter_heyteacher_connectivity:
-    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_connectivity
-  flutter_heyteacher_e2ee:
-    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_e2ee
-  flutter_heyteacher_firebase:
-    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_firebase
-  flutter_heyteacher_platform:
-    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_platform
 
 dev_dependencies:
   build_runner: ^2.13.1
