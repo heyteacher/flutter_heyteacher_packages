@@ -287,12 +287,12 @@ class ThemeViewModel {
   /// Defaults to [ThemeMode.system] if no theme has been explicitly set in 
   /// shared preferences.
   Future<ThemeMode> get themeMode async {
-    _logger.finer('<themeMode>:');
+    _logger.finest('<themeMode>:');
     if (_themeMode != null) {
-      _logger.finer(
-        '(themeMode): already initialized themeMode ${_themeMode!.name}',
+      _logger.finest(
+        '(themeMode): already initialized themeMode ${_themeMode?.name}',
       );
-      return _themeMode!;
+      return _themeMode ?? ThemeMode.system;
     }
     /// check for persisted theme mode in shared preferences
     final themeModeName = await SharedPreferencesAsync().getString(
@@ -310,10 +310,10 @@ class ThemeViewModel {
     // emit theme and theme mode initialized to listeners
     _themeStreamController.sink.add((
       themeData: theme,
-      themeMode: _themeMode!,
+      themeMode: _themeMode ?? ThemeMode.system,
     ));
-    _logger.info('(themeMode): initialized themeMode ${_themeMode!.name}');
-    return _themeMode!;
+    _logger.info('(themeMode): initialized themeMode ${_themeMode?.name}');
+    return _themeMode ?? ThemeMode.system;
   }
 
   /// Sets the application's [ThemeMode] to the provided [themeMode].
