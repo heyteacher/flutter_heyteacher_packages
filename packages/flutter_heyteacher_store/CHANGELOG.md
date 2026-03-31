@@ -1,3 +1,13 @@
+## [flutter_heyteacher_store-2.0.2+1034] - 2026-03-31
+
+### 💼 Other
+
+- Update version to 2.0.2+1034 which closes #72
+
+### 🚜 Refactor
+
+- Merge remote-tracking branch 'temp_store/main' into 72
+- Configure `flutter_heyteacher_store` as package of monorepo `flutter_heyteacher_packages` and add metadata for `pub.dev` publish
 ## [flutter_heyteacher_store-2.0.1+1032] - 2026-03-31
 
 ### 💼 Other
@@ -7,6 +17,7 @@
 ### 📚 Documentation
 
 - Update example on `README.md` with new `aggregateFields` type with `aggregateType` and add `fake_cloud_firestore` configuration
+- Update changelog generated for flutter_heyteacher_store-2.0.1+1032
 ## [flutter_heyteacher_store-2.0.0+1030] - 2026-03-30
 
 ### 🐛 Bug Fixes
