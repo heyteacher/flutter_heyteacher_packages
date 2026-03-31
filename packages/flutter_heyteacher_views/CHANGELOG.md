@@ -1,3 +1,14 @@
+## [flutter_heyteacher_views-3.0.2+146] - 2026-03-31
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+
+### 💼 Other
+
+- *(deps)* Bump deps to 3.0.1+144
+- *(deps)* Bump dependencies
+- Update version to 3.0.2+146 which closes #77
 ## [flutter_heyteacher_views-3.0.0+142] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +18,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 3.0.0+142
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-3.0.0+142
 ## [flutter_heyteacher_views-3.0.0+144] - 2026-03-26
 
 ### 🐛 Bug Fixes
