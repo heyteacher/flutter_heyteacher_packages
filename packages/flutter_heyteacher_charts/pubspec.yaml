@@ -1,6 +1,6 @@
 name: flutter_heyteacher_charts
 description: "A high-level Flutter charting library built on top of fl_chart"
-version: 2.0.1+112
+version: 2.0.2+114
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_charts
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
