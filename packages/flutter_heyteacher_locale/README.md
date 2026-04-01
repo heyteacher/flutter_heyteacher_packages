@@ -10,6 +10,8 @@ A Flutter package for managing application locale, date/time formatting, and loc
 - **Date Extensions**: `DateHelpers` extension on `DateTime` for relative day checks (Today, Yesterday, Tomorrow).
 - **UI Widgets**: Pre-built widgets like `LocaleCard` and `LocaleWrap` for language selection.
 
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+
 ## Getting started
 
 Add the package and `flutter_localizations` to your `pubspec.yaml`:
