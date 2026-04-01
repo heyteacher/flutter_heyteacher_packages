@@ -1,3 +1,12 @@
+## [flutter_heyteacher_meta-7.3.1+162] - 2026-04-01
+
+### 💼 Other
+
+- *(flutter_heyteacher_meta)* Update version to 7.3.1+162 which closes #85
+
+### 📚 Documentation
+
+- *(README.md)* Enhance migration to monorepo guide and lane `deployweb` documentation
 ## [flutter_heyteacher_meta-7.3.0+160] - 2026-03-31
 
 ### 🚀 Features
@@ -11,6 +20,7 @@
 ### 📚 Documentation
 
 - *(README.md)* Update `fl checkout` documentation
+- *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.3.0+160
 ## [flutter_heyteacher_meta-7.2.2+158] - 2026-03-31
 
 ### 🐛 Bug Fixes
