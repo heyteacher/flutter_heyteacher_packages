@@ -567,8 +567,8 @@ abstract class ChartView extends StatelessWidget {
                     fromIndex: betweenBarsData.fromIndex,
                     toIndex: betweenBarsData.toIndex,
                     color: betweenBarsData.color,
-                    fromAboveColor: betweenBarsData.fromAboveColor,
-                    fromBelowColor: betweenBarsData.fromBelowColor,
+                    //fromAboveColor: betweenBarsData.fromAboveColor,
+                    //fromBelowColor: betweenBarsData.fromBelowColor,
                     gradient: betweenBarsData.gradient,
                   )
                 : null,
