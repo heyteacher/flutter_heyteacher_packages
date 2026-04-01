@@ -10,6 +10,8 @@ A Flutter package for managing End-to-End Encryption (E2EE) workflows, specifica
 - **AAD Management**: Specific handling for Additional Authenticated Data to ensure integrity.
 - **QR Code Utilities**: Helpers for managing key exchange or backup via QR codes.
 
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+
 ## Getting started
 
 Add the package to your `pubspec.yaml`:
