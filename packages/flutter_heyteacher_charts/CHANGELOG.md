@@ -1,3 +1,21 @@
+## [flutter_heyteacher_charts-2.0.2+114] - 2026-04-01
+
+### 🐛 Bug Fixes
+
+- Commented `fromAboveColor` and `fromBelowColor` non present in official `fl_chart` package
+
+### 💼 Other
+
+- *(flutter_heyteacher_charts)* Update version to 2.0.2+114 which closes #83
+
+### 🚜 Refactor
+
+- Merge remote-tracking branch 'temp_charts/main' into 83
+- *(charts)* Move `flutter_heyteacher_charts` to `flutter_heyteacher_packages` as package
+
+### 📚 Documentation
+
+- Add metadata to `pubspec.yaml`
 ## [flutter_heyteacher_charts-2.0.1+112] - 2026-04-01
 
 ### 💼 Other
@@ -7,6 +25,7 @@
 ### 📚 Documentation
 
 - Add `example` app and add documentation into `README.md`
+- *(flutter_heyteacher_charts)* Update `CHANGELOG.md` with flutter_heyteacher_charts-2.0.1+112
 ## [flutter_heyteacher_charts-2.0.0+110] - 2026-04-01
 
 ### 💼 Other
