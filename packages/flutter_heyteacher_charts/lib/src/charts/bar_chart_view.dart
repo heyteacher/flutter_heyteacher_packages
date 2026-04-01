@@ -10,7 +10,7 @@ import 'package:flutter_heyteacher_charts/src/charts/chart_view.dart';
 class BarChartView extends ChartView {
   /// Creates a [BarChartView].
   BarChartView({
-    required super.chartDataLists,
+    required Iterable<BarChartDataItem> barChartDataList,
     required super.title,
     required super.formatterAxisX,
     required super.formatterColorAxisX,
@@ -30,7 +30,8 @@ class BarChartView extends ChartView {
     super.minIntervalY,
     super.axisNameWidgetY,
     super.key,
-  }) : _smallScreen = smallScreen;
+  })  : _smallScreen = smallScreen,
+        super(chartDataLists: [barChartDataList]);
 
   final bool _smallScreen;
 
@@ -42,7 +43,7 @@ class BarChartView extends ChartView {
             child: title,
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 20, bottom: 20, top: 4),
+            padding: const EdgeInsets.only(right: 20, top: 4, bottom: 8),
             child: Column(
               children: [
                 AspectRatio(
@@ -112,7 +113,10 @@ class BarChartView extends ChartView {
                                 ) ??
                                 '',
                             TextStyle(
-                                color: rod.color, height: 0.9, fontSize: 10,),
+                              color: rod.color,
+                              height: 0.9,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                       ),
