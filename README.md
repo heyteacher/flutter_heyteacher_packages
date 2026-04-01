@@ -6,6 +6,8 @@ The `Flutter` ecosystem created by @heyteacher. A [Pub workspace](https://dart.d
 
 - [flutter_heyteacher_auth](packages/flutter_heyteacher_auth): authentication utilities via [Firebase Authentication](https://firebase.google.com/docs/auth)
 
+- [flutter_heyteacher_charts](packages/flutter_heyteacher_charts): a high-level Flutter charting library built on top of [fl_chart](https://pub.dev/packages/fl_chart).
+
 - [flutter_heyteacher_connectivity](packages/flutter_heyteacher_connectivity): manage and display connectivity status
 
 - [flutter_heyteacher_e2ee](packages/flutter_heyteacher_e2ee): `End-to-End Encryption` (`E2EE`) workflows with generation, storage, and management of cryptographic keys and `Additional Authenticated Data` (`AAD`)
