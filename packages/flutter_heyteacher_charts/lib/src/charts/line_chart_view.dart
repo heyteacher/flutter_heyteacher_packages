@@ -56,7 +56,7 @@ class LineChartView extends ChartView {
         children: [
           title,
           Padding(
-            padding: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.only(right: 8, bottom: 8),
             child: AspectRatio(
               aspectRatio: aspectRatio,
               child: LineChart(

@@ -9,10 +9,13 @@ import 'package:flutter_heyteacher_charts/flutter_heyteacher_charts.dart';
 class ChartDataItem {
   /// Creates a [ChartDataItem].
   const ChartDataItem({required this.x, required this.y, this.yColor});
+
   /// The value on the X-axis.
   final num x;
+
   /// The value on the Y-axis.
   final num y;
+
   /// An optional color for this specific data point.
   final Color? yColor;
 
@@ -26,15 +29,21 @@ class ChartDataItem {
 /// grouped bars, and [fromY] to specify the bar's starting point on the y-axis.
 class BarChartDataItem extends ChartDataItem {
   /// Creates a data item for a bar chart, used by [BarChartView].
-  BarChartDataItem(
-      {required super.x, required super.y, this.fromY = 0,
-      super.yColor,
-      this.y1,
-      this.y2,});
+  const BarChartDataItem({
+    required super.x,
+    required super.y,
+    this.fromY = 0,
+    super.yColor,
+    this.y1,
+    this.y2,
+  });
+
   /// An optional secondary y-value, for stacked or grouped bars.
   final num? y1;
+
   /// An optional tertiary y-value, for stacked or grouped bars.
   final num? y2;
+
   /// The starting y-value for the bar, defaulting to 0.
   final num fromY;
 
@@ -55,10 +64,13 @@ class CandlestickDataItem extends ChartDataItem {
     required this.yHigh,
     required this.yLow,
   });
+
   /// The opening value (or previous closing value).
   final num yPrec;
+
   /// The highest value in the period.
   final num yHigh;
+
   /// The lowest value in the period.
   final num yLow;
 
@@ -67,6 +79,7 @@ class CandlestickDataItem extends ChartDataItem {
 
   /// The minimum value among the open, close, low, and high values.
   num get minY => min(y, min(yLow, yHigh));
+
   /// The maximum value among the open, close, low, and high values.
   num get maxY => max(y, max(yLow, yHigh));
 
@@ -76,15 +89,20 @@ class CandlestickDataItem extends ChartDataItem {
 
 /// Represents an extra horizontal or vertical line to be drawn on a chart.
 class ExtraLineData extends Equatable {
-  
   /// Creates an [ExtraLineData] instance.
-  const ExtraLineData(
-      {required this.value, required this.color, required this.label,});
+  const ExtraLineData({
+    required this.value,
+    required this.color,
+    required this.label,
+  });
+
   /// The position of the line on its axis (e.g., y-value for a horizontal
   /// line).
   final num value;
+
   /// The text label to display with the line.
   final String label;
+
   /// The color of the line.
   final Color color;
 
@@ -96,20 +114,26 @@ class ExtraLineData extends Equatable {
 /// vertically.
 class RangeAnnotationData extends Equatable {
   /// Creates a [RangeAnnotationData] instance.
-  const RangeAnnotationData(
-      {required this.min,
-      required this.max,
-      required this.value,
-      required this.label,
-      required this.color,});
+  const RangeAnnotationData({
+    required this.min,
+    required this.max,
+    required this.value,
+    required this.label,
+    required this.color,
+  });
+
   /// The starting point of the range on the axis.
   final num min;
+
   /// The ending point of the range on the axis.
   final num max;
+
   /// A specific value associated with the range, for labeling or calculation.
   final num value;
+
   /// The text label for the range.
   final String label;
+
   /// The color of the range annotation.
   final Color color;
 
