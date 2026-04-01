@@ -12,6 +12,8 @@ A Flutter package that provides UI components and a model for viewing and managi
 - **Routing**: Pre-configured routing for the logger UI with `LoggingRouter`.
 - **Localization**: Support for localizations via `FlutterHeyteacherLoggerLocalizations`.
 
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+
 ## Getting started
 
 Add the package to your `pubspec.yaml`:
