@@ -28,7 +28,7 @@ The `Flutter Heyteacher` ecosystem created by @heyteacher. A [Pub workspace](htt
 
 - [flutter_heyteacher_logger](packages/flutter_heyteacher_logger): UI components and a model for viewing and managing application logs
 
-- [flutter_heyteacher_heyteacher_math](packages/flutter_heyteacher_math): mathematical utilities and algorithms
+- [flutter_heyteacher_math](packages/flutter_heyteacher_math): mathematical utilities and algorithms
 
 - [flutter_heyteacher_platform](packages/flutter_heyteacher_platform): platform-specific utilities, UI components, and localization support
 
