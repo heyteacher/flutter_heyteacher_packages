@@ -79,7 +79,10 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
   - [Dart Builders](#dart-builders)
   - [Appendice](#appendice)
-    - [migration to `monorepo` project](#migration-to-monorepo-project)
+    - [Migrate a repository to a package of a `monorepo`](#migrate-a-repository-to-a-package-of-a-monorepo)
+      - [Setup](#setup)
+      - [update git history of all repositories](#update-git-history-of-all-repositories)
+      - [Merge all repositories to `monorepo`](#merge-all-repositories-to-monorepo)
     - [Migrate from `Github` to  `forgejo` public instance](#migrate-from-github-to--forgejo-public-instance)
   
 ## Installing
@@ -113,9 +116,9 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 
 - [vscode-markdownlint](https://github.com/DavidAnson/vscode-markdownlint): Markdown/CommonMark linting and style checking for Visual Studio Code
 
-- [vscode-markdown](https://github.com/yzhang-gh/vscode-markdown): All you need for Markdown (keyboard shortcuts, table of contents, auto preview and more).
+- [vscode-markdown](https://github.com/yzhang-gh/vscode-markdown): All you need for Markdown (keyboard shortcuts, table of contents, auto preview and more)
 
-- [git-filter-repo](https://github.com/newren/git-filter-repo): Quickly rewrite git repository history (filter-branch replacement). Used in [migration to `monorepo` project](#migration-to-monorepo-project)
+- [git-filter-repo](https://github.com/newren/git-filter-repo): Quickly rewrite git repository history (filter-branch replacement). Used in [Migrate a repository to a package of a `monorepo`](#migrate-a-repository-to-a-package-of-a-monorepo)
 
 ## Requirements
 
@@ -580,7 +583,12 @@ Promote a release in Google Play via `supply` from `from_track` to `to_track`.
 fl buildweb [version:profile|debug]
 ```
 
-Build web and run local webserver on `http://localhost:8080`
+Build web and run local webserver on `http://localhost:8080`.
+
+`version`, if set, must be `profile` or `debug`.
+
+In order reload all resources after e new version released, the suffix
+`?b=buildNumber`is added to the url of all web assets in `index.html` and `manifest.json`.
 
 ### deployweb
 
@@ -589,6 +597,11 @@ fl deployweb [release_type:release|profile|debug]
 ```
 
 Deploy web in `Firabase Hosting` with release type `release_type` (default `release`)
+
+`release_type`, must be `release`, `profile` or `debug` (default `release`).
+
+In order reload all resources after e new version released, the suffix
+`?b=buildNumber`is added to the url of all web assets in `index.html` and `manifest.json`.
 
 ## `git` utilities
 
@@ -1234,11 +1247,11 @@ setup your `~/.bash_aliases` with `dart_builders` alias:
 
 ## Appendice
 
-### migration to `monorepo` project
-
-This procedure migrate a repository into a `monorepo` project.
+### Migrate a repository to a package of a `monorepo`
 
 Based on [Migrating Git from multirepo to monorepo without losing history](https://developers.netlify.com/guides/migrating-git-from-multirepo-to-monorepo-without-losing-history/)
+
+#### Setup
 
 - install `git-repo-filter`
   
@@ -1271,6 +1284,8 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
   git checkout -b integrate-monorepo
   ```
 
+#### update git history of all repositories
+
 - for each `<repository>` you want migrate into `<monorepo>`:
 
   - clone the `<repository>` from `<account>` of your preferred [forge](https://en.wikipedia.org/wiki/Forge_(software)) instance in `/tmp`:
@@ -1284,7 +1299,7 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
 
     ```bash
     cd <repository>
-    git-filter-repo --to-subdirectory-filter <package> --tag-name '':'<package>-'
+    git-filter-repo --to-subdirectory-filter <package>
     ```
 
   - remove reference of `<repository>` in all commits:
@@ -1296,6 +1311,8 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
     commit.message = newmsg.encode("utf-8")
     '
     ```
+
+#### Merge all repositories to `monorepo`
 
 - go to `<monorepo>` folder, create and checkout `integrate-monorepo` branch:
 
@@ -1311,10 +1328,15 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
     git remote add temp_<repository> /tmp/<repository>
     ```
 
-  - fetch and merge to `main`:
+  - fetch remote:
 
     ```bash
     git fetch temp_<repository>
+    ```
+
+- merge to `main`:
+
+    ```bash
     git merge temp_<repository>/main --allow-unrelated-histories
     ```
 
@@ -1352,6 +1374,13 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
   git checkout main
   git merge integrate-monorepo 
   git branch -d integrate-monorepo
+  ```
+
+- push remote `main` branch local tags imported
+
+  ```bash
+  git push
+  git push --tags 
   ```
 
 ### Migrate from `Github` to  `forgejo` public instance
