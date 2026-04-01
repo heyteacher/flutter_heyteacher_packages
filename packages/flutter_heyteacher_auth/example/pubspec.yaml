@@ -35,14 +35,14 @@ dependencies:
   cupertino_icons: ^1.0.9
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^2.0.11+150 
+  flutter_heyteacher_auth: ^2.0.12+152 
   flutter_heyteacher_logger: ^2.0.10+146 
-  flutter_heyteacher_views: ^3.0.1+144 
+  flutter_heyteacher_views: ^3.0.3+148 
   go_router: ^17.1.0
   logging: ^1.3.0 
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.2.1+156 
+  flutter_heyteacher_meta: ^7.3.0+160 
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0
