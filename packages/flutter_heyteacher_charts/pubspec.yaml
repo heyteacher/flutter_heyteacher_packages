@@ -1,7 +1,14 @@
 name: flutter_heyteacher_charts
-description: "A heyteacher flutter package for create charts"
+description: "A high-level Flutter charting library built on top of fl_chart"
 version: 2.0.1+112
-publish_to: none
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_charts
+license: BSD 3-Clause
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_charts
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_charts
+topics: [flutter, charts, fl-chart, flutter-charts]
+funding: [https://liberapay.com/heyteacher]
+
 
 environment:
   sdk: ^3.6.2
