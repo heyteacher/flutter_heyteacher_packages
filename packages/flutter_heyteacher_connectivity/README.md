@@ -8,6 +8,8 @@ A Flutter package for managing and displaying connectivity status.
 * **ConnectivityCard**: A reusable widget to display connectivity status.
 * **Localization**: Includes `FlutterHeyteacherConnectivityLocalizations` for internationalization support.
 
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+
 ## Installation
 
 Add the dependency to your `pubspec.yaml`:
