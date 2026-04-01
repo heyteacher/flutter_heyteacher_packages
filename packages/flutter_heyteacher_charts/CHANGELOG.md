@@ -1,3 +1,12 @@
+## [flutter_heyteacher_charts-2.0.0+110] - 2026-04-01
+
+### 💼 Other
+
+- *(flutter_heyteacher_charts)* Update version to 2.0.0+110 which closes #2
+
+### 🚜 Refactor
+
+- [**breaking**] Enhance charts constructor signature
 ## [flutter_heyteacher_charts-1.29.8+108] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +16,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 1.29.8+108
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_charts-1.29.8+108
 ## [flutter_heyteacher_charts-1.29.7+106] - 2026-03-24
 
 ### 💼 Other
