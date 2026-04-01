@@ -1,3 +1,12 @@
+## [flutter_heyteacher_charts-2.0.1+112] - 2026-04-01
+
+### 💼 Other
+
+- *(flutter_heyteacher_charts)* Update version to 2.0.1+112 which closes #3
+
+### 📚 Documentation
+
+- Add `example` app and add documentation into `README.md`
 ## [flutter_heyteacher_charts-2.0.0+110] - 2026-04-01
 
 ### 💼 Other
@@ -7,6 +16,10 @@
 ### 🚜 Refactor
 
 - [**breaking**] Enhance charts constructor signature
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_charts)* Update `CHANGELOG.md` with flutter_heyteacher_charts-2.0.0+110
 ## [flutter_heyteacher_charts-1.29.8+108] - 2026-03-26
 
 ### 🐛 Bug Fixes
