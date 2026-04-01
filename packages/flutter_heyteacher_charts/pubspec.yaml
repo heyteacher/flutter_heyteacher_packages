@@ -7,27 +7,23 @@ environment:
   sdk: ^3.6.2
   flutter: ">=1.17.0"
 
+resolution: workspace
+
 dependencies:
-  collection:
-  equatable:
-  fl_chart:
-    path: ../packages/fl_chart
+  collection: ^1.19.1
+  equatable: ^2.0.8
+  fl_chart: ^1.2.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_locale:
-  flutter_heyteacher_views:
+  flutter_heyteacher_locale: ^2.0.10+146
+  flutter_heyteacher_views: ^3.0.3+148
 
-dependency_overrides:
-  flutter_heyteacher_locale:
-    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_locale
-  flutter_heyteacher_views:
-    path: ../flutter_heyteacher_packages/packages/flutter_heyteacher_views
 
 dev_dependencies:
-  flutter_heyteacher_meta:
+  flutter_heyteacher_meta: ^7.3.0+160
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^10.0.0
+  very_good_analysis: ^10.2.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
