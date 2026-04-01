@@ -15,6 +15,8 @@ This package provides singleton `ViewModel` classes to simplify integration with
 - `FirebaseCloudMessagingViewModel`: Handles setup and interaction with Firebase Cloud Messaging (FCM) for push notifications.
 - `GoogleAnalitycsViewModel`: A wrapper for logging events and user properties to Google Analytics for Firebase.
 
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+
 ## Getting started
 
 ### Prerequisites
