@@ -13,6 +13,8 @@ This package exports the following modules via `platform.dart`:
 - **Localization**: `FlutterHeyteacherPlatformLocalizations` handles localized strings specific to platform features.
 - **Platform Utilities**: `PlatformHelper` offers methods to handle platform-specific behaviors.
 
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+
 ## Usage
 
 Import the main library file to access the components:
