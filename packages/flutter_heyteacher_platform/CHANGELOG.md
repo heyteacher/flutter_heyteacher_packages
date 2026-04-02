@@ -1,3 +1,20 @@
+## [flutter_heyteacher_platform-2.0.6+138] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+- *(platform)* Corrected unlock advanced features unlock and show a snake message
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_platform)* Update version to 2.0.6+138 which closes #88
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_platform-2.0.5+136] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -9,6 +26,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.5+136
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_platform-2.0.5+136
 ## [flutter_heyteacher_platform-2.0.4+134] - 2026-03-24
 
 ### 🐛 Bug Fixes
