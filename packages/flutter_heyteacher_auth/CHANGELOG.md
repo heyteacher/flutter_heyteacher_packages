@@ -1,3 +1,18 @@
+## [flutter_heyteacher_auth-2.0.13+154] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(README.md)* Typo causing broken ling
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_auth)* Update version to 2.0.13+154 which closes #tmp
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_auth-2.0.12+152] - 2026-03-31
 
 ### 🐛 Bug Fixes
@@ -9,6 +24,10 @@
 
 - *(deps)* Bump dependencies
 - Update version to 2.0.12+152 which closes #74
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_auth-2.0.12+152
 ## [flutter_heyteacher_auth-2.0.11+150] - 2026-03-26
 
 ### 🐛 Bug Fixes
