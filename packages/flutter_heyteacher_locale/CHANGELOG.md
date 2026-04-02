@@ -1,3 +1,18 @@
+## [flutter_heyteacher_locale-2.0.11+148] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(README.md)* Typo causing broken link
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_locale)* Update version to 2.0.11+148 which closes #tmp
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_locale-2.0.10+146] - 2026-03-30
 
 ### 🐛 Bug Fixes
@@ -8,6 +23,10 @@
 
 - *(deps)* Bump dependencies
 - Update version to 2.0.10+146 which closes #68
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_locale-2.0.10+146
 ## [flutter_heyteacher_locale-2.0.9+144] - 2026-03-26
 
 ### 🐛 Bug Fixes
