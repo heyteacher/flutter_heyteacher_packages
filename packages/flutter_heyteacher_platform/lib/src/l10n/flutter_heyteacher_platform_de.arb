@@ -5,5 +5,7 @@
   "askSupportFor": "Support anfragen für: ",
   "@askSupportFor": {},
   "deviceOfflineAskSupportWhenOnline": "Gerät offline. Support anfragen, wenn das Gerät mit dem Internet verbunden ist.",
-  "@deviceOfflineAskSupportWhenOnline": {}
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "advancedFeaturesUnlocked": "Erweiterte Funktionen entsperrt!",
+  "@advancedFeaturesUnlocked": {}
 }

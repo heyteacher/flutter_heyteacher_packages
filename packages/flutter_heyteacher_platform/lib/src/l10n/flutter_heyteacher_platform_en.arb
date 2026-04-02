@@ -5,5 +5,7 @@
   "askSupportFor": "Ask support for: ",
   "@askSupportFor": {},
   "deviceOfflineAskSupportWhenOnline": "Device offline. Ask support when the device is connected to the internet.",
-  "@deviceOfflineAskSupportWhenOnline": {}
-}
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "advancedFeaturesUnlocked": "Advanced Features Unlocked!",
+  "@advancedFeaturesUnlocked": {}
+} 

@@ -19,4 +19,7 @@ class FlutterHeyteacherPlatformLocalizationsDe
   @override
   String get deviceOfflineAskSupportWhenOnline =>
       'Gerät offline. Support anfragen, wenn das Gerät mit dem Internet verbunden ist.';
+
+  @override
+  String get advancedFeaturesUnlocked => 'Erweiterte Funktionen entsperrt!';
 }

@@ -49,7 +49,17 @@ class DevicePackageInfoCard extends StatelessWidget {
       key: const ValueKey('lt_fhu_version'),
       leading: IconButton(
         icon: const Icon(Icons.smartphone),
-        onPressed: InfoDevicePackageViewModel.instance._incrementTapCounter,
+        onPressed: () async {
+          InfoDevicePackageViewModel.instance._incrementTapCounter();
+          if (InfoDevicePackageViewModel.instance.tapCounterReached) {
+            showSnackBar(
+              context: context,
+              message: FlutterHeyteacherPlatformLocalizations.of(
+                context,
+              )!.advancedFeaturesUnlocked,
+            );
+          }
+        },
       ),
       title: FutureBuilder<String>(
         future: InfoDevicePackageViewModel.instance.packageVersion,
@@ -106,6 +116,8 @@ class InfoDevicePackageViewModel {
   ///
   int _tapCounter = 0;
 
+  bool _tapCounterReached = false;
+
   /// A stream controller to broadcast the tap counter.
   final StreamController<bool> _tapCounterReachedStreamController =
       StreamController<bool>.broadcast();
@@ -117,9 +129,14 @@ class InfoDevicePackageViewModel {
   Stream<bool> get tapCounterReachedStream =>
       _tapCounterReachedStreamController.stream;
 
+  /// Returns true if the tap counter has reached 5.
+  bool get tapCounterReached => _tapCounterReached;
+
   /// Increments the tap counter and broadcasts the new value.
-  void _incrementTapCounter() =>
-      _tapCounterReachedStreamController.sink.add((++_tapCounter) >= 5);
+  void _incrementTapCounter() {
+    _tapCounterReached = (++_tapCounter) >= 5;
+    _tapCounterReachedStreamController.sink.add(_tapCounterReached);
+  }
 
   /// Asynchronously retrieves detailed information about the current device.
   ///
