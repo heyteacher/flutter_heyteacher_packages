@@ -8,7 +8,7 @@ A Flutter package for managing `Text-to-Speech` (`TTS`) functionalities, specifi
 - **UI Components**: Ready-to-use widgets like `EnableTTSChoiceCard` for enabling/disabling TTS.
 - **Localization**: Integrated localization support via `FlutterHeyteacherTextToSpeechLocalizations`.
 
-The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.org/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
 
 ## Getting started
 
