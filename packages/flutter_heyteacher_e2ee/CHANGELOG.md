@@ -1,3 +1,19 @@
+## [flutter_heyteacher_e2ee-2.0.9+145] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(README.md)* Typo causing broken link
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_e2ee)* Update version to 2.0.9+145 which closes #tmp
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_e2ee-2.0.8+143] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +23,10 @@
 ### 💼 Other
 
 - Update version to 2.0.8+143 which closes #54
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_e2ee-2.0.8+143
 ## [flutter_heyteacher_e2ee-2.0.7+141] - 2026-03-26
 
 ### 🐛 Bug Fixes
