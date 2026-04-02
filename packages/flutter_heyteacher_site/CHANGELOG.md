@@ -1,3 +1,19 @@
+## [flutter_heyteacher_site-1.10.2+124] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(README.md)* Typo causing broken link
+- *(README.md)* Typo causing broken link
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_site)* Update version to 1.10.2+124 which closes #tmp
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_site-1.10.1+122] - 2026-03-30
 
 ### 💼 Other
@@ -14,6 +30,7 @@
 ### 📚 Documentation
 
 - Add BSD 3-Clause License `LICENSE`
+- Update changelog generated for flutter_heyteacher_site-1.10.1+122
 ## [flutter_heyteacher_site-1.10.0+120] - 2026-03-27
 
 ### 🚀 Features
