@@ -15,7 +15,7 @@ A Flutter package providing a set of standardized UI components and utilities fo
   - Themed iconography with `LeadingIcon`.
 - **Localization**: Integrated localization support through `FlutterHeyteacherSiteLocalizations`.
 
-The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.orf/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
 
 ## Getting started
 
