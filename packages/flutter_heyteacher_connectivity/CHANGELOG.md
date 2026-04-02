@@ -1,3 +1,20 @@
+## [flutter_heyteacher_connectivity-2.1.5+142] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+- *(README.md)* Typo causing broken link
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_connectivity)* Update version to 2.1.5+142 which closes #tmp
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_connectivity-2.1.4+140] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -9,6 +26,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.1.4+140
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_connectivity-2.1.4+140
 ## [flutter_heyteacher_connectivity-2.1.3+138] - 2026-03-24
 
 ### 💼 Other
