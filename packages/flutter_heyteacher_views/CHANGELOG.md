@@ -1,3 +1,18 @@
+## [flutter_heyteacher_views-3.0.4+150] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(README.md)* Typo causing broken link
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_views)* Update version to 3.0.4+150 which closes #tmp
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_views-3.0.3+148] - 2026-03-31
 
 ### 🐛 Bug Fixes
@@ -7,6 +22,10 @@
 ### 💼 Other
 
 - Update version to 3.0.3+148 which closes #73
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_views-3.0.3+148
 ## [flutter_heyteacher_views-3.0.2+146] - 2026-03-31
 
 ### 🐛 Bug Fixes
