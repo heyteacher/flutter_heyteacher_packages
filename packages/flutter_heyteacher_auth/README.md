@@ -12,7 +12,7 @@ This package provides the necessary utilities and repositories to handle user se
 - **Demo Mode**: `Fake` authentication support for demonstration and testing purposes without requiring real credentials with [firebase_auth_mocks](https://pub.dev/packages/firebase_auth_mocks).
 - **Ecosystem Integration**: Designed to work seamlessly with other packages of [flutter_heyteacher_packages](https://github.com/heyteacher/flutter_heyteacher_packages)
 
-The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.org/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
 
 ## Usage
 
