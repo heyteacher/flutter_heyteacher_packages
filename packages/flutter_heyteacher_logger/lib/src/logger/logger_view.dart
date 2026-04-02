@@ -11,7 +11,6 @@ library;
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
 import 'package:flutter_heyteacher_logger/flutter_heyteacher_logger.dart';
@@ -51,9 +50,10 @@ class LoggerCard extends StatelessWidget {
 
   @override
   StreamBuilder<bool> build(BuildContext context) => StreamBuilder<bool>(
+    initialData: InfoDevicePackageViewModel.instance.tapCounterReached,
     stream: InfoDevicePackageViewModel.instance.tapCounterReachedStream,
     builder: (_, tapCounterReachedSnapshot) => Visibility(
-      visible: kDebugMode || (tapCounterReachedSnapshot.data ?? false),
+      visible: tapCounterReachedSnapshot.data ?? false,
       child: Card(
         child: ListTile(
           key: const ValueKey('lt_fhu_logger'),
