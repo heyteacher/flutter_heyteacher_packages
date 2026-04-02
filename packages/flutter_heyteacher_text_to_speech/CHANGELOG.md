@@ -1,3 +1,15 @@
+## [flutter_heyteacher_text_to_speech-2.0.13+152] - 2026-04-02
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_text_to_speech)* Update version to 2.0.13+152 which closes #tmp
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_text_to_speech-2.0.12+150] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +19,10 @@
 ### 💼 Other
 
 - Update version to 2.0.12+150 which closes #53
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_text_to_speech-2.0.12+150
 ## [flutter_heyteacher_text_to_speech-2.0.11+148] - 2026-03-26
 
 ### 🐛 Bug Fixes
