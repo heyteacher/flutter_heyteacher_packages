@@ -1,3 +1,12 @@
+## [flutter_heyteacher_platform-2.0.7+140] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(README.md)* Typo causing broken link
+
+### 💼 Other
+
+- *(flutter_heyteacher_platform)* Update version to 2.0.7+140 which closes #tmp
 ## [flutter_heyteacher_platform-2.0.6+138] - 2026-04-02
 
 ### 🐛 Bug Fixes
@@ -15,6 +24,7 @@
 ### 📚 Documentation
 
 - Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
+- *(flutter_heyteacher_platform)* Update `CHANGELOG.md` with flutter_heyteacher_platform-2.0.6+138
 ## [flutter_heyteacher_platform-2.0.5+136] - 2026-03-26
 
 ### 🐛 Bug Fixes
