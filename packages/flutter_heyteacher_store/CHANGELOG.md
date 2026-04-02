@@ -1,3 +1,18 @@
+## [flutter_heyteacher_store-2.0.3+1036] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(README.md)* Typo causing broken link
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_store)* Update version to 2.0.3+1036 which closes #tmp
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_store-2.0.2+1034] - 2026-03-31
 
 ### 💼 Other
@@ -8,6 +23,10 @@
 
 - Merge remote-tracking branch 'temp_store/main' into 72
 - Configure `flutter_heyteacher_store` as package of monorepo `flutter_heyteacher_packages` and add metadata for `pub.dev` publish
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_store-2.0.2+1034
 ## [flutter_heyteacher_store-2.0.1+1032] - 2026-03-31
 
 ### 💼 Other
