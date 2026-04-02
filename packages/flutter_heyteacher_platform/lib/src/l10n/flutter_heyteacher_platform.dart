@@ -126,6 +126,12 @@ abstract class FlutterHeyteacherPlatformLocalizations {
   /// In en, this message translates to:
   /// **'Device offline. Ask support when the device is connected to the internet.'**
   String get deviceOfflineAskSupportWhenOnline;
+
+  /// No description provided for @advancedFeaturesUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Features Unlocked!'**
+  String get advancedFeaturesUnlocked;
 }
 
 class _FlutterHeyteacherPlatformLocalizationsDelegate

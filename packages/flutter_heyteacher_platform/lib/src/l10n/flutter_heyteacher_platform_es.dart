@@ -19,4 +19,8 @@ class FlutterHeyteacherPlatformLocalizationsEs
   @override
   String get deviceOfflineAskSupportWhenOnline =>
       'Dispositivo sin conexión. Solicite soporte cuando el dispositivo esté conectado a internet.';
+
+  @override
+  String get advancedFeaturesUnlocked =>
+      '¡Características avanzadas desbloqueadas!';
 }

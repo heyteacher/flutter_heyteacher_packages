@@ -5,5 +5,7 @@
   "askSupportFor": "Demander de l'aide pour : ",
   "@askSupportFor": {},
   "deviceOfflineAskSupportWhenOnline": "Appareil hors ligne. Demandez de l'aide lorsque l'appareil est connecté à internet.",
-  "@deviceOfflineAskSupportWhenOnline": {}
+  "@deviceOfflineAskSupportWhenOnline": {},
+  "advancedFeaturesUnlocked": "Fonctionnalités avancées déverrouillées!",
+  "@advancedFeaturesUnlocked": {}
 }
