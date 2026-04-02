@@ -12,7 +12,7 @@ A Flutter package providing a collection of reusable UI widgets, adaptive layout
 - **Tutorials**: A `TutorialViewModel` to help guide users through your app's features.
 - **Handy Utilities**: dialogs (`showConfirmCancelDialog`), snackbars (`showSnackBar`), and extensions.
 
-The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.or/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
+The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.org/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
 
 ## Getting started
 
