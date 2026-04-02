@@ -1,3 +1,19 @@
+## [flutter_heyteacher_timer_workflow-2.0.6+138] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- Compatible with dependency constraint lower bounds
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_timer_workflow)* Update version to 2.0.6+138 which closes #tmp
+
+### 📚 Documentation
+
+- Fix broken link on  `pubspec.yaml` metadata
 ## [flutter_heyteacher_timer_workflow-2.0.5+136] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +23,10 @@
 ### 💼 Other
 
 - *(deps)* Bump deps to 2.0.5+136
+
+### 📚 Documentation
+
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_timer_workflow-2.0.5+136
 ## [flutter_heyteacher_timer_workflow-2.0.4+134] - 2026-03-24
 
 ### 🐛 Bug Fixes
