@@ -1,3 +1,12 @@
+## [flutter_heyteacher_logger-2.0.12+150] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(README.md)* Typo causing broken link
+
+### 💼 Other
+
+- *(flutter_heyteacher_logger)* Update version to 2.0.12+150 which closes #tmp
 ## [flutter_heyteacher_logger-2.0.11+148] - 2026-04-02
 
 ### 🐛 Bug Fixes
@@ -14,6 +23,7 @@
 ### 📚 Documentation
 
 - Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
+- *(flutter_heyteacher_logger)* Update `CHANGELOG.md` with flutter_heyteacher_logger-2.0.11+148
 ## [flutter_heyteacher_logger-2.0.10+146] - 2026-03-26
 
 ### 🐛 Bug Fixes
