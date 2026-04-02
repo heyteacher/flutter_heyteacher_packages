@@ -1,3 +1,19 @@
+## [flutter_heyteacher_logger-2.0.11+148] - 2026-04-02
+
+### 🐛 Bug Fixes
+
+- *(logger)* Show logger when advanced feature are unloked
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_logger)* Update version to 2.0.11+148 which closes #89
+
+### 📚 Documentation
+
+- Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
 ## [flutter_heyteacher_logger-2.0.10+146] - 2026-03-26
 
 ### 🐛 Bug Fixes
@@ -7,6 +23,10 @@
 ### 💼 Other
 
 - Update version to 2.0.10+146 which closes #55
+
+### 📚 Documentation
+
+- Update changelog generated for flutter_heyteacher_logger-2.0.10+146
 ## [flutter_heyteacher_logger-2.0.9+144] - 2026-03-26
 
 ### 🐛 Bug Fixes
