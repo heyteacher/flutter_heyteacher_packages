@@ -19,7 +19,7 @@ dependencies:
   connectivity_plus: ^7.1.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_views: ^3.0.3+148
+  flutter_heyteacher_views: ^3.0.4+150
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
