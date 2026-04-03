@@ -19,8 +19,8 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_heyteacher_locale: ^2.0.10+146 
-  flutter_heyteacher_platform: ^2.0.5+136 
+  flutter_heyteacher_locale: ^2.0.11+148 
+  flutter_heyteacher_platform: ^2.0.7+140 
   flutter_localizations:
     sdk: flutter
   flutter_tts: ^4.2.5
