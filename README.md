@@ -50,15 +50,13 @@ All packages of the `Flutter Heyteacher` ecosystem implement the `Model-View-Vie
 
 ![`Model-View-ViewModel` architecture](https://docs.flutter.dev/assets/images/docs/app-architecture/guide/feature-architecture-simplified-Data-highlighted.png)
 
-`Data`, the classes with suffix `Data`, represents the data of application without logic, implementing only serialization (`JSON` or `Firestore` ).
-
-`Data` transport information across layers.
-
 Each component exposed by the `Flutter Heyteacher` packages implements one of these layers:
 
-- `View`: `Widget` or `Layout`, a UI component for represent `Data` with basic logic which interacts with one or more `View Model` to aquire `Data`.
+- `Data`: classes with suffix `Data` which hold the information of application without logic, implementing only serialization (`JSON` or `Firestore` documents).
+
+- `View`: [Widgets](https://docs.flutter.dev/ui/widgets) or [Layouts](https://docs.flutter.dev/ui/layout) with basic logic which interact with one or more `View Model` to aquire `Data` and show in applcation.
   
-- `View Model`, the classes with suffix `ViewModel` implemented via [`Singleton` Pattern](#singleton-pattern), retrieve `Data` from `Repository` or `Shared Preferances` or `Service`. `View Model` also implements strong logic.
+- `View Model`, classes with suffix `ViewModel` implemented via [`Singleton` Pattern](#singleton-pattern), retrieve `Data` from `Repository` or `Shared Preferances` or `Service` and expose to `View` layer. `View Model` implements strong application logic.
 `Data` are exposed to `View` component in bidirectional way:
   
   - `User Action Trigger commands`: `View` component invoke a `View Model` method after an user action
@@ -66,7 +64,7 @@ Each component exposed by the `Flutter Heyteacher` packages implements one of th
   - `UI State`: `View Model` emits `Data` and `View` component which are listening the `View Model` stream, receives `Data` and refresh itself
 
 - `Repository`: in `Flutter Heyteacher` ecosystem, compoment which extend `Store` class of [flutter_heyteacher_store](packages/flutter_heyteacher_store) package which wraps [Firestore](https://firebase.google.com/docs/firestore).
-As for interaction betwen `View` and  `View Model`,  `Data` are exposed to `View Model` component in bidirectional way:
+As for interaction between `View` and  `View Model`,  `Data` are exposed to `View Model` component in bidirectional way:
 
   - `method call`: `View Model` component invoke a `Repository` method (`list`, `get`, `set`, `update`, `delete`, etc)
   
