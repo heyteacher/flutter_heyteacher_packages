@@ -1,3 +1,9 @@
+## [flutter_heyteacher_logger-2.0.13+152] - 2026-04-03
+
+### 💼 Other
+
+- *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds`
+- *(flutter_heyteacher_logger)* Update version to 2.0.13+152 which closes #92
 ## [flutter_heyteacher_logger-2.0.12+150] - 2026-04-02
 
 ### 🐛 Bug Fixes
@@ -7,6 +13,10 @@
 ### 💼 Other
 
 - *(flutter_heyteacher_logger)* Update version to 2.0.12+150 which closes #tmp
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_logger)* Update `CHANGELOG.md` with flutter_heyteacher_logger-2.0.12+150
 ## [flutter_heyteacher_logger-2.0.11+148] - 2026-04-02
 
 ### 🐛 Bug Fixes
