@@ -1,3 +1,13 @@
+## [flutter_heyteacher_views-3.0.5+152] - 2026-04-11
+
+### 🐛 Bug Fixes
+
+- *(theme)* Change log level from `INFO` to `FINER`
+
+### 💼 Other
+
+- *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds`
+- *(flutter_heyteacher_views)* Update version to 3.0.5+152 which closes #94
 ## [flutter_heyteacher_views-3.0.4+150] - 2026-04-02
 
 ### 🐛 Bug Fixes
@@ -13,6 +23,7 @@
 ### 📚 Documentation
 
 - Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
+- *(flutter_heyteacher_views)* Update `CHANGELOG.md` with flutter_heyteacher_views-3.0.4+150
 ## [flutter_heyteacher_views-3.0.3+148] - 2026-03-31
 
 ### 🐛 Bug Fixes
