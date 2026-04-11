@@ -85,7 +85,7 @@ class ThemeViewModel {
     unawaited(
       themeMode.then(
         (themeMode) =>
-            _logger.info('<costructor>: themeMode ${themeMode.name}'),
+            _logger.finer('<costructor>: themeMode ${themeMode.name}'),
       ),
     );
   }
@@ -312,7 +312,7 @@ class ThemeViewModel {
       themeData: theme,
       themeMode: _themeMode ?? ThemeMode.system,
     ));
-    _logger.info('(themeMode): initialized themeMode ${_themeMode?.name}');
+    _logger.finer('(themeMode): initialized themeMode ${_themeMode?.name}');
     return _themeMode ?? ThemeMode.system;
   }
 
@@ -341,7 +341,7 @@ class ThemeViewModel {
   /// given. An event is emitted on the [themeStream].
   /// An event is emitted on the [themeStream].
   void setDefault() {
-    _logger.info('<setDefault>:');
+    _logger.finer('<setDefault>:');
     darkTheme = _themeData(
       themeMode: ThemeMode.dark,
       colorScheme: _darkColorScheme,
@@ -373,7 +373,7 @@ class ThemeViewModel {
     ({Color light, Color dark})? onSurfaceVariant,
     ({Color light, Color dark})? surfaceContainer,
   }) {
-    _logger.info('<update>:');
+    _logger.finer('<update>:');
     final lightColorScheme = (
       primary: primary?.light,
       disabled: disabled?.light,
