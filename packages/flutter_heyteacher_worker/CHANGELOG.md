@@ -1,3 +1,18 @@
+## [flutter_heyteacher_worker-2.0.7+140] - 2026-04-14
+
+### 🐛 Bug Fixes
+
+- Pubspec metadata corrected
+- Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo`
+- Compatible with dependency constraint lower bounds
+- Remove `debugPrint`  when  execute in main thread, not in Isolate
+
+### 💼 Other
+
+- *(deps)* Bump dependencies
+- *(deps)* Bump dependencies
+- *(deps)* Bump rependencies version
+- *(flutter_heyteacher_worker)* Update version to 2.0.7+140 which closes #99
 ## [flutter_heyteacher_worker-2.0.6+138] - 2026-03-24
 
 ### 🐛 Bug Fixes
@@ -16,6 +31,7 @@
 ### 📚 Documentation
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics`
+- *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_worker-2.0.6+138
 ## [flutter_heyteacher_worker-2.0.5+136] - 2026-03-13
 
 ### 🐛 Bug Fixes
