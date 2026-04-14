@@ -73,10 +73,6 @@ final class Worker<I, O> {
   ) async {
     try {
       if (kIsWeb || Platform.environment.containsKey('FLUTTER_TEST')) {
-        debugPrint(
-          '(${_workerIsolate.runtimeType}.execute): platform web '
-          'or unit test, execute in main thread, not in Isolate',
-        );
         return (
           output: await _workerIsolate.call(input),
           error: null,
