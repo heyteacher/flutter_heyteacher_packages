@@ -17,11 +17,11 @@ resolution: workspace
 
 dependencies:
   clock: ^1.1.2
-  cloud_firestore: ^6.2.0
+  cloud_firestore: ^6.3.0
   collection: ^1.19.1
   copy_with_extension: ^14.0.0
   equatable: ^2.0.8
-  firebase_auth: ^6.3.0
+  firebase_auth: ^6.4.0
   flutter:
     sdk: flutter
   flutter_heyteacher_auth: ^2.0.13+154

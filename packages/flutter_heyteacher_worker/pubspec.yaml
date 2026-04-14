@@ -1,6 +1,6 @@
 name: flutter_heyteacher_worker
 description: "The flutter heyteacher package for worker utilities."
-version: 2.0.6+138
+version: 2.0.7+140
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_worker
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
