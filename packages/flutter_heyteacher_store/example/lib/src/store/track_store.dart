@@ -22,9 +22,6 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
         ],
         fromFirestoreFactory: BaseTrackData.fromFirestore,
         detailsFromFirestoreFactory: TrackData.fromFirestore,
-        groupByFields: {
-          'year': _groupByYear,
-        },
       );
 
   static TrackStore? _instance;
@@ -33,8 +30,4 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
   // ignore: prefer_constructors_over_static_methods
   static TrackStore get instance => _instance ??= TrackStore();
   static set instance(TrackStore instance) => _instance = instance;
-
-  static String _groupByYear(TrackData trackData) {
-    return '${trackData.startTime.year}';
-  }
 }

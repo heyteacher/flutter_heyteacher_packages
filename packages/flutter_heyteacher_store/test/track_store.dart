@@ -1,7 +1,8 @@
 import 'package:clock/clock.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'
+    show AggregateStageOptions, CountAll, Field;
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter_heyteacher_e2ee/flutter_heyteacher_e2ee.dart';
-import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:flutter_heyteacher_store/flutter_heyteacher_store.dart';
 import 'package:intl/intl.dart';
 
@@ -80,11 +81,37 @@ class BaseTrackData extends FirestoreData<dynamic> {
   @override
   Map<String, dynamic> toFirestore(List<String>? fields) => {
         'startTime': FirestoreData.toFirestoreTimestamp(startTime),
+        'year': startTime.year,
         if (fields?.contains('stopTime') ?? true)
           'stopTime': FirestoreData.toFirestoreTimestamp(stopTime),
         if (fields?.contains('duration') ?? true) 'duration': duration,
         if (fields?.contains('distance') ?? true) 'distance': distance,
       };
+}
+
+/// Represents the count for a specific year
+class CountPerYearData {
+  /// Creates an instance of [CountPerYearData] specifying the
+  /// [count] of track for a specific [year]
+  const CountPerYearData._({
+    required this.count,
+    required this.year,
+  });
+
+  /// Creates a [CountPerYearData] instance from a JSON map from a pipeline.
+  factory CountPerYearData.fromJson(Map<String, dynamic> json) =>
+      CountPerYearData._(
+        count: json['count'] as int,
+        year: json['year'] as int,
+      );
+
+  /// The user's Functional Threshold Power (FTP) in watts at the time of the
+  /// track.
+  final int count;
+
+  /// The user's Functional Threshold Heart Rate (FTHR) in BPM at the time of
+  /// the track.
+  final int year;
 }
 
 class TrackStore extends Store<BaseTrackData, TrackData> {
@@ -102,16 +129,7 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
           ],
           fromFirestoreFactory: BaseTrackData.fromFirestore,
           detailsFromFirestoreFactory: TrackData.fromFirestore,
-          groupByFields: {
-            'year': _groupByYear,
-          },
-          // if web or test, use bkdb database
-          databaseId: PlatformHelper.isNotMobile ? 'bkdb' : null,
         );
-
-  static String _groupByYear(TrackData trackData) {
-    return '${trackData.startTime.year}';
-  }
 
   static TrackStore? _instance;
 
@@ -119,4 +137,21 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
   // ignore: prefer_constructors_over_static_methods
   static TrackStore get instance => _instance ??= TrackStore();
   static set instance(TrackStore instance) => _instance = instance;
+
+  /// Returns the count per year using pipeline
+  Future<Iterable<CountPerYearData?>> get countPerTrackTypeAndYearList async {
+    final snapshot = await collectionPipeline
+        .aggregateWithOptions(
+          AggregateStageOptions(
+            accumulators: [CountAll().as('count')],
+            groups: [Field('year')],
+          ),
+        )
+        .execute();
+    return snapshot.result.map(
+      (pipelineResult) => pipelineResult.data() != null
+          ? CountPerYearData.fromJson(pipelineResult.data()!)
+          : null,
+    );
+  }
 }

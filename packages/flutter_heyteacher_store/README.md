@@ -1,33 +1,30 @@
 # `flutter_heyteacher_store`
 
-Firebase Firestore library using [generics](https://dart.dev/language/generics|generics).
+> [!IMPORTANT]
+> __BREAKING CHANGE__ starting from version `3.0.0` the __Group By__ features has been replaced by
+> [Pipelines](https://firebase.google.com/docs/firestore/enterprise/pipelines-overview) available only on databases
+> __Firestore in Native mode (with Pipeline operations) for Enterprise edition__
+
+Firebase Firestore library using [generics](https://dart.dev/language/generics|generics). This package is specifically designed for the [Flutter HeyTeacher ecosystem](../../).
 
 - use [generics](https://dart.dev/language/generics|generics) to define two
   different DataType in [firestore.CollectionReference.withConverter]
-  - `<LightDataType>` the lighweight [FirestoreData] document used in
-     [Store.list] and [Store.query]
-  - `<DetailsDataType>` the full detailed [FirestoreData] document used in
-    [Store.get], [Store.set] and [Store.update]
+  - `<LightDataType>` the lighweight [FirestoreData] document used in [Store.list] and [Store.query]
+  - `<DetailsDataType>` the full detailed [FirestoreData] document used in [Store.get], [Store.set] and [Store.update]
 
-- manage collection separation in a main collection wich store
-  `<LightDataType>` documents and a `<collection>_details` which store
-  `<DetailsDataType>` documents (only if `<LightDataType>` and
-  `<DetailsDataType>` differs)
+- manage collection separation in a main collection wich store `<LightDataType>` documents and a `<collection>_details` which store `<DetailsDataType>` documents (only if `<LightDataType>` and `<DetailsDataType>` differs)
 
-- manage the user collection `/users/<uid>/` with [Store._userProfile]
-  integrating [FirebaseAuth] using automatically the `uid` of authenticated
-  user
+- manage the user collection `/users/<uid>/` with [Store._userProfile] integrating [FirebaseAuth] using automatically the `uid` of authenticated user
 
 - manage data filtering with `StoreFilter`
 
 - manage multiple order by field with `Store.orderByFields`
 
-- implement distinct and group by `Store._groupByFields`
-
-- manage aggregate field via `Store.aggregateFields` and notify aggregate
-  value changes via `Store.aggregateStream`
+- manage aggregate field via `Store.aggregateFields` and notify aggregate value changes via `Store.aggregateStream`
 
 - cache `DetailsDataType` object in `SharedPreferencesAsync`
+
+- expose [Pipelines](https://firebase.google.com/docs/firestore/enterprise/pipelines-overview) on `<LightDataType>` and `<DetailsDataType>` collections ([Pipelines](https://firebase.google.com/docs/firestore/enterprise/pipelines-overview) available only on databases __Firestore in Native mode (with Pipeline operations) for Enterprise edition__)
 
 - use [fake_cloud_firestore](https://pub.dev/packages/fake_cloud_firestore) for tests and example
 
@@ -39,6 +36,11 @@ The components in this packages are implemented following [`Model-View-ViewModel
   - [Table of Contents](#table-of-contents)
   - [Installing](#installing)
   - [Usage](#usage)
+    - [`TrackStore`](#trackstore)
+    - [`BaseTrackData`](#basetrackdata)
+    - [`TrackData`](#trackdata)
+    - [`CountPerYearData`](#countperyeardata)
+    - [`UserStore`](#userstore)
   - [Example](#example)
   - [`fake_cloud_firestore` configuration](#fake_cloud_firestore-configuration)
 
@@ -66,7 +68,9 @@ Consider the following example, store tracks in `Firestore` in these way:
 - store in `/users<uid>/tracks_details` `TrackData` document (`<DetailsDataType>`)
 - order by track `startTime` descending
 - aggregate `distance` and `duration` for `sum` and `average`
-- group by track `year`
+- count per year using pipeline
+
+### `TrackStore`
 
 Define `TrackStore` class:
 
@@ -91,27 +95,36 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
            // factory per BaseTrackData creation
            fromFirestoreFactory: BaseTrackData.fromFirestore,
            // factory per TrackData creation
-           detailsFromFirestoreFactory: TrackData.fromFirestore,
-           // group by track year, the map field /users/<uid>/tracks_years 
-           //store years and // track count per year
-           groupByFields: {
-             "years": _groupByYear,
-           });
+           detailsFromFirestoreFactory: TrackData.fromFirestore);
 
- // function used for group by year the track
- static String _groupByYear(TrackData trackData) {
-   return "${trackData.startTime.year}";
- }
+  // singleton
+  static TrackStore? _instance;
+  static TrackStore get instance {
+    _instance ??= TrackStore._();
+    return _instance!;
+  }
 
- // singleton
- static TrackStore? _instance;
- static TrackStore get instance {
-   _instance ??= TrackStore._();
-   return _instance!;
- }
-
+  /// Returns the count per year using pipeline available only on databases
+  /// Firestore in Native mode (with Pipeline operations) for Enterprise edition
+  Future<Iterable<CountPerYearData?>> get countPerTrackTypeAndYearList async {
+    final snapshot = await collectionPipeline
+        .aggregateWithOptions(
+          AggregateStageOptions(
+            accumulators: [CountAll().as('count')],
+            groups: [Field('year')],
+          ),
+        )
+        .execute();
+    return snapshot.result.map(
+      (pipelineResult) => pipelineResult.data() != null
+          ? CountPerYearData.fromJson(pipelineResult.data()!)
+          : null,
+    );
+  }
 }
 ```
+
+### `BaseTrackData`
 
 Define the `BaseTrackData` class, the `<LightDataType>` which store basic data in `/users/<uid>/tracks` collection
 
@@ -151,12 +164,15 @@ class BaseTrackData extends FirestoreData {
  @override
  Map<String, dynamic> toFirestore() => {
        'startTime': FirestoreData.toFirestoreTimestamp(startTime),
+       'year': startTime.year,
        'stopTime': FirestoreData.toFirestoreTimestamp(stopTime),
        'duration': duration,
        'distance': distance,
  };
 }
 ```
+
+### `TrackData`
 
 Define the`TrackData`, the `<DetailsDataType>` which store details data in `/users/<uid>/tracks_details` collection.
 
@@ -216,6 +232,39 @@ class TrackData extends BaseTrackData {
   }
 }
 ```
+
+### `CountPerYearData`
+
+Define `CountPerYearData` which represents the count for a specific year returned by `pipeline` query.
+
+```dart
+/// Represents the count for a specific year
+class CountPerYearData {
+  /// Creates an instance of [CountPerYearData] specifying the
+  /// [count] of track for a specific [year]
+  const CountPerYearData._({
+    required this.count,
+    required this.year,
+  });
+
+  /// Creates a [CountPerYearData] instance from a JSON map from a pipeline.
+  factory CountPerYearData.fromJson(Map<String, dynamic> json) =>
+      CountPerYearData._(
+        count: json['count'] as int,
+        year: json['year'] as int,
+      );
+
+  /// The user's Functional Threshold Power (FTP) in watts at the time of the
+  /// track.
+  final int count;
+
+  /// The user's Functional Threshold Heart Rate (FTHR) in BPM at the time of
+  /// the track.
+  final int year;
+}
+```
+
+### `UserStore`
 
 Define the `UserStore`  an user collection `/users/<uid>` ([Store._collection] is empty).
 Since `<LightDataType>` and `<DetailsDataType>` are equal to `UserData`

@@ -193,76 +193,6 @@ void main() {
     });
   });
 
-  group('track groupByCounter group:', () {
-    test('groupByCounter years check map', () async {
-      expect(
-        (await TrackStore.instance.groupBy())?.length,
-        2,
-        reason: 'years wrong size',
-      );
-      expect(
-        (await TrackStore.instance.groupBy())
-            ?.where((e) => e.groupByFields['year'] == '2023')
-            .first
-            .value,
-        2,
-        reason: 'year 2023 wrong size',
-      );
-      expect(
-        (await TrackStore.instance.groupBy())
-            ?.where((e) => e.groupByFields['year'] == '2024')
-            .first
-            .value,
-        2,
-        reason: 'year 2024 wrong size',
-      );
-    });
-    test('groupByCounter years check  map after add new track', () async {
-      await TrackStore.instance
-          .set(TrackData(startTime: DateTime(2020), distance: 0));
-      expect(
-        (await TrackStore.instance.groupBy())!.length,
-        3,
-        reason: 'years wrong size',
-      );
-      expect(
-        (await TrackStore.instance.groupBy())!
-            .where((e) => e.groupByFields['year'] == '2020')
-            .first
-            .value,
-        1,
-        reason: 'year 2020 wrong size',
-      );
-      expect(
-        (await TrackStore.instance.groupBy())!
-            .where((e) => e.groupByFields['year'] == '2023')
-            .first
-            .value,
-        2,
-        reason: 'year 2023 wrong size',
-      );
-      expect(
-        (await TrackStore.instance.groupBy())!
-            .where((e) => e.groupByFields['year'] == '2024')
-            .first
-            .value,
-        2,
-        reason: 'year 2024 wrong size',
-      );
-    });
-    test('track groupByCounter order of keys', () async {
-      expect(
-        (await TrackStore.instance.groupBy())?.map((e) => e.key),
-        ['2023', '2024'],
-      );
-      expect(
-        (await TrackStore.instance
-                .groupBy(groupByFieldsOrderDirection: OrderDirection.desc))
-            ?.map((e) => e.key),
-        ['2024', '2023'],
-      );
-    });
-  });
   group('track aggregateStream group:', () {
     test('aggregateStream check', () async {
       unawaited(TrackStore.instance.notifyAggregatesChanges());
@@ -331,8 +261,11 @@ void main() {
       final aggregate = await TrackStore.instance.aggregateStream.first;
       expect(aggregate.count, 2, reason: 'aggregate count wrong');
       expect(aggregate.getSum('distance'), 20000, reason: 'sum distance wrong');
-      expect(aggregate.getAverage('distance'), 10000,
-          reason: 'avg distance wrong',);
+      expect(
+        aggregate.getAverage('distance'),
+        10000,
+        reason: 'avg distance wrong',
+      );
       expect(
         aggregate.getSum('duration'),
         2 * 3600 * 1000,
