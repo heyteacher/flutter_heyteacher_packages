@@ -1,3 +1,14 @@
+## [flutter_heyteacher_store-3.0.0+1038] - 2026-04-15
+
+### 🚀 Features
+
+- [**breaking**] Expose pipelines on `collection` and `collection_details` for advanced queries and remove `groupBy` feature
+
+### 💼 Other
+
+- *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds`
+- *(deps)* Upgrade tighten and major versions
+- *(flutter_heyteacher_store)* Update version to 3.0.0+1038 which closes #98
 ## [flutter_heyteacher_store-2.0.3+1036] - 2026-04-02
 
 ### 🐛 Bug Fixes
@@ -13,6 +24,7 @@
 ### 📚 Documentation
 
 - Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
+- *(flutter_heyteacher_store)* Update `CHANGELOG.md` with flutter_heyteacher_store-2.0.3+1036
 ## [flutter_heyteacher_store-2.0.2+1034] - 2026-03-31
 
 ### 💼 Other
