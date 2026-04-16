@@ -1,3 +1,13 @@
+## [flutter_heyteacher_meta-7.4.1+164] - 2026-04-16
+
+### 🐛 Bug Fixes
+
+- *(fastlane)* Lane `release` corrected buld number imcrement
+- *(fastlane)* Corrected check of answer to confirm version detected
+
+### 💼 Other
+
+- *(flutter_heyteacher_meta)* Update version to 7.4.1+164 which closes #108
 ## [flutter_heyteacher_meta-7.4.0+162] - 2026-04-16
 
 ### 🚀 Features
@@ -8,6 +18,10 @@
 ### 💼 Other
 
 - *(flutter_heyteacher_meta)* Update version to 7.4.0+162 which closes #104
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.4.0+162
 ## [flutter_heyteacher_meta-7.3.1+162] - 2026-04-01
 
 ### 💼 Other
