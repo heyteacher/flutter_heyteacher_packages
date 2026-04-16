@@ -89,12 +89,12 @@ lane :release do|options|
     if options[:semver] != nil
       version = sh("dart run flutter_heyteacher_meta:dartsemver #{options[:semver]}")
     elsif
-      version = sh("git-cliff --bumped-version").lines.last.strip!.split("-").last
-      confirm = UI.input("Confirm new version detected #{version}? (Y/n):")
-      if confirm != nil && confirm != "" && confirm.downcase == "y"
+      version = sh("git-cliff --bumped-version").lines.last.strip!.split("-").last.split("+").first
+      confirm = UI.input("Version detected is #{version}, confirm? (Y/n):")
+      if confirm != nil && confirm != "" && confirm.downcase != "y"
         exit(0)
       end
-      sh("dart run flutter_heyteacher_meta:dartsemver set --version #{version}")
+      version = sh("dart run flutter_heyteacher_meta:dartsemver set --version #{version}")
       puts "\"pubspec.yaml\" updated with new version #{version}"
     end  
     # append tag suffix if set
