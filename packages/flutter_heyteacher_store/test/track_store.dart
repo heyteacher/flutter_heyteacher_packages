@@ -147,6 +147,7 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
             groups: [Field('year')],
           ),
         )
+        .sort(Field('year').descending())
         .execute();
     return snapshot.result.map(
       (pipelineResult) => pipelineResult.data() != null
