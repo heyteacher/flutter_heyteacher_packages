@@ -1,3 +1,13 @@
+## [flutter_heyteacher_meta-7.4.0+162] - 2026-04-16
+
+### 🚀 Features
+
+- *(dartsemver)* Add commant `set --version <X.Y.Z>` to update `pubspec.yaml` to a specific version
+- *(fastlane)* Lane `release` detect semver based on conventional commit messages so `semver` parameters become optional
+
+### 💼 Other
+
+- *(flutter_heyteacher_meta)* Update version to 7.4.0+162 which closes #104
 ## [flutter_heyteacher_meta-7.3.1+162] - 2026-04-01
 
 ### 💼 Other
@@ -7,6 +17,7 @@
 ### 📚 Documentation
 
 - *(README.md)* Enhance migration to monorepo guide and lane `deployweb` documentation
+- *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.3.1+162
 ## [flutter_heyteacher_meta-7.3.0+160] - 2026-03-31
 
 ### 🚀 Features
