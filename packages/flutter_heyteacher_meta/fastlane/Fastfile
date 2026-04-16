@@ -91,7 +91,7 @@ lane :release do|options|
     elsif
       version = sh("git-cliff --bumped-version").lines.last.strip!.split("-").last.split("+").first
       confirm = UI.input("Version detected is #{version}, confirm? (Y/n):")
-      if confirm != nil && confirm != "" && confirm.downcase == "y"
+      if confirm != nil && confirm != "" && confirm.downcase != "y"
         exit(0)
       end
       version = sh("dart run flutter_heyteacher_meta:dartsemver set --version #{version}")
