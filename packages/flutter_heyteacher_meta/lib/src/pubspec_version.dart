@@ -39,6 +39,9 @@ enum PubspecVersionCommand {
   /// Increment the build number.
   build,
 
+  /// Set the version.
+  set,
+
   /// Show the current version.
   show,
 
@@ -58,12 +61,14 @@ enum PubspecVersionCommand {
         return PubspecVersionCommand.patch;
       case 'build':
         return PubspecVersionCommand.build;
+      case 'set':
+        return PubspecVersionCommand.set;
       case 'show':
         return PubspecVersionCommand.show;
       case 'show-build':
         return PubspecVersionCommand.showBuild;
       default:
-        throw Exception('Invalid command: $command');
+        throw Exception("Invalid command '$command'");
     }
   }
 }
@@ -90,12 +95,13 @@ class PubspecVersion {
   Future<String?> version({
     required PubspecVersionCommand versionCommand,
     bool dryRun = false,
+    String? version,
   }) async {
     final yamlEditor = YamlEditor(await pubspecFile.readAsString());
     final regex = RegExp(r'^(\d+)\.(\d+)\.(\d+)\s?(\+(\d+))?$');
     final curretVersion = yamlEditor.parseAt(['version']).value as String;
     // apply the regex to the current version
-    final currentVersionRegexed = regex
+    var currentVersionRegexed = regex
         .allMatches(curretVersion)
         .firstOrNull
         ?.groups([
@@ -116,6 +122,21 @@ class PubspecVersion {
         _incrementVersion(currentVersionRegexed, PubspecVersionCommand.patch);
       case PubspecVersionCommand.build:
         break;
+      case PubspecVersionCommand.set:
+        if (version == null) {
+          throw Exception('--version <X.Y.Z> is required');
+        }
+        final build = currentVersionRegexed?[PubspecVersionCommand.build.index];
+        currentVersionRegexed = regex.allMatches(version).firstOrNull?.groups([
+          PubspecVersionCommand.major.index + 1,
+          PubspecVersionCommand.minor.index + 1,
+          PubspecVersionCommand.patch.index + 1,
+        ]);
+        if (currentVersionRegexed == null ||
+            currentVersionRegexed.length != 3) {
+          throw Exception('--version format must be <X.Y.Z>');
+        }
+        currentVersionRegexed = [...currentVersionRegexed, build];
       case PubspecVersionCommand.show:
         return curretVersion;
       case PubspecVersionCommand.showBuild:

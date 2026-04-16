@@ -12,35 +12,46 @@ import 'package:io/io.dart' show copyPath;
 ///
 /// Usage:
 /// ```bash
-/// dartsemver major|minor|patch|build|show|show-build [--dry-run]
+/// dartsemver major|minor|patch|build|set|show|show-build
+///            [--dry-run]
+///            [--version <X.Y.Z>]
 /// ```
 ///
-/// - `major|minor|patch`: Increments the respective version component and
+/// - `major|minor|patch|build`: Increments the respective version component and
 ///    resets subsequent components to 0.
-/// - `build`: Updates the build number to a format `yyMMddHHm` (9 digits).
+/// - `set --version <X.Y.Z>`: the new version to set.
 /// - `show`: Prints the full current version string (e.g., "1.2.3+001").
 /// - `show-build`: Prints only the current build number.
-/// - `--dry-run`: Shows the new version without modifying `pubspec.yaml`.
-///
-/// The script automatically updates the build number to `yyMMddHHm`
-/// (first 9 digits)
-/// for `major`, `minor`, `patch`, and `build` commands unless `--dry-run`
-/// is specified.
+/// - `--dry-run`: run command without modify `pubspec.yaml`.
 Future<void> dartSemver(List<String> arguments) async {
   try {
     final command = arguments.isNotEmpty ? arguments[0] : '';
-    final dryRun = arguments.length > 1 && arguments[1] == '--dry-run';
+    final dryRun = arguments.contains('--dry-run');
+    final version =
+        arguments.contains('--version') &&
+            arguments.length > (arguments.indexOf('--version') + 1)
+        ? arguments[arguments.indexOf('--version') + 1]
+        : null;
     stdout.write(
       await PubspecVersion.instance.version(
         versionCommand: PubspecVersionCommand.fromString(command),
         dryRun: dryRun,
+        version: version,
       ),
     );
-  } on Exception catch (_) {
-    stdout.write(
-      '\nusage: dartsemver major|minor|patch|build|show|show-build '
-      '[--dry-run]\n\n',
-    );
+  } on Exception catch (error) {
+    stdout
+      ..write('\n$error\n')
+      ..write(
+        '\nusage: dartsemver major|minor|patch|build|set|show|show-build '
+        '[--dry-run] [--version <X.Y.Z>]\n\n'
+        '- major|minor|patch|build: Increments the respective version and '
+        'resets subsequent components to 0.\n'
+        '- set --version <X.Y.Z>: set the version to <X.Y.Z>.\n'
+        '- show: Prints the current version in pubspec.yaml\n'
+        '- show-build: Prints the current build number in pubspec.yaml.\n'
+        '- --dry-run: run command without modify pubspec.yaml.\n\n',
+      );
   }
 }
 

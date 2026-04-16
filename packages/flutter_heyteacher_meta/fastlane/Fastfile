@@ -71,9 +71,9 @@ lane :forge_release do
   create_forge_release(version)
 end
 
-desc "fl release semver:major|minor|patch [suffix:<version_suffix>] [merge:true|false] [forge:true|false] [publish:false|true]- Creates new release, merge branch into main and creates a forge release"
+desc "fl release [semver:major|minor|patch] [suffix:<version_suffix>] [merge:true|false] [forge:true|false] [publish:false|true]- Creates new release, merge branch into main and creates a forge release"
 lane :release do|options|
-  if !["major", "minor", "patch"].include?(options[:semver])
+  if options[:semver] != nil && !["major", "minor", "patch"].include?(options[:semver])
     puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"
     exit(1)
   end
@@ -84,10 +84,19 @@ lane :release do|options|
   end
   sh("git pull")
   test
-  increment_build
   version = ""
   Dir.chdir("../") do
-    version = sh("dart run flutter_heyteacher_meta:dartsemver #{options[:semver]}")
+    if options[:semver] != nil
+      version = sh("dart run flutter_heyteacher_meta:dartsemver #{options[:semver]}")
+    elsif
+      version = sh("git-cliff --bumped-version").lines.last.strip!.split("-").last
+      confirm = UI.input("Confirm new version detected #{version}? (Y/n):")
+      if confirm != nil && confirm != "" && confirm.downcase == "y"
+        exit(0)
+      end
+      sh("dart run flutter_heyteacher_meta:dartsemver set --version #{version}")
+      puts "\"pubspec.yaml\" updated with new version #{version}"
+    end  
     # append tag suffix if set
     if options[:suffix] != nil && options[:suffix] != ""
       version = "#{version}-#{options[:suffix]}"
