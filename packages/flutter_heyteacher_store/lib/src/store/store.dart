@@ -316,7 +316,10 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
                 app: firestore.FirebaseFirestore.instance.app,
                 databaseId: databaseId,
               ));
-
+    assert(
+      databaseId?.isNotEmpty ?? true,
+      'databaseId must be null or not empty',
+    );
     final fakeFirestore =
         _firestore.runtimeType.toString() == 'FakeFirebaseFirestore';
     if (!fakeFirestore) {
