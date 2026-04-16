@@ -1,8 +1,21 @@
+## [flutter_heyteacher_store-3.0.2+1042] - 2026-04-16
+
+### 🐛 Bug Fixes
+
+- Add assert `databaseId` null or not empty to `Store` costructor
+
+### 💼 Other
+
+- *(flutter_heyteacher_store)* Update version to 3.0.2+1042 which closes #103
 ## [flutter_heyteacher_store-3.0.1+1040] - 2026-04-16
 
 ### 💼 Other
 
 - *(flutter_heyteacher_store)* Update version to 3.0.1+1040 which closes #102
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_store)* Update `CHANGELOG.md` with flutter_heyteacher_store-3.0.1+1040
 
 ### ⚙️ Miscellaneous Tasks
 
