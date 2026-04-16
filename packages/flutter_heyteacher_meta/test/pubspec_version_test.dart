@@ -58,6 +58,40 @@ void main() {
       );
     });
 
+    test('set with valid version', () async {
+      final newVersion = await PubspecVersion.instance.version(
+        versionCommand: PubspecVersionCommand.set,
+        version: '2.0.0',
+      );
+      expect(newVersion, '2.0.0+2');
+      expect(
+        await PubspecVersion.instance.pubspecFile.readAsString(),
+        contains('version: 2.0.0+2'),
+        reason: "version doesn't match",
+      );
+    });
+
+    test('set without version', () async {
+      expect(
+        () => PubspecVersion.instance.version(
+          versionCommand: PubspecVersionCommand.set,
+        ),
+        throwsA(isA<Exception>()),
+        reason: 'expected exception to be thrown without version',
+      );
+    });
+
+    test('set with invalid version', () async {
+      expect(
+        () => PubspecVersion.instance.version(
+          versionCommand: PubspecVersionCommand.set,
+          version: 'invalid',
+        ),
+        throwsA(isA<Exception>()),
+        reason: 'expected exception to be thrown without version',
+      );
+    });
+
     test('show returns current version without modification', () async {
       final currentVersion = await PubspecVersion.instance.version(
         versionCommand: PubspecVersionCommand.show,

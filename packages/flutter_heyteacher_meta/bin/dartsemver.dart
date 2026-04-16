@@ -6,20 +6,17 @@
 ///
 /// Usage:
 /// ```bash
-/// dartsemver major|minor|patch|build|show|show-build [--dry-run]
+/// dartsemver major|minor|patch|build|set|show|show-build
+///            [--dry-run]
+///            [--version <X.Y.Z>]
 /// ```
 ///
-/// - `major|minor|patch`: Increments the respective version component and
+/// - `major|minor|patch|build`: Increments the respective version component and
 ///    resets subsequent components to 0.
-/// - `build`: Updates the build number to a format `yyMMddHHm` (9 digits).
+/// - `set --version <X.Y.Z>`: the new version to set.
 /// - `show`: Prints the full current version string (e.g., "1.2.3+001").
 /// - `show-build`: Prints only the current build number.
-/// - `--dry-run`: Shows the new version without modifying `pubspec.yaml`.
-///
-/// The script automatically updates the build number to `yyMMddHHm`
-/// (first 9 digits)
-/// for `major`, `minor`, `patch`, and `build` commands unless `--dry-run`
-/// is specified.
+/// - `--dry-run`: run command without modify `pubspec.yaml`.
 library;
 
 import 'package:flutter_heyteacher_meta/src/commands.dart';
