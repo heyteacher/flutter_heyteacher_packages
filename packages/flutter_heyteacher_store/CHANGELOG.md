@@ -1,3 +1,12 @@
+## [flutter_heyteacher_store-3.0.1+1040] - 2026-04-16
+
+### 💼 Other
+
+- *(flutter_heyteacher_store)* Update version to 3.0.1+1040 which closes #102
+
+### ⚙️ Miscellaneous Tasks
+
+- Add `sort` to aggregate pipeline example
 ## [flutter_heyteacher_store-3.0.0+1038] - 2026-04-15
 
 ### 🚀 Features
@@ -9,6 +18,10 @@
 - *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds`
 - *(deps)* Upgrade tighten and major versions
 - *(flutter_heyteacher_store)* Update version to 3.0.0+1038 which closes #98
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_store)* Update `CHANGELOG.md` with flutter_heyteacher_store-3.0.0+1038
 ## [flutter_heyteacher_store-2.0.3+1036] - 2026-04-02
 
 ### 🐛 Bug Fixes
