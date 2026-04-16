@@ -1,6 +1,6 @@
 name: flutter_heyteacher_meta
 description: "A Flutter meta project implementing utilities and best practices for Flutter package and app project avoiding Copy & Paste pattern"
-version: 7.3.1+162
+version: 7.4.0+163
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_meta
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
