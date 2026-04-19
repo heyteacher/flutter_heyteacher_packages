@@ -34,7 +34,7 @@ dependencies:
   video_player: ^2.11.1
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.3.1+162
+  flutter_heyteacher_meta: ^7.4.1+164
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0
