@@ -1,3 +1,10 @@
+## [flutter_heyteacher_views-3.0.6+153] - 2026-04-19
+
+### 💼 Other
+
+- *(deps)* Upgrade tighten and major versions
+- *(deps)* Upgrade major versions and tighten
+- *(flutter_heyteacher_views)* Update version to 3.0.6+153 which closes #110
 ## [flutter_heyteacher_views-3.0.5+152] - 2026-04-11
 
 ### 🐛 Bug Fixes
@@ -8,6 +15,10 @@
 
 - *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds`
 - *(flutter_heyteacher_views)* Update version to 3.0.5+152 which closes #94
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_views)* Update `CHANGELOG.md` with flutter_heyteacher_views-3.0.5+152
 ## [flutter_heyteacher_views-3.0.4+150] - 2026-04-02
 
 ### 🐛 Bug Fixes
