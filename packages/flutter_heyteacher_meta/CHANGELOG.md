@@ -1,3 +1,13 @@
+## [flutter_heyteacher_meta-7.4.2+165] - 2026-04-20
+
+### 🐛 Bug Fixes
+
+- Enhance commit message of `pubspec.yaml` update on `release`
+
+### 💼 Other
+
+- *(deps)* Upgrade major versions and tighten
+- Update  version to 7.4.2+165 which closes #112
 ## [flutter_heyteacher_meta-7.4.1+164] - 2026-04-16
 
 ### 🐛 Bug Fixes
@@ -8,6 +18,10 @@
 ### 💼 Other
 
 - *(flutter_heyteacher_meta)* Update version to 7.4.1+164 which closes #108
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.4.1+164
 ## [flutter_heyteacher_meta-7.4.0+162] - 2026-04-16
 
 ### 🚀 Features
