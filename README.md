@@ -70,6 +70,14 @@ As for interaction between `View` and  `View Model`,  `Data` are exposed to `Vie
   
   - `domain model`: `Repository` emits `Data` and `View Model` component which are listening the `Repository` stream, receives `Data`
 
+### `Use Case` in Logic Layer
+
+Complex logic can be optionally encapsulated in Logic Layer in `Use Case`. This layer is between `View Model` and `Repository`.
+
+![`Model-View-ViewModel` architecture with Use Case (Logic Layer)](https://docs.flutter.dev/assets/images/docs/app-architecture/guide/mvvm-intro-with-domain-layer.png)
+
+
+
 ## `Singleton` pattern
 
 The `View Model` implements the `Singleton` pattern, instantiating a single object instance and avoiding to invoke outside the class.
