@@ -1,9 +1,24 @@
+## [flutter_heyteacher_logger-2.0.14+153] - 2026-04-22
+
+### 💼 Other
+
+- *(deps)* Upgrade tighten and major versions
+- *(deps)* Upgrade major versions and tighten
+- Update  version to 2.0.14+153 which closes #117
+
+### 🎨 Styling
+
+- Show boolean default value `yes` or `no`
 ## [flutter_heyteacher_logger-2.0.13+152] - 2026-04-03
 
 ### 💼 Other
 
 - *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds`
 - *(flutter_heyteacher_logger)* Update version to 2.0.13+152 which closes #92
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_logger)* Update `CHANGELOG.md` with flutter_heyteacher_logger-2.0.13+152
 ## [flutter_heyteacher_logger-2.0.12+150] - 2026-04-02
 
 ### 🐛 Bug Fixes
