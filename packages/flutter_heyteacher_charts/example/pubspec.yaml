@@ -34,13 +34,13 @@ dependencies:
     sdk: flutter
   flutter_heyteacher_charts:
     path: ..
-  flutter_heyteacher_locale: ^2.0.11+148 
-  flutter_heyteacher_views: ^3.0.5+152
+  flutter_heyteacher_locale: ^2.0.12+149 
+  flutter_heyteacher_views: ^3.0.6+153
   flutter_localizations:
     sdk: flutter
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.4.1+164
+  flutter_heyteacher_meta: ^7.4.2+165
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0

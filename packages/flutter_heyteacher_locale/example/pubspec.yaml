@@ -32,16 +32,16 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_heyteacher_locale: ^2.0.11+148 
-  flutter_heyteacher_views: ^3.0.5+152 
+  flutter_heyteacher_locale: ^2.0.12+149 
+  flutter_heyteacher_views: ^3.0.6+153 
   flutter_localizations:
     sdk: flutter
-  go_router: ^17.2.1
+  go_router: ^17.2.2
   logging: ^1.3.0
   url_launcher: ^6.3.2
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.4.1+164
+  flutter_heyteacher_meta: ^7.4.2+165
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0
