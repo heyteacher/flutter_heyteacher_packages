@@ -37,11 +37,11 @@ dependencies:
     sdk: flutter
   flutter_heyteacher_site: 
     path: ..
-  flutter_heyteacher_views: ^3.0.5+152 
-  go_router: ^17.2.1
+  flutter_heyteacher_views: ^3.0.6+153 
+  go_router: ^17.2.2
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.4.1+164 
+  flutter_heyteacher_meta: ^7.4.2+165 
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0
