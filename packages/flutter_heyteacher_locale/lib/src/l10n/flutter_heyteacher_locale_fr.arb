@@ -36,6 +36,8 @@
       "defaultValue": {}
     }
   },
+  "booleanValue": "{booleanValue, select, true{Oui} false{Non} other{}}",
+  
   "skip": "Passer",
   "@skip": {},
   "description": "Description",

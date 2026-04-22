@@ -60,6 +60,19 @@ class FlutterHeyteacherLocaleLocalizationsPt
   }
 
   @override
+  String booleanValue(String booleanValue) {
+    String _temp0 = intl.Intl.selectLogic(
+      booleanValue,
+      {
+        'true': 'Sim',
+        'false': 'Não',
+        'other': '',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get skip => 'Pular';
 
   @override

@@ -38,6 +38,7 @@
       "defaultValue": {}
     }
   },
+  "booleanValue": "{booleanValue, select, true{Sí} false{No} other{}}",
   "skip": "Omitir",
   "@skip": {},
   "description": "Descripción",
