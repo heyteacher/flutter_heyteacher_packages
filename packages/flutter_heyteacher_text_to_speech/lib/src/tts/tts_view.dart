@@ -45,7 +45,8 @@ class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
           ),
           subtitle: Text(
             FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
-              TTSViewModel.defaultEnabled,
+              FlutterHeyteacherLocaleLocalizations.of(context)!
+                  .booleanValue(TTSViewModel.defaultEnabled.toString()),
             ),
           ),
           trailing: Switch(
