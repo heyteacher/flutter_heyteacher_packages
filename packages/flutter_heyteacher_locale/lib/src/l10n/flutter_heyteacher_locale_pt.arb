@@ -36,6 +36,7 @@
       "defaultValue": {}
     }
   },
+  "booleanValue": "{booleanValue, select, true{Sim} false{Não} other{}}",
   "skip": "Pular",
   "@skip": {},
   "description": "Descrição",

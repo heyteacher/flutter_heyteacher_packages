@@ -36,6 +36,7 @@
       "defaultValue": {}
     }
   },
+  "booleanValue": "{booleanValue, select, true{Sì} false{No} other{}}",
   "skip": "Salta",
   "@skip": {},
   "description": "Descrizione",

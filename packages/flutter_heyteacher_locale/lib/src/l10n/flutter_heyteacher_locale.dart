@@ -133,6 +133,12 @@ abstract class FlutterHeyteacherLocaleLocalizations {
   /// **'Default: {defaultValue}'**
   String defaultValue(Object defaultValue);
 
+  /// No description provided for @booleanValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{booleanValue, select, true{Yes} false{No} other{}}'**
+  String booleanValue(String booleanValue);
+
   /// No description provided for @skip.
   ///
   /// In en, this message translates to:

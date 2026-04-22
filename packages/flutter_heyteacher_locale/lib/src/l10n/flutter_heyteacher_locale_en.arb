@@ -36,6 +36,12 @@
       "defaultValue": {}
     }
   },
+  "booleanValue": "{booleanValue, select, true{Yes} false{No} other{}}",
+  "@booleanValue": {
+    "placeholders": {
+      "booleanValue": {}
+    }
+  },
   "skip": "Skip",
   "@skip": {},
   "description": "Description",
