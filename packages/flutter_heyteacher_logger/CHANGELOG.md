@@ -1,3 +1,12 @@
+## [flutter_heyteacher_logger-2.0.15+154] - 2026-04-22
+
+### 🐛 Bug Fixes
+
+- *(deps)* Incompatible with dependency constraint lower bounds error, upgrade tighten deps
+
+### 💼 Other
+
+- Update  version to 2.0.15+154 which closes #120
 ## [flutter_heyteacher_logger-2.0.14+153] - 2026-04-22
 
 ### 💼 Other
@@ -5,6 +14,10 @@
 - *(deps)* Upgrade tighten and major versions
 - *(deps)* Upgrade major versions and tighten
 - Update  version to 2.0.14+153 which closes #117
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_logger)* Update `CHANGELOG.md` with flutter_heyteacher_logger-2.0.14+153
 
 ### 🎨 Styling
 
