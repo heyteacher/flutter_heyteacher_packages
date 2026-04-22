@@ -408,7 +408,9 @@ class _EnableLogsStorageChoiceCardState
             ),
             subtitle: Text(
               FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
-                LoggerViewModel.instance.defaultEnableLogsStorage,
+                FlutterHeyteacherLocaleLocalizations.of(context)!.booleanValue(
+                  LoggerViewModel.instance.defaultEnableLogsStorage.toString(),
+                ),
               ),
             ),
             trailing: Switch(
