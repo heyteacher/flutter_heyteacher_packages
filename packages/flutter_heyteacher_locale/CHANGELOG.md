@@ -1,3 +1,15 @@
+## [flutter_heyteacher_locale-2.0.12+149] - 2026-04-22
+
+### 💼 Other
+
+- *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds`
+- *(deps)* Upgrade tighten and major versions
+- *(deps)* Upgrade major versions and tighten
+- Update  version to 2.0.12+149 which closes #114
+
+### ⚙️ Miscellaneous Tasks
+
+- *(locale)* Add booleanValue localization `yes` or `no`
 ## [flutter_heyteacher_locale-2.0.11+148] - 2026-04-02
 
 ### 🐛 Bug Fixes
@@ -13,6 +25,7 @@
 ### 📚 Documentation
 
 - Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections
+- *(flutter_heyteacher_locale)* Update `CHANGELOG.md` with flutter_heyteacher_locale-2.0.11+148
 ## [flutter_heyteacher_locale-2.0.10+146] - 2026-03-30
 
 ### 🐛 Bug Fixes
