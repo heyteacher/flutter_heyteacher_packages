@@ -1,3 +1,17 @@
+## [flutter_heyteacher_charts-2.0.3+115] - 2026-04-23
+
+### 🐛 Bug Fixes
+
+- Calculate `minY` and `minY` flooring/ceilling with `intervalY`
+
+### 💼 Other
+
+- *(deps)* Bump rependencies version
+- *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds`
+- *(deps)* Upgrade tighten and major versions
+- *(deps)* Upgrade major versions and tighten
+- *(deps)* Upgrade tighten deps
+- Update  version to 2.0.3+115 which closes #122
 ## [flutter_heyteacher_charts-2.0.2+114] - 2026-04-01
 
 ### 🐛 Bug Fixes
@@ -16,6 +30,7 @@
 ### 📚 Documentation
 
 - Add metadata to `pubspec.yaml`
+- *(flutter_heyteacher_charts)* Update `CHANGELOG.md` with flutter_heyteacher_charts-2.0.2+114
 ## [flutter_heyteacher_charts-2.0.1+112] - 2026-04-01
 
 ### 💼 Other
