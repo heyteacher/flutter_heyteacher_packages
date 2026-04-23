@@ -72,8 +72,8 @@ abstract class ChartView extends StatelessWidget {
     intervalY = minMaxValues.intervalY;
     minY ??= minMaxValues.minY;
     maxY ??= minMaxValues.maxY;
-    this.minY = ChartView.floorToInterval(minY, intervalX);
-    this.maxY = ChartView.ceilToInterval(maxY, intervalX);
+    this.minY = ChartView.floorToInterval(minY, intervalY);
+    this.maxY = ChartView.ceilToInterval(maxY, intervalY);
   }
 
   /// A widget to display as the main title of the chart.
