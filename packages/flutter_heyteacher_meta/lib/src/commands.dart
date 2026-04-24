@@ -88,6 +88,10 @@ Future<void> configureFlutterPackage() async {
       fromPath: '../assets/fastlane/Fastfile',
       toPath: 'fastlane/Fastfile',
     );
+    await _createFile(
+      fromPath: 'fastlane/cliff.toml',
+      toPath: 'fastlane/cliff.toml',
+    );
   } on Exception catch (e) {
     stdout.write('configure_flutter_package: error $e\n');
   }

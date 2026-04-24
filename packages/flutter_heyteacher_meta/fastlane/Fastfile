@@ -41,25 +41,30 @@ lane :checkout do|options|
     issue_number = UI.input("Enter the issue number (without #):")
   end  
   puts "check issue #{issue_number} exists in #{forge}"
+  issue_found = false
   if forge == "github"
     sh("gh issue list")
     found_issues = sh("gh issue list --search \"state:open #{issue_number}\"").strip!;
     if found_issues.start_with?("no issues")
       puts "issue #{issue_number} not found in #{forge}"
-      exit(1)
+    elsif 
+      issue_found = true
     end
   elsif forge == "forgejo"
-    found_issues = sh("fj issue search #{issue_number}").strip!;
-    if found_issues.start_with?("0")
+    begin
+      sh("fj issue search | grep \"##{issue_number}\"");
+      issue_found = true
+    rescue => error
       puts "issue #{issue_number} not found in #{forge}"
-      exit(1)
     end
   end
-  puts "issue #{issue_number} found in #{forge}"
-  puts "create and checkout branch #{issue_number}"
-  sh("git checkout -b #{issue_number}")
-  puts "push branch #{issue_number} to origin"
-  sh("git push --set-upstream origin #{issue_number}")
+  if issue_found
+    puts "issue #{issue_number} found in #{forge}"
+    puts "create and checkout branch #{issue_number}"
+    sh("git checkout -b #{issue_number}")
+    puts "push branch #{issue_number} to origin"
+    sh("git push --set-upstream origin #{issue_number}")
+  end
 end
 
 desc "fl forge_release - Creates a forge release and update CHANGELOG.md"
@@ -105,7 +110,7 @@ lane :release do|options|
   # commit bump and push remote
   puts "commit pubspec.yaml with new version #{version}"
   sh("git add ../pubspec.yaml")
-  sh("git commit -m \"build: update `pubspec.yaml` version to #{version} which closes ##{currentBranch}\"")
+  sh("git commit -m \"chore(release): new version #{version} which closes ##{currentBranch}\"")
   push_to_git_remote
   if options[:merge] == nil || options[:merge] == true
     forge_merge(currentBranch)
@@ -177,15 +182,16 @@ def create_forge_release(version)
     package_name = sh("basename `pwd`").strip!
   end
   Dir.chdir("../") do
+    repo_url = sh("git remote get-url --push origin").strip!.split(".git").first
     puts "generate CHANGELOG.md with git-cliff"
-    sh("git-cliff -t #{package_name}-#{version} -o CHANGELOG.md")
+    sh("git-cliff -c fastlane/cliff.toml -t #{package_name}-#{version} | sed 's|<REPO>|#{repo_url}|g' >  CHANGELOG.md ")
   end
   sh("git branch release")
   sh("git checkout release")
   puts "commit CHANGELOG.md generated for #{package_name}-#{version}"
   git_commit(
     path: "CHANGELOG.md", 
-    message: "docs(#{package_name}): update `CHANGELOG.md` with #{package_name}-#{version}"
+    message: "chore(release): prepare for #{package_name}-#{version} updating `CHANGELOG.md`"
   )
   sh("git checkout main")
   sh("git merge release")
@@ -201,8 +207,8 @@ def create_forge_release(version)
     puts "create forge release #{package_name}-#{version}"
     sh("gh release create #{package_name}-#{version} --generate-notes")
   elsif forge == "forgejo"
-    puts "wait 2 second in order tag #{package_name}-#{version} will be available on #{forge}"
-    sleep(2)
+    puts "wait 5 second in order tag #{package_name}-#{version} will be available on #{forge}"
+    sleep(5)
     puts "create forge release #{package_name}-#{version}"
     sh("fj release create --tag #{package_name}-#{version} #{package_name}-#{version}")
   end
