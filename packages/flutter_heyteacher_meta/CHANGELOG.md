@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.5.2+168] - 2026-04-24
+
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.5.2+168]
+
+- Typo on lane checkout on search issue in github
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.5.2+168]
+
+- *(release)* New version 7.5.2+168 which closes ([#127](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/127))
+
 ## [flutter_heyteacher_meta-7.5.1+167] - 2026-04-24
 
 ### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.5.1+167]
