@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.5.1+167] - 2026-04-24
+
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.5.1+167]
+
+- Corrected `configureFlutterPackage` and `configureFlutterApp` path of `cliff.toml` and copy of `ruby-version
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.5.1+167]
+
+- *(release)* New version 7.5.1+167 which closes ([#125](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/125))
+
 ## [flutter_heyteacher_meta-7.5.0+166] - 2026-04-24
 
 ### 🚀 Features - [flutter_heyteacher_meta-7.5.0+166]
