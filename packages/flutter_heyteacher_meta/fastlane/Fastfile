@@ -47,7 +47,7 @@ lane :checkout do|options|
     found_issues = sh("gh issue list --search \"state:open #{issue_number}\"").strip!;
     if found_issues.start_with?("no issues")
       puts "issue #{issue_number} not found in #{forge}"
-    elsif 
+    else 
       issue_found = true
     end
   elsif forge == "forgejo"
