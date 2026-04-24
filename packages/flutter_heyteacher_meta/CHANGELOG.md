@@ -1,125 +1,156 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
+
+## [flutter_heyteacher_meta-7.5.0+166] - 2026-04-24
+
+### 🚀 Features - [flutter_heyteacher_meta-7.5.0+166]
+
+- *(meta)* Load custom `fastlane/cliff.toml` and add link to issue closed. IMPORTANT: run `dart run flutter_heyteacher_meta:configure_flutter_package` to acquire `fastlane/cliff.toml` in your package
+
+### 🛠️ Build - [flutter_heyteacher_meta-7.5.0+166]
+
+- *(deps)* Upgrade tighten deps
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.5.0+166]
+
+- *(release)* New version 7.5.0+166 which closes ([#71](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/71))
+
 ## [flutter_heyteacher_meta-7.4.2+165] - 2026-04-20
 
-### 🐛 Bug Fixes
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.4.2+165]
 
 - Enhance commit message of `pubspec.yaml` update on `release`
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.4.2+165]
 
 - *(deps)* Upgrade major versions and tighten
-- Update  version to 7.4.2+165 which closes #112
+- Update  version to 7.4.2+165 which closes ([#112](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/112))
+
+### 📚 Documentation - [flutter_heyteacher_meta-7.4.2+165]
+
+- *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.4.2+165
+
 ## [flutter_heyteacher_meta-7.4.1+164] - 2026-04-16
 
-### 🐛 Bug Fixes
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.4.1+164]
 
 - *(fastlane)* Lane `release` corrected buld number imcrement
 - *(fastlane)* Corrected check of answer to confirm version detected
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.4.1+164]
 
-- *(flutter_heyteacher_meta)* Update version to 7.4.1+164 which closes #108
+- *(flutter_heyteacher_meta)* Update version to 7.4.1+164 which closes ([#108](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/108))
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.4.1+164]
 
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.4.1+164
+
 ## [flutter_heyteacher_meta-7.4.0+162] - 2026-04-16
 
-### 🚀 Features
+### 🚀 Features - [flutter_heyteacher_meta-7.4.0+162]
 
 - *(dartsemver)* Add commant `set --version <X.Y.Z>` to update `pubspec.yaml` to a specific version
 - *(fastlane)* Lane `release` detect semver based on conventional commit messages so `semver` parameters become optional
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.4.0+162]
 
-- *(flutter_heyteacher_meta)* Update version to 7.4.0+162 which closes #104
+- *(flutter_heyteacher_meta)* Update version to 7.4.0+162 which closes ([#104](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/104))
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.4.0+162]
 
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.4.0+162
+
 ## [flutter_heyteacher_meta-7.3.1+162] - 2026-04-01
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.3.1+162]
 
-- *(flutter_heyteacher_meta)* Update version to 7.3.1+162 which closes #85
+- *(flutter_heyteacher_meta)* Update version to 7.3.1+162 which closes ([#85](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/85))
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.3.1+162]
 
 - *(README.md)* Enhance migration to monorepo guide and lane `deployweb` documentation
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.3.1+162
+
 ## [flutter_heyteacher_meta-7.3.0+160] - 2026-03-31
 
-### 🚀 Features
+### 🚀 Features - [flutter_heyteacher_meta-7.3.0+160]
 
 - *(Fastfile)* Show open issues and check issue exists in `checkout` lane
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.3.0+160]
 
-- *(flutter_heyteacher_meta)* Update version to 7.3.0+160 which closes #70
+- *(flutter_heyteacher_meta)* Update version to 7.3.0+160 which closes ([#70](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/70))
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.3.0+160]
 
 - *(README.md)* Update `fl checkout` documentation
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.3.0+160
+
 ## [flutter_heyteacher_meta-7.2.2+158] - 2026-03-31
 
-### 🐛 Bug Fixes
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.2.2+158]
 
 - Update commits adding `scope` as package name
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.2.2+158]
 
-- *(flutter_heyteacher_meta)* Update version to 7.2.2+158 which closes #79
+- *(flutter_heyteacher_meta)* Update version to 7.2.2+158 which closes ([#79](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/79))
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.2.2+158]
 
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.2.2+158
+
 ## [flutter_heyteacher_meta-7.2.1+156] - 2026-03-27
 
-### 🐛 Bug Fixes
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.2.1+156]
 
 - Compatible with dependency constraint lower bounds
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.2.1+156]
 
-- Update version to 7.2.1+156 which closes #62
+- Update version to 7.2.1+156 which closes ([#62](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/62))
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.2.1+156]
 
 - Add usage example to release a new version and close an issue
 - Update changelog generated for flutter_heyteacher_meta-7.2.1+156
+
 ## [flutter_heyteacher_meta-7.2.0+154] - 2026-03-26
 
-### 🚀 Features
+### 🚀 Features - [flutter_heyteacher_meta-7.2.0+154]
 
 - Add `publish` param to  `release` lane and set `forge` default to `true`
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.2.0+154]
 
-- Update version to 7.2.0+154 which closes #40
+- Update version to 7.2.0+154 which closes ([#40](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/40))
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.2.0+154]
 
 - Update changelog generated for flutter_heyteacher_meta-7.2.0+154
+
 ## [flutter_heyteacher_meta-7.1.0+152] - 2026-03-26
 
-### 🚀 Features
+### 🚀 Features - [flutter_heyteacher_meta-7.1.0+152]
 
 - Create branch on issue number and add `closes #issue' on commit before merging. On merge delete local branch
 
-### 🐛 Bug Fixes
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.1.0+152]
 
 - Corrected commit message on update `pubspec.yaml`
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.1.0+152]
 
-- Update version to 7.1.0+152 which closes #49
+- Update version to 7.1.0+152 which closes ([#49](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/49))
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.1.0+152]
 
 - Update changelog generated for flutter_heyteacher_meta-7.1.0+152
+
 ## [flutter_heyteacher_meta-7.0.6+150] - 2026-03-25
 
-### 🚀 Features
+### 🚀 Features - [flutter_heyteacher_meta-7.0.6+150]
 
 - Add  lane
 - Add lane`github_release` for create a github release and update `CHANGELOG.md`
@@ -140,7 +171,7 @@
 - [**breaking**] `configure_git_hooks`, `configure_flutter_package` and `configure_flutter_app` become dart commands and resource file moved into `assets` directory
 - [**breaking**] Integrate `forgejo` and necome forge indipendent supporting forgejo public instances
 
-### 🐛 Bug Fixes
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.0.6+150]
 
 - Rename test into `dummy_test`
 - Commit `pubspec.yaml` in `bump` lane, useful when when runs `flutter pub upgrade --major-versions`
@@ -183,7 +214,7 @@
 - Corrected `homepage`, 'documentation'
 - Waith 2 second before create release in `forgejo` public instance
 
-### 💼 Other
+### 🛠️ Build - [flutter_heyteacher_meta-7.0.6+150]
 
 - *(deps)* Bump deps version to 1.2.0+260208113
 - *(deps)* Bump deps versions
@@ -236,13 +267,13 @@
 - *(deps)* Bump deps to 7.0.5+148
 - *(deps)* Bump deps to 7.0.6+150
 
-### 🚜 Refactor
+### 🚜 Refactor - [flutter_heyteacher_meta-7.0.6+150]
 
 - Rename `flutter_heyteacher_fastlane` into `flutter_heyteacher_meta` and add `github` flag to `release` lane to generate or not the github release
 - Merge remote-tracking branch 'temp_meta/main' into integrate-monorepo
 - Move `flutter_heytacher_meta` to monorepo `flutter_heyteacher_packages`
 
-### 📚 Documentation
+### 📚 Documentation - [flutter_heyteacher_meta-7.0.6+150]
 
 - Update CHANGELOG.md with release 1.2.0+260208113
 - Update CHANGELOG.md with release 1.2.1+260208140
@@ -302,11 +333,11 @@
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.5+148
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.6+150
 
-### 🧪 Testing
+### 🧪 Testing - [flutter_heyteacher_meta-7.0.6+150]
 
 - Add unit tests for `PubspecVersion.version` method
 
-### ⚙️ Miscellaneous Tasks
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.0.6+150]
 
 - Conventional commit
 - Commit Gemfile.lock on bump lane
