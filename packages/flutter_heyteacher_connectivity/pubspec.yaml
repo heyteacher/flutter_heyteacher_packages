@@ -1,6 +1,6 @@
 name: flutter_heyteacher_connectivity
 description: "The flutter heyteacher package for connectivity utilities with UI widget"
-version: 2.1.5+142
+version: 2.1.6+143
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_connectivity
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
