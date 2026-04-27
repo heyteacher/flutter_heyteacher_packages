@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_text_to_speech-3.0.1+156] - 2026-04-27
+
+### 🐛 Bug Fixes - [flutter_heyteacher_text_to_speech-3.0.1+156]
+
+- Get `thresholdInSeconds` only one time in `speak` ([03c40ce](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/03c40ce0ca3d3ac694eae230c87a4c56771de80c))
+
+### 🛠️ Build - [flutter_heyteacher_text_to_speech-3.0.1+156]
+
+- *(deps)* Upgrade dependencies ([c3b1d5f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c3b1d5fbaccc6b1c7799552a12b6ff501aa6652b))
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_text_to_speech-3.0.1+156]
+
+- *(release)* New version 3.0.1+156 which closes ([#152](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/152)) ([bf6d98e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bf6d98efb057ff01418cffdebd394365794064ae))
+
 ## [flutter_heyteacher_text_to_speech-3.0.0+155] - 2026-04-27
 
 ### 🚀 Features - [flutter_heyteacher_text_to_speech-3.0.0+155]
