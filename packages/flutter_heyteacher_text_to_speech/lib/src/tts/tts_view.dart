@@ -45,13 +45,14 @@ class _EnableTTSChoiceCardState extends State<EnableTTSChoiceCard> {
           ),
           subtitle: Text(
             FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
-              FlutterHeyteacherLocaleLocalizations.of(context)!
-                  .booleanValue(TTSViewModel.defaultEnabled.toString()),
+              FlutterHeyteacherLocaleLocalizations.of(context)!.booleanValue(
+                TTSViewModel.instance().defaultEnabled.toString(),
+              ),
             ),
           ),
           trailing: Switch(
             // This bool value toggles the switch.
-            value: _enableTTS ?? TTSViewModel.defaultEnabled,
+            value: _enableTTS ?? TTSViewModel.instance().defaultEnabled,
             onChanged: (value) {
               setState(() => _enableTTS = value);
               unawaited(TTSViewModel.instance().setEnabled(enabled: value));
