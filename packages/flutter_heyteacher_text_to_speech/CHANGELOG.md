@@ -1,3 +1,17 @@
+## [flutter_heyteacher_text_to_speech-2.0.15+154] - 2026-04-27
+
+### 🐛 Bug Fixes
+
+- Manage better `checkTTSThreshold extending `Throttling / Threshold logic` implementation with more use cases
+
+### 💼 Other
+
+- *(deps)* Upgrade tighten deps
+- Add `fastlane/cliff.toml`  enhanced and customizable for generate change log
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* New version 2.0.15+154 which closes #131
 ## [flutter_heyteacher_text_to_speech-2.0.14+153] - 2026-04-22
 
 ### 💼 Other
@@ -6,6 +20,10 @@
 - *(deps)* Upgrade tighten and major versions
 - *(deps)* Upgrade major versions and tighten
 - Update  version to 2.0.14+153 which closes #116
+
+### 📚 Documentation
+
+- *(flutter_heyteacher_text_to_speech)* Update `CHANGELOG.md` with flutter_heyteacher_text_to_speech-2.0.14+153
 
 ### 🎨 Styling
 
