@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.6.1+170] - 2026-04-27
+
+### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.6.1+170]
+
+- Avoid commands `configure_flutter_package` and `configure_flutter_app` override existing files ([0ffee7c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0ffee7c39a246c8ed2b65d4f274ea443352e7ce1))
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.1+170]
+
+- *(release)* New version 7.6.1+170 which closes ([#130](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/130)) ([3d541c0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3d541c0c51a7d90e6fff7cb4b77f9fc1c823a705))
+
 ## [flutter_heyteacher_meta-7.6.0+169] - 2026-04-27
 
 ### 🚀 Features - [flutter_heyteacher_meta-7.6.0+169]
