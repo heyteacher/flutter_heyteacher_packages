@@ -33,7 +33,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_locale: ^2.0.12+149 
-  flutter_heyteacher_views: ^3.0.6+153 
+  flutter_heyteacher_views: ^3.0.7+154 
   flutter_localizations:
     sdk: flutter
   go_router: ^17.2.2
@@ -41,7 +41,7 @@ dependencies:
   url_launcher: ^6.3.2
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.4.2+165
+  flutter_heyteacher_meta: ^7.6.2+171
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0

@@ -22,7 +22,7 @@ dependencies:
   flutter_cookie_consent: ^1.0.3
   flutter_heyteacher_firebase: ^2.0.9+145
   flutter_heyteacher_locale: ^2.0.12+149
-  flutter_heyteacher_views: ^3.0.6+153
+  flutter_heyteacher_views: ^3.0.7+154
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
@@ -34,7 +34,7 @@ dependencies:
   video_player: ^2.11.1
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.4.2+165
+  flutter_heyteacher_meta: ^7.6.2+171
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0
