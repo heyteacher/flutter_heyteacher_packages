@@ -148,22 +148,22 @@ class TTSViewModel {
       _lastTryDateTime = clock.now();
       return false;
     }
+    final thresholdInSecondsValue = await thresholdInSeconds;
     // speak in threshold
     if (checkTTSThreshold &&
         _lastTryDateTime != null &&
         clock.now().difference(_lastTryDateTime!) <
-            Duration(seconds: await thresholdInSeconds)) {
+            Duration(seconds: thresholdInSecondsValue)) {
       final tryDateTime = clock.now();
-      // await thresholdInSeconds
       await Future<void>.delayed(
-        Duration(seconds: await thresholdInSeconds),
+        Duration(seconds: thresholdInSecondsValue),
       );
       // if previous text remain equal or no new text has been spoken
       // meantime, ignore text
       if (_lastTextSpoken == text || tryDateTime.isBefore(_lastTryDateTime!)) {
         _logger.finer("(speak): ignore text '$text' too close to previous "
             "speaked at '$_lastTryDateTime' "
-            'thresholdInSeconds ${await thresholdInSeconds}');
+            'thresholdInSeconds $thresholdInSecondsValue');
         // set the last try date time when the text is delayed
         _lastTryDateTime = tryDateTime;
         return false;

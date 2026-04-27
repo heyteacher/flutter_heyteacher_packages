@@ -21,11 +21,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_auth: ^2.0.13+154 
-  flutter_heyteacher_connectivity: ^2.1.5+142 
+  flutter_heyteacher_connectivity: ^2.1.6+143 
   flutter_heyteacher_firebase: ^2.0.9+145
   flutter_heyteacher_locale: ^2.0.12+149
-  flutter_heyteacher_logger: ^2.0.14+153
-  flutter_heyteacher_views: ^3.0.6+153
+  flutter_heyteacher_logger: ^2.0.16+155
+  flutter_heyteacher_views: ^3.0.7+154
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
@@ -34,7 +34,7 @@ dependencies:
   url_launcher: ^6.3.2
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.4.2+165
+  flutter_heyteacher_meta: ^7.6.2+171
   flutter_test:
     sdk: flutter
 
