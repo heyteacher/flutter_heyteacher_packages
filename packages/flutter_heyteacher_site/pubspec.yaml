@@ -1,6 +1,6 @@
 name: flutter_heyteacher_site
 description: "A set of standardized UI components and utilities for building websites and landing pages within the HeyTeacher ecosystem"
-version: 1.10.2+124
+version: 1.10.3+125
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_site
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
