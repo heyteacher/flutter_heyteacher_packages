@@ -14,6 +14,10 @@ A Flutter package providing a collection of reusable UI widgets, adaptive layout
 
 The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.org/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
 
+## Credits
+
+- [app_tutorial](https://pub.dev/packages/app_tutorial): Flutter App Onboarding
+
 ## Getting started
 
 Add the package to your `pubspec.yaml`:
