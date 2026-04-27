@@ -12,6 +12,24 @@ A Flutter package for managing End-to-End Encryption (E2EE) workflows, specifica
 
 The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.org/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
 
+## Credits
+
+- [archive](https://pub.dev/packages/archive): Provides encoders and decoders for various archive and compression formats such as zip, tar, bzip2, gzip, and zlib.
+
+- [equatable](https://pub.dev/packages/equatable): A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
+
+- [flutter_secure_storage](https://pub.dev/packages/flutter_secure_storage): A Flutter plugin for securely storing sensitive data using encrypted storage.
+
+- [json_annotation](https://pub.dev/packages/json_annotation): Classes and helper functions that support JSON code generation via the `json_serializable` package.
+
+- [mobile_scanner](https://pub.dev/packages/mobile_scanner): A universal Flutter barcode and QR code scanner using CameraX/ML Kit for Android, AVFoundation/Apple Vision for iOS & macOS, and ZXing for web.
+
+- [package_info_plus](https://pub.dev/packages/package_info_plus): this Flutter plugin provides an API for querying information about an application package.
+
+- [qr_flutter](https://pub.dev/packages/qr_flutter): QR.Flutter is a Flutter library for simple and fast QR code rendering via a Widget or custom painter.
+
+- [webcrypto](https://pub.dev/packages/webcrypto): This package provides a cross-platform implementation of the [Web Cryptograph API](https://www.w3.org/TR/webcrypto/).
+
 ## Getting started
 
 Add the package to your `pubspec.yaml`:
