@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
 import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart'
     show
-        EnableTTSChoiceCard,
         FlutterHeyteacherTextToSpeechLocalizations,
+        TTSEnableChoiceCard,
+        TTSThresholdInSecondsCard,
         TTSViewModel;
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show ProgressIndicatorWidget, ThemeViewModel;
@@ -89,7 +90,8 @@ class _MyHomePageState extends State<_MyHomePage> {
             padding: EdgeInsets.all(8),
             child: LocaleWrap(),
           ),
-          const EnableTTSChoiceCard(),
+          const TTSEnableChoiceCard(),
+          const TTSThresholdInSecondsCard(),
           Expanded(
             child: Center(
               child: _loading

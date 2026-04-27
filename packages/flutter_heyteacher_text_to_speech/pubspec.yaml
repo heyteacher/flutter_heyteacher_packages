@@ -1,6 +1,6 @@
 name: flutter_heyteacher_text_to_speech
 description: "The flutter heyteacher text-to-speech (TTS) utilities localized in six languages"
-version: 2.0.15+154
+version: 3.0.0+155
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_text_to_speech
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
@@ -20,7 +20,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_locale: ^2.0.12+149 
-  flutter_heyteacher_platform: ^2.0.7+140
+  flutter_heyteacher_platform: ^2.1.0+141
+  flutter_heyteacher_views: ^3.0.7+154
   flutter_localizations:
     sdk: flutter
   flutter_tts: ^4.2.5
@@ -30,8 +31,8 @@ dependencies:
 
 dev_dependencies:
   fake_async: ^1.3.3
-  flutter_heyteacher_logger:  
-  flutter_heyteacher_meta: ^7.4.2+165
+  flutter_heyteacher_logger: ^2.0.16+155  
+  flutter_heyteacher_meta: ^7.6.2+171
   flutter_test:
     sdk: flutter
   mockito: ^5.6.4

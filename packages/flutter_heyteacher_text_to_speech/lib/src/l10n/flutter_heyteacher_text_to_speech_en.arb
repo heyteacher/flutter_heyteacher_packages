@@ -1,5 +1,7 @@
 {
     "@@locale": "en",
     "enableTextToSpeech": "Enable Text to Speech",
-    "@enableTextToSpeech": {}
+    "@enableTextToSpeech": {},
+    "thresholdInSeconds": "Threshold in seconds",
+    "@thresholdInSeconds": {}
 }

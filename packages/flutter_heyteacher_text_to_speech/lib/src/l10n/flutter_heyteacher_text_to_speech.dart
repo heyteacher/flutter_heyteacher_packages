@@ -112,6 +112,12 @@ abstract class FlutterHeyteacherTextToSpeechLocalizations {
   /// In en, this message translates to:
   /// **'Enable Text to Speech'**
   String get enableTextToSpeech;
+
+  /// No description provided for @thresholdInSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Threshold in seconds'**
+  String get thresholdInSeconds;
 }
 
 class _FlutterHeyteacherTextToSpeechLocalizationsDelegate

@@ -1,5 +1,7 @@
 {
     "@@locale": "pt",
-    "enableTextToSpeech": "Enable Text to Speech",
-    "@enableTextToSpeech": {}
+    "enableTextToSpeech": "Ativar síntese de voz",
+    "@enableTextToSpeech": {},
+    "thresholdInSeconds": "Limite em segundos",
+    "@thresholdInSeconds": {}
 }
