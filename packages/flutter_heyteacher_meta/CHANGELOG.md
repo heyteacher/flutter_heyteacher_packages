@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.6.2+171] - 2026-04-27
+
+### 📚 Documentation - [flutter_heyteacher_meta-7.6.2+171]
+
+- Add documentation how to customize `CHANGELOG.md` modifying template `fastlane/cliff.toml` ([e6f3036](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e6f3036e75eb12c6bf391426663e8103932dba87))
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.2+171]
+
+- *(release)* New version 7.6.2+171 which closes ([#129](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/129)) ([48d8dab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/48d8dab64bbeea2b4a2bf427d6c228511d4719a8))
+
 ## [flutter_heyteacher_meta-7.6.1+170] - 2026-04-27
 
 ### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.6.1+170]
