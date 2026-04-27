@@ -15,6 +15,12 @@ This package exports the following modules via `platform.dart`:
 
 The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.org/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
 
+## Credits
+
+- [device_info_plus](https://pub.dev/packages/device_info_plus): get current device information from within the Flutter application.
+
+- [package_info_plu](https://pub.dev/packages/package_info_plus): this Flutter plugin provides an API for querying information about an application package.
+
 ## Usage
 
 Import the main library file to access the components:
