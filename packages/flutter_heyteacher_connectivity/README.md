@@ -1,6 +1,6 @@
 # flutter_heyteacher_connectivity
 
-A Flutter package for managing and displaying connectivity status.
+A Flutter package based [connectivity_plus](https://pub.dev/packages/connectivity_plus) for managing and displaying connectivity status  specifically designed for the [Flutter HeyTeacher ecosystem](../../).
 
 ## Features
 
