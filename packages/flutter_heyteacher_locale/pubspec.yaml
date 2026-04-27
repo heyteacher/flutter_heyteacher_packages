@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_platform: ^2.1.0+141 
-  flutter_heyteacher_text_to_speech: ^3.0.0+155 
+  flutter_heyteacher_text_to_speech: ^3.0.1+156 
   flutter_heyteacher_views: ^3.0.7+154
   flutter_localizations:
     sdk: flutter
