@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-2.0.10+147] - 2026-04-27
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_e2ee-2.0.10+147]
+
+- *(release)* New version 2.0.10+147 which closes ([#133](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/133)) ([379a166](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/379a1668723bc70667b067b7130d529325b263d7))
+
 ## [flutter_heyteacher_e2ee-2.0.10+146] - 2026-04-27
 
 ### 🛠️ Build - [flutter_heyteacher_e2ee-2.0.10+146]
