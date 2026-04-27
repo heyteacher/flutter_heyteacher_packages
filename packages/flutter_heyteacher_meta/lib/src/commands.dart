@@ -59,45 +59,73 @@ Future<void> dartSemver(List<String> arguments) async {
 Future<void> configureGitHooks() async {
   try {
     // commit-msg hook
-    await _createFile(
-      fromPath: '../assets/git-hooks/commit-msg',
-      toPath: '.git/hooks/commit-msg',
-      executable: true,
-    );
-    stdout.write('.git/hooks/commit-msg created\n');
+    if (!File('.git/hooks/commit-msg').existsSync()) {
+      await _createFile(
+        fromPath: '../assets/git-hooks/commit-msg',
+        toPath: '.git/hooks/commit-msg',
+        executable: true,
+      );
+      stdout.write('.git/hooks/commit-msg created\n');
+    } else {
+      stdout.write('.git/hooks/commit-msg already exists, NOT overwritten\n');
+    }
     // pre-commit hook
-    await _createFile(
-      fromPath: '../assets/git-hooks/pre-commit',
-      toPath: '.git/hooks/pre-commit',
-      executable: true,
-    );
-    stdout.write('.git/hooks/pre-commit created\n');
+    if (!File('.git/hooks/pre-commit').existsSync()) {
+      await _createFile(
+        fromPath: '../assets/git-hooks/pre-commit',
+        toPath: '.git/hooks/pre-commit',
+        executable: true,
+      );
+      stdout.write('.git/hooks/pre-commit created\n');
+    } else {
+      stdout.write('.git/hooks/pre-commit already exists, NOT overwritten\n');
+    }
   } on Exception catch (e) {
     stdout.write('configure_git_hooks: error $e\n');
   }
 }
 
-/// Configure a Flutter application
+/// Configure a Flutter package
 Future<void> configureFlutterPackage() async {
   try {
     await configureGitHooks();
-    await _createFile(
-      fromPath: '../assets/fastlane/Fastfile',
-      toPath: 'fastlane/Fastfile',
-    );
-    stdout.write('fastlane/Fastfile created\n');
-    await _createFile(
-      fromPath: '../fastlane/cliff.toml',
-      toPath: 'fastlane/cliff.toml',
-    );
-    stdout.write('fastlane/cliff.toml created\n');
-    await _createFile(
-      fromPath: '../assets/ruby-version',
-      toPath: '.ruby-version',
-    );
-    stdout.write('.ruby-version created\n');
-    await _createFile(fromPath: '../assets/Gemfile', toPath: 'Gemfile');
-    stdout.write('Gemfile created\n');
+    // fastlane/Fastfile
+    if (!File('fastlane/Fastfile').existsSync()) {
+      await _createFile(
+        fromPath: '../assets/fastlane/Fastfile',
+        toPath: 'fastlane/Fastfile',
+      );
+      stdout.write('fastlane/Fastfile created\n');
+    } else {
+      stdout.write('fastlane/Fastfile already exists, NOT overwritten\n');
+    }
+    // fastlane/cliff.toml
+    if (!File('fastlane/cliff.toml').existsSync()) {
+      await _createFile(
+        fromPath: '../fastlane/cliff.toml',
+        toPath: 'fastlane/cliff.toml',
+      );
+      stdout.write('fastlane/cliff.toml created\n');
+    } else {
+      stdout.write('fastlane/cliff.toml already exists, NOT overwritten\n');
+    }
+    // .ruby-version
+    if (!File('.ruby-version').existsSync()) {
+      await _createFile(
+        fromPath: '../assets/ruby-version',
+        toPath: '.ruby-version',
+      );
+      stdout.write('.ruby-version created\n');
+    } else {
+      stdout.write('.ruby-version already exists, NOT overwritten\n');
+    }
+    // Gemfile
+    if (!File('Gemfile').existsSync()) {
+      await _createFile(fromPath: '../assets/Gemfile', toPath: 'Gemfile');
+      stdout.write('Gemfile created\n');
+    } else {
+      stdout.write('Gemfile already exists, NOT overwritten\n');
+    }
   } on Exception catch (e) {
     stdout.write('configure_flutter_package: error $e\n');
   }
@@ -107,33 +135,63 @@ Future<void> configureFlutterPackage() async {
 Future<void> configureFlutterApp() async {
   try {
     await configureGitHooks();
-    await _createFile(
-      fromPath: '../assets/fastlane/AppFastfile',
-      toPath: 'fastlane/Fastfile',
-    );
-    stdout.write('fastlane/Fastfile created\n');
-    await _createFile(
-      fromPath: '../fastlane/cliff.toml',
-      toPath: 'fastlane/cliff.toml',
-    );
-    stdout.write('fastlane/cliff.toml created\n');
-    await _createFile(
-      fromPath: '../assets/fastlane/Pluginfile',
-      toPath: 'fastlane/Pluginfile',
-    );
-    stdout.write('fastlane/Pluginfile created\n');
-    await copyPath(
-      await _getSourceFilePath('../assets/fastlane/metadata'),
-      'fastlane/metadata',
-    );
-    stdout.write('fastlane/metadata/* created\n');
-    await _createFile(
-      fromPath: '../assets/ruby-version',
-      toPath: '.ruby-version',
-    );
-    stdout.write('.ruby-version created\n');
-    await _createFile(fromPath: '../assets/AppGemfile', toPath: 'Gemfile');
-    stdout.write('Gemfile created\n');
+    // fastlane/Fastfile
+    if (!File('fastlane/Fastfile').existsSync()) {
+      await _createFile(
+        fromPath: '../assets/fastlane/AppFastfile',
+        toPath: 'fastlane/Fastfile',
+      );
+      stdout.write('fastlane/Fastfile created\n');
+    } else {
+      stdout.write('fastlane/Fastfile already exists, NOT overwritten\n');
+    }
+    // fastlane/cliff.toml
+    if (!File('fastlane/cliff.toml').existsSync()) {
+      await _createFile(
+        fromPath: '../fastlane/cliff.toml',
+        toPath: 'fastlane/cliff.toml',
+      );
+      stdout.write('fastlane/cliff.toml created\n');
+    } else {
+      stdout.write('fastlane/cliff.toml already exists, NOT overwritten\n');
+    }
+    // fastlane/Pluginfile
+    if (!File('fastlane/Pluginfile').existsSync()) {
+      await _createFile(
+        fromPath: '../assets/fastlane/Pluginfile',
+        toPath: 'fastlane/Pluginfile',
+      );
+      stdout.write('fastlane/Pluginfile created\n');
+    } else {
+      stdout.write('fastlane/Pluginfile already exists, NOT overwritten\n');
+    }
+    // fastlane/metadata/*
+    if (!Directory('fastlane/metadata').existsSync()) {
+      await copyPath(
+        await _getSourceFilePath('../assets/fastlane/metadata'),
+        'fastlane/metadata',
+      );
+      stdout.write('fastlane/metadata/* created\n');
+    } else {
+      stdout.write('fastlane/metadata already exists, NOT overwritten\n');
+    }
+    // .ruby-version
+    if (!File('.ruby-version').existsSync()) {
+      await _createFile(
+        fromPath: '../assets/ruby-version',
+        toPath: '.ruby-version',
+      );
+      stdout.write('.ruby-version created\n');
+    } else {
+      stdout.write('.ruby-version already exists, NOT overwritten\n');
+    }
+    // Gemfile
+    if (!File('Gemfile').existsSync()) {
+      await _createFile(fromPath: '../assets/AppGemfile', toPath: 'Gemfile');
+      stdout.write('Gemfile created\n');
+    } else {
+      stdout.write('Gemfile already exists, NOT overwritten\n');
+    }
   } on Exception catch (e) {
     stdout.write('configure_flutter_app: error $e\n');
   }
