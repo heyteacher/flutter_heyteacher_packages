@@ -11,5 +11,8 @@ class FlutterHeyteacherTextToSpeechLocalizationsEs
       : super(locale);
 
   @override
-  String get enableTextToSpeech => 'Enable Text to Speech';
+  String get enableTextToSpeech => 'Activar síntesis de voz';
+
+  @override
+  String get thresholdInSeconds => 'Umbral en segundos';
 }

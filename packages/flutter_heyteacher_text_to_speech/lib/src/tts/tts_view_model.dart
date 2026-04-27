@@ -18,10 +18,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TTSViewModel {
   TTSViewModel._({
     required bool defaultEnabled,
-    required int thresholdInSeconds,
+    required int defaultThresholdInSeconds,
     FlutterTts? ttsForTesting,
   })  : _defaultEnabled = defaultEnabled,
-        _thresholdInSeconds = thresholdInSeconds {
+        _defaultThresholdInSeconds = defaultThresholdInSeconds {
     _textToSpeech = ttsForTesting ?? FlutterTts();
     if (PlatformHelper.isMobile || PlatformHelper.isWeb) {
       unawaited(_textToSpeech.awaitSpeakCompletion(false));
@@ -39,7 +39,7 @@ class TTSViewModel {
       SharedPreferencesAsync();
 
   final bool _defaultEnabled;
-  final int _thresholdInSeconds;
+  final int _defaultThresholdInSeconds;
   String? _lastTextSpoken;
   DateTime? _lastTryDateTime;
 
@@ -47,7 +47,7 @@ class TTSViewModel {
   bool get defaultEnabled => _defaultEnabled;
 
   /// if threshold in seconds is enabled by default
-  int get thresholdInSeconds => _thresholdInSeconds;
+  int get defaultThresholdInSeconds => _defaultThresholdInSeconds;
 
   StreamSubscription<Locale>? _stateChangesStreamSubscription;
 
@@ -60,11 +60,11 @@ class TTSViewModel {
   // ignore: prefer_constructors_over_static_methods
   static TTSViewModel instance({
     bool defaultEnabled = true,
-    int thresholdInSeconds = 5,
+    int defaultThresholdInSeconds = 5,
   }) {
     _instance ??= TTSViewModel._(
       defaultEnabled: defaultEnabled,
-      thresholdInSeconds: thresholdInSeconds,
+      defaultThresholdInSeconds: defaultThresholdInSeconds,
     );
     return _instance!;
   }
@@ -80,8 +80,8 @@ class TTSViewModel {
   /// Resets the view model to its initial state.
   Future<void> reset() async {
     _instance = TTSViewModel._(
-      defaultEnabled: true,
-      thresholdInSeconds: _thresholdInSeconds,
+      defaultEnabled: _defaultEnabled,
+      defaultThresholdInSeconds: _defaultThresholdInSeconds,
     );
     await _sharedPreferencesAsync
         .remove(TTSPreferencesKeys.htuTtsEnableTTS.name);
@@ -104,6 +104,23 @@ class TTSViewModel {
       _sharedPreferencesAsync.setBool(
         TTSPreferencesKeys.htuTtsEnableTTS.name,
         enabled,
+      );
+
+  /// The threshold in seconds.
+  ///
+  /// Get from user's preference in [SharedPreferencesAsync] or returns default
+  Future<int> get thresholdInSeconds async =>
+      (await _sharedPreferencesAsync.getInt(
+        TTSPreferencesKeys.htuTtsThresholdInSeconds.name,
+      )) ??
+      _defaultThresholdInSeconds;
+
+  /// Set the threshold in seconds to [thresholdInSeconds] in the user's
+  /// preference
+  Future<void> setThresholdInSeconds({required int thresholdInSeconds}) async =>
+      _sharedPreferencesAsync.setInt(
+        TTSPreferencesKeys.htuTtsThresholdInSeconds.name,
+        thresholdInSeconds,
       );
 
   /// Speaks the given [text] using the TTS engine.
@@ -135,18 +152,18 @@ class TTSViewModel {
     if (checkTTSThreshold &&
         _lastTryDateTime != null &&
         clock.now().difference(_lastTryDateTime!) <
-            Duration(seconds: _thresholdInSeconds)) {
+            Duration(seconds: await thresholdInSeconds)) {
       final tryDateTime = clock.now();
       // await thresholdInSeconds
       await Future<void>.delayed(
-        Duration(seconds: _thresholdInSeconds),
+        Duration(seconds: await thresholdInSeconds),
       );
       // if previous text remain equal or no new text has been spoken
       // meantime, ignore text
       if (_lastTextSpoken == text || tryDateTime.isBefore(_lastTryDateTime!)) {
         _logger.finer("(speak): ignore text '$text' too close to previous "
             "speaked at '$_lastTryDateTime' "
-            'thresholdInSeconds $_thresholdInSeconds');
+            'thresholdInSeconds ${await thresholdInSeconds}');
         // set the last try date time when the text is delayed
         _lastTryDateTime = tryDateTime;
         return false;

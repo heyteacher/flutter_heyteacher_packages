@@ -12,4 +12,7 @@ class FlutterHeyteacherTextToSpeechLocalizationsEn
 
   @override
   String get enableTextToSpeech => 'Enable Text to Speech';
+
+  @override
+  String get thresholdInSeconds => 'Threshold in seconds';
 }

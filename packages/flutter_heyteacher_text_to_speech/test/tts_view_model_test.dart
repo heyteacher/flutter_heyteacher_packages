@@ -18,7 +18,7 @@ void main() {
   SharedPreferencesAsyncPlatform.instance =
       InMemorySharedPreferencesAsync.empty();
   final ttsViewModel =
-      TTSViewModel.instance(thresholdInSeconds: thresholdInSeconds);
+      TTSViewModel.instance(defaultThresholdInSeconds: thresholdInSeconds);
 
   tearDown(() async {
     // reset
