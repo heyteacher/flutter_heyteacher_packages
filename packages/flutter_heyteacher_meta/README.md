@@ -79,6 +79,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
   - [Dart Builders](#dart-builders)
   - [Appendice](#appendice)
+    - [Customize `CHANGELOG.md` template](#customize-changelogmd-template)
     - [Migrate a repository to a package of a `monorepo`](#migrate-a-repository-to-a-package-of-a-monorepo)
       - [Setup](#setup)
       - [update git history of all repositories](#update-git-history-of-all-repositories)
@@ -1246,6 +1247,14 @@ setup your `~/.bash_aliases` with `dart_builders` alias:
   ```
 
 ## Appendice
+
+### Customize `CHANGELOG.md` template
+
+`CHANGELOG.md` is generated via [git-cliff](https://git-cliff.org/) based on template located in `<project_root>/fastlane/cliff.toml`.
+
+When you [configure `FastLane`](#configure-fastlane), a default [cliff.toml](https://codeberg.org/heyteacher/flutter_heyteacher_packages/raw/branch/main/packages/flutter_heyteacher_e2ee/fastlane/cliff.toml) is create in `<project_root>/fastlane/cliff.toml`.
+
+You can customize this template modifying `<project_root>/fastlane/cliff.toml` following [git cliff templating documentation](https://git-cliff.org/docs/category/templating).
 
 ### Migrate a repository to a package of a `monorepo`
 
