@@ -17,6 +17,18 @@ A Flutter package providing a set of standardized UI components and utilities fo
 
 The components in this packages are implemented following [`Model-View-ViewModel` (`MVVM`) architecture](https://codeberg.org/heyteacher/flutter_heyteacher_packages#model-view-viewmodel-mvvm-architecture) and [`Singleton` pattern](https://codeberg.org/heyteacher/flutter_heyteacher_packages#singleton-pattern).
 
+## Credits
+
+- [flutter_cookie_consent](https://pub.dev/packages/flutter_cookie_consent): A Flutter plugin for displaying cookie consent banners and managing cookie preferences in your Flutter applications.
+  
+- [markdown_widget](https://pub.dev/packages/markdown_widget):  simple and easy-to-use markdown rendering component.
+
+- [scroll_to_index](http://pub.dev/packages/scroll_to_index): This package provides the scroll to index mechanism for fixed/variable row height for Flutter scrollable widget.
+
+- [updown_arrow_scroller](https://pub.dev/packages/updown_arrow_scroller): A Flutter web package that enables keyboard up-down arrow navigation for scrolling through pages.
+
+- [video_player](https://pub.dev/packages/video_player): A Flutter plugin for iOS, Android and Web for playing back video on a Widget surface.
+
 ## Getting started
 
 Add the package to your `pubspec.yaml`:
