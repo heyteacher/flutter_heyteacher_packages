@@ -1,6 +1,6 @@
 name: flutter_heyteacher_e2ee
 description: "The flutter heyteacher package for End-2-End Encryption utilities."
-version: 2.0.11+149
+version: 2.0.11+150
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_e2ee
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
