@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-3.0.8+156] - 2026-04-28
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_views-3.0.8+156]
+
+- *(release)* New version 3.0.8+156 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([c53fa23](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c53fa23564c357cc4cab8e7cfeaf1f89e4c6d21b))
+
 ## [flutter_heyteacher_views-3.0.8+155] - 2026-04-28
 
 ### 📚 Documentation - [flutter_heyteacher_views-3.0.8+155]
