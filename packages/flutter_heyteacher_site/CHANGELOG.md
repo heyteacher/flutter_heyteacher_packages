@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_site-1.10.4+126] - 2026-04-28
+
+### 🛠️ Build - [flutter_heyteacher_site-1.10.4+126]
+
+- *(deps)* Upgrade dependencies ([c3b1d5f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c3b1d5fbaccc6b1c7799552a12b6ff501aa6652b))
+
+### 📚 Documentation - [flutter_heyteacher_site-1.10.4+126]
+
+- Update link to `Flutter HeyTeacher ecosystem` in `README.md` ([aa34118](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aa3411870c40861c4d6540d715be83b145ea3ea6))
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_site-1.10.4+126]
+
+- *(release)* New version 1.10.4+126 which closes ([#154](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/154)) ([b3453a2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b3453a2408e9e27ffcd1badb0ab551420370c13a))
+
 ## [flutter_heyteacher_site-1.10.3+125] - 2026-04-27
 
 ### 🐛 Bug Fixes - [flutter_heyteacher_site-1.10.3+125]
