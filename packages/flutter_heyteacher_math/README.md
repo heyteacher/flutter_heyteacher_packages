@@ -1,6 +1,6 @@
 # flutter_heyteacher_math
 
-A Flutter package containing mathematical utilities and algorithms, designed for the [Flutter HeyTeacher ecosystem](../../).
+A Flutter package containing mathematical utilities and algorithms, designed for the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages).
 
 ## Features
 

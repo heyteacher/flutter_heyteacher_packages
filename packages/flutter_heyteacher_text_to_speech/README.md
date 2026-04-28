@@ -1,6 +1,6 @@
 # flutter_heyteacher_text_to_speech
 
-A Flutter package based on [flutter_tts](https://pub.dev/packages/flutter_tts) for managing `Text-to-Speech` (`TTS`) functionalities, specifically designed for the [Flutter HeyTeacher ecosystem](../../). This package provides view models for controlling TTS output and UI components for user settings.
+A Flutter package based on [flutter_tts](https://pub.dev/packages/flutter_tts) for managing `Text-to-Speech` (`TTS`) functionalities, specifically designed for the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages). This package provides view models for controlling TTS output and UI components for user settings.
 
 ## Features
 

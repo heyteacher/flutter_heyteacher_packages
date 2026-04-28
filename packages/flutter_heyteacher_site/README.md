@@ -1,6 +1,6 @@
 # flutter_heyteacher_site
 
-A Flutter package providing a set of standardized UI components and utilities for building websites and landing pages within the HeyTeacher ecosystem.
+A Flutter package providing a set of standardized UI components and utilities for building websites and landing pages within the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages).
 
 ## Features
 
@@ -23,7 +23,7 @@ The components in this packages are implemented following [`Model-View-ViewModel
   
 - [markdown_widget](https://pub.dev/packages/markdown_widget):  simple and easy-to-use markdown rendering component.
 
-- [scroll_to_index](http://pub.dev/packages/scroll_to_index): This package provides the scroll to index mechanism for fixed/variable row height for Flutter scrollable widget.
+- [scroll_to_index](https://pub.dev/packages/scroll_to_index): This package provides the scroll to index mechanism for fixed/variable row height for Flutter scrollable widget.
 
 - [updown_arrow_scroller](https://pub.dev/packages/updown_arrow_scroller): A Flutter web package that enables keyboard up-down arrow navigation for scrolling through pages.
 
