@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_text_to_speech-3.0.2+157] - 2026-04-28
+
+### 🛠️ Build - [flutter_heyteacher_text_to_speech-3.0.2+157]
+
+- *(deps)* Upgrade `flutter_heyteacher_text_to_speech` dependency ([ad6f69c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ad6f69c9ea0665c5a66d2ad2519fb5bc24714639))
+
+### 📚 Documentation - [flutter_heyteacher_text_to_speech-3.0.2+157]
+
+- Update link to `Flutter HeyTeacher ecosystem` in `README.md` ([aa34118](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aa3411870c40861c4d6540d715be83b145ea3ea6))
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_text_to_speech-3.0.2+157]
+
+- *(release)* New version 3.0.2+157 which closes ([#154](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/154)) ([69fd0fa](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/69fd0fac8721ffd8e617a04ffb069e06e497ba0a))
+
 ## [flutter_heyteacher_text_to_speech-3.0.1+156] - 2026-04-27
 
 ### 🐛 Bug Fixes - [flutter_heyteacher_text_to_speech-3.0.1+156]
