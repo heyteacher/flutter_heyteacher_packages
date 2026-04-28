@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.6.4+173] - 2026-04-28
+
+### 📚 Documentation - [flutter_heyteacher_meta-7.6.4+173]
+
+- *(cliff)* Skip `build(deps)` commits in `CHANGELOG.md` ([a43d836](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a43d8360f2772267a08f69d9bba30b7294ac4181))
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.4+173]
+
+- *(release)* New version 7.6.4+173 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([bba65ab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bba65ab7075c6364ce9f13e2301732abc7a015bc))
+
 ## [flutter_heyteacher_meta-7.6.3+172] - 2026-04-28
-
-### 🛠️ Build - [flutter_heyteacher_meta-7.6.3+172]
-
-- *(deps)* Upgrade dependencies ([c3b1d5f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c3b1d5fbaccc6b1c7799552a12b6ff501aa6652b))
 
 ### 📚 Documentation - [flutter_heyteacher_meta-7.6.3+172]
 
@@ -72,10 +78,6 @@ All notable changes to this project will be documented in this file. See [conven
 
 - *(meta)* Load custom `fastlane/cliff.toml` and add link to issue closed. IMPORTANT: run `dart run flutter_heyteacher_meta:configure_flutter_package` to acquire `fastlane/cliff.toml` in your package ([f94567b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f94567b3c680ac4ae2c2a6f7e15e0e1fdbe55e1b))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.5.0+166]
-
-- *(deps)* Upgrade tighten deps ([7604d9b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7604d9bc613050d9fdf0a1545cb3de0f0cf34a62))
-
 ### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.5.0+166]
 
 - *(release)* New version 7.5.0+166 which closes ([#71](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/71)) ([7e17baa](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7e17baa3baf55fd6ef5e302509a3891c43658ce4))
@@ -88,7 +90,6 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### 🛠️ Build - [flutter_heyteacher_meta-7.4.2+165]
 
-- *(deps)* Upgrade major versions and tighten ([365bff8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/365bff8ea49733b79b2cdb785cfcb26746be7a95))
 - Update  version to 7.4.2+165 which closes ([#112](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/112)) ([cc0b293](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cc0b2937228f82e90f39ac79c0af578cfde31662))
 
 ### 📚 Documentation - [flutter_heyteacher_meta-7.4.2+165]
@@ -280,56 +281,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### 🛠️ Build - [flutter_heyteacher_meta-7.0.6+150]
 
-- *(deps)* Bump deps version to 1.2.0+260208113 ([0d30dab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0d30dab6f4f4f73fe37a01efe5343d827adeee0d))
-- *(deps)* Bump deps versions ([e665944](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e6659442d4485241ef45237fb7c8b0c109a8e306))
-- *(deps)* Bump deps version to 1.2.1+260208140 ([de7f39e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/de7f39edc0182a1e9335a895d69b7abe8afbdbb1))
-- *(deps)* Bump deps version to 2.0.0+260215111 ([82062ab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/82062ab8b292e556232852b2a222f9e42a98c91e))
-- *(deps)* Bump deps version to 2.0.1+260216114 ([8108c05](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8108c0578eab098d1ef705a219b3e26d6e781673))
-- *(deps)* Bump deps version to 2.1.0+260216145 ([17d3f0a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/17d3f0a0e0971d0bfb0c2d3bc4e3d950cd3cdbf1))
-- *(deps)* Bump deps version ([50f07e2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/50f07e2d7c46ed3219740e41993b5f4adc4e5ad0))
-- *(deps)* Bump deps version to 2.1.1+260219100 ([f868703](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f86870370c4484067645414ff6cddde4ce2b3ae0))
-- *(deps)* Bump deps version ([ab6226c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ab6226ce19dec1c075d57951f53bc8ca1c325231))
-- *(deps)* Bump deps version to 2.2.0+260220161 ([64348d4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/64348d45ceb3f77f7e40096748c6f17100be628e))
-- *(deps)* Bump deps version to 2.2.1+260222212 ([e28d37b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e28d37b3786c4c5773cfa07769e415ba032c67c3))
-- *(deps)* Bump deps version to 2.2.2+260225101 ([37450d5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/37450d5bd914041e81da9476aa68272788dfe267))
-- *(deps)* Bump deps version to 2.2.3+260225103 ([74283c1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/74283c17b28e441736b79aaeda4b66840af781fc))
-- *(deps)* Bump deps version to 3.0.0+260225151 ([9cbc04a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9cbc04a737ab007c6bd2f567f91b6bfef0802ee1))
-- *(deps)* Bump deps version to 3.0.1+260225163 ([d913d59](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d913d59a0c24e2192c9098f4cea3a8e011ccca95))
-- *(deps)* Bump deps version to 3.1.0+260226113 ([cb4b2dc](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cb4b2dc0a7c1f9b823246881398d687cabc8f66b))
-- *(deps)* Bump deps version to 3.1.1+260226123 ([b191a2a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b191a2ae742122c2f1a51218548cfd5442111060))
-- *(deps)* Bump deps version to 3.1.2+260226154 ([4d3e80c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4d3e80c0e3111db6c311f60cd45668fd9e150a4a))
-- *(deps)* Bump deps to 4.0.0+101 ([5898d37](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5898d375ab5b3ab53046c11c5c306e5d0a4a3dd8))
-- *(deps)* Bump deps to 4.1.0+103 ([d1e4e75](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d1e4e75464eda9ddfee4f3a439ba3e8ce3d9721a))
-- *(deps)* Bump deps to 4.1.0+103 ([0aae94c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0aae94c1d09b241947742041b296db51581971ef))
 - Update tag pattern for publishing workflow ([d84f32b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d84f32b08ab5919a06db71aeed749bbc496d3706))
-- *(deps)* Bump deps to 4.1.1+105 ([e687ef0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e687ef0c204ea2b9b2a777eaabe3830b4cf31d08))
-- *(deps)* Bump deps to 4.1.2+107 ([fb2df8e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fb2df8ee6244daff8e675ce6ca330abdc0072162))
-- *(deps)* Bump deps to 4.1.3+109 ([28af59f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/28af59feaafaebf38c49740a34b6fa0bae41f6c9))
-- *(deps)* Bump deps to 4.1.4+111 ([8a5f65b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8a5f65bae4a704edbe330ba0e26ab0ff92705462))
-- *(deps)* Bump deps to 4.1.5+114 ([5fc0d1d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5fc0d1d77ad8f9be840f658e93b405a86065295a))
-- *(deps)* Bump deps to 4.2.0+116 ([2b7d03a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2b7d03ae08f6deabcb30e0b1731b8793023eb974))
-- *(deps)* Bump deps to 4.3.0+118 ([b3279ea](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b3279ea55e8550862b9dc6ea0df0dbfcbbd6737f))
-- *(deps)* Bump deps to 4.4.0+120 ([46c696d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/46c696d753ecb3481926702edf11502cf02bc16e))
-- *(deps)* Bump deps to 4.4.1+122 ([840c129](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/840c129fe33b58601527211c3c4f9fb002b48878))
-- *(deps)* Bump deps to 4.4.1+122 ([9db512e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9db512eb1a7c34a902d61767b17dfd23b19a1795))
-- *(deps)* Bump deps to 4.4.2+124 ([fd4e014](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fd4e014cde2f3af60d211a354e073e95690b5f7d))
-- *(deps)* Bump deps to 4.4.3+126 ([4b56222](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4b5622247b5ca347af14788105c7fde04cb71806))
-- *(deps)* Bump deps to 4.4.4+128 ([2e08eaf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2e08eafbf6d14d4b8fd839c4f4a6dd79942d84af))
-- *(deps)* Bump deps to 4.4.5+130 ([87b997d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/87b997dd0e1b572b36de4931326a5f41f6c08628))
-- *(deps)* Bump deps to 5.0.0+132 ([891551b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/891551b65884338fba1f9086aef803e02d9d309c))
-- *(deps)* Bump deps to 6.0.0+138 ([98230c9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/98230c9ae404bb60b768df338f0bfc95df39840e))
-- *(deps)* Bump deps to 7.0.0+140 ([84413b6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/84413b6fac767fd2e1770302efdc2075a1179366))
-- *(deps)* Bump deps to 7.0.0+142 ([2f96acd](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2f96acd685ea597bcc8f88f4b3332ad61ec3c728))
-- *(deps)* Bump deps to 6.0.0+134 ([a364bbe](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a364bbe9648589249f1469fb02a201db8d1c94ea))
-- *(deps)* Bump deps to 6.0.0+134 ([8476636](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/84766360d6455f7823c6537d1c7a1216181cfc0f))
-- *(deps)* Bump deps to 6.0.1+136 ([6299225](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6299225c34c8d6c937a66936876d4fafe4e8ca6e))
-- *(deps)* Bump deps to 7.0.0+138 ([759c720](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/759c720a82c5f70493d7a49410151bf50977b728))
-- *(deps)* Bump deps to 7.0.1+140 ([63abfd8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/63abfd89d170087a6b853f79155d02ea7b5b9611))
-- *(deps)* Bump deps to 7.0.2+142 ([aaa0095](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aaa00953641bd81b47c7fd11f8034624770a3241))
-- *(deps)* Bump deps to 7.0.3+144 ([4554a25](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4554a2517e0f42a214404383d702510b3f6c4846))
-- *(deps)* Bump deps to 7.0.4+146 ([6cf7679](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6cf7679b24ab03b1cfa2c410cdf8974b0033ea79))
-- *(deps)* Bump deps to 7.0.5+148 ([623e19b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/623e19b8af537c04db2dd4c23b768f0765104cd0))
-- *(deps)* Bump deps to 7.0.6+150 ([f126715](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f1267150aecdffd5d42f31bd43acfb7416d9a9fc))
 
 ### 🚜 Refactor - [flutter_heyteacher_meta-7.0.6+150]
 
