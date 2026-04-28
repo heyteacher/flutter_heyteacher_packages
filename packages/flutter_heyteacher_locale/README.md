@@ -1,6 +1,6 @@
 # flutter_heyteacher_locale
 
-A Flutter package for managing application locale, date/time formatting, and localization helpers, specifically designed for the Flutter HeyTeacher ecosystem.
+A Flutter package for managing application locale, date/time formatting, and localization helpers, specifically designed for the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages).
 
 ## Features
 

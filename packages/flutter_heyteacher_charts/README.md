@@ -1,6 +1,6 @@
 # flutter_heyteacher_charts
 
-A high-level Flutter charting library built on top of [fl_chart](https://pub.dev/packages/fl_chart). This package provides simplified "View" components specifically designed for the HeyTeacher ecosystem, offering consistent styling, theme integration, and easy-to-use APIs for common data visualizations.
+A high-level Flutter charting library built on top of [fl_chart](https://pub.dev/packages/fl_chart). This package provides simplified "View" components specifically designed for the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages), offering consistent styling, theme integration, and easy-to-use APIs for common data visualizations.
 
 ## Features
 

@@ -1,6 +1,6 @@
 # flutter_heyteacher_views
 
-A Flutter package providing a collection of reusable UI widgets, adaptive layouts, and view utilities, designed for the [Flutter HeyTeacher ecosystem](../..).
+A Flutter package providing a collection of reusable UI widgets, adaptive layouts, and view utilities, designed for the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages).
 
 ## Features
 

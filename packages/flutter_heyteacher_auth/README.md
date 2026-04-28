@@ -1,6 +1,6 @@
 # Flutter HeyTeacher Auth
 
-A Flutter package responsible for managing authentication within the HeyTeacher ecosystem.
+A Flutter package responsible for managing authentication within the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages).
 
 This package provides the necessary utilities and repositories to handle user sessions, including Google Sign-In and a demo authentication mode.
 

@@ -1,6 +1,6 @@
 # flutter_heyteacher_e2ee
 
-A Flutter package for managing End-to-End Encryption (E2EE) workflows, specifically designed for the [Flutter HeyTeacher ecosystem](../../). This package handles the generation, storage, and management of cryptographic keys and Additional Authenticated Data (AAD).
+A Flutter package for managing End-to-End Encryption (E2EE) workflows, specifically designed for the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages). This package handles the generation, storage, and management of cryptographic keys and Additional Authenticated Data (AAD).
 
 ## Features
 

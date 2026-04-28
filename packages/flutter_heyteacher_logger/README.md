@@ -1,6 +1,6 @@
 # flutter_heyteacher_logger
 
-A Flutter package based on [logging](https://pub.dev/packages/logging) that provides UI components and a model for viewing and managing application logs. This package is specifically designed for the [Flutter HeyTeacher ecosystem](../../).
+A Flutter package based on [logging](https://pub.dev/packages/logging) that provides UI components and a model for viewing and managing application logs. This package is specifically designed for the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages).
 
 ## Features
 

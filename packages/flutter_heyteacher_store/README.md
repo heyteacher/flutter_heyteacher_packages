@@ -5,7 +5,7 @@
 > [Pipelines](https://firebase.google.com/docs/firestore/enterprise/pipelines-overview) available only on databases
 > __Firestore in Native mode (with Pipeline operations) for Enterprise edition__
 
-Firebase Firestore library using [generics](https://dart.dev/language/generics|generics). This package is specifically designed for the [Flutter HeyTeacher ecosystem](../../).
+Firebase Firestore library using [generics](https://dart.dev/language/generics|generics). This package is specifically designed for the [Flutter HeyTeacher ecosystem](https://codeberg.org/heyteacher/flutter_heyteacher_packages).
 
 - use [generics](https://dart.dev/language/generics|generics) to define two
   different DataType in [firestore.CollectionReference.withConverter]
