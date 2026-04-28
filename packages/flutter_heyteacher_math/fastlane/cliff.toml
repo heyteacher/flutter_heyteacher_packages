@@ -20,7 +20,7 @@ body = """
     ## [unreleased]
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
-    ### {{ group | striptags | trim | upper_first }} - [{{ version }}]
+    ### {{ group | striptags | trim | upper_first }} [{{ version | split(pat="+") | first | split(pat="-") | last }}]
     {% for commit in commits %}
         - {% if commit.scope %}*({{ commit.scope }})* {% endif %}\
             {% if commit.breaking %}[**breaking**] {% endif %}\
@@ -83,7 +83,6 @@ commit_parsers = [
     { message = "^revert", group = "<!-- 9 -->◀️ Revert" },
     { message = "^build\\(deps.*\\)", skip = true },
     { message = "^build", group = "<!-- 10 -->🛠️ Build" },
-    { message = "^build\\(deps.*\\)", skip = true },
     { message = ".*", group = "<!-- 11 -->💼 Other" },
 ]
 # Exclude commits that are not matched by any commit parser.
