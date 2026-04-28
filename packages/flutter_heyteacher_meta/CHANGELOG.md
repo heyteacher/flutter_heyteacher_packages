@@ -2,220 +2,230 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.6.5+174] - 2026-04-28
+
+### 📚 Documentation [7.6.5]
+
+- *(cliff)* Replace `tag` with `version` in group headings ([8e77b24](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8e77b245705510863376408fcd634a7f3e366038))
+
+### ⚙️ Miscellaneous Tasks [7.6.5]
+
+- *(release)* New version 7.6.5+174 which closes ([#163](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/163)) ([e835a45](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e835a4577771c30a6a26e270bb035ebfb4b98837))
+
 ## [flutter_heyteacher_meta-7.6.4+173] - 2026-04-28
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.6.4+173]
+### 📚 Documentation [7.6.4]
 
 - *(cliff)* Skip `build(deps)` commits in `CHANGELOG.md` ([a43d836](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a43d8360f2772267a08f69d9bba30b7294ac4181))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.4+173]
+### ⚙️ Miscellaneous Tasks [7.6.4]
 
 - *(release)* New version 7.6.4+173 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([bba65ab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bba65ab7075c6364ce9f13e2301732abc7a015bc))
 
 ## [flutter_heyteacher_meta-7.6.3+172] - 2026-04-28
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.6.3+172]
+### 📚 Documentation [7.6.3]
 
 - *(cliff)* Skip `build(deps)` commits in `CHANGELOG.md` ([61a7b40](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/61a7b4010ca79b155d173f9fb76b22ab0ee25f44))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.3+172]
+### ⚙️ Miscellaneous Tasks [7.6.3]
 
 - *(release)* New version 7.6.3+172 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([f599198](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f599198b81ef439730daa66b6fddfd901e177588))
 
 ## [flutter_heyteacher_meta-7.6.2+171] - 2026-04-27
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.6.2+171]
+### 📚 Documentation [7.6.2]
 
 - Add documentation how to customize `CHANGELOG.md` modifying template `fastlane/cliff.toml` ([e6f3036](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e6f3036e75eb12c6bf391426663e8103932dba87))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.2+171]
+### ⚙️ Miscellaneous Tasks [7.6.2]
 
 - *(release)* New version 7.6.2+171 which closes ([#129](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/129)) ([48d8dab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/48d8dab64bbeea2b4a2bf427d6c228511d4719a8))
 
 ## [flutter_heyteacher_meta-7.6.1+170] - 2026-04-27
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.6.1+170]
+### 🐛 Bug Fixes [7.6.1]
 
 - Avoid commands `configure_flutter_package` and `configure_flutter_app` override existing files ([0ffee7c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0ffee7c39a246c8ed2b65d4f274ea443352e7ce1))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.1+170]
+### ⚙️ Miscellaneous Tasks [7.6.1]
 
 - *(release)* New version 7.6.1+170 which closes ([#130](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/130)) ([3d541c0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3d541c0c51a7d90e6fff7cb4b77f9fc1c823a705))
 
 ## [flutter_heyteacher_meta-7.6.0+169] - 2026-04-27
 
-### 🚀 Features - [flutter_heyteacher_meta-7.6.0+169]
+### 🚀 Features [7.6.0]
 
 - Add link to commit changes ([c0387f1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c0387f16c12f4fe3b0732559c7d6e1fdd22e4e10))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.0+169]
+### ⚙️ Miscellaneous Tasks [7.6.0]
 
 - *(release)* New version 7.6.0+169 which closes ([#141](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/141)) ([9b2e2dc](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9b2e2dcda92dda6e8dc2e513c99665c2f82676a1))
 
 ## [flutter_heyteacher_meta-7.5.2+168] - 2026-04-24
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.5.2+168]
+### 🐛 Bug Fixes [7.5.2]
 
 - Typo on lane checkout on search issue in github ([25cdc08](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/25cdc08938cc321f9f4ba5e4e86c373ff001e4a7))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.5.2+168]
+### ⚙️ Miscellaneous Tasks [7.5.2]
 
 - *(release)* New version 7.5.2+168 which closes ([#127](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/127)) ([b01c3c4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b01c3c43f868bbe25e82a74f8c8c40d26ac0a1a0))
 
 ## [flutter_heyteacher_meta-7.5.1+167] - 2026-04-24
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.5.1+167]
+### 🐛 Bug Fixes [7.5.1]
 
 - Corrected `configureFlutterPackage` and `configureFlutterApp` path of `cliff.toml` and copy of `ruby-version ([09270fe](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/09270fee44f854b375cbf966eb0f7a0979c87841))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.5.1+167]
+### ⚙️ Miscellaneous Tasks [7.5.1]
 
 - *(release)* New version 7.5.1+167 which closes ([#125](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/125)) ([9278279](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/92782790ce287d73e078910f3576ed6c119c4457))
 
 ## [flutter_heyteacher_meta-7.5.0+166] - 2026-04-24
 
-### 🚀 Features - [flutter_heyteacher_meta-7.5.0+166]
+### 🚀 Features [7.5.0]
 
 - *(meta)* Load custom `fastlane/cliff.toml` and add link to issue closed. IMPORTANT: run `dart run flutter_heyteacher_meta:configure_flutter_package` to acquire `fastlane/cliff.toml` in your package ([f94567b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f94567b3c680ac4ae2c2a6f7e15e0e1fdbe55e1b))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.5.0+166]
+### ⚙️ Miscellaneous Tasks [7.5.0]
 
 - *(release)* New version 7.5.0+166 which closes ([#71](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/71)) ([7e17baa](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7e17baa3baf55fd6ef5e302509a3891c43658ce4))
 
 ## [flutter_heyteacher_meta-7.4.2+165] - 2026-04-20
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.4.2+165]
+### 🐛 Bug Fixes [7.4.2]
 
 - Enhance commit message of `pubspec.yaml` update on `release` ([ae82206](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ae8220632f6cbcad3b4b270d868e835d0188ee6b))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.4.2+165]
+### 🛠️ Build [7.4.2]
 
 - Update  version to 7.4.2+165 which closes ([#112](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/112)) ([cc0b293](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cc0b2937228f82e90f39ac79c0af578cfde31662))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.4.2+165]
+### 📚 Documentation [7.4.2]
 
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.4.2+165 ([cf6f306](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cf6f3065849322695059f331f7899645ff3f2bec))
 
 ## [flutter_heyteacher_meta-7.4.1+164] - 2026-04-16
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.4.1+164]
+### 🐛 Bug Fixes [7.4.1]
 
 - *(fastlane)* Lane `release` corrected buld number imcrement ([b887ce9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b887ce9aee3004222ff5b045ccce37927676490c))
 - *(fastlane)* Corrected check of answer to confirm version detected ([b719ea6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b719ea655c9ddee6e2da393f3a4e042461cb67fd))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.4.1+164]
+### 🛠️ Build [7.4.1]
 
 - *(flutter_heyteacher_meta)* Update version to 7.4.1+164 which closes ([#108](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/108)) ([0c4d19d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0c4d19d48a594129d36bea42e17ca952540962ae))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.4.1+164]
+### 📚 Documentation [7.4.1]
 
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.4.1+164 ([b9e97c9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b9e97c939d0f954e03066e93a14f4328892d12f6))
 
 ## [flutter_heyteacher_meta-7.4.0+162] - 2026-04-16
 
-### 🚀 Features - [flutter_heyteacher_meta-7.4.0+162]
+### 🚀 Features [7.4.0]
 
 - *(dartsemver)* Add commant `set --version <X.Y.Z>` to update `pubspec.yaml` to a specific version ([a91441e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a91441e161f92adc4cbbb5fc51a840d1cfe3c971))
 - *(fastlane)* Lane `release` detect semver based on conventional commit messages so `semver` parameters become optional ([b111bcc](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b111bccd0b61e3ca3fcabe3064e30c03b3be0d53))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.4.0+162]
+### 🛠️ Build [7.4.0]
 
 - *(flutter_heyteacher_meta)* Update version to 7.4.0+162 which closes ([#104](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/104)) ([1db9a69](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1db9a69517a9527c067901348f2d5ab45ad51a86))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.4.0+162]
+### 📚 Documentation [7.4.0]
 
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.4.0+162 ([6263a38](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6263a389ff86af4e8a51fabf37f8c9e7a12029b4))
 
 ## [flutter_heyteacher_meta-7.3.1+162] - 2026-04-01
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.3.1+162]
+### 🛠️ Build [7.3.1]
 
 - *(flutter_heyteacher_meta)* Update version to 7.3.1+162 which closes ([#85](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/85)) ([2de53f2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2de53f282da41e23b17f2fabb090bff07e91089c))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.3.1+162]
+### 📚 Documentation [7.3.1]
 
 - *(README.md)* Enhance migration to monorepo guide and lane `deployweb` documentation ([c4f87f8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c4f87f876ce86c6df76e175a54e2fb588a7af2f2))
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.3.1+162 ([17e793f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/17e793f633db2bed2e1a06b2dd27d1d8413d77fb))
 
 ## [flutter_heyteacher_meta-7.3.0+160] - 2026-03-31
 
-### 🚀 Features - [flutter_heyteacher_meta-7.3.0+160]
+### 🚀 Features [7.3.0]
 
 - *(Fastfile)* Show open issues and check issue exists in `checkout` lane ([52aec9e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/52aec9e18d5bc9fd1d80504c5c8a783b0fa2cf7f))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.3.0+160]
+### 🛠️ Build [7.3.0]
 
 - *(flutter_heyteacher_meta)* Update version to 7.3.0+160 which closes ([#70](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/70)) ([227fd19](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/227fd190e6f7b9d89c6666d430668c239605c3aa))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.3.0+160]
+### 📚 Documentation [7.3.0]
 
 - *(README.md)* Update `fl checkout` documentation ([fab46e7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fab46e7e41c8ea66b547e730a932710815e7428b))
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.3.0+160 ([2a705b5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2a705b53801cbc79d398ac468f4c3ab05cc0266a))
 
 ## [flutter_heyteacher_meta-7.2.2+158] - 2026-03-31
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.2.2+158]
+### 🐛 Bug Fixes [7.2.2]
 
 - Update commits adding `scope` as package name ([f813925](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f81392531153d68f94e4f9ba25139d6fed80bc84))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.2.2+158]
+### 🛠️ Build [7.2.2]
 
 - *(flutter_heyteacher_meta)* Update version to 7.2.2+158 which closes ([#79](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/79)) ([4a9f60b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4a9f60b81018b31b9fd680dd1daeb9f232580083))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.2.2+158]
+### 📚 Documentation [7.2.2]
 
 - *(flutter_heyteacher_meta)* Update `CHANGELOG.md` with flutter_heyteacher_meta-7.2.2+158 ([ed9d346](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ed9d346c21b433fd5f1bb24979c228bff0c12908))
 
 ## [flutter_heyteacher_meta-7.2.1+156] - 2026-03-27
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.2.1+156]
+### 🐛 Bug Fixes [7.2.1]
 
 - Compatible with dependency constraint lower bounds ([722abd8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/722abd838293cbc3df225e1d6b4f6c4ddbe4ea84))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.2.1+156]
+### 🛠️ Build [7.2.1]
 
 - Update version to 7.2.1+156 which closes ([#62](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/62)) ([fd7891c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fd7891c328e5e340cde7f9f1d22adbd90ca6a400))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.2.1+156]
+### 📚 Documentation [7.2.1]
 
 - Add usage example to release a new version and close an issue ([bcfb0c4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bcfb0c4bcc8f8ff15c4e426f1c16247df9415617))
 - Update changelog generated for flutter_heyteacher_meta-7.2.1+156 ([cc62869](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cc62869bc748921bd1ab9d96f1e66cf76d530c57))
 
 ## [flutter_heyteacher_meta-7.2.0+154] - 2026-03-26
 
-### 🚀 Features - [flutter_heyteacher_meta-7.2.0+154]
+### 🚀 Features [7.2.0]
 
 - Add `publish` param to  `release` lane and set `forge` default to `true` ([3fa6655](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3fa665550829b3fdfbc8186e73165b0fb0fda16e))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.2.0+154]
+### 🛠️ Build [7.2.0]
 
 - Update version to 7.2.0+154 which closes ([#40](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/40)) ([d29f970](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d29f9702a4c8add40539e17b484d8c531562ac8f))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.2.0+154]
+### 📚 Documentation [7.2.0]
 
 - Update changelog generated for flutter_heyteacher_meta-7.2.0+154 ([ad28292](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ad28292a74fce89dc8d86df4c3e11fdee6c8eb42))
 
 ## [flutter_heyteacher_meta-7.1.0+152] - 2026-03-26
 
-### 🚀 Features - [flutter_heyteacher_meta-7.1.0+152]
+### 🚀 Features [7.1.0]
 
 - Create branch on issue number and add `closes #issue' on commit before merging. On merge delete local branch ([85ab388](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/85ab38863f9b39de76f6822bc244e819580a2b48))
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.1.0+152]
+### 🐛 Bug Fixes [7.1.0]
 
 - Corrected commit message on update `pubspec.yaml` ([ad12683](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ad126837e7d8bdfff00e3c9253834ebe1d0820e7))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.1.0+152]
+### 🛠️ Build [7.1.0]
 
 - Update version to 7.1.0+152 which closes ([#49](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/49)) ([36c2158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/36c215887d9e0a999916c5982f9c8c85e4ddb43d))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.1.0+152]
+### 📚 Documentation [7.1.0]
 
 - Update changelog generated for flutter_heyteacher_meta-7.1.0+152 ([a251b2e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a251b2e51723ef60c59422d53dca21ff1fc0d395))
 
 ## [flutter_heyteacher_meta-7.0.6+150] - 2026-03-25
 
-### 🚀 Features - [flutter_heyteacher_meta-7.0.6+150]
+### 🚀 Features [7.0.6]
 
 - Add  lane ([3686323](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/368632390a2d17c7f1bd65d549c0bc5b8aab49fc))
 - Add lane`github_release` for create a github release and update `CHANGELOG.md` ([fec5946](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fec5946242ef487b8eb79d94196d693110c21089))
@@ -236,7 +246,7 @@ All notable changes to this project will be documented in this file. See [conven
 - [**breaking**] `configure_git_hooks`, `configure_flutter_package` and `configure_flutter_app` become dart commands and resource file moved into `assets` directory ([d0dab76](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d0dab7698dbcf036918e4ef7afe48417c8f6f8df))
 - [**breaking**] Integrate `forgejo` and necome forge indipendent supporting forgejo public instances ([df53586](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/df5358629b6eddbb19554b53a0758a8765d77f3e))
 
-### 🐛 Bug Fixes - [flutter_heyteacher_meta-7.0.6+150]
+### 🐛 Bug Fixes [7.0.6]
 
 - Rename test into `dummy_test` ([c8c31af](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c8c31af68b57ae6384690da62c1ad15b5c5295af))
 - Commit `pubspec.yaml` in `bump` lane, useful when when runs `flutter pub upgrade --major-versions` ([e2f7b27](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2f7b272e49720031a797a0571c5ec2054198f23))
@@ -279,17 +289,17 @@ All notable changes to this project will be documented in this file. See [conven
 - Corrected `homepage`, 'documentation' ([04fd1df](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/04fd1dfe5157a3ee3b0acec2ac838e890370d616))
 - Waith 2 second before create release in `forgejo` public instance ([be52f81](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/be52f818c1c6ec9113671c07ff7e6fe1f291ed29))
 
-### 🛠️ Build - [flutter_heyteacher_meta-7.0.6+150]
+### 🛠️ Build [7.0.6]
 
 - Update tag pattern for publishing workflow ([d84f32b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d84f32b08ab5919a06db71aeed749bbc496d3706))
 
-### 🚜 Refactor - [flutter_heyteacher_meta-7.0.6+150]
+### 🚜 Refactor [7.0.6]
 
 - Rename `flutter_heyteacher_fastlane` into `flutter_heyteacher_meta` and add `github` flag to `release` lane to generate or not the github release ([352f33b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/352f33bd466b75065fea0ba156dcbed0b2e50e5d))
 - Merge remote-tracking branch 'temp_meta/main' into integrate-monorepo ([ee6439e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ee6439eee70d6a89beb37a58cf6c773aee1b5e92))
 - Move `flutter_heytacher_meta` to monorepo `flutter_heyteacher_packages` ([9778276](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/97782765a3d62cb0b08324f7a92fb5caf803c97f))
 
-### 📚 Documentation - [flutter_heyteacher_meta-7.0.6+150]
+### 📚 Documentation [7.0.6]
 
 - Update CHANGELOG.md with release 1.2.0+260208113 ([81957e4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/81957e4d872f6cab35264ee72de3105aec65f22c))
 - Update CHANGELOG.md with release 1.2.1+260208140 ([1f54ed0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1f54ed035bcaaa5e1e26d3e62e891ef090b848a9))
@@ -349,11 +359,11 @@ All notable changes to this project will be documented in this file. See [conven
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.5+148 ([8f7a370](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8f7a370115559a4c4a65b635db3580e2a347c8da))
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_meta-7.0.6+150 ([36b2499](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/36b2499762eba4e922cb45c9abd949cc8543b9b1))
 
-### 🧪 Testing - [flutter_heyteacher_meta-7.0.6+150]
+### 🧪 Testing [7.0.6]
 
 - Add unit tests for `PubspecVersion.version` method ([d113f7e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d113f7e850552bab359a6fa0eabbd2aca3db01a5))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.0.6+150]
+### ⚙️ Miscellaneous Tasks [7.0.6]
 
 - Conventional commit ([5e75e78](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5e75e7898ae699455dbde2fe197878f229f64217))
 - Commit Gemfile.lock on bump lane ([d5a1f1e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d5a1f1e76717fbad9cfdf50a6de3b7cadeb404af))
