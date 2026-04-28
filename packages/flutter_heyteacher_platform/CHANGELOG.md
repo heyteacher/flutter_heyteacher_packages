@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-2.1.1+142] - 2026-04-28
+
+### 📚 Documentation - [flutter_heyteacher_platform-2.1.1+142]
+
+- *(cliff)* Skip `build(deps)` commits in `CHANGELOG.md` ([61a7b40](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/61a7b4010ca79b155d173f9fb76b22ab0ee25f44))
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_platform-2.1.1+142]
+
+- *(release)* New version 2.1.1+142 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([0c98da3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0c98da358b07f061a36c97ec9aeca08b4ab4a71f))
+
 ## [flutter_heyteacher_platform-2.1.0+141] - 2026-04-27
 
 ### 🚀 Features - [flutter_heyteacher_platform-2.1.0+141]
@@ -14,10 +24,6 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### 🛠️ Build - [flutter_heyteacher_platform-2.1.0+141]
 
-- *(deps)* Upgrade dependencies tighten fixing `Compatible with dependency constraint lower bounds` ([3f520f6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3f520f6be150052ef5809286d04c056bccb90ce6))
-- *(deps)* Upgrade tighten and major versions ([72608c3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/72608c3656debbbbfcc602d86dae9ce19b7f4934))
-- *(deps)* Upgrade major versions and tighten ([365bff8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/365bff8ea49733b79b2cdb785cfcb26746be7a95))
-- *(deps)* Upgrade tighten deps ([7604d9b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7604d9bc613050d9fdf0a1545cb3de0f0cf34a62))
 - Add `fastlane/cliff.toml`  enhanced and customizable for generate change log ([e25bf19](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e25bf19ac3f5c1513c5575807c51c0a29e3603d3))
 
 ### 📚 Documentation - [flutter_heyteacher_platform-2.1.0+141]
@@ -51,9 +57,6 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### 🛠️ Build - [flutter_heyteacher_platform-2.0.6+138]
 
-- *(deps)* Bump dependencies ([815781e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/815781e4756cbd4d88d15f6ab63a9426604dd92a))
-- *(deps)* Bump dependencies ([f2e688b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f2e688ba6709a0c08d4ed3119f2ffdbce86517b3))
-- *(deps)* Bump rependencies version ([de6bdda](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/de6bddacb58cc4acb20d26103802f0f84ed94c4f))
 - *(flutter_heyteacher_platform)* Update version to 2.0.6+138 which closes ([#88](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/88)) ([8903379](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8903379f831ba2b0892e1a3199f5c3ffe75e0b68))
 
 ### 📚 Documentation - [flutter_heyteacher_platform-2.0.6+138]
@@ -69,10 +72,6 @@ All notable changes to this project will be documented in this file. See [conven
 - Pubspec metadata corrected ([9d12311](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9d123112056192eda6e6437517ec735a29ef7564))
 - Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo` ([f3ec1e3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f3ec1e350160b31e382ca9419332e1ab6b1fe61e))
 
-### 🛠️ Build - [flutter_heyteacher_platform-2.0.5+136]
-
-- *(deps)* Bump deps to 2.0.5+136 ([20fa613](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/20fa61303856d0ba0f9cafa062a860c2d76cdf81))
-
 ### 📚 Documentation - [flutter_heyteacher_platform-2.0.5+136]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_platform-2.0.5+136 ([642a079](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/642a079d3a21054b8b1db9abd826f0e907e02236))
@@ -84,10 +83,6 @@ All notable changes to this project will be documented in this file. See [conven
 - Remove from `.gitignore`  i10n generated dart files ([4b7f76b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4b7f76b6a3991a7e8020085d1c4f982c3935ce2a))
 - L10n deps ([7e50651](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7e5065166ab3fcaf74d15bc7626dcc907ccb8bc3))
 
-### 🛠️ Build - [flutter_heyteacher_platform-2.0.4+134]
-
-- *(deps)* Bump deps to 2.0.4+134 ([6e91a0a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6e91a0a771388570affa53b98160eb8841d3bdca))
-
 ### 📚 Documentation - [flutter_heyteacher_platform-2.0.4+134]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_platform-2.0.4+134 ([b950f66](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b950f6616b62c25a49c4c80e2be8307a66d5d467))
@@ -97,12 +92,6 @@ All notable changes to this project will be documented in this file. See [conven
 ### 🚀 Features - [flutter_heyteacher_platform-2.0.3+132]
 
 - Add examples to dart workspace and add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics` ([5bc12ac](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5bc12ac326fdd6974d5c7c6ab7bf619fefbfb9c6))
-
-### 🛠️ Build - [flutter_heyteacher_platform-2.0.3+132]
-
-- *(deps)* Upgrade major versions ([4c3363a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4c3363ae5558b06e27e72fd054cf0acb90dbde8f))
-- *(deps)* Upgrade major versions ([c0583d0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c0583d07aa172ee5d888a192e7259e68895ffbf3))
-- *(deps)* Bump deps to 2.0.3+132 ([033f56d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/033f56dea3cf09679de94afbd17ce843cffe27e3))
 
 ### 🚜 Refactor - [flutter_heyteacher_platform-2.0.3+132]
 
@@ -115,10 +104,6 @@ All notable changes to this project will be documented in this file. See [conven
 
 ## [flutter_heyteacher_platform-2.0.2+130] - 2026-03-12
 
-### 🛠️ Build - [flutter_heyteacher_platform-2.0.2+130]
-
-- *(deps)* Bump deps to 2.0.2+130 ([00d67bf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/00d67bfbdbf68709ae0915d1d3cf40e62699dd33))
-
 ### 📚 Documentation - [flutter_heyteacher_platform-2.0.2+130]
 
 - Add `example` app and documentation in `README.md` ([a8ff0a2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a8ff0a2ea63af30eb9ac4c62451078b1edea8205))
@@ -129,10 +114,6 @@ All notable changes to this project will be documented in this file. See [conven
 ### 🐛 Bug Fixes - [flutter_heyteacher_platform-2.0.1+128]
 
 - *(plaftorm)* `LoggerViewModel.instance` become getter ([3acdbbd](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3acdbbdcec4d62a49d9b1355bafdf1e73689b87b))
-
-### 🛠️ Build - [flutter_heyteacher_platform-2.0.1+128]
-
-- *(deps)* Bump deps to 2.0.1+128 ([d16a504](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d16a5048889889fd645e2206dbb8c640b9283e12))
 
 ### 📚 Documentation - [flutter_heyteacher_platform-2.0.1+128]
 
