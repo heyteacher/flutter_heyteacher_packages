@@ -1,6 +1,6 @@
 name: flutter_heyteacher_firebase
 description: "The flutter heyteacher package for Firebase utilities: analytics, app check, crashlytics, messaging, remote config, and storage"
-version: 2.0.9+145
+version: 2.0.10+146
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_firebase
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
