@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.6.3+172] - 2026-04-28
+
+### 🛠️ Build - [flutter_heyteacher_meta-7.6.3+172]
+
+- *(deps)* Upgrade dependencies ([c3b1d5f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c3b1d5fbaccc6b1c7799552a12b6ff501aa6652b))
+
+### 📚 Documentation - [flutter_heyteacher_meta-7.6.3+172]
+
+- *(cliff)* Skip `build(deps)` commits in `CHANGELOG.md` ([61a7b40](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/61a7b4010ca79b155d173f9fb76b22ab0ee25f44))
+
+### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_meta-7.6.3+172]
+
+- *(release)* New version 7.6.3+172 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([f599198](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f599198b81ef439730daa66b6fddfd901e177588))
+
 ## [flutter_heyteacher_meta-7.6.2+171] - 2026-04-27
 
 ### 📚 Documentation - [flutter_heyteacher_meta-7.6.2+171]
