@@ -87,8 +87,6 @@ lane :release do|options|
     puts "current branch must not be \"main\""
     exit(1)
   end
-  sh("git pull")
-  test
   version = ""
   Dir.chdir("../") do
     if options[:semver] != nil
@@ -107,6 +105,8 @@ lane :release do|options|
       version = "#{version}-#{options[:suffix]}"
     end
   end
+  sh("git pull")
+  test
   # commit bump and push remote
   puts "commit pubspec.yaml with new version #{version}"
   sh("git add ../pubspec.yaml")
