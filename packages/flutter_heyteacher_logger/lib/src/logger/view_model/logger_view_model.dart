@@ -8,7 +8,7 @@ import 'package:clock/clock.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
-import 'package:flutter_heyteacher_logger/src/logger/logger_data.dart';
+import 'package:flutter_heyteacher_logger/src/logger/data/logger_data.dart';
 import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:flutter_heyteacher_worker/flutter_heyteacher_worker.dart';
 import 'package:logging/logging.dart';

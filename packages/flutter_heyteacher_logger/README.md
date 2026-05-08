@@ -92,7 +92,7 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: [
           // ... other settings
-          LoggerCard(''),
+          LoggerListTile(''),
         ],
       ),
     );

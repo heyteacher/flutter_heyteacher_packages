@@ -3,14 +3,19 @@ import 'dart:async';
 // import 'package:firebase_auth_mocks/firebase_auth_mocks.dart'
 //     show MockFirebaseAuth, MockUser;
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart'
+    show FlutterHeyteacherLocaleLocalizations;
 //import 'package:flutter_heyteacher_auth/auth.dart' show AuthViewModel;
 import 'package:flutter_heyteacher_logger/flutter_heyteacher_logger.dart'
     show
+        EnableLogsStorageChoiceListTile,
         FlutterHeyteacherLoggerLocalizations,
-        LoggerCard,
+        LoggerListTile,
         LoggerViewModel,
+        LoggingLevelDropDownMenuListTile,
         LoggingRouter;
-import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
+    show ThemeViewModel;
 import 'package:go_router/go_router.dart' show GoRoute, GoRouter;
 import 'package:logging/logging.dart' show Level, Logger;
 
@@ -29,8 +34,8 @@ Future<void> main() async {
     ..warning('(main): this is an warning essage');
   try {
     throw Exception('this is an exception');
-  // 
-  // ignore: avoid_catches_without_on_clauses
+    //
+    // ignore: avoid_catches_without_on_clauses
   } catch (e, s) {
     logger.severe('(main): this is an severe message', e, s);
   }
@@ -53,6 +58,7 @@ class MyApp extends StatelessWidget {
     themeMode: ThemeMode.dark,
     localizationsDelegates: const [
       FlutterHeyteacherLoggerLocalizations.delegate,
+      FlutterHeyteacherLocaleLocalizations.delegate,
     ],
     routerConfig: GoRouter(
       routes: [
@@ -89,11 +95,16 @@ class _MyHomePageState extends State<_MyHomePage> {
     appBar: AppBar(
       title: const Text('Flutter Heyteacher Logger'),
     ),
-    body: const Padding(
-      padding: EdgeInsets.only(top: 32),
+    body: Padding(
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
         children: [
-          LoggerCard(''),
+          const LoggerListTile('', visible: true),
+          const Divider(height: 1, color: Colors.white24),
+          const EnableLogsStorageChoiceListTile(),
+          const Divider(height: 1, color: Colors.white24),
+          LoggingLevelDropDownMenuListTile(onChanged: () {}),
+          const Divider(height: 1, color: Colors.white24),
         ],
       ),
     ),
