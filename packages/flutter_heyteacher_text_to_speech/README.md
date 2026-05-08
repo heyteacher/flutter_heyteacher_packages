@@ -89,7 +89,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: EnableTTSChoiceCard(),
+        child: EnableTTSChoiceListTile(),
       ),
     );
   }
