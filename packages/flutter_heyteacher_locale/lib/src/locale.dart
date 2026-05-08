@@ -18,10 +18,10 @@ enum _SharedPreferencesKeys {
   fhuCountryCode,
 }
 
-/// A  [Card] wrap of [ListTile] a [LocaleWrap] with TTS speak test.
-class LocaleCard extends StatefulWidget {
-  /// Creates a [LocaleCard].
-  const LocaleCard({
+/// A [ListTile] a [LocaleWrap] with TTS speak test.
+class LocaleListTile extends StatefulWidget {
+  /// Creates a [LocaleListTile].
+  const LocaleListTile({
     Future<void> Function(BuildContext)? onTextToSpeechPressed,
     super.key,
   }) : _onTextToSpeechPressed = onTextToSpeechPressed;
@@ -29,10 +29,10 @@ class LocaleCard extends StatefulWidget {
   final Future<void> Function(BuildContext context)? _onTextToSpeechPressed;
 
   @override
-  State<LocaleCard> createState() => _LocaleCardState();
+  State<LocaleListTile> createState() => _LocaleListTileState();
 }
 
-class _LocaleCardState extends State<LocaleCard> {
+class _LocaleListTileState extends State<LocaleListTile> {
   bool _loading = false;
 
   StreamSubscription<({ThemeData themeData, ThemeMode themeMode})>?
@@ -54,62 +54,60 @@ class _LocaleCardState extends State<LocaleCard> {
   }
 
   @override
-  Widget build(BuildContext context) => Card(
-    child: ListTile(
-      key: const ValueKey('lt_fhu_locale'),
-      leading: const Icon(Icons.language),
-      trailing: _loading
-          ? const Padding(
-              padding: EdgeInsets.only(left: 12, right: 16),
-              child: ProgressIndicatorWidget(),
-            )
-          : IconButton(
-              alignment: Alignment.topRight,
-              iconSize: 24,
-              icon: const Icon(Icons.volume_up),
-              onPressed: () async {
-                setState(() => _loading = true);
-                widget._onTextToSpeechPressed?.call(context) ??
-                    unawaited(
-                      TTSViewModel.instance().speak(
-                        FlutterHeyteacherLocaleLocalizations.of(
-                          context,
-                        )!.ttsTest(
-                          LocaleViewModel.instance.locale.languageCode,
-                          LocaleViewModel.instance.locale.countryCode ?? '',
-                        ),
-                        checkTTSThreshold: false,
+  Widget build(BuildContext context) => ListTile(
+    key: const ValueKey('lt_fhu_locale'),
+    leading: const Icon(Icons.language),
+    trailing: _loading
+        ? const Padding(
+            padding: EdgeInsets.only(left: 12, right: 16),
+            child: ProgressIndicatorWidget(),
+          )
+        : IconButton(
+            alignment: Alignment.topRight,
+            iconSize: 24,
+            icon: const Icon(Icons.volume_up),
+            onPressed: () async {
+              setState(() => _loading = true);
+              widget._onTextToSpeechPressed?.call(context) ??
+                  unawaited(
+                    TTSViewModel.instance().speak(
+                      FlutterHeyteacherLocaleLocalizations.of(
+                        context,
+                      )!.ttsTest(
+                        LocaleViewModel.instance.locale.languageCode,
+                        LocaleViewModel.instance.locale.countryCode ?? '',
                       ),
-                    );
-                await Future<void>.delayed(const Duration(seconds: 5));
-                setState(() => _loading = false);
-              },
-            ),
-      title: const LocaleWrap(),
-      subtitle: Padding(
-        padding: const EdgeInsets.only(top: 8),
-        child: StreamBuilder(
-          stream: LocaleViewModel.instance.localeStream,
-          builder: (_, _) => RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              text: '',
-              children: [
-                TextSpan(
-                  text: FormatterHelper.dateTimeFormat(
-                    DateTime(2020, 6, 30, 22),
-                  ),
-                  style: TextStyle(
-                    color: ThemeViewModel.instance.orangeColor,
-                  ),
+                      checkTTSThreshold: false,
+                    ),
+                  );
+              await Future<void>.delayed(const Duration(seconds: 5));
+              setState(() => _loading = false);
+            },
+          ),
+    title: const LocaleWrap(),
+    subtitle: Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: StreamBuilder(
+        stream: LocaleViewModel.instance.localeStream,
+        builder: (_, _) => RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: '',
+            children: [
+              TextSpan(
+                text: FormatterHelper.dateTimeFormat(
+                  DateTime(2020, 6, 30, 22),
                 ),
-                const TextSpan(text: '  '),
-                TextSpan(
-                  text: FormatterHelper.doubleFormat(12.34),
-                  style: TextStyle(color: ThemeViewModel.instance.blueColor),
+                style: TextStyle(
+                  color: ThemeViewModel.instance.orangeColor,
                 ),
-              ],
-            ),
+              ),
+              const TextSpan(text: '  '),
+              TextSpan(
+                text: FormatterHelper.doubleFormat(12.34),
+                style: TextStyle(color: ThemeViewModel.instance.blueColor),
+              ),
+            ],
           ),
         ),
       ),
