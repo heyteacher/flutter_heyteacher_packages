@@ -5,8 +5,8 @@ import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
 import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_speech.dart'
     show
         FlutterHeyteacherTextToSpeechLocalizations,
-        TTSEnableChoiceCard,
-        TTSThresholdInSecondsCard,
+        TTSEnableChoiceListTile,
+        TTSThresholdInSecondsListTile,
         TTSViewModel;
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show ProgressIndicatorWidget, ThemeViewModel;
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<_MyHomePage> {
       title: const Text('Flutter Heyteacher Text to Speech'),
     ),
     body: Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
         spacing: 8,
         children: [
@@ -90,8 +90,11 @@ class _MyHomePageState extends State<_MyHomePage> {
             padding: EdgeInsets.all(8),
             child: LocaleWrap(),
           ),
-          const TTSEnableChoiceCard(),
-          const TTSThresholdInSecondsCard(),
+          const Divider(height: 1, color: Colors.white24),
+          const TTSEnableChoiceListTile(),
+          const Divider(height: 1, color: Colors.white24),
+          const TTSThresholdInSecondsListTile(),
+          const Divider(height: 1, color: Colors.white24),
           Expanded(
             child: Center(
               child: _loading

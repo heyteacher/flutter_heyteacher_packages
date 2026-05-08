@@ -227,7 +227,7 @@ class ThemeViewModel {
     onSecondary: Colors.grey.shade900,
     error: Colors.white,
     onError: Colors.redAccent,
-    surface: Colors.black.withValues(alpha: 0.8),
+    surface: Colors.black,
     onSurface: Colors.white70,
     surfaceContainer: Colors.grey.shade900,
     onSurfaceVariant: Colors.white,
@@ -254,7 +254,7 @@ class ThemeViewModel {
     onSecondary: Colors.white70,
     error: Colors.white,
     onError: Colors.red,
-    surface: Colors.grey.shade400,
+    surface: Colors.grey.shade500,
     onSurface: Colors.grey.shade900,
     surfaceContainer: Color.lerp(Colors.grey.shade400, Colors.white, 0.3)!,
     onSurfaceVariant: Colors.black,
@@ -284,7 +284,7 @@ class ThemeViewModel {
 
   /// The current selected [ThemeMode].
   ///
-  /// Defaults to [ThemeMode.system] if no theme has been explicitly set in 
+  /// Defaults to [ThemeMode.system] if no theme has been explicitly set in
   /// shared preferences.
   Future<ThemeMode> get themeMode async {
     _logger.finest('<themeMode>:');
@@ -294,6 +294,7 @@ class ThemeViewModel {
       );
       return _themeMode ?? ThemeMode.system;
     }
+
     /// check for persisted theme mode in shared preferences
     final themeModeName = await SharedPreferencesAsync().getString(
       _SharedPreferencesKeys.fhuThemeMode.name,
@@ -301,6 +302,7 @@ class ThemeViewModel {
     _logger.finer(
       '(themeMode): themeMode from shared preferences $themeModeName',
     );
+
     /// initialize theme mode from shared preferences
     _themeMode =
         ThemeMode.values
@@ -540,7 +542,7 @@ class ThemeViewModel {
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         selectedItemColor: primary,
         unselectedItemColor: disabled,
-        backgroundColor: surfaceContainer,
+        backgroundColor: surface,
       ),
       cardTheme: CardThemeData(color: surfaceContainer),
       snackBarTheme: const SnackBarThemeData(

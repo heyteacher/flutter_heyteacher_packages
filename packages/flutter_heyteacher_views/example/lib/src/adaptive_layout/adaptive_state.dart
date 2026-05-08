@@ -43,18 +43,27 @@ class _AbstractAdaptiveStateScreenState extends AbstractAdaptiveState<String> {
 
   List<Widget> get _childred => [
     for (var i = 0; i < 10; i++)
-      Card(
-        child: Center(
-          child: ListTile(
-            title: Text(
-              'GridView Child #${i + 1}',
-              textAlign: TextAlign.center,
+      Padding(
+        padding: const EdgeInsets.all(8),
+        child: Container(
+          decoration: ShapeDecoration(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: const BorderSide(color: Colors.grey),
             ),
-            subtitle: Text(
-              'Param: "${widget.params}"\n'
-              'crossAxisCount: ${widget.crossAxisCount}\n'
-              'ScreenSize: ${widget.screenSize.name}',
-              textAlign: TextAlign.center,
+          ),
+          child: Center(
+            child: ListTile(
+              title: Text(
+                'GridView Child #${i + 1}',
+                textAlign: TextAlign.center,
+              ),
+              subtitle: Text(
+                'Param: "${widget.params}"\n'
+                'crossAxisCount: ${widget.crossAxisCount}\n'
+                'ScreenSize: ${widget.screenSize.name}',
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),

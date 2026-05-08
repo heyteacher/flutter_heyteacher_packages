@@ -93,19 +93,23 @@ class SliverAdaptiveWrap extends StatelessWidget {
     //ScrollController? controller,
     double runSpacing = 4,
     double spacing = 4,
+    WrapAlignment alignment = WrapAlignment.center,
     super.key,
   }) : _direction = direction,
        //   _controller = controller,
        _crossAxisCount = crossAxisCount,
        _children = children,
        _spacing = spacing,
-       _runSpacing = runSpacing;
+       _runSpacing = runSpacing,
+       _alignment = alignment;
 
   final double _runSpacing;
   final double _spacing;
   final List<Widget> _children;
   final int _crossAxisCount;
   final Axis _direction;
+  final WrapAlignment _alignment;
+
   //final ScrollController? _controller;
 
   @override
@@ -115,6 +119,7 @@ class SliverAdaptiveWrap extends StatelessWidget {
       runSpacing: _runSpacing,
       spacing: _spacing,
       crossAxisCount: _crossAxisCount,
+      alignment: _alignment,
       children: _children,
     ),
   );

@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
-import 'package:flutter_heyteacher_views_example/src/app_router.dart' show AppRouteName;
+import 'package:flutter_heyteacher_views_example/src/app_router.dart'
+    show AppRouteName;
 import 'package:go_router/go_router.dart';
 
 /// This Widget is the main application widget.
@@ -100,7 +101,7 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       title: const Text('Flutter Heyteacher Views'),
-      actions: const [ThemeModeButton()]
+      actions: const [ThemeModeButton()],
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     floatingActionButton: Row(
@@ -121,199 +122,195 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
       ],
     ),
     body: ListView(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       children: [
-        Card(
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(vertical: 8),
           key: _tutorialKey,
-          child: ListTile(
-            title: const Text('Tutorial'),
-            trailing: OutlinedButton(
-              onPressed: () => TutorialViewModel.instance.start(
-                context,
-                tutorialScreenName,
-                forceRestart: true,
-              ),
-              child: const Text(
-                'Start',
-              ),
+          title: const Text('Tutorial'),
+          trailing: OutlinedButton(
+            onPressed: () => TutorialViewModel.instance.start(
+              context,
+              tutorialScreenName,
+              forceRestart: true,
+            ),
+            child: const Text(
+              'Start',
             ),
           ),
         ),
-        Card(
+        const Divider(height: 1, color: Colors.white24),
+        Padding(
           key: _genericsDropDownMenuKey,
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Center(
-              child: GenericsDropDownMenu<int>(
-                label: 'Generics Drop Down Menu',
-                initialSelection: 1,
-                values: const [
-                  (icon: Icon(Icons.onetwothree), label: 'one', value: 1),
-                  (
-                    icon: Icon(Icons.onetwothree_outlined),
-                    label: 'two',
-                    value: 2,
-                  ),
-                  (
-                    icon: Icon(Icons.onetwothree_rounded),
-                    label: 'three',
-                    value: 3,
-                  ),
-                ],
-                onSelected: (value, {index}) => showSnackBar(
-                  context: context,
-                  message: 'value $value selected',
+          padding: const EdgeInsets.all(8),
+          child: Center(
+            child: GenericsDropDownMenu<int>(
+              label: 'Generics Drop Down Menu',
+              initialSelection: 1,
+              values: const [
+                (icon: Icon(Icons.onetwothree), label: 'one', value: 1),
+                (
+                  icon: Icon(Icons.onetwothree_outlined),
+                  label: 'two',
+                  value: 2,
                 ),
+                (
+                  icon: Icon(Icons.onetwothree_rounded),
+                  label: 'three',
+                  value: 3,
+                ),
+              ],
+              onSelected: (value, {index}) => showSnackBar(
+                context: context,
+                message: 'value $value selected',
               ),
             ),
           ),
         ),
-        Card(
+        const Divider(height: 1, color: Colors.white24),
+        const Text('Table View'),
+        Padding(
           key: _tableViewKey,
-          child: Column(
+          padding: const EdgeInsets.all(8),
+          child: _SampleTableView(),
+        ),
+        const Divider(height: 1, color: Colors.white24),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(vertical: 8),
+          key: _showConfirmCancelDialogKey,
+          title: const Text('Show Confirm Cancel Dialog'),
+          trailing: Wrap(
+            spacing: 2,
             children: [
-              const Text('Table View'),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: _SampleTableView(),
+              OutlinedButton(
+                onPressed: () => showConfirmCancelDialog(
+                  context: context,
+                  title: const Text('Title'),
+                  content: const Text('Do you confirm this action?'),
+                  confirmCallback: (_) async {
+                    showSnackBar(
+                      context: context,
+                      message: 'Confirmed',
+                    );
+                    return null;
+                  },
+                  cancelCallback: (_) async {
+                    showSnackBar(
+                      context: context,
+                      message: 'Canceled',
+                      error: true,
+                    );
+                    return null;
+                  },
+                  timeout: const Duration(seconds: 5),
+                ),
+                child: const Text(
+                  'Open',
+                ),
               ),
             ],
           ),
         ),
-        Card(
-          key: _showConfirmCancelDialogKey,
-          child: ListTile(
-            title: const Text('Show Confirm Cancel Dialog'),
-            trailing: Wrap(
-              spacing: 2,
-              children: [
-                OutlinedButton(
-                  onPressed: () => showConfirmCancelDialog(
-                    context: context,
-                    title: const Text('Title'),
-                    content: const Text('Do you confirm this action?'),
-                    confirmCallback: (_) async {
-                      showSnackBar(
-                        context: context,
-                        message: 'Confirmed',
-                      );
-                      return null;
-                    },
-                    cancelCallback: (_) async {
-                      showSnackBar(
-                        context: context,
-                        message: 'Canceled',
-                        error: true,
-                      );
-                      return null;
-                    },
-                    timeout: const Duration(seconds: 5),
-                  ),
-                  child: const Text(
-                    'Open',
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Card(
+        const Divider(height: 1, color: Colors.white24),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(vertical: 8),
           key: _showSnackBarKey,
-          child: ListTile(
-            title: const Text('Show Snack Bar'),
-            trailing: Wrap(
-              spacing: 2,
-              children: [
-                OutlinedButton(
-                  onPressed: () => showSnackBar(
-                    context: context,
-                    message: 'Snack Bar Message',
-                  ),
-                  child: Text(
-                    'Message',
-                    style: TextStyle(color: ThemeViewModel.instance.greenColor),
+          title: const Text('Show Snack Bar'),
+          trailing: Wrap(
+            spacing: 2,
+            children: [
+              OutlinedButton(
+                onPressed: () => showSnackBar(
+                  context: context,
+                  message: 'Snack Bar Message',
+                ),
+                child: Text(
+                  'Message',
+                  style: TextStyle(
+                    color: ThemeViewModel.instance.greenColor,
                   ),
                 ),
-                OutlinedButton(
-                  onPressed: () => showSnackBar(
-                    context: context,
-                    message: 'Snack Bar Error',
-                    error: true,
-                  ),
-                  child: Text(
-                    'Error',
-                    style: TextStyle(color: ThemeViewModel.instance.redColor),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Card(
-          key: _tooltipIconButtonKey,
-          child: const ListTile(
-            title: Wrap(
-              spacing: 2,
-              children: [
-                Text('Tooltip Icon Button'),
-                TooltipIconButton(
-                  content: Text('This is a tooltip'),
-                  iconSize: 20,
-                ),
-              ],
-            ),
-          ),
-        ),
-        Card(
-          key: _errorViewKey,
-          child: ListTile(
-            title: const Text('Error View'),
-            trailing: IconButton(
-              onPressed: () => unawaited(
-                GoRouter.of(
-                  context,
-                ).pushNamed(AppRouteName.errorView.name),
               ),
-              icon: const Icon(Icons.keyboard_arrow_right),
-            ),
+              OutlinedButton(
+                onPressed: () => showSnackBar(
+                  context: context,
+                  message: 'Snack Bar Error',
+                  error: true,
+                ),
+                child: Text(
+                  'Error',
+                  style: TextStyle(color: ThemeViewModel.instance.redColor),
+                ),
+              ),
+            ],
           ),
         ),
-        Card(
+        const Divider(height: 1, color: Colors.white24),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(vertical: 8),
+          key: _tooltipIconButtonKey,
+          title: const Wrap(
+            spacing: 2,
+            children: [
+              Text('Tooltip Icon Button'),
+              TooltipIconButton(
+                content: Text('This is a tooltip'),
+                iconSize: 20,
+              ),
+            ],
+          ),
+        ),
+        const Divider(height: 1, color: Colors.white24),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(vertical: 8),
+          key: _errorViewKey,
+          title: const Text('Error View'),
+          trailing: IconButton(
+            onPressed: () => unawaited(
+              GoRouter.of(
+                context,
+              ).pushNamed(AppRouteName.errorView.name),
+            ),
+            icon: const Icon(Icons.keyboard_arrow_right),
+          ),
+        ),
+        const Divider(height: 1, color: Colors.white24),
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(vertical: 8),
           key: _progressIndicatorKey,
-          child: ListTile(
-            title: const Text('Progress Indicator'),
-            trailing: Wrap(
-              children: [
-                if (_loading)
-                  const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: ProgressIndicatorWidget(),
-                  )
-                else
-                  IconButton(
-                    onPressed: () async {
-                      setState(() => _loading = true);
-                      await Future<void>.delayed(
-                        const Duration(seconds: 5),
-                      );
-                      setState(() => _loading = false);
-                    },
-                    icon: const Icon(Icons.timer),
-                  ),
+          title: const Text('Progress Indicator'),
+          trailing: Wrap(
+            children: [
+              if (_loading)
+                const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: ProgressIndicatorWidget(),
+                )
+              else
                 IconButton(
                   onPressed: () async {
-                    unawaited(
-                      GoRouter.of(
-                        context,
-                      ).pushNamed(AppRouteName.progressIndicatorView.name),
+                    setState(() => _loading = true);
+                    await Future<void>.delayed(
+                      const Duration(seconds: 5),
                     );
+                    setState(() => _loading = false);
                   },
-                  icon: const Icon(Icons.keyboard_arrow_right),
+                  icon: const Icon(Icons.timer),
                 ),
-              ],
-            ),
+              IconButton(
+                onPressed: () async {
+                  unawaited(
+                    GoRouter.of(
+                      context,
+                    ).pushNamed(AppRouteName.progressIndicatorView.name),
+                  );
+                },
+                icon: const Icon(Icons.keyboard_arrow_right),
+              ),
+            ],
           ),
         ),
+        const Divider(height: 1, color: Colors.white24),
       ],
     ),
   );

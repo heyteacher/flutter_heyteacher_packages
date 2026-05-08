@@ -1,5 +1,5 @@
 export 'src/e2ee/e2ee_data.dart' show E2EEValue;
-export 'src/e2ee/e2ee_view.dart' show E2EESecretKeyCard;
+export 'src/e2ee/e2ee_view.dart' show E2EESecretKeyListTile;
 export 'src/e2ee/e2ee_view_model.dart'
     show
         AADEmptyException,

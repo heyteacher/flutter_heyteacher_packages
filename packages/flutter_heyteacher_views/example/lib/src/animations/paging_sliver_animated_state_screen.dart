@@ -39,11 +39,14 @@ class _PagingSliverAnimatedStateScreenState
     Animation<double>? animation,
     bool removing = false,
   }) => index < (dataList?.length ?? 0)
-      ? Card(
-          child: ListTile(
-            title: Text(dataList!.elementAt(index).title),
-            subtitle: Text(dataList!.elementAt(index).message),
-          ),
+      ? Column(
+          children: [
+            ListTile(
+              title: Text(dataList!.elementAt(index).title),
+              subtitle: Text(dataList!.elementAt(index).message),
+            ),
+            const Divider(height: 1, color: Colors.white24),
+          ],
         )
       : const SizedBox.shrink();
 

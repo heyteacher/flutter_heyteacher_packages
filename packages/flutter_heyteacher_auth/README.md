@@ -87,7 +87,7 @@ In order to use `Delete User Data` feature you need:
 - in `AccountCard` set `deleteAccountCallback` and `deleteAccountConfirmMessage`
 
   ```dart
-  AccountCard(
+  AccountListTile(
     deleteAccountConfirmMessage: 'Are you sure to delete your user data?',
     deleteAccountCallback: () async {
       // insert here your logic to delete user data

@@ -5,7 +5,7 @@ import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
     show AuthViewModel, FlutterHeyteacherAuthLocalizations;
 import 'package:flutter_heyteacher_e2ee/flutter_heyteacher_e2ee.dart'
     show
-        E2EESecretKeyCard,
+        E2EESecretKeyListTile,
         E2EEValue,
         E2EEViewModel,
         FlutterHeyteacherE2EELocalizations;
@@ -78,11 +78,13 @@ class _MyHomePageState extends State<_MyHomePage> {
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: const Text('Flutter Heyteacher E2EE')),
     body: Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
-        spacing: 16,
+        spacing: 8,
         children: [
-          const E2EESecretKeyCard(),
+          const Divider(height: 1, color: Colors.white24),
+          const E2EESecretKeyListTile(),
+          const Divider(height: 1, color: Colors.white24),
           TextFormField(
             controller: _secretKeyTextEditingController,
             minLines: 20,

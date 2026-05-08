@@ -38,19 +38,26 @@ dependencies:
   fake_cloud_firestore: ^4.1.0+1
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^2.0.13+154
-  flutter_heyteacher_e2ee: ^2.0.10+147
-  flutter_heyteacher_locale: ^2.0.12+149
+  flutter_heyteacher_auth:
+    path: ../../flutter_heyteacher_auth
+  flutter_heyteacher_e2ee:
+    path: ../../flutter_heyteacher_e2ee
+  flutter_heyteacher_locale:
+    path: ../../flutter_heyteacher_locale
   flutter_heyteacher_store: 
-    path: ..
-  flutter_heyteacher_views: ^3.0.7+154 
+    path: ../../flutter_heyteacher_store
+  flutter_heyteacher_views:
+    path: ../../flutter_heyteacher_views
+  flutter_test:
+    sdk: flutter
   go_router: ^17.2.2
   intl: ^0.20.2
 
 dev_dependencies:
   build_runner: ^2.14.1
   copy_with_extension_gen: ^15.0.0
-  flutter_heyteacher_meta: ^7.6.2+171 
+  flutter_heyteacher_meta: 
+    path: ../../flutter_heyteacher_meta
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0

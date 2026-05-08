@@ -2,7 +2,7 @@
 /// theme persistence, and dynamic theme updates.
 ///
 /// This library provides:
-/// - [ThemeModeCard] and [ThemeModeButton]: A widget for users to select
+/// - [ThemeModeListTile] and [ThemeModeButton]: A widget for users to select
 ///   between light, dark, or system default themes.
 /// - [ThemeViewModel]: A singleton class responsible for holding the current
 ///   theme state, persisting user preferences, providing theme data, and
@@ -75,20 +75,21 @@ class _ThemeModeButtonState extends State<ThemeModeButton> {
 ///
 /// It presents [ChoiceChip] options for system, dark, and light themes.
 /// Changes are propagated through the [ThemeViewModel] singleton.
-class ThemeModeCard extends StatefulWidget {
-  /// Creates a [ThemeModeCard].
-  const ThemeModeCard({super.key});
+class ThemeModeListTile extends StatefulWidget {
+  /// Creates a [ThemeModeListTile].
+  const ThemeModeListTile({super.key});
 
   @override
-  State<ThemeModeCard> createState() => ThemeModeCardState<ThemeModeCard>();
+  State<ThemeModeListTile> createState() =>
+      ThemeModeListTileState<ThemeModeListTile>();
 }
 
-/// The state for [ThemeModeCard], which builds the UI for theme selection.
+/// The state for [ThemeModeListTile], which builds the UI for theme selection.
 ///
 /// This class is generic (`<T extends StatefulWidget>`) to allow it to be
 /// extended by other state classes that may want to override its behavior,
 /// such as the `onSelected` method.
-class ThemeModeCardState<T extends StatefulWidget> extends State<T> {
+class ThemeModeListTileState<T extends StatefulWidget> extends State<T> {
   ThemeMode? _themeMode;
 
   StreamSubscription<({ThemeData themeData, ThemeMode themeMode})>?
@@ -118,48 +119,46 @@ class ThemeModeCardState<T extends StatefulWidget> extends State<T> {
   }
 
   @override
-  Widget build(BuildContext context) => Card(
-    child: ListTile(
-      leading: const Icon(Icons.contrast),
-      title: Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 2,
-        children: [
-          SegmentedButton<ThemeMode?>(
-            emptySelectionAllowed: true,
-            showSelectedIcon: false,
-            style: ButtonStyle(
-              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+  Widget build(BuildContext context) => ListTile(
+    leading: const Icon(Icons.contrast),
+    title: Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 2,
+      children: [
+        SegmentedButton<ThemeMode?>(
+          emptySelectionAllowed: true,
+          showSelectedIcon: false,
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
             ),
-            segments: <ButtonSegment<ThemeMode>>[
-              ButtonSegment<ThemeMode>(
-                value: ThemeMode.system,
-                label: Text(ThemeMode.system.name),
-              ),
-              ButtonSegment<ThemeMode>(
-                value: ThemeMode.dark,
-                label: Text(ThemeMode.dark.name),
-                icon: const Icon(
-                  Icons.dark_mode,
-                ),
-              ),
-              ButtonSegment<ThemeMode>(
-                value: ThemeMode.light,
-                label: Text(ThemeMode.light.name),
-                icon: const Icon(
-                  Icons.light_mode,
-                ),
-              ),
-            ],
-            selected: <ThemeMode>{_themeMode ?? ThemeMode.system},
-            onSelectionChanged: onSelected,
           ),
-        ],
-      ),
+          segments: <ButtonSegment<ThemeMode>>[
+            ButtonSegment<ThemeMode>(
+              value: ThemeMode.system,
+              label: Text(ThemeMode.system.name),
+            ),
+            ButtonSegment<ThemeMode>(
+              value: ThemeMode.dark,
+              label: Text(ThemeMode.dark.name),
+              icon: const Icon(
+                Icons.dark_mode,
+              ),
+            ),
+            ButtonSegment<ThemeMode>(
+              value: ThemeMode.light,
+              label: Text(ThemeMode.light.name),
+              icon: const Icon(
+                Icons.light_mode,
+              ),
+            ),
+          ],
+          selected: <ThemeMode>{_themeMode ?? ThemeMode.system},
+          onSelectionChanged: onSelected,
+        ),
+      ],
     ),
   );
 

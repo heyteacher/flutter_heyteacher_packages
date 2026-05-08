@@ -21,10 +21,10 @@ dependencies:
   firebase_remote_config: ^6.4.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^2.0.13+154 
-  flutter_heyteacher_locale: ^2.0.12+149 
-  flutter_heyteacher_platform: ^2.1.0+141
-  flutter_heyteacher_views: ^3.0.7+154 
+  flutter_heyteacher_auth: any 
+  flutter_heyteacher_locale: any 
+  flutter_heyteacher_platform: any
+  flutter_heyteacher_views: any 
   flutter_localizations:
     sdk: flutter
   flutter_secure_storage: ^10.0.0
@@ -37,7 +37,7 @@ dependencies:
   webcrypto: ^0.6.0
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.6.2+171 
+  flutter_heyteacher_meta: any 
   flutter_test:
     sdk: flutter
 

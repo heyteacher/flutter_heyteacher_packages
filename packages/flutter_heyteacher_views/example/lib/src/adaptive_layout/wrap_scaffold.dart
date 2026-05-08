@@ -23,10 +23,13 @@ class WrapAndScaffold extends StatelessWidget {
 
   List<Widget> get _childred => [
     for (var i = 0; i < 10; i++)
-      Card(
-        child: ListTile(
-          title: Center(child: Text('Adaptive Wrap Child #${i + 1}')),
-        ),
+      Column(
+        children: [
+          ListTile(
+            title: Center(child: Text('Adaptive Wrap Child #${i + 1}')),
+          ),
+          const Divider(height: 1, color: Colors.white24),
+        ],
       ),
   ];
 }

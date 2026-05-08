@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_connectivity/flutter_heyteacher_connectivity.dart';
 import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart'
     show FlutterHeyteacherLocaleLocalizations, LocaleViewModel, LocaleWrap;
-import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
+    show ThemeViewModel;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
@@ -69,14 +70,17 @@ class _MyHomePageState extends State<_MyHomePage> {
       title: const Text('Flutter Heyteacher Connectivity'),
     ),
     body: Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
         children: [
-          const ConnectivityCard(),
+          const Divider(height: 1, color: Colors.white24),
+          const ConnectivityListTile(),
+          const Divider(height: 1, color: Colors.white24),
           const Padding(
             padding: EdgeInsets.all(8),
             child: LocaleWrap(),
           ),
+          const Divider(height: 1, color: Colors.white24),
           Expanded(
             child: Center(
               child: RichText(

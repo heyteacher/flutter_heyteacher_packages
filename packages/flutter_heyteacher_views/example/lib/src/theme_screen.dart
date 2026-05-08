@@ -31,7 +31,7 @@ class _ThemeScreenState extends State<ThemeScreen>
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       title: const Text('Flutter Heyteacher Views'),
-      actions: const [ThemeModeButton()]
+      actions: const [ThemeModeButton()],
     ),
     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     floatingActionButton: Row(
@@ -44,16 +44,19 @@ class _ThemeScreenState extends State<ThemeScreen>
         ),
       ],
     ),
-    body: Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: ListView(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 32),
-            child: ThemeModeCard(),
-          ),
-          Card(
-            child: ListTile(
+    body: ListView(
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+      children: [
+        const Column(
+          children: [
+            ThemeModeListTile(),
+            Divider(height: 1, color: Colors.white24),
+          ],
+        ),
+        Column(
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
               title: Wrap(
                 alignment: WrapAlignment.spaceEvenly,
                 spacing: 2,
@@ -102,16 +105,23 @@ class _ThemeScreenState extends State<ThemeScreen>
                 ],
               ),
             ),
-          ),
-          Card(
-            child: ListTile(
+            const Divider(height: 1, color: Colors.white24),
+          ],
+        ),
+        Column(
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+
               title: Wrap(
                 alignment: WrapAlignment.spaceBetween,
                 spacing: 2,
                 children: [
                   Text(
                     'Blue',
-                    style: TextStyle(color: ThemeViewModel.instance.blueColor),
+                    style: TextStyle(
+                      color: ThemeViewModel.instance.blueColor,
+                    ),
                   ),
                   Text(
                     'Dark Grey',
@@ -127,11 +137,15 @@ class _ThemeScreenState extends State<ThemeScreen>
                   ),
                   Text(
                     'Green',
-                    style: TextStyle(color: ThemeViewModel.instance.greenColor),
+                    style: TextStyle(
+                      color: ThemeViewModel.instance.greenColor,
+                    ),
                   ),
                   Text(
                     'Grey',
-                    style: TextStyle(color: ThemeViewModel.instance.greyColor),
+                    style: TextStyle(
+                      color: ThemeViewModel.instance.greyColor,
+                    ),
                   ),
                 ],
               ),
@@ -141,7 +155,9 @@ class _ThemeScreenState extends State<ThemeScreen>
                 children: [
                   Text(
                     'Grey',
-                    style: TextStyle(color: ThemeViewModel.instance.greyColor),
+                    style: TextStyle(
+                      color: ThemeViewModel.instance.greyColor,
+                    ),
                   ),
                   Text(
                     'Orange',
@@ -168,9 +184,13 @@ class _ThemeScreenState extends State<ThemeScreen>
                 ],
               ),
             ),
-          ),
-          Card(
-            child: ListTile(
+            const Divider(height: 1, color: Colors.white24),
+          ],
+        ),
+        Column(
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -189,9 +209,14 @@ class _ThemeScreenState extends State<ThemeScreen>
                 ],
               ),
             ),
-          ),
-          Card(
-            child: ListTile(
+            const Divider(height: 1, color: Colors.white24),
+          ],
+        ),
+        Column(
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -212,48 +237,48 @@ class _ThemeScreenState extends State<ThemeScreen>
                 ],
               ),
             ),
-          ),
-          Card(
-            child: Column(
-              children: [
-                TabBar(
-                  controller: _tabController,
-                  tabs: const <Widget>[
-                    Tab(
-                      icon: Icon(Icons.list),
-                      text: 'Tab 1',
-                    ),
-                    Tab(
-                      icon: Icon(Icons.history),
-                      text: 'Tab 2',
-                    ),
-                  ],
+            const Divider(height: 1, color: Colors.white24),
+          ],
+        ),
+        Column(
+          children: [
+            TabBar(
+              controller: _tabController,
+              tabs: const <Widget>[
+                Tab(
+                  icon: Icon(Icons.list),
+                  text: 'Tab 1',
                 ),
-                SizedBox(
-                  height: 80,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: <Widget>[
-                      Center(
-                        child: Text(
-                          'Tab 1 content',
-                          style: Theme.of(context).textTheme.displaySmall,
-                        ),
-                      ),
-                      Center(
-                        child: Text(
-                          'Tab 2 content',
-                          style: Theme.of(context).textTheme.displaySmall,
-                        ),
-                      ),
-                    ],
-                  ),
+                Tab(
+                  icon: Icon(Icons.history),
+                  text: 'Tab 2',
                 ),
               ],
             ),
-          ),
-        ],
-      ),
+            SizedBox(
+              height: 80,
+              child: TabBarView(
+                controller: _tabController,
+                children: <Widget>[
+                  Center(
+                    child: Text(
+                      'Tab 1 content',
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      'Tab 2 content',
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 1, color: Colors.white24),
+          ],
+        ),
+      ],
     ),
   );
 }

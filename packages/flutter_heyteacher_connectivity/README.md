@@ -39,5 +39,5 @@ MaterialApp(
 );
 
 // Use the connectivity card in your widget tree
-const ConnectivityCard();
+const ConnectivityListTile();
 ```

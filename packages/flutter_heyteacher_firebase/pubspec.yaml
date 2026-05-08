@@ -25,14 +25,14 @@ dependencies:
   firebase_storage: ^13.3.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^2.0.13+154 
-  flutter_heyteacher_locale: ^2.0.12+149 
-  flutter_heyteacher_platform: ^2.1.0+141 
+  flutter_heyteacher_auth: any
+  flutter_heyteacher_locale: any 
+  flutter_heyteacher_platform: any 
   logging: ^1.3.0
   shared_preferences: ^2.5.5
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.6.2+171 
+  flutter_heyteacher_meta: any 
   flutter_test:
     sdk: flutter
 

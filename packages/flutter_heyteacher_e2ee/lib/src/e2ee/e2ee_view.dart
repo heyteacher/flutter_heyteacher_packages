@@ -34,10 +34,10 @@ class _E2EEPassphraseTextField extends StatefulWidget {
   final VoidCallback? setPassphraseCallback;
 
   @override
-  State<_E2EEPassphraseTextField> createState() => _E2EEPassphraseCard();
+  State<_E2EEPassphraseTextField> createState() => _E2EEPassphraseListTile();
 }
 
-class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
+class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
   bool _passphraseVisibility = false;
   bool _warningAlreadyShowed = false;
 
@@ -136,7 +136,7 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
   }
 }
 
-/// A card widget for managing the End-to-End Encryption (E2EE) secret key.
+/// A list tile widget for managing the End-to-End Encryption (E2EE) secret key.
 ///
 /// This widget displays the status of the secret key (whether it's stored or
 /// not) and provides actions to export or import it.
@@ -145,9 +145,9 @@ class _E2EEPassphraseCard extends State<_E2EEPassphraseTextField> {
 ///   to scan.
 /// - **Import**: Allows importing the secret key by scanning a QR code
 ///   (on mobile) or by pasting the key data (on non-mobile platforms).
-class E2EESecretKeyCard extends StatefulWidget {
-  /// Creates an [E2EESecretKeyCard].
-  const E2EESecretKeyCard({
+class E2EESecretKeyListTile extends StatefulWidget {
+  /// Creates an [E2EESecretKeyListTile].
+  const E2EESecretKeyListTile({
     VoidCallback? secretKeyImportedCallback,
     Key? e2eePassphraseKey,
     super.key,
@@ -161,10 +161,10 @@ class E2EESecretKeyCard extends StatefulWidget {
   final Key? _e2eePassphraseKey;
 
   @override
-  State<E2EESecretKeyCard> createState() => _E2EESecretKeyCardState();
+  State<E2EESecretKeyListTile> createState() => _E2EESecretKeyListTileState();
 }
 
-class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
+class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
   /// The [FocusNode] for the passphrase input field, used to remove focus
   /// when showing the QR code.
   late FocusNode _encryptionPassphraseFocusNode;
@@ -188,59 +188,57 @@ class _E2EESecretKeyCardState extends State<E2EESecretKeyCard> {
   @override
   Widget build(BuildContext context) => FutureBuilder<bool>(
     future: E2EEViewModel.instance(AuthViewModel.instance.uid).secretKeyStored,
-    builder: (_, secretKeySnapshot) => Card(
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: Icon(
-          secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
-          color: secretKeySnapshot.data ?? false
-              ? ThemeViewModel.instance.greenColor
-              : ThemeViewModel.instance.redColor,
+    builder: (_, secretKeySnapshot) => ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
+        color: secretKeySnapshot.data ?? false
+            ? ThemeViewModel.instance.greenColor
+            : ThemeViewModel.instance.redColor,
+      ),
+      title: Padding(
+        padding: const EdgeInsets.only(bottom: 15),
+        child: Text(
+          FlutterHeyteacherE2EELocalizations.of(
+            context,
+          )!.encryptionSecretKey,
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 15),
-          child: Text(
-            FlutterHeyteacherE2EELocalizations.of(
-              context,
-            )!.encryptionSecretKey,
-          ),
-        ),
-        subtitle: _E2EEPassphraseTextField(
-          focusNode: _encryptionPassphraseFocusNode,
-          setPassphraseCallback: widget._secretKeyImportedCallback,
-          key: widget._e2eePassphraseKey,
-        ),
+      ),
+      subtitle: _E2EEPassphraseTextField(
+        focusNode: _encryptionPassphraseFocusNode,
+        setPassphraseCallback: widget._secretKeyImportedCallback,
+        key: widget._e2eePassphraseKey,
+      ),
 
-        trailing: Wrap(
-          spacing: -10,
-          children: [
-            IconButton(
-              onPressed: () => AuthViewModel.instance.autenticated
-                  ? _showQrCode()
-                  : showConfirmCancelDialog<void>(
-                      context: context,
-                      content: Text(
-                        FlutterHeyteacherAuthLocalizations.of(
-                          context,
-                        )!.userNotAuthenticated,
-                      ),
+      trailing: Wrap(
+        spacing: -10,
+        children: [
+          IconButton(
+            onPressed: () => AuthViewModel.instance.autenticated
+                ? _showQrCode()
+                : showConfirmCancelDialog<void>(
+                    context: context,
+                    content: Text(
+                      FlutterHeyteacherAuthLocalizations.of(
+                        context,
+                      )!.userNotAuthenticated,
                     ),
-              icon: const Icon(Icons.qr_code, size: 20),
-            ),
-            IconButton(
-              onPressed: PlatformHelper.isMobile ? _showQrCodeScanner : null,
-              icon: const Icon(Icons.qr_code_scanner, size: 20),
-            ),
-            IconButton(
-              icon: const Icon(Icons.download, size: 20),
-              onPressed: _showSecretKey,
-            ),
-            IconButton(
-              onPressed: _secretKeyDialog,
-              icon: const Icon(Icons.upload, size: 20),
-            ),
-          ],
-        ),
+                  ),
+            icon: const Icon(Icons.qr_code, size: 20),
+          ),
+          IconButton(
+            onPressed: PlatformHelper.isMobile ? _showQrCodeScanner : null,
+            icon: const Icon(Icons.qr_code_scanner, size: 20),
+          ),
+          IconButton(
+            icon: const Icon(Icons.download, size: 20),
+            onPressed: _showSecretKey,
+          ),
+          IconButton(
+            onPressed: _secretKeyDialog,
+            icon: const Icon(Icons.upload, size: 20),
+          ),
+        ],
       ),
     ),
   );

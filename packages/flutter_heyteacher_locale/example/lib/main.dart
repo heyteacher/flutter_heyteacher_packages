@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
-import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
+    show ThemeViewModel;
 import 'package:flutter_localizations/flutter_localizations.dart'
     show
         GlobalCupertinoLocalizations,
@@ -72,10 +73,11 @@ class _MyHomePageState extends State<_MyHomePage> {
       title: const Text('Flutter Heyteacher Locale'),
     ),
     body: Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
         children: [
-          const LocaleCard(),
+          const LocaleListTile(),
+          const Divider(height: 1, color: Colors.white24),
           Expanded(
             child: Center(
               child: RichText(
