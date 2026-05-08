@@ -46,7 +46,10 @@ dependencies:
     path: ../../flutter_heyteacher_locale
   flutter_heyteacher_store: 
     path: ../../flutter_heyteacher_store
-  flutter_heyteacher_views: ^3.0.7+154 
+  flutter_heyteacher_views:
+    path: ../../flutter_heyteacher_views
+  flutter_test:
+    sdk: flutter
   go_router: ^17.2.2
   intl: ^0.20.2
 
