@@ -20,7 +20,7 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.6.2+171
+  flutter_heyteacher_meta: any
   flutter_test:
     sdk: flutter
 

@@ -32,15 +32,19 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_heyteacher_connectivity: ^2.1.6+143
-  flutter_heyteacher_locale: ^2.0.12+149 
-  flutter_heyteacher_views: ^3.0.7+154 
+  flutter_heyteacher_connectivity:
+    path: ../../flutter_heyteacher_connectivity
+  flutter_heyteacher_locale:
+    path: ../../flutter_heyteacher_locale
+  flutter_heyteacher_views:
+    path: ../../flutter_heyteacher_views
   flutter_localizations:
     sdk: flutter
   
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.6.2+171
+  flutter_heyteacher_meta:
+    path: ../../flutter_heyteacher_meta
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0
