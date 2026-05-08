@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-3.0.1+157] - 2026-05-08
+
+### 🐛 Bug Fixes [3.0.1]
+
+- *(deps)* Upgrade dependencies tighen ([8be6145](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8be6145dd20821531389a5d0f18d0ce7816146a5))
+
+### ⚙️ Miscellaneous Tasks [3.0.1]
+
+- *(release)* New version 3.0.1+157 which closes ([#167](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/167)) ([5ef35a9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5ef35a93d24cece1405a919526f67da0b54e405d))
+
 ## [flutter_heyteacher_auth-3.0.0+156] - 2026-05-08
 
 ### 📚 Documentation [3.0.0]
