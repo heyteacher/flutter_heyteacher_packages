@@ -2,194 +2,209 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.0.0+157] - 2026-05-08
+
+### 📚 Documentation [4.0.0]
+
+- *(cliff)* Replace `tag` with `version` in group headings ([8e77b24](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8e77b245705510863376408fcd634a7f3e366038))
+
+### 🎨 Styling [4.0.0]
+
+- [**breaking**] Remove `Card` wrapper to ListTile widgets and rename `*Card` in `*Widget` ([a9ebc59](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a9ebc59772986ca02ade5f178705d321c04f6400))
+
+### ⚙️ Miscellaneous Tasks [4.0.0]
+
+- *(release)* New version 4.0.0+157 which closes ([#167](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/167)) ([6abb8f6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6abb8f62dd9a5e47b092d164e32dcf75258a12cb))
+- *(release)* New version 4.0.0+157 which closes ([#167](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/167)) ([0900d8f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0900d8f160cbdd7032c360c128deb58555a70025))
+
 ## [flutter_heyteacher_views-3.0.8+156] - 2026-04-28
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_views-3.0.8+156]
+### ⚙️ Miscellaneous Tasks [3.0.8]
 
 - *(release)* New version 3.0.8+156 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([c53fa23](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c53fa23564c357cc4cab8e7cfeaf1f89e4c6d21b))
 
 ## [flutter_heyteacher_views-3.0.8+155] - 2026-04-28
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.8+155]
+### 📚 Documentation [3.0.8]
 
 - Update link to `Flutter HeyTeacher ecosystem` in `README.md` ([aa34118](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aa3411870c40861c4d6540d715be83b145ea3ea6))
 - *(cliff)* Skip `build(deps)` commits in `CHANGELOG.md` ([61a7b40](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/61a7b4010ca79b155d173f9fb76b22ab0ee25f44))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_views-3.0.8+155]
+### ⚙️ Miscellaneous Tasks [3.0.8]
 
 - *(release)* New version 3.0.8+155 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([89a1aa1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/89a1aa1b867d20458a98a414ac897b1390e126fa))
 
 ## [flutter_heyteacher_views-3.0.7+154] - 2026-04-27
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-3.0.7+154]
+### 🐛 Bug Fixes [3.0.7]
 
 - Corrected `cliff.toml` ([284d73e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/284d73e85e51d80e70a89af71d3fbf6c12c99b59))
 
-### 🛠️ Build - [flutter_heyteacher_views-3.0.7+154]
+### 🛠️ Build [3.0.7]
 
 - Add `fastlane/cliff.toml`  enhanced and customizable for generate change log ([e25bf19](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e25bf19ac3f5c1513c5575807c51c0a29e3603d3))
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.7+154]
+### 📚 Documentation [3.0.7]
 
 - Add link to commit changes in `CHANGELOG.md` ([da93ee5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/da93ee58101ac0fa3c07a7a9587a271d95e9b0aa))
 - Add `app_tutorial` credits to `README.md` ([26d10e8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/26d10e81bd64b906921d7ab6bd7cd3dea84702db))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_views-3.0.7+154]
+### ⚙️ Miscellaneous Tasks [3.0.7]
 
 - *(release)* New version 3.0.7+154 which closes ([#138](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/138)) ([19b1183](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/19b11838a8ed7c03b2f5337e8f37b9e66d5b92f1))
 
 ## [flutter_heyteacher_views-3.0.6+153] - 2026-04-19
 
-### 🛠️ Build - [flutter_heyteacher_views-3.0.6+153]
+### 🛠️ Build [3.0.6]
 
 - *(flutter_heyteacher_views)* Update version to 3.0.6+153 which closes ([#110](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/110)) ([313f813](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/313f81371883adf971b412275049907630ac3339))
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.6+153]
+### 📚 Documentation [3.0.6]
 
 - *(flutter_heyteacher_views)* Update `CHANGELOG.md` with flutter_heyteacher_views-3.0.6+153 ([de60b0b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/de60b0bdf876897690aec9dca2fe6be8564eb329))
 
 ## [flutter_heyteacher_views-3.0.5+152] - 2026-04-11
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-3.0.5+152]
+### 🐛 Bug Fixes [3.0.5]
 
 - *(theme)* Change log level from `INFO` to `FINER` ([1c1d0fe](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1c1d0fed544a2358314a9198422adc9d9244378d))
 
-### 🛠️ Build - [flutter_heyteacher_views-3.0.5+152]
+### 🛠️ Build [3.0.5]
 
 - *(flutter_heyteacher_views)* Update version to 3.0.5+152 which closes ([#94](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/94)) ([a9d2405](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a9d2405490e9bbd93c93c76aaae21d15ccde0dcb))
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.5+152]
+### 📚 Documentation [3.0.5]
 
 - *(flutter_heyteacher_views)* Update `CHANGELOG.md` with flutter_heyteacher_views-3.0.5+152 ([0c3caf5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0c3caf51476574f95328599bc6805b6054a9e09f))
 
 ## [flutter_heyteacher_views-3.0.4+150] - 2026-04-02
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-3.0.4+150]
+### 🐛 Bug Fixes [3.0.4]
 
 - *(README.md)* Typo causing broken link ([4c2d33c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4c2d33c395a3936b290018c953899ab6f85727bd))
 
-### 🛠️ Build - [flutter_heyteacher_views-3.0.4+150]
+### 🛠️ Build [3.0.4]
 
 - *(flutter_heyteacher_views)* Update version to 3.0.4+150 which closes #tmp ([8093de7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8093de70563f5ab1ce7797d25e7e6058e95c7ace))
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.4+150]
+### 📚 Documentation [3.0.4]
 
 - Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections ([6da7b5b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6da7b5b16f677ec6ed6921a15f35999b502f59fe))
 - *(flutter_heyteacher_views)* Update `CHANGELOG.md` with flutter_heyteacher_views-3.0.4+150 ([e4c92a3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e4c92a31bae11f64f225bc3591eb5646c3c05a04))
 
 ## [flutter_heyteacher_views-3.0.3+148] - 2026-03-31
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-3.0.3+148]
+### 🐛 Bug Fixes [3.0.3]
 
 - *(ThemeViewModel)* `Null check operator` on yield `themeMode` in theme changes ([eeaf791](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/eeaf791327e35d96de950b987d3942512df22776))
 
-### 🛠️ Build - [flutter_heyteacher_views-3.0.3+148]
+### 🛠️ Build [3.0.3]
 
 - Update version to 3.0.3+148 which closes ([#73](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/73)) ([0cf1e00](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0cf1e0020be1fda30f32bc0364ffe5ed485130f1))
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.3+148]
+### 📚 Documentation [3.0.3]
 
 - Update changelog generated for flutter_heyteacher_views-3.0.3+148 ([d1dc3a2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d1dc3a2b74d12b7cc593865b9bda6e05b8d44fe6))
 
 ## [flutter_heyteacher_views-3.0.2+146] - 2026-03-31
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-3.0.2+146]
+### 🐛 Bug Fixes [3.0.2]
 
 - Compatible with dependency constraint lower bounds ([722abd8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/722abd838293cbc3df225e1d6b4f6c4ddbe4ea84))
 
-### 🛠️ Build - [flutter_heyteacher_views-3.0.2+146]
+### 🛠️ Build [3.0.2]
 
 - Update version to 3.0.2+146 which closes ([#77](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/77)) ([d5707f2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d5707f2d2ac0b97e4e676ccd79befa8d754fd948))
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.2+146]
+### 📚 Documentation [3.0.2]
 
 - Update changelog generated for flutter_heyteacher_views-3.0.2+146 ([327ab62](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/327ab62f7c22e3ea3b046e0f671e65af794f47d8))
 
 ## [flutter_heyteacher_views-3.0.0+142] - 2026-03-26
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-3.0.0+142]
+### 🐛 Bug Fixes [3.0.0]
 
 - Remove version from `flutter_heyteacher_*` dependency packages inside `monorepo` ([f3ec1e3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f3ec1e350160b31e382ca9419332e1ab6b1fe61e))
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.0+142]
+### 📚 Documentation [3.0.0]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-3.0.0+142 ([80651a3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/80651a31b440b2039c97d2c53bd73c97eb60d626))
 
 ## [flutter_heyteacher_views-3.0.0+144] - 2026-03-26
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-3.0.0+144]
+### 🐛 Bug Fixes [3.0.0]
 
 - [**breaking**] Load correctly theme mode from shared prefs and `themeStream` sends `themeMod`. Split `ThemeViewModel` from views ([885ae47](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/885ae4754f97d5f18a18c1e194b03c395594fc41))
 - Add `ThemeModeButton` to scafold action ([6b5b6de](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6b5b6de2bbfd766a2065d15cdc28464e36937a6c))
 - Set `ThemeMode` from `ThemeViewModel.instance.themeStream` ([ca32ba1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ca32ba1cc74af3467d9b4bc9e94c13f6bbe6e914))
 
-### 📚 Documentation - [flutter_heyteacher_views-3.0.0+144]
+### 📚 Documentation [3.0.0]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-3.0.0+144 ([e016648](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e016648943eba6fe8809220cda5c2a50090f3781))
 
 ## [flutter_heyteacher_views-2.1.3+142] - 2026-03-24
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-2.1.3+142]
+### 🐛 Bug Fixes [2.1.3]
 
 - Tighten deps ([c18dac6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c18dac67f933b89f575877268e4e386295f65346))
 - Pubspec metadata corrected ([bead8cb](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bead8cbe7d20e8196c309b541e1630cb57f2c5fa))
 
-### 📚 Documentation - [flutter_heyteacher_views-2.1.3+142]
+### 📚 Documentation [2.1.3]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.1.3+142 ([d59a65f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d59a65f3e6a242d05c08581ac358761b14f81630))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_views-2.1.3+142]
+### ⚙️ Miscellaneous Tasks [2.1.3]
 
 - Publish on `pub.dev` ([db5cf01](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/db5cf01ac6a84b79cdb7ae20f9943e13f4af4339))
 
 ## [flutter_heyteacher_views-2.1.2+140] - 2026-03-24
 
-### 🚀 Features - [flutter_heyteacher_views-2.1.2+140]
+### 🚀 Features [2.1.2]
 
 - Add examples to dart workspace and add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics` ([5bc12ac](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5bc12ac326fdd6974d5c7c6ab7bf619fefbfb9c6))
 
-### 🚜 Refactor - [flutter_heyteacher_views-2.1.2+140]
+### 🚜 Refactor [2.1.2]
 
 - `lib/flutter_heyteacher_*.dart` must match the name of package ([a9e3636](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a9e36362446a2112603802a996bfb0e126919b36))
 
-### 📚 Documentation - [flutter_heyteacher_views-2.1.2+140]
+### 📚 Documentation [2.1.2]
 
 - Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics` ([ddfa4a1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ddfa4a1b115e63fa8d1152ee55725e49b724c93e))
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.1.2+140 ([586c307](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/586c307523e38870705643067577b1e8b46b3ad3))
 
 ## [flutter_heyteacher_views-2.1.1+138] - 2026-03-21
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-2.1.1+138]
+### 🐛 Bug Fixes [2.1.1]
 
 - Pass `AppBar` and `persistentFooter` parameters to `AdaptiveScaffold` ([d91079e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d91079e4b695f952c29076ca0d88bdb89ccc1e06))
 
-### 📚 Documentation - [flutter_heyteacher_views-2.1.1+138]
+### 📚 Documentation [2.1.1]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.1.1+138 ([d9ffd60](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d9ffd6034715a6c4afb25dfd684f863cdf8b7622))
 
 ## [flutter_heyteacher_views-2.1.0+136] - 2026-03-21
 
-### 🚀 Features - [flutter_heyteacher_views-2.1.0+136]
+### 🚀 Features [2.1.0]
 
 - Add `ThemeModeButton` and rename `ThemeCard` in `ThemeModeCard` ([addfbb8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/addfbb85b83de15a74a53e911e90d077f040d2ac))
 
-### 📚 Documentation - [flutter_heyteacher_views-2.1.0+136]
+### 📚 Documentation [2.1.0]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.1.0+136 ([a684420](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a6844202c447af158fda7aac0c527c517c201c26))
 
 ## [flutter_heyteacher_views-2.0.4+134] - 2026-03-19
 
-### 📚 Documentation - [flutter_heyteacher_views-2.0.4+134]
+### 📚 Documentation [2.0.4]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.0.4+134 ([aec0fb5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aec0fb5be8aab2cc6162f7210a2d6531fd20ec96))
 
-### 🎨 Styling - [flutter_heyteacher_views-2.0.4+134]
+### 🎨 Styling [2.0.4]
 
 - Enhange light theme managing colors based on mode ([037f28a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/037f28a2e5bc450f59a591a7d8967b5b882f61d0))
 
 ## [flutter_heyteacher_views-2.0.3+132] - 2026-03-16
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-2.0.3+132]
+### 🐛 Bug Fixes [2.0.3]
 
 - Move `AuthRouterName` and `GoAuthRoute` to `flutter_heyteacher_auth` from `flutter_heyteacher_views` and remove unused dependencies in `flutter_heyteacher_views` ([858e3f5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/858e3f598d2943218cd81a149dce2d303d32697e))
 - `ScaffoldNavigationShell` become concrete adding implementation `onTapInitialLocation` to false ([18b214e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/18b214ec98638ae47c87335a6be8b4d37a73cb21))
@@ -207,7 +222,7 @@ All notable changes to this project will be documented in this file. See [conven
 - Lighing `disabled` color on default light theme ([a2b2650](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a2b26508ef3cb5922dcde8566943739b47e7a669))
 - Move `PagingSliverAnimatedState` and `AnimationScreen` into the separated folder `animations` ([2df9168](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2df9168423e3bdbdc91cfa4ecce3a6e673b1fb53))
 
-### 📚 Documentation - [flutter_heyteacher_views-2.0.3+132]
+### 📚 Documentation [2.0.3]
 
 - Add `example` app ([674f411](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/674f411e4e3e502345db289c1c66817b2c313283))
 - Add documentation to `README.md` ([cd8dbaa](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cd8dbaa85de46028775a40e328f5b1e2bd718c1f))
@@ -215,31 +230,31 @@ All notable changes to this project will be documented in this file. See [conven
 
 ## [flutter_heyteacher_views-2.0.2+130] - 2026-03-11
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-2.0.2+130]
+### 🐛 Bug Fixes [2.0.2]
 
 - *(views)* Remove `FHURemoteConfigKeys` and `FlutterHeyteacherUtilsSharedPreferencesKeys` import ([b745dc1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b745dc1efa605c4037c1d7884b45d7a1eba9f282))
 
-### 📚 Documentation - [flutter_heyteacher_views-2.0.2+130]
+### 📚 Documentation [2.0.2]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.0.1+128 ([bc72bf0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bc72bf00fd80c0a6a198cc225d7d00f08f3ccd98))
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.0.2+130 ([2ccbceb](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2ccbcebbcaef5a5a6e68c71938c15f6f57e2b15b))
 
 ## [flutter_heyteacher_views-2.0.1+128] - 2026-03-06
 
-### 🐛 Bug Fixes - [flutter_heyteacher_views-2.0.1+128]
+### 🐛 Bug Fixes [2.0.1]
 
 - *(views)* Move generic localized strings to `flutter_heyteacher_locale` ([6a412a0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6a412a08a26ac2ba4b376465fabb4f650eddf4af))
 
-### 📚 Documentation - [flutter_heyteacher_views-2.0.1+128]
+### 📚 Documentation [2.0.1]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.0.1+128 ([9bd985c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9bd985cd072c0bcf39cd1ed28810226ec5c1831c))
 
 ## [flutter_heyteacher_views-2.0.0+126] - 2026-03-06
 
-### 🚀 Features - [flutter_heyteacher_views-2.0.0+126]
+### 🚀 Features [2.0.0]
 
 - *(packages)* [**breaking**] Split `flutter_heyteacher_utils` in `flutter_heyteacher_auth`, `flutter_heyteacher_connectivity`, `flutter_heyteacher_e2ee`, `flutter_heyteacher_firebase`, `flutter_heyteacher_locale`, `flutter_heyteacher_logger`, `flutter_heyteacher_math`, `flutter_heyteacher_platform`, `flutter_heyteacher_text_to_speech`, `flutter_heyteacher_timer_workflow`, `flutter_heyteacher_views`, `flutter_heyteacher_worker` ([4bd4514](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4bd4514f7c15aeeac3e41e44967aaf989065483e))
 
-### 📚 Documentation - [flutter_heyteacher_views-2.0.0+126]
+### 📚 Documentation [2.0.0]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_views-2.0.0+126 ([118293f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/118293f1d26b1d5e0ee7c680e71bac02f0a9a5f0))
