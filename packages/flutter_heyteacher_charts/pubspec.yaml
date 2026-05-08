@@ -22,12 +22,12 @@ dependencies:
   fl_chart: ^1.2.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_locale: any
-  flutter_heyteacher_views: any
+  flutter_heyteacher_locale: ^3.0.0+152
+  flutter_heyteacher_views: ^4.0.0+157
 
 
 dev_dependencies:
-  flutter_heyteacher_meta: any
+  flutter_heyteacher_meta: ^7.6.6+175
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.2.0
