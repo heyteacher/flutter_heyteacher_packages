@@ -39,7 +39,7 @@ dependencies:
     path: ..
   flutter_heyteacher_views:
     path: ../../flutter_heyteacher_views
-  go_router: ^17.2.2
+  go_router: ^17.2.3
 
 dev_dependencies:
   flutter_heyteacher_meta:
