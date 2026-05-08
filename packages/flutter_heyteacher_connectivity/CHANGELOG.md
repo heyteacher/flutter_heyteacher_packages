@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_connectivity-3.0.1+146] - 2026-05-08
+
+### 🐛 Bug Fixes [3.0.1]
+
+- *(deps)* Upgrade dependencies tighen ([8be6145](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8be6145dd20821531389a5d0f18d0ce7816146a5))
+
+### ⚙️ Miscellaneous Tasks [3.0.1]
+
+- *(release)* New version 3.0.1+146 which closes ([#167](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/167)) ([98847c9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/98847c992fde8d811821fc402c7b15eb7890ee7d))
+
 ## [flutter_heyteacher_connectivity-3.0.0+145] - 2026-05-08
 
 ### 📚 Documentation [3.0.0]
