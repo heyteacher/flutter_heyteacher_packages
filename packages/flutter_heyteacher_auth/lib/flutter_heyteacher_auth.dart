@@ -12,9 +12,9 @@ library;
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-export 'src/account_card.dart' show AccountCard;
+export 'src/account_list_tile.dart' show AccountListTile;
 export 'src/auth_view_model.dart'
     show AuthViewModel, UserNotAuthenticatedException;
 export 'src/l10n/flutter_heyteacher_auth.dart'
     show FlutterHeyteacherAuthLocalizations;
-export 'src/route.dart' show AuthRouterName,GoAuthRoute;
+export 'src/route.dart' show AuthRouterName, GoAuthRoute;
