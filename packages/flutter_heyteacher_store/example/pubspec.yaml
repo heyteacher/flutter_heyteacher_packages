@@ -48,8 +48,6 @@ dependencies:
     path: ../../flutter_heyteacher_store
   flutter_heyteacher_views:
     path: ../../flutter_heyteacher_views
-  flutter_test:
-    sdk: flutter
   go_router: ^17.2.2
   intl: ^0.20.2
 
