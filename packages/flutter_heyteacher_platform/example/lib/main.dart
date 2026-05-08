@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
-import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart' show ThemeViewModel;
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
+    show ThemeViewModel;
 
 Future<void> main() async {
   // ensureInitialized
@@ -37,12 +38,13 @@ class _MyHomePage extends StatelessWidget {
       title: const Text('Flutter Heyteacher Platform'),
     ),
     body: Padding(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
         children: [
-          const DevicePackageInfoCard(
+          const DevicePackageInfoListTile(
             supportEmail: 'support@example-com',
           ),
+          const Divider(height: 1, color: Colors.white24),
           Expanded(
             child: Center(
               child: RichText(
