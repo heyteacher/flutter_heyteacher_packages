@@ -1,6 +1,6 @@
 name: flutter_heyteacher_text_to_speech
 description: "The flutter heyteacher text-to-speech (TTS) utilities localized in six languages"
-version: 4.0.0+159
+version: 4.0.1+160
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_text_to_speech
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
