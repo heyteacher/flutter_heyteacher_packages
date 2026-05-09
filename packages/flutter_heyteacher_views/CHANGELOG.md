@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.0.3+160] - 2026-05-09
+
+### 🎨 Styling [4.0.3]
+
+- Set `isCollapsed` as `isDense` in  `inputDecorationTheme` of  `GenericDropDown` ([bb004ce](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bb004ce9b8265a789b2c4e7ee337ef3f6013a94e))
+
+### ⚙️ Miscellaneous Tasks [4.0.3]
+
+- *(release)* New version 4.0.3+160 which closes ([#176](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/176)) ([c0ade42](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c0ade4275f0ad804628f733428c19190fb0c8d23))
+
 ## [flutter_heyteacher_views-4.0.2+159] - 2026-05-09
 
 ### 🐛 Bug Fixes [4.0.2]
