@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.0.2+159] - 2026-05-09
+
+### 🐛 Bug Fixes [4.0.2]
+
+- Avoid negative width or height in setting `maxWidth` and `maxHeight`  in `ConstrainedBox` of `AdaptiveWrap` ([6397482](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/63974828067ae1e3c5a1ec1853ef426cbe90c3fc))
+
+### ⚙️ Miscellaneous Tasks [4.0.2]
+
+- *(release)* New version 4.0.2+159 which closes ([#173](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/173)) ([e26faae](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e26faaefbe175e13f86622a1c15f2baefa1fba69))
+
 ## [flutter_heyteacher_views-4.0.1+158] - 2026-05-08
 
 ### 🐛 Bug Fixes [4.0.1]
