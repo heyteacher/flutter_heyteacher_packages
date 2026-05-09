@@ -119,7 +119,7 @@ class E2EEViewModel {
   ///
   /// Enables encrypted shared preferences, using the [appName] for naming.
   AndroidOptions _getAndroidOptions(String appName) => AndroidOptions(
-    sharedPreferencesName: appName,
+    storageNamespace: appName,
     preferencesKeyPrefix: appName,
   );
 
