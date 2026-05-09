@@ -665,8 +665,9 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
       ),
     ],
     inputDecorationTheme: InputDecorationTheme(
-      contentPadding: const EdgeInsets.only(left: 4),
+      contentPadding: const EdgeInsets.only(left: 2),
       isDense: widget._isDense,
+      isCollapsed: widget._isDense,
       constraints: BoxConstraints.tight(Size.fromHeight(widget._height)),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
     ),
