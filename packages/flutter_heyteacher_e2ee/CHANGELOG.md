@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.0.2+153] - 2026-05-09
+
+### 🐛 Bug Fixes [3.0.2]
+
+- Replace deprecated param `sharedPreferencesName` with `storageNamespace` in `AndroidOption` of `FlutterSecureStorage` ([cd066e2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cd066e21ad4bf5f43b325cf7b3f7fd982d209b6e))
+
+### ⚙️ Miscellaneous Tasks [3.0.2]
+
+- *(release)* New version 3.0.2+153 which closes ([#172](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/172)) ([7fb62e7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fb62e714a81f443ee654ebacf34da7cdafe1060))
+
 ## [flutter_heyteacher_e2ee-3.0.1+152] - 2026-05-08
 
 ### 🐛 Bug Fixes [3.0.1]
