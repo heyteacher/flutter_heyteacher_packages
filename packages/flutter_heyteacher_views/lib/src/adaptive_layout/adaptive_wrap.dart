@@ -60,12 +60,16 @@ class AdaptiveWrap extends StatelessWidget {
 
   double _width({required BuildContext context, required double parentWidth}) =>
       _direction == Axis.horizontal
-      ? (parentWidth -
-                (MediaQuery.of(context).orientation == Orientation.landscape &&
-                        PlatformHelper.isMobile
-                    ? AppBar().preferredSize.shortestSide
-                    : 0) -
-                _spacing * (_crossAxisCount - 1)) /
+      ? max(
+              parentWidth -
+                  (MediaQuery.of(context).orientation ==
+                              Orientation.landscape &&
+                          PlatformHelper.isMobile
+                      ? AppBar().preferredSize.shortestSide
+                      : 0) -
+                  _spacing * (_crossAxisCount - 1),
+              0,
+            ) /
             max(_crossAxisCount, 1)
       : double.infinity;
 
@@ -73,7 +77,7 @@ class AdaptiveWrap extends StatelessWidget {
     required BuildContext context,
     required double parentHeight,
   }) => _direction == Axis.vertical
-      ? (parentHeight - _runSpacing * (max(_crossAxisCount, 1) - 1)) /
+      ? max(parentHeight - _runSpacing * (max(_crossAxisCount, 1) - 1), 0) /
             max(_crossAxisCount, 1)
       : double.infinity;
 }
