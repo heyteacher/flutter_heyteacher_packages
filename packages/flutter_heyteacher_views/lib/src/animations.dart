@@ -267,7 +267,9 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
   Iterable<int> _compare({
     required List<D> oldList,
     required List<D> newList,
-  }) => newList.indexed.where((e) => !oldList.contains(e.$2)).map((e) => e.$1);
+  }) => newList.indexed
+      .where((e) => oldList.indexOf(e.$2) != e.$1)
+      .map((e) => e.$1);
 }
 
 /// A widget that displays text with a blinking (fade in/out) animation.
