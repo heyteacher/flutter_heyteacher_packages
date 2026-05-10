@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.0.4+161] - 2026-05-10
+
+### 🐛 Bug Fixes [4.0.4]
+
+- In `updateDataList` of `PagingSliverAnimatedState` update also when order changed ([b31164b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b31164bc08e647a60cf4d77653ca0b2493636bc7))
+
+### ⚙️ Miscellaneous Tasks [4.0.4]
+
+- *(release)* New version 4.0.4+161 which closes ([#179](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/179)) ([6fc0f67](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6fc0f67be9c8a7bd982d16d5603b1fdecdeabe45))
+
 ## [flutter_heyteacher_views-4.0.3+160] - 2026-05-09
 
 ### 🎨 Styling [4.0.3]
