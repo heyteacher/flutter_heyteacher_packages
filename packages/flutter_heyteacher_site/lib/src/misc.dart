@@ -16,7 +16,7 @@ class GetItOnGooglePlayButton extends StatefulWidget {
   }) : _appId = appId;
 
   final String _appId;
- 
+
   @override
   State<GetItOnGooglePlayButton> createState() =>
       _GetItOnGooglePlayButtonState();
@@ -66,7 +66,7 @@ class _AbstractGetItOnGooglePlayButtonState
         child: const Image(
           image: AssetImage(
             'assets/images/GetItOnGooglePlay_Badge_Web_color_English.png',
-              package: 'flutter_heyteacher_site',
+            package: 'flutter_heyteacher_site',
           ),
         ),
       ),
@@ -135,7 +135,12 @@ class TitleText extends StatelessWidget {
 /// The title text as a sliver
 class TitleTextSliver extends TitleText {
   /// Creater a [TitleTextSliver]
-  const TitleTextSliver({required super.title, super.key, super.padding});
+  const TitleTextSliver({
+    required super.title,
+    super.key,
+    super.padding,
+    super.style,
+  });
 
   @override
   Widget build(BuildContext context) => SliverToBoxAdapter(
