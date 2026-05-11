@@ -10,13 +10,17 @@ class SlideSliver extends StatefulWidget {
   const SlideSliver({
     required List<SlideData> slides,
     Decoration? decoration,
+    Decoration? imageDecoration,
     super.key,
   }) : _slides = slides,
-       _decoration = decoration;
+       _decoration = decoration,
+       _imageDecoration = imageDecoration;
 
   final List<SlideData> _slides;
 
   final Decoration? _decoration;
+
+  final Decoration? _imageDecoration;
 
   @override
   /// Creates the state for the [SlideSliver] based on the platform.
@@ -29,21 +33,37 @@ class _SlideSliverState
         AdaptiveState<
           SlideSliver,
           _AbstractLiveSlideSliverState,
-          ({Decoration? decoration, List<SlideData> slides})
+          ({
+            Decoration? decoration,
+            Decoration? imageDecoration,
+            List<SlideData> slides,
+          })
         > {
   @override
   _AbstractLiveSlideSliverState createAdaptiveState() =>
       _AbstractLiveSlideSliverState();
 
   @override
-  ({Decoration? decoration, List<SlideData> slides}) get params =>
-      (slides: widget._slides, decoration: widget._decoration);
+  ({
+    Decoration? decoration,
+    Decoration? imageDecoration,
+    List<SlideData> slides,
+  })
+  get params => (
+    slides: widget._slides,
+    decoration: widget._decoration,
+    imageDecoration: widget._imageDecoration,
+  );
 }
 
 class _AbstractLiveSlideSliverState
     extends
         AbstractAdaptiveState<
-          ({Decoration? decoration, List<SlideData> slides})
+          ({
+            Decoration? decoration,
+            Decoration? imageDecoration,
+            List<SlideData> slides,
+          })
         > {
   @override
   Widget build(BuildContext context) => SliverGrid(
@@ -57,6 +77,7 @@ class _AbstractLiveSlideSliverState
             (slideData) => _SlideWidget(
               slideData,
               decoration: widget.params.decoration,
+              imageDecoration: widget.params.imageDecoration,
             ),
           )
           .toList(),
@@ -251,9 +272,11 @@ class _SlideWidget extends StatelessWidget {
   const _SlideWidget(
     SlideData slideData, {
     Decoration? decoration,
+    Decoration? imageDecoration,
     super.key,
   }) : _slideData = slideData,
-       _decoration = decoration;
+       _decoration = decoration,
+       _imageDecoration = imageDecoration;
 
   /// The [SlideData] object containing the title, subtitle,
   /// and path for the image displayed in this card.
@@ -263,6 +286,8 @@ class _SlideWidget extends StatelessWidget {
   final SlideData _slideData;
 
   final Decoration? _decoration;
+
+  final Decoration? _imageDecoration;
 
   @override
   /// Builds the UI for the [_SlideWidget].
@@ -314,11 +339,14 @@ class _SlideWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: _slideData.imagePaths!
                   .map(
-                    (imagePath) => Image(
-                      isAntiAlias: true,
-                      filterQuality: FilterQuality.high,
-                      height: MediaQuery.sizeOf(context).height / 2,
-                      image: AssetImage(imagePath),
+                    (imagePath) => Container(
+                      decoration: _imageDecoration,
+                      child: Image(
+                        isAntiAlias: true,
+                        filterQuality: FilterQuality.high,
+                        height: MediaQuery.sizeOf(context).height / 2,
+                        image: AssetImage(imagePath),
+                      ),
                     ),
                   )
                   .toList(),
