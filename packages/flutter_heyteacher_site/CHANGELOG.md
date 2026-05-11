@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_site-2.0.1+129] - 2026-05-11
+
+### 🎨 Styling [2.0.1]
+
+- Add `imageDecoration` to  `SlideSliver` ([6d1634f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6d1634f803ce94b6330db126266ea58bd0fb6fbe))
+- Add `style` param to `TitleTextSliver` ([6f33051](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6f330511e6d1bcabe395d6287f6da38dc9dbbb0b))
+
+### ⚙️ Miscellaneous Tasks [2.0.1]
+
+- *(release)* New version 2.0.1+129 which closes ([#188](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/188)) ([64f07c2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/64f07c222fa3fe6fd882f7d1476a197bd0bd85d6))
+
 ## [flutter_heyteacher_site-2.0.0+128] - 2026-05-11
 
 ### 📚 Documentation [2.0.0]
