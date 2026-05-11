@@ -28,7 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () => GoRouter.of(context).goNamed('home'),
         ),
       ),
-      title: const Text('Flutter Heyteacher Site'),
+      title: Text(
+        'Flutter Heyteacher Site',
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
       actions: const [
         ThemeModeButton(),
         GetItOnGooglePlayButton(
@@ -37,69 +40,64 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     ),
     body: Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Stack(
         children: [
           Column(
             spacing: 8,
             children: [
-              Card(
-                child: ListTile(
-                  title: const Text('Markdown'),
-                  trailing: const Icon(Icons.keyboard_arrow_right),
-                  onTap: () => GoRouter.of(context).pushNamed('markdown'),
-                ),
+              ListTile(
+                title: const Text('Markdown'),
+                trailing: const Icon(Icons.keyboard_arrow_right),
+                onTap: () => GoRouter.of(context).pushNamed('markdown'),
               ),
-              Card(
-                child: ListTile(
-                  title: const Text('SlideSliver'),
-                  trailing: const Icon(Icons.keyboard_arrow_right),
-                  onTap: () => GoRouter.of(context).pushNamed('slides'),
-                ),
+              const Divider(height: 1, color: Colors.white24),
+              ListTile(
+                title: const Text('SlideSliver'),
+                trailing: const Icon(Icons.keyboard_arrow_right),
+                onTap: () => GoRouter.of(context).pushNamed('slides'),
               ),
-              Card(
-                child: ListTile(
-                  title: const Text('SlideCarouselView'),
-                  trailing: const Icon(Icons.keyboard_arrow_right),
-                  onTap: () => GoRouter.of(context).pushNamed('carousel'),
-                ),
+              const Divider(height: 1, color: Colors.white24),
+              ListTile(
+                title: const Text('SlideCarouselView'),
+                trailing: const Icon(Icons.keyboard_arrow_right),
+                onTap: () => GoRouter.of(context).pushNamed('carousel'),
               ),
-              Card(
-                child: ListTile(
-                  title: const Text('VideoSliverGrid'),
-                  trailing: const Icon(Icons.keyboard_arrow_right),
-                  onTap: () => GoRouter.of(context).pushNamed('videos'),
-                ),
+              const Divider(height: 1, color: Colors.white24),
+              ListTile(
+                title: const Text('VideoSliverGrid'),
+                trailing: const Icon(Icons.keyboard_arrow_right),
+                onTap: () => GoRouter.of(context).pushNamed('videos'),
               ),
+              const Divider(height: 1, color: Colors.white24),
               const TitleText(
                 title: 'TitleText',
                 padding: EdgeInsets.all(32),
               ),
-              Card(
-                child: ListTile(
-                  title: const Text('Cookie Consent'),
-                  trailing: FutureBuilder(
-                    future: CookieConsentViewModel.instance.enabled,
-                    builder: (context, snapshot) => Badge(
-                      label: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(
-                          snapshot.data == null
-                              ? 'Unclicked'
-                              : snapshot.data!
-                              ? 'Enabled'
-                              : 'Disabled',
-                        ),
+              ListTile(
+                title: const Text('Cookie Consent'),
+                trailing: FutureBuilder(
+                  future: CookieConsentViewModel.instance.enabled,
+                  builder: (context, snapshot) => Badge(
+                    label: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        snapshot.data == null
+                            ? 'Unclicked'
+                            : snapshot.data!
+                            ? 'Enabled'
+                            : 'Disabled',
                       ),
-                      backgroundColor: snapshot.data == null
-                          ? Colors.white10
-                          : snapshot.data!
-                          ? Colors.green
-                          : Colors.red,
                     ),
+                    backgroundColor: snapshot.data == null
+                        ? Colors.white10
+                        : snapshot.data!
+                        ? Colors.green
+                        : Colors.red,
                   ),
                 ),
               ),
+              const Divider(height: 1, color: Colors.white24),
             ],
           ),
           CookieConsentBanner(

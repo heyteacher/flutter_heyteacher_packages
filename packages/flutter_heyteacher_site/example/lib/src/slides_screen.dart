@@ -20,6 +20,7 @@ class SlidesScreen extends StatelessWidget {
     body: CustomScrollView(
       slivers: [
         SlideSliver(
+          decoration: BoxDecoration(border: Border.all(color: Colors.white24)),
           slides: [
             SlideData(
               title: 'Slide Title',
