@@ -1,6 +1,6 @@
 # Uncomment the line if you want fastlane to automatically update itself
-#update_fastlane
-
+ENV["FASTLANE_SKIP_ACTION_SUMMARY"] = "1"
+ENV["FASTLANE_HIDE_TIMESTAMP"] = "1"
 desc "fl docweb - run local webserver on generated doc"
 lane :docweb do
   Dir.chdir("../") do

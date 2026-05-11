@@ -1,6 +1,6 @@
 # Uncomment the line if you want fastlane to automatically update itself
 #update_fastlane
-
+ENV["FASTLANE_HIDE_PLUGINS_TABLE"] = "1"
 default_platform(:android)
 
 platform :android do
