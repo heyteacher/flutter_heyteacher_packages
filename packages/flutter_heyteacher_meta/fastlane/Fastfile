@@ -42,17 +42,18 @@ lane :checkout do|options|
   end  
   puts "check issue #{issue_number} exists in #{forge}"
   issue_found = false
+  issue_description = ""
   if forge == "github"
     sh("gh issue list")
-    found_issues = sh("gh issue list --search \"state:open #{issue_number}\"").strip!;
-    if found_issues.start_with?("no issues")
+    issue_description = sh("gh issue list --search \"state:open #{issue_number}\"").strip!;
+    if issue_description.start_with?("no issues")
       puts "issue #{issue_number} not found in #{forge}"
     else 
       issue_found = true
     end
   elsif forge == "forgejo"
     begin
-      sh("fj issue search | grep \"##{issue_number}\"");
+      issue_description = sh("fj issue search | grep \"##{issue_number}\"");
       issue_found = true
     rescue => error
       puts "issue #{issue_number} not found in #{forge}"
@@ -64,6 +65,7 @@ lane :checkout do|options|
     sh("git checkout -b #{issue_number}")
     puts "push branch #{issue_number} to origin"
     sh("git push --set-upstream origin #{issue_number}")
+    puts "\n\n #{issue_description}"
   end
 end
 
