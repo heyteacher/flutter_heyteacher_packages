@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.6.8+177] - 2026-05-11
+
+### ⚙️ Miscellaneous Tasks [7.6.8]
+
+- *(meta)* Hide timestamp, summary and plugins table during `fastlane` execution ([ff40d92](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ff40d92d2b6d1a489f5e277709d876f3cd92f98e))
+- *(release)* New version 7.6.8+177 which closes ([#190](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/190)) ([08dab16](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/08dab168fa367b1a2211886691c3e6b30fbf0a9d))
+
 ## [flutter_heyteacher_meta-7.6.7+176] - 2026-05-11
 
 ### ⚙️ Miscellaneous Tasks [7.6.7]
