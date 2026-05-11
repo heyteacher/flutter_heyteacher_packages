@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.6.7+176] - 2026-05-11
+
+### ⚙️ Miscellaneous Tasks [7.6.7]
+
+- Show issue description at the end of lane `checkout` ([9d2319c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9d2319c3e67a2330968bd45488aef7802ab4c9a8))
+- *(release)* New version 7.6.7+176 which closes ([#186](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/186)) ([6ad110e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6ad110e5a4a130c5ed64fd43963bf19a026e3315))
+
 ## [flutter_heyteacher_meta-7.6.6+175] - 2026-04-30
 
 ### 🐛 Bug Fixes [7.6.6]
