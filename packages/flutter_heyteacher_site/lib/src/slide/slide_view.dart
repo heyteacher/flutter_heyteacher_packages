@@ -7,10 +7,16 @@ import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 /// The slide Sliver .
 class SlideSliver extends StatefulWidget {
   /// The constructor  of the [SlideSliver] for [slides]
-  const SlideSliver({required List<SlideData> slides, super.key})
-    : _slides = slides;
+  const SlideSliver({
+    required List<SlideData> slides,
+    Decoration? decoration,
+    super.key,
+  }) : _slides = slides,
+       _decoration = decoration;
 
   final List<SlideData> _slides;
+
+  final Decoration? _decoration;
 
   @override
   /// Creates the state for the [SlideSliver] based on the platform.
@@ -23,45 +29,39 @@ class _SlideSliverState
         AdaptiveState<
           SlideSliver,
           _AbstractLiveSlideSliverState,
-          List<SlideData>
+          ({Decoration? decoration, List<SlideData> slides})
         > {
   @override
   _AbstractLiveSlideSliverState createAdaptiveState() =>
       _AbstractLiveSlideSliverState();
 
   @override
-  List<SlideData> get params => widget._slides;
+  ({Decoration? decoration, List<SlideData> slides}) get params =>
+      (slides: widget._slides, decoration: widget._decoration);
 }
 
 class _AbstractLiveSlideSliverState
-    extends AbstractAdaptiveState<List<SlideData>> {
+    extends
+        AbstractAdaptiveState<
+          ({Decoration? decoration, List<SlideData> slides})
+        > {
   @override
   Widget build(BuildContext context) => SliverGrid(
     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: _crossAxisCount,
-      crossAxisSpacing: _spacing,
-      mainAxisSpacing: _spacing,
-      mainAxisExtent: MediaQuery.sizeOf(context).height / 2,
+      mainAxisExtent: MediaQuery.sizeOf(context).height / 2.2,
     ),
     delegate: SliverChildListDelegate(
-      widget.params
+      widget.params.slides
           .map(
-            (e) => Padding(
-              padding: EdgeInsetsGeometry.symmetric(
-                horizontal: _spacing,
-              ),
-              child: _SlideCard(e),
+            (slideData) => _SlideWidget(
+              slideData,
+              decoration: widget.params.decoration,
             ),
           )
           .toList(),
     ),
   );
-
-  double get _spacing => switch (widget.screenSize) {
-    ScreenSize.small => 8,
-    ScreenSize.medium => 32,
-    ScreenSize.large => 64,
-  };
 
   int get _crossAxisCount => switch (widget.screenSize) {
     ScreenSize.small => 1,
@@ -212,7 +212,7 @@ class _AbstractSlideCarouselViewState
           itemSnapping: true,
           shrinkExtent: MediaQuery.of(context).size.width,
           flexWeights: widget.flexWeights,
-          children: widget.params.slides.map(_SlideCard.new).toList(),
+          children: widget.params.slides.map(_SlideWidget.new).toList(),
         ),
         Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -243,15 +243,17 @@ class _AbstractSlideCarouselViewState
 }
 
 /// A widget that displays an image with a title and subtitle overlay,
-class _SlideCard extends StatelessWidget {
+class _SlideWidget extends StatelessWidget {
   /// Creates a card that displays an image and some text.
   ///
   /// The [slideData] parameter is required and provides the data
   /// for the card.
-  const _SlideCard(
+  const _SlideWidget(
     SlideData slideData, {
+    Decoration? decoration,
     super.key,
-  }) : _slideData = slideData;
+  }) : _slideData = slideData,
+       _decoration = decoration;
 
   /// The [SlideData] object containing the title, subtitle,
   /// and path for the image displayed in this card.
@@ -260,122 +262,112 @@ class _SlideCard extends StatelessWidget {
   /// It holds all the necessary data to render the card's content.
   final SlideData _slideData;
 
+  final Decoration? _decoration;
+
   @override
-  /// Builds the UI for the [_SlideCard].
+  /// Builds the UI for the [_SlideWidget].
   ///
   /// It uses a [Stack] to layer an image with text overlay.
   /// The image is constrained and uses an [AssetImage].
-  Widget build(BuildContext context) => Stack(
-    alignment: _slideData.body != null
-        ? AlignmentDirectional.topStart
-        : AlignmentDirectional.bottomStart,
-    children: <Widget>[
-      /// show body sentences
-      if (_slideData.body != null)
-        Card(
-          child: Padding(
+  Widget build(BuildContext context) => Container(
+    decoration: _decoration,
+    child: Stack(
+      alignment: _slideData.body != null
+          ? AlignmentDirectional.topStart
+          : AlignmentDirectional.bottomStart,
+      children: <Widget>[
+        /// show body sentences
+        if (_slideData.body != null)
+          Padding(
             padding: EdgeInsets.only(
-              left: 8,
-              right: 8,
               top: _slideData.subtitle != null ? 128 : 64,
               bottom: 2,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: _slideData.body!
                   .map(
-                    (row) => Expanded(
-                      child: Row(
-                        spacing: 16,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            row.leadingIcon,
-                            color: row.leadingIconColor,
-                            size: Theme.of(
-                              context,
-                            ).textTheme.headlineSmall!.fontSize,
-                          ),
-                          Flexible(
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              row.text,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.headlineSmall,
-                            ),
-                          ),
-                        ],
+                    (row) => ListTile(
+                      leading: Icon(
+                        row.leadingIcon,
+                        color: row.leadingIconColor,
+                        size: Theme.of(
+                          context,
+                        ).textTheme.headlineSmall!.fontSize,
+                      ),
+                      title: Text(
+                        row.text,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.headlineSmall,
                       ),
                     ),
                   )
                   .toList(),
             ),
-          ),
-        )
-      // show image
-      else if (_slideData.imagePaths?.isNotEmpty ?? false)
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _slideData.imagePaths!
-                .map(
-                  (imagePath) => Image(
-                    isAntiAlias: true,
-                    filterQuality: FilterQuality.high,
-                    height: MediaQuery.sizeOf(context).height / 2,
-                    image: AssetImage(imagePath),
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-      if (_slideData.title != null)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                _slideData.title!,
-                overflow: TextOverflow.clip,
-                softWrap: false,
-                textAlign: _slideData.body != null
-                    ? TextAlign.center
-                    : TextAlign.left,
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineLarge,
-              ),
+          )
+        // show image
+        else if (_slideData.imagePaths?.isNotEmpty ?? false)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: _slideData.imagePaths!
+                  .map(
+                    (imagePath) => Image(
+                      isAntiAlias: true,
+                      filterQuality: FilterQuality.high,
+                      height: MediaQuery.sizeOf(context).height / 2,
+                      image: AssetImage(imagePath),
+                    ),
+                  )
+                  .toList(),
             ),
-            if (_slideData.subtitle?.isNotEmpty ?? false)
+          ),
+        if (_slideData.title != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 2,
-                  right: 2,
-                  top: 8,
-                  bottom: 8,
-                ),
+                padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  _slideData.subtitle!,
+                  _slideData.title!,
                   overflow: TextOverflow.clip,
-                  softWrap: true,
-                  maxLines: 3,
+                  softWrap: false,
                   textAlign: _slideData.body != null
                       ? TextAlign.center
                       : TextAlign.left,
                   style: Theme.of(
                     context,
-                  ).textTheme.headlineSmall,
+                  ).textTheme.headlineLarge,
                 ),
               ),
-          ],
-        ),
-    ],
+              if (_slideData.subtitle?.isNotEmpty ?? false)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 2,
+                    right: 2,
+                    top: 8,
+                    bottom: 8,
+                  ),
+                  child: Text(
+                    _slideData.subtitle!,
+                    overflow: TextOverflow.clip,
+                    softWrap: true,
+                    maxLines: 3,
+                    textAlign: _slideData.body != null
+                        ? TextAlign.center
+                        : TextAlign.left,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineSmall,
+                  ),
+                ),
+            ],
+          ),
+      ],
+    ),
   );
 }

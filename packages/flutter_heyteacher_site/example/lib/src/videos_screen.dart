@@ -17,10 +17,11 @@ class VideosScreen extends StatelessWidget {
         ThemeModeButton(),
       ],
     ),
-    body: const CustomScrollView(
+    body: CustomScrollView(
       slivers: [
         VideoSliverGrid(
-          videos: [
+          decoration: BoxDecoration(border: Border.all(color: Colors.white24)),
+          videos: const [
             VideoData(
               title: 'Video Title',
               subTitle: 'Video Subtitle',

@@ -12,13 +12,18 @@ import 'package:video_player/video_player.dart';
 /// This widget arranges videos in a grid layout that can be
 /// placed within a [CustomScrollView]. It manages the playback of videos
 /// to ensure that only one video plays at a time across all
-/// [_VideoCard] instances.
+/// [_VideoWidget] instances.
 class VideoSliverGrid extends StatefulWidget {
   /// Creates a sliver grid for displaying videos.
-  const VideoSliverGrid({required List<VideoData> videos, super.key})
-    : _videos = videos;
+  const VideoSliverGrid({
+    required List<VideoData> videos,
+    Decoration? decoration,
+    super.key,
+  }) : _videos = videos,
+       _decoration = decoration;
 
   final List<VideoData> _videos;
+  final Decoration? _decoration;
 
   @override
   /// Creates the mutable state for this widget.
@@ -28,14 +33,14 @@ class VideoSliverGrid extends StatefulWidget {
 /// The state for [VideoSliverGrid].
 ///
 /// This class manages the [StreamController] that coordinates video playback
-/// among the [_VideoCard] children.
+/// among the [_VideoWidget] children.
 class _VideoSliverGridState extends State<VideoSliverGrid> {
   @override
   /// Builds the sliver grid of videos.
   ///
   /// It uses a [SliverGrid] with a [SliverGridDelegateWithMaxCrossAxisExtent]
   /// to create a responsive grid. Each video is
-  /// rendered as a [_VideoCard].
+  /// rendered as a [_VideoWidget].
   Widget build(BuildContext context) => SliverGrid(
     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
       maxCrossAxisExtent: MediaQuery.sizeOf(context).height / 2.2,
@@ -43,8 +48,9 @@ class _VideoSliverGridState extends State<VideoSliverGrid> {
     delegate: SliverChildListDelegate(
       widget._videos
           .map(
-            (videoData) => _VideoCard(
+            (videoData) => _VideoWidget(
               videoData: videoData,
+              decoration: widget._decoration,
             ),
           )
           .toList(),
@@ -53,24 +59,27 @@ class _VideoSliverGridState extends State<VideoSliverGrid> {
 }
 
 /// Stateful widget to fetch and then display video content.
-class _VideoCard extends StatelessWidget {
-  const _VideoCard({
+class _VideoWidget extends StatelessWidget {
+  const _VideoWidget({
     required VideoData videoData,
-  }) : _videolData = videoData;
+    Decoration? decoration,
+  }) : _videolData = videoData,
+       _decoration = decoration;
 
   final VideoData _videolData;
+  final Decoration? _decoration;
 
   @override
-  Widget build(BuildContext context) => Card(
-    child: Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: TitleText(title: _videolData.title),
-          ),
+  Widget build(BuildContext context) => Container(
+    decoration: _decoration,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(
+          child: TitleText(title: _videolData.title),
+        ),
+        if (_videolData.url.isNotEmpty)
           Center(
             child: IconButton(
               color: ThemeViewModel.instance.purpleColor,
@@ -81,14 +90,13 @@ class _VideoCard extends StatelessWidget {
               onPressed: () => _show(context),
             ),
           ),
-          Center(
-            child: TitleText(
-              title: _videolData.subTitle,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+        Center(
+          child: TitleText(
+            title: _videolData.subTitle,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
-        ],
-      ),
+        ),
+      ],
     ),
   );
 
@@ -149,13 +157,15 @@ class _VideoPlayState extends State<_VideoPlay> {
     await _videoPlayerController.play();
     setState(() {});
     _videoPlayerController.addListener(() => setState(() {}));
-    unawaited(GoogleAnalitycsViewModel.instance.logCustomEvent(
-      name: 'play_video',
-      parameters: {
-        'url': widget._videolData.url,
-        'title': widget._videolData.title,
-      },
-    ));
+    unawaited(
+      GoogleAnalitycsViewModel.instance.logCustomEvent(
+        name: 'play_video',
+        parameters: {
+          'url': widget._videolData.url,
+          'title': widget._videolData.title,
+        },
+      ),
+    );
   }
 
   @override
