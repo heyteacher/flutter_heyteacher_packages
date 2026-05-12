@@ -66,14 +66,25 @@ class _MyHomePageState extends State<_MyHomePage> {
     required int crossAxisCount,
     required ScreenSize screenSize,
   }) => SingleChildScrollView(
-    child: AdaptiveWrap(
-      crossAxisCount: crossAxisCount,
-      children: const [
-        LineChartExampleCard(),
-        BarChartExampleCard(),
-        ScatterChartExampleCard(),
-        CandlestickChartExampleCard(),
-      ],
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: AdaptiveWrap(
+        crossAxisCount: crossAxisCount,
+        children: const [
+          Column(
+            children: [ExampleLineChart(), Divider()],
+          ),
+          Column(
+            children: [ExampleBarChart(), Divider()],
+          ),
+          Column(
+            children: [ExampleScatterChart(), Divider()],
+          ),
+          Column(
+            children: [ExampleCandlestickChart(), Divider()],
+          ),
+        ],
+      ),
     ),
   );
 }
