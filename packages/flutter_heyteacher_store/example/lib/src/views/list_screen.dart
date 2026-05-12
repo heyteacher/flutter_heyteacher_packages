@@ -34,7 +34,7 @@ class _ListScreenState extends State<ListScreen> {
       ],
     ),
     body: Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
         children: [
           StreamBuilder(
@@ -53,7 +53,7 @@ class _ListScreenState extends State<ListScreen> {
               )} meters',
             ),
           ),
-          const Divider(),
+          const Divider(height: 1),
           StreamBuilder(
             stream: TrackStore.instance.stream(),
             builder: (context, asyncSnapshot) => Column(
@@ -61,32 +61,37 @@ class _ListScreenState extends State<ListScreen> {
               children: asyncSnapshot.hasData
                   ? asyncSnapshot.data!
                         .map<Widget>(
-                          (trackData) => Card(
-                            child: ListTile(
-                              title: Text(trackData.id),
-                              subtitle: Text(
-                                'start time '
-                                '${FormatterHelper.timeWithSecondsFormat(
-                                  trackData.startTime,
-                                )}\n'
-                                'stop time '
-                                '${FormatterHelper.timeWithSecondsFormat(
-                                  trackData.stopTime,
-                                )}\n'
-                                'distance  ${FormatterHelper.intFormat(
-                                  trackData.distanceInMeters,
-                                )} meters \n'
-                                'duration  ${FormatterHelper.formatDuration(
-                                  trackData.durationInMilliseconds,
-                                  showSeconds: true,
-                                )}',
+                          (trackData) => Column(
+                            children: [
+                              ListTile(
+                                title: Text(trackData.id),
+                                subtitle: Text(
+                                  'start time '
+                                  '${FormatterHelper.timeWithSecondsFormat(
+                                    trackData.startTime,
+                                  )}\n'
+                                  'stop time '
+                                  '${FormatterHelper.timeWithSecondsFormat(
+                                    trackData.stopTime,
+                                  )}\n'
+                                  'distance  ${FormatterHelper.intFormat(
+                                    trackData.distanceInMeters,
+                                  )} meters \n'
+                                  'duration  ${FormatterHelper.formatDuration(
+                                    trackData.durationInMilliseconds,
+                                    showSeconds: true,
+                                  )}',
+                                ),
+                                onTap: () => GoRouter.of(context).pushNamed(
+                                  'details',
+                                  pathParameters: {'id': trackData.id},
+                                ),
+                                trailing: const Icon(
+                                  Icons.keyboard_arrow_right,
+                                ),
                               ),
-                              onTap: () => GoRouter.of(context).pushNamed(
-                                'details',
-                                pathParameters: {'id': trackData.id},
-                              ),
-                              trailing: const Icon(Icons.keyboard_arrow_right),
-                            ),
+                              const Divider(height: 1),
+                            ],
                           ),
                         )
                         .toList()

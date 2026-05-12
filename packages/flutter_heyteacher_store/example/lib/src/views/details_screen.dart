@@ -37,70 +37,65 @@ class DetailsScreen extends StatelessWidget {
       builder: (context, getAsyncSnapshot) => getAsyncSnapshot.hasData
           ? Column(
               children: [
-                Card(
-                  child: ListTile(
-                    title: const Text('start time'),
-                    subtitle: Text(
-                      FormatterHelper.timeWithSecondsFormat(
-                        getAsyncSnapshot.data!.startTime,
-                      ),
+                ListTile(
+                  title: const Text('start time'),
+                  subtitle: Text(
+                    FormatterHelper.timeWithSecondsFormat(
+                      getAsyncSnapshot.data!.startTime,
                     ),
                   ),
                 ),
-                Card(
-                  child: ListTile(
-                    title: const Text('stop time'),
-                    subtitle: Text(
-                      FormatterHelper.timeWithSecondsFormat(
-                        getAsyncSnapshot.data!.stopTime,
-                      ),
+                const Divider(height: 1),
+                ListTile(
+                  title: const Text('distance'),
+                  subtitle: Text(
+                    FormatterHelper.intFormat(
+                      getAsyncSnapshot.data!.distanceInMeters,
                     ),
                   ),
                 ),
-                Card(
-                  child: ListTile(
-                    title: const Text('distance'),
-                    subtitle: Text(
-                      FormatterHelper.intFormat(
-                        getAsyncSnapshot.data!.distanceInMeters,
-                      ),
+                const Divider(height: 1),
+                ListTile(
+                  title: const Text('stop time'),
+                  subtitle: Text(
+                    FormatterHelper.timeWithSecondsFormat(
+                      getAsyncSnapshot.data!.stopTime,
                     ),
                   ),
                 ),
-                Card(
-                  child: ListTile(
-                    title: const Text('duration'),
-                    subtitle: Text(
-                      FormatterHelper.formatDuration(
-                        getAsyncSnapshot.data!.durationInMilliseconds,
-                        showSeconds: true
-                      ),
+                const Divider(height: 1),
+                ListTile(
+                  title: const Text('duration'),
+                  subtitle: Text(
+                    FormatterHelper.formatDuration(
+                      getAsyncSnapshot.data!.durationInMilliseconds,
+                      showSeconds: true,
                     ),
                   ),
                 ),
-                Card(
-                  child: ListTile(
-                    title: const Text('avg rpm'),
-                    subtitle: Text(
-                      FormatterHelper.intFormat(
-                        getAsyncSnapshot.data!.avgRpm,
-                      ),
+                const Divider(height: 1),
+                ListTile(
+                  title: const Text('avg rpm'),
+                  subtitle: Text(
+                    FormatterHelper.intFormat(
+                      getAsyncSnapshot.data!.avgRpm,
                     ),
                   ),
                 ),
+                const Divider(height: 1),
                 FutureBuilder(
                   future: E2EEViewModel.instance(
                     AuthViewModel.instance.uid,
                   ).decrypt(getAsyncSnapshot.data!.avgBpm!),
-                  builder: (context, decryptAsyncSnapshot) => Card(
-                    child: ListTile(
-                      title: const Text('avg bpm'),
-                      subtitle: Text(
-                        decryptAsyncSnapshot.data ?? '',
-                      ),
+                  builder: (context, decryptAsyncSnapshot) => ListTile(
+                    title: const Text('avg bpm'),
+                    subtitle: Text(
+                      decryptAsyncSnapshot.data ?? '',
                     ),
                   ),
                 ),
+
+                const Divider(height: 1),
               ],
             )
           : const ProgressIndicatorWidget(),
