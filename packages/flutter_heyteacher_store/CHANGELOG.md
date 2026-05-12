@@ -2,132 +2,146 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-3.0.4+1044] - 2026-05-12
+
+### 📚 Documentation [3.0.4]
+
+- *(cliff)* Replace `tag` with `version` in group headings ([8e77b24](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8e77b245705510863376408fcd634a7f3e366038))
+
+### 🎨 Styling [3.0.4]
+
+- Update layout removing `Card` ad add `Divider` in example ([32d2e22](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/32d2e222c5f7af796106b5412558d3d8b3855384))
+
+### ⚙️ Miscellaneous Tasks [3.0.4]
+
+- *(release)* New version 3.0.4+1044 which closes ([#192](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/192)) ([031196e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/031196e0b6ed84228efd5bee806eb4115ab50fa8))
+
 ## [flutter_heyteacher_store-3.0.3+1043] - 2026-04-28
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-3.0.3+1043]
+### 🐛 Bug Fixes [3.0.3]
 
 - Corrected `cliff.toml` ([284d73e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/284d73e85e51d80e70a89af71d3fbf6c12c99b59))
 
-### 🛠️ Build - [flutter_heyteacher_store-3.0.3+1043]
+### 🛠️ Build [3.0.3]
 
 - Add `fastlane/cliff.toml`  enhanced and customizable for generate change log ([e25bf19](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e25bf19ac3f5c1513c5575807c51c0a29e3603d3))
 
-### 📚 Documentation - [flutter_heyteacher_store-3.0.3+1043]
+### 📚 Documentation [3.0.3]
 
 - Add link to commit changes in `CHANGELOG.md` ([da93ee5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/da93ee58101ac0fa3c07a7a9587a271d95e9b0aa))
 - Update link to `Flutter HeyTeacher ecosystem` in `README.md` ([aa34118](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aa3411870c40861c4d6540d715be83b145ea3ea6))
 - *(cliff)* Skip `build(deps)` commits in `CHANGELOG.md` ([61a7b40](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/61a7b4010ca79b155d173f9fb76b22ab0ee25f44))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_store-3.0.3+1043]
+### ⚙️ Miscellaneous Tasks [3.0.3]
 
 - *(release)* New version 3.0.3+1043 which closes ([#158](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/158)) ([76e6c6a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/76e6c6a3f3438da3f9dcecbd38b8f8df2805314a))
 
 ## [flutter_heyteacher_store-3.0.2+1042] - 2026-04-16
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-3.0.2+1042]
+### 🐛 Bug Fixes [3.0.2]
 
 - Add assert `databaseId` null or not empty to `Store` costructor ([22995e3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/22995e354e6d617008950892f7167a1936788335))
 
-### 🛠️ Build - [flutter_heyteacher_store-3.0.2+1042]
+### 🛠️ Build [3.0.2]
 
 - *(flutter_heyteacher_store)* Update version to 3.0.2+1042 which closes ([#103](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/103)) ([f410f67](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f410f67ce018d7881f455cb7726c1b4f4af32f6e))
 
-### 📚 Documentation - [flutter_heyteacher_store-3.0.2+1042]
+### 📚 Documentation [3.0.2]
 
 - *(flutter_heyteacher_store)* Update `CHANGELOG.md` with flutter_heyteacher_store-3.0.2+1042 ([9c6d226](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9c6d226ad3d57a8f39a19a3782440853e50e0a23))
 
 ## [flutter_heyteacher_store-3.0.1+1040] - 2026-04-16
 
-### 🛠️ Build - [flutter_heyteacher_store-3.0.1+1040]
+### 🛠️ Build [3.0.1]
 
 - *(flutter_heyteacher_store)* Update version to 3.0.1+1040 which closes ([#102](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/102)) ([72a18cb](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/72a18cbb007f47d7edd6af33ee2a3da771f442a6))
 
-### 📚 Documentation - [flutter_heyteacher_store-3.0.1+1040]
+### 📚 Documentation [3.0.1]
 
 - *(flutter_heyteacher_store)* Update `CHANGELOG.md` with flutter_heyteacher_store-3.0.1+1040 ([29d76ad](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/29d76ad5db775927f477afc24d4d2322b9bb7166))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_store-3.0.1+1040]
+### ⚙️ Miscellaneous Tasks [3.0.1]
 
 - Add `sort` to aggregate pipeline example ([8268d56](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8268d56e9be60d40c6c8f4c1a3b6becad90b380b))
 
 ## [flutter_heyteacher_store-3.0.0+1038] - 2026-04-15
 
-### 🚀 Features - [flutter_heyteacher_store-3.0.0+1038]
+### 🚀 Features [3.0.0]
 
 - [**breaking**] Expose pipelines on `collection` and `collection_details` for advanced queries and remove `groupBy` feature ([bcf1bb3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bcf1bb3bed1c65e2a0f3193a138de76bd456810f))
 
-### 🛠️ Build - [flutter_heyteacher_store-3.0.0+1038]
+### 🛠️ Build [3.0.0]
 
 - *(flutter_heyteacher_store)* Update version to 3.0.0+1038 which closes ([#98](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/98)) ([c714c7b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c714c7b4df66e16da1b3d023132886fc60d3b641))
 
-### 📚 Documentation - [flutter_heyteacher_store-3.0.0+1038]
+### 📚 Documentation [3.0.0]
 
 - *(flutter_heyteacher_store)* Update `CHANGELOG.md` with flutter_heyteacher_store-3.0.0+1038 ([47ffbed](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/47ffbed65652b63a9b6054fd014259984170a4c4))
 
 ## [flutter_heyteacher_store-2.0.3+1036] - 2026-04-02
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-2.0.3+1036]
+### 🐛 Bug Fixes [2.0.3]
 
 - *(README.md)* Typo causing broken link ([acf7e55](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/acf7e556dba928ca0f6cfd92b3f09c94333ee6b5))
 
-### 🛠️ Build - [flutter_heyteacher_store-2.0.3+1036]
+### 🛠️ Build [2.0.3]
 
 - *(flutter_heyteacher_store)* Update version to 2.0.3+1036 which closes #tmp ([4f1bdc1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4f1bdc199082621454c29324d44cada8616c0a24))
 
-### 📚 Documentation - [flutter_heyteacher_store-2.0.3+1036]
+### 📚 Documentation [2.0.3]
 
 - Add reference to `Model-View-ViewModel` (`MVVM`) architecture and `Singleton` pattern sections ([fb8f5d0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fb8f5d07eefd2421d4e7b2ea0eff9bb86f966f54))
 - *(flutter_heyteacher_store)* Update `CHANGELOG.md` with flutter_heyteacher_store-2.0.3+1036 ([6311880](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6311880c026ecba3e8430b5d3c427353e8a773cb))
 
 ## [flutter_heyteacher_store-2.0.2+1034] - 2026-03-31
 
-### 🛠️ Build - [flutter_heyteacher_store-2.0.2+1034]
+### 🛠️ Build [2.0.2]
 
 - Update version to 2.0.2+1034 which closes ([#72](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/72)) ([ae7218f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ae7218fd010ec10446aef2cc7ce519113272c93b))
 
-### 🚜 Refactor - [flutter_heyteacher_store-2.0.2+1034]
+### 🚜 Refactor [2.0.2]
 
 - Merge remote-tracking branch 'temp_store/main' into 72 ([1bd0474](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1bd0474feb312ecb72294b8c2d8060c0a76c871a))
 - Configure `flutter_heyteacher_store` as package of monorepo `flutter_heyteacher_packages` and add metadata for `pub.dev` publish ([603b63a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/603b63af9376c19e185c7655a65b7dac8ae6b2f6))
 
-### 📚 Documentation - [flutter_heyteacher_store-2.0.2+1034]
+### 📚 Documentation [2.0.2]
 
 - Update changelog generated for flutter_heyteacher_store-2.0.2+1034 ([d381fa2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d381fa2cd349b022531386318f5d50335b347601))
 
 ## [flutter_heyteacher_store-2.0.1+1032] - 2026-03-31
 
-### 🛠️ Build - [flutter_heyteacher_store-2.0.1+1032]
+### 🛠️ Build [2.0.1]
 
 - Update version to 2.0.1+1032 which closes ([#7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/7)) ([75fcf64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/75fcf64dc13aec417d82792f6c102bf8d057ab11))
 
-### 📚 Documentation - [flutter_heyteacher_store-2.0.1+1032]
+### 📚 Documentation [2.0.1]
 
 - Update example on `README.md` with new `aggregateFields` type with `aggregateType` and add `fake_cloud_firestore` configuration ([8954cc1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8954cc14677b30c490a841669da94719d88681ff))
 - Update changelog generated for flutter_heyteacher_store-2.0.1+1032 ([05e3f62](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/05e3f621938e7f037b019cd3eb360df11cb35de7))
 
 ## [flutter_heyteacher_store-2.0.0+1030] - 2026-03-30
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-2.0.0+1030]
+### 🐛 Bug Fixes [2.0.0]
 
 - [**breaking**] Add `AggregationType` (`sum` or `average`)  to `aggregateFields` items ([49110ef](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/49110ef84fac17bfedeb7d1d7f997399039c709c))
 
-### 🛠️ Build - [flutter_heyteacher_store-2.0.0+1030]
+### 🛠️ Build [2.0.0]
 
 - Update version to 1.29.20+1028 which closes ([#4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/4)) ([49021ab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/49021abb6837f46c9f1fdf89fe847884af7c2c52))
 - Update version to 2.0.0+1030 which closes ([#4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/4)) ([6a13473](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6a1347328c340548be97552688aa63fbe19a0d6d))
 
-### 📚 Documentation - [flutter_heyteacher_store-2.0.0+1030]
+### 📚 Documentation [2.0.0]
 
 - Update changelog generated for flutter_heyteacher_store-1.29.20+1028 ([0c24abf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0c24abf561129fd330b9d861ca266fd234800e0e))
 - Update changelog generated for flutter_heyteacher_store-2.0.0+1030 ([a2a272a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a2a272a4e02435cc98758c23670208c2ba831043))
 
 ## [flutter_heyteacher_store-1.29.19+1026] - 2026-03-30
 
-### 🛠️ Build - [flutter_heyteacher_store-1.29.19+1026]
+### 🛠️ Build [1.29.19]
 
 - Update version to 1.29.19+1026 which closes ([#2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/2)) ([57e0bb3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/57e0bb3bfa67893047b7e67b76f441bb90a007cd))
 
-### 📚 Documentation - [flutter_heyteacher_store-1.29.19+1026]
+### 📚 Documentation [1.29.19]
 
 - *(store)* Add `example` app ([2031728](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2031728bf8b341124dcbd6195ba6b5a6b8f4806f))
 - Change link of example to `example` app directory ([dcf66d6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/dcf66d6d2c4e310beaaa3d5df2296add8e3a5600))
@@ -135,68 +149,68 @@ All notable changes to this project will be documented in this file. See [conven
 
 ## [flutter_heyteacher_store-1.29.18+1024] - 2026-03-26
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-1.29.18+1024]
+### 🐛 Bug Fixes [1.29.18]
 
 - Remove version for `flutter_heyteacher_*` dependency ([261cd8c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/261cd8c249933c042037e3063dc98900a7b6509a))
 
-### 📚 Documentation - [flutter_heyteacher_store-1.29.18+1024]
+### 📚 Documentation [1.29.18]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.18+1024 ([ddbf4f6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ddbf4f6e4d3147329779c9c5c2e328b170ef2aa3))
 
 ## [flutter_heyteacher_store-1.29.17+1022] - 2026-03-25
 
-### 📚 Documentation - [flutter_heyteacher_store-1.29.17+1022]
+### 📚 Documentation [1.29.17]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.17+1022 ([9d72c19](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9d72c1928dd8d670927903262123ea7cd26f1ef1))
 
 ## [flutter_heyteacher_store-1.29.16+1020] - 2026-03-24
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-1.29.16+1020]
+### 🐛 Bug Fixes [1.29.16]
 
 - Update `fake_cloud_firestore` to git repo in order to get latest fixes ([50105c3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/50105c3280ff5a23fbe7b22bd4306541a7dd5f62))
 - Use a branch where is fixes the incompatibility with `cloud_firestore-6-2-0` ([f8e7ff1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f8e7ff151bbc5cfe57412b9c1112acda34bc5535))
 
-### 🚜 Refactor - [flutter_heyteacher_store-1.29.16+1020]
+### 🚜 Refactor [1.29.16]
 
 - `flutter_heyteacher_*` published on `pub.dev` ([fb2c856](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fb2c856207734bf62970775aba21a6323fb494f0))
 
-### 📚 Documentation - [flutter_heyteacher_store-1.29.16+1020]
+### 📚 Documentation [1.29.16]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.16+1020 ([9ecd1f4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9ecd1f48b0ec7d7f4a9306a778a8b65d1cd57ac7))
 
 ## [flutter_heyteacher_store-1.29.14+1016] - 2026-03-12
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-1.29.14+1016]
+### 🐛 Bug Fixes [1.29.14]
 
 - Remove `firebase_auth_mocks` dependency ([5159142](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5159142ff021314df0723e25eea9501fe32a2058))
 
-### 📚 Documentation - [flutter_heyteacher_store-1.29.14+1016]
+### 📚 Documentation [1.29.14]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.14+1016 ([aca2435](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aca24354d0b8c332d1d627952b46c302c27d8b6b))
 
 ## [flutter_heyteacher_store-1.29.13+1014] - 2026-03-12
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-1.29.13+1014]
+### 🐛 Bug Fixes [1.29.13]
 
 - `MockFirebaseAuth` is instantiante inside `flutter_heyteacher_auth` if `FirebaseException` is  raised ([52c50c7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/52c50c7c7e9abd29f8b786c0309ef3a3a8bd2052))
 
-### 📚 Documentation - [flutter_heyteacher_store-1.29.13+1014]
+### 📚 Documentation [1.29.13]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.13+1014 ([67e2dbd](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/67e2dbd604630fe0dd346457267f79b76187e927))
 
-### 🧪 Testing - [flutter_heyteacher_store-1.29.13+1014]
+### 🧪 Testing [1.29.13]
 
 - *(store)* Changed signature of `E2EEViewModel.setAAD` ([060c6d0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/060c6d013c6c042a9316b4e56d15e42c2124ba16))
 
 ## [flutter_heyteacher_store-1.29.11+1010] - 2026-03-06
 
-### 📚 Documentation - [flutter_heyteacher_store-1.29.11+1010]
+### 📚 Documentation [1.29.11]
 
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.11+1010 ([27ef612](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/27ef6125e623b31a352a04be3bcc52898f6c074b))
 
 ## [flutter_heyteacher_store-1.29.10+1008] - 2026-03-05
 
-### 🚀 Features - [flutter_heyteacher_store-1.29.10+1008]
+### 🚀 Features [1.29.10]
 
 - Add caching mechanism for detailed data in Store class ([960c30d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/960c30d49f36f253863792be43fbf41924c815b1))
 - Implement caching in exists method and optimize cache update in batch operation ([86e59e0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/86e59e0eb219941f6de006f71269270b04595417))
@@ -205,7 +219,7 @@ All notable changes to this project will be documented in this file. See [conven
 - Implement StoreCache with syncronized package ([ece155c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ece155c46aba99b23e0d235f003907f7b856d868))
 - Add filter by document id via constant `Filter.documentId` ([70de2ea](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/70de2ea35691bb3a67088b52f64692d6fc958f72))
 
-### 🐛 Bug Fixes - [flutter_heyteacher_store-1.29.10+1008]
+### 🐛 Bug Fixes [1.29.10]
 
 - Update flutter_heyteacher_utils dependency from path to git reference ([b4f7c24](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b4f7c24e1dd21a16707d16bb259001e359d1582c))
 - Remove duplicate clock package from dev_dependencies ([f4b54a8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f4b54a86c3cffd73a72a647cf6af8c8e1eb8243f))
@@ -236,11 +250,11 @@ All notable changes to this project will be documented in this file. See [conven
 - Corrected `groupBy` entries ordering by key and corrected `Direction` ([b128b9c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b128b9c4e98ef19ac1190945e207d63780c7b3f5))
 - Re-apply filters in unit tests accidentally removed during refactor ([eff60dd](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/eff60dd6ab90bb63bc36a24ecf71fd3fae4beef0))
 
-### 🛠️ Build - [flutter_heyteacher_store-1.29.10+1008]
+### 🛠️ Build [1.29.10]
 
 - Bump flutter_heyteacher_utils version to  1.45.0+260206123 ([47cb182](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/47cb1825c1d0407a9948888a82c03b9df3595235))
 
-### 🚜 Refactor - [flutter_heyteacher_store-1.29.10+1008]
+### 🚜 Refactor [1.29.10]
 
 - Rename Auth to AuthModel + create RemoteConfigMode +  update references across the codebase ([5ff1308](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5ff13081e832cb287713c6bde34b5441e4eb545f))
 - Update stream return type to Iterable<LightDataType> for improved data handling ([a6f3d68](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a6f3d68860d545cc4f0fa4bfff06e22287324961))
@@ -260,7 +274,7 @@ All notable changes to this project will be documented in this file. See [conven
 - Standardize string quotes and simplify method implementations in store filters ([c424a71](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c424a719859e0de2a59f0f853c87220c6576ff88))
 - Rename `flutter_heyteacher_fastlane` into `flutter_heyteacher_meta` ([87aa02e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/87aa02e0b98bd20de0207379afa72872d0c727f2))
 
-### 📚 Documentation - [flutter_heyteacher_store-1.29.10+1008]
+### 📚 Documentation [1.29.10]
 
 - Update documentation to include cache functionality in Store class ([d89bec3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d89bec35755356131016d709ce223afd0e8383bc))
 - Update CHANGELOG.md with release 1.28.0+260214153 ([d81b242](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d81b24216ddbbfe926ae8e3f8a7eef8414449890))
@@ -276,11 +290,11 @@ All notable changes to this project will be documented in this file. See [conven
 - *(CHANGELOG)* Update CHANGELOG.md with release v1.29.9+1005 ([6eff2fe](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6eff2fefe42a26faf79a61c85eb0ab929dfb19c5))
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_store-1.29.10+1008 ([2f02595](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2f02595ceab78a55c2a98067632ea476bbf05232))
 
-### 🧪 Testing - [flutter_heyteacher_store-1.29.10+1008]
+### 🧪 Testing [1.29.10]
 
 - Initialize SharedPreferences in tests and disable cache in TrackStore ([28e6da8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/28e6da88b1161e97bbabfe92d43430f6e99261f8))
 
-### ⚙️ Miscellaneous Tasks - [flutter_heyteacher_store-1.29.10+1008]
+### ⚙️ Miscellaneous Tasks [1.29.10]
 
 - Add shared_preferences_platform_interface to dev_dependencies ([372faa0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/372faa03771fd450bfa3bd491c2bc1f4c1236e51))
 - Update gem dependencies to latest versions ([dc560f3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/dc560f323b6f7206f9442664c22262a6d8206acc))
