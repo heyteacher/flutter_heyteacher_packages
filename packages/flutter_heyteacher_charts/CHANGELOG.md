@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_charts-2.0.6+118] - 2026-05-12
+
+### 🎨 Styling [2.0.6]
+
+- Update layout removing `Card` ad add `Divider` in example ([c427c01](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c427c01221965ce63ebcfb08cdf1ca7405960204))
+
+### ⚙️ Miscellaneous Tasks [2.0.6]
+
+- *(release)* New version 2.0.6+118 which closes ([#193](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/193)) ([6e06511](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6e06511312075b78559e79b8bfcaee67d3c702c5))
+
 ## [flutter_heyteacher_charts-2.0.5+117] - 2026-05-10
 
 ### 🐛 Bug Fixes [2.0.5]
