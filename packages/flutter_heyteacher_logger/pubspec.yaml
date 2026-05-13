@@ -22,9 +22,9 @@ dependencies:
   firebase_analytics: ^12.3.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^3.0.1+157
+  flutter_heyteacher_auth: ^3.0.2+158
   flutter_heyteacher_locale: ^3.0.1+153
-  flutter_heyteacher_platform: ^3.0.1+144
+  flutter_heyteacher_platform: ^3.0.2+146
   flutter_heyteacher_views: ^4.0.4+161
   flutter_heyteacher_worker: ^2.0.8+141
   flutter_localizations:
@@ -37,7 +37,7 @@ dependencies:
   shared_preferences: ^2.5.5
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.6.6+175
+  flutter_heyteacher_meta: ^7.6.9+178
   flutter_test:
     sdk: flutter
 
