@@ -64,21 +64,35 @@ class FutureStreamBuilder<T> extends FutureBuilder<T> {
       : super.builder(context, futureSnapshot);
 }
 
-/// Easily display a [SnackBar] (a brief message shown at the bottom of the
+/// Display a [SnackBar] (a brief message shown at the bottom of the
 /// screen).
 ///
-/// It takes the [BuildContext], the [message] to display, an optional
-/// [duration] (in seconds), and a boolean [error] flag to show message in
-/// red as an error (othersise in green for succes message)
+/// if [persist] is `false`, display [message] for
+/// [duration] seconds (default 4) otherwise ignore timeout and show the close
+/// button.
+///
+/// If [action] is provided, a button is show in trailing with `onPressed`
+/// callback.
+///
+/// If [error] show error background and foreground color
 void showSnackBar({
   required BuildContext? context,
   required String message,
-  int? duration,
+  int duration = 4,
+  bool persist = false,
+  String? actionLabel,
+  SnackBarAction? action,
   bool error = false,
 }) => context != null
     ? ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          duration: Duration(seconds: duration ?? 5),
+          showCloseIcon: persist && action == null,
+          closeIconColor: error
+              ? ThemeViewModel.instance.colorScheme.error
+              : ThemeViewModel.instance.colorScheme.onPrimary,
+          persist: persist,
+          action: action,
+          duration: Duration(seconds: duration),
           backgroundColor: error
               ? ThemeViewModel.instance.colorScheme.onError
               : ThemeViewModel.instance.greenColor,
