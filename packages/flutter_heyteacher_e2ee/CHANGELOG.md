@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.0.6+157] - 2026-05-22
+
+### 🐛 Bug Fixes [3.0.6]
+
+- Add `tapTargetSize` to correct bottom hoverflow on mobile platform and add `icon` to `OutlinedButton` ([842d282](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/842d28224c0a36d72c34660610a6e72ee4fb2a84)) by **heyteacher**
+- *(example)* Corrected overflow when keyboard is show ([c760409](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c760409d5966592bbe62d845567293517aa47ecc)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.6]
+
+- *(release)* New version 3.0.6+157 which closes ([#205](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/205)) ([9356461](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9356461a9900dc65dde5429bb6ac7d53a1bc8bc2)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.0.5+156] - 2026-05-22
 
 ### 🎨 Styling [3.0.5]
