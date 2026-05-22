@@ -21,5 +21,11 @@
   "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scannen Sie den QR-Code mit einem anderen Gerät oder speichern Sie ihn an einem sicheren Ort.\nDer QR-Code ist mit der Verschlüsselungspassphrase verschlüsselt.\nSie müssen auf dem neuen Gerät dieselbe Verschlüsselungspassphrase festlegen.",
   "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
   "missingMasterSecretKeyJwk": "Fehlender Master Secret Key JWK, E2EE nicht initialisiert",
-  "@missingMasterSecretKeyJwk": {}
+  "@missingMasterSecretKeyJwk": {},
+  "show": "Zeigen",
+  "@show": {},
+  "scan": "Scannen",
+  "@scan": {},
+  "edit": "Bearbeiten",
+  "@edit": {}
 }

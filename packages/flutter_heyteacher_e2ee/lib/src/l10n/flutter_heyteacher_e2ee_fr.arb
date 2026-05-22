@@ -21,5 +21,11 @@
   "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Scannez le code QR avec un autre appareil ou stockez-le dans un endroit sécurisé.\nLe code QR est chiffré avec la Cryptographique.\nVous devez définir la même Cryptographique sur le nouvel appareil.",
   "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
   "missingMasterSecretKeyJwk": "Clé secrète maître JWK manquante, E2EE non initialisé",
-  "@missingMasterSecretKeyJwk": {}
+  "@missingMasterSecretKeyJwk": {},
+  "show": "Afficher",
+  "@show": {},
+  "scan": "Scanner",
+  "@scan": {},
+  "edit": "Modifier",
+  "@edit": {}
 }
