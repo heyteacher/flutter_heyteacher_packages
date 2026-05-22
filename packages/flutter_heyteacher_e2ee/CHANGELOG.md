@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.0.5+156] - 2026-05-22
+
+### 🎨 Styling [3.0.5]
+
+- Enhance `E2EESecretKeyListTile` trailing buttons layout ([295ab74](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/295ab742910454ef70bbd38c68a00b76e7390678)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.5]
+
+- *(release)* New version 3.0.5+156 which closes ([#205](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/205)) ([9bb737e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9bb737e044432d0b34aa18d2bb6649196aaefc81)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.0.4+155] - 2026-05-13
 
 ### ⚙️ Miscellaneous Tasks [3.0.4]
