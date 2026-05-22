@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-3.0.4+148] - 2026-05-22
+
+### 🐛 Bug Fixes [3.0.4]
+
+- Snackbar shower multiple times even if logging are already unlocked ([589e7a8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/589e7a829b0bc2b737e12fbd61a7f459c378dcfb)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.4]
+
+- Reorganize `info_device_package` in separate folder and files ([083717a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/083717a29ae030abde30084e8dd70dfeaf6f3feb)) by **heyteacher**
+- *(release)* New version 3.0.4+148 which closes ([#202](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/202)) ([9b2161a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9b2161a5b96010fadda0465337e509d3011105d2)) by **heyteacher**
+
 ## [flutter_heyteacher_platform-3.0.3+147] - 2026-05-13
 
 ### 📚 Documentation [3.0.3]
