@@ -17,12 +17,12 @@ resolution: workspace
 
 dependencies:
   clock: ^1.1.2
-  firebase_analytics: ^12.3.0
-  firebase_app_check: ^0.4.3
-  firebase_crashlytics: ^5.2.0
-  firebase_messaging: ^16.2.0
-  firebase_remote_config: ^6.4.0
-  firebase_storage: ^13.3.0
+  firebase_analytics: ^12.4.1
+  firebase_app_check: ^0.4.4+1
+  firebase_crashlytics: ^5.2.2
+  firebase_messaging: ^16.2.2
+  firebase_remote_config: ^6.5.1
+  firebase_storage: ^13.4.1
   flutter:
     sdk: flutter
   flutter_heyteacher_auth: ^3.0.3+159

@@ -29,10 +29,23 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
   static final GlobalKey _errorViewKey = GlobalKey();
   static final GlobalKey _progressIndicatorKey = GlobalKey();
 
+  StreamSubscription<({ThemeData themeData, ThemeMode themeMode})>?
+  _themeStreamSubscription;
+
   @override
   void initState() {
     super.initState();
+    unawaited(_themeStreamSubscription?.cancel());
+    _themeStreamSubscription = ThemeViewModel.instance.themeStream.listen(
+      (_) => setState(() {}),
+    );
     WidgetsBinding.instance.addPostFrameCallback(_initTutorial);
+  }
+
+  @override
+  void dispose() {
+    unawaited(_themeStreamSubscription?.cancel());
+    super.dispose();
   }
 
   void _initTutorial(_) {
@@ -216,31 +229,89 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
           contentPadding: const EdgeInsets.symmetric(vertical: 8),
           key: _showSnackBarKey,
           title: const Text('Show Snack Bar'),
-          trailing: Wrap(
+          trailing: Column(
             spacing: 2,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              OutlinedButton(
-                onPressed: () => showSnackBar(
-                  context: context,
-                  message: 'Snack Bar Message',
-                ),
-                child: Text(
-                  'Message',
-                  style: TextStyle(
-                    color: ThemeViewModel.instance.greenColor,
+              Row(
+                spacing: 2,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  OutlinedButton(
+                    onPressed: () => showSnackBar(
+                      context: context,
+                      message: 'SnackBar',
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: Size.zero,
+                      foregroundColor: ThemeViewModel.instance.greenColor,
+                    ),
+                    child: Text(
+                      'Message',
+                      style: TextStyle(
+                        color: ThemeViewModel.instance.greenColor,
+                      ),
+                    ),
                   ),
-                ),
+                  OutlinedButton(
+                    onPressed: () => showSnackBar(
+                      context: context,
+                      message: 'SnackBar persisted with close button',
+                      persist: true,
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: Size.zero,
+                      foregroundColor: ThemeViewModel.instance.greenColor,
+                    ),
+                    child: Text(
+                      'Persisted',
+                      style: TextStyle(
+                        color: ThemeViewModel.instance.greenColor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              OutlinedButton(
-                onPressed: () => showSnackBar(
-                  context: context,
-                  message: 'Snack Bar Error',
-                  error: true,
-                ),
-                child: Text(
-                  'Error',
-                  style: TextStyle(color: ThemeViewModel.instance.redColor),
-                ),
+              Row(
+                spacing: 2,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  OutlinedButton(
+                    onPressed: () => showSnackBar(
+                      context: context,
+                      message: 'SnackBar with action',
+                      action: SnackBarAction(
+                        label: 'Action',
+                        onPressed: () {},
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: Size.zero,
+                      foregroundColor: ThemeViewModel.instance.greenColor,
+                    ),
+                    child: Text(
+                      'With Action',
+                      style: TextStyle(
+                        color: ThemeViewModel.instance.greenColor,
+                      ),
+                    ),
+                  ),
+                  OutlinedButton(
+                    onPressed: () => showSnackBar(
+                      context: context,
+                      message: 'SnackBar Error',
+                      error: true,
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: Size.zero,
+                      foregroundColor: ThemeViewModel.instance.greenColor,
+                    ),
+                    child: Text(
+                      'Error',
+                      style: TextStyle(color: ThemeViewModel.instance.redColor),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

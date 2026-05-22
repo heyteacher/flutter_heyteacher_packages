@@ -21,7 +21,7 @@ dependencies:
     sdk: flutter
   flutter_heyteacher_locale: ^3.0.2+154
   flutter_heyteacher_platform: ^3.0.3+147
-  flutter_heyteacher_views: ^4.0.4+161
+  flutter_heyteacher_views: ^4.0.5+162
   flutter_localizations:
     sdk: flutter
   flutter_tts: ^4.2.5

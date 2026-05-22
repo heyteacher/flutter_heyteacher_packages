@@ -17,16 +17,16 @@ resolution: workspace
 
 dependencies:
   clock: ^1.1.2
-  cloud_firestore: ^6.3.0
+  cloud_firestore: ^6.4.1
   collection: ^1.19.1
   copy_with_extension: ^15.0.1
   equatable: ^2.0.8
-  firebase_auth: ^6.4.0
+  firebase_auth: ^6.5.1
   flutter:
     sdk: flutter
   flutter_heyteacher_auth: ^3.0.3+159
   flutter_heyteacher_connectivity: ^3.0.2+147 
-  flutter_heyteacher_e2ee: ^3.0.3+154 
+  flutter_heyteacher_e2ee: ^3.0.4+155 
   flutter_heyteacher_firebase: ^2.0.11+147 
   flutter_heyteacher_platform: ^3.0.3+147 
 
@@ -39,7 +39,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.15.0
   copy_with_extension_gen: ^15.0.1
-  fake_cloud_firestore: ^4.1.0+1
+  fake_cloud_firestore: ^4.1.1
   flutter_heyteacher_meta: ^7.6.9+178
   flutter_secure_storage: ^10.2.0
   flutter_test:

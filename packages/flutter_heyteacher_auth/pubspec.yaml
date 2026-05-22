@@ -18,9 +18,9 @@ resolution: workspace
 
 dependencies:
   clock: ^1.1.2
-  firebase_auth: ^6.4.0
-  firebase_auth_mocks: ^0.15.1
-  firebase_remote_config: ^6.4.0
+  firebase_auth: ^6.5.1
+  firebase_auth_mocks: ^0.15.2
+  firebase_remote_config: ^6.5.1
   firebase_ui_auth: ^3.0.1
   firebase_ui_oauth_google: ^2.0.1
   flutter:
@@ -28,7 +28,7 @@ dependencies:
   flutter_heyteacher_firebase: ^2.0.11+147 
   flutter_heyteacher_locale: ^3.0.2+154
   flutter_heyteacher_platform: ^3.0.3+147 
-  flutter_heyteacher_views: ^4.0.4+161 
+  flutter_heyteacher_views: ^4.0.5+162 
   flutter_localizations:
     sdk: flutter
   go_router: ^17.2.3
