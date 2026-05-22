@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.1.0+163] - 2026-05-22
+
+### 🚀 Features [4.1.0]
+
+- Add `persist` flag and `action` button to `showSnackBar` ([551c8d8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/551c8d8d5b8dc702e1af7c04e1c4ead3bfb78999)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.1.0]
+
+- *(release)* New version 4.1.0+163 which closes ([#203](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/203)) ([ec35a7a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ec35a7ab1c44b2090d8518a81685556837218256)) by **heyteacher**
+
 ## [flutter_heyteacher_views-4.0.5+162] - 2026-05-13
 
 ### 📚 Documentation [4.0.5]
