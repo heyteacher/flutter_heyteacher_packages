@@ -79,12 +79,14 @@ class _MyHomePageState extends State<_MyHomePage> {
     appBar: AppBar(title: const Text('Flutter Heyteacher E2EE')),
     body: Padding(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-      child: Column(
-        spacing: 8,
+      child: ListView(
         children: [
           const Divider(height: 1, color: Colors.white24),
           const E2EESecretKeyListTile(),
-          const Divider(height: 1, color: Colors.white24),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Divider(height: 1, color: Colors.white24),
+          ),
           TextFormField(
             controller: _secretKeyTextEditingController,
             minLines: 20,
