@@ -209,34 +209,84 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
         setPassphraseCallback: widget._secretKeyImportedCallback,
         key: widget._e2eePassphraseKey,
       ),
-
-      trailing: Wrap(
-        spacing: -10,
+      trailing: Column(
+        spacing: 4,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          IconButton(
-            onPressed: () => AuthViewModel.instance.autenticated
-                ? _showQrCode()
-                : showConfirmCancelDialog<void>(
-                    context: context,
-                    content: Text(
-                      FlutterHeyteacherAuthLocalizations.of(
-                        context,
-                      )!.userNotAuthenticated,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Row(
+              spacing: 4,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
+                    child: Text(
+                      FlutterHeyteacherE2EELocalizations.of(context)!.show,
                     ),
                   ),
-            icon: const Icon(Icons.qr_code, size: 20),
+                  onPressed: () => AuthViewModel.instance.autenticated
+                      ? _showQrCode()
+                      : showConfirmCancelDialog<void>(
+                          context: context,
+                          content: Text(
+                            FlutterHeyteacherAuthLocalizations.of(
+                              context,
+                            )!.userNotAuthenticated,
+                          ),
+                        ),
+                ),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                  ),
+                  onPressed: PlatformHelper.isMobile
+                      ? _showQrCodeScanner
+                      : null,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
+                    child: Text(
+                      FlutterHeyteacherE2EELocalizations.of(context)!.scan,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          IconButton(
-            onPressed: PlatformHelper.isMobile ? _showQrCodeScanner : null,
-            icon: const Icon(Icons.qr_code_scanner, size: 20),
-          ),
-          IconButton(
-            icon: const Icon(Icons.download, size: 20),
-            onPressed: _showSecretKey,
-          ),
-          IconButton(
-            onPressed: _secretKeyDialog,
-            icon: const Icon(Icons.upload, size: 20),
+          Row(
+            spacing: 4,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.zero,
+                ),
+                onPressed: () async => _secretKeyDialog(
+                  initialValue: await E2EEViewModel.instance(
+                    AuthViewModel.instance.uid,
+                  ).exportSecretJwkJson(),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  child: Text(
+                    FlutterHeyteacherE2EELocalizations.of(context)!.edit,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -342,14 +392,6 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
       ),
     );
   }
-
-  Future<void> _showSecretKey() async => unawaited(
-    _secretKeyDialog(
-      initialValue: await E2EEViewModel.instance(
-        AuthViewModel.instance.uid,
-      ).exportSecretJwkJson(),
-    ),
-  );
 
   Future<void> _showQrCodeScanner() async {
     // get localized confirm question message before async invocation

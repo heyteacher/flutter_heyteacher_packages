@@ -175,6 +175,24 @@ abstract class FlutterHeyteacherE2EELocalizations {
   /// In en, this message translates to:
   /// **'Missing Master Secret Key JWK, E2EE not initialized'**
   String get missingMasterSecretKeyJwk;
+
+  /// No description provided for @show.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get show;
+
+  /// No description provided for @scan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan'**
+  String get scan;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
 }
 
 class _FlutterHeyteacherE2EELocalizationsDelegate

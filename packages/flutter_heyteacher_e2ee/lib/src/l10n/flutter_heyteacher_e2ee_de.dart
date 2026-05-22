@@ -51,4 +51,13 @@ class FlutterHeyteacherE2EELocalizationsDe
   @override
   String get missingMasterSecretKeyJwk =>
       'Fehlender Master Secret Key JWK, E2EE nicht initialisiert';
+
+  @override
+  String get show => 'Zeigen';
+
+  @override
+  String get scan => 'Scannen';
+
+  @override
+  String get edit => 'Bearbeiten';
 }

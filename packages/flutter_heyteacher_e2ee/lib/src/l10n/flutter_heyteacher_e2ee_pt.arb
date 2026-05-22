@@ -21,5 +21,11 @@
   "scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": "Digitalize o código QR com outro dispositivo ou armazene-o em um local seguro.\nO código QR é criptografado com a Frase Criptográfica.\nVocê deve definir a mesma Frase Criptográfica no novo dispositivo.",
   "@scanQRCodeWithAnotherDeviceOrStoreInASecurePlaceRememberToUseSamePassphrase": {},
   "missingMasterSecretKeyJwk": "Chave secreta mestre JWK ausente, E2EE não inicializado",
-  "@missingMasterSecretKeyJwk": {}
+  "@missingMasterSecretKeyJwk": {},
+  "show": "Mostrar",
+  "@show": {},
+  "scan": "Escanear",
+  "@scan": {},
+  "edit": "Editar",
+  "@edit": {}
 }
