@@ -210,7 +210,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
         key: widget._e2eePassphraseKey,
       ),
       trailing: Column(
-        spacing: 4,
+        spacing: 8,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
@@ -219,12 +219,17 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
               spacing: 4,
               mainAxisSize: MainAxisSize.min,
               children: [
-                OutlinedButton(
+                OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     minimumSize: Size.zero,
                     padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
-                  child: Padding(
+                  icon: const Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Icon(Icons.qr_code),
+                  ),
+                  label: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
                     ),
@@ -243,15 +248,20 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                           ),
                         ),
                 ),
-                OutlinedButton(
+                OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     minimumSize: Size.zero,
                     padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   onPressed: PlatformHelper.isMobile
                       ? _showQrCodeScanner
                       : null,
-                  child: Padding(
+                  icon: const Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Icon(Icons.qr_code_scanner),
+                  ),
+                  label: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
                     ),
@@ -267,20 +277,23 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
             spacing: 4,
             mainAxisSize: MainAxisSize.min,
             children: [
-              OutlinedButton(
+              OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   minimumSize: Size.zero,
                   padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 onPressed: () async => _secretKeyDialog(
                   initialValue: await E2EEViewModel.instance(
                     AuthViewModel.instance.uid,
                   ).exportSecretJwkJson(),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                  ),
+                icon: const Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Icon(Icons.edit),
+                ),
+                label: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.edit,
                   ),
