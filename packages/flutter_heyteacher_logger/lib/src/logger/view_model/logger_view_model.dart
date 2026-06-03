@@ -128,12 +128,14 @@ class LoggerViewModel {
     Level? defaultLevel,
     bool? defaultEnableLogsStorage,
     bool? enableFirebaseAnalytics,
+    Iterable<String> supportedCountries = const ['US'],
   }) async {
     _logger.finer(
       '<initialize>: clearTemporaryLog $clearTemporaryLog '
       'reconfigure $reconfigure defaultLevel $defaultLevel '
       'defaultEnableLogsStorage $defaultEnableLogsStorage'
-      'enableFirebaseAnalytics $enableFirebaseAnalytics',
+      'enableFirebaseAnalytics $enableFirebaseAnalytics'
+      'supportedCountries $supportedCountries',
     );
     // already configured, do nothing
     // Prevents re-configuration if already done.
@@ -142,11 +144,15 @@ class LoggerViewModel {
         '<initialize>: clearTemporaryLog $clearTemporaryLog '
         'reconfigure $reconfigure defaultLevel $defaultLevel '
         'defaultEnableLogsStorage $defaultEnableLogsStorage '
-        'enableFirebaseAnalytics $enableFirebaseAnalytics. Already configured',
+        'enableFirebaseAnalytics $enableFirebaseAnalytics. Already configured '
+        'supportedCountries $supportedCountries',
       );
       return;
     }
     _alreadyConfigured = true;
+    await LocaleViewModel.instance.initLocale(
+      supportedCountries: supportedCountries,
+    );
     // set default level
     if (defaultLevel != null) {
       _defaultLevel = defaultLevel;
