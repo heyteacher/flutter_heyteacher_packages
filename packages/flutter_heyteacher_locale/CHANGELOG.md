@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_locale-3.0.3+155] - 2026-06-03
+
+### 🐛 Bug Fixes [3.0.3]
+
+- On `initLocale`, manage already configured and reconfigure ([22b4ee8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/22b4ee88a91a44a87b598e271b5abb824f0ee9dc)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.3]
+
+- *(release)* New version 3.0.3+155 which closes ([#212](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/212)) ([d3c9ed7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d3c9ed7d522feaee7e47b1c39706cd8469b7c7b2)) by **heyteacher**
+
 ## [flutter_heyteacher_locale-3.0.2+154] - 2026-05-13
 
 ### 📚 Documentation [3.0.2]
