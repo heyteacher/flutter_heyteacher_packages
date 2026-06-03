@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_worker-2.0.10+144] - 2026-06-03
+
+### ⚙️ Miscellaneous Tasks [2.0.10]
+
+- Change level from FINER to FINEST ([1860dbc](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1860dbc9e9b52887a337f98a2df83fb0b9696410)) by **heyteacher**
+- *(release)* New version 2.0.10+144 which closes ([#209](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/209)) ([75b4453](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/75b44538929e09b55c92881ce700f6478952ef19)) by **heyteacher**
+
 ## [flutter_heyteacher_worker-2.0.9+143] - 2026-05-13
 
 ### ⚙️ Miscellaneous Tasks [2.0.9]
