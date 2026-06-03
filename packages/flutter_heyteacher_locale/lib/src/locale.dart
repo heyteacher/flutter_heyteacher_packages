@@ -7,6 +7,7 @@ import 'package:flutter_heyteacher_text_to_speech/flutter_heyteacher_text_to_spe
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show ProgressIndicatorWidget, ThemeViewModel;
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:logging/logging.dart' show Logger;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Keys for values stored in `SharedPreferences`.
@@ -184,6 +185,10 @@ class LocaleViewModel {
   /// `SharedPreferencesAsync`.
   LocaleViewModel._();
 
+  bool _alreadyConfigured = false;
+
+  final Logger _logger = Logger('LocaleViewModel');
+
   Iterable<Locale> _supportedLocales = [
     _availableLocales['US']!,
   ];
@@ -261,7 +266,20 @@ class LocaleViewModel {
   /// locale loading from [SharedPreferences]
   Future<void> initLocale({
     Iterable<String> supportedCountries = const ['US'],
+    bool reconfigure = false,
   }) async {
+    // already configured, do nothing
+    // Prevents re-configuration if already done.
+    if (_alreadyConfigured && !reconfigure) {
+      _logger.finer(
+        '<initLocale>: supportedCountries $supportedCountries '
+        'reconfigure $reconfigure. Already configured '
+        '',
+      );
+      return;
+    }
+    _alreadyConfigured = true;
+
     _supportedLocales = supportedCountries.map(
       (country) => _localeFromCountryCode(
         countryCode: country,
