@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.1.1+164] - 2026-06-04
+
+### 🐛 Bug Fixes [4.1.1]
+
+- *(views)* Set `heroTag` unique in `FloatingActionTextIconButtom` using `fabKey` ([a1fd2ad](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a1fd2ad5374dcbef548a434a18fe2d82259c6e30)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.1.1]
+
+- *(release)* New version 4.1.1+164 which closes ([#215](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/215)) ([b884ff4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b884ff4c03e207d6545465c0ffc41fd573d0886c)) by **heyteacher**
+
 ## [flutter_heyteacher_views-4.1.0+163] - 2026-05-22
 
 ### 🚀 Features [4.1.0]
