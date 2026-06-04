@@ -803,7 +803,7 @@ class FloatingActionTextIconButtom extends StatelessWidget {
         key: fabKey,
         // heroTag must be set unique in app for each FloatingActionButton
         // to avoid warning introduce by go_router
-        heroTag: '${iconData}HeroTag',
+        heroTag: '${fabKey ?? GlobalKey()}HeroTag',
         backgroundColor: backgroundColor,
         onPressed: onPressed,
         child: Wrap(
