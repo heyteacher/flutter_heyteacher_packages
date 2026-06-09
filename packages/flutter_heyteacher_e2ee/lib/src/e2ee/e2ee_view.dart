@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
     show AuthViewModel, FlutterHeyteacherAuthLocalizations;
 import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_view_model.dart'
@@ -364,29 +363,21 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
       title: Text(
         FlutterHeyteacherE2EELocalizations.of(context)!.encryptionSecretKey,
       ),
-      confirmCallback: initialValue != null
-          ? (_) async {
-              await Clipboard.setData(ClipboardData(text: initialValue));
-              return null;
-            }
-          : (_) async {
-              final i10n = FlutterHeyteacherE2EELocalizations.of(context)!;
-              // split - trim each line - jon
-              // the only way to remove special chars in Copy & Paste
-              // from a rich text editor (Word, Writer)
-              secretJwkJson = secretJwkJson!
-                  .split('\n')
-                  .map((e) => e.trim())
-                  .join();
-              await E2EEViewModel.instance(
-                AuthViewModel.instance.uid,
-              ).importSecretJwkJson(
-                secretJwkJson!,
-              );
-              if (mounted) setState(() {});
-              widget._secretKeyImportedCallback?.call();
-              return i10n.encryptionSecretKeyImported;
-            },
+      confirmCallback: (_) async {
+        final i10n = FlutterHeyteacherE2EELocalizations.of(context)!;
+        // split - trim each line - jon
+        // the only way to remove special chars in Copy & Paste
+        // from a rich text editor (Word, Writer)
+        secretJwkJson = secretJwkJson!.split('\n').map((e) => e.trim()).join();
+        await E2EEViewModel.instance(
+          AuthViewModel.instance.uid,
+        ).importSecretJwkJson(
+          secretJwkJson!,
+        );
+        if (mounted) setState(() {});
+        widget._secretKeyImportedCallback?.call();
+        return i10n.encryptionSecretKeyImported;
+      },
       content: TextFormField(
         controller: _secretKeyTextEditingController,
         minLines: 10,
