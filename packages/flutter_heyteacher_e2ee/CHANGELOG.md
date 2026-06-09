@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.0.7+158] - 2026-06-09
+
+### 🐛 Bug Fixes [3.0.7]
+
+- Secret key import correctly save new key ([e9c05a9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e9c05a998d1a2a68452b78c68dda01e85401aeb9)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.7]
+
+- *(release)* New version 3.0.7+158 which closes ([#217](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/217)) ([c365e61](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c365e6172cf2de4c71fc3c949e60b77eaa0b0852)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.0.6+157] - 2026-05-22
 
 ### 🐛 Bug Fixes [3.0.6]
