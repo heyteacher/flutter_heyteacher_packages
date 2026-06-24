@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.7.0+179] - 2026-06-24
+
+### 🚀 Features [7.7.0]
+
+- Add `delete_branch` option to `release` lane in order to skip branch delete during release ([86eab09](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/86eab0985df70ed9dc24ae95ca8a808465494ad6)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.7.0]
+
+- *(release)* New version 7.7.0+179 which closes ([#219](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/219)) ([46a107f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/46a107f50fe55f79420f8063f24cdc5276c787e8)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.6.9+178] - 2026-05-13
 
 ### 📚 Documentation [7.6.9]
