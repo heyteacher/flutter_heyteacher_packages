@@ -78,7 +78,7 @@ lane :forge_release do
   create_forge_release(version)
 end
 
-desc "fl release [semver:major|minor|patch] [suffix:<version_suffix>] [merge:true|false] [forge:true|false] [publish:false|true]- Creates new release, merge branch into main and creates a forge release"
+desc "fl release [semver:major|minor|patch] [suffix:<version_suffix>] [merge:true|false] [delete_branch:true|false] [forge:true|false] [publish:false|true]- Creates new release, merge branch into main and creates a forge release"
 lane :release do|options|
   if options[:semver] != nil && !["major", "minor", "patch"].include?(options[:semver])
     puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"
@@ -115,7 +115,7 @@ lane :release do|options|
   sh("git commit -m \"chore(release): new version #{version} which closes ##{currentBranch}\"")
   push_to_git_remote
   if options[:merge] == nil || options[:merge] == true
-    forge_merge(currentBranch)
+    forge_merge(currentBranch, options[:delete_branch] == nil || options[:delete_branch])
   end
   puts "make release #{version} release forge #{options[:forge]}"
   if options[:forge] == nil || options[:forge] == true
@@ -154,7 +154,8 @@ end
 ##
 # Merge branch to main repo
 # @param: [String, #currentBranch] the current branch
-def forge_merge(currentBranch)
+# @param: [boolean, #delete_branch] delete the branch after merge
+def forge_merge(currentBranch, delete_branch=true)
   forge = detect_forge 
   puts "create pull request on #{forge} for branch #{currentBranch}"
   if forge == "github"
@@ -166,11 +167,13 @@ def forge_merge(currentBranch)
   sleep(1)
   puts "merge pull request on #{forge}"
   if forge == "github"
-    sh("gh pr merge -m -d --auto")
+    sh("gh pr merge -m #{if delete_branch then "-d" else "" end} --auto")
   elsif forge == "forgejo"
-    sh("fj pr merge --delete")
+    sh("fj pr merge #{if delete_branch then "--delete" else "" end}")
     sh("git checkout main")
-    sh("git branch -d #{currentBranch}")
+    if delete_branch
+      sh("git branch -d #{currentBranch}")
+    end
     sh("git pull")
   end
 end
