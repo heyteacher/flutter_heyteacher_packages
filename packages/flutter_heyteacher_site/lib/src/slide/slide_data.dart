@@ -24,6 +24,8 @@ class SlideData {
   final Iterable<String>? imagePaths;
 
   /// The body as list of sentences
-  final Iterable<({IconData leadingIcon, Color leadingIconColor, String text})>?
+  final Iterable<
+    ({IconData? leadingIcon, Color? leadingIconColor, String text})
+  >?
   body;
 }
