@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_site-2.0.3+131] - 2026-06-25
+
+### ⚙️ Miscellaneous Tasks [2.0.3]
+
+- Make icon optional in `SlideData` body as list of sentences ([aa49853](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aa498530023d1690318f5e2357856098d67e5b7e)) by **heyteacher**
+- *(release)* New version 2.0.3+131 which closes ([#222](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/222)) ([d6be9da](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d6be9da43f83072405482f296ee09af5fb24f718)) by **heyteacher**
+
 ## [flutter_heyteacher_site-2.0.2+130] - 2026-05-13
 
 ### 📚 Documentation [2.0.2]
