@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-4.0.0+161] - 2026-06-29
+
+### 🚜 Refactor [4.0.0]
+
+- *(auth)* [**breaking**] Replace mock authentication with a local authentication ([e50bbad](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e50bbad951afefe6fe83ec3eaadea2627793a985)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.0.0]
+
+- *(release)* New version 4.0.0+161 which closes ([#224](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/224)) ([ea804b3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ea804b317792fa054ff1bfa998b8e979a6204986)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-3.0.3+159] - 2026-05-13
 
 ### 📚 Documentation [3.0.3]
