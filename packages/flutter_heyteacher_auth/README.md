@@ -98,17 +98,9 @@ In order to use `Delete User Data` feature you need:
 
 ### Mock Firestore Authentication
 
-In unit tests and example applications you can mock [Firebase Authentication](https://firebase.google.com/docs/auth) with [firebase_auth_mocks](https://pub.dev/packages/firebase_auth_mocks):
+In unit tests and example applications you can mock [Firebase Authentication](https://firebase.google.com/docs/auth) with [firebase_auth_mocks](https://pub.dev/packages/firebase_auth_mocks) via `AuthViewModel.instance.localInitialize()`:
 
 ```dart
-  // Mock Firebase Authentication
-  final mockFirebaseAuth = MockFirebaseAuth(
-    mockUser: MockUser(
-      uid: 'testuid',
-      email: 'test@example.com',
-      displayName: 'Test User',
-    ),
-  );
-  //initialize Auth with MockFirebaseAuth
-  AuthViewModel.instance = AuthViewModel(mockedFirebaseAuth: mockFirebaseAuth);
+  // Local initializzation with Mock Firebase Authentication
+  await AuthViewModel.instance.localInitialize();
 ```

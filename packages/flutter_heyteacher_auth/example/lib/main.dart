@@ -54,10 +54,7 @@ class MyApp extends StatelessWidget {
   /// fake sign in for testing purposes
   Future<void> _fakeSignIn() async {
     if (AuthViewModel.instance.notAutenticated) {
-      await AuthViewModel.instance.signInWithEmailAndPassword(
-        email: 'test@example.com',
-        password: 'password',
-      );
+      await AuthViewModel.instance.localInitialize();
     }
   }
 }
@@ -117,7 +114,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                       text: '\nuid: ',
                     ),
                     TextSpan(
-                      text: AuthViewModel.instance.user?.uid ?? 'none',
+                      text: AuthViewModel.instance.uid ?? 'none',
                       style: const TextStyle(fontStyle: FontStyle.italic)
                           .copyWith(
                             color: AuthViewModel.instance.autenticated
@@ -129,7 +126,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                       text: '\nuser name: ',
                     ),
                     TextSpan(
-                      text: AuthViewModel.instance.user?.displayName ?? 'none',
+                      text: AuthViewModel.instance.displayName ?? 'none',
                       style: const TextStyle(fontStyle: FontStyle.italic)
                           .copyWith(
                             color: AuthViewModel.instance.autenticated
@@ -141,7 +138,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                       text: '\nemail: ',
                     ),
                     TextSpan(
-                      text: AuthViewModel.instance.user?.email ?? 'none',
+                      text: AuthViewModel.instance.email ?? 'none',
                       style: const TextStyle(fontStyle: FontStyle.italic)
                           .copyWith(
                             color: AuthViewModel.instance.autenticated
