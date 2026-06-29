@@ -16,16 +16,11 @@ Future<void> main() async {
   // ensureInitialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // sign in
-  await AuthViewModel.instance.signInWithEmailAndPassword(
-    email: 'test@example.com',
-    password: "doesn't matter",
+  // local sign in
+  await AuthViewModel.instance.localInitialize();
+  unawaited(
+    E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD('debugPassword'),
   );
-
-  // generate Master Secret Key
-  E2EEViewModel.masterSecretKeyJwk = await E2EEViewModel.generateSecretKeyJwk();
-  // set Secret Key
-  await E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD('jd&76h%d');
 
   runApp(const MyApp());
 }
