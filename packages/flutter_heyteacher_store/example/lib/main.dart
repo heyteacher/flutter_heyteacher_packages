@@ -24,12 +24,8 @@ Future<void> main() async {
   runApp(const MyApp());
 
   // mock sign-in
-  unawaited(
-    AuthViewModel.instance.signInWithEmailAndPassword(
-      email: 'test@example.com',
-      password: 'test@example.com',
-    ),
-  );
+  await AuthViewModel.instance.localInitialize();
+
   // initialize E2EE passfrase (aka AAD)
   unawaited(E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD());
 

@@ -320,8 +320,6 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       databaseId?.isNotEmpty ?? true,
       'databaseId must be null or not empty',
     );
-    final fakeFirestore =
-        _firestore.runtimeType.toString() == 'FakeFirebaseFirestore';
     if (!fakeFirestore) {
       // enable persistence for offline access
       _firestore.settings = firestore.Settings(
@@ -432,6 +430,10 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   final StreamController<firestore.AggregateQuerySnapshot>
       _aggregateStreamController =
       StreamController<firestore.AggregateQuerySnapshot>.broadcast();
+
+  /// return True if [_firestore] is a `FakeFirebaseFirestore`
+  bool get fakeFirestore =>
+      _firestore.runtimeType.toString() == 'FakeFirebaseFirestore';
 
   /// The aggregate stream where aggregate changes are notified
   Stream<firestore.AggregateQuerySnapshot> get aggregateStream =>

@@ -20,8 +20,6 @@ import 'track_store.dart';
 
 @GenerateNiceMocks([MockSpec<ConnectivityViewModel>()])
 void main() {
-  const userEmail = 'test@example.com';
-
   setUp(() async {
     final connectivityViewModel = MockConnectivityViewModel();
     when(connectivityViewModel.connected).thenAnswer((_) async => true);
@@ -34,8 +32,7 @@ void main() {
     PackageInfoPlusLinuxPlugin.registerWith();
     // mock sign-in
     unawaited(
-      AuthViewModel.instance
-          .signInWithEmailAndPassword(email: userEmail, password: userEmail),
+      AuthViewModel.instance.localInitialize(),
     );
 
     // set AAD

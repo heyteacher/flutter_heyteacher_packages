@@ -140,6 +140,10 @@ class TrackStore extends Store<BaseTrackData, TrackData> {
 
   /// Returns the count per year using pipeline
   Future<Iterable<CountPerYearData?>> get countPerTrackTypeAndYearList async {
+    if (fakeFirestore) {
+      //fake firestore, no pipeline, return empty list
+      return [];
+    }
     final snapshot = await collectionPipeline
         .aggregateWithOptions(
           AggregateStageOptions(
