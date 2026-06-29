@@ -301,12 +301,10 @@ In ordet to configure a fake instance of firestore, add this code on `setup` in 
 
 ```dart
   // mock sign-in
-  unawaited(
-    AuthViewModel.instance.signInWithEmailAndPassword(
-      email: 'test@example.com',
-      password: 'test@example.com',
-    ),
-  );
+  await AuthViewModel.instance.localInitialize(),
+  // initialize E2EE passfrase (aka AAD)
+  unawaited(E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD());
+
   // mock firestore with mock authentication
   final firestore = FakeFirebaseFirestore(
     authObject: AuthViewModel.instance.authForFakeFirestore,
