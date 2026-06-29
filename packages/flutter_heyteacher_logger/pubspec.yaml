@@ -19,13 +19,13 @@ resolution: workspace
 dependencies:
   clock: ^1.1.2
   equatable: ^2.0.8
-  firebase_analytics: ^12.4.2
+  firebase_analytics: ^12.4.3
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^3.0.3+159
+  flutter_heyteacher_auth: ^4.0.0+161
   flutter_heyteacher_locale: ^3.0.3+155
   flutter_heyteacher_platform: ^3.0.4+148
-  flutter_heyteacher_views: ^4.1.0+163
+  flutter_heyteacher_views: ^4.1.1+164
   flutter_heyteacher_worker: ^2.0.10+144
   flutter_localizations:
     sdk: flutter
@@ -33,11 +33,11 @@ dependencies:
   intl: ^0.20.2
   json_annotation: ^4.12.0
   logging: ^1.3.0
-  path_provider: ^2.1.5
+  path_provider: ^2.1.6
   shared_preferences: ^2.5.5
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.6.9+178
+  flutter_heyteacher_meta: ^7.7.0+179
   flutter_test:
     sdk: flutter
 

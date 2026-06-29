@@ -23,14 +23,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_locale: ^3.0.3+155
-  flutter_heyteacher_views: ^4.1.0+163
+  flutter_heyteacher_views: ^4.1.1+164
 
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.6.9+178
+  flutter_heyteacher_meta: ^7.7.0+179
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^10.2.0
+  very_good_analysis: ^10.3.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
