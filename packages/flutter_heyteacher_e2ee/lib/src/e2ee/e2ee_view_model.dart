@@ -89,7 +89,9 @@ class E2EEViewModel {
   /// Get master secret key JWK
   static String? get debugSecretKeyJWK => _debugSecretKeyJWK;
 
-  bool get _debug => PlatformHelper.isWeb && _debugSecretKeyJWK != null;
+  bool get _debug =>
+      (PlatformHelper.isWeb || PlatformHelper.isFlutterTest) &&
+      _debugSecretKeyJWK != null;
 
   /// the secure storage instance
   @visibleForTesting
