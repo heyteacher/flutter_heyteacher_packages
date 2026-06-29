@@ -17,39 +17,20 @@ import 'package:logging/logging.dart';
 /// changes.
 /// It can be initialized with a real or mocked [FirebaseAuth] instance.
 class AuthViewModel {
-  /// Private constructor for the singleton.
-  /// Initializes [_firebaseAuth] with either the provided [MockFirebaseAuth]
-  /// or the default [FirebaseAuth.instance].
-  /// Configures [GoogleProvider] if not using a mocked instance.
-  //@visibleForTesting
-  AuthViewModel() {
-    try {
-      _googleProvider = GoogleProvider(
-        clientId: FirebaseRemoteConfig.instance.getString(
-          'authGoogleClientId',
-        ),
-      );
-      FirebaseUIAuth.configureProviders([_googleProvider!]);
-      _firebaseAuth = FirebaseAuth.instance;
-    //
-    // ignore: avoid_catches_without_on_clauses
-    } catch (_) {
-      _logger.warning(
-        '(AuthViewModel): no firebase, mock authentication with uid "testuid". '
-        'Do not use in production mode',
-      );
-      // Mock Firebase Authentication
-      _firebaseAuth = MockFirebaseAuth(
-        mockUser: MockUser(
-          uid: 'testuid',
-          email: 'test@example.com',
-          displayName: 'Test User',
-        ),
-      );
-    }
-  }
+  AuthViewModel._();
+
   static final _logger = Logger('AuthViewModel');
-  late final FirebaseAuth _firebaseAuth;
+
+  /// Local user constants for testing purposes.
+  static const String localUid = 'localUid';
+
+  /// Local user email.
+  static const String _localEmail = 'user@localhost.localdomain';
+
+  /// Local user name.
+  static const String _localName = 'Local User';
+
+  FirebaseAuth? _firebaseAuth;
   GoogleProvider? _googleProvider;
 
   // singleton
@@ -61,11 +42,70 @@ class AuthViewModel {
   /// This is useful for testing environments.
   // ignore: prefer_constructors_over_static_methods
   static AuthViewModel get instance {
-    _instance ??= AuthViewModel();
+    _instance ??= AuthViewModel._();
     return _instance!;
   }
 
-  static set instance(AuthViewModel instance) => _instance = instance;
+  /// Initializes [_firebaseAuth] with either the provided [MockFirebaseAuth]
+  /// or the default [FirebaseAuth.instance].
+  /// Configures [GoogleProvider] if not using a mocked instance.
+  //@visibleForTesting
+  Future<void> initialize() async {
+    try {
+      _googleProvider = GoogleProvider(
+        clientId: FirebaseRemoteConfig.instance.getString(
+          'authGoogleClientId',
+        ),
+      );
+      FirebaseUIAuth.configureProviders([_googleProvider!]);
+      _firebaseAuth = FirebaseAuth.instance;
+      //
+      // ignore: avoid_catches_without_on_clauses
+    } catch (_) {
+      _logger.warning(
+        '(AuthViewModel): no firebase, local authentication with uid '
+        '"$localUid". ',
+      );
+      // Mock Firebase Authentication
+      await localInitialize();
+    }
+  }
+
+  /// Local sign in with local user credentials
+  Future<void> localInitialize() async {
+    _logger.fine('<localInitialize>:');
+    if (_firebaseAuth != null && notLocalAuthentication) {
+      throw Exception(
+        '(initializeLocalAuthentication): Cannot initialize local '
+        'authentication, already using real authentication',
+      );
+    }
+    _firebaseAuth ??= MockFirebaseAuth(
+      mockUser: MockUser(
+        uid: localUid,
+        email: _localEmail,
+        displayName: _localName,
+      ),
+    );
+    await signInWithEmailAndPassword(
+      email: _localEmail,
+      password: _localEmail,
+    );
+    await localSignIn();
+  }
+
+  /// Sign in with local user credentials
+  Future<void> localSignIn() async => signInWithEmailAndPassword(
+    email: _localEmail,
+    password: _localEmail,
+  );
+
+  /// Whether local authentication is used
+  bool get localAuthentication =>
+      _firebaseAuth != null && _firebaseAuth is MockFirebaseAuth;
+
+  /// Whether local authentication is not used
+  bool get notLocalAuthentication => !localAuthentication;
 
   /// Signs out the current user from Firebase Authentication.
   ///
@@ -74,7 +114,7 @@ class AuthViewModel {
   Future<void> signOut() async {
     _logger.info('<signOut>:');
     try {
-      await _firebaseAuth.signOut();
+      await _firebaseAuth?.signOut();
       await _googleProvider?.logOutProvider();
       _logger.info('(signOut): success');
     } on Exception catch (error, stackTrace) {
@@ -89,7 +129,10 @@ class AuthViewModel {
   }) async {
     _logger.info('<signInWithEmailAndPassword>: email $email');
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      if (_firebaseAuth == null) {
+        throw Exception('Firebase Authentication is not initialized');
+      }
+      await _firebaseAuth!.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -101,17 +144,12 @@ class AuthViewModel {
 
   /// Gets the authForFakeFirestore
   Stream<Map<String, dynamic>?> get authForFakeFirestore =>
-      _firebaseAuth is MockFirebaseAuth
-      ? _firebaseAuth.authForFakeFirestore
+      _firebaseAuth != null && _firebaseAuth is MockFirebaseAuth
+      ? (_firebaseAuth! as MockFirebaseAuth).authForFakeFirestore
       : const Stream.empty();
 
-  /// Gets the currently authenticated Firebase [User].
-  ///
-  /// Returns `null` if no user is currently signed in.
-  User? get user => _firebaseAuth.currentUser;
-
   /// Returns `true` if a user is currently authenticated, `false` otherwise.
-  bool get autenticated => user != null;
+  bool get autenticated => _firebaseAuth?.currentUser != null;
 
   /// Returns `true` if no user is currently authenticated, `false` otherwise.
   bool get notAutenticated => !autenticated;
@@ -119,20 +157,27 @@ class AuthViewModel {
   /// Gets the display name of the currently authenticated user.
   ///
   /// Returns `null` if no user is signed in or if the user has no display name.
-  String? get displayName => user?.displayName;
+  String? get displayName => _firebaseAuth?.currentUser?.displayName;
+
+  /// Gets the email of the currently authenticated user.
+  ///
+  /// Returns `null` if no user is signed in or if the user has no email.
+  String? get email => _firebaseAuth?.currentUser?.email;
 
   /// Gets the unique ID (UID) of the currently authenticated user.
   ///
   /// Returns `null` if no user is signed in.
-  String? get uid => user?.uid;
+  String? get uid => _firebaseAuth?.currentUser?.uid;
 
   /// A stream that emits the [User] object when the authentication state
   /// changes.
   ///
   /// Emits `null` when the user signs out.
-  Stream<User?> get stateChangesStream => _firebaseAuth
-      .authStateChanges()
-      .distinct((user1, user2) => user1?.uid == user2?.uid);
+  Stream<User?> get stateChangesStream => _firebaseAuth != null
+      ? _firebaseAuth!.authStateChanges().distinct(
+          (user1, user2) => user1?.uid == user2?.uid,
+        )
+      : const Stream.empty();
 }
 
 /// Exception thrown when an operation requiring authentication is attempted
