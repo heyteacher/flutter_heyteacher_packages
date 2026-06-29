@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-3.1.0+1046] - 2026-06-29
+
+### 🚀 Features [3.1.0]
+
+- Add `fakeFirestore` bool method in order to know if istance is a fake ([a927d6c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a927d6c1aae5eea57570f4faedb9aff6fe93a918)) by **heyteacher**
+
+### 🚜 Refactor [3.1.0]
+
+- Upgrade major version of `flutter_heyteacher_auth` using local authentication ([6014b89](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6014b89b771bfc99106b2da4550d5bce1f9df839)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.0]
+
+- *(release)* New version 3.1.0+1046 which closes ([#228](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/228)) ([1e48f38](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1e48f3803e5bac5be3879052ac0614bc01f2135e)) by **heyteacher**
+
 ## [flutter_heyteacher_store-3.0.5+1045] - 2026-05-13
 
 ### 📚 Documentation [3.0.5]
