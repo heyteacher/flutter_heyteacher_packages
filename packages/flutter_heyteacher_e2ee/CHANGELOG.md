@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.0.8+159] - 2026-06-29
+
+### 🚜 Refactor [3.0.8]
+
+- Upgrade major version of `flutter_heyteacher_auth` using local authentication ([be3fb2c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/be3fb2c10dc89e3e19f03a8934a46f3e7aa6eee2)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.8]
+
+- Unit tests are threated as debug using debugSecretKeyJWK ([e9d6389](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e9d6389255eb6b66094330cbbee6eaa86144e04d)) by **heyteacher**
+- *(release)* New version 3.0.8+159 which closes ([#226](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/226)) ([343242a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/343242ad91d1a0a463e0e02b72889f812b3ea49a)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.0.7+158] - 2026-06-09
 
 ### 🐛 Bug Fixes [3.0.7]
