@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 part 'base_track_data.g.dart';
 
 /// The basic track data information `<LightDataType>`, the lighweight
-/// [FirestoreData] document /// used in [Store.list] and [Store.query]
+/// [FirestoreData] document /// used in [Store.list]
 @CopyWith()
 class BaseTrackData extends FirestoreData<dynamic> {
   /// Creates [BaseTrackData]
