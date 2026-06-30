@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-4.0.0+1047] - 2026-06-30
+
+### 🚜 Refactor [4.0.0]
+
+- *(store)* [**breaking**] Extract `Store` into an agnostic superclass `BaseStore` ([988b459](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/988b459e0f87088eccdb01959df25db4c3083d79)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.0.0]
+
+- *(release)* New version 4.0.0+1047 which closes ([#230](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/230)) ([a606964](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a606964db3719a8482cd6cff2a6196ab3caf7262)) by **heyteacher**
+
 ## [flutter_heyteacher_store-3.1.0+1046] - 2026-06-29
 
 ### 🚀 Features [3.1.0]
