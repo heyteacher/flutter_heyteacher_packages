@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.0.9+160] - 2026-07-02
+
+### 🐛 Bug Fixes [3.0.9]
+
+- Enable set null `debugSecretKeyJWK` ([6c03db4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6c03db456232645cc2241e755f64f8edbf700b42)) by **heyteacher**
+- Reload `AAD` un authentication ([b5858bf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b5858bf2d3e1222c4ccad59195823e804bb0c574)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.9]
+
+- *(release)* New version 3.0.9+160 which closes ([#232](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/232)) ([cebdf1b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cebdf1bdcb56b6deb9f8293e055b867dc20ac823)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.0.8+159] - 2026-06-29
 
 ### 🚜 Refactor [3.0.8]
