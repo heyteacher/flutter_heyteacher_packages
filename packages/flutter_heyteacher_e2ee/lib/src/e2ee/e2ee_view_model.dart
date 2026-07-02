@@ -81,7 +81,7 @@ class E2EEViewModel {
   static String? get masterSecretKeyJwk => _masterSecretKeyJwk;
 
   /// Set debug password
-  static set debugSecretKeyJWK(String debugSecretKeyJWK) {
+  static set debugSecretKeyJWK(String? debugSecretKeyJWK) {
     _debugSecretKeyJWK = debugSecretKeyJWK;
   }
 
