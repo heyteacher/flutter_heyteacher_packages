@@ -58,7 +58,12 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
     // listen for auth changes
     unawaited(_authStremSubscription?.cancel());
     _authStremSubscription = AuthViewModel.instance.stateChangesStream.listen(
-      (user) => setState(() => _authenticated = user != null),
+      (user) async {
+        _aad = await E2EEViewModel.instance(
+          AuthViewModel.instance.uid,
+        ).getAAD();
+        setState(() => _authenticated = user != null);
+      },
     );
   }
 
