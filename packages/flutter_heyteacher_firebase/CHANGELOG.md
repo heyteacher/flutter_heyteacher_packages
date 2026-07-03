@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_firebase-2.0.12+148] - 2026-07-03
+
+### ⚙️ Miscellaneous Tasks [2.0.12]
+
+- Bump internal package dependencies and update flutter_cookie_consent ([38e5c27](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/38e5c272dadbc92f093fee3ad345bc715928d447)) by **heyteacher**
+- *(release)* New version 2.0.12+148 which closes ([#240](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/240)) ([3a46dd8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3a46dd85b650c71eddd42188d32c58d58f85e00e)) by **heyteacher**
+
 ## [flutter_heyteacher_firebase-2.0.11+147] - 2026-05-13
 
 ### 📚 Documentation [2.0.11]
