@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-4.0.1+162] - 2026-07-03
+
+### ⚙️ Miscellaneous Tasks [4.0.1]
+
+- Bump internal package dependencies and update flutter_cookie_consent ([38e5c27](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/38e5c272dadbc92f093fee3ad345bc715928d447)) by **heyteacher**
+- *(release)* New version 4.0.1+162 which closes ([#236](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/236)) ([bdc8f88](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bdc8f88a39a9f486f813f124f96e2931649d8700)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-4.0.0+161] - 2026-06-29
 
 ### 🚜 Refactor [4.0.0]
