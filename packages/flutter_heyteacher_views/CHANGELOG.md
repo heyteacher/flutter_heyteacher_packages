@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.1.2+165] - 2026-07-03
+
+### ⚙️ Miscellaneous Tasks [4.1.2]
+
+- *(release)* New version 4.1.2+165 which closes ([#234](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/234)) ([de56737](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/de56737906cbe299ed9b66ec16cf347e34a4f957)) by **heyteacher**
+
 ## [flutter_heyteacher_views-4.1.1+164] - 2026-06-04
 
 ### 🐛 Bug Fixes [4.1.1]
