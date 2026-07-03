@@ -27,8 +27,8 @@ dependencies:
     sdk: flutter
   flutter_heyteacher_firebase: ^2.0.11+147 
   flutter_heyteacher_locale: ^3.0.3+155
-  flutter_heyteacher_platform: ^3.0.4+148 
-  flutter_heyteacher_views: ^4.1.1+164 
+  flutter_heyteacher_platform: ^3.0.5+149 
+  flutter_heyteacher_views: ^4.1.2+165 
   flutter_localizations:
     sdk: flutter
   go_router: ^17.3.0
