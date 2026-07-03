@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-4.0.2+163] - 2026-07-03
+
+### ⚙️ Miscellaneous Tasks [4.0.2]
+
+- Bump flutter_heyteacher_auth to 4.0.1+162 and flutter_heyteacher_firebase to 2.0.12+148 across packages ([9dff4e2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9dff4e288772413fd6d0bc85c041cc5797c5c77e)) by **heyteacher**
+- *(release)* New version 4.0.2+163 which closes ([#236](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/236)) ([48e6fc9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/48e6fc9ba602c97e7482162e35c3d4777867f0ad)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-4.0.1+162] - 2026-07-03
 
 ### ⚙️ Miscellaneous Tasks [4.0.1]
