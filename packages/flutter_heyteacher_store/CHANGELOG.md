@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-4.0.2+1049] - 2026-07-08
+
+### 🚜 Refactor [4.0.2]
+
+- Replace deprecated `EquatableMixin` with `Equatable` in data models ([edaf2b9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/edaf2b982ff5752fc6c2257f478a4dc82c706064)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.0.2]
+
+- *(release)* New version 4.0.2+1049 which closes ([#249](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/249)) ([53bc262](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/53bc262405846af451063846884f487ed84ebc6f)) by **heyteacher**
+
 ## [flutter_heyteacher_store-4.0.1+1048] - 2026-07-08
 
 ### ⚙️ Miscellaneous Tasks [4.0.1]
