@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.0.10+161] - 2026-07-08
+
+### ⚙️ Miscellaneous Tasks [3.0.10]
+
+- Bump internal package dependencies and update flutter_cookie_consent ([38e5c27](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/38e5c272dadbc92f093fee3ad345bc715928d447)) by **heyteacher**
+- Bump flutter_heyteacher_auth to 4.0.1+162 and flutter_heyteacher_firebase to 2.0.12+148 across packages ([9dff4e2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9dff4e288772413fd6d0bc85c041cc5797c5c77e)) by **heyteacher**
+- *(release)* New version 3.0.10+161 which closes ([#247](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/247)) ([5f9d968](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5f9d968a228a677b2b8d879036793539bf98c3bd)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.0.9+160] - 2026-07-02
 
 ### 🐛 Bug Fixes [3.0.9]
