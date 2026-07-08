@@ -18,11 +18,11 @@ resolution: workspace
 
 dependencies:
   clock: ^1.1.2
-  equatable: ^2.0.8
+  equatable: ^2.1.0
   firebase_analytics: ^12.4.3
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^4.0.1+162
+  flutter_heyteacher_auth: ^4.0.2+163
   flutter_heyteacher_locale: ^3.0.3+155
   flutter_heyteacher_platform: ^3.0.5+149
   flutter_heyteacher_views: ^4.1.2+165
