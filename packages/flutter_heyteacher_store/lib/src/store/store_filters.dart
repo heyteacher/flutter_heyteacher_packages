@@ -110,7 +110,7 @@ abstract class StoreFilter extends Equatable {
 }
 
 /// Compares [field] value to [value] according [Operator]
-class ValueStoreFilter extends StoreFilter with EquatableMixin {
+class ValueStoreFilter extends StoreFilter with Equatable {
   /// The field in document
   final String field;
 
@@ -150,7 +150,7 @@ class ValueStoreFilter extends StoreFilter with EquatableMixin {
 }
 
 /// Compares [field] value to iterable [values] according the [IterableOperator]
-class IterableValueStoreFilter extends StoreFilter with EquatableMixin {
+class IterableValueStoreFilter extends StoreFilter with Equatable {
   /// The field in document
   final String field;
 
@@ -187,7 +187,7 @@ class IterableValueStoreFilter extends StoreFilter with EquatableMixin {
 
 /// If [value] is `true`, checks if [field] is null. Otherwise checks [field]
 ///  is not null.
-class IsNullStoreFilter extends StoreFilter with EquatableMixin {
+class IsNullStoreFilter extends StoreFilter with Equatable {
   /// The field to check nullability
   final String field;
 
@@ -212,7 +212,7 @@ class IsNullStoreFilter extends StoreFilter with EquatableMixin {
 /// Applies [LogicalOperator] to [StoreFilter]. If [LogicalOperator.and] all
 /// [StoreFilter] must be satisfied.
 /// If [LogicalOperator.or] at least one [StoreFilter] must be satisfied.
-class LogicalStoreFilter extends StoreFilter with EquatableMixin {
+class LogicalStoreFilter extends StoreFilter with Equatable {
   /// The logical operator applied to filters
   final LogicalOperator logicalOperator;
 
