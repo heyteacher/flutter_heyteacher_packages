@@ -25,10 +25,12 @@ class AccountListTile extends StatefulWidget {
     AsyncCallback? createAccountCallback,
     AsyncCallback? deleteAccountCallback,
     String? deleteAccountConfirmMessage,
+    bool disableLoginLogout = false,
     super.key,
   }) : _createUserDataCallback = createAccountCallback,
        _deleteUserDataCallback = deleteAccountCallback,
-       _deleteUserDataCallbackMessage = deleteAccountConfirmMessage;
+       _deleteUserDataCallbackMessage = deleteAccountConfirmMessage,
+       _disableLoginLogout = disableLoginLogout;
 
   /// A callback function that is invoked to delete the user's data.
   /// This is typically triggered when the user confirms the data deletion
@@ -40,6 +42,8 @@ class AccountListTile extends StatefulWidget {
   final AsyncCallback? _createUserDataCallback;
 
   final String? _deleteUserDataCallbackMessage;
+
+  final bool _disableLoginLogout;
 
   @override
   State<AccountListTile> createState() => _AccountListTileState();
@@ -126,23 +130,25 @@ class _AccountListTileState extends State<AccountListTile> {
             color: AuthViewModel.instance.autenticated
                 ? ThemeViewModel.instance.redColor
                 : Theme.of(context).iconTheme.color,
-            onPressed: () async {
-              // sign out
-              if (AuthViewModel.instance.autenticated) {
-                unawaited(
-                  GoRouter.of(
-                    context,
-                  ).pushNamed(AuthRouterName.signOut.name),
-                );
-                // sign in
-              } else {
-                unawaited(
-                  GoRouter.of(
-                    context,
-                  ).pushNamed(AuthRouterName.signIn.name),
-                );
-              }
-            },
+            onPressed: widget._disableLoginLogout
+                ? null
+                : () async {
+                    // sign out
+                    if (AuthViewModel.instance.autenticated) {
+                      unawaited(
+                        GoRouter.of(
+                          context,
+                        ).pushNamed(AuthRouterName.signOut.name),
+                      );
+                      // sign in
+                    } else {
+                      unawaited(
+                        GoRouter.of(
+                          context,
+                        ).pushNamed(AuthRouterName.signIn.name),
+                      );
+                    }
+                  },
           ),
         ],
       ),
