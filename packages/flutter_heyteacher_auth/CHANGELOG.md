@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-4.1.0+164] - 2026-07-09
+
+### 🚀 Features [4.1.0]
+
+- Add `disableLoginLogout` bool parameter to `AccountListTile` ([8b75bb8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8b75bb8a8960c43c587da9ec8d1ce6fe5197b776)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.1.0]
+
+- *(release)* New version 4.1.0+164 which closes ([#254](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/254)) ([c5460f1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c5460f1f5d889d9be4d5ba7bcbe30276f7536e26)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-4.0.2+163] - 2026-07-03
 
 ### ⚙️ Miscellaneous Tasks [4.0.2]
