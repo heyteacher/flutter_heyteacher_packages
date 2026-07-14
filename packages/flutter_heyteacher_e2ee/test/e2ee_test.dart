@@ -74,6 +74,100 @@ void main() async {
     });
   });
 
+  group('secretKeyChangedStream', () {
+    setUp(() {
+      // Reset static state so each test starts clean
+      E2EEViewModel.debugSecretKeyJWK = null;
+      E2EEViewModel.masterSecretKeyJwk = '';
+    });
+
+    test('emits debug:true when debugSecretKeyJWK setter is called', () async {
+      final vm = E2EEViewModel.instance(AuthViewModel.instance.uid);
+
+      // Collect the next event from the stream
+      final eventFuture = vm.secretKeyChangedStream.first;
+
+      // Trigger the setter
+      final jwk = await E2EEViewModel.generateSecretKeyJwk();
+      E2EEViewModel.debugSecretKeyJWK = jwk;
+
+      final event = await eventFuture;
+      expect(event.debug, isTrue, reason: 'expected debug flag to be true');
+      expect(
+        event.uid,
+        equals(AuthViewModel.instance.uid),
+        reason: 'expected uid to match current user',
+      );
+    });
+
+    test(
+      'emits debug:false when generateSecretKey is called with isToStore:true',
+      () async {
+        final vm = E2EEViewModel.instance(AuthViewModel.instance.uid);
+
+        final eventFuture = vm.secretKeyChangedStream.first;
+
+        await vm.generateSecretKey();
+
+        final event = await eventFuture;
+        expect(event.debug, isFalse, reason: 'expected debug flag to be false');
+        expect(
+          event.uid,
+          equals(AuthViewModel.instance.uid),
+          reason: 'expected uid to match current user',
+        );
+      },
+    );
+
+    test(
+      'does not emit when generateSecretKey is called with isToStore:false',
+      () async {
+        final vm = E2EEViewModel.instance(AuthViewModel.instance.uid);
+
+        var emitted = false;
+        final sub = vm.secretKeyChangedStream.listen((_) => emitted = true);
+
+        await vm.generateSecretKey(isToStore: false);
+
+        // Give the stream a moment to deliver any event
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        expect(
+          emitted,
+          isFalse,
+          reason: 'stream should not emit for isToStore:false',
+        );
+
+        await sub.cancel();
+      },
+    );
+
+    test(
+      'emits debug:false when importSecretJwkJson imports a valid key',
+      () async {
+        final vm = E2EEViewModel.instance(AuthViewModel.instance.uid);
+
+        // Set up a master key so importSecretJwkJson can decrypt
+        final masterJwk = await E2EEViewModel.generateSecretKeyJwk();
+        E2EEViewModel.masterSecretKeyJwk = masterJwk;
+
+        // Export a real secret key encrypted with the master key
+        final exportedJson = await vm.exportSecretJwkJson();
+
+        final eventFuture = vm.secretKeyChangedStream.first;
+
+        await vm.importSecretJwkJson(exportedJson);
+
+        final event = await eventFuture;
+        expect(event.debug, isFalse, reason: 'expected debug flag to be false');
+        expect(
+          event.uid,
+          equals(AuthViewModel.instance.uid),
+          reason: 'expected uid to match current user',
+        );
+      },
+    );
+  });
+
   group('encrypt decryp message:', () {
     test('encrypted decrypted empty message return same', () async {
       const originalMessage = '';
