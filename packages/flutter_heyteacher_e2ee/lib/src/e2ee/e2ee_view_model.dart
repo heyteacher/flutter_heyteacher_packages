@@ -39,26 +39,69 @@ class E2EEViewModel {
   E2EEViewModel._(this._uid);
   final _logger = Logger('E2EEViewModel');
 
+  /// the uid of the current user
+  final String? _uid;
+
+  /// secret key changed notifier
+  final StreamController<({String? uid, bool debug})>
+  _secretKeyChangedStreamController =
+      StreamController<({String? uid, bool debug})>.broadcast();
+
+  /// the secure storage instance
+  @visibleForTesting
+  FlutterSecureStorage? flutterSecureStorage;
+
   // Singleton instance
   static final Map<String?, E2EEViewModel?> _instances = {};
+
+  static String? _debugSecretKeyJWK;
+
+  static String? _masterSecretKeyJwk;
 
   /// Provides the singleton instance of the [E2EEViewModel] manager.
   // ignore: prefer_constructors_over_static_methods
   static E2EEViewModel instance(String? uid) =>
       _instances[uid] ??= E2EEViewModel._(uid);
 
-  final String? _uid;
+  /// Set master secret key JWK
+  static set masterSecretKeyJwk(String masterSecretKeyJwk) {
+    _masterSecretKeyJwk = masterSecretKeyJwk;
+  }
 
-  /// Key used in secure storage for the Additional Authenticated Data (AAD).
-  /// Uniquely identifies the AAD for the current authenticated user.
-  @visibleForTesting
-  String get aadKey => '${_uid}_aad';
+  /// Set debug password
+  static set debugSecretKeyJWK(String? debugSecretKeyJWK) {
+    _debugSecretKeyJWK = debugSecretKeyJWK;
+    instance(
+      AuthViewModel.instance.uid,
+    )._logger.info('debugSecretKeyJWK changed to: $debugSecretKeyJWK');
+    instance(
+      AuthViewModel.instance.uid,
+    )._secretKeyChangedStreamController.add((
+      uid: AuthViewModel.instance.uid,
+      debug: true,
+    ));
+  }
 
-  /// Key used in secure storage for the user's secret encryption key
-  /// (in JWK format).
-  /// Uniquely identifies the secret key for the current authenticated user.
+  /// Generate a Secret Key anr returns the JWK in JSON format.
+  static Future<String> generateSecretKeyJwk() async => jsonEncode(
+    await (await AesGcmSecretKey.generateKey(256)).exportJsonWebKey(),
+  );
+
   @visibleForTesting
-  String get secretKeyKey => '${_uid}_secretKey';
+  /// Get master secret key JWK
+  static String? get masterSecretKeyJwk => _masterSecretKeyJwk;
+
+  @visibleForTesting
+  /// Get master secret key JWK
+  static String? get debugSecretKeyJWK => _debugSecretKeyJWK;
+
+  static bool get _debug =>
+      (PlatformHelper.isWeb || PlatformHelper.isFlutterTest) &&
+      _debugSecretKeyJWK != null;
+
+  /// the secret key changed stream
+  Stream<({String? uid, bool debug})> get secretKeyChangedStream =>
+      _secretKeyChangedStreamController.stream;
 
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
@@ -67,63 +110,15 @@ class E2EEViewModel {
   /// Asynchronously checks if the user's secret key is not currently stored.
   Future<bool> get secretKeyNotStored async => !await secretKeyStored;
 
-  static String? _debugSecretKeyJWK;
-
-  static String? _masterSecretKeyJwk;
-
-  /// Set master secret key JWK
-  static set masterSecretKeyJwk(String masterSecretKeyJwk) {
-    _masterSecretKeyJwk = masterSecretKeyJwk;
-  }
-
-  @visibleForTesting
-  /// Get master secret key JWK
-  static String? get masterSecretKeyJwk => _masterSecretKeyJwk;
-
-  /// Set debug password
-  static set debugSecretKeyJWK(String? debugSecretKeyJWK) {
-    _debugSecretKeyJWK = debugSecretKeyJWK;
-  }
-
-  @visibleForTesting
-  /// Get master secret key JWK
-  static String? get debugSecretKeyJWK => _debugSecretKeyJWK;
-
-  bool get _debug =>
-      (PlatformHelper.isWeb || PlatformHelper.isFlutterTest) &&
-      _debugSecretKeyJWK != null;
-
-  /// the secure storage instance
-  @visibleForTesting
-  FlutterSecureStorage? flutterSecureStorage;
-
-  /// Lazily initializes and returns the [FlutterSecureStorage] instance.
-  /// Configures Android-specific options for encrypted shared preferences.
-  Future<FlutterSecureStorage> get _secureStorage async {
-    if (flutterSecureStorage != null) return flutterSecureStorage!;
-    var appName = 'appName';
-    try {
-      appName = (await PackageInfo.fromPlatform()).appName;
-    } on Exception catch (error, stackTrace) {
-      _logger.warning(
-        "unable to read app name, use 'appName'",
-        error,
-        stackTrace,
-      );
+  /// Initializes the secret key by generating one if it's not already stored.
+  /// This is typically called during application startup or after user
+  /// authentication.
+  Future<void> initSecretKey() async {
+    _logger.finer('<initSecretKey>:');
+    if (await secretKeyNotStored) {
+      await generateSecretKey();
     }
-    flutterSecureStorage = FlutterSecureStorage(
-      aOptions: _getAndroidOptions(appName),
-    );
-    return flutterSecureStorage!;
   }
-
-  /// Returns Android-specific options for `FlutterSecureStorage`.
-  ///
-  /// Enables encrypted shared preferences, using the [appName] for naming.
-  AndroidOptions _getAndroidOptions(String appName) => AndroidOptions(
-    storageNamespace: appName,
-    preferencesKeyPrefix: appName,
-  );
 
   /// Encrypts the given [value] string using AES-GCM.
   ///
@@ -351,9 +346,51 @@ class E2EEViewModel {
     _logger.info('(importSecretJwkJson): secret key is valid');
     // write the jwk json into storage
     await (await _secureStorage).write(key: secretKeyKey, value: secretJwkJson);
-    _logger.info('(importSecretJwkJson): secret key imported');
+    _logger.info(
+      '(importSecretJwkJson): secret key imported, notify secret key changed',
+    );
+    _secretKeyChangedStreamController.add((uid: _uid, debug: false));
     return secretJwkJson;
   }
+
+  /// Key used in secure storage for the Additional Authenticated Data (AAD).
+  /// Uniquely identifies the AAD for the current authenticated user.
+  @visibleForTesting
+  String get aadKey => '${_uid}_aad';
+
+  /// Key used in secure storage for the user's secret encryption key
+  /// (in JWK format).
+  /// Uniquely identifies the secret key for the current authenticated user.
+  @visibleForTesting
+  String get secretKeyKey => '${_uid}_secretKey';
+
+  /// Lazily initializes and returns the [FlutterSecureStorage] instance.
+  /// Configures Android-specific options for encrypted shared preferences.
+  Future<FlutterSecureStorage> get _secureStorage async {
+    if (flutterSecureStorage != null) return flutterSecureStorage!;
+    var appName = 'appName';
+    try {
+      appName = (await PackageInfo.fromPlatform()).appName;
+    } on Exception catch (error, stackTrace) {
+      _logger.warning(
+        "unable to read app name, use 'appName'",
+        error,
+        stackTrace,
+      );
+    }
+    flutterSecureStorage = FlutterSecureStorage(
+      aOptions: _getAndroidOptions(appName),
+    );
+    return flutterSecureStorage!;
+  }
+
+  /// Returns Android-specific options for `FlutterSecureStorage`.
+  ///
+  /// Enables encrypted shared preferences, using the [appName] for naming.
+  AndroidOptions _getAndroidOptions(String appName) => AndroidOptions(
+    storageNamespace: appName,
+    preferencesKeyPrefix: appName,
+  );
 
   String _generateAADValue() {
     _logger.info('<_generateAADValue>:');
@@ -387,16 +424,13 @@ class E2EEViewModel {
       // write the jwk json into storage
       await secureStorage.write(key: secretKeyKey, value: secretJwkJson);
       _logger.info(
-        '(generateSecretKey): new key generated stored in secureStorage',
+        '(generateSecretKey): new key generated stored in secureStorage '
+        'and notify secret key changed',
       );
+      _secretKeyChangedStreamController.add((uid: _uid, debug: false));
     }
     return secretKey;
   }
-
-  /// Generate a Secret Key anr returns the JWK in JSON format.
-  static Future<String> generateSecretKeyJwk() async => jsonEncode(
-    await (await AesGcmSecretKey.generateKey(256)).exportJsonWebKey(),
-  );
 
   /// Reads the user's secret key from secure storage and returns it as an
   ///  [AesGcmSecretKey].
@@ -470,16 +504,6 @@ class E2EEViewModel {
     );
     // import the jwk into secret key
     return AesGcmSecretKey.importJsonWebKey(secretJwk);
-  }
-
-  /// Initializes the secret key by generating one if it's not already stored.
-  /// This is typically called during application startup or after user
-  /// authentication.
-  Future<void> initSecretKey() async {
-    _logger.finer('<initSecretKey>:');
-    if (await secretKeyNotStored) {
-      await generateSecretKey();
-    }
   }
 }
 
