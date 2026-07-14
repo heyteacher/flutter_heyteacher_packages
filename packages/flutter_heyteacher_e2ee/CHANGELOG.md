@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.1.0+162] - 2026-07-14
+
+### 🚀 Features [3.1.0]
+
+- Add secretKeyChangedStream to E2EEViewModel to notify about encryption key updates ([72f2362](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/72f23623977be74d85b09f8427e4532f167f06a6)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.0]
+
+- Update dependencies equatable, auth, and logger across packages ([1726e46](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1726e4602dc02393fad6fe29c89a3a581195f8db)) by **heyteacher**
+- *(release)* New version 3.1.0+162 which closes ([#256](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/256)) ([357c24d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/357c24dc4df1339b80a64e0b6eafc2958a1bc42c)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.0.10+161] - 2026-07-08
 
 ### ⚙️ Miscellaneous Tasks [3.0.10]
