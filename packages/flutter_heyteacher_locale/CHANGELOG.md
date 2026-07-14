@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_locale-3.1.0+157] - 2026-07-14
+
+### 🚀 Features [3.1.0]
+
+- Add `doubleParse` helper method to formats utility ([f627c55](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f627c554e841b187e874c72fab7035dfacb4492d)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.0]
+
+- Bump internal package dependencies and update flutter_cookie_consent ([38e5c27](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/38e5c272dadbc92f093fee3ad345bc715928d447)) by **heyteacher**
+- *(release)* New version 3.1.0+157 which closes ([#258](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/258)) ([bdda6f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bdda6f7bbfa75b5318f0450e6cd49a3b44789da4)) by **heyteacher**
+
 ## [flutter_heyteacher_locale-3.0.3+155] - 2026-06-03
 
 ### 🐛 Bug Fixes [3.0.3]
