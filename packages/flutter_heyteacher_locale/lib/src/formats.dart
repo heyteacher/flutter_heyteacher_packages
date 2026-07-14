@@ -80,7 +80,7 @@ class FormatterHelper {
 
   /// Parses a machine-readable date string `yyyyMMdd_HHmmss` into a [DateTime]
   /// object. Returns `null` if [value] is null.
-  /// 
+  ///
   /// Source - (https://stackoverflow.com/a/78764981)
   /// Posted by Robert
   /// Retrieved 2026-03-06, License - CC BY-SA 4.0
@@ -163,6 +163,9 @@ class FormatterHelper {
   /// Returns [defaultValue] if [num] is null.
   static String doubleFormat(num? num, {String defaultValue = ''}) =>
       num != null ? _doubleFormatter.format(num) : defaultValue;
+
+  /// Parses a string into an double.
+  static num doubleParse(String string) => _doubleFormatter.parse(string);
 
   /// Converts a [DateTime] object to an integer representing milliseconds
   /// since the Unix epoch.
