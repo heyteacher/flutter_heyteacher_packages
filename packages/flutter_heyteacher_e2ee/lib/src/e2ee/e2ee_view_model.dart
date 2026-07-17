@@ -54,21 +54,30 @@ class E2EEViewModel {
   // Singleton instance
   static final Map<String?, E2EEViewModel?> _instances = {};
 
-  static String? _debugSecretKeyJWK;
-
-  static String? _masterSecretKeyJwk;
-
   /// Provides the singleton instance of the [E2EEViewModel] manager.
   // ignore: prefer_constructors_over_static_methods
   static E2EEViewModel instance(String? uid) =>
       _instances[uid] ??= E2EEViewModel._(uid);
+
+  /// master Secret Key JWK
+  static String? _masterSecretKeyJwk;
 
   /// Set master secret key JWK
   static set masterSecretKeyJwk(String masterSecretKeyJwk) {
     _masterSecretKeyJwk = masterSecretKeyJwk;
   }
 
-  /// Set debug password
+  /// The debug AAD
+  static const String _debugAAD = '/&/8678bhnogvd6&/=gB097';
+
+  /// debug Secret Key JWK
+  static String? _debugSecretKeyJWK;
+
+  @visibleForTesting
+  /// Get debug secret key JWK
+  static String? get debugSecretKeyJWK => _debugSecretKeyJWK;
+
+  /// Set debug secret key JWK
   static set debugSecretKeyJWK(String? debugSecretKeyJWK) {
     _debugSecretKeyJWK = debugSecretKeyJWK;
     instance(
@@ -90,10 +99,6 @@ class E2EEViewModel {
   @visibleForTesting
   /// Get master secret key JWK
   static String? get masterSecretKeyJwk => _masterSecretKeyJwk;
-
-  @visibleForTesting
-  /// Get master secret key JWK
-  static String? get debugSecretKeyJWK => _debugSecretKeyJWK;
 
   static bool get _debug =>
       (PlatformHelper.isWeb || PlatformHelper.isFlutterTest) &&
@@ -251,9 +256,13 @@ class E2EEViewModel {
   Future<void> setAAD([String? aadValue]) async {
     _logger.finer('<setAAD>:');
     // cannot encrypt if not auth
-    if (_uid?.isEmpty ?? false) {
+    if (_debug) {
       _logger.severe('(setAAD): user not authenticated');
       throw UserNotAuthenticatedException();
+    }
+    if (_debug) {
+      _logger.warning('(setAAD): debug mode enabled, skip setting AAD');
+      return;
     }
     final secureStorage = await _secureStorage;
     await secureStorage.write(
@@ -273,9 +282,8 @@ class E2EEViewModel {
       return null;
     }
     if (_debug) {
-      // if debug and aad not set, generate a random AAD
-      final aad = await (await _secureStorage).read(key: aadKey);
-      return (aad == null || aad.isEmpty) ? _generateAADValue() : aad;
+      // if debug returns debugAAD
+      return _debugAAD;
     } else {
       // try to read from secure storage
       final aad = await (await _secureStorage).read(key: aadKey);
