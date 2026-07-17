@@ -8,7 +8,11 @@ import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_view_model.dart'
 import 'package:flutter_heyteacher_e2ee/src/l10n/flutter_heyteacher_e2ee.dart';
 import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
-    show ProgressIndicatorView, ThemeViewModel, showConfirmCancelDialog;
+    show
+        ProgressIndicatorView,
+        ThemeViewModel,
+        showConfirmCancelDialog,
+        showSnackBar;
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -287,11 +291,24 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
-                onPressed: () async => _secretKeyDialog(
-                  initialValue: await E2EEViewModel.instance(
-                    AuthViewModel.instance.uid,
-                  ).exportSecretJwkJson(),
-                ),
+                onPressed: () async {
+                  try {
+                    await _secretKeyDialog(
+                      initialValue: await E2EEViewModel.instance(
+                        AuthViewModel.instance.uid,
+                      ).exportSecretJwkJson(),
+                    );
+                  } on Exception catch (e) {
+                    if (context.mounted) {
+                      showSnackBar(
+                        context: context,
+                        message: e.toString(),
+                        error: true,
+                        persist: true,
+                      );
+                    }
+                  }
+                },
                 icon: const Padding(
                   padding: EdgeInsets.only(left: 8),
                   child: Icon(Icons.edit),
