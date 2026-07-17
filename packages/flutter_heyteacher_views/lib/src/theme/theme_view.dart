@@ -174,7 +174,7 @@ class ThemeModeListTileState<T extends StatefulWidget> extends State<T> {
   void onSelected(Set<ThemeMode?> newSelection) => setState(() {
     unawaited(
       ThemeViewModel.instance.setThemeMode(
-        newSelection.first ?? ThemeMode.system,
+        newSelection.firstOrNull ?? ThemeMode.system,
       ),
     );
   });
