@@ -181,7 +181,7 @@ platform :android do
     )
   end
 
-  desc "fl buildweb [version:profile|debug] - build web and run local webserver on it"
+  desc "fl buildweb [version:profile|debug] [tree-shake-icons:false|true]- build web and run local webserver on it"
   lane :buildweb do|options|
     test
     increment_build
@@ -189,8 +189,12 @@ platform :android do
     if (options[:version] == "profile" || options[:version] == "debug")
         version = "--#{options[:version]}"
     end 
+    treeShakeIcons = "--no-tree-shake-icons"
+    if (options[:tree_shake_icons] == true)
+      treeShakeIcons = "--tree-shake-icons"
+    end
     Dir.chdir("../") do
-      sh("flutter build web --no-wasm-dry-run #{version}")
+      sh("flutter build web #{treeShakeIcons} --no-wasm-dry-run #{version}")
       appendBuildWebAssets
       buildNumber = sh("dart run flutter_heyteacher_meta:dartsemver show-build")
       # open browser http://localhost:8080 and run local webserver
