@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-3.1.0+151] - 2026-07-17
+
+### 🚀 Features [3.1.0]
+
+- Append Wasm build indicator to package version if  supported ([c37d5f4](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c37d5f4d2565dd5bd7216c4387a08f349fa64ad7)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.0]
+
+- *(release)* New version 3.1.0+151 which closes ([#268](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/268)) ([3d3a119](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3d3a11908f4cb9016f00fdbb0ceda89e278aaab0)) by **heyteacher**
+
 ## [flutter_heyteacher_platform-3.0.6+150] - 2026-07-08
 
 ### ⚙️ Miscellaneous Tasks [3.0.6]
