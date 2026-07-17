@@ -222,7 +222,7 @@ platform :android do
       # deploy
       puts "deploy"
       sh("firebase deploy --only hosting")
-    endc
+    end
   end
 end
 
