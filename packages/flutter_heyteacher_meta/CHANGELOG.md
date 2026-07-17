@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.9.0+183] - 2026-07-17
+
+### 🚀 Features [7.9.0]
+
+- Add `wasm` option to `buildweb `and `deployweb` lanes (default `true`) ([b4573e8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b4573e88ed2e27b0be03aeaad9f6bd50be761889)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.9.0]
+
+- *(release)* New version 7.9.0+183 which closes ([#270](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/270)) ([4f7ad12](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4f7ad127d26464ac4c84dc33aeb2e83e25c0daa5)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.8.2+182] - 2026-07-17
 
 ### 🐛 Bug Fixes [7.8.2]
