@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.1.1+163] - 2026-07-17
+
+### 🐛 Bug Fixes [3.1.1]
+
+- Add error handling and snackbar notification to secret key export action ([6e371ab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6e371abf5c3dd6cc3336dcc119393d18d087e227)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.1]
+
+- *(release)* New version 3.1.1+163 which closes ([#260](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/260)) ([ee06e9c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ee06e9ce892437b861d5c1e4e00ec14707a742ce)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.1.0+162] - 2026-07-14
 
 ### 🚀 Features [3.1.0]
