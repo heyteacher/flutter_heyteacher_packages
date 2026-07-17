@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.8.2+182] - 2026-07-17
+
+### 🐛 Bug Fixes [7.8.2]
+
+- Typo corrected in `AppFastfile` script ([6020ffe](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6020ffe195c6f12e6f36c01ceebb089ff880b1d9)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.8.2]
+
+- *(release)* New version 7.8.2+182 which closes ([#264](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/264)) ([51c4f69](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/51c4f69cdee1b30b21bb934ce6760785bfa5388f)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.8.1+181] - 2026-07-17
 
 ### 🐛 Bug Fixes [7.8.1]
