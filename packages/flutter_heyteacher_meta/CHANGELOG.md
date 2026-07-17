@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.8.1+181] - 2026-07-17
+
+### 🐛 Bug Fixes [7.8.1]
+
+- Add  `--tree-shake-icons` option to `deployweb` lane ([aec9b7e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aec9b7e58661af6c4fdfcc2899613955f54ce551)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.8.1]
+
+- *(release)* New version 7.8.1+181 which closes ([#264](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/264)) ([d5a6cb0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d5a6cb0df26e1dc72162706988b98ac4e07d04e5)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.8.0+180] - 2026-07-17
 
 ### 🚀 Features [7.8.0]
