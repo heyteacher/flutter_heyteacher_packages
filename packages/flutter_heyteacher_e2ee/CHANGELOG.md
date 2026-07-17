@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.1.2+164] - 2026-07-17
+
+### 🚜 Refactor [3.1.2]
+
+- Restructure debug configuration and managing a debug AAD constant  in `E2EEViewModel` ([a53e5e2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a53e5e2267be1cba426060ae9d1ade502c9e8dc3)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.2]
+
+- *(release)* New version 3.1.2+164 which closes ([#272](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/272)) ([ff5957e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ff5957e16d55a5aa98d460b084a36aed9287d108)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.1.1+163] - 2026-07-17
 
 ### 🐛 Bug Fixes [3.1.1]
