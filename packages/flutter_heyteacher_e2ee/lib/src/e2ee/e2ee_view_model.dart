@@ -43,9 +43,8 @@ class E2EEViewModel {
   final String? _uid;
 
   /// secret key changed notifier
-  final StreamController<({String? uid, bool debug})>
-  _secretKeyChangedStreamController =
-      StreamController<({String? uid, bool debug})>.broadcast();
+  final StreamController<String?> _secretKeyChangedStreamController =
+      StreamController<String?>.broadcast();
 
   /// the secure storage instance
   @visibleForTesting
@@ -63,54 +62,74 @@ class E2EEViewModel {
   static String? _masterSecretKeyJwk;
 
   /// Set master secret key JWK
-  static set masterSecretKeyJwk(String masterSecretKeyJwk) {
+  static void setMasterSecretKeyJwk(String masterSecretKeyJwk) {
+    if (debugMode) {
+      instance(
+        AuthViewModel.instance.uid,
+      )._logger.severe(
+        '(masterSecretKeyJwk): cannot set master secret key in debug mode',
+      );
+      throw DebugModeException();
+    }
     _masterSecretKeyJwk = masterSecretKeyJwk;
   }
 
   /// The debug AAD
   static const String _debugAAD = '/&/8678bhnogvd6&/=gB097';
 
-  /// debug Secret Key JWK
-  static String? _debugSecretKeyJWK;
+  /// The debug Secret Key JWK
+  static const String _debugSecretKeyJWK =
+      '{'
+      '  "kty": "oct", '
+      '  "use": "enc", '
+      '  "alg": "A256GCM", '
+      '  "k": "PchiB6gMbbKd6PZLyQDGyY_T6E5OS9GjjoQiEy9jfuE" '
+      '}';
 
-  @visibleForTesting
-  /// Get debug secret key JWK
-  static String? get debugSecretKeyJWK => _debugSecretKeyJWK;
+  /// The debug Master Secret Key JWK
+  static const String _debugMasterSecretKeyJWK =
+      '{'
+      '  "kty": "oct", '
+      '  "use": "enc", '
+      '  "alg": "A256GCM", '
+      '  "k": "GzZgFMxgx1sTCGd5cXMt9YAv7dfrSyC-6R7AYtKlYbU" '
+      '}';
 
-  /// Set debug secret key JWK
-  static set debugSecretKeyJWK(String? debugSecretKeyJWK) {
-    _debugSecretKeyJWK = debugSecretKeyJWK;
+  static bool _debugMode = false;
+
+  /// Get debug mode
+  static bool get debugMode => _debugMode;
+
+  /// Set debug mode
+  static set debugMode(bool debugMode) {
+    _debugMode = debugMode;
     instance(
       AuthViewModel.instance.uid,
-    )._logger.info('debugSecretKeyJWK changed to: $debugSecretKeyJWK');
-    instance(
-      AuthViewModel.instance.uid,
-    )._secretKeyChangedStreamController.add((
-      uid: AuthViewModel.instance.uid,
-      debug: true,
-    ));
+    )._logger.info('(debugMode): changed to $debugMode');
   }
 
   /// Generate a Secret Key anr returns the JWK in JSON format.
-  static Future<String> generateSecretKeyJwk() async => jsonEncode(
-    await (await AesGcmSecretKey.generateKey(256)).exportJsonWebKey(),
-  );
-
-  @visibleForTesting
-  /// Get master secret key JWK
-  static String? get masterSecretKeyJwk => _masterSecretKeyJwk;
-
-  static bool get _debug =>
-      (PlatformHelper.isWeb || PlatformHelper.isFlutterTest) &&
-      _debugSecretKeyJWK != null;
+  static Future<String> generateSecretKeyJwk() async {
+    if (debugMode) {
+      instance(
+        AuthViewModel.instance.uid,
+      )._logger.severe(
+        '(generateSecretKeyJwk): cannot generate secret key in debug mode',
+      );
+      throw DebugModeException();
+    }
+    return jsonEncode(
+      await (await AesGcmSecretKey.generateKey(256)).exportJsonWebKey(),
+    );
+  }
 
   /// the secret key changed stream
-  Stream<({String? uid, bool debug})> get secretKeyChangedStream =>
+  Stream<String?> get secretKeyChangedStream =>
       _secretKeyChangedStreamController.stream;
 
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
-      _debug || await (await _secureStorage).containsKey(key: secretKeyKey);
+      _debugMode || await (await _secureStorage).containsKey(key: secretKeyKey);
 
   /// Asynchronously checks if the user's secret key is not currently stored.
   Future<bool> get secretKeyNotStored async => !await secretKeyStored;
@@ -255,14 +274,15 @@ class E2EEViewModel {
   /// the provided [aadValue].
   Future<void> setAAD([String? aadValue]) async {
     _logger.finer('<setAAD>:');
-    // cannot encrypt if not auth
-    if (_debug) {
-      _logger.severe('(setAAD): user not authenticated');
-      throw UserNotAuthenticatedException();
-    }
-    if (_debug) {
+    // skip in debug mode
+    if (_debugMode) {
       _logger.warning('(setAAD): debug mode enabled, skip setting AAD');
       return;
+    }
+    // cannot encrypt if not auth
+    if (_uid?.isEmpty ?? false) {
+      _logger.severe('(setAAD): user not authenticated');
+      throw UserNotAuthenticatedException();
     }
     final secureStorage = await _secureStorage;
     await secureStorage.write(
@@ -276,12 +296,7 @@ class E2EEViewModel {
   /// Returns `null` if the user is not authenticated or if no AAD is set.
   Future<String?> getAAD() async {
     _logger.finest('<getAAD>:');
-    // cannot encrypt if not auth
-    if (_uid?.isEmpty ?? false) {
-      _logger.warning('(getAAD): user not authenticated');
-      return null;
-    }
-    if (_debug) {
+    if (_debugMode) {
       // if debug returns debugAAD
       return _debugAAD;
     } else {
@@ -357,7 +372,7 @@ class E2EEViewModel {
     _logger.info(
       '(importSecretJwkJson): secret key imported, notify secret key changed',
     );
-    _secretKeyChangedStreamController.add((uid: _uid, debug: false));
+    _secretKeyChangedStreamController.add(_uid);
     return secretJwkJson;
   }
 
@@ -403,8 +418,7 @@ class E2EEViewModel {
   String _generateAADValue() {
     _logger.info('<_generateAADValue>:');
     final r = Random();
-    const chars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    const chars = 'AaBbCcDdEeFfGgHhiJjKkLMmNnoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     _logger.info('(_generateAADValue): AAD generated');
     return List.generate(5, (index) => chars[r.nextInt(chars.length)]).join();
   }
@@ -418,24 +432,30 @@ class E2EEViewModel {
   @visibleForTesting
   Future<AesGcmSecretKey> generateSecretKey({bool isToStore = true}) async {
     _logger.info('<generateSecretKey>:');
+    if (debugMode) {
+      _logger.severe(
+        '(generateSecretKey): cannot generate secret key in debug mode',
+      );
+      throw DebugModeException();
+    }
     // cannot encrypt if not auth
     if (_uid?.isEmpty ?? false) {
       _logger.severe('(generateSecretKey): user not authenticated');
       throw UserNotAuthenticatedException();
     }
-    final secureStorage = await _secureStorage;
     // Generate a new random AES-GCM secret key for AES-256.
     final secretKey = await AesGcmSecretKey.generateKey(256);
     // encode json the jwk
     final secretJwkJson = jsonEncode(await secretKey.exportJsonWebKey());
     if (isToStore) {
+      final secureStorage = await _secureStorage;
       // write the jwk json into storage
       await secureStorage.write(key: secretKeyKey, value: secretJwkJson);
       _logger.info(
         '(generateSecretKey): new key generated stored in secureStorage '
         'and notify secret key changed',
       );
-      _secretKeyChangedStreamController.add((uid: _uid, debug: false));
+      _secretKeyChangedStreamController.add(_uid);
     }
     return secretKey;
   }
@@ -452,17 +472,16 @@ class E2EEViewModel {
       _logger.severe('(_readSecretKey): user not authenticated');
       throw UserNotAuthenticatedException();
     }
-    final secureStorage = await _secureStorage;
     if (await secretKeyStored) {
       // try to read secret key from secure storage
-      var secretJwkJson = await secureStorage.read(key: secretKeyKey);
+      String? secretJwkJson;
       // if not found, try to read from remote config `e2eeWebDebugSecretKey`
-      if (secretJwkJson == null && _debug) {
-        _logger.info(
-          '(_readSecretKey): secretJwkJson null and '
-          '_useE2EEWebDebugSecretKey true, read secret key from remote config',
-        );
-        secretJwkJson = await importSecretJwkJson(_debugSecretKeyJWK!);
+      if (_debugMode) {
+        _logger.info('(_readSecretKey): debug mode, using debug secret key');
+        secretJwkJson = _debugSecretKeyJWK;
+      } else {
+        final secureStorage = await _secureStorage;
+        secretJwkJson = await secureStorage.read(key: secretKeyKey);
       }
       if (secretJwkJson != null) {
         // found, decode the json jwk
@@ -486,6 +505,10 @@ class E2EEViewModel {
       _logger.severe('(_readMasterSecretKey): user not authenticated');
       throw UserNotAuthenticatedException();
     }
+    if (debugMode) {
+      _logger.info('(_readMasterSecretKey): debug mode');
+      return _readSecretKeyFromJwkJson(_debugMasterSecretKeyJWK);
+    }
     if (_masterSecretKeyJwk == null || _masterSecretKeyJwk!.isEmpty) {
       _logger.severe(
         '(_readMasterSecretKey): E2EE not initialized, '
@@ -494,9 +517,7 @@ class E2EEViewModel {
       throw MissingMasterSecretKeyJwkException();
     }
     // decode the json jwk
-    return _readSecretKeyFromJwkJson(
-      _masterSecretKeyJwk!,
-    );
+    return _readSecretKeyFromJwkJson(_masterSecretKeyJwk!);
   }
 
   /// Imports an [AesGcmSecretKey] from its JWK (JSON Web Key) JSON
@@ -595,5 +616,19 @@ class MissingMasterSecretKeyJwkException implements Exception {
     } else {
       return 'Missing Master Secret Key JWK';
     }
+  }
+}
+
+/// Exception thrown when action not permitter in debug mode.
+class DebugModeException implements Exception {
+  @override
+  String toString() {
+    // if (ContextHelper.context != null) {
+    //   return FlutterHeyteacherE2EELocalizations.of(
+    //     ContextHelper.context!,
+    //   )!.actionNotPermittedInDebugMode;
+    // } else {
+    return 'Action not permitter in debug mode';
+    //}
   }
 }

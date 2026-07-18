@@ -77,27 +77,7 @@ void main() async {
   group('secretKeyChangedStream', () {
     setUp(() {
       // Reset static state so each test starts clean
-      E2EEViewModel.debugSecretKeyJWK = null;
-      E2EEViewModel.masterSecretKeyJwk = '';
-    });
-
-    test('emits debug:true when debugSecretKeyJWK setter is called', () async {
-      final vm = E2EEViewModel.instance(AuthViewModel.instance.uid);
-
-      // Collect the next event from the stream
-      final eventFuture = vm.secretKeyChangedStream.first;
-
-      // Trigger the setter
-      final jwk = await E2EEViewModel.generateSecretKeyJwk();
-      E2EEViewModel.debugSecretKeyJWK = jwk;
-
-      final event = await eventFuture;
-      expect(event.debug, isTrue, reason: 'expected debug flag to be true');
-      expect(
-        event.uid,
-        equals(AuthViewModel.instance.uid),
-        reason: 'expected uid to match current user',
-      );
+      E2EEViewModel.debugMode = false;
     });
 
     test(
@@ -109,10 +89,9 @@ void main() async {
 
         await vm.generateSecretKey();
 
-        final event = await eventFuture;
-        expect(event.debug, isFalse, reason: 'expected debug flag to be false');
+        final uid = await eventFuture;
         expect(
-          event.uid,
+          uid,
           equals(AuthViewModel.instance.uid),
           reason: 'expected uid to match current user',
         );
@@ -147,8 +126,9 @@ void main() async {
         final vm = E2EEViewModel.instance(AuthViewModel.instance.uid);
 
         // Set up a master key so importSecretJwkJson can decrypt
-        final masterJwk = await E2EEViewModel.generateSecretKeyJwk();
-        E2EEViewModel.masterSecretKeyJwk = masterJwk;
+        E2EEViewModel.setMasterSecretKeyJwk(
+          await E2EEViewModel.generateSecretKeyJwk(),
+        );
 
         // Export a real secret key encrypted with the master key
         final exportedJson = await vm.exportSecretJwkJson();
@@ -157,10 +137,9 @@ void main() async {
 
         await vm.importSecretJwkJson(exportedJson);
 
-        final event = await eventFuture;
-        expect(event.debug, isFalse, reason: 'expected debug flag to be false');
+        final uid = await eventFuture;
         expect(
-          event.uid,
+          uid,
           equals(AuthViewModel.instance.uid),
           reason: 'expected uid to match current user',
         );
