@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.1.3+165] - 2026-07-18
+
+### 🚜 Refactor [3.1.3]
+
+- Replace debug secret keys  with debugMode management ([bcb32a8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bcb32a8d6ab084f3bce2c6cf781c1dcadd8b4660)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.3]
+
+- *(release)* New version 3.1.3+165 which closes ([#274](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/274)) ([73227bf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/73227bf967771468cc04b507e26b3fd222dd2f93)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.1.2+164] - 2026-07-17
 
 ### 🚜 Refactor [3.1.2]
