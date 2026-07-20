@@ -63,13 +63,14 @@ class E2EEViewModel {
 
   /// Set master secret key JWK
   static void setMasterSecretKeyJwk(String masterSecretKeyJwk) {
-    if (debugMode) {
-      instance(
-        AuthViewModel.instance.uid,
-      )._logger.severe(
-        '(masterSecretKeyJwk): cannot set master secret key in debug mode',
+    final logger = instance(
+      AuthViewModel.instance.uid,
+    )._logger..finer('<setMasterSecretKeyJwk>:');
+    if (_debugMode) {
+      logger.warning(
+        '(setMasterSecretKeyJwk): debug mode, skip setting master secret key',
       );
-      throw DebugModeException();
+      return;
     }
     _masterSecretKeyJwk = masterSecretKeyJwk;
   }
@@ -102,18 +103,20 @@ class E2EEViewModel {
 
   /// Set debug mode
   static set debugMode(bool debugMode) {
-    _debugMode = debugMode;
-    instance(
+    final logger = instance(
       AuthViewModel.instance.uid,
-    )._logger.info('(debugMode): changed to $debugMode');
+    )._logger..finer('<setDebugMode>:');
+    _debugMode = debugMode;
+    logger.info('(debugMode): changed to $debugMode');
   }
 
   /// Generate a Secret Key anr returns the JWK in JSON format.
   static Future<String> generateSecretKeyJwk() async {
+    final logger = instance(
+      AuthViewModel.instance.uid,
+    )._logger..finer('<generateSecretKeyJwk>:');
     if (debugMode) {
-      instance(
-        AuthViewModel.instance.uid,
-      )._logger.severe(
+      logger.severe(
         '(generateSecretKeyJwk): cannot generate secret key in debug mode',
       );
       throw DebugModeException();
@@ -198,7 +201,9 @@ class E2EEViewModel {
       );
       // return string encoded with the initial vector
       return E2EEValue(value: encryptedBytes, iv: iv);
-    } on Exception catch (error, stackTrace) {
+      // catch all exceptions
+      // ignore: avoid_catches_without_on_clauses
+    } catch (error, stackTrace) {
       _logger.severe('(encrypt): error', error, stackTrace);
       throw ErrorOnEncryptException();
     }
@@ -259,7 +264,9 @@ class E2EEViewModel {
       // return string decripted utf8 decoding bytes
       final decrypted = utf8.decode(decryptedBytes);
       return decrypted;
-    } on Exception catch (error, stackTrace) {
+      // catch all exceptions
+      // ignore: avoid_catches_without_on_clauses
+    } catch (error, stackTrace) {
       _logger.severe('(decrypt): error', error, stackTrace);
       throw ErrorOnDecryptException();
     }
@@ -350,6 +357,12 @@ class E2EEViewModel {
   /// stores it in secure storage.
   Future<String> importSecretJwkJson(String e2eeValueJson) async {
     _logger.info('<importSecretJwkJson>:');
+    if (debugMode) {
+      _logger.severe(
+        '(importSecretJwkJson): debug mode, skip importing secret key',
+      );
+      throw DebugModeException();
+    }
     // check if json is empty
     if (e2eeValueJson.isEmpty) {
       _logger.severe('(importSecretJwkJson): e2eeValueJson is empty');

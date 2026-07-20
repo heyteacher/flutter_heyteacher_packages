@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
-    show AuthViewModel, FlutterHeyteacherAuthLocalizations;
+    show AuthViewModel;
 import 'package:flutter_heyteacher_e2ee/src/e2ee/e2ee_view_model.dart'
     show E2EEViewModel;
 import 'package:flutter_heyteacher_e2ee/src/l10n/flutter_heyteacher_e2ee.dart';
@@ -85,6 +85,7 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
     obscureText: !_passphraseVisibility && (_aad?.isNotEmpty ?? false),
     decoration: InputDecoration(
       isDense: true,
+      constraints: BoxConstraints.tight(const Size.fromHeight(40)),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: ThemeViewModel.instance.colorScheme.onSurface,
@@ -205,7 +206,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
             : ThemeViewModel.instance.redColor,
       ),
       title: Padding(
-        padding: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.only(bottom: 8),
         child: Text(
           FlutterHeyteacherE2EELocalizations.of(
             context,
@@ -218,7 +219,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
         key: widget._e2eePassphraseKey,
       ),
       trailing: Column(
-        spacing: 8,
+        spacing: 2,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
@@ -230,7 +231,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     minimumSize: Size.zero,
-                    padding: EdgeInsets.zero,
+                    padding: const EdgeInsets.symmetric(vertical: 3),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   icon: const Padding(
@@ -238,28 +239,19 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                     child: Icon(Icons.qr_code),
                   ),
                   label: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
+                    padding: const EdgeInsets.only(
+                      right: 8,
                     ),
                     child: Text(
                       FlutterHeyteacherE2EELocalizations.of(context)!.show,
                     ),
                   ),
-                  onPressed: () => AuthViewModel.instance.autenticated
-                      ? _showQrCode()
-                      : showConfirmCancelDialog<void>(
-                          context: context,
-                          content: Text(
-                            FlutterHeyteacherAuthLocalizations.of(
-                              context,
-                            )!.userNotAuthenticated,
-                          ),
-                        ),
+                  onPressed: _showQrCode,
                 ),
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     minimumSize: Size.zero,
-                    padding: EdgeInsets.zero,
+                    padding: const EdgeInsets.symmetric(vertical: 3),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   onPressed: PlatformHelper.isMobile
@@ -270,8 +262,8 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                     child: Icon(Icons.qr_code_scanner),
                   ),
                   label: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
+                    padding: const EdgeInsets.only(
+                      right: 8,
                     ),
                     child: Text(
                       FlutterHeyteacherE2EELocalizations.of(context)!.scan,
@@ -288,7 +280,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   minimumSize: Size.zero,
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.symmetric(vertical: 3),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 onPressed: () async {
@@ -314,7 +306,9 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   child: Icon(Icons.edit),
                 ),
                 label: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  padding: const EdgeInsets.only(
+                    right: 8,
+                  ),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.edit,
                   ),
@@ -425,19 +419,19 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
       context,
     )!.areYouSureToImportEncryptionSecretKey;
     _encryptionPassphraseFocusNode.unfocus();
-    if (AuthViewModel.instance.notAutenticated) {
-      unawaited(
-        showConfirmCancelDialog<void>(
-          context: context,
-          content: Text(
-            FlutterHeyteacherAuthLocalizations.of(
-              context,
-            )!.userNotAuthenticated,
-          ),
-        ),
-      );
-      return;
-    }
+    // if (AuthViewModel.instance.notAutenticated) {
+    //   unawaited(
+    //     showConfirmCancelDialog<void>(
+    //       context: context,
+    //       content: Text(
+    //         FlutterHeyteacherAuthLocalizations.of(
+    //           context,
+    //         )!.userNotAuthenticated,
+    //       ),
+    //     ),
+    //   );
+    //   return;
+    // }
     String? secretJwkJson;
     await showDialog<bool>(
       context: context,
