@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.1.4+167] - 2026-07-20
+
+### 🚜 Refactor [3.1.4]
+
+- Update E2EE UI layouts, remove auth requirements from E2EE actions, and improve debug mode error handling ([7ded6d8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7ded6d8c846542a2e6b93ac90c0de8e46ae8a14d)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.4]
+
+- *(release)* New version 3.1.4+166 which closes ([#278](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/278)) ([d4cbd60](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/d4cbd60d215ae51105fabceb619c24aa7775eab7)) by **heyteacher**
+- *(release)* New version 3.1.4+167 which closes ([#278](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/278)) ([19a6e24](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/19a6e244cd27d125b33c5e1059d57cb5d8f47bb0)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.1.3+165] - 2026-07-18
 
 ### 🚜 Refactor [3.1.3]
