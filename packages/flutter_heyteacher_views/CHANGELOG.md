@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.2.0+168] - 2026-07-20
+
+### 🚀 Features [4.2.0]
+
+- Add `actions` parameter to `ErrorView` and set to `AppBar` ([7cbd525](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7cbd525a00ebc27b4c79f46a9985d85152167019)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.2.0]
+
+- *(release)* New version 4.2.0+168 which closes ([#276](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/276)) ([9d04f91](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9d04f9189da989bcd1f7b258784d07fe121d273d)) by **heyteacher**
+
 ## [flutter_heyteacher_views-4.1.4+167] - 2026-07-17
 
 ### 🐛 Bug Fixes [4.1.4]
