@@ -453,8 +453,14 @@ class ErrorView extends StatelessWidget {
   /// Creates an [ErrorView] to display information about an [_error].
   ///
   /// The [_stackTrace] is also logged for debugging purposes.
-  ErrorView(this._error, this._stackTrace, {String title = '', super.key})
-    : _title = title {
+  ErrorView(
+    this._error,
+    this._stackTrace, {
+    String title = '',
+    List<Widget> actions = const <Widget>[],
+    super.key,
+  }) : _title = title,
+       _actions = actions {
     _logger.severe('<ErrorView>', _error, _stackTrace);
   }
   static final _logger = Logger('ErrorView');
@@ -471,9 +477,12 @@ class ErrorView extends StatelessWidget {
 
   final String _title;
 
+  final List<Widget> _actions;
+
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(_title)),
+    appBar: AppBar(title: Text(_title), actions: _actions),
+
     body: _isFirebaseExceptionCode('permission-denied')
         ? Column(
             children: [
