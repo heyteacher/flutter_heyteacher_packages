@@ -114,6 +114,9 @@ class InfoDevicePackageViewModel {
         '${isRunningWithWasm ? '(Wasm)' : ''}';
   }
 
+  /// Indicates whether the application is running with WebAssembly.
+  bool get runningWithWasm => const bool.fromEnvironment('dart.tool.dart2wasm');
+
   /// Gets a user identifier string.
   ///
   /// It returns the first 7 characters of the authenticated user's UID if
