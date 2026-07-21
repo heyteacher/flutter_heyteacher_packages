@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
-    show PagingSliverAnimatedState;
+    show DeleteCallback, MessageCallback, PagingSliverAnimatedState;
 
 /// A screen that displays a paginated list of sample records.
 class PagingSliverAnimatedStateScreen extends StatefulWidget {
@@ -34,6 +34,20 @@ class _PagingSliverAnimatedStateScreenState
   double get mainAxisExtent => 100;
 
   @override
+  DeleteCallback? get deleteData => (index) async {
+    dataList?.removeAt(index);
+    await animateDeleteData(index);
+  };
+
+  @override
+  MessageCallback<SampleRecord>? get deleteConfirmMessageCallback =>
+      (data) => 'Are you sure you want to delete ${data.title}?';
+
+  @override
+  MessageCallback<SampleRecord>? get deletedMessageCallback =>
+      (data) => '${data.title} deleted';
+
+  @override
   Widget buildData(
     int index, {
     Animation<double>? animation,
@@ -54,7 +68,7 @@ class _PagingSliverAnimatedStateScreenState
     for (var i = 0; i < limit; i++)
       SampleRecord(
         title: 'Record #$i',
-        message: 'loaded $limit records',
+        message: 'swipe right to delete',
       ),
   ];
 

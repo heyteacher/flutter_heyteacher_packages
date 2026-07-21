@@ -3,6 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/src/widgets.dart';
 
+/// Callback that is invoked when an item is removed.
+typedef DeleteCallback = Future<void> Function(int index);
+
+/// Callback that is invoked when the confirm message is displayed.
+typedef MessageCallback<D> = String Function(D data);
+
 /// An abstract [State] for creating a paginated [SliverAnimatedList] or
 /// [SliverAnimatedGrid] that is populated from a `Stream`.
 ///
@@ -101,6 +107,16 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
     bool removing = false,
   });
 
+  /// Removes an item at the given [.
+  @protected
+  DeleteCallback? deleteData;
+
+  /// Message to show when confirming the deletion of an item.
+  MessageCallback<D>? deleteConfirmMessageCallback;
+
+  /// Message to show when confirming the deletion of an item.
+  MessageCallback<D>? deletedMessageCallback;
+
   /// Fetches the initial data for the list.
   ///
   /// This method is called once in [initState] to populate the list before
@@ -160,7 +176,7 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
           initialItemCount: dataList?.length ?? 0,
           itemBuilder: (context, index, animation) =>
               (dataList?.isNotEmpty ?? false) && (dataList?.length ?? 0) > index
-              ? buildData(index, animation: animation)
+              ? _showData(index, animation: animation)
               : const SizedBox.shrink(),
         )
       : SliverAnimatedGrid(
@@ -174,9 +190,31 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
           initialItemCount: dataList?.length ?? 0,
           itemBuilder: (context, index, animation) =>
               (dataList?.isNotEmpty ?? false) && (dataList?.length ?? 0) > index
-              ? buildData(index, animation: animation)
+              ? _showData(index, animation: animation)
               : const SizedBox.shrink(),
         );
+
+  Widget _showData(
+    int index, {
+    required Animation<double> animation,
+    bool removing = false,
+  }) =>
+      deleteData != null &&
+          deleteConfirmMessageCallback != null &&
+          deletedMessageCallback != null
+      ? DismissibleWidget(
+          dismissibleKey: ValueKey(index),
+          deleteConfirmMessage: deleteConfirmMessageCallback!.call(
+            dataList![index],
+          ),
+          deletedMessage: deletedMessageCallback!.call(dataList![index]),
+          onDismissed: (_) async {
+            await deleteData!.call(index);
+            await animateDeleteData(index);
+          },
+          child: buildData(index, animation: animation, removing: removing),
+        )
+      : buildData(index, animation: animation, removing: removing);
 
   /// Animates the deletion of an item at the given [index].
   @protected
@@ -270,6 +308,70 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
   }) => newList.indexed
       .where((e) => oldList.indexOf(e.$2) != e.$1)
       .map((e) => e.$1);
+}
+
+/// A widget that can be dismissed by swiping.
+class DismissibleWidget extends StatelessWidget {
+  /// Creates a [DismissibleWidget] widget on [child].
+  ///
+  /// The [deleteConfirmMessage] is the message to be displayed in the dialog.
+  ///
+  /// The [dismissibleKey] is the key to be used for the [Dismissible] widget.
+  ///
+  /// The [deletedMessage] is the message to be displayed after the item
+  /// is deleted.
+  ///
+  /// The [onDismissed] is the callback to be called after the item is deleted.
+  const DismissibleWidget({
+    required String deleteConfirmMessage,
+    required Key dismissibleKey,
+    required String deletedMessage,
+    required void Function(DismissDirection) onDismissed,
+    required Widget child,
+    super.key,
+  }) : _child = child,
+       _onDismissed = onDismissed,
+       _deletedMessage = deletedMessage,
+       _dismissibleKey = dismissibleKey,
+       _deleteConfirmMessage = deleteConfirmMessage;
+
+  final String _deleteConfirmMessage;
+
+  final Key _dismissibleKey;
+
+  final String _deletedMessage;
+
+  final DismissDirectionCallback _onDismissed;
+
+  final Widget _child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: _dismissibleKey,
+      direction: DismissDirection.startToEnd,
+      background: const ColoredBox(
+        color: Colors.red,
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: Icon(
+                Icons.delete_rounded,
+              ),
+            ),
+          ],
+        ),
+      ),
+      confirmDismiss: (_) async => showConfirmCancelDialog<void>(
+        context: context,
+        content: Text(_deleteConfirmMessage),
+        confirmCallback: (_) async => _deletedMessage,
+      ),
+      onDismissed: _onDismissed,
+      child: _child,
+    );
+  }
 }
 
 /// A widget that displays text with a blinking (fade in/out) animation.

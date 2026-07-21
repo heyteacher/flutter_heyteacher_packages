@@ -7,7 +7,7 @@ A Flutter package providing a collection of reusable UI widgets, adaptive layout
 - **Navigation Helpers**: Includes `ScaffoldNavigationShell` for streamlined navigation with packages like `go_router`.
 - **Common Widgets**: A set of pre-built widgets for common UI patterns, including `ErrorView`, `ProgressIndicatorView`, `TableView`, and more.
 - **Adaptive Layout**: Easily create responsive UIs that adapt to different screen sizes with `AdaptiveScaffold`,  `AdaptiveWrap` and `AdaptiveState`.
-- **Animations Utilities**: Includes `PagingSliverAnimatedState`, `BlinkingText` and `AnimatedText`.
+- **Animations Utilities**: Includes `PagingSliverAnimatedState`, `BlinkingText`, `AnimatedText` and `DismissibleWidget`.
 - **Theme Management**: Simple theme switching and management capabilities with `ThemeViewModel` and widget to change theme mode (`ThemeModeButton`, `ThemeCard`)
 - **Tutorials**: A `TutorialViewModel` to help guide users through your app's features.
 - **Handy Utilities**: dialogs (`showConfirmCancelDialog`), snackbars (`showSnackBar`), and extensions.
