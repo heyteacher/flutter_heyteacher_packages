@@ -50,11 +50,30 @@ class DevicePackageInfoListTile extends StatelessWidget {
         }
       },
     ),
-    title: FutureBuilder<String>(
-      future: InfoDevicePackageViewModel.instance.packageVersion,
-      builder: (_, devicePackageSnapshot) => Text(
-        devicePackageSnapshot.data ?? '',
-      ),
+    title: Wrap(
+      children: [
+        FutureBuilder<String>(
+          future: InfoDevicePackageViewModel.instance.packageVersion,
+          builder: (_, devicePackageSnapshot) => Text(
+            devicePackageSnapshot.data ?? '',
+          ),
+        ),
+        if (InfoDevicePackageViewModel.instance.runningWithWasm)
+          const Badge(
+            label: Wrap(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 1),
+                  child: Icon(Icons.rocket, size: 14),
+                ),
+                Text('WASM'),
+              ],
+            ),
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            //largeSize: 12,
+          ),
+      ],
     ),
     subtitle: FutureBuilder(
       future: InfoDevicePackageViewModel.instance.deviceInfo,
