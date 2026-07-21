@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.3.0+169] - 2026-07-21
+
+### 🚀 Features [4.3.0]
+
+- Implement swipe to delete in `PagingSliverAnimatedState` and  `DismissibleWidged` ([331f3e2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/331f3e210d186a9bfd2eb431d74ba303bd8d40c3)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.3.0]
+
+- *(release)* New version 4.3.0+169 which closes ([#280](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/280)) ([433fc7f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/433fc7f316511365afc19f8bbe183ef4215ae5bd)) by **heyteacher**
+
 ## [flutter_heyteacher_views-4.2.0+168] - 2026-07-20
 
 ### 🚀 Features [4.2.0]
