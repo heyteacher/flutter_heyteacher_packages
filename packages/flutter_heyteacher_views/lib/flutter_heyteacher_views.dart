@@ -5,7 +5,13 @@ export 'src/adaptive_layout/adaptive_scaffold.dart' show AdaptiveScaffold;
 export 'src/adaptive_layout/adaptive_wrap.dart'
     show AdaptiveWrap, SliverAdaptiveWrap;
 export 'src/animations.dart'
-    show AnimateText, BlinkingText, PagingSliverAnimatedState;
+    show
+        AnimateText,
+        BlinkingText,
+        DeleteCallback,
+        DismissibleWidget,
+        MessageCallback,
+        PagingSliverAnimatedState;
 export 'src/color_to_int32_extension.dart' show ColorEx;
 export 'src/router.dart' show ScaffoldNavigationShell;
 export 'src/theme/theme_view.dart'
