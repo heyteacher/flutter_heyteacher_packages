@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-3.1.1+152] - 2026-07-21
+
+### 🎨 Styling [3.1.1]
+
+- Show Wasm support with a badge ([ae5aeab](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ae5aeab129ffad5d1eb9187d0b2674b7af86b795)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.1]
+
+- *(release)* New version 3.1.1+152 which closes ([#282](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/282)) ([993ecca](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/993ecca42a2e69c4ac011ce94b890fe66f8549f7)) by **heyteacher**
+
 ## [flutter_heyteacher_platform-3.1.0+151] - 2026-07-17
 
 ### 🚀 Features [3.1.0]
