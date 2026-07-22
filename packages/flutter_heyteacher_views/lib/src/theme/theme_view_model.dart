@@ -172,6 +172,10 @@ class ThemeViewModel {
   /// A blue color that adapts to the current theme (light/dark).
   Color get blueColor => isLight ? Colors.blue.shade800 : Colors.blue.shade200;
 
+  /// A light blue color that adapts to the current theme (light/dark).
+  Color get lightBlueColor =>
+      isLight ? Colors.lightBlue.shade800 : Colors.lightBlue.shade200;
+
   /// A purple color that adapts to the current theme (light/dark).
   Color get purpleColor =>
       isLight ? Colors.purple.shade800 : Colors.purple.shade200;
@@ -183,6 +187,10 @@ class ThemeViewModel {
   /// A green color that adapts to the current theme (light/dark).
   Color get greenColor =>
       isLight ? Colors.green.shade800 : Colors.green.shade200;
+
+  /// A light green color that adapts to the current theme (light/dark).
+  Color get lightGreenColor =>
+      isLight ? Colors.lightGreen.shade800 : Colors.lightGreen.shade200;
 
   /// A yellow color that adapts to the current theme (light/dark).
   Color get yellowColor =>
