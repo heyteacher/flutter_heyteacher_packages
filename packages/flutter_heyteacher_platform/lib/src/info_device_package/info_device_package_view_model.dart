@@ -108,10 +108,8 @@ class InfoDevicePackageViewModel {
   ///
   /// Formats it as "version+buildNumber".
   Future<String> get packageVersion async {
-    const isRunningWithWasm = bool.fromEnvironment('dart.tool.dart2wasm');
     final packageInfoPlatform = await PackageInfo.fromPlatform();
-    return '${packageInfoPlatform.version}+${packageInfoPlatform.buildNumber} '
-        '${isRunningWithWasm ? '(Wasm)' : ''}';
+    return '${packageInfoPlatform.version}+${packageInfoPlatform.buildNumber}';
   }
 
   /// Indicates whether the application is running with WebAssembly.

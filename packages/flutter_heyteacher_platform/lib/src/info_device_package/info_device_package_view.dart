@@ -51,6 +51,7 @@ class DevicePackageInfoListTile extends StatelessWidget {
       },
     ),
     title: Wrap(
+      spacing: 4,
       children: [
         FutureBuilder<String>(
           future: InfoDevicePackageViewModel.instance.packageVersion,
@@ -58,21 +59,10 @@ class DevicePackageInfoListTile extends StatelessWidget {
             devicePackageSnapshot.data ?? '',
           ),
         ),
-        if (InfoDevicePackageViewModel.instance.runningWithWasm)
-          const Badge(
-            label: Wrap(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 1),
-                  child: Icon(Icons.rocket, size: 14),
-                ),
-                Text('WASM'),
-              ],
-            ),
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            //largeSize: 12,
-          ),
+        const Padding(
+          padding: EdgeInsets.only(top: 3),
+          child: WasmWidget(),
+        ),
       ],
     ),
     subtitle: FutureBuilder(
@@ -90,4 +80,26 @@ class DevicePackageInfoListTile extends StatelessWidget {
       tooltip: FlutterHeyteacherPlatformLocalizations.of(context)!.askSupport,
     ),
   );
+}
+
+/// Widget to display if the application is running with WASM.
+class WasmWidget extends StatelessWidget {
+  /// Creates a [WasmWidget].
+  const WasmWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) =>
+      InfoDevicePackageViewModel.instance.runningWithWasm
+      ? const Badge(
+          label: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Icon(Icons.rocket, size: 12),
+              Text('WASM'),
+            ],
+          ),
+        )
+      : const SizedBox.shrink();
 }
