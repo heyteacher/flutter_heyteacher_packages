@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_connectivity-3.0.3+148] - 2026-07-22
+
+### ⚙️ Miscellaneous Tasks [3.0.3]
+
+- Bump internal package dependencies and update flutter_cookie_consent ([38e5c27](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/38e5c272dadbc92f093fee3ad345bc715928d447)) by **heyteacher**
+- Update dependencies and internal package versions across the project monorepo ([5fd9ba9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5fd9ba90007871f461ea292b49a31d82b3777b29)) by **heyteacher**
+- *(release)* New version 3.0.3+148 which closes ([#286](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/286)) ([a1e61ba](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a1e61bae78b68aac09eb110d6c58f14b95eb5d3e)) by **heyteacher**
+
 ## [flutter_heyteacher_connectivity-3.0.2+147] - 2026-05-13
 
 ### 📚 Documentation [3.0.2]
