@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.3.2+171] - 2026-07-22
+
+### ⚙️ Miscellaneous Tasks [4.3.2]
+
+- Add `lightBlueColor` and `lightGreenColor` getters to `ThemeViewModel` ([07ec358](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/07ec3583a88d5794adc0332b2f13b2650d0a544a)) by **heyteacher**
+- *(release)* New version 4.3.2+171 which closes ([#288](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/288)) ([1195bcf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1195bcf37d9e7f26b1ca49d827b7f89844fc1e5d)) by **heyteacher**
+
 ## [flutter_heyteacher_views-4.3.1+170] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [4.3.1]
