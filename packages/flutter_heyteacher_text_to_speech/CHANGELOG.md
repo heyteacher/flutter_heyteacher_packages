@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_text_to_speech-4.0.3+162] - 2026-07-22
+
+### ⚙️ Miscellaneous Tasks [4.0.3]
+
+- Bump internal package dependencies and update flutter_cookie_consent ([38e5c27](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/38e5c272dadbc92f093fee3ad345bc715928d447)) by **heyteacher**
+- Update dependencies equatable, auth, and logger across packages ([1726e46](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1726e4602dc02393fad6fe29c89a3a581195f8db)) by **heyteacher**
+- Update dependencies and internal package versions across the project monorepo ([5fd9ba9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5fd9ba90007871f461ea292b49a31d82b3777b29)) by **heyteacher**
+- *(release)* New version 4.0.3+162 which closes ([#286](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/286)) ([c47ccae](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c47ccaebab0a48949a9595dfa635b271b4fbb9ab)) by **heyteacher**
+
 ## [flutter_heyteacher_text_to_speech-4.0.2+161] - 2026-05-13
 
 ### 📚 Documentation [4.0.2]
