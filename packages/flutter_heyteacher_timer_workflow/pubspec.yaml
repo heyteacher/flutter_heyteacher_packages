@@ -1,6 +1,6 @@
 name: flutter_heyteacher_timer_workflow
 description: "The flutter heyteacher package for manage timer workflow, that means tasks with an execution duration prefixed"
-version: 2.0.9+141
+version: 2.0.10+142
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_timer_workflow
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues

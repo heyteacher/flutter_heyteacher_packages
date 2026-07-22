@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_timer_workflow-2.0.10+142] - 2026-07-22
+
+### ⚙️ Miscellaneous Tasks [2.0.10]
+
+- Bump internal package dependencies and update flutter_cookie_consent ([38e5c27](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/38e5c272dadbc92f093fee3ad345bc715928d447)) by **heyteacher**
+- Update dependencies and internal package versions across the project monorepo ([5fd9ba9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5fd9ba90007871f461ea292b49a31d82b3777b29)) by **heyteacher**
+- *(release)* New version 2.0.10+142 which closes ([#286](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/286)) ([a191994](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a191994b2d01425bcffde9b753a44a8a1c3729f1)) by **heyteacher**
+
 ## [flutter_heyteacher_timer_workflow-2.0.9+141] - 2026-05-13
 
 ### 📚 Documentation [2.0.9]
