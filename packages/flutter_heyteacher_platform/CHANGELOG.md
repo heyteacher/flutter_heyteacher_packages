@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-3.1.2+153] - 2026-07-22
+
+### 🚜 Refactor [3.1.2]
+
+- Extract WASM status badge into reusable WasmWidget and remove wasm check from `packageVersion` ([99bc501](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/99bc5014e24397201de65201610d1afbd565542e)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.2]
+
+- *(release)* New version 3.1.2+153 which closes ([#282](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/282)) ([c27e208](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c27e208cf85d25074fb391ffd08329284286e75b)) by **heyteacher**
+
 ## [flutter_heyteacher_platform-3.1.1+152] - 2026-07-21
 
 ### 🎨 Styling [3.1.1]
