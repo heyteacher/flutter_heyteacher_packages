@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_firebase-2.0.14+150] - 2026-07-22
+
+### ⚙️ Miscellaneous Tasks [2.0.14]
+
+- Update dependencies and internal package versions across the project monorepo ([5fd9ba9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5fd9ba90007871f461ea292b49a31d82b3777b29)) by **heyteacher**
+- *(release)* New version 2.0.14+150 which closes ([#286](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/286)) ([c2bbd29](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c2bbd29105027dfddeb3a2334dc4d26c6c996594)) by **heyteacher**
+
 ## [flutter_heyteacher_firebase-2.0.13+149] - 2026-07-08
 
 ### ⚙️ Miscellaneous Tasks [2.0.13]
