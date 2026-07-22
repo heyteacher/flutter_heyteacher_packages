@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-4.0.3+1050] - 2026-07-22
+
+### ⚙️ Miscellaneous Tasks [4.0.3]
+
+- Update dependencies and internal package versions across the project monorepo ([5fd9ba9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5fd9ba90007871f461ea292b49a31d82b3777b29)) by **heyteacher**
+- *(release)* New version 4.0.3+1050 which closes ([#286](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/286)) ([3eb749f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3eb749ff95f1acd18e7c844f0d4c635e14805fcd)) by **heyteacher**
+
 ## [flutter_heyteacher_store-4.0.2+1049] - 2026-07-08
 
 ### 🚜 Refactor [4.0.2]
