@@ -19,10 +19,14 @@ lane :doc do
   end
 end
 
-desc "fl test - Run tests"
+desc "fl test - Run tests (only if test/ directory exists and contains test files)"
 lane :test do
   Dir.chdir("../") do
-    sh("flutter test")
+    if Dir.exist?("test") && Dir.glob("test/**/*_test.dart").any?
+      sh("flutter test")
+    else
+      puts "Skipping tests: no test/ directory or no *_test.dart files found"
+    end
   end
 end
 
@@ -108,7 +112,13 @@ lane :release do|options|
     end
   end
   sh("git pull")
-  test
+  Dir.chdir("../") do
+    if Dir.exist?("test") && Dir.glob("test/**/*_test.dart").any?
+      test
+    else
+      puts "skipping tests since no test found"
+    end
+  end
   # commit bump and push remote
   puts "commit pubspec.yaml with new version #{version}"
   sh("git add ../pubspec.yaml")
