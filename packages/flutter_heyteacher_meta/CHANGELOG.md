@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.9.1+185] - 2026-07-23
+
+### 🐛 Bug Fixes [7.9.1]
+
+- Skip test if `test` directory doesn't exists in `test` lane ([9b4d35e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9b4d35e4432243499d65c9291ce1c1e4679c17d5)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.9.1]
+
+- *(release)* New version 7.9.1+185 which closes ([#285](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/285)) ([26e8c08](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/26e8c08b958b2aacda061432e92a692f15b51115)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.9.0+184] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [7.9.0]
