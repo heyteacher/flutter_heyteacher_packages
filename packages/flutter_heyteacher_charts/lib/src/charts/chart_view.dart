@@ -204,11 +204,13 @@ abstract class ChartView extends StatelessWidget {
 
   /// For line charts, defines the appearance of the area above a line series,
   /// cut off at a specific Y-value.
-  final Iterable<({double cutoff, Color color})?>? aboveBarDataList;
+  final Iterable<({double? cutoff, Color? color, Gradient? gradient})?>?
+      aboveBarDataList;
 
   /// For line charts, defines the appearance of the area below a line series,
   /// cut off at a specific Y-value.
-  final Iterable<({double cutoff, Color color})?>? belowBarDataList;
+  final Iterable<({double? cutoff, Color? color, Gradient? gradient})?>?
+      belowBarDataList;
 
   ({double intervalY, double maxY, double minY}) _minMaxIntervalY(
     double? maxY,
@@ -585,8 +587,9 @@ abstract class ChartView extends StatelessWidget {
         ? BarAreaData(
             show: true,
             color: aboveBarDataList!.elementAt(index)!.color,
-            cutOffY: aboveBarDataList!.elementAt(index)!.cutoff,
-            applyCutOffY: true,
+            cutOffY: aboveBarDataList!.elementAt(index)!.cutoff ?? 0,
+            applyCutOffY: aboveBarDataList!.elementAt(index)!.cutoff != null,
+            gradient: aboveBarDataList!.elementAt(index)!.gradient,
           )
         : BarAreaData();
   }
@@ -599,8 +602,9 @@ abstract class ChartView extends StatelessWidget {
         ? BarAreaData(
             show: true,
             color: belowBarDataList!.elementAt(index)!.color,
-            cutOffY: belowBarDataList!.elementAt(index)!.cutoff,
-            applyCutOffY: true,
+            cutOffY: belowBarDataList!.elementAt(index)!.cutoff ?? 0,
+            applyCutOffY: belowBarDataList!.elementAt(index)!.cutoff != null,
+            gradient: belowBarDataList!.elementAt(index)!.gradient,
           )
         : BarAreaData();
   }
