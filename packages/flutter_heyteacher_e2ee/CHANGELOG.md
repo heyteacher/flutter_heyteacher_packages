@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.1.6+169] - 2026-07-24
+
+### 🧪 Testing [3.1.6]
+
+- Remove dummy tests ([7fd058c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fd058ce29da7e12e4a673d74df97649d259d969)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.6]
+
+- Log `debugMode` set only when value changes ([77f5799](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/77f5799f500c79f77976b230b5e97989dab56cae)) by **heyteacher**
+- *(release)* New version 3.1.6+169 which closes ([#291](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/291)) ([09290b1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/09290b15b5403b7ec38a8b0df5dde761a6dae99e)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.1.5+168] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [3.1.5]
