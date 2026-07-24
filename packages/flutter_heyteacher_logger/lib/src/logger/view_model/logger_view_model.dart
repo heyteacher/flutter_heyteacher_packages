@@ -216,6 +216,7 @@ class LoggerViewModel {
     // a single isolate
     unawaited(_writeLogsWorker.initialize());
     // Listen to records from the root logger.
+    unawaited(_loggerSubscription?.cancel());
     _loggerSubscription = Logger.root.onRecord.listen(
       (logRecord) => _logEntry(
         LogEntry.fromLogRecord(logRecord),
