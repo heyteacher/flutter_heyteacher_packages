@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_charts-3.0.0+121] - 2026-07-24
+
+### 🚀 Features [3.0.0]
+
+- [**breaking**] Add gradient to `belowBarDataList` and `aboveBarDataList` ([f1d64ff](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f1d64ff7a49322fe5ca9f9066b17e46ccb67fb38)) by **heyteacher**
+
+### 🧪 Testing [3.0.0]
+
+- Remove dummy tests ([7fd058c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fd058ce29da7e12e4a673d74df97649d259d969)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.0]
+
+- *(release)* New version 3.0.0+121 which closes ([#292](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/292)) ([cd700e3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cd700e36e60679c0f1669ee5487e73c15e577689)) by **heyteacher**
+
 ## [flutter_heyteacher_charts-2.0.8+120] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [2.0.8]
