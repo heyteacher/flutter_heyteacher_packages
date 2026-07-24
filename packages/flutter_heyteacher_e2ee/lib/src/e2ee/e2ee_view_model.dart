@@ -105,9 +105,14 @@ class E2EEViewModel {
   static set debugMode(bool debugMode) {
     final logger = instance(
       AuthViewModel.instance.uid,
-    )._logger..finer('<setDebugMode>:');
+    )._logger..finest('<setDebugMode>:');
+    if (_debugMode == debugMode) {
+      logger.finest('(debugMode): no changes');
+      return;
+    }
+    final oldDebugMode = _debugMode;
     _debugMode = debugMode;
-    logger.info('(debugMode): changed to $debugMode');
+    logger.info('(debugMode): changed from $oldDebugMode to $debugMode');
   }
 
   /// Generate a Secret Key anr returns the JWK in JSON format.
