@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_logger-3.0.5+162] - 2026-07-24
+
+### 🐛 Bug Fixes [3.0.5]
+
+- On reconfigure log in `LoggerViewModel-initialize` close previous log subscription ([751c8de](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/751c8de83a3189d49c181aff9a2fd8c00047ab84)) by **heyteacher**
+
+### 🧪 Testing [3.0.5]
+
+- Remove dummy tests ([7fd058c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fd058ce29da7e12e4a673d74df97649d259d969)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.5]
+
+- Update dependencies equatable, auth, and logger across packages ([1726e46](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1726e4602dc02393fad6fe29c89a3a581195f8db)) by **heyteacher**
+- Update dependencies and internal package versions across the project monorepo ([5fd9ba9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5fd9ba90007871f461ea292b49a31d82b3777b29)) by **heyteacher**
+- *(release)* New version 3.0.5+162 which closes ([#293](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/293)) ([4f02226](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4f0222648ec5db3cd372d7f465fbe82a7b6c4d3c)) by **heyteacher**
+
 ## [flutter_heyteacher_logger-3.0.4+161] - 2026-07-08
 
 ### ⚙️ Miscellaneous Tasks [3.0.4]
