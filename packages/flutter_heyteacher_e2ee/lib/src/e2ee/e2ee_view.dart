@@ -47,6 +47,7 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
   bool _authenticated = AuthViewModel.instance.autenticated;
   String? _aad;
 
+  StreamSubscription<dynamic>? _aadChangedStreamSubscription;
   StreamSubscription<dynamic>? _authStremSubscription;
 
   @override
@@ -60,6 +61,10 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
     _aad = await E2EEViewModel.instance(AuthViewModel.instance.uid).getAAD();
     setState(() {});
     // listen for auth changes
+    unawaited(_aadChangedStreamSubscription?.cancel());
+    _aadChangedStreamSubscription = E2EEViewModel.instance(
+      AuthViewModel.instance.uid,
+    ).aadChangedStream.listen((aad) => setState(() => _aad = aad));
     unawaited(_authStremSubscription?.cancel());
     _authStremSubscription = AuthViewModel.instance.stateChangesStream.listen(
       (user) async {
@@ -73,6 +78,7 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
 
   @override
   void dispose() {
+    unawaited(_aadChangedStreamSubscription?.cancel());
     unawaited(_authStremSubscription?.cancel());
     super.dispose();
   }
@@ -120,7 +126,7 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
           confirmCallback: (_) async {
             await E2EEViewModel.instance(
               AuthViewModel.instance.uid,
-            ).setAAD(value);
+            ).setAAD(aad: value, notifyChange: false);
             _warningAlreadyShowed = true;
             _aad = value;
             widget.setPassphraseCallback?.call();
@@ -138,7 +144,9 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
         ),
       );
     } else {
-      await E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD(value);
+      await E2EEViewModel.instance(
+        AuthViewModel.instance.uid,
+      ).setAAD(aad: value, notifyChange: false);
       _aad = value;
       widget.setPassphraseCallback?.call();
     }
@@ -285,6 +293,70 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                 ),
                 onPressed: () async {
                   try {
+                    if (await E2EEViewModel.instance(
+                      AuthViewModel.instance.uid,
+                    ).aadNotStored) {
+                      await E2EEViewModel.instance(
+                        AuthViewModel.instance.uid,
+                      ).setAAD();
+                      setState(() {});
+                    }
+                    if (await E2EEViewModel.instance(
+                      AuthViewModel.instance.uid,
+                    ).secretKeyStored) {
+                      if (context.mounted) {
+                        unawaited(
+                          showConfirmCancelDialog(
+                            context: context,
+                            content: Text(
+                              FlutterHeyteacherE2EELocalizations.of(
+                                context,
+                              )!.areYouSureToChangeSecretKey,
+                            ),
+                            confirmCallback: (_) async {
+                              await _generateSecretKey(context);
+                              return null;
+                            },
+                          ),
+                        );
+                      }
+                    } else {
+                      if (context.mounted) {
+                        await _generateSecretKey(context);
+                      }
+                    }
+                  } on Exception catch (e) {
+                    if (context.mounted) {
+                      showSnackBar(
+                        context: context,
+                        message: e.toString(),
+                        error: true,
+                        persist: true,
+                      );
+                    }
+                  }
+                },
+                icon: const Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Icon(Icons.create),
+                ),
+                label: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 8,
+                  ),
+                  child: Text(
+                    FlutterHeyteacherE2EELocalizations.of(context)!.generate,
+                  ),
+                ),
+              ),
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size.zero,
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                onPressed: () async {
+                  try {
                     await _secretKeyDialog(
                       initialValue: await E2EEViewModel.instance(
                         AuthViewModel.instance.uid,
@@ -320,6 +392,20 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
       ),
     ),
   );
+
+  Future<void> _generateSecretKey(BuildContext context) async {
+    await E2EEViewModel.instance(
+      AuthViewModel.instance.uid,
+    ).generateSecretKey();
+    if (context.mounted) {
+      showSnackBar(
+        context: context,
+        message: FlutterHeyteacherE2EELocalizations.of(
+          context,
+        )!.secretkeyGenerated,
+      );
+    }
+  }
 
   Future<void> _showQrCode() async {
     // remove focus on encryption passphrase

@@ -60,4 +60,14 @@ class FlutterHeyteacherE2EELocalizationsDe
 
   @override
   String get edit => 'Bearbeiten';
+
+  @override
+  String get generate => 'Generieren';
+
+  @override
+  String get secretkeyGenerated => 'Geheimschlüssel generiert';
+
+  @override
+  String get areYouSureToChangeSecretKey =>
+      'Wenn Sie den Kryptografischen Schlüssel ändern, können Sie nicht mehr auf Daten zugreifen, die mit dem alten Schlüssel verschlüsselt wurden.\n\nMöchten Sie den Kryptografischen Schlüssel wirklich ändern?';
 }

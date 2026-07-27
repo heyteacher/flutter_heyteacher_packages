@@ -59,4 +59,14 @@ class FlutterHeyteacherE2EELocalizationsEn
 
   @override
   String get edit => 'Edit';
+
+  @override
+  String get generate => 'Generate';
+
+  @override
+  String get secretkeyGenerated => 'Secret key generated';
+
+  @override
+  String get areYouSureToChangeSecretKey =>
+      'If you change the Secret Key, you will not be able to access data encrypted with the old key.\n\nAre you sure you want to change the Encryption Key?';
 }

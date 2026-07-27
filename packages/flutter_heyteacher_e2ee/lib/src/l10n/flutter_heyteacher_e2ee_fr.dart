@@ -59,4 +59,14 @@ class FlutterHeyteacherE2EELocalizationsFr
 
   @override
   String get edit => 'Modifier';
+
+  @override
+  String get generate => 'Générer';
+
+  @override
+  String get secretkeyGenerated => 'Clé secrète générée';
+
+  @override
+  String get areYouSureToChangeSecretKey =>
+      'Si vous modifiez la Clé Cryptographique, vous ne pourrez plus accéder aux données chiffrées avec l\'ancienne clé.\n\nÊtes-vous sûr de vouloir modifier la Clé Cryptographique?';
 }

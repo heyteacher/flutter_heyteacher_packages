@@ -193,6 +193,24 @@ abstract class FlutterHeyteacherE2EELocalizations {
   /// In en, this message translates to:
   /// **'Edit'**
   String get edit;
+
+  /// No description provided for @generate.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate'**
+  String get generate;
+
+  /// No description provided for @secretkeyGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Secret key generated'**
+  String get secretkeyGenerated;
+
+  /// No description provided for @areYouSureToChangeSecretKey.
+  ///
+  /// In en, this message translates to:
+  /// **'If you change the Secret Key, you will not be able to access data encrypted with the old key.\n\nAre you sure you want to change the Encryption Key?'**
+  String get areYouSureToChangeSecretKey;
 }
 
 class _FlutterHeyteacherE2EELocalizationsDelegate

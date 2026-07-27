@@ -27,5 +27,11 @@
   "scan": "Escanear",
   "@scan": {},
   "edit": "Editar",
-  "@edit": {}
+  "@edit": {},
+  "generate": "Gerar",
+  "@generate": {},
+  "secretkeyGenerated": "Chave secreta gerada",
+  "@secretkeyGenerated": {},
+  "areYouSureToChangeSecretKey": "Se você alterar a Chave Criptográfica, não poderá acessar os dados criptografados com a chave antiga.\n\nTem certeza de que deseja alterar a Chave Criptográfica?",
+  "@areYouSureToChangeSecretKey": {}
 }
