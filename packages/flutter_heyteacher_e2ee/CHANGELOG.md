@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.2.0+170] - 2026-07-27
+
+### 🚀 Features [3.2.0]
+
+- Add generate secret key in list tile, `aadChangeStream` in view model and change signature of  `setAAD` ([599dcb3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/599dcb336a0dfcf14aa02ee6813b242aa07745c8)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.2.0]
+
+- *(release)* New version 3.2.0+170 which closes ([#299](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/299)) ([75fc25f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/75fc25f5a07ac693e833ae014781ce74ca761af2)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.1.6+169] - 2026-07-24
 
 ### 🧪 Testing [3.1.6]
