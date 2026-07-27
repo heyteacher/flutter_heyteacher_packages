@@ -2,7 +2,7 @@ name: flutter_heyteacher_e2ee_example
 description: "Flutter Heyteacher E2EE example app."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -36,6 +36,8 @@ dependencies:
     path: ../../flutter_heyteacher_auth
   flutter_heyteacher_e2ee:
     path: ../../flutter_heyteacher_e2ee
+  flutter_heyteacher_logger:
+    path: ../../flutter_heyteacher_logger
   flutter_heyteacher_views:
     path: ../../flutter_heyteacher_views
   go_router: ^17.3.0
@@ -43,7 +45,7 @@ dependencies:
   url_launcher: ^6.3.2
 
 dev_dependencies:
-  flutter_heyteacher_meta: 
+  flutter_heyteacher_meta:
     path: ../../flutter_heyteacher_meta
   flutter_test:
     sdk: flutter
@@ -54,7 +56,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

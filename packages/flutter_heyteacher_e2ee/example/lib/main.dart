@@ -9,6 +9,7 @@ import 'package:flutter_heyteacher_e2ee/flutter_heyteacher_e2ee.dart'
         E2EEValue,
         E2EEViewModel,
         FlutterHeyteacherE2EELocalizations;
+import 'package:flutter_heyteacher_logger/flutter_heyteacher_logger.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show ThemeViewModel, showSnackBar;
 
@@ -18,9 +19,15 @@ Future<void> main() async {
 
   // local sign in
   await AuthViewModel.instance.localInitialize();
-  unawaited(
-    E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD('debugPassword'),
+  // setup logger
+  await LoggerViewModel.instance.initialize();
+
+  E2EEViewModel.setMasterSecretKeyJwk(
+    await E2EEViewModel.generateSecretKeyJwk(),
   );
+  await E2EEViewModel.instance(
+    AuthViewModel.instance.uid,
+  ).setAAD(aad: 'debugPassword');
 
   runApp(const MyApp());
 }

@@ -23,7 +23,9 @@ void main() async {
 
   unawaited(AuthViewModel.instance.localInitialize());
   unawaited(
-    E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD('debugPassword'),
+    E2EEViewModel.instance(
+      AuthViewModel.instance.uid,
+    ).setAAD(aad: 'debugPassword'),
   );
 
   group('secret key', () {

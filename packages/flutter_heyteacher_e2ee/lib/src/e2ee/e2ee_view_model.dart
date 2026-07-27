@@ -46,6 +46,10 @@ class E2EEViewModel {
   final StreamController<String?> _secretKeyChangedStreamController =
       StreamController<String?>.broadcast();
 
+  /// AAD changed notifier
+  final StreamController<String?> _aadChangedStreamController =
+      StreamController<String?>.broadcast();
+
   /// the secure storage instance
   @visibleForTesting
   FlutterSecureStorage? flutterSecureStorage;
@@ -135,22 +139,15 @@ class E2EEViewModel {
   Stream<String?> get secretKeyChangedStream =>
       _secretKeyChangedStreamController.stream;
 
+  /// the aad changed stream
+  Stream<String?> get aadChangedStream => _aadChangedStreamController.stream;
+
   /// Asynchronously checks if the user's secret key is currently stored.
   Future<bool> get secretKeyStored async =>
       _debugMode || await (await _secureStorage).containsKey(key: secretKeyKey);
 
   /// Asynchronously checks if the user's secret key is not currently stored.
   Future<bool> get secretKeyNotStored async => !await secretKeyStored;
-
-  /// Initializes the secret key by generating one if it's not already stored.
-  /// This is typically called during application startup or after user
-  /// authentication.
-  Future<void> initSecretKey() async {
-    _logger.finer('<initSecretKey>:');
-    if (await secretKeyNotStored) {
-      await generateSecretKey();
-    }
-  }
 
   /// Encrypts the given [value] string using AES-GCM.
   ///
@@ -279,13 +276,13 @@ class E2EEViewModel {
 
   /// Sets the Additional Authenticated Data (AAD) for the current user.
   ///
-  /// The [aadValue] (typically a user-provided passphrase) is stored securely.
+  /// The [aad] (typically a user-provided passphrase) is stored securely.
   /// Requires the user to be authenticated.
   ///
-  /// If [aadValue] is null, generate a ramdom string and set it
-  /// the provided [aadValue].
-  Future<void> setAAD([String? aadValue]) async {
-    _logger.finer('<setAAD>:');
+  /// If [aad] is null, generate a ramdom string and set it
+  /// the provided [aad].
+  Future<void> setAAD({String? aad, bool notifyChange = true}) async {
+    _logger.finer('<setAAD>: notifyChange $notifyChange');
     // skip in debug mode
     if (_debugMode) {
       _logger.warning('(setAAD): debug mode enabled, skip setting AAD');
@@ -297,10 +294,15 @@ class E2EEViewModel {
       throw UserNotAuthenticatedException();
     }
     final secureStorage = await _secureStorage;
+    final value = aad ?? _generateAADValue();
     await secureStorage.write(
       key: aadKey,
-      value: aadValue ?? _generateAADValue(),
+      value: value,
     );
+    // notify change
+    if (notifyChange) {
+      _aadChangedStreamController.add(value);
+    }
   }
 
   /// Retrieves the Additional Authenticated Data (AAD) for the current user.
@@ -323,6 +325,16 @@ class E2EEViewModel {
       }
     }
   }
+
+  /// Check if AAD is stored.
+  Future<bool> get aadStored async {
+    _logger.finest('<aadStored>:');
+    final aad = await getAAD();
+    return aad != null && aad.isNotEmpty;
+  }
+
+  /// Check if AAD is not stored.
+  Future<bool> get aadNotStored async => !(await aadStored);
 
   /// Exports the user's secret key as a JSON string.
   ///
@@ -447,7 +459,6 @@ class E2EEViewModel {
   /// Stores into user's secure storage if [isToStore] is true (the default).
   ///
   /// Requires the user to be authenticated.
-  @visibleForTesting
   Future<AesGcmSecretKey> generateSecretKey({bool isToStore = true}) async {
     _logger.info('<generateSecretKey>:');
     if (debugMode) {
