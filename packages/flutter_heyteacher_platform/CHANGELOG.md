@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-3.1.4+155] - 2026-07-28
+
+### 🎨 Styling [3.1.4]
+
+- Remove padding on `DevicePackageInfoListTile` leading icon ([e97d309](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e97d3094efb05cc2d0396bfdb97728b98a476a55)) by **heyteacher**
+
+### 🧪 Testing [3.1.4]
+
+- Remove dummy tests ([7fd058c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fd058ce29da7e12e4a673d74df97649d259d969)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.4]
+
+- *(release)* New version 3.1.4+155 which closes ([#303](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/303)) ([8114621](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/811462152c963245b02b933e331dc26dbc41fda3)) by **heyteacher**
+
 ## [flutter_heyteacher_platform-3.1.3+154] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [3.1.3]
