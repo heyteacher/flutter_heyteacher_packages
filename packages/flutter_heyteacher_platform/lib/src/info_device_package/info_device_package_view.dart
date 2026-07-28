@@ -32,9 +32,8 @@ class DevicePackageInfoListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListTile(
     key: const ValueKey('lt_fhu_version'),
-    leading: IconButton(
-      icon: const Icon(Icons.smartphone),
-      onPressed: () {
+    leading: InkWell(
+      onTap: () {
         if (InfoDevicePackageViewModel.instance.tapCounterReached) {
           // tab counter already reached
           return;
@@ -49,6 +48,7 @@ class DevicePackageInfoListTile extends StatelessWidget {
           );
         }
       },
+      child: const Icon(Icons.smartphone),
     ),
     title: Wrap(
       spacing: 4,
