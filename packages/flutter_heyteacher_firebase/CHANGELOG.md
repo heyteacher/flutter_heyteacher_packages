@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_firebase-2.0.15+151] - 2026-07-28
+
+### 🐛 Bug Fixes [2.0.15]
+
+- Add support check and error handling to google analytics logging methods ([05a6971](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/05a69716dea9f583f64dee176773903d1e46c3b6)) by **heyteacher**
+
+### 🧪 Testing [2.0.15]
+
+- Remove dummy tests ([7fd058c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fd058ce29da7e12e4a673d74df97649d259d969)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [2.0.15]
+
+- *(release)* New version 2.0.15+151 which closes ([#298](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/298)) ([c1fbf9a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c1fbf9a6e3320cc0c2606bf098a6dcb4ba33352b)) by **heyteacher**
+
 ## [flutter_heyteacher_firebase-2.0.14+150] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [2.0.14]
