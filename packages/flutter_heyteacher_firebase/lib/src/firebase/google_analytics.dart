@@ -52,10 +52,23 @@ class GoogleAnalitycsViewModel {
     Map<String, Object>? parameters,
   }) async {
     _logger.finer('<logCustomEvent>: name $name. enabled $enabled');
-    await FirebaseAnalytics.instance.logEvent(
-      name: name,
-      parameters: parameters,
-    );
+    if (await FirebaseAnalytics.instance.isSupported()) {
+      try {
+        await FirebaseAnalytics.instance.logEvent(
+          name: name,
+          parameters: parameters,
+        );
+      }
+      // on web `FirebaseException` is threated as  JavaScriptObject raising
+      // error type 'FirebaseException' is not a subtype of type
+      // 'JavaScriptObject' so catch all possible exception
+      // ignore: avoid_catches_without_on_clauses
+      catch (e) {
+        _logger.finer(
+          '(logCustomEvent): name $name. enabled $enabled. Error: $e',
+        );
+      }
+    }
   }
 
   /// Logs a view item with the given [id], [name], and [affiliation].
@@ -68,14 +81,27 @@ class GoogleAnalitycsViewModel {
       '<logViewItem>: id $id name $name affiliation $affiliation. '
       'enabled $enabled',
     );
-    await FirebaseAnalytics.instance.logViewItem(
-      items: [
-        AnalyticsEventItem(
-          itemId: id,
-          itemName: name,
-          affiliation: affiliation,
-        ),
-      ],
-    );
+    try {
+      if (await FirebaseAnalytics.instance.isSupported()) {
+        await FirebaseAnalytics.instance.logViewItem(
+          items: [
+            AnalyticsEventItem(
+              itemId: id,
+              itemName: name,
+              affiliation: affiliation,
+            ),
+          ],
+        );
+      }
+      // on web `FirebaseException` is threated as  JavaScriptObject raising
+      // error type 'FirebaseException' is not a subtype of type
+      // 'JavaScriptObject' so catch all possible exception
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      _logger.finer(
+        '(logViewItem): id $id name $name affiliation $affiliation. '
+        'enabled $enabled. Error: $e',
+      );
+    }
   }
 }
