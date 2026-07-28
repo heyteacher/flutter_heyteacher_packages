@@ -111,7 +111,7 @@ class E2EEViewModel {
       AuthViewModel.instance.uid,
     )._logger..finest('<setDebugMode>:');
     if (_debugMode == debugMode) {
-      logger.finest('(debugMode): no changes');
+      logger.finest('(setDebugMode): no changes');
       return;
     }
     final oldDebugMode = _debugMode;

@@ -206,7 +206,6 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
   Widget build(BuildContext context) => FutureBuilder<bool>(
     future: E2EEViewModel.instance(AuthViewModel.instance.uid).secretKeyStored,
     builder: (_, secretKeySnapshot) => ListTile(
-      contentPadding: EdgeInsets.zero,
       leading: Icon(
         secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
         color: secretKeySnapshot.data ?? false
@@ -221,24 +220,23 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
           )!.encryptionSecretKey,
         ),
       ),
-      subtitle: _E2EEPassphraseTextField(
-        focusNode: _encryptionPassphraseFocusNode,
-        setPassphraseCallback: widget._secretKeyImportedCallback,
-        key: widget._e2eePassphraseKey,
-      ),
-      trailing: Column(
-        spacing: 2,
+      subtitle: Column(
+        spacing: 8,
         mainAxisSize: MainAxisSize.min,
         children: [
+          _E2EEPassphraseTextField(
+            focusNode: _encryptionPassphraseFocusNode,
+            setPassphraseCallback: widget._secretKeyImportedCallback,
+            key: widget._e2eePassphraseKey,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Row(
-              spacing: 4,
               mainAxisSize: MainAxisSize.min,
+              spacing: 4,
               children: [
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
-                    minimumSize: Size.zero,
                     padding: const EdgeInsets.symmetric(vertical: 3),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -258,7 +256,6 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                 ),
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
-                    minimumSize: Size.zero,
                     padding: const EdgeInsets.symmetric(vertical: 3),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -282,12 +279,11 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
             ),
           ),
           Row(
-            spacing: 4,
             mainAxisSize: MainAxisSize.min,
+            spacing: 4,
             children: [
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
-                  minimumSize: Size.zero,
                   padding: const EdgeInsets.symmetric(vertical: 3),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
@@ -351,7 +347,6 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
               ),
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
-                  minimumSize: Size.zero,
                   padding: const EdgeInsets.symmetric(vertical: 3),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
