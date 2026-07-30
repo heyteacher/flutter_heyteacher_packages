@@ -282,6 +282,9 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
     });
   }
 
+  /// Reload the data list
+  void reload() => setState(() => _loading = false);
+
   static const int _scrollDelayInMilliseconds = 500;
 
   /// Checks the scroll position to trigger pagination.
