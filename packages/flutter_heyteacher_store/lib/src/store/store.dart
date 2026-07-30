@@ -267,13 +267,15 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// If [applyOrderBy] and [limit] not equals 1, order by
   /// [Store.orderByFields].
   ///
-  /// If [applyFilterBy], filter by [Store.storeFilter].
+  /// If [applyFilterBy], filter by [queryStoreFilter] if set or
+  /// [Store.storeFilter] otherwise.
   ///
   /// If [limit] is not null, apply limit.
   @override
   Stream<Iterable<LightDataType>> stream({
     bool applyOrderBy = false,
     bool applyFilterBy = true,
+    StoreFilter? queryStoreFilter,
     int? limit,
   }) =>
       AuthViewModel.instance.notAutenticated
@@ -281,42 +283,55 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
           : _query(
               applyOrderBy: applyOrderBy,
               applyFilterBy: applyFilterBy,
+              queryStoreFilter: queryStoreFilter,
               limit: limit,
             ).snapshots().map(
                 (querySnapshot) =>
                     querySnapshot.docs.map((document) => document.data()),
               );
 
-  /// Returns the list of [LightDataType] based on [Store.storeFilter] ordered
-  /// by [Store.orderByFields] limited to [limit]
+  /// Returns the list of [LightDataType] based on [queryStoreFilter] if set or
+  /// [Store.storeFilter] ordered by [Store.orderByFields] limited to [limit]
   @override
-  Future<Iterable<LightDataType>> list({int? limit}) async {
+  Future<Iterable<LightDataType>> list({
+    StoreFilter? queryStoreFilter,
+    int? limit,
+  }) async {
     _logger.finest('<$runtimeType.list>: $collectionPathLog orderByFields: '
         '$orderByFields limit: $limit)');
     checkAuthenticated();
-    return (await _query(applyOrderBy: true, limit: limit).get())
+    return (await _query(
+      applyOrderBy: true,
+      queryStoreFilter: queryStoreFilter,
+      limit: limit,
+    ).get())
         .docs
         .map((e) => e.data());
   }
 
-  /// Returns the count of [LightDataType] based on [Store.storeFilter] ordered
+  /// Returns the count of [LightDataType] based on [queryStoreFilter] if set
+  /// or [Store.storeFilter] otherwise
   @override
-  Future<int> count() async {
-    _logger.finer('<$runtimeType.count>: $collectionPathLog '
-        'storeFilter $storeFilter');
+  Future<int> count({StoreFilter? queryStoreFilter}) async {
+    _logger.finest('<$runtimeType.count>: $collectionPathLog '
+        'storeFilter to apply ${queryStoreFilter ?? storeFilter}');
     checkAuthenticated();
-    return (await _query().count().get()).count ?? 0;
+    return (await _query(queryStoreFilter: queryStoreFilter).count().get())
+            .count ??
+        0;
   }
 
   /// Returns the list of [DetailsDataType].
   ///
-  /// If [applyFilterBy] is true, filter by [Store.storeFilter].
+  /// If [applyFilterBy] is true, filter by [queryStoreFilter] if set or
+  /// [BaseStore.storeFilter] otherwise.
   /// If [applyOrderBy] is true order by [Store.orderByFields].
   /// If [limit] is not null, apply limit.
   @override
   Future<Iterable<DetailsDataType>> listDetails({
     bool applyOrderBy = false,
     bool applyFilterBy = true,
+    StoreFilter? queryStoreFilter,
     int? limit,
   }) async {
     _logger
@@ -324,10 +339,13 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
             '$orderByFields limit: $limit)');
     checkAuthenticated();
     firestore.Query<DetailsDataType> retQuery = _detailsCollectionReference;
+
+    final storeFilterToApply = queryStoreFilter ?? storeFilter;
     // apply filter
-    if (applyFilterBy && storeFilter != null) {
-      _logger.finest('($runtimeType.listDetailed): storeFilter $storeFilter');
-      retQuery = retQuery.where(storeFilter!.toFirestore());
+    if (applyFilterBy && storeFilterToApply != null) {
+      _logger.finest('($runtimeType.listDetails): store filter to apply '
+          '$storeFilterToApply');
+      retQuery = retQuery.where(storeFilterToApply.toFirestore());
     }
     // apply order by
     if (applyOrderBy && orderByFields != null) {
@@ -672,22 +690,27 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
   /// If [applyOrderBy] and [limit] not equals 1, order by
   /// [Store.orderByFields].
   ///
-  /// If [applyFilterBy], filter by [Store.storeFilter].
+  /// If [applyFilterBy], filter by [queryStoreFilter] or instance
+  /// [Store.storeFilter].
   ///
   /// If [limit] is not null, apply limit.
   firestore.Query<LightDataType> _query({
     bool applyOrderBy = false,
     bool applyFilterBy = true,
+    StoreFilter? queryStoreFilter,
     int? limit,
   }) {
     assert(limit == null || limit > 0, 'if set, limit must be > 0');
     firestore.Query<LightDataType> retQuery = _collectionReference;
-    _logger.finest('<$runtimeType.query>: applyOrderBy $applyOrderBy '
+    _logger.finest('<$runtimeType._query>: applyOrderBy $applyOrderBy '
         ' applyFilterBy $applyFilterBy limit $limit');
     // apply filter
-    if (applyFilterBy && storeFilter != null) {
-      _logger.finest('($runtimeType.query): storeFilter $storeFilter');
-      retQuery = retQuery.where(storeFilter!.toFirestore());
+    final storeFilterToApply = queryStoreFilter ?? storeFilter;
+    if (applyFilterBy && storeFilterToApply != null) {
+      _logger.finest(
+        '($runtimeType._query): storeFilter to apply $storeFilterToApply',
+      );
+      retQuery = retQuery.where(storeFilterToApply.toFirestore());
     }
     // apply order by
     if (applyOrderBy && orderByFields != null) {
