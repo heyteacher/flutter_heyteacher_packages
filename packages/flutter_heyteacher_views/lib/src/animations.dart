@@ -203,7 +203,7 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
           deleteConfirmMessageCallback != null &&
           deletedMessageCallback != null
       ? DismissibleWidget(
-          dismissibleKey: ValueKey(index),
+          dismissibleKey: UniqueKey(),
           deleteConfirmMessage: deleteConfirmMessageCallback!.call(
             dataList![index],
           ),
