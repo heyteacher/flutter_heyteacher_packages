@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-4.4.0+172] - 2026-07-30
+
+### 🚀 Features [4.4.0]
+
+- Add `reload` to `PagingSliverAnimatedState` in order to force refresh ([2224d3a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2224d3a70f402b3cb19d6934a20c74dbac429810)) by **heyteacher**
+
+### 🐛 Bug Fixes [4.4.0]
+
+- Set unique key in `DismissibleWidget`  avoiding  `A dismissed Dismissible widget is still part of the tree` error due index overlapping ([46cab4f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/46cab4f1f3e5fc194fbd9e614b4bf9f8c28d25b1)) by **heyteacher**
+
+### 🧪 Testing [4.4.0]
+
+- Remove dummy tests ([7fd058c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fd058ce29da7e12e4a673d74df97649d259d969)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.4.0]
+
+- *(release)* New version 4.4.0+172 which closes ([#308](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/308)) ([af17747](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/af17747620668b3385d48239cb5b42fcdeed93a3)) by **heyteacher**
+
 ## [flutter_heyteacher_views-4.3.2+171] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [4.3.2]
