@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-4.1.0+1051] - 2026-07-30
+
+### 🚀 Features [4.1.0]
+
+- Add `queryStoreFilter` parameter to `list` `count` `stream` and `listDetails` which replace instance `storeFilter` during quey execution ([003511c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/003511c2dfc48e27fa4797963da8496e7dc28a41)) by **heyteacher**
+
+### 🧪 Testing [4.1.0]
+
+- Remove dummy tests ([7fd058c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fd058ce29da7e12e4a673d74df97649d259d969)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.1.0]
+
+- *(release)* New version 4.1.0+1051 which closes ([#307](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/307)) ([ad835a8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ad835a869091401524a68ab14f9c38121065db30)) by **heyteacher**
+
 ## [flutter_heyteacher_store-4.0.3+1050] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [4.0.3]
