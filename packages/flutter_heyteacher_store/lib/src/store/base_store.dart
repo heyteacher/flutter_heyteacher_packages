@@ -189,6 +189,7 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
   Stream<Iterable<LightDataType>> stream({
     bool applyOrderBy = false,
     bool applyFilterBy = true,
+    StoreFilter? queryStoreFilter,
     int? limit,
   });
 
@@ -207,22 +208,30 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
     return (await count()) > 0;
   }
 
-  /// Returns the list of [LightDataType] based on [BaseStore.storeFilter]
+  /// Returns the list of [LightDataType] based on [queryStoreFilter] if set or
+  /// [BaseStore.storeFilter] otherwise
   /// ordered by [BaseStore.orderByFields] limited to [limit]
-  Future<Iterable<LightDataType>> list({int? limit});
+  Future<Iterable<LightDataType>> list({
+    StoreFilter? queryStoreFilter,
+    int? limit,
+  });
 
-  /// Returns the count of [LightDataType] based on [BaseStore.storeFilter]
-  /// ordered
-  Future<int> count();
+  /// Returns the count of [LightDataType] based on [queryStoreFilter] if set or
+  /// [BaseStore.storeFilter] otherwise
+  Future<int> count({
+    StoreFilter? queryStoreFilter,
+  });
 
   /// Returns the list of [DetailsDataType].
   ///
-  /// If [applyFilterBy] is true, filter by [BaseStore.storeFilter].
+  /// If [applyFilterBy] is true, filter by [queryStoreFilter] if set or
+  /// [BaseStore.storeFilter] otherwise.
   /// If [applyOrderBy] is true order by [BaseStore.orderByFields].
   /// If [limit] is not null, apply limit.
   Future<Iterable<DetailsDataType>> listDetails({
     bool applyOrderBy = false,
     bool applyFilterBy = true,
+    StoreFilter? queryStoreFilter,
     int? limit,
   });
 
