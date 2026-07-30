@@ -203,7 +203,7 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
           deleteConfirmMessageCallback != null &&
           deletedMessageCallback != null
       ? DismissibleWidget(
-          dismissibleKey: ValueKey(index),
+          dismissibleKey: UniqueKey(),
           deleteConfirmMessage: deleteConfirmMessageCallback!.call(
             dataList![index],
           ),
@@ -281,6 +281,9 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
       }
     });
   }
+
+  /// Reload the data list
+  void reload() => setState(() => _loading = false);
 
   static const int _scrollDelayInMilliseconds = 500;
 
