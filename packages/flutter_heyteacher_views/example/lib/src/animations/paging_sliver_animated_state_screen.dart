@@ -1,6 +1,13 @@
+import 'dart:async';
+
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
-    show DeleteCallback, MessageCallback, PagingSliverAnimatedState;
+    show
+        DeleteCallback,
+        MessageCallback,
+        PagingSliverAnimatedState,
+        ThemeViewModel;
 
 /// A screen that displays a paginated list of sample records.
 class PagingSliverAnimatedStateScreen extends StatefulWidget {
@@ -21,6 +28,10 @@ class _PagingSliverAnimatedStateScreenState
         > {
   late ScrollController _scrollController;
 
+  final TextEditingController _textEditingController = TextEditingController();
+
+  String? _filterValue;
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +49,9 @@ class _PagingSliverAnimatedStateScreenState
     dataList?.removeAt(index);
     await animateDeleteData(index);
   };
+
+  @override
+  String? get filterValue => _filterValue;
 
   @override
   MessageCallback<SampleRecord>? get deleteConfirmMessageCallback =>
@@ -92,14 +106,59 @@ class _PagingSliverAnimatedStateScreenState
     body: SafeArea(
       child: CustomScrollView(
         controller: _scrollController,
-        slivers: [super.build(context)],
+        slivers: [
+          PinnedHeaderSliver(
+            child: ColoredBox(
+              color: ThemeViewModel.instance.colorScheme.surface,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8, right: 12, left: 12),
+                child: TextField(
+                  controller: _textEditingController,
+                  onChanged: (value) {
+                    _filterValue = value;
+                    unawaited(updateDataList());
+                  },
+                  decoration: InputDecoration(
+                    isDense: true,
+                    constraints: BoxConstraints.tight(
+                      const Size.fromHeight(40),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: ThemeViewModel.instance.colorScheme.onSurface,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _filterValue = null;
+                        unawaited(updateDataList());
+                        _textEditingController.clear();
+                      },
+                      icon: Icon(
+                        Icons.clear,
+                        color: ThemeViewModel.instance.redColor,
+                      ),
+                    ),
+                    labelText: 'search',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          super.build(context),
+        ],
       ),
     ),
   );
 }
 
 /// An example record.
-class SampleRecord {
+class SampleRecord extends Equatable {
   /// Creates a [SampleRecord].
   const SampleRecord({
     required this.title,
@@ -111,4 +170,10 @@ class SampleRecord {
 
   /// The message of the record.
   final String message;
+
+  @override
+  String toString() => title;
+
+  @override
+  List<Object?> get props => [title, message];
 }

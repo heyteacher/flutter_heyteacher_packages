@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/src/widgets.dart';
 
@@ -16,7 +17,10 @@ typedef MessageCallback<D> = String Function(D data);
 /// fetched in pages as the user scrolls down. It also handles real-time
 /// updates, such as inserting new items at the top of the grid with an
 /// animation.
-abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
+abstract class PagingSliverAnimatedState<
+  D extends Equatable,
+  T extends StatefulWidget
+>
     extends State<T> {
   /// The current list of data items displayed in the gruid.
   @protected
@@ -29,6 +33,10 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
   /// the cross axis (columns or rows) count
   @protected
   int get crossAxisCount => 1;
+
+  /// Optional filter to apply to the data.
+  @protected
+  String? get filterValue => null;
 
   /// the main axis (height or width) extent
   double get mainAxisExtent => 85;
@@ -230,56 +238,66 @@ abstract class PagingSliverAnimatedState<D, T extends StatefulWidget>
       _limit += pageSize;
     }
     unawaited(_streamSubscription?.cancel());
-    _streamSubscription = stream(limit: _limit).listen((newDataList) {
-      final changedIndexes =
-          _compare(
-            oldList: dataList ?? [],
-            newList: newDataList.toList(),
-          )..forEach(
-            _insertItem,
-          );
-      // add new item at the end of list, scrollo down e litte bit
-      if (changedIndexes.isNotEmpty &&
-          (dataList?.length ?? 0) > 0 &&
-          changedIndexes.last >= (dataList?.length ?? 0)) {
-        Future.delayed(
-          const Duration(milliseconds: _scrollDelayInMilliseconds),
-          () => scrollController.animateTo(
-            min(
-              scrollController.offset + 200,
-              max(scrollController.position.maxScrollExtent, 0),
-            ),
-            duration: const Duration(milliseconds: _scrollDelayInMilliseconds),
-            curve: Curves.fastOutSlowIn,
+    _streamSubscription = stream(limit: _limit).listen(_updateDataList);
+  }
+
+  void _updateDataList(Iterable<D> list) {
+    // filter by filterValue, if null or empty list, return all list
+    final newDataList = list.where(
+      (data) =>
+          filterValue == null ||
+          data.toString().toLowerCase().contains(
+            filterValue!.toLowerCase(),
           ),
+    );
+    final changedIndexes =
+        _compare(
+          oldList: dataList ?? [],
+          newList: newDataList.toList(),
+        )..forEach(
+          _insertItem,
         );
-      }
-      // for each item not in old data list, animate delete
-      var removed = false;
-      if (dataList != null) {
-        final toBeRemoved = dataList!.reversed.where(
-          (item) => !newDataList.contains(item),
-        );
-        toBeRemoved
-            .map((item) => dataList!.indexOf(item))
-            .forEach(animateDeleteData);
-        removed = toBeRemoved.isNotEmpty;
-      }
-      dataList = newDataList.toList();
-      if ((dataList?.length ?? 0) < _limit &&
-          changedIndexes.isNotEmpty &&
-          removed) {
-        unawaited(updateDataList(incrementsLimit: true));
-      }
-      // first time _loading in true, so we need to wait for the first frame
-      // to be built to set it to false
-      if (_loading) {
-        // debugPrint(
-        //     'PagingSliverAnimatedState.updateDataList(): $runtimeType '
-        //     'set state _loading to false');
-        setState(() => _loading = false);
-      }
-    });
+    // add new item at the end of list, scrollo down e litte bit
+    if (changedIndexes.isNotEmpty &&
+        (dataList?.length ?? 0) > 0 &&
+        changedIndexes.last >= (dataList?.length ?? 0)) {
+      Future.delayed(
+        const Duration(milliseconds: _scrollDelayInMilliseconds),
+        () => scrollController.animateTo(
+          min(
+            scrollController.offset + 200,
+            max(scrollController.position.maxScrollExtent, 0),
+          ),
+          duration: const Duration(milliseconds: _scrollDelayInMilliseconds),
+          curve: Curves.fastOutSlowIn,
+        ),
+      );
+    }
+    // for each item not in old data list, animate delete
+    var removed = false;
+    if (dataList != null) {
+      final toBeRemoved = dataList!.reversed.where(
+        (item) => !newDataList.contains(item),
+      );
+      toBeRemoved
+          .map((item) => dataList!.indexOf(item))
+          .forEach(animateDeleteData);
+      removed = toBeRemoved.isNotEmpty;
+    }
+    dataList = newDataList.toList();
+    if ((dataList?.length ?? 0) < _limit &&
+        changedIndexes.isNotEmpty &&
+        removed) {
+      unawaited(updateDataList(incrementsLimit: true));
+    }
+    // first time _loading in true, so we need to wait for the first frame
+    // to be built to set it to false
+    if (_loading) {
+      // debugPrint(
+      //     'PagingSliverAnimatedState.updateDataList(): $runtimeType '
+      //     'set state _loading to false');
+      setState(() => _loading = false);
+    }
   }
 
   /// Reload the data list
