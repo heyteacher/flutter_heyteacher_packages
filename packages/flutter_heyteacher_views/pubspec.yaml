@@ -19,6 +19,7 @@ dependencies:
   app_tutorial: ^1.0.6
   cloud_firestore: ^6.7.1
   collection: ^1.19.1
+  equatable: ^2.1.0
   flutter:
     sdk: flutter
   flutter_heyteacher_auth: ^4.1.0+164

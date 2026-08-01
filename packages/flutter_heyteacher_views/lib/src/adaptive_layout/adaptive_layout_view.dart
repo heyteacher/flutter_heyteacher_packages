@@ -59,14 +59,14 @@ abstract class AdaptiveState<
 /// - [screenSize]
 /// - [crossAxisCount] for [GridView] and [SliverGrid]
 class _BranchView<PARAMS> extends StatefulWidget {
-  
   /// Creates an instance of [_BranchView].
   @protected
   const _BranchView({
     required ScreenSize currentScreenSize,
     required AbstractAdaptiveState<PARAMS> Function() createAdaptiveState,
     required PARAMS params,
-  }) : _createAdaptiveState = createAdaptiveState, _params = params,
+  }) : _createAdaptiveState = createAdaptiveState,
+       _params = params,
        _screenSize = currentScreenSize;
 
   final ScreenSize _screenSize;
@@ -84,12 +84,12 @@ class _BranchView<PARAMS> extends StatefulWidget {
     ScreenSize.large => 3,
   };
 
-  /// The weights that each visible child should occupy in the [CarouselView] 
+  /// The weights that each visible child should occupy in the [CarouselView]
   /// viewport.
   List<int> get flexWeights => switch (_screenSize) {
     ScreenSize.small => [1],
     ScreenSize.medium => [1, 1],
-    ScreenSize.large => [1, 1, 1]
+    ScreenSize.large => [1, 1, 1],
   };
 
   final AbstractAdaptiveState<PARAMS> Function() _createAdaptiveState;
