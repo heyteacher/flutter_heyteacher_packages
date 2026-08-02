@@ -19,9 +19,9 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_heyteacher_platform: ^3.1.2+153
-  flutter_heyteacher_text_to_speech: ^4.0.2+161 
-  flutter_heyteacher_views: ^4.3.0+169
+  flutter_heyteacher_platform: any
+  flutter_heyteacher_text_to_speech: any
+  flutter_heyteacher_views: any
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
@@ -29,10 +29,10 @@ dependencies:
   shared_preferences: ^2.5.5
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.9.0+183
+  flutter_heyteacher_meta: any
   flutter_test:
     sdk: flutter
- 
+
 flutter:
   generate: true
   assets:

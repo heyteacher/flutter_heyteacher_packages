@@ -9,7 +9,6 @@ documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/b
 topics: [flutter, charts, fl-chart, flutter-charts]
 funding: [https://liberapay.com/heyteacher]
 
-
 environment:
   sdk: ^3.6.2
   flutter: ">=1.17.0"
@@ -22,12 +21,11 @@ dependencies:
   fl_chart: ^1.2.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_locale: ^3.1.0+157
-  flutter_heyteacher_views: ^4.3.0+169
-
+  flutter_heyteacher_locale: any
+  flutter_heyteacher_views: any
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.9.0+183
+  flutter_heyteacher_meta: any
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.3.0
