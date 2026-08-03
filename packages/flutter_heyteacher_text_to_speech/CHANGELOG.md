@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_text_to_speech-4.0.4+163] - 2026-08-03
+
+### 🧪 Testing [4.0.4]
+
+- Remove dummy tests ([7fd058c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7fd058ce29da7e12e4a673d74df97649d259d969)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.0.4]
+
+- Upgrade Gradle to 9.1.0 and Java source compatibility to version 24 across package examples ([3cb8a74](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3cb8a740e3f6220c2595805fce14617a23b704ae)) by **heyteacher**
+- Update pubspec dependencies to use any version for internal packages `flutter_heyteacher_*` ([7d0f702](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7d0f70225aa3a5a7f3984b026e5226b5e6c9a74e)) by **heyteacher**
+- Pin internal package versions ([892eaf7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/892eaf7c9cffa079f1575a06ac3e0b83fed8aafd)) by **heyteacher**
+- *(release)* New version 4.0.4+163 which closes ([#319](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/319)) ([9e93a9a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9e93a9adf3b08e5582646f508f5a082629d78d0e)) by **heyteacher**
+
 ## [flutter_heyteacher_text_to_speech-4.0.3+162] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [4.0.3]
