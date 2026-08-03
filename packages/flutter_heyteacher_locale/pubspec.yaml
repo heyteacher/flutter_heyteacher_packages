@@ -19,8 +19,8 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_heyteacher_platform: ^3.1.4+155
-  flutter_heyteacher_text_to_speech: ^4.0.3+162
+  flutter_heyteacher_platform: ^3.1.5+156
+  flutter_heyteacher_text_to_speech: ^4.0.4+163
   flutter_heyteacher_views: ^5.0.1+174
   flutter_localizations:
     sdk: flutter

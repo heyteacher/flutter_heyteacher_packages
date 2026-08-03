@@ -21,7 +21,7 @@ dependencies:
   fl_chart: ^1.2.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_locale: ^3.1.1+158
+  flutter_heyteacher_locale: ^3.1.2+159
   flutter_heyteacher_views: ^5.0.1+174
 
 dev_dependencies:
