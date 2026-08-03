@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_logger-3.0.6+163] - 2026-08-03
+
+### ⚙️ Miscellaneous Tasks [3.0.6]
+
+- Upgrade Gradle to 9.1.0 and Java source compatibility to version 24 across package examples ([3cb8a74](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3cb8a740e3f6220c2595805fce14617a23b704ae)) by **heyteacher**
+- Update pubspec dependencies to use any version for internal packages `flutter_heyteacher_*` ([7d0f702](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7d0f70225aa3a5a7f3984b026e5226b5e6c9a74e)) by **heyteacher**
+- Pin internal package versions ([892eaf7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/892eaf7c9cffa079f1575a06ac3e0b83fed8aafd)) by **heyteacher**
+- *(release)* New version 3.0.6+163 which closes ([#319](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/319)) ([c63fe4f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c63fe4f951c7008d1cbcc531c8ac8b6ed66c81ae)) by **heyteacher**
+
 ## [flutter_heyteacher_logger-3.0.5+162] - 2026-07-24
 
 ### 🐛 Bug Fixes [3.0.5]
