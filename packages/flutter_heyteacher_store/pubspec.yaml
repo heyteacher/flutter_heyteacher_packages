@@ -26,7 +26,7 @@ dependencies:
     sdk: flutter
   flutter_heyteacher_auth: ^4.1.1+165
   flutter_heyteacher_connectivity: ^3.0.3+148
-  flutter_heyteacher_e2ee: ^3.2.2+172
+  flutter_heyteacher_e2ee: ^3.2.3+173
   flutter_heyteacher_firebase: ^2.0.15+151
   flutter_heyteacher_platform: ^3.1.4+155
 
