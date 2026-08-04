@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-3.1.6+157] - 2026-08-04
+
+### ⚙️ Miscellaneous Tasks [3.1.6]
+
+- *(release)* New version 3.1.6+157 which closes ([#319](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/319)) ([3f75a9e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3f75a9eeb4bae903d48cb5c91602d8211ca0fad2)) by **heyteacher**
+
 ## [flutter_heyteacher_platform-3.1.5+156] - 2026-08-03
 
 ### ⚙️ Miscellaneous Tasks [3.1.5]
