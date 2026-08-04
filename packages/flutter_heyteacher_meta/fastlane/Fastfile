@@ -198,6 +198,13 @@ def create_forge_release(version)
   end
   Dir.chdir("../") do
     repo_url = sh("git remote get-url --push origin").strip!.split(".git").first
+    # if repository url is GitHub SSH replace it with HTTPS
+    if repo_url.start_with("ssh://git@github.com:")
+      repo_url = repo_url.replace("ssh://git@github.com:", "https://github.com/")
+    # if repository url is SSH for other forges, replace it with HTTPS
+    elsif repo_url.start_with("ssh://git@")
+      repo_url = repo_url.replace("ssh://git@", "https://")
+    end
     puts "generate CHANGELOG.md with git-cliff"
     sh("git-cliff -c fastlane/cliff.toml -t #{package_name}-#{version} | sed 's|<REPO>|#{repo_url}|g' >  CHANGELOG.md ")
   end
