@@ -1,6 +1,6 @@
 name: flutter_heyteacher_logger
 description: "The flutter heyteacher package for logger utilities."
-version: 3.0.6+163
+version: 3.0.7+164
 
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_logger
 license: BSD 3-Clause
@@ -22,14 +22,14 @@ dependencies:
   firebase_analytics: ^12.4.6
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^4.1.2+166
-  flutter_heyteacher_locale: ^3.1.2+159
-  flutter_heyteacher_platform: ^3.1.5+156
-  flutter_heyteacher_views: ^5.0.1+174
+  flutter_heyteacher_auth: ^4.1.3+167
+  flutter_heyteacher_locale: ^3.1.3+160
+  flutter_heyteacher_platform: ^3.1.6+157
+  flutter_heyteacher_views: ^6.0.0+176
   flutter_heyteacher_worker: ^2.0.11+145
   flutter_localizations:
     sdk: flutter
-  go_router: ^17.3.0
+  go_router: ^17.4.0
   intl: ^0.20.2
   json_annotation: ^4.12.0
   logging: ^1.3.0
@@ -37,7 +37,7 @@ dependencies:
   shared_preferences: ^2.5.5
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.9.2+186
+  flutter_heyteacher_meta: ^7.9.3+188
   flutter_test:
     sdk: flutter
 
