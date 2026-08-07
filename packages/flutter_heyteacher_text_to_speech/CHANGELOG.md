@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_text_to_speech-4.0.5+164] - 2026-08-07
+
+### ⚙️ Miscellaneous Tasks [4.0.5]
+
+- Bump dependencies including `flutter_heyteacher_views` major version to 6.0.0 ([3484308](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/34843083145f25823dfa9a50744ef0b458e87b1b)) by **heyteacher**
+- *(release)* New version 4.0.5+164 which closes ([#339](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/339)) ([70542ba](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/70542ba6f8ac1e0653ce06bd9c528cb6f5e81f1b)) by **heyteacher**
+
 ## [flutter_heyteacher_text_to_speech-4.0.4+163] - 2026-08-03
 
 ### 🧪 Testing [4.0.4]
