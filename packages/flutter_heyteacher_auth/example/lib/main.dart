@@ -85,7 +85,6 @@ class _MyHomePageState extends State<_MyHomePage> {
               showSnackBar(
                 context: context,
                 message: 'User data deleted successfully',
-                duration: 5,
               );
             },
           ),
