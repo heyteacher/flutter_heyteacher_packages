@@ -1,6 +1,6 @@
 name: flutter_heyteacher_site
 description: "A set of standardized UI components and utilities for building websites and landing pages within the HeyTeacher ecosystem"
-version: 2.0.5+133
+version: 2.0.6+134
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_site
 license: BSD 3-Clause
 issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
@@ -21,8 +21,8 @@ dependencies:
     sdk: flutter
   flutter_cookie_consent: ^1.1.0
   flutter_heyteacher_firebase: ^2.0.15+151
-  flutter_heyteacher_locale: ^3.1.2+159
-  flutter_heyteacher_views: ^5.0.1+174
+  flutter_heyteacher_locale: ^3.1.3+160
+  flutter_heyteacher_views: ^6.0.0+176
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
@@ -34,7 +34,7 @@ dependencies:
   video_player: ^2.13.0
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.9.2+186
+  flutter_heyteacher_meta: ^7.9.3+188
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.3.0
