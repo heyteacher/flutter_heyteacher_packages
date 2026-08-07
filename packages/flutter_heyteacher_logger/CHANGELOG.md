@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_logger-3.0.7+164] - 2026-08-07
+
+### ⚙️ Miscellaneous Tasks [3.0.7]
+
+- Bump dependencies including `flutter_heyteacher_views` major version to 6.0.0 ([82f429c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/82f429c40e1d204b34e25614f807d73f20a41c5e)) by **heyteacher**
+- *(release)* New version 3.0.7+164 which closes ([#339](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/339)) ([3139569](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3139569390cb29cd1cd705a390ecfe1f90953687)) by **heyteacher**
+
 ## [flutter_heyteacher_logger-3.0.6+163] - 2026-08-03
 
 ### ⚙️ Miscellaneous Tasks [3.0.6]
