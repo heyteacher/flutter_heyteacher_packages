@@ -68,7 +68,7 @@ class FutureStreamBuilder<T> extends FutureBuilder<T> {
 /// screen).
 ///
 /// if [persist] is `false`, display [message] for
-/// [duration] seconds (default 4) otherwise ignore timeout and show the close
+/// [duration] (default: 5 seconds) otherwise ignore timeout and show the close
 /// button.
 ///
 /// If [action] is provided, a button is show in trailing with `onPressed`
@@ -78,31 +78,46 @@ class FutureStreamBuilder<T> extends FutureBuilder<T> {
 void showSnackBar({
   required BuildContext? context,
   required String message,
-  int duration = 4,
+  Widget? leading,
+  Color? backgroundColor,
+  Color? foregroundColor,
+  Duration duration = const Duration(seconds: 5),
   bool persist = false,
   String? actionLabel,
   SnackBarAction? action,
   bool error = false,
-}) => context != null
+}) => context != null && context.mounted
     ? ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           showCloseIcon: persist && action == null,
-          closeIconColor: error
-              ? ThemeViewModel.instance.colorScheme.error
-              : ThemeViewModel.instance.colorScheme.onPrimary,
+          closeIconColor:
+              foregroundColor ??
+              (error
+                  ? ThemeViewModel.instance.colorScheme.error
+                  : ThemeViewModel.instance.colorScheme.onPrimary),
           persist: persist,
           action: action,
-          duration: Duration(seconds: duration),
-          backgroundColor: error
-              ? ThemeViewModel.instance.colorScheme.onError
-              : ThemeViewModel.instance.greenColor,
-          content: Text(
-            message,
-            style: TextStyle(
-              color: error
-                  ? ThemeViewModel.instance.colorScheme.error
-                  : ThemeViewModel.instance.colorScheme.onPrimary,
-            ),
+          duration: duration,
+          backgroundColor:
+              backgroundColor ??
+              (error
+                  ? ThemeViewModel.instance.colorScheme.onError
+                  : ThemeViewModel.instance.greenColor),
+          content: Row(
+            spacing: 8,
+            children: [
+              ?leading,
+              Text(
+                message,
+                style: TextStyle(
+                  color:
+                      foregroundColor ??
+                      (error
+                          ? ThemeViewModel.instance.colorScheme.error
+                          : ThemeViewModel.instance.colorScheme.onPrimary),
+                ),
+              ),
+            ],
           ),
         ),
       )
