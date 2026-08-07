@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.0.0+176] - 2026-08-07
+
+### 🚀 Features [6.0.0]
+
+- [**breaking**] Add `backgroundColor`, `foregroundColor`, `leading` parameters to `showSnackBar` and change type of `duration` from `int` to  `Duration` ([1ec6fb8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1ec6fb8ad7ee8b56ff228a52e336dccc80b48b02)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.0.0]
+
+- *(release)* New version 6.0.0+176 which closes ([#337](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/337)) ([f536c9e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f536c9ea7f57ce11e022862ceb7cda95f33095e3)) by **heyteacher**
+
 ## [flutter_heyteacher_views-5.0.2+175] - 2026-08-03
 
 ### ⚙️ Miscellaneous Tasks [5.0.2]
