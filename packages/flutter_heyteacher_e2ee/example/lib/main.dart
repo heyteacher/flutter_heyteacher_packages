@@ -143,7 +143,6 @@ class _MyHomePageState extends State<_MyHomePage> {
         showSnackBar(
           context: context,
           message: e.toString(),
-          duration: 5,
           error: true,
         );
       }
@@ -165,7 +164,6 @@ class _MyHomePageState extends State<_MyHomePage> {
         showSnackBar(
           context: context,
           message: e.toString(),
-          duration: 5,
           error: true,
         );
       }
