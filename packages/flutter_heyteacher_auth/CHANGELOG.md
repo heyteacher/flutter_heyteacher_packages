@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-4.1.4+169] - 2026-08-07
+
+### ⚙️ Miscellaneous Tasks [4.1.4]
+
+- *(release)* New version 4.1.4+169 which closes ([#339](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/339)) ([86b3cdf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/86b3cdff17a09795079f72f837fe79c103a42724)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-4.1.4+168] - 2026-08-07
 
 ### ⚙️ Miscellaneous Tasks [4.1.4]
