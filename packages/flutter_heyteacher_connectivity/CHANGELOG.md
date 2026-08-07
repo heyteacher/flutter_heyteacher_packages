@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_connectivity-3.0.5+151] - 2026-08-07
+
+### ⚙️ Miscellaneous Tasks [3.0.5]
+
+- *(release)* New version 3.0.5+151 which closes ([#339](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/339)) ([ee1b0b2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ee1b0b2d8f0c5b6829f9fd134b007b9e3f0ca91e)) by **heyteacher**
+
 ## [flutter_heyteacher_connectivity-3.0.5+150] - 2026-08-07
 
 ### ⚙️ Miscellaneous Tasks [3.0.5]
