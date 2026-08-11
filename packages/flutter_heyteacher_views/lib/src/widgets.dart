@@ -849,6 +849,37 @@ class FloatingActionTextIconButtom extends StatelessWidget {
   );
 }
 
+/// A table cell data used to build table rows with [TableView.buildTableRow].
+class TableCellData {
+  /// Creates a [TableCellData].
+  const TableCellData({
+    this.label = '',
+    this.value = '',
+    this.valueWidget,
+    this.color,
+    this.iconData,
+    this.tooltip,
+  });
+
+  /// The label for the table cell.
+  final String label;
+
+  /// The value for the table cell.
+  final String value;
+
+  /// The widget for the table cell.
+  final Widget? valueWidget;
+
+  /// The color for the table cell.
+  final Color? color;
+
+  /// The icon data for the table cell.
+  final IconData? iconData;
+
+  /// The tooltip for the table cell.
+  final Widget? tooltip;
+}
+
 /// An abstract base class for creating views with a table-like layout.
 ///
 /// Provides a set of protected helper methods for creating consistently
@@ -967,4 +998,83 @@ abstract class TableView extends StatelessWidget {
   /// Returns a [TextStyle] for value widgets, based on the current theme.
   TextStyle _textStyle(BuildContext context, Color? color) =>
       Theme.of(context).textTheme.labelLarge!.copyWith(color: color);
+
+  @protected
+  /// Builds a table row with the given cells.
+  TableRow buildTableRow({
+    required BuildContext context,
+    Iterable<TableCellData> cells = const [
+      TableCellData(),
+      TableCellData(),
+    ],
+  }) => TableRow(
+    children: [
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: labelText(
+              cells.elementAt(0).label,
+              tooltip: cells.elementAt(0).tooltip,
+            ),
+          ),
+          if (cells.elementAt(0).iconData != null)
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 2, bottom: 2),
+                child: Icon(
+                  cells.elementAt(0).iconData,
+                  color: cells.elementAt(0).color,
+                  size: 14,
+                ),
+              ),
+            ),
+        ],
+      ),
+      if (cells.elementAt(0).valueWidget != null)
+        cells.elementAt(0).valueWidget!
+      else
+        valueText(
+          context,
+          cells.elementAt(0).value,
+          color: cells.elementAt(0).color,
+        ),
+      if (cells.length > 1)
+        if (cells.elementAt(1).valueWidget != null)
+          cells.elementAt(1).valueWidget!
+        else
+          valueText(
+            context,
+            cells.elementAt(1).value,
+            textAlign: TextAlign.right,
+            color: cells.elementAt(1).color,
+          ),
+      if (cells.length > 1)
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (cells.elementAt(1).iconData != null)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 2, bottom: 2),
+                  child: Icon(
+                    cells.elementAt(1).iconData,
+                    color: cells.elementAt(1).color,
+                    size: 14,
+                  ),
+                ),
+              ),
+            Expanded(
+              child: labelText(
+                cells.elementAt(1).label,
+                textAlign: TextAlign.left,
+                tooltip: cells.elementAt(1).tooltip,
+              ),
+            ),
+          ],
+        ),
+    ],
+  );
 }

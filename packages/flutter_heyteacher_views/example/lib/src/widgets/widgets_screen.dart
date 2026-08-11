@@ -391,49 +391,57 @@ class _SampleTableView extends TableView {
   @override
   Widget build(BuildContext context) => Table(
     columnWidths: const {
-      0: FlexColumnWidth(1.5),
-      1: FlexColumnWidth(),
-      2: FlexColumnWidth(),
-      3: FlexColumnWidth(1.5),
+      0: FlexColumnWidth(),
+      1: FlexColumnWidth(1.5),
+      2: FlexColumnWidth(1.5),
+      3: FlexColumnWidth(),
     },
     border: TableBorder.all(
       color: ThemeViewModel.instance.darkGreyColor,
     ),
     children: [
-      TableRow(
-        children: [
-          super.valueTextBlue(
-            context,
-            'valueTextBlue',
-            textAlign: TextAlign.right,
+      buildTableRow(
+        context: context,
+        cells: [
+          TableCellData(
+            label: 'label',
+            value: 'valueTextBlue',
+            color: ThemeViewModel.instance.blueColor,
           ),
-          super.labelText('labelText', textAlign: TextAlign.left),
-          super.labelText('labelText'),
-          valueTextRed(context, 'valueTextRed'),
+          TableCellData(
+            label: 'label',
+            value: 'valueTextRed',
+            color: ThemeViewModel.instance.redColor,
+          ),
         ],
       ),
-      TableRow(
-        children: [
-          super.valueTextGreen(
-            context,
-            'valueTextGreen',
-            textAlign: TextAlign.right,
+      buildTableRow(
+        context: context,
+        cells: [
+          TableCellData(
+            label: 'label',
+            value: 'valueTextGreen',
+            color: ThemeViewModel.instance.greenColor,
           ),
-          super.labelText('labelText', textAlign: TextAlign.left),
-          super.labelText('labelText'),
-          valueTextOrange(context, 'valueTextOrange'),
+          TableCellData(
+            label: 'label',
+            value: 'valueTextOrange',
+            color: ThemeViewModel.instance.orangeColor,
+          ),
         ],
       ),
-      TableRow(
-        children: [
-          super.valueTextYellow(
-            context,
-            'valueTextYellow',
-            textAlign: TextAlign.right,
+      buildTableRow(
+        context: context,
+        cells: [
+          TableCellData(
+            label: 'label',
+            value: 'valueTextYellow',
+            color: ThemeViewModel.instance.yellowColor,
           ),
-          super.labelText('labelText', textAlign: TextAlign.left),
-          super.labelText('labelText'),
-          valueText(context, 'valueText'),
+          const TableCellData(
+            label: 'label',
+            value: 'labelText',
+          ),
         ],
       ),
     ],
