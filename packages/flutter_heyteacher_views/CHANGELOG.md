@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.1.0+178] - 2026-08-11
+
+### 🚀 Features [6.1.0]
+
+- Introduce `TableCellData` class and `buildTableRow` method for improved `TableView` row construction ([0be749d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0be749d582909aed3d6cdea7157a5aadd0dcfb8d)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.1.0]
+
+- *(release)* New version 6.1.0+178 which closes ([#353](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/353)) ([25df5f2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/25df5f27cc9b5508cdea309f45d957616b153670)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.0.1+177] - 2026-08-07
 
 ### ⚙️ Miscellaneous Tasks [6.0.1]
