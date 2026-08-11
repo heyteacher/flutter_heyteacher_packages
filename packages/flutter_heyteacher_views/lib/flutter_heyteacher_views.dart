@@ -27,6 +27,7 @@ export 'src/widgets.dart'
         GenericsDropDownMenu,
         ProgressIndicatorView,
         ProgressIndicatorWidget,
+        TableCellData,
         TableView,
         TooltipIconButton,
         showConfirmCancelDialog,
