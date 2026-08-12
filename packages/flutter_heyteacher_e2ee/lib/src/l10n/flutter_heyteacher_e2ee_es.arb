@@ -33,5 +33,7 @@
   "secretkeyGenerated": "Clave secreta generada",
   "@secretkeyGenerated": {},
   "areYouSureToChangeSecretKey": "Si cambia la Clave Criptográfica, no podrá acceder a los datos cifrados con la clave antigua.\n\n¿Está seguro de que desea cambiar la Clave Criptográfica?",
-  "@areYouSureToChangeSecretKey": {}
+  "@areYouSureToChangeSecretKey": {},
+  "actionNotPermittedInDebugMode": "Acción no permitida en modo de depuración",
+  "@actionNotPermittedInDebugMode": {}
 }

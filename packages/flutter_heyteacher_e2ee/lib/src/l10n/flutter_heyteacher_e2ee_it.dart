@@ -69,4 +69,8 @@ class FlutterHeyteacherE2EELocalizationsIt
   @override
   String get areYouSureToChangeSecretKey =>
       'Se modifichi la Chiave Crittografica, non potrai più accedere ai dati crittografati con la vecchia chiave.\n\nSei sicuro di voler modificare la Chiave Crittografica?';
+
+  @override
+  String get actionNotPermittedInDebugMode =>
+      'Azione non consentita in modalità debug';
 }

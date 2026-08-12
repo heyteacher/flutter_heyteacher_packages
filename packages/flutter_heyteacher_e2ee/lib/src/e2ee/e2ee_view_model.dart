@@ -652,12 +652,12 @@ class MissingMasterSecretKeyJwkException implements Exception {
 class DebugModeException implements Exception {
   @override
   String toString() {
-    // if (ContextHelper.context != null) {
-    //   return FlutterHeyteacherE2EELocalizations.of(
-    //     ContextHelper.context!,
-    //   )!.actionNotPermittedInDebugMode;
-    // } else {
-    return 'Action not permitter in debug mode';
-    //}
+    if (ContextHelper.context != null) {
+      return FlutterHeyteacherE2EELocalizations.of(
+        ContextHelper.context!,
+      )!.actionNotPermittedInDebugMode;
+    } else {
+      return 'Action not permitter in debug mode';
+    }
   }
 }

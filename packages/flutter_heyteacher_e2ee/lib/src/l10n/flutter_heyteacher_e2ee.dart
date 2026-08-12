@@ -211,6 +211,12 @@ abstract class FlutterHeyteacherE2EELocalizations {
   /// In en, this message translates to:
   /// **'If you change the Secret Key, you will not be able to access data encrypted with the old key.\n\nAre you sure you want to change the Encryption Key?'**
   String get areYouSureToChangeSecretKey;
+
+  /// No description provided for @actionNotPermittedInDebugMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Action not permitted in debug mode'**
+  String get actionNotPermittedInDebugMode;
 }
 
 class _FlutterHeyteacherE2EELocalizationsDelegate

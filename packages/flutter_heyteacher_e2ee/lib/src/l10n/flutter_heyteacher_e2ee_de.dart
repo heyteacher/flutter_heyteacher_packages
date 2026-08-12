@@ -70,4 +70,8 @@ class FlutterHeyteacherE2EELocalizationsDe
   @override
   String get areYouSureToChangeSecretKey =>
       'Wenn Sie den Kryptografischen Schlüssel ändern, können Sie nicht mehr auf Daten zugreifen, die mit dem alten Schlüssel verschlüsselt wurden.\n\nMöchten Sie den Kryptografischen Schlüssel wirklich ändern?';
+
+  @override
+  String get actionNotPermittedInDebugMode =>
+      'Aktion im Debug-Modus nicht erlaubt';
 }
