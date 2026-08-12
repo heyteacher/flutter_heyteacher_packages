@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.2.4+174] - 2026-08-12
+
+### 🎨 Styling [3.2.4]
+
+- Restructure E2EE view layout and improve error handling for secret key operations ([b569e9b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b569e9b0b3419c88151381939b5681fb78558326)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.2.4]
+
+- Bump dependencies including `flutter_heyteacher_views` major version to 6.0.0 ([1580c22](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1580c2265c0825b854fdb789ac3acf4b44badf56)) by **heyteacher**
+- *(release)* New version 3.2.4+174 which closes ([#355](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/355)) ([49f991e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/49f991e390f43629ba52d46e6d90678e8a33c8d9)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.2.3+173] - 2026-08-03
 
 ### ⚙️ Miscellaneous Tasks [3.2.3]
