@@ -33,5 +33,7 @@
   "secretkeyGenerated": "Secret key generated",
   "@secretkeyGenerated": {},
   "areYouSureToChangeSecretKey": "If you change the Secret Key, you will not be able to access data encrypted with the old key.\n\nAre you sure you want to change the Encryption Key?",
-  "@areYouSureToChangeSecretKey": {}
+  "@areYouSureToChangeSecretKey": {},
+  "actionNotPermittedInDebugMode": "Action not permitted in debug mode",
+  "@actionNotPermittedInDebugMode": {}
 }

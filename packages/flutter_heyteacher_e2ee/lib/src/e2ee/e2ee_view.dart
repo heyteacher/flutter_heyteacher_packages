@@ -206,22 +206,27 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
   Widget build(BuildContext context) => FutureBuilder<bool>(
     future: E2EEViewModel.instance(AuthViewModel.instance.uid).secretKeyStored,
     builder: (_, secretKeySnapshot) => ListTile(
-      leading: Icon(
-        secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
-        color: secretKeySnapshot.data ?? false
-            ? ThemeViewModel.instance.greenColor
-            : ThemeViewModel.instance.redColor,
-      ),
       title: Padding(
         padding: const EdgeInsets.only(bottom: 8),
-        child: Text(
-          FlutterHeyteacherE2EELocalizations.of(
-            context,
-          )!.encryptionSecretKey,
+        child: Row(
+          spacing: 16,
+          children: [
+            Icon(
+              secretKeySnapshot.data ?? false ? Icons.key : Icons.key_off,
+              color: secretKeySnapshot.data ?? false
+                  ? ThemeViewModel.instance.greenColor
+                  : ThemeViewModel.instance.redColor,
+            ),
+            Text(
+              FlutterHeyteacherE2EELocalizations.of(
+                context,
+              )!.encryptionSecretKey,
+            ),
+          ],
         ),
       ),
       subtitle: Column(
-        spacing: 8,
+        spacing: 4,
         mainAxisSize: MainAxisSize.min,
         children: [
           _E2EEPassphraseTextField(
@@ -229,59 +234,48 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
             setPassphraseCallback: widget._secretKeyImportedCallback,
             key: widget._e2eePassphraseKey,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 4,
-              children: [
-                OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 3),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  icon: const Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Icon(Icons.qr_code),
-                  ),
-                  label: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 8,
-                    ),
-                    child: Text(
-                      FlutterHeyteacherE2EELocalizations.of(context)!.show,
-                    ),
-                  ),
-                  onPressed: _showQrCode,
-                ),
-                OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 3),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  onPressed: PlatformHelper.isMobile
-                      ? _showQrCodeScanner
-                      : null,
-                  icon: const Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Icon(Icons.qr_code_scanner),
-                  ),
-                  label: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 8,
-                    ),
-                    child: Text(
-                      FlutterHeyteacherE2EELocalizations.of(context)!.scan,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Row(
             mainAxisSize: MainAxisSize.min,
             spacing: 4,
             children: [
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                icon: const Padding(
+                  padding: EdgeInsets.only(left: 4),
+                  child: Icon(Icons.qr_code),
+                ),
+                label: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 4,
+                  ),
+                  child: Text(
+                    FlutterHeyteacherE2EELocalizations.of(context)!.show,
+                  ),
+                ),
+                onPressed: _showQrCode,
+              ),
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                onPressed: PlatformHelper.isMobile ? _showQrCodeScanner : null,
+                icon: const Padding(
+                  padding: EdgeInsets.only(left: 4),
+                  child: Icon(Icons.qr_code_scanner),
+                ),
+                label: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 4,
+                  ),
+                  child: Text(
+                    FlutterHeyteacherE2EELocalizations.of(context)!.scan,
+                  ),
+                ),
+              ),
               OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 3),
@@ -333,12 +327,12 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   }
                 },
                 icon: const Padding(
-                  padding: EdgeInsets.only(left: 8),
+                  padding: EdgeInsets.only(left: 4),
                   child: Icon(Icons.create),
                 ),
                 label: Padding(
                   padding: const EdgeInsets.only(
-                    right: 8,
+                    right: 4,
                   ),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.generate,
@@ -369,12 +363,12 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   }
                 },
                 icon: const Padding(
-                  padding: EdgeInsets.only(left: 8),
+                  padding: EdgeInsets.only(left: 4),
                   child: Icon(Icons.edit),
                 ),
                 label: Padding(
                   padding: const EdgeInsets.only(
-                    right: 8,
+                    right: 4,
                   ),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.edit,
@@ -389,16 +383,29 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
   );
 
   Future<void> _generateSecretKey(BuildContext context) async {
-    await E2EEViewModel.instance(
-      AuthViewModel.instance.uid,
-    ).generateSecretKey();
-    if (context.mounted) {
-      showSnackBar(
-        context: context,
-        message: FlutterHeyteacherE2EELocalizations.of(
-          context,
-        )!.secretkeyGenerated,
-      );
+    try {
+      await E2EEViewModel.instance(
+        AuthViewModel.instance.uid,
+      ).generateSecretKey();
+      if (context.mounted) {
+        showSnackBar(
+          context: context,
+          message: FlutterHeyteacherE2EELocalizations.of(
+            context,
+          )!.secretkeyGenerated,
+        );
+      }
+      // catch all exceptions
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      if (context.mounted) {
+        showSnackBar(
+          context: context,
+          message: e.toString(),
+          error: true,
+          persist: true,
+        );
+      }
     }
   }
 
@@ -462,6 +469,9 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
       ),
       confirmCallback: (_) async {
         final i10n = FlutterHeyteacherE2EELocalizations.of(context)!;
+        if (secretJwkJson == null || secretJwkJson!.isEmpty) {
+          return i10n.encryptionPassphraseIsEmptySetIt;
+        }
         // split - trim each line - jon
         // the only way to remove special chars in Copy & Paste
         // from a rich text editor (Word, Writer)
