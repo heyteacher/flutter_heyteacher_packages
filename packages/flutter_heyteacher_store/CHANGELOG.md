@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-4.2.0+1055] - 2026-08-21
+
+### 🚀 Features [4.2.0]
+
+- Add update stream store and notify on document modifications ([8d2aafe](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8d2aafe7d74f0cf02c0da102778caafca3b266b4)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.2.0]
+
+- *(release)* New version 4.2.0+1055 which closes ([#357](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/357)) ([ad49dcf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ad49dcfb52bad2608931854228793ff37278d235)) by **heyteacher**
+
 ## [flutter_heyteacher_store-4.1.3+1054] - 2026-08-07
 
 ### ⚙️ Miscellaneous Tasks [4.1.3]
