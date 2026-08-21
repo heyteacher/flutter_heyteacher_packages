@@ -434,6 +434,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     // changes
     if (batch == null) {
       unawaited(notifyAggregatesChanges());
+      updateStreamController.sink.add([id]);
     }
   }
 
@@ -455,6 +456,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     }
     await batch.commit();
     unawaited(notifyAggregatesChanges());
+    updateStreamController.sink.add(ids);
   }
 
   /// Creates (override) the document [detailsData] with identifier [id].
@@ -494,6 +496,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     if (batch == null) {
       storeCache?.set(id, detailsData);
       unawaited(notifyAggregatesChanges());
+      updateStreamController.sink.add([id]);
     }
   }
 
@@ -506,14 +509,17 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     _logger.finer('<$runtimeType.bulkSet>: $detailsCollectionPathLog ids $ids');
     checkAuthenticated();
     final batch = _firestore.batch();
+    final idsUpdated = <String>[];
     for (var i = 0; i < documents.length; i++) {
       // need await operation in order batch commit will by executed as
       // last operation
       await set(documents[i], id: ids?.elementAt(i), batch: batch);
+      idsUpdated.add(ids?.elementAt(i) ?? documents[i].id);
       storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
     }
     await batch.commit();
     unawaited(notifyAggregatesChanges());
+    updateStreamController.sink.add(idsUpdated);
   }
 
   /// Updates the document [document] with identifier [id].
@@ -578,6 +584,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
       if (batch == null) {
         storeCache?.set(id, document);
         unawaited(notifyAggregatesChanges());
+        updateStreamController.sink.add([id]);
       }
     } else {
       _logger.finer(
@@ -603,6 +610,7 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
     );
     checkAuthenticated();
     final batch = _firestore.batch();
+    final idsUpdated = <String>[];
     for (var i = 0; i < documents.length; i++) {
       // need await operation in order batch commit will by executed as last
       // operation
@@ -612,10 +620,12 @@ abstract class Store<LightDataType extends FirestoreData<dynamic>,
         id: ids?.elementAt(i),
         batch: batch,
       );
+      idsUpdated.add(ids?.elementAt(i) ?? documents[i].id);
       storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
     }
     await batch.commit();
     unawaited(notifyAggregatesChanges());
+    updateStreamController.sink.add(idsUpdated);
   }
 
   /// Returns a [firestore.Pipeline] declared on collection path.
