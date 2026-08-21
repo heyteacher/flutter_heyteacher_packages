@@ -151,6 +151,16 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
   @protected
   final lock = Lock(reentrant: true);
 
+  final StreamController<Iterable<String>> _updateStreamController =
+      StreamController<Iterable<String>>.broadcast();
+
+  /// The update stream controller where detail changes are notified.
+  StreamController<Iterable<String>> get updateStreamController =>
+      _updateStreamController;
+
+  /// The update stream where detail changes are notified
+  Stream<Iterable<String>> get updateStream => _updateStreamController.stream;
+
   /// The subscrition to listen aggregate changes.
   StreamSubscription<User?>? _aggregatesSubscription;
 
