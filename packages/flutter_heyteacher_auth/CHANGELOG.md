@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-4.1.5+170] - 2026-09-01
+
+### ⚙️ Miscellaneous Tasks [4.1.5]
+
+- Update project dependencies and internal package versions across the monorepo ([e2223f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2223f71fcc27c55c84cd5dfc519b0eb36d8f123)) by **heyteacher**
+- *(release)* New version 4.1.5+170 which closes ([#361](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/361)) ([ad08d90](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ad08d908c76752262f453be91f306485f121c8e8)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-4.1.4+169] - 2026-08-07
 
 ### ⚙️ Miscellaneous Tasks [4.1.4]
