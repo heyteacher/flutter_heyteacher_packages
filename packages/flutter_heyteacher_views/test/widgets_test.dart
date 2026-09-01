@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart' show FirebaseException;
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart' show AuthRouterName, FlutterHeyteacherAuthLocalizations;
+import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
+    show AuthRouterName, FlutterHeyteacherAuthLocalizations;
 import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -35,7 +36,7 @@ void main() {
       MaterialApp(
         localizationsDelegates: const [
           FlutterHeyteacherAuthLocalizations.delegate,
-          FlutterHeyteacherPlatformLocalizations.delegate
+          FlutterHeyteacherPlatformLocalizations.delegate,
           // Add other delegates if needed (e.g., GlobalMaterialLocalizations)
         ],
         home: InheritedGoRouter(
