@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.20.2
-  io: ^1.0.5
+  io: ^1.1.0
   yaml_edit: ^2.2.4
 
 dev_dependencies:

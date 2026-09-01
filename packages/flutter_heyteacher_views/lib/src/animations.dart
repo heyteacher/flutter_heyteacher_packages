@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_heyteacher_views/src/widgets.dart';
+import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 
 /// Callback that is invoked when an item is removed.
 typedef DeleteCallback = Future<void> Function(int index);
