@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.2.0+179] - 2026-09-01
+
+### 🚀 Features [6.2.0]
+
+- Add `PropertyEditorListTile` component for property selection via dropdown menu ([48ff5b8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/48ff5b8d0a9202ee6fe0600a76589eb385da4a89)) by **heyteacher**
+
+### 🚜 Refactor [6.2.0]
+
+- Reorganize widgets splitting into separated files ([11f9044](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/11f9044a054230f55218b02a96e4b8be01d19866)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.2.0]
+
+- Update project dependencies and internal package versions across the monorepo ([e2223f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2223f71fcc27c55c84cd5dfc519b0eb36d8f123)) by **heyteacher**
+- *(release)* New version 6.2.0+179 which closes ([#359](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/359)) ([01010a3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/01010a3a73506341688e7a1870690a6dd26024fe)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.1.0+178] - 2026-08-11
 
 ### 🚀 Features [6.1.0]
