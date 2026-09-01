@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_logger-3.0.8+167] - 2026-09-01
+
+### ⚙️ Miscellaneous Tasks [3.0.8]
+
+- Update project dependencies and internal package versions across the monorepo ([e2223f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2223f71fcc27c55c84cd5dfc519b0eb36d8f123)) by **heyteacher**
+- *(release)* New version 3.0.8+165 which closes ([#362](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/362)) ([6554c54](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6554c54d41ee977b1d0631c66d9ec3a7979a6409)) by **heyteacher**
+- *(release)* New version 3.0.8+166 which closes ([#362](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/362)) ([2081e3b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2081e3bab7d9ea45afe275e2af2b72a5b794b5f8)) by **heyteacher**
+- *(release)* New version 3.0.8+167 which closes ([#362](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/362)) ([a965181](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a965181d7796934174dfa60bab82d9b8f69c3be8)) by **heyteacher**
+
 ## [flutter_heyteacher_logger-3.0.7+164] - 2026-08-07
 
 ### ⚙️ Miscellaneous Tasks [3.0.7]
