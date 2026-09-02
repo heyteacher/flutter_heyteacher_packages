@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.3.0+180] - 2026-09-02
+
+### 🚀 Features [6.3.0]
+
+- Add s`howClose` parameter to `showSnackBar` and wrap `message` in `Flexible` for better overflow handling ([92650f8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/92650f8ea940ac65a6a5ffb151315fa02b38226f)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.3.0]
+
+- `PropertyEditorListTile` example ([77a658e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/77a658ef1b6c40b44028457529d7006e78bd3937)) by **heyteacher**
+- *(release)* New version 6.3.0+180 which closes ([#373](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/373)) ([59d97e7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/59d97e7d73ceaef9d1f70ceccbf4bb3db830328a)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.2.0+179] - 2026-09-01
 
 ### 🚀 Features [6.2.0]
