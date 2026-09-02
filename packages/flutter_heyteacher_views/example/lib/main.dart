@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
     show ThemeViewModel;
 import 'package:flutter_heyteacher_views_example/src/app_router.dart'
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeViewModel.instance.darkTheme,
       themeMode: asyncSnapshot.data?.themeMode,
       title: 'Flutter Demo',
-      localizationsDelegates: const [],
+      localizationsDelegates: const [
+        FlutterHeyteacherLocaleLocalizations.delegate,
+      ],
       routerConfig: AppRouter.instance.router,
       debugShowCheckedModeBanner: false,
     ),
