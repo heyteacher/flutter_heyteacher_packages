@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_charts-3.0.1+122] - 2026-09-02
+
+### ⚙️ Miscellaneous Tasks [3.0.1]
+
+- Upgrade Gradle to 9.1.0 and Java source compatibility to version 24 across package examples ([3cb8a74](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3cb8a740e3f6220c2595805fce14617a23b704ae)) by **heyteacher**
+- Update pubspec dependencies to use any version for internal packages `flutter_heyteacher_*` ([7d0f702](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7d0f70225aa3a5a7f3984b026e5226b5e6c9a74e)) by **heyteacher**
+- Pin internal package versions ([892eaf7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/892eaf7c9cffa079f1575a06ac3e0b83fed8aafd)) by **heyteacher**
+- Bump dependencies including `flutter_heyteacher_views` major version to 6.0.0 ([18a6715](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/18a6715e3bd1c1408fbc6fec46dbeaa4cff3539b)) by **heyteacher**
+- Update project dependencies and internal package versions across the monorepo ([e2223f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2223f71fcc27c55c84cd5dfc519b0eb36d8f123)) by **heyteacher**
+- *(release)* New version 3.0.1+122 which closes ([#371](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/371)) ([aecc50f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/aecc50f8a6a26dc911c52dc75a14e848f8acc85f)) by **heyteacher**
+
 ## [flutter_heyteacher_charts-3.0.0+121] - 2026-07-24
 
 ### 🚀 Features [3.0.0]
