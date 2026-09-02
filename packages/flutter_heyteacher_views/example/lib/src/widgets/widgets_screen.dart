@@ -382,6 +382,19 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
           ),
         ),
         const Divider(height: 1, color: Colors.white24),
+        PropertyEditorListTile<int>(
+          label: 'Property',
+          icon: const Icon(Icons.edit_note),
+          values: const [1, 2, 3],
+          defaultValue: 2,
+          setValue: () async => 2,
+          labels: const ['1 second', '2 seconds', '3 seconds'],
+          onSelected: (value, {index}) => showSnackBar(
+            context: context,
+            message: ' property value $value selected',
+          ),
+        ),
+        const Divider(height: 1, color: Colors.white24),
       ],
     ),
   );
