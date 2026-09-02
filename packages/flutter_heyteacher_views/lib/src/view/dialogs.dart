@@ -25,13 +25,14 @@ void showSnackBar({
   Color? foregroundColor,
   Duration duration = const Duration(seconds: 5),
   bool persist = false,
+  bool showClose = false,
   String? actionLabel,
   SnackBarAction? action,
   bool error = false,
 }) => context != null && context.mounted
     ? ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          showCloseIcon: persist && action == null,
+          showCloseIcon: showClose,
           closeIconColor:
               foregroundColor ??
               (error
@@ -49,14 +50,16 @@ void showSnackBar({
             spacing: 8,
             children: [
               ?leading,
-              Text(
-                message,
-                style: TextStyle(
-                  color:
-                      foregroundColor ??
-                      (error
-                          ? ThemeViewModel.instance.colorScheme.error
-                          : ThemeViewModel.instance.colorScheme.onPrimary),
+              Flexible(
+                child: Text(
+                  message,
+                  style: TextStyle(
+                    color:
+                        foregroundColor ??
+                        (error
+                            ? ThemeViewModel.instance.colorScheme.error
+                            : ThemeViewModel.instance.colorScheme.onPrimary),
+                  ),
                 ),
               ),
             ],
