@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.4.0+181] - 2026-09-03
+
+### 🚀 Features [6.4.0]
+
+- Add optional list parameter to updateDataList for manual data injection ([8b4ced3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8b4ced3411acd47ab456146c6fedb2a8cb82f698)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.4.0]
+
+- *(release)* New version 6.4.0+181 which closes ([#375](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/375)) ([2369507](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2369507c56dca846ac7ebc6f6f5206c75fd26c37)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.3.0+180] - 2026-09-02
 
 ### 🚀 Features [6.3.0]
