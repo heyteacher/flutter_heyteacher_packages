@@ -233,9 +233,15 @@ abstract class PagingSliverAnimatedState<
   );
 
   /// Subscribes to the data [stream] and handles list updates.
-  Future<void> updateDataList({bool incrementsLimit = false}) async {
+  Future<void> updateDataList({
+    bool incrementsLimit = false,
+    Iterable<D>? list,
+  }) async {
     if (incrementsLimit) {
       _limit += pageSize;
+    }
+    if (list != null) {
+      _updateDataList(list);
     }
     unawaited(_streamSubscription?.cancel());
     _streamSubscription = stream(limit: _limit).listen(_updateDataList);
