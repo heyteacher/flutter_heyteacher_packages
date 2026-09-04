@@ -21,8 +21,8 @@ dependencies:
     sdk: flutter
   flutter_cookie_consent: ^1.1.0
   flutter_heyteacher_firebase: ^2.0.15+151
-  flutter_heyteacher_locale: ^3.1.4+161
-  flutter_heyteacher_views: ^6.1.0+178
+  flutter_heyteacher_locale: ^3.1.5+163
+  flutter_heyteacher_views: ^6.4.0+181
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.2
