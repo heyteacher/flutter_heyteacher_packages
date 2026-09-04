@@ -28,9 +28,12 @@ class ConnectivityListTile extends StatelessWidget {
             FlutterHeyteacherConnectivityLocalizations.of(
               context,
             )!.online,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge!.copyWith(color: Colors.white),
+            style:
+                Theme.of(
+                  context,
+                ).textTheme.bodyLarge!.copyWith(
+                  color: ThemeViewModel.instance.colorScheme.onPrimary,
+                ),
           ),
           backgroundColor: ThemeViewModel.instance.greenColor,
         ),
