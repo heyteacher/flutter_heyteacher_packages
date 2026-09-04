@@ -18,7 +18,7 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_heyteacher_views: ^6.1.0+178
+  flutter_heyteacher_views: ^6.4.0+181
   flutter_localizations:
     sdk: flutter
   internet_connection_checker_plus: ^3.1.1
