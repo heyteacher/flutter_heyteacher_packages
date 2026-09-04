@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_connectivity-3.1.1+153] - 2026-09-04
+
+### 🎨 Styling [3.1.1]
+
+- Update `ConnectivityListTile` text color to use ThemeViewModel onPrimary color ([c1b4a70](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c1b4a70fe00351e585d61e583cd7be490790a9ac)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.1]
+
+- *(release)* New version 3.1.1+153 which closes ([#379](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/379)) ([5702c22](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5702c22952d299ed71df09c974625cd494dc6265)) by **heyteacher**
+
 ## [flutter_heyteacher_connectivity-3.1.0+152] - 2026-09-04
 
 ### 🚀 Features [3.1.0]
