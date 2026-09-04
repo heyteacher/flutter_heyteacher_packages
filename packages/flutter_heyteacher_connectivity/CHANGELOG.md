@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_connectivity-3.1.0+152] - 2026-09-04
+
+### 🚀 Features [3.1.0]
+
+- Replace `connectivity_plus` with `internet_connection_checker_plus` for network monitoring detecting network unreachable ([681375c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/681375cd42c50e936deda147afe1eb93cbce5bd5)) by **heyteacher**
+
+### 🚜 Refactor [3.1.0]
+
+- Update Android manifests setting label to `ft_<package>` ([1f8e824](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1f8e824cd66487720b0e3744a1f1d7605b78f855)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.0]
+
+- Update project dependencies and internal package versions across the monorepo ([e2223f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2223f71fcc27c55c84cd5dfc519b0eb36d8f123)) by **heyteacher**
+- Add `builtInKotlin` and `newDsl` flags to Android gradle properties ([b399db0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b399db0be960fd30491fba6387019310882308eb)) by **heyteacher**
+- Bump versions for internal packages and update go_router to 18.0.1 ([e59136e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e59136e897ef25c4cd1f0764b615f63f0966c0b6)) by **heyteacher**
+- *(release)* New version 3.1.0+152 which closes ([#377](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/377)) ([df329d8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/df329d86dde1ff9b1984bb212073aa666ca231c0)) by **heyteacher**
+
 ## [flutter_heyteacher_connectivity-3.0.5+151] - 2026-08-07
 
 ### ⚙️ Miscellaneous Tasks [3.0.5]
