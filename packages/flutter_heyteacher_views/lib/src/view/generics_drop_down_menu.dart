@@ -6,10 +6,9 @@ import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 class GenericsDropDownMenu<T> extends StatefulWidget {
   /// Creates a generic dropdown menu.
   const GenericsDropDownMenu({
-    required String label,
     required void Function(T?, {int? index}) onSelected,
     required List<({Icon? icon, String label, T value})> values,
-    super.key,
+    String? label,
     List<String> deniedValues = const [],
     T? initialSelection,
     bool enableFilter = true,
@@ -21,6 +20,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
     double? width,
     double menuHeight = 300,
     IconData trailingIcon = Icons.filter_list,
+    super.key,
   }) : _onSelected = onSelected,
        _values = values,
        _initialSelection = initialSelection,
@@ -35,7 +35,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
        _deniedValues = deniedValues,
        _trailingIcon = trailingIcon,
        _label = label;
-  final String _label;
+  final String? _label;
 
   /// The callback that is called when a new item is selected.
   final void Function(T?, {int? index}) _onSelected;
@@ -102,7 +102,9 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
   @override
   Widget build(BuildContext context) => DropdownMenu<T?>(
     focusNode: _focusNode,
-    label: Text(widget._label, style: const TextStyle(fontSize: 11)),
+    label: widget._label != null
+        ? Text(widget._label!, style: const TextStyle(fontSize: 11))
+        : null,
     initialSelection: widget._initialSelection,
     onSelected: _preOnSelected,
     enableSearch: widget._enableSearch,
