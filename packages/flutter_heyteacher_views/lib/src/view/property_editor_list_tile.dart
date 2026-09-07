@@ -55,11 +55,12 @@ class _PropertyEditorListTileState<T> extends State<PropertyEditorListTile<T>> {
   }
 
   Future<void> _init([_]) async {
-    _value = await widget._setValue?.call();
+    _value = await widget._setValue?.call() ?? widget._defaultValue;
     if (widget._defaultValue != null) {
       final index = widget._values.indexOf(widget._defaultValue as T);
       if (index != -1) {
-        _defaultValueLabel = widget._labels?.elementAt(index);
+        _defaultValueLabel =
+            widget._labels?.elementAt(index) ?? widget._defaultValue.toString();
       } else {
         throw Exception(
           'Default value ${widget._defaultValue} not found in values '
@@ -76,24 +77,36 @@ class _PropertyEditorListTileState<T> extends State<PropertyEditorListTile<T>> {
     title: Text(widget._label),
     subtitle: Text(
       FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
-        _defaultValueLabel ?? '',
+        widget._defaultValue is bool
+            ? FlutterHeyteacherLocaleLocalizations.of(
+                context,
+              )!.booleanValue(widget._defaultValue!.toString())
+            : _defaultValueLabel ?? '',
       ),
     ),
-    trailing: GenericsDropDownMenu<T>(
-      label: widget._label,
-      width: 120,
-      isDense: true,
-      onSelected: widget._onSelected,
-      values: widget._values
-          .mapIndexed(
-            (index, value) => (
-              label: widget._labels?.elementAt(index) ?? value.toString(),
-              value: value,
-              icon: null,
-            ),
+    trailing: widget._values.firstOrNull is bool
+        ? Switch(
+            value: _value as bool? ?? false,
+            onChanged: (value) {
+              widget._onSelected(value as T?, index: null);
+              _value = value as T?;
+              setState(() {});
+            },
           )
-          .toList(),
-      initialSelection: _value,
-    ),
+        : GenericsDropDownMenu<T>(
+            width: 120,
+            isDense: true,
+            onSelected: widget._onSelected,
+            values: widget._values
+                .mapIndexed(
+                  (index, value) => (
+                    label: widget._labels?.elementAt(index) ?? value.toString(),
+                    value: value,
+                    icon: null,
+                  ),
+                )
+                .toList(),
+            initialSelection: _value,
+          ),
   );
 }
