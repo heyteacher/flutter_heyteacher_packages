@@ -382,8 +382,19 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
           ),
         ),
         const Divider(height: 1, color: Colors.white24),
+        PropertyEditorListTile<bool>(
+          label: 'Boolean Property',
+          icon: const Icon(Icons.edit_note),
+          values: const [true, false],
+          defaultValue: true,
+          onSelected: (value, {index}) => showSnackBar(
+            context: context,
+            message: 'boolean property value $value selected',
+          ),
+        ),
+        const Divider(height: 1, color: Colors.white24),
         PropertyEditorListTile<int>(
-          label: 'Property',
+          label: 'Integer Property',
           icon: const Icon(Icons.edit_note),
           values: const [1, 2, 3],
           defaultValue: 2,
@@ -391,7 +402,19 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
           labels: const ['1 second', '2 seconds', '3 seconds'],
           onSelected: (value, {index}) => showSnackBar(
             context: context,
-            message: ' property value $value selected',
+            message: 'integer property value $value selected',
+          ),
+        ),
+        const Divider(height: 1, color: Colors.white24),
+        PropertyEditorListTile<String>(
+          label: 'String Property',
+          icon: const Icon(Icons.edit_note),
+          values: const ['one', 'two', 'three'],
+          defaultValue: 'two',
+          setValue: () async => 'two',
+          onSelected: (value, {index}) => showSnackBar(
+            context: context,
+            message: 'string property value $value selected',
           ),
         ),
         const Divider(height: 1, color: Colors.white24),
