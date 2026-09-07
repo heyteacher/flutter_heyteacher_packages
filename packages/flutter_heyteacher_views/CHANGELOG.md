@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.4.1+182] - 2026-09-07
+
+### 🐛 Bug Fixes [6.4.1]
+
+- Show `Switch` for  `PropertyEditorListTile<bool> ([e376c9b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e376c9b517a05ae65ef4f9f3874f25403e42d735)) by **heyteacher**
+
+### 🚜 Refactor [6.4.1]
+
+- Update Android manifests setting label to `ft_<package>` ([1f8e824](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1f8e824cd66487720b0e3744a1f1d7605b78f855)) by **heyteacher**
+- Make label optional in `GenericsDropDownMenu` ([fc80e18](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fc80e1816f84de4198a3e3987132fc15411fdf7b)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.4.1]
+
+- Bump versions for internal packages and update go_router to 18.0.1 ([e59136e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e59136e897ef25c4cd1f0764b615f63f0966c0b6)) by **heyteacher**
+- *(release)* New version 6.4.1+182 which closes ([#381](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/381)) ([7caf74d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7caf74d26430862e0297b2fd35223a5345fcba52)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.4.0+181] - 2026-09-03
 
 ### 🚀 Features [6.4.0]
