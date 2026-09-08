@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_timer_workflow-2.0.11+143] - 2026-09-08
+
+### ⚙️ Miscellaneous Tasks [2.0.11]
+
+- Update pubspec dependencies to use any version for internal packages `flutter_heyteacher_*` ([7d0f702](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7d0f70225aa3a5a7f3984b026e5226b5e6c9a74e)) by **heyteacher**
+- Pin internal package versions ([892eaf7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/892eaf7c9cffa079f1575a06ac3e0b83fed8aafd)) by **heyteacher**
+- Update project dependencies and internal package versions across the monorepo ([e2223f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2223f71fcc27c55c84cd5dfc519b0eb36d8f123)) by **heyteacher**
+- Bump versions for internal packages and update go_router to 18.0.1 ([e59136e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e59136e897ef25c4cd1f0764b615f63f0966c0b6)) by **heyteacher**
+- Upgrade sdk minimum constrants to `3.12.0`, flutter minimun constraints to `3.47.0` and  upgrade dependencies ([e44b3a7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e44b3a7a9bafc864ff37d2ebc9d8c4509d221a61)) by **heyteacher**
+- *(release)* New version 2.0.11+143 which closes ([#383](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/383)) ([9e1a389](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/9e1a389bcf68e951d4b9b5f70628f7006b32012f)) by **heyteacher**
+
 ## [flutter_heyteacher_timer_workflow-2.0.10+142] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [2.0.10]
