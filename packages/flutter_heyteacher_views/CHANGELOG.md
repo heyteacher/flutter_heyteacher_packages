@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.4.2+183] - 2026-09-08
+
+### ⚙️ Miscellaneous Tasks [6.4.2]
+
+- Upgrade sdk minimum constrants to `3.12.0`, flutter minimun constraints to `3.47.0` and  upgrade dependencies ([e44b3a7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e44b3a7a9bafc864ff37d2ebc9d8c4509d221a61)) by **heyteacher**
+- *(release)* New version 6.4.2+183 which closes ([#383](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/383)) ([51737f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/51737f798215dafddd3ecec861d1f162b7e7d1c1)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.4.1+182] - 2026-09-07
 
 ### 🐛 Bug Fixes [6.4.1]
