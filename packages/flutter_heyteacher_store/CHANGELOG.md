@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-4.2.1+1056] - 2026-09-08
+
+### 🚜 Refactor [4.2.1]
+
+- Update Android manifests setting label to `ft_<package>` ([1f8e824](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1f8e824cd66487720b0e3744a1f1d7605b78f855)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.2.1]
+
+- Update project dependencies and internal package versions across the monorepo ([e2223f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2223f71fcc27c55c84cd5dfc519b0eb36d8f123)) by **heyteacher**
+- Bump versions for internal packages and update go_router to 18.0.1 ([e59136e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e59136e897ef25c4cd1f0764b615f63f0966c0b6)) by **heyteacher**
+- Upgrade sdk minimum constrants to `3.12.0`, flutter minimun constraints to `3.47.0` and  upgrade dependencies ([e44b3a7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e44b3a7a9bafc864ff37d2ebc9d8c4509d221a61)) by **heyteacher**
+- *(release)* New version 4.2.1+1056 which closes ([#383](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/383)) ([c3ef15a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c3ef15a1c68ee49f5d894cda0d277130346a8b75)) by **heyteacher**
+
 ## [flutter_heyteacher_store-4.2.0+1055] - 2026-08-21
 
 ### 🚀 Features [4.2.0]
