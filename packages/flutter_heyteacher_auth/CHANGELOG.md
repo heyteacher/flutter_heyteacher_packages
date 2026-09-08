@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-4.1.6+171] - 2026-09-08
+
+### 🚜 Refactor [4.1.6]
+
+- Update Android manifests setting label to `ft_<package>` ([1f8e824](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1f8e824cd66487720b0e3744a1f1d7605b78f855)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.1.6]
+
+- Bump versions for internal packages and update go_router to 18.0.1 ([e59136e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e59136e897ef25c4cd1f0764b615f63f0966c0b6)) by **heyteacher**
+- Upgrade sdk minimum constrants to `3.12.0`, flutter minimun constraints to `3.47.0` and  upgrade dependencies ([e44b3a7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e44b3a7a9bafc864ff37d2ebc9d8c4509d221a61)) by **heyteacher**
+- *(release)* New version 4.1.6+171 which closes ([#383](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/383)) ([eeb60d8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/eeb60d8c17ec88755c686c5002cfaa038775d1b0)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-4.1.5+170] - 2026-09-01
 
 ### ⚙️ Miscellaneous Tasks [4.1.5]
