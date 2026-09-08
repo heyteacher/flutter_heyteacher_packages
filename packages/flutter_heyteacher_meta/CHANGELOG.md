@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.9.4+189] - 2026-09-08
+
+### 🚜 Refactor [7.9.4]
+
+- Update Android manifests setting label to `ft_<package>` ([1f8e824](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1f8e824cd66487720b0e3744a1f1d7605b78f855)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.9.4]
+
+- Update project dependencies and internal package versions across the monorepo ([e2223f7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e2223f71fcc27c55c84cd5dfc519b0eb36d8f123)) by **heyteacher**
+- Upgrade sdk minimum constrants to `3.12.0`, flutter minimun constraints to `3.47.0` and  upgrade dependencies ([e44b3a7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e44b3a7a9bafc864ff37d2ebc9d8c4509d221a61)) by **heyteacher**
+- *(release)* New version 7.9.4+189 which closes ([#383](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/383)) ([5c97d0b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5c97d0bf9733fa5b2b781e4e558b2e66db7ab7ad)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.9.3+188] - 2026-08-04
 
 ### 🐛 Bug Fixes [7.9.3]
