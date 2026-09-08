@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.2.6+176] - 2026-09-08
+
+### 🚜 Refactor [3.2.6]
+
+- Update Android manifests setting label to `ft_<package>` ([1f8e824](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1f8e824cd66487720b0e3744a1f1d7605b78f855)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.2.6]
+
+- Bump versions for internal packages and update go_router to 18.0.1 ([e59136e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e59136e897ef25c4cd1f0764b615f63f0966c0b6)) by **heyteacher**
+- Upgrade sdk minimum constrants to `3.12.0`, flutter minimun constraints to `3.47.0` and  upgrade dependencies ([e44b3a7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e44b3a7a9bafc864ff37d2ebc9d8c4509d221a61)) by **heyteacher**
+- *(release)* New version 3.2.6+176 which closes ([#383](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/383)) ([2b68ec1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2b68ec1f8140480481c9c49a29f9220abf4f4359)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.2.5+175] - 2026-09-01
 
 ### ⚙️ Miscellaneous Tasks [3.2.5]
