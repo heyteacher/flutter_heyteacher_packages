@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-4.1.7+172] - 2026-09-08
+
+### ⚙️ Miscellaneous Tasks [4.1.7]
+
+- Bump Android Gradle plugin to 9.0.1 and Kotlin plugin to 2.3.20 across all example projects ([904ad64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/904ad64a13026d045ce1ee3e3ff4c98da6f4d966)) by **heyteacher**
+- *(release)* New version 4.1.7+172 which closes ([#385](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/385)) ([84a1ebc](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/84a1ebc5e704c043ab8d586d0031add6b1bb1c9b)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-4.1.6+171] - 2026-09-08
 
 ### 🚜 Refactor [4.1.6]
