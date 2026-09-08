@@ -15,10 +15,7 @@ import 'package:logging/logging.dart' show Level;
 /// one, which is then persisted via [LoggerViewModel].
 class LoggingLevelDropDownMenuListTile extends StatefulWidget {
   /// Creates a [LoggingLevelDropDownMenuListTile].
-  const LoggingLevelDropDownMenuListTile({
-    required void Function() onChanged,
-    super.key,
-  }) : _onChanged = onChanged;
+  const LoggingLevelDropDownMenuListTile({required this._onChanged, super.key});
   final VoidCallback _onChanged;
 
   @override
@@ -44,13 +41,11 @@ class _LoggingLevelDropDownMenuListTileState
   @override
   Widget build(BuildContext context) => ListTile(
     leading: const Icon(Icons.list),
-    title: Text(
-      FlutterHeyteacherLoggerLocalizations.of(context)!.loggingLevel,
-    ),
+    title: Text(FlutterHeyteacherLoggerLocalizations.of(context)!.loggingLevel),
     subtitle: Text(
-      FlutterHeyteacherLocaleLocalizations.of(context)!.defaultValue(
-        LoggerViewModel.instance.defaultLevel.name,
-      ),
+      FlutterHeyteacherLocaleLocalizations.of(
+        context,
+      )!.defaultValue(LoggerViewModel.instance.defaultLevel.name),
     ),
     trailing: GenericsDropDownMenu<Level>(
       label: FlutterHeyteacherLoggerLocalizations.of(context)!.loggingLevel,

@@ -24,8 +24,7 @@ import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 /// It shows the device type, version, and a button to ask for support.
 class DevicePackageInfoListTile extends StatelessWidget {
   /// Creates a [DevicePackageInfoListTile].
-  const DevicePackageInfoListTile({required String supportEmail, super.key})
-    : _supportEmail = supportEmail;
+  const DevicePackageInfoListTile({required this._supportEmail, super.key});
 
   final String _supportEmail;
 
@@ -55,21 +54,15 @@ class DevicePackageInfoListTile extends StatelessWidget {
       children: [
         FutureBuilder<String>(
           future: InfoDevicePackageViewModel.instance.packageVersion,
-          builder: (_, devicePackageSnapshot) => Text(
-            devicePackageSnapshot.data ?? '',
-          ),
+          builder: (_, devicePackageSnapshot) =>
+              Text(devicePackageSnapshot.data ?? ''),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: WasmWidget(),
-        ),
+        const Padding(padding: EdgeInsets.only(top: 3), child: WasmWidget()),
       ],
     ),
     subtitle: FutureBuilder(
       future: InfoDevicePackageViewModel.instance.deviceInfo,
-      builder: (_, deviceSnapshot) => Text(
-        'id: ${deviceSnapshot.data}',
-      ),
+      builder: (_, deviceSnapshot) => Text('id: ${deviceSnapshot.data}'),
     ),
     trailing: IconButton(
       onPressed: () => InfoDevicePackageViewModel.instance.askSupport(
@@ -85,9 +78,7 @@ class DevicePackageInfoListTile extends StatelessWidget {
 /// Widget to display if the application is running with WASM.
 class WasmWidget extends StatelessWidget {
   /// Creates a [WasmWidget].
-  const WasmWidget({
-    super.key,
-  });
+  const WasmWidget({super.key});
 
   @override
   Widget build(BuildContext context) =>
@@ -95,10 +86,7 @@ class WasmWidget extends StatelessWidget {
       ? const Badge(
           label: Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              Icon(Icons.rocket, size: 12),
-              Text('WASM'),
-            ],
+            children: [Icon(Icons.rocket, size: 12), Text('WASM')],
           ),
         )
       : const SizedBox.shrink();

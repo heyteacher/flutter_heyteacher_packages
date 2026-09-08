@@ -51,16 +51,15 @@ abstract class ChartView extends StatelessWidget {
     this.intervalYAlt,
     this.extraHorizontalLines,
     this.extraVerticalLines,
-    Iterable<RangeAnnotationData>? horizontalRangeAnnotations,
-    Iterable<RangeAnnotationData>? verticalRangeAnnotations,
+    this._horizontalRangeAnnotations,
+    this._verticalRangeAnnotations,
     this.rotate = false,
     this.betweenBarsDataList,
     this.aboveBarDataList,
     this.belowBarDataList,
     this.isCurvedList,
     this.isStepLineChartList,
-  })  : _verticalRangeAnnotations = verticalRangeAnnotations,
-        _horizontalRangeAnnotations = horizontalRangeAnnotations {
+  }) {
     // set intervalX maxX minX
     maxX ??= _maxX();
     minX ??= _minX();
@@ -193,24 +192,26 @@ abstract class ChartView extends StatelessWidget {
   /// For line charts, defines the appearance of the area between two line
   /// series.
   final Iterable<
-      ({
-        int fromIndex,
-        int toIndex,
-        Color? color,
-        Color? fromAboveColor,
-        Color? fromBelowColor,
-        Gradient? gradient
-      })?>? betweenBarsDataList;
+    ({
+      int fromIndex,
+      int toIndex,
+      Color? color,
+      Color? fromAboveColor,
+      Color? fromBelowColor,
+      Gradient? gradient,
+    })?
+  >?
+  betweenBarsDataList;
 
   /// For line charts, defines the appearance of the area above a line series,
   /// cut off at a specific Y-value.
   final Iterable<({double? cutoff, Color? color, Gradient? gradient})?>?
-      aboveBarDataList;
+  aboveBarDataList;
 
   /// For line charts, defines the appearance of the area below a line series,
   /// cut off at a specific Y-value.
   final Iterable<({double? cutoff, Color? color, Gradient? gradient})?>?
-      belowBarDataList;
+  belowBarDataList;
 
   ({double intervalY, double maxY, double minY}) _minMaxIntervalY(
     double? maxY,
@@ -227,8 +228,11 @@ abstract class ChartView extends StatelessWidget {
         final maxYToUse = maxY == null || maxY < newMaxY ? newMaxY : maxY;
         final newMinY = iterableY.min.toDouble();
         final minYToUse = minY == null || minY > newMinY ? newMinY : minY;
-        intervalYValue =
-            interval(minYToUse, maxYToUse, minInterval: minIntervalY);
+        intervalYValue = interval(
+          minYToUse,
+          maxYToUse,
+          minInterval: minIntervalY,
+        );
         minYValue = min(
           ChartView.floorToInterval(minYToUse, intervalYValue),
           minYValue ?? 0,
@@ -246,30 +250,30 @@ abstract class ChartView extends StatelessWidget {
     return (
       intervalY: intervalYValue ?? 0,
       minY: minYValue ?? 0,
-      maxY: maxYValue ?? 0
+      maxY: maxYValue ?? 0,
     );
   }
 
   double _minX() => chartDataLists.isNotEmpty
       ? chartDataLists
-          .map(
-            (chartDataList) => chartDataList.isNotEmpty
-                ? chartDataList.map((e) => e.x).min.toDouble()
-                : 0,
-          )
-          .min
-          .toDouble()
+            .map(
+              (chartDataList) => chartDataList.isNotEmpty
+                  ? chartDataList.map((e) => e.x).min.toDouble()
+                  : 0,
+            )
+            .min
+            .toDouble()
       : 0;
 
   double _maxX() => chartDataLists.isNotEmpty
       ? chartDataLists
-          .map(
-            (chartDataList) => chartDataList.isNotEmpty
-                ? chartDataList.map((e) => e.x).max.toDouble()
-                : 0,
-          )
-          .max
-          .toDouble()
+            .map(
+              (chartDataList) => chartDataList.isNotEmpty
+                  ? chartDataList.map((e) => e.x).max.toDouble()
+                  : 0,
+            )
+            .max
+            .toDouble()
       : 0;
 
   /// Gets the first data series from [chartDataLists].
@@ -281,232 +285,234 @@ abstract class ChartView extends StatelessWidget {
   /// Configures the titles (axes labels and names) for the chart.
   @protected
   FlTitlesData get titlesData => FlTitlesData(
-        topTitles: const AxisTitles(),
-        rightTitles: formatterAxisYAlt != null
-            ? yAltAxisTitles()
-            : rightTitlesLikeLeft || rotate
-                ? yAxisTitles()
-                : const AxisTitles(),
-        bottomTitles: xAxisTitles(),
-        leftTitles: rotate ? const AxisTitles() : yAxisTitles(),
-      );
+    topTitles: const AxisTitles(),
+    rightTitles: formatterAxisYAlt != null
+        ? yAltAxisTitles()
+        : rightTitlesLikeLeft || rotate
+        ? yAxisTitles()
+        : const AxisTitles(),
+    bottomTitles: xAxisTitles(),
+    leftTitles: rotate ? const AxisTitles() : yAxisTitles(),
+  );
 
   /// Configures the X-axis titles.
   @protected
   AxisTitles xAxisTitles() => AxisTitles(
-        axisNameSize: 20,
-        axisNameWidget:
-            RotatedBox(quarterTurns: rotate ? 2 : 0, child: axisNameWidgetX),
-        sideTitles: SideTitles(
-          showTitles: true,
-          interval: runtimeType == BarChartView
-              ? double.maxFinite // that means no X intervals in bar char
-              : intervalX,
-          reservedSize: reservedSizeX,
-          maxIncluded: !(runtimeType == BarChartView),
-          minIncluded: !(runtimeType == BarChartView),
-          getTitlesWidget: bottomTitleWidgets,
-        ),
-      );
+    axisNameSize: 20,
+    axisNameWidget: RotatedBox(
+      quarterTurns: rotate ? 2 : 0,
+      child: axisNameWidgetX,
+    ),
+    sideTitles: SideTitles(
+      showTitles: true,
+      interval: runtimeType == BarChartView
+          ? double
+                .maxFinite // that means no X intervals in bar char
+          : intervalX,
+      reservedSize: reservedSizeX,
+      maxIncluded: !(runtimeType == BarChartView),
+      minIncluded: !(runtimeType == BarChartView),
+      getTitlesWidget: bottomTitleWidgets,
+    ),
+  );
 
   /// Configures the primary (left) Y-axis titles.
   @protected
   AxisTitles yAxisTitles() => AxisTitles(
-        axisNameWidget: axisNameWidgetY,
-        sideTitles: SideTitles(
-          showTitles: true,
-          reservedSize: reservedSizeY,
-          maxIncluded: false,
-          minIncluded: false,
-          interval: intervalY,
-          getTitlesWidget: leftTitleWidgets,
-        ),
-      );
+    axisNameWidget: axisNameWidgetY,
+    sideTitles: SideTitles(
+      showTitles: true,
+      reservedSize: reservedSizeY,
+      maxIncluded: false,
+      minIncluded: false,
+      interval: intervalY,
+      getTitlesWidget: leftTitleWidgets,
+    ),
+  );
 
   /// Builds the widget for a single label on the left Y-axis.
   @protected
   Widget leftTitleWidgets(double value, TitleMeta meta) => RotatedBox(
-        quarterTurns: rotate ? 3 : 0,
-        child: SideTitleWidget(
-          meta: meta,
-          child: Padding(
-            padding:
-                EdgeInsets.only(right: rotate ? 0 : 4.0, top: rotate ? 4.0 : 0),
-            child: Text(
-              formatterAxisY(0, value),
-              style: TextStyle(
-                color: formatterColorAxisY(value),
-                fontSize: 10,
-              ),
-            ),
-          ),
+    quarterTurns: rotate ? 3 : 0,
+    child: SideTitleWidget(
+      meta: meta,
+      child: Padding(
+        padding: EdgeInsets.only(
+          right: rotate ? 0 : 4.0,
+          top: rotate ? 4.0 : 0,
         ),
-      );
+        child: Text(
+          formatterAxisY(0, value),
+          style: TextStyle(color: formatterColorAxisY(value), fontSize: 10),
+        ),
+      ),
+    ),
+  );
 
   /// Configures the alternative (right) Y-axis titles.
   @protected
   AxisTitles yAltAxisTitles() => AxisTitles(
-        axisNameWidget: axisNameWidgetYAlt,
-        sideTitles: SideTitles(
-          showTitles: true,
-          reservedSize: reservedSizeYAlt,
-          maxIncluded: false,
-          minIncluded: false,
-          interval: intervalYAlt,
-          getTitlesWidget: rightTitleWidgets,
-        ),
-      );
+    axisNameWidget: axisNameWidgetYAlt,
+    sideTitles: SideTitles(
+      showTitles: true,
+      reservedSize: reservedSizeYAlt,
+      maxIncluded: false,
+      minIncluded: false,
+      interval: intervalYAlt,
+      getTitlesWidget: rightTitleWidgets,
+    ),
+  );
 
   /// Builds the widget for a single label on the right Y-axis.
   @protected
   Widget rightTitleWidgets(double value, TitleMeta meta) => RotatedBox(
-        quarterTurns: rotate ? 3 : 0,
-        child: SideTitleWidget(
-          meta: meta,
-          child: Padding(
-            padding:
-                EdgeInsets.only(right: rotate ? 0 : 4.0, top: rotate ? 4.0 : 0),
-            child: Text(
-              formatterAxisYAlt!(0, value),
-              style: TextStyle(color: formatterColorAxisYAlt?.call(value)),
-            ),
-          ),
+    quarterTurns: rotate ? 3 : 0,
+    child: SideTitleWidget(
+      meta: meta,
+      child: Padding(
+        padding: EdgeInsets.only(
+          right: rotate ? 0 : 4.0,
+          top: rotate ? 4.0 : 0,
         ),
-      );
+        child: Text(
+          formatterAxisYAlt!(0, value),
+          style: TextStyle(color: formatterColorAxisYAlt?.call(value)),
+        ),
+      ),
+    ),
+  );
 
   /// Builds the widget for a single label on the bottom X-axis.
   @protected
   Widget bottomTitleWidgets(double value, TitleMeta meta) => SideTitleWidget(
-        meta: meta,
-        space: 3,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 5),
-          child: RotatedBox(
-            quarterTurns: rotate ? 0 : 3,
-            child: Text(
-              formatterAxisX(value),
-              style: TextStyle(color: formatterColorAxisX(value), fontSize: 10),
-            ),
-          ),
+    meta: meta,
+    space: 3,
+    child: Padding(
+      padding: const EdgeInsets.only(left: 5),
+      child: RotatedBox(
+        quarterTurns: rotate ? 0 : 3,
+        child: Text(
+          formatterAxisX(value),
+          style: TextStyle(color: formatterColorAxisX(value), fontSize: 10),
         ),
-      );
+      ),
+    ),
+  );
 
   /// Configures the border of the chart drawing area.
   @protected
   FlBorderData get borderData => FlBorderData(
-        show: true,
-        border: Border(
-          bottom: BorderSide(
-            color: ThemeViewModel.instance.colorScheme.onSurface
-                .withValues(alpha: 0.5),
-          ),
-          left: BorderSide(
-            color: ThemeViewModel.instance.colorScheme.onSurface
-                .withValues(alpha: 0.5),
-          ),
-          right: BorderSide(
-            color: ThemeViewModel.instance.colorScheme.onSurface
-                .withValues(alpha: rightTitlesLikeLeft ? 0.5 : 0),
-          ),
-          top: BorderSide(
-            color: ThemeViewModel.instance.colorScheme.onSurface
-                .withValues(alpha: 0),
-          ),
+    show: true,
+    border: Border(
+      bottom: BorderSide(
+        color: ThemeViewModel.instance.colorScheme.onSurface.withValues(
+          alpha: 0.5,
         ),
-      );
+      ),
+      left: BorderSide(
+        color: ThemeViewModel.instance.colorScheme.onSurface.withValues(
+          alpha: 0.5,
+        ),
+      ),
+      right: BorderSide(
+        color: ThemeViewModel.instance.colorScheme.onSurface.withValues(
+          alpha: rightTitlesLikeLeft ? 0.5 : 0,
+        ),
+      ),
+      top: BorderSide(
+        color: ThemeViewModel.instance.colorScheme.onSurface.withValues(
+          alpha: 0,
+        ),
+      ),
+    ),
+  );
 
   /// Generates a list of [HorizontalLine]s from the provided annotation data.
   @protected
   List<HorizontalLine> get horizontalLines => [
-        ..._horizontalRangeAnnotations?.map(
+    ..._horizontalRangeAnnotations?.map(
+          (e) => HorizontalLine(
+            y: e.min.toDouble(),
+            color: e.color,
+            label: HorizontalLineLabel(
+              style: TextStyle(color: e.color, fontWeight: FontWeight.bold),
+              alignment: Alignment.lerp(
+                Alignment.centerLeft,
+                Alignment.topLeft,
+                0.5,
+              )!,
+              show: true,
+              labelResolver: (_) => e.label,
+            ),
+          ),
+        ) ??
+        [],
+    ...extraHorizontalLines
+            ?.map(
               (e) => HorizontalLine(
-                y: e.min.toDouble(),
-                color: e.color,
+                y: e.value.toDouble(),
+                color: e.color.withValues(alpha: 0.4),
                 label: HorizontalLineLabel(
-                  style: TextStyle(
-                    color: e.color,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  alignment: Alignment.lerp(
-                    Alignment.centerLeft,
-                    Alignment.topLeft,
-                    0.5,
-                  )!,
                   show: true,
+                  alignment: Alignment.bottomRight,
                   labelResolver: (_) => e.label,
                 ),
               ),
-            ) ??
-            [],
-        ...extraHorizontalLines
-                ?.map(
-                  (e) => HorizontalLine(
-                    y: e.value.toDouble(),
-                    color: e.color.withValues(alpha: 0.4),
-                    label: HorizontalLineLabel(
-                      show: true,
-                      alignment: Alignment.bottomRight,
-                      labelResolver: (_) => e.label,
-                    ),
-                  ),
-                )
-                .toList() ??
-            [],
-      ];
+            )
+            .toList() ??
+        [],
+  ];
 
   /// Generates a list of [VerticalLine]s from the provided annotation data.
   @protected
   List<VerticalLine> get verticalLines => [
-        // draw a line at the start of range
-        ..._verticalRangeAnnotations?.map(
+    // draw a line at the start of range
+    ..._verticalRangeAnnotations?.map(
+          (e) => VerticalLine(
+            x: e.min.toDouble(),
+            color: e.color,
+            label: VerticalLineLabel(
+              style: TextStyle(color: e.color, fontWeight: FontWeight.bold),
+              alignment: Alignment.topLeft,
+              show: true,
+              labelResolver: (_) => e.label,
+            ),
+          ),
+        ) ??
+        [],
+    // draw a line at the end of range
+    ..._verticalRangeAnnotations?.map(
+          (e) => VerticalLine(
+            x: e.max.toDouble(),
+            color: e.color,
+            label: VerticalLineLabel(
+              style: TextStyle(
+                color: ThemeViewModel.instance.colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+              ),
+              alignment: Alignment.topRight,
+              show: true,
+              labelResolver: (_) => '',
+            ),
+          ),
+        ) ??
+        [],
+    // draw a extra vertical line
+    ...extraVerticalLines
+            ?.map(
               (e) => VerticalLine(
-                x: e.min.toDouble(),
+                x: e.value.toDouble(),
                 color: e.color,
                 label: VerticalLineLabel(
-                  style: TextStyle(
-                    color: e.color,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  alignment: Alignment.topLeft,
                   show: true,
+                  alignment: Alignment.topRight,
                   labelResolver: (_) => e.label,
                 ),
               ),
-            ) ??
-            [],
-        // draw a line at the end of range
-        ..._verticalRangeAnnotations?.map(
-              (e) => VerticalLine(
-                x: e.max.toDouble(),
-                color: e.color,
-                label: VerticalLineLabel(
-                  style: TextStyle(
-                    color: ThemeViewModel.instance.colorScheme.onSurface,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  alignment: Alignment.topRight,
-                  show: true,
-                  labelResolver: (_) => '',
-                ),
-              ),
-            ) ??
-            [],
-        // draw a extra vertical line
-        ...extraVerticalLines
-                ?.map(
-                  (e) => VerticalLine(
-                    x: e.value.toDouble(),
-                    color: e.color,
-                    label: VerticalLineLabel(
-                      show: true,
-                      alignment: Alignment.topRight,
-                      labelResolver: (_) => e.label,
-                    ),
-                  ),
-                )
-                .toList() ??
-            [],
-      ];
+            )
+            .toList() ??
+        [],
+  ];
 
   /// Generates a list of [VerticalRangeAnnotation]s to shade vertical regions
   /// of the chart.

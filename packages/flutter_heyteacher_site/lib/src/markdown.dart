@@ -16,14 +16,13 @@ import 'package:url_launcher/url_launcher.dart';
 class MarkdownView extends StatefulWidget {
   /// Markdown page constructor.
   ///
-  /// The markdown is loaded from assets [page] based on the current locale
+  /// The markdown is loaded from assets [_page] based on the current locale
   /// [LocaleViewModel.locale].
   const MarkdownView({
-    required String page,
-    String Function(BuildContext)? markdownAppendixCallback,
+    required this._page,
+    this._markdownAppendixCallback,
     super.key,
-  }) : _page = page,
-       _markdownAppendixCallback = markdownAppendixCallback;
+  });
 
   final String _page;
 

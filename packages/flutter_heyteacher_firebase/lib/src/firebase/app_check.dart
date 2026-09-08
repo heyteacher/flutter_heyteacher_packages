@@ -33,7 +33,7 @@ class AppCheckViewModel {
   /// - For Android, it uses `AndroidProvider.playIntegrity` in release mode
   ///   and `AndroidProvider.debug` in debug mode.
   /// - For Apple platforms (iOS/macOS), it uses `AppleProvider.appAttest`.
-  Future<void> initialize() async => FirebaseAppCheck.instance.activate(
+  Future<void> initialize() async => await FirebaseAppCheck.instance.activate(
     // You can also use 6a `ReCaptchaEnterpriseProvider` provider instance as
     // an argument for `webProvider`
     providerWeb: ReCaptchaEnterpriseProvider(

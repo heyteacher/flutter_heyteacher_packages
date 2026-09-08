@@ -252,17 +252,12 @@ abstract class PagingSliverAnimatedState<
     final newDataList = list.where(
       (data) =>
           filterValue == null ||
-          data.toString().toLowerCase().contains(
-            filterValue!.toLowerCase(),
-          ),
+          data.toString().toLowerCase().contains(filterValue!.toLowerCase()),
     );
-    final changedIndexes =
-        _compare(
-          oldList: dataList ?? [],
-          newList: newDataList.toList(),
-        )..forEach(
-          _insertItem,
-        );
+    final changedIndexes = _compare(
+      oldList: dataList ?? [],
+      newList: newDataList.toList(),
+    )..forEach(_insertItem);
     // add new item at the end of list, scrollo down e litte bit
     if (changedIndexes.isNotEmpty &&
         (dataList?.length ?? 0) > 0 &&
@@ -336,28 +331,24 @@ abstract class PagingSliverAnimatedState<
 
 /// A widget that can be dismissed by swiping.
 class DismissibleWidget extends StatelessWidget {
-  /// Creates a [DismissibleWidget] widget on [child].
+  /// Creates a [DismissibleWidget] widget on [_child].
   ///
-  /// The [deleteConfirmMessage] is the message to be displayed in the dialog.
+  /// The [_deleteConfirmMessage] is the message to be displayed in the dialog.
   ///
-  /// The [dismissibleKey] is the key to be used for the [Dismissible] widget.
+  /// The [_dismissibleKey] is the key to be used for the [Dismissible] widget.
   ///
-  /// The [deletedMessage] is the message to be displayed after the item
+  /// The [_deletedMessage] is the message to be displayed after the item
   /// is deleted.
   ///
-  /// The [onDismissed] is the callback to be called after the item is deleted.
+  /// The [_onDismissed] is the callback to be called after the item is deleted.
   const DismissibleWidget({
-    required String deleteConfirmMessage,
-    required Key dismissibleKey,
-    required String deletedMessage,
-    required void Function(DismissDirection) onDismissed,
-    required Widget child,
+    required this._deleteConfirmMessage,
+    required this._dismissibleKey,
+    required this._deletedMessage,
+    required this._onDismissed,
+    required this._child,
     super.key,
-  }) : _child = child,
-       _onDismissed = onDismissed,
-       _deletedMessage = deletedMessage,
-       _dismissibleKey = dismissibleKey,
-       _deleteConfirmMessage = deleteConfirmMessage;
+  });
 
   final String _deleteConfirmMessage;
 
@@ -380,14 +371,12 @@ class DismissibleWidget extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(left: 8),
-              child: Icon(
-                Icons.delete_rounded,
-              ),
+              child: Icon(Icons.delete_rounded),
             ),
           ],
         ),
       ),
-      confirmDismiss: (_) async => showConfirmCancelDialog<void>(
+      confirmDismiss: (_) async => await showConfirmCancelDialog<void>(
         context: context,
         content: Text(_deleteConfirmMessage),
         confirmCallback: (_) async => _deletedMessage,

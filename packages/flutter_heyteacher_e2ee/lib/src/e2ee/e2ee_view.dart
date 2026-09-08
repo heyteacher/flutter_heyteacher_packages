@@ -66,14 +66,12 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
       AuthViewModel.instance.uid,
     ).aadChangedStream.listen((aad) => setState(() => _aad = aad));
     unawaited(_authStremSubscription?.cancel());
-    _authStremSubscription = AuthViewModel.instance.stateChangesStream.listen(
-      (user) async {
-        _aad = await E2EEViewModel.instance(
-          AuthViewModel.instance.uid,
-        ).getAAD();
-        setState(() => _authenticated = user != null);
-      },
-    );
+    _authStremSubscription = AuthViewModel.instance.stateChangesStream.listen((
+      user,
+    ) async {
+      _aad = await E2EEViewModel.instance(AuthViewModel.instance.uid).getAAD();
+      setState(() => _authenticated = user != null);
+    });
   }
 
   @override
@@ -87,7 +85,7 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
   Widget build(BuildContext context) => TextField(
     focusNode: widget.focusNode,
     enabled: _authenticated,
-    onChanged: (value) async => _setPassphrase(value, oldValue: _aad),
+    onChanged: (value) async => await _setPassphrase(value, oldValue: _aad),
     obscureText: !_passphraseVisibility && (_aad?.isNotEmpty ?? false),
     decoration: InputDecoration(
       isDense: true,
@@ -98,16 +96,13 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
         ),
         borderRadius: BorderRadius.circular(8),
       ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
       suffixIcon: IconButton(
         icon: Icon(
           _passphraseVisibility ? Icons.visibility_off : Icons.visibility,
         ),
-        onPressed: () => setState(
-          () => _passphraseVisibility = !_passphraseVisibility,
-        ),
+        onPressed: () =>
+            setState(() => _passphraseVisibility = !_passphraseVisibility),
       ),
       labelText: FlutterHeyteacherE2EELocalizations.of(
         context,
@@ -165,11 +160,10 @@ class _E2EEPassphraseListTile extends State<_E2EEPassphraseTextField> {
 class E2EESecretKeyListTile extends StatefulWidget {
   /// Creates an [E2EESecretKeyListTile].
   const E2EESecretKeyListTile({
-    VoidCallback? secretKeyImportedCallback,
-    Key? e2eePassphraseKey,
+    this._secretKeyImportedCallback,
+    this._e2eePassphraseKey,
     super.key,
-  }) : _e2eePassphraseKey = e2eePassphraseKey,
-       _secretKeyImportedCallback = secretKeyImportedCallback;
+  });
 
   /// A callback that is invoked after the secret key has been successfully
   /// imported.
@@ -248,9 +242,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   child: Icon(Icons.qr_code),
                 ),
                 label: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 4,
-                  ),
+                  padding: const EdgeInsets.only(right: 4),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.show,
                   ),
@@ -268,9 +260,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   child: Icon(Icons.qr_code_scanner),
                 ),
                 label: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 4,
-                  ),
+                  padding: const EdgeInsets.only(right: 4),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.scan,
                   ),
@@ -331,9 +321,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   child: Icon(Icons.create),
                 ),
                 label: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 4,
-                  ),
+                  padding: const EdgeInsets.only(right: 4),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.generate,
                   ),
@@ -367,9 +355,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   child: Icon(Icons.edit),
                 ),
                 label: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 4,
-                  ),
+                  padding: const EdgeInsets.only(right: 4),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.edit,
                   ),
@@ -478,9 +464,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
         secretJwkJson = secretJwkJson!.split('\n').map((e) => e.trim()).join();
         await E2EEViewModel.instance(
           AuthViewModel.instance.uid,
-        ).importSecretJwkJson(
-          secretJwkJson!,
-        );
+        ).importSecretJwkJson(secretJwkJson!);
         if (mounted) setState(() {});
         widget._secretKeyImportedCallback?.call();
         return i10n.encryptionSecretKeyImported;

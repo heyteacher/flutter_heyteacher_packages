@@ -31,9 +31,8 @@ class CandlestickChartView extends ChartView {
     super.horizontalRangeAnnotations,
     super.verticalRangeAnnotations,
     super.aspectRatio,
-    List<TextSpan>? Function(int)? getTooltipItems,
-  })  : _getTooltipItems = getTooltipItems,
-        super(chartDataLists: candlestickChartDataList);
+    this._getTooltipItems,
+  }) : super(chartDataLists: candlestickChartDataList);
 
   /// A function that provides custom tooltip text spans for a given data point
   /// index. This allows for rich text formatting in the tooltips.
@@ -41,64 +40,58 @@ class CandlestickChartView extends ChartView {
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          title,
-          Padding(
-            padding: const EdgeInsets.only(right: 8, bottom: 8),
-            child: AspectRatio(
-              aspectRatio: aspectRatio,
-              child: CandlestickChart(
-                _candleStickChartData,
-              ),
-            ),
-          ),
-        ],
-      );
+    children: [
+      title,
+      Padding(
+        padding: const EdgeInsets.only(right: 8, bottom: 8),
+        child: AspectRatio(
+          aspectRatio: aspectRatio,
+          child: CandlestickChart(_candleStickChartData),
+        ),
+      ),
+    ],
+  );
 
   CandlestickChartData get _candleStickChartData => CandlestickChartData(
-        candlestickSpots: _candlestickSpots,
-        gridData: const FlGridData(
-          show: false,
+    candlestickSpots: _candlestickSpots,
+    gridData: const FlGridData(show: false),
+    rangeAnnotations: RangeAnnotations(
+      verticalRangeAnnotations: verticalRangeAnnotations,
+      horizontalRangeAnnotations: horizontalRangeAnnotations,
+    ),
+    minY: _minY,
+    maxY: _maxY,
+    minX: minX,
+    maxX: maxX,
+    titlesData: titlesData,
+    borderData: borderData,
+    candlestickTouchData: CandlestickTouchData(
+      touchTooltipData: CandlestickTouchTooltipData(
+        getTooltipItems: _getCandleStickTooltipItems,
+        fitInsideHorizontally: true,
+        fitInsideVertically: true,
+      ),
+    ),
+    touchedPointIndicator: AxisSpotIndicator(
+      painter: AxisLinesIndicatorPainter(
+        verticalLineProvider: (x) => VerticalLine(
+          x: x,
+          color: ThemeViewModel.instance.colorScheme.onSurface,
+          strokeWidth: 1,
         ),
-        rangeAnnotations: RangeAnnotations(
-          verticalRangeAnnotations: verticalRangeAnnotations,
-          horizontalRangeAnnotations: horizontalRangeAnnotations,
-        ),
-        minY: _minY,
-        maxY: _maxY,
-        minX: minX,
-        maxX: maxX,
-        titlesData: titlesData,
-        borderData: borderData,
-        candlestickTouchData: CandlestickTouchData(
-          touchTooltipData: CandlestickTouchTooltipData(
-            getTooltipItems: _getCandleStickTooltipItems,
-            fitInsideHorizontally: true,
-            fitInsideVertically: true,
+        horizontalLineProvider: (y) => HorizontalLine(
+          y: y,
+          label: HorizontalLineLabel(
+            show: true,
+            style: TextStyle(color: formatterColorAxisY(y)),
+            labelResolver: (hLine) => hLine.y.toInt().toString(),
           ),
+          color: ThemeViewModel.instance.colorScheme.onSurface,
+          strokeWidth: 1,
         ),
-        touchedPointIndicator: AxisSpotIndicator(
-          painter: AxisLinesIndicatorPainter(
-            verticalLineProvider: (x) => VerticalLine(
-              x: x,
-              color: ThemeViewModel.instance.colorScheme.onSurface,
-              strokeWidth: 1,
-            ),
-            horizontalLineProvider: (y) => HorizontalLine(
-              y: y,
-              label: HorizontalLineLabel(
-                show: true,
-                style: TextStyle(
-                  color: formatterColorAxisY(y),
-                ),
-                labelResolver: (hLine) => hLine.y.toInt().toString(),
-              ),
-              color: ThemeViewModel.instance.colorScheme.onSurface,
-              strokeWidth: 1,
-            ),
-          ),
-        ),
-      );
+      ),
+    ),
+  );
 
   List<CandlestickSpot> get _candlestickSpots => chartDataList
       .toList()
@@ -116,20 +109,24 @@ class CandlestickChartView extends ChartView {
       .toList();
 
   double get _maxY {
-    final maxYValue =
-        chartDataList.map((e) => (e as CandlestickDataItem).maxY).max.floor();
+    final maxYValue = chartDataList
+        .map((e) => (e as CandlestickDataItem).maxY)
+        .max
+        .floor();
     final interval = intervalY.floor();
-    final ret =
-        (maxYValue + (interval - (maxYValue % interval))).floorToDouble();
+    final ret = (maxYValue + (interval - (maxYValue % interval)))
+        .floorToDouble();
     return ret;
   }
 
   double get _minY {
-    final minYValue =
-        chartDataList.map((e) => (e as CandlestickDataItem).minY).min.floor();
+    final minYValue = chartDataList
+        .map((e) => (e as CandlestickDataItem).minY)
+        .min
+        .floor();
     final interval = intervalY.floor();
-    final ret =
-        (minYValue - (interval - (minYValue % intervalY))).floorToDouble();
+    final ret = (minYValue - (interval - (minYValue % intervalY)))
+        .floorToDouble();
     return ret;
   }
 
@@ -137,8 +134,7 @@ class CandlestickChartView extends ChartView {
     FlCandlestickPainter painter,
     CandlestickSpot touchedSpot,
     int spotIndex,
-  ) =>
-      _getTooltipItems == null
-          ? null
-          : CandlestickTooltipItem('', children: _getTooltipItems(spotIndex));
+  ) => _getTooltipItems == null
+      ? null
+      : CandlestickTooltipItem('', children: _getTooltipItems(spotIndex));
 }

@@ -17,11 +17,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// to speak text with throttling and duplicate-text prevention.
 class TTSViewModel {
   TTSViewModel._({
-    required bool defaultEnabled,
-    required int defaultThresholdInSeconds,
+    required this._defaultEnabled,
+    required this._defaultThresholdInSeconds,
     FlutterTts? ttsForTesting,
-  })  : _defaultEnabled = defaultEnabled,
-        _defaultThresholdInSeconds = defaultThresholdInSeconds {
+  }) {
     _textToSpeech = ttsForTesting ?? FlutterTts();
     if (PlatformHelper.isMobile || PlatformHelper.isWeb) {
       unawaited(_textToSpeech.awaitSpeakCompletion(false));
@@ -83,8 +82,9 @@ class TTSViewModel {
       defaultEnabled: _defaultEnabled,
       defaultThresholdInSeconds: _defaultThresholdInSeconds,
     );
-    await _sharedPreferencesAsync
-        .remove(TTSPreferencesKeys.htuTtsEnableTTS.name);
+    await _sharedPreferencesAsync.remove(
+      TTSPreferencesKeys.htuTtsEnableTTS.name,
+    );
     _lastTextSpoken = null;
     _lastTryDateTime = null;
   }
@@ -101,7 +101,7 @@ class TTSViewModel {
   /// Set Text-To-Speech is enabled in the user's preference
   /// in [SharedPreferencesAsync].
   Future<void> setEnabled({required bool enabled}) async =>
-      _sharedPreferencesAsync.setBool(
+      await _sharedPreferencesAsync.setBool(
         TTSPreferencesKeys.htuTtsEnableTTS.name,
         enabled,
       );
@@ -118,7 +118,7 @@ class TTSViewModel {
   /// Set the threshold in seconds to [thresholdInSeconds] in the user's
   /// preference
   Future<void> setThresholdInSeconds({required int thresholdInSeconds}) async =>
-      _sharedPreferencesAsync.setInt(
+      await _sharedPreferencesAsync.setInt(
         TTSPreferencesKeys.htuTtsThresholdInSeconds.name,
         thresholdInSeconds,
       );
@@ -155,15 +155,15 @@ class TTSViewModel {
         clock.now().difference(_lastTryDateTime!) <
             Duration(seconds: thresholdInSecondsValue)) {
       final tryDateTime = clock.now();
-      await Future<void>.delayed(
-        Duration(seconds: thresholdInSecondsValue),
-      );
+      await Future<void>.delayed(Duration(seconds: thresholdInSecondsValue));
       // if previous text remain equal or no new text has been spoken
       // meantime, ignore text
       if (_lastTextSpoken == text || tryDateTime.isBefore(_lastTryDateTime!)) {
-        _logger.finer("(speak): ignore text '$text' too close to previous "
-            "speaked at '$_lastTryDateTime' "
-            'thresholdInSeconds $thresholdInSecondsValue');
+        _logger.finer(
+          "(speak): ignore text '$text' too close to previous "
+          "speaked at '$_lastTryDateTime' "
+          'thresholdInSeconds $thresholdInSecondsValue',
+        );
         // set the last try date time when the text is delayed
         _lastTryDateTime = tryDateTime;
         return false;
@@ -182,6 +182,6 @@ class TTSViewModel {
 
   Future<void> _changeLanguage(String? languageCode) async =>
       !PlatformHelper.isFlutterTest
-          ? _textToSpeech.setLanguage(languageCode ?? Intl.getCurrentLocale())
-          : null;
+      ? await _textToSpeech.setLanguage(languageCode ?? Intl.getCurrentLocale())
+      : null;
 }

@@ -16,8 +16,10 @@ import 'package:synchronized/synchronized.dart';
 ///
 /// Sub classes must supplying generics [LightDataType], [DetailsDataType] and
 /// constructor parameters.
-abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
-    DetailsDataType extends LightDataType> {
+abstract class BaseStore<
+  LightDataType extends FirestoreData<dynamic>,
+  DetailsDataType extends LightDataType
+> {
   /// The store constructor.
   ///
   /// Create a store with these paramenters:
@@ -34,20 +36,20 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
     required this.collection,
     required this.userProfile,
     required LightDataType Function(Map<String, dynamic> map)
-        fromFirestoreFactory,
+    fromFirestoreFactory,
     DetailsDataType Function(Map<String, dynamic> map)?
-        detailsFromFirestoreFactory,
+    detailsFromFirestoreFactory,
     this.orderByFields,
     this.aggregateFields,
     this.storeFilter,
     this.databaseId,
     this.cacheEnabled = true,
     this.offlineEnabled = true,
-  })  : assert(
-          databaseId?.isNotEmpty ?? true,
-          'databaseId must be null or not empty',
-        ),
-        separatedDetailsCollection = LightDataType != DetailsDataType {
+  }) : assert(
+         databaseId?.isNotEmpty ?? true,
+         'databaseId must be null or not empty',
+       ),
+       separatedDetailsCollection = LightDataType != DetailsDataType {
     _logger
       ..finer(
         '<$runtimeType>: $collectionPathLog '
@@ -177,10 +179,8 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
   bool get fakeFirestore;
 
   /// The aggregate stream where aggregate changes are notified
-  Stream<AggregateData> get aggregateStream =>
-      _aggregateStreamController.stream.where(
-        (aggregateData) => aggregateData.count != null,
-      );
+  Stream<AggregateData> get aggregateStream => _aggregateStreamController.stream
+      .where((aggregateData) => aggregateData.count != null);
 
   /// On dispose, cancel the subscriptions.
   @mustCallSuper
@@ -228,9 +228,7 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
 
   /// Returns the count of [LightDataType] based on [queryStoreFilter] if set or
   /// [BaseStore.storeFilter] otherwise
-  Future<int> count({
-    StoreFilter? queryStoreFilter,
-  });
+  Future<int> count({StoreFilter? queryStoreFilter});
 
   /// Returns the list of [DetailsDataType].
   ///
@@ -247,23 +245,23 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
 
   /// Returns `true` if exists a document identified by [id].
   Future<bool> exists(String id) => lock.synchronized(() async {
-        _logger.finer(
-          '<$runtimeType.exists[synchronized]>:  $detailsCollectionPathLog/$id',
-        );
-        final cached = await storeCache?.get(id);
-        if (cached != null) return true;
-        try {
-          await get(id);
-          return true;
-        } on DocumentNotFoundException {
-          return false;
-        } on FirebaseException catch (e) {
-          if (e.code == 'unavailable') {
-            return false;
-          }
-          rethrow;
-        }
-      });
+    _logger.finer(
+      '<$runtimeType.exists[synchronized]>:  $detailsCollectionPathLog/$id',
+    );
+    final cached = await storeCache?.get(id);
+    if (cached != null) return true;
+    try {
+      await get(id);
+      return true;
+    } on DocumentNotFoundException {
+      return false;
+    } on FirebaseException catch (e) {
+      if (e.code == 'unavailable') {
+        return false;
+      }
+      rethrow;
+    }
+  });
 
   /// Returns `true` if doesn't exists a document identified by [id].
   Future<bool> notExists(String? id) async {
@@ -281,7 +279,7 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
   /// Returns null if document doesn't exist.
   Future<DetailsDataType?> getOrNull(String? id) async {
     _logger.finer('<$runtimeType.getOrNull>: $detailsCollectionPathLog/$id');
-    return await notExists(id) ? null : get(id!);
+    return await notExists(id) ? null : await get(id!);
   }
 
   /// Delete document identified by [id].
@@ -290,9 +288,7 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
   Future<void> delete(String id, {dynamic batch});
 
   /// Deletes massively documents identified by list [ids].
-  Future<void> bulkDelete(
-    Iterable<String> ids,
-  ) async {
+  Future<void> bulkDelete(Iterable<String> ids) async {
     _logger.finer(
       '<$runtimeType.bulkDelete>: $detailsCollectionPathLog, ids: $ids)',
     );
@@ -311,11 +307,7 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
   /// If a document identified by [id] already exists, ovverride it.
   ///
   /// If [batch] is not null, apply the `set` operation to batch.
-  Future<void> set(
-    DetailsDataType detailsData, {
-    String? id,
-    dynamic batch,
-  });
+  Future<void> set(DetailsDataType detailsData, {String? id, dynamic batch});
 
   /// Creates (override) massively [documents] identified by list [ids].
   Future<void> bulkSet(
@@ -364,11 +356,7 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
     for (var i = 0; i < documents.length; i++) {
       // need await operation in order batch commit will by executed as last
       // operation
-      await update(
-        documents[i],
-        fields: fields,
-        id: ids?.elementAt(i),
-      );
+      await update(documents[i], fields: fields, id: ids?.elementAt(i));
       storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
     }
     unawaited(notifyAggregatesChanges());
@@ -420,14 +408,14 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
   @protected
   String get collectionPath => userProfile
       ? 'users'
-          "${collection == "" ? "" : "/$uid/$collection"}"
+            "${collection == "" ? "" : "/$uid/$collection"}"
       : collection;
 
   /// Gets the collection for [LightDataType]  path obfuscating `uid`.
   @protected
   String get collectionPathLog => userProfile
       ? 'users'
-          "${collection == "" ? "" : "/<uid>/$collection"}"
+            "${collection == "" ? "" : "/<uid>/$collection"}"
       : collection;
 
   /// Gets the collection path for [DetailsDataType] based on [collection]
@@ -438,13 +426,13 @@ abstract class BaseStore<LightDataType extends FirestoreData<dynamic>,
   @protected
   String get detailsCollectionPath => userProfile
       ? 'users'
-          "${detailsCollection == "" ? "" : "/$uid/$detailsCollection"}"
+            "${detailsCollection == "" ? "" : "/$uid/$detailsCollection"}"
       : detailsCollection;
 
   /// Gets the collection for [DetailsDataType]  path obfuscating `uid`.
   @protected
   String? get detailsCollectionPathLog => userProfile
       ? 'users'
-          "${detailsCollection == "" ? "" : "/<uid>/$detailsCollection"}"
+            "${detailsCollection == "" ? "" : "/<uid>/$detailsCollection"}"
       : detailsCollection;
 }

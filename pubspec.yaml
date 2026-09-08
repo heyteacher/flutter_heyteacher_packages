@@ -9,11 +9,11 @@ documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages
 topics: [flutter, e2ee, firebase, locale, logger]
 
 environment:
-  sdk: ^3.11.0
+  sdk: ">=3.12.0 <4.0.0"
+  flutter: ">=3.47.0 <4.0.0"
 
 workspace:
   # ignore: path_does_not_exist
   - packages/*
   # ignore: path_does_not_exist
   - packages/*/example
-

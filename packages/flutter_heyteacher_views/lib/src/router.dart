@@ -11,28 +11,22 @@ library;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-
 /// Builds the navigation shell for the app by building a Scaffold, where child
 /// is placed in the body of the Scaffold.
 ///
 class ScaffoldNavigationShell extends StatelessWidget {
   /// Constructs an [ScaffoldNavigationShell].
   ///
-  /// [navigationShell] is placed into the body of scaffold, and a bottom
-  /// navigation bar decorated with [bottomNavigationBarDecoration] is
-  /// displayed with [bottomNavigationBarItems].
+  /// [_navigationShell] is placed into the body of scaffold, and a bottom
+  /// navigation bar decorated with [_bottomNavigationBarDecoration] is
+  /// displayed with [_bottomNavigationBarItems].
   const ScaffoldNavigationShell({
-    required StatefulNavigationShell navigationShell,
-    AppBar? appBar,
-    List<BottomNavigationBarItem> bottomNavigationBarItems =
-        const <BottomNavigationBarItem>[],
-    Decoration? bottomNavigationBarDecoration,
+    required this._navigationShell,
+    AppBar? this._appBar,
+    this._bottomNavigationBarItems = const <BottomNavigationBarItem>[],
+    this._bottomNavigationBarDecoration,
     Key? key,
-  }) : _navigationShell = navigationShell,
-       _appBar = appBar,
-       _bottomNavigationBarDecoration = bottomNavigationBarDecoration,
-       _bottomNavigationBarItems = bottomNavigationBarItems,
-       super(key: key ?? const ValueKey<String>('ScaffoldNavigationShell'));
+  }) : super(key: key ?? const ValueKey<String>('ScaffoldNavigationShell'));
 
   /// The navigation shell and container for the branch Navigators.
   final StatefulNavigationShell _navigationShell;

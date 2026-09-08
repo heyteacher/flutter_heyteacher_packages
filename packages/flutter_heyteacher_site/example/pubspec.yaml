@@ -2,7 +2,7 @@ name: flutter_heyteacher_site_example
 description: "Flutter Heyteacher Site example app."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -21,7 +21,7 @@ version: 1.0.0+1
 resolution: workspace
 
 environment:
-  sdk: ^3.11.0
+  sdk: ">=3.12.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,7 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.9
   flutter:
     sdk: flutter
-  flutter_heyteacher_site: 
+  flutter_heyteacher_site:
     path: ..
   flutter_heyteacher_views:
     path: ../../flutter_heyteacher_views
@@ -46,14 +46,13 @@ dev_dependencies:
     path: ../../flutter_heyteacher_meta
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^10.3.0
+  very_good_analysis: ^11.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -61,9 +60,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/
-     - assets/pages/en/
- 
+    - assets/images/
+    - assets/pages/en/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

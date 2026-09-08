@@ -7,21 +7,16 @@ import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
 class AdaptiveWrap extends StatelessWidget {
   /// Creates an instance of [AdaptiveWrap].
   ///
-  /// the [children] width are adapted to Screen width and [crossAxisCount]
+  /// the [_children] width are adapted to Screen width and [_crossAxisCount]
   const AdaptiveWrap({
-    required List<Widget> children,
-    required int crossAxisCount,
-    double runSpacing = 4,
-    double spacing = 4,
-    Axis direction = Axis.horizontal,
-    WrapAlignment alignment = WrapAlignment.center,
+    required this._children,
+    required this._crossAxisCount,
+    this._runSpacing = 4,
+    this._spacing = 4,
+    this._direction = Axis.horizontal,
+    this._alignment = WrapAlignment.center,
     super.key,
-  }) : _spacing = spacing,
-       _runSpacing = runSpacing,
-       _direction = direction,
-       _crossAxisCount = crossAxisCount,
-       _alignment = alignment,
-       _children = children;
+  });
 
   final List<Widget> _children;
   final double _spacing;
@@ -84,28 +79,21 @@ class AdaptiveWrap extends StatelessWidget {
 
 /// Create a Sliver Adaptive with remaining items centered
 class SliverAdaptiveWrap extends StatelessWidget {
-  /// Creates an instance of Wrap with [crossAxisCount]
-  /// columns ([direction] = [Axis.horizontal] default) or
-  /// rows ([direction] = [Axis.vertical]) with remaining items centered.
+  /// Creates an instance of Wrap with [_crossAxisCount]
+  /// columns ([_direction] = [Axis.horizontal] default) or
+  /// rows ([_direction] = [Axis.vertical]) with remaining items centered.
   ///
-  /// Childredn are spaced by [runSpacing] (default = 4) and [spacing]
+  /// Childredn are spaced by [_runSpacing] (default = 4) and [_spacing]
   /// (default = 4).
   const SliverAdaptiveWrap({
-    required List<Widget> children,
-    required int crossAxisCount,
-    Axis direction = Axis.horizontal,
-    //ScrollController? controller,
-    double runSpacing = 4,
-    double spacing = 4,
-    WrapAlignment alignment = WrapAlignment.center,
+    required this._children,
+    required this._crossAxisCount,
+    this._direction = Axis.horizontal,
+    this._runSpacing = 4,
+    this._spacing = 4,
+    this._alignment = WrapAlignment.center,
     super.key,
-  }) : _direction = direction,
-       //   _controller = controller,
-       _crossAxisCount = crossAxisCount,
-       _children = children,
-       _spacing = spacing,
-       _runSpacing = runSpacing,
-       _alignment = alignment;
+  });
 
   final double _runSpacing;
   final double _spacing;

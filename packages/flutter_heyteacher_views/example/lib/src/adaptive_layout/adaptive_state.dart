@@ -5,8 +5,7 @@ import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
 /// This Widget is the main application widget.
 class AdaptiveStateScreen extends StatefulWidget {
   /// Creates the [AdaptiveStateScreen].
-  const AdaptiveStateScreen({required String param, super.key})
-    : _param = param;
+  const AdaptiveStateScreen({required this._param, super.key});
 
   final String _param;
 
@@ -32,9 +31,7 @@ class _AdaptiveStateScreenState
 class _AbstractAdaptiveStateScreenState extends AbstractAdaptiveState<String> {
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Adaptive State'),
-    ),
+    appBar: AppBar(title: const Text('Adaptive State')),
     body: GridView.count(
       crossAxisCount: widget.crossAxisCount,
       children: _childred,

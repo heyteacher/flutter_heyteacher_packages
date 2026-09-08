@@ -25,10 +25,8 @@ class LoggingRouter {
   static const String path = 'logging';
 
   /// Builds a [GoRoute] for the logger screen.
-  static GoRoute builder() => GoRoute(
-    path: path,
-    builder: (context, state) => const LoggerScreen(),
-  );
+  static GoRoute builder() =>
+      GoRoute(path: path, builder: (context, state) => const LoggerScreen());
 }
 
 /// A screen that displays a paginated and filterable list of log messages.
@@ -74,7 +72,7 @@ class _LoggerScreenState
 
   @override
   Future<Iterable<LogEntry>?> initData() async =>
-      LoggerViewModel.instance.logs(descending: true, limit: pageSize);
+      await LoggerViewModel.instance.logs(descending: true, limit: pageSize);
 
   @override
   ScrollController get scrollController => _scrollController;
@@ -196,8 +194,8 @@ class _LoggerScreenState
 /// timestamp, level, logger name, and message. If an error and stack trace are
 /// present, it displays an info icon that reveals them in a dialog when tapped.
 class _LogEntryListTile extends StatelessWidget {
-  /// Creates a [_LogEntryListTile] to display the given [logEntry].
-  const _LogEntryListTile({required LogEntry logEntry}) : _logEntry = logEntry;
+  /// Creates a [_LogEntryListTile] to display the given [_logEntry].
+  const _LogEntryListTile({required this._logEntry});
 
   final LogEntry _logEntry;
   @override
@@ -233,9 +231,7 @@ class _LogEntryListTile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Text(FormatterHelper.timeWithSecondsFormat(_logEntry.time)),
-        Text(
-          _logEntry.level.name,
-        ),
+        Text(_logEntry.level.name),
       ],
     );
   }

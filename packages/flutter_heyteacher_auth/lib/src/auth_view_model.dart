@@ -53,9 +53,7 @@ class AuthViewModel {
   Future<void> initialize() async {
     try {
       _googleProvider = GoogleProvider(
-        clientId: FirebaseRemoteConfig.instance.getString(
-          'authGoogleClientId',
-        ),
+        clientId: FirebaseRemoteConfig.instance.getString('authGoogleClientId'),
       );
       FirebaseUIAuth.configureProviders([_googleProvider!]);
       _firebaseAuth = FirebaseAuth.instance;
@@ -87,15 +85,12 @@ class AuthViewModel {
         displayName: _localName,
       ),
     );
-    await signInWithEmailAndPassword(
-      email: _localEmail,
-      password: _localEmail,
-    );
+    await signInWithEmailAndPassword(email: _localEmail, password: _localEmail);
     await localSignIn();
   }
 
   /// Sign in with local user credentials
-  Future<void> localSignIn() async => signInWithEmailAndPassword(
+  Future<void> localSignIn() async => await signInWithEmailAndPassword(
     email: _localEmail,
     password: _localEmail,
   );

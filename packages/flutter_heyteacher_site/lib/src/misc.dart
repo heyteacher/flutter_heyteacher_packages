@@ -9,11 +9,8 @@ import 'package:url_launcher/url_launcher.dart' show launchUrl;
 class GetItOnGooglePlayButton extends StatefulWidget {
   /// Creates a [GetItOnGooglePlayButton].
   ///
-  /// [appId] on Play Store must be speficied
-  const GetItOnGooglePlayButton({
-    required String appId,
-    super.key,
-  }) : _appId = appId;
+  /// [_appId] on Play Store must be speficied
+  const GetItOnGooglePlayButton({required this._appId, super.key});
 
   final String _appId;
 
@@ -78,14 +75,13 @@ class _AbstractGetItOnGooglePlayButtonState
 ///
 /// show the logo `assetIconPath` (default  `assets/images/icon.png`)
 class LeadingIcon extends StatelessWidget {
-  /// Creates a [LeadingIcon] with imaged stored in [assetIconPath]
+  /// Creates a [LeadingIcon] with imaged stored in [_assetIconPath]
   /// (default  `assets/images/icon.png`)
   const LeadingIcon({
-    String assetIconPath = 'assets/images/icon.png',
+    this._assetIconPath = 'assets/images/icon.png',
     super.key,
-    void Function()? onPressed,
-  }) : _assetIconPath = assetIconPath,
-       _onPressed = onPressed;
+    this._onPressed,
+  });
 
   final VoidCallback? _onPressed;
 
@@ -103,13 +99,11 @@ class TitleText extends StatelessWidget {
   /// Creater a [TitleText]
   const TitleText({
     required this.title,
-    TextStyle? style,
+    this._style,
     super.key,
-    TextAlign textAlign = TextAlign.center,
-    EdgeInsets? padding,
-  }) : _style = style,
-       _padding = padding,
-       _textAlign = textAlign;
+    this._textAlign = TextAlign.center,
+    this._padding,
+  });
 
   /// The title text
   @protected
@@ -143,7 +137,6 @@ class TitleTextSliver extends TitleText {
   });
 
   @override
-  Widget build(BuildContext context) => SliverToBoxAdapter(
-    child: super.build(context),
-  );
+  Widget build(BuildContext context) =>
+      SliverToBoxAdapter(child: super.build(context));
 }

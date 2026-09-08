@@ -7,28 +7,22 @@ import 'package:flutter_heyteacher_views/src/view/generics_drop_down_menu.dart';
 class PropertyEditorListTile<T> extends StatefulWidget {
   /// Creates a [PropertyEditorListTile].
   ///
-  /// [label] is the label of the property.
-  /// [values] is the list of values to choose from.
-  /// [labels] is the list of labels to be displayed in the dropdown menu.
-  /// [onSelected] is the callback to be called when a value is selected.
-  /// [setValue] is the function that returns the value to be set.
-  /// [icon] is the icon to be displayed.
+  /// [_label] is the label of the property.
+  /// [_values] is the list of values to choose from.
+  /// [_labels] is the list of labels to be displayed in the dropdown menu.
+  /// [_onSelected] is the callback to be called when a value is selected.
+  /// [_setValue] is the function that returns the value to be set.
+  /// [_icon] is the icon to be displayed.
   const PropertyEditorListTile({
-    required String label,
-    required List<T> values,
-    required void Function(T?, {int? index}) onSelected,
-    List<String>? labels,
-    Future<T?> Function()? setValue,
-    T? defaultValue,
-    Icon? icon,
+    required this._label,
+    required this._values,
+    required this._onSelected,
+    this._labels,
+    this._setValue,
+    this._defaultValue,
+    this._icon,
     super.key,
-  }) : _onSelected = onSelected,
-       _labels = labels,
-       _values = values,
-       _label = label,
-       _setValue = setValue,
-       _icon = icon,
-       _defaultValue = defaultValue;
+  });
 
   final String _label;
   final Future<T?> Function()? _setValue;

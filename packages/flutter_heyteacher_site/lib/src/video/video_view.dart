@@ -15,12 +15,7 @@ import 'package:video_player/video_player.dart';
 /// [_VideoWidget] instances.
 class VideoSliverGrid extends StatefulWidget {
   /// Creates a sliver grid for displaying videos.
-  const VideoSliverGrid({
-    required List<VideoData> videos,
-    Decoration? decoration,
-    super.key,
-  }) : _videos = videos,
-       _decoration = decoration;
+  const VideoSliverGrid({required this._videos, this._decoration, super.key});
 
   final List<VideoData> _videos;
   final Decoration? _decoration;
@@ -60,11 +55,8 @@ class _VideoSliverGridState extends State<VideoSliverGrid> {
 
 /// Stateful widget to fetch and then display video content.
 class _VideoWidget extends StatelessWidget {
-  const _VideoWidget({
-    required VideoData videoData,
-    Decoration? decoration,
-  }) : _videolData = videoData,
-       _decoration = decoration;
+  const _VideoWidget({required VideoData videoData, this._decoration})
+    : _videolData = videoData;
 
   final VideoData _videolData;
   final Decoration? _decoration;
@@ -76,9 +68,7 @@ class _VideoWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: TitleText(title: _videolData.title),
-        ),
+        Center(child: TitleText(title: _videolData.title)),
         if (_videolData.url.isNotEmpty)
           Center(
             child: IconButton(
@@ -109,9 +99,7 @@ class _VideoWidget extends StatelessWidget {
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.displayMedium,
         ),
-        content: _VideoPlay(
-          videoData: _videolData,
-        ),
+        content: _VideoPlay(videoData: _videolData),
       ),
     );
   }
@@ -119,9 +107,7 @@ class _VideoWidget extends StatelessWidget {
 
 /// Stateful widget to fetch and then display video content.
 class _VideoPlay extends StatefulWidget {
-  const _VideoPlay({
-    required VideoData videoData,
-  }) : _videolData = videoData;
+  const _VideoPlay({required VideoData videoData}) : _videolData = videoData;
 
   final VideoData _videolData;
 
@@ -145,9 +131,7 @@ class _VideoPlayState extends State<_VideoPlay> {
     super.initState();
     //debugPrint('initState ${widget._videolData.url}');
     _videoPlayerController = VideoPlayerController.networkUrl(
-      Uri.parse(
-        widget._videolData.url,
-      ),
+      Uri.parse(widget._videolData.url),
     );
     WidgetsBinding.instance.addPostFrameCallback(_init);
   }

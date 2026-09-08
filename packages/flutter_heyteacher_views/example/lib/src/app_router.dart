@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
-import 'package:flutter_heyteacher_views_example/src/adaptive_layout/adaptive_layout_screen.dart' show AdaptiveLayoutScreen;
-import 'package:flutter_heyteacher_views_example/src/adaptive_layout/adaptive_state.dart' show AdaptiveStateScreen;
-import 'package:flutter_heyteacher_views_example/src/adaptive_layout/wrap_scaffold.dart' show WrapAndScaffold;
-import 'package:flutter_heyteacher_views_example/src/animations/animations_screen.dart' show AnimationsScreen;
-import 'package:flutter_heyteacher_views_example/src/animations/paging_sliver_animated_state_screen.dart' show PagingSliverAnimatedStateScreen;
-import 'package:flutter_heyteacher_views_example/src/theme_screen.dart' show ThemeScreen;
-import 'package:flutter_heyteacher_views_example/src/widgets/error_screen.dart' show ErrorScreen;
-import 'package:flutter_heyteacher_views_example/src/widgets/progress_indicator_screen.dart' show ProgressIndicatorScreen;
+import 'package:flutter_heyteacher_views_example/src/adaptive_layout/adaptive_layout_screen.dart'
+    show AdaptiveLayoutScreen;
+import 'package:flutter_heyteacher_views_example/src/adaptive_layout/adaptive_state.dart'
+    show AdaptiveStateScreen;
+import 'package:flutter_heyteacher_views_example/src/adaptive_layout/wrap_scaffold.dart'
+    show WrapAndScaffold;
+import 'package:flutter_heyteacher_views_example/src/animations/animations_screen.dart'
+    show AnimationsScreen;
+import 'package:flutter_heyteacher_views_example/src/animations/paging_sliver_animated_state_screen.dart'
+    show PagingSliverAnimatedStateScreen;
+import 'package:flutter_heyteacher_views_example/src/theme_screen.dart'
+    show ThemeScreen;
+import 'package:flutter_heyteacher_views_example/src/widgets/error_screen.dart'
+    show ErrorScreen;
+import 'package:flutter_heyteacher_views_example/src/widgets/progress_indicator_screen.dart'
+    show ProgressIndicatorScreen;
 import 'package:flutter_heyteacher_views_example/src/widgets/widgets_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -39,11 +47,10 @@ enum AppRouteName {
   progressIndicatorView(path: '/progress_indicator_view'),
 
   /// Theme
-  theme(path: '/theme')
-  ;
+  theme(path: '/theme');
 
   /// Creates a route name with a given path.
-  const AppRouteName({required String path}) : _path = path;
+  const AppRouteName({required this._path});
 
   /// The URL path segment for the route.
   final String _path;
@@ -69,9 +76,7 @@ class AppRouter {
           navigationShell: navigationShell,
           bottomNavigationBarDecoration: BoxDecoration(
             border: Border(
-              top: BorderSide(
-                color: ThemeViewModel.instance.darkGreyColor,
-              ),
+              top: BorderSide(color: ThemeViewModel.instance.darkGreyColor),
             ),
           ),
           bottomNavigationBarItems: const [
