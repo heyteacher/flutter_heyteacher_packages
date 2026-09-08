@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_connectivity-3.1.2+154] - 2026-09-08
+
+### ⚙️ Miscellaneous Tasks [3.1.2]
+
+- Upgrade sdk minimum constrants to `3.12.0`, flutter minimun constraints to `3.47.0` and  upgrade dependencies ([e44b3a7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e44b3a7a9bafc864ff37d2ebc9d8c4509d221a61)) by **heyteacher**
+- *(release)* New version 3.1.2+154 which closes ([#383](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/383)) ([c363a9a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c363a9a3fc1eff2dbb1ccca1f1bb5ccf992d74f8)) by **heyteacher**
+
 ## [flutter_heyteacher_connectivity-3.1.1+153] - 2026-09-04
 
 ### 🎨 Styling [3.1.1]
