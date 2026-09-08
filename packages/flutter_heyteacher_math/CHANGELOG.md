@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_math-2.0.7+136] - 2026-09-08
+
+### ⚙️ Miscellaneous Tasks [2.0.7]
+
+- Update pubspec dependencies to use any version for internal packages `flutter_heyteacher_*` ([7d0f702](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7d0f70225aa3a5a7f3984b026e5226b5e6c9a74e)) by **heyteacher**
+- Pin internal package versions ([892eaf7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/892eaf7c9cffa079f1575a06ac3e0b83fed8aafd)) by **heyteacher**
+- Upgrade sdk minimum constrants to `3.12.0`, flutter minimun constraints to `3.47.0` and  upgrade dependencies ([e44b3a7](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e44b3a7a9bafc864ff37d2ebc9d8c4509d221a61)) by **heyteacher**
+- *(release)* New version 2.0.7+136 which closes ([#383](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/383)) ([555d564](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/555d564a5fc42b9669cfc1dc5b965387276e289d)) by **heyteacher**
+
 ## [flutter_heyteacher_math-2.0.6+135] - 2026-07-22
 
 ### ⚙️ Miscellaneous Tasks [2.0.6]
