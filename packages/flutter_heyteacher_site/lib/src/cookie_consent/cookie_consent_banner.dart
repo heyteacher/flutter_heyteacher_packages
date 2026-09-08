@@ -13,12 +13,9 @@ import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 class CookieConsentBanner extends StatefulWidget {
   /// create instance of [CookieConsentBanner]
   ///
-  /// if set, [callback] is called when user accept or decline
+  /// if set, [_callback] is called when user accept or decline
   ///
-  const CookieConsentBanner({
-    void Function({required bool enabled})? callback,
-    super.key,
-  }) : _callback = callback;
+  const CookieConsentBanner({this._callback, super.key});
 
   final void Function({required bool enabled})? _callback;
 

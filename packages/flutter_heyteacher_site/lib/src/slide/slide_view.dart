@@ -6,15 +6,13 @@ import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 
 /// The slide Sliver .
 class SlideSliver extends StatefulWidget {
-  /// The constructor  of the [SlideSliver] for [slides]
+  /// The constructor  of the [SlideSliver] for [_slides]
   const SlideSliver({
-    required List<SlideData> slides,
-    Decoration? decoration,
-    Decoration? imageDecoration,
+    required this._slides,
+    this._decoration,
+    this._imageDecoration,
     super.key,
-  }) : _slides = slides,
-       _decoration = decoration,
-       _imageDecoration = imageDecoration;
+  });
 
   final List<SlideData> _slides;
 
@@ -95,13 +93,11 @@ class _AbstractLiveSlideSliverState
 class SlideCarouselView extends StatefulWidget {
   /// Creates an instance of [SlideCarouselView].
   const SlideCarouselView({
-    required Iterable<SlideData> slides,
-    double? maxHeight,
-    double? aspectRatio,
+    required this._slides,
+    this._maxHeight,
+    this._aspectRatio,
     super.key,
-  }) : _maxHeight = maxHeight,
-       _aspectRatio = aspectRatio,
-       _slides = slides;
+  });
 
   final Iterable<SlideData> _slides;
 
@@ -121,22 +117,14 @@ class _SlideCarouselViewState
         AdaptiveState<
           SlideCarouselView,
           _AbstractSlideCarouselViewState,
-          ({
-            Iterable<SlideData> slides,
-            double? maxHeight,
-            double? aspectRatio,
-          })
+          ({Iterable<SlideData> slides, double? maxHeight, double? aspectRatio})
         > {
   @override
   _AbstractSlideCarouselViewState createAdaptiveState() =>
       _AbstractSlideCarouselViewState();
 
   @override
-  ({
-    Iterable<SlideData> slides,
-    double? maxHeight,
-    double? aspectRatio,
-  })
+  ({Iterable<SlideData> slides, double? maxHeight, double? aspectRatio})
   get params => (
     slides: widget._slides,
     maxHeight: widget._maxHeight,
@@ -151,11 +139,7 @@ class _SlideCarouselViewState
 class _AbstractSlideCarouselViewState
     extends
         AbstractAdaptiveState<
-          ({
-            Iterable<SlideData> slides,
-            double? maxHeight,
-            double? aspectRatio,
-          })
+          ({Iterable<SlideData> slides, double? maxHeight, double? aspectRatio})
         > {
   /// The controller for the carousel.
   final CarouselController _controller = CarouselController();
@@ -205,9 +189,7 @@ class _AbstractSlideCarouselViewState
   /// navigation, which also pauses the auto-scroll timer.
   Widget build(BuildContext context) => widget.params.maxHeight != null
       ? ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: widget.params.maxHeight!,
-          ),
+          constraints: BoxConstraints(maxHeight: widget.params.maxHeight!),
           child: _buildCarouselView(context),
         )
       : widget.params.aspectRatio != null
@@ -242,10 +224,7 @@ class _AbstractSlideCarouselViewState
               color: ThemeViewModel.instance.colorScheme.primary.withValues(
                 alpha: 0.5,
               ),
-              icon: const Icon(
-                size: 80,
-                Icons.keyboard_arrow_left,
-              ),
+              icon: const Icon(size: 80, Icons.keyboard_arrow_left),
               onPressed: _prev,
             ),
             const Expanded(child: SizedBox.shrink()),
@@ -271,12 +250,10 @@ class _SlideWidget extends StatelessWidget {
   /// for the card.
   const _SlideWidget(
     SlideData slideData, {
-    Decoration? decoration,
-    Decoration? imageDecoration,
+    this._decoration,
+    this._imageDecoration,
     super.key,
-  }) : _slideData = slideData,
-       _decoration = decoration,
-       _imageDecoration = imageDecoration;
+  }) : _slideData = slideData;
 
   /// The [SlideData] object containing the title, subtitle,
   /// and path for the image displayed in this card.
@@ -322,9 +299,7 @@ class _SlideWidget extends StatelessWidget {
                       ),
                       title: Text(
                         row.text,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.headlineSmall,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                     ),
                   )
@@ -367,9 +342,7 @@ class _SlideWidget extends StatelessWidget {
                   textAlign: _slideData.body != null
                       ? TextAlign.center
                       : TextAlign.left,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
               ),
               if (_slideData.subtitle?.isNotEmpty ?? false)
@@ -388,9 +361,7 @@ class _SlideWidget extends StatelessWidget {
                     textAlign: _slideData.body != null
                         ? TextAlign.center
                         : TextAlign.left,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.headlineSmall,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
             ],

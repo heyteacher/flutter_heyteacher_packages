@@ -63,11 +63,9 @@ class _BranchView<PARAMS> extends StatefulWidget {
   @protected
   const _BranchView({
     required ScreenSize currentScreenSize,
-    required AbstractAdaptiveState<PARAMS> Function() createAdaptiveState,
-    required PARAMS params,
-  }) : _createAdaptiveState = createAdaptiveState,
-       _params = params,
-       _screenSize = currentScreenSize;
+    required this._createAdaptiveState,
+    required this._params,
+  }) : _screenSize = currentScreenSize;
 
   final ScreenSize _screenSize;
 

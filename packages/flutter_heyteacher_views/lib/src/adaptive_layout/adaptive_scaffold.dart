@@ -5,31 +5,16 @@ import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart';
 class AdaptiveScaffold extends StatefulWidget {
   /// Creates a [AdaptiveScaffold].
   const AdaptiveScaffold({
-    required Widget Function({
-      required int crossAxisCount,
-      required ScreenSize screenSize,
-    })
-    bodyForLargeBuilder,
-    required Widget Function({
-      required int crossAxisCount,
-      required ScreenSize screenSize,
-    })
-    bodyForSmallBuilder,
-    AppBar? appBar,
-    Widget? drawler,
-    FloatingActionButton? floatingActionButton,
-    List<Widget>? persistentFooterButtons,
-    AlignmentDirectional? persistentFooterAlignment,
-    BoxDecoration? persistentFooterDecoration,
+    required this._bodyForLargeBuilder,
+    required this._bodyForSmallBuilder,
+    this._appBar,
+    this._drawler,
+    this._floatingActionButton,
+    this._persistentFooterButtons,
+    this._persistentFooterAlignment,
+    this._persistentFooterDecoration,
     super.key,
-  }) : _appBar = appBar,
-       _drawler = drawler,
-       _bodyForLargeBuilder = bodyForLargeBuilder,
-       _bodyForSmallBuilder = bodyForSmallBuilder,
-       _floatingActionButton = floatingActionButton,
-       _persistentFooterDecoration = persistentFooterDecoration,
-       _persistentFooterAlignment = persistentFooterAlignment,
-       _persistentFooterButtons = persistentFooterButtons;
+  });
 
   /// The title of the screen
   final AppBar? _appBar;

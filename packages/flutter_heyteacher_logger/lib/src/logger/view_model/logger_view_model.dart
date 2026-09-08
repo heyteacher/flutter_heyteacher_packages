@@ -590,7 +590,7 @@ class LoggerViewModel {
       '${(await getTemporaryDirectory()).path}/logs',
     );
     // Check if the temporary logs directory exists, if not, create it.
-    return tmpLogsDir.existsSync() ? tmpLogsDir : tmpLogsDir.create();
+    return tmpLogsDir.existsSync() ? tmpLogsDir : await tmpLogsDir.create();
   }
 
   Future<List<FileSystemEntity>> _logFiles({required bool descending}) async =>
@@ -645,9 +645,7 @@ Future<void> writeLogsWorkerIsolate(Iterable<LogEntry> logEntries) async {
     return;
   }
   final tmpLogDir = await LoggerViewModel.instance._tmpLogsDir;
-  final filename = FormatterHelper.machineDateTimeFormat(
-    clock.now().toLocal(),
-  );
+  final filename = FormatterHelper.machineDateTimeFormat(clock.now().toLocal());
   final file = File('${tmpLogDir.path}/$filename.json');
   // write the log entry to logs temporary directory as a JSON file
   await file.writeAsString(jsonEncode(logEntries));

@@ -8,7 +8,7 @@ import 'flutter_heyteacher_text_to_speech.dart';
 class FlutterHeyteacherTextToSpeechLocalizationsEn
     extends FlutterHeyteacherTextToSpeechLocalizations {
   FlutterHeyteacherTextToSpeechLocalizationsEn([String locale = 'en'])
-      : super(locale);
+    : super(locale);
 
   @override
   String get enableTextToSpeech => 'Enable Text to Speech';

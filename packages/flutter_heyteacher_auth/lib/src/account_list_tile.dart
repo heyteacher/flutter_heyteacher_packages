@@ -25,12 +25,11 @@ class AccountListTile extends StatefulWidget {
     AsyncCallback? createAccountCallback,
     AsyncCallback? deleteAccountCallback,
     String? deleteAccountConfirmMessage,
-    bool disableLoginLogout = false,
+    this._disableLoginLogout = false,
     super.key,
   }) : _createUserDataCallback = createAccountCallback,
        _deleteUserDataCallback = deleteAccountCallback,
-       _deleteUserDataCallbackMessage = deleteAccountConfirmMessage,
-       _disableLoginLogout = disableLoginLogout;
+       _deleteUserDataCallbackMessage = deleteAccountConfirmMessage;
 
   /// A callback function that is invoked to delete the user's data.
   /// This is typically triggered when the user confirms the data deletion
@@ -80,9 +79,7 @@ class _AccountListTileState extends State<AccountListTile> {
       title: Text(FlutterHeyteacherAuthLocalizations.of(context)!.account),
       subtitle: AuthViewModel.instance.autenticated
           ? AuthViewModel.instance.displayName != null
-                ? Text(
-                    AuthViewModel.instance.displayName!,
-                  )
+                ? Text(AuthViewModel.instance.displayName!)
                 : null
           : Text(
               FlutterHeyteacherAuthLocalizations.of(
@@ -116,9 +113,7 @@ class _AccountListTileState extends State<AccountListTile> {
                       context,
                     )!.deleteUserData,
                   ),
-                  content: Text(
-                    widget._deleteUserDataCallbackMessage ?? '',
-                  ),
+                  content: Text(widget._deleteUserDataCallbackMessage ?? ''),
                 ),
               ),
             ),

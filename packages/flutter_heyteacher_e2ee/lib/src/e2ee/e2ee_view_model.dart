@@ -67,9 +67,8 @@ class E2EEViewModel {
 
   /// Set master secret key JWK
   static void setMasterSecretKeyJwk(String masterSecretKeyJwk) {
-    final logger = instance(
-      AuthViewModel.instance.uid,
-    )._logger..finer('<setMasterSecretKeyJwk>:');
+    final logger = instance(AuthViewModel.instance.uid)._logger
+      ..finer('<setMasterSecretKeyJwk>:');
     if (_debugMode) {
       logger.warning(
         '(setMasterSecretKeyJwk): debug mode, skip setting master secret key',
@@ -107,9 +106,8 @@ class E2EEViewModel {
 
   /// Set debug mode
   static set debugMode(bool debugMode) {
-    final logger = instance(
-      AuthViewModel.instance.uid,
-    )._logger..finest('<setDebugMode>:');
+    final logger = instance(AuthViewModel.instance.uid)._logger
+      ..finest('<setDebugMode>:');
     if (_debugMode == debugMode) {
       logger.finest('(setDebugMode): no changes');
       return;
@@ -121,9 +119,8 @@ class E2EEViewModel {
 
   /// Generate a Secret Key anr returns the JWK in JSON format.
   static Future<String> generateSecretKeyJwk() async {
-    final logger = instance(
-      AuthViewModel.instance.uid,
-    )._logger..finer('<generateSecretKeyJwk>:');
+    final logger = instance(AuthViewModel.instance.uid)._logger
+      ..finer('<generateSecretKeyJwk>:');
     if (debugMode) {
       logger.severe(
         '(generateSecretKeyJwk): cannot generate secret key in debug mode',
@@ -295,10 +292,7 @@ class E2EEViewModel {
     }
     final secureStorage = await _secureStorage;
     final value = aad ?? _generateAADValue();
-    await secureStorage.write(
-      key: aadKey,
-      value: value,
-    );
+    await secureStorage.write(key: aadKey, value: value);
     // notify change
     if (notifyChange) {
       _aadChangedStreamController.add(value);
@@ -440,10 +434,8 @@ class E2EEViewModel {
   /// Returns Android-specific options for `FlutterSecureStorage`.
   ///
   /// Enables encrypted shared preferences, using the [appName] for naming.
-  AndroidOptions _getAndroidOptions(String appName) => AndroidOptions(
-    storageNamespace: appName,
-    preferencesKeyPrefix: appName,
-  );
+  AndroidOptions _getAndroidOptions(String appName) =>
+      AndroidOptions(storageNamespace: appName, preferencesKeyPrefix: appName);
 
   String _generateAADValue() {
     _logger.info('<_generateAADValue>:');
@@ -514,7 +506,7 @@ class E2EEViewModel {
       }
       if (secretJwkJson != null) {
         // found, decode the json jwk
-        return _readSecretKeyFromJwkJson(secretJwkJson);
+        return await _readSecretKeyFromJwkJson(secretJwkJson);
       }
     }
     // not found, throw exception
@@ -536,7 +528,7 @@ class E2EEViewModel {
     }
     if (debugMode) {
       _logger.info('(_readMasterSecretKey): debug mode');
-      return _readSecretKeyFromJwkJson(_debugMasterSecretKeyJWK);
+      return await _readSecretKeyFromJwkJson(_debugMasterSecretKeyJWK);
     }
     if (_masterSecretKeyJwk == null || _masterSecretKeyJwk!.isEmpty) {
       _logger.severe(
@@ -546,7 +538,7 @@ class E2EEViewModel {
       throw MissingMasterSecretKeyJwkException();
     }
     // decode the json jwk
-    return _readSecretKeyFromJwkJson(_masterSecretKeyJwk!);
+    return await _readSecretKeyFromJwkJson(_masterSecretKeyJwk!);
   }
 
   /// Imports an [AesGcmSecretKey] from its JWK (JSON Web Key) JSON
@@ -561,7 +553,7 @@ class E2EEViewModel {
       'secretJwkJson $secretJwkJson',
     );
     // import the jwk into secret key
-    return AesGcmSecretKey.importJsonWebKey(secretJwk);
+    return await AesGcmSecretKey.importJsonWebKey(secretJwk);
   }
 }
 

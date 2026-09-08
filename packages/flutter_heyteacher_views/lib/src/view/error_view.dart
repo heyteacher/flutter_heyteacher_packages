@@ -28,11 +28,10 @@ class ErrorView extends StatelessWidget {
   ErrorView(
     this._error,
     this._stackTrace, {
-    String title = '',
-    List<Widget> actions = const <Widget>[],
+    this._title = '',
+    this._actions = const <Widget>[],
     super.key,
-  }) : _title = title,
-       _actions = actions {
+  }) {
     _logger.severe('<ErrorView>', _error, _stackTrace);
   }
   static final _logger = Logger('ErrorView');

@@ -2,15 +2,15 @@
 class VideoData {
   /// Creates a [VideoData] object.
   const VideoData({
-    required String title,
-    required String subTitle,
-    required String url,
-  }) : _url = url, _title = title, _subTitle = subTitle;
+    required this._title,
+    required this._subTitle,
+    required this._url,
+  });
 
   /// The title of the video.
   final String _title;
 
- /// The title of the video.
+  /// The title of the video.
   final String _subTitle;
 
   /// The URL of the video.

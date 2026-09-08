@@ -8,7 +8,7 @@ import 'flutter_heyteacher_text_to_speech.dart';
 class FlutterHeyteacherTextToSpeechLocalizationsIt
     extends FlutterHeyteacherTextToSpeechLocalizations {
   FlutterHeyteacherTextToSpeechLocalizationsIt([String locale = 'it'])
-      : super(locale);
+    : super(locale);
 
   @override
   String get enableTextToSpeech => 'Abilita sintesi vocale';

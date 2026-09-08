@@ -13,8 +13,7 @@ import 'package:go_router/go_router.dart';
 class LoggerListTile extends StatelessWidget {
   /// Creates a [LoggerListTile].
   /// Requires a [_pathPrefix] to construct the navigation route.
-  const LoggerListTile(this._pathPrefix, {bool visible = false, super.key})
-    : _visible = visible;
+  const LoggerListTile(this._pathPrefix, {this._visible = false, super.key});
 
   /// The prefix for the route path to the logger screen.
   final String _pathPrefix;
@@ -30,9 +29,7 @@ class LoggerListTile extends StatelessWidget {
       child: ListTile(
         key: const ValueKey('lt_fhu_logger'),
         leading: const Icon(Icons.list),
-        title: Text(
-          FlutterHeyteacherLoggerLocalizations.of(context)!.logging,
-        ),
+        title: Text(FlutterHeyteacherLoggerLocalizations.of(context)!.logging),
         onTap: () {
           // Navigates to the logger screen using GoRouter.
           GoRouter.of(context).go('$_pathPrefix/${LoggingRouter.path}');

@@ -22,10 +22,7 @@ enum _SharedPreferencesKeys {
 /// A [ListTile] a [LocaleWrap] with TTS speak test.
 class LocaleListTile extends StatefulWidget {
   /// Creates a [LocaleListTile].
-  const LocaleListTile({
-    Future<void> Function(BuildContext)? onTextToSpeechPressed,
-    super.key,
-  }) : _onTextToSpeechPressed = onTextToSpeechPressed;
+  const LocaleListTile({this._onTextToSpeechPressed, super.key});
 
   final Future<void> Function(BuildContext context)? _onTextToSpeechPressed;
 
@@ -72,9 +69,7 @@ class _LocaleListTileState extends State<LocaleListTile> {
               widget._onTextToSpeechPressed?.call(context) ??
                   unawaited(
                     TTSViewModel.instance().speak(
-                      FlutterHeyteacherLocaleLocalizations.of(
-                        context,
-                      )!.ttsTest(
+                      FlutterHeyteacherLocaleLocalizations.of(context)!.ttsTest(
                         LocaleViewModel.instance.locale.languageCode,
                         LocaleViewModel.instance.locale.countryCode ?? '',
                       ),
@@ -96,12 +91,8 @@ class _LocaleListTileState extends State<LocaleListTile> {
             text: '',
             children: [
               TextSpan(
-                text: FormatterHelper.dateTimeFormat(
-                  DateTime(2020, 6, 30, 22),
-                ),
-                style: TextStyle(
-                  color: ThemeViewModel.instance.orangeColor,
-                ),
+                text: FormatterHelper.dateTimeFormat(DateTime(2020, 6, 30, 22)),
+                style: TextStyle(color: ThemeViewModel.instance.orangeColor),
               ),
               const TextSpan(text: '  '),
               TextSpan(
@@ -189,9 +180,7 @@ class LocaleViewModel {
 
   final Logger _logger = Logger('LocaleViewModel');
 
-  Iterable<Locale> _supportedLocales = [
-    _availableLocales['US']!,
-  ];
+  Iterable<Locale> _supportedLocales = [_availableLocales['US']!];
 
   /// Returns the supported locales for the app.
   ///
@@ -281,9 +270,7 @@ class LocaleViewModel {
     _alreadyConfigured = true;
 
     _supportedLocales = supportedCountries.map(
-      (country) => _localeFromCountryCode(
-        countryCode: country,
-      ),
+      (country) => _localeFromCountryCode(countryCode: country),
     );
     _locale = _localeFromCountryCode(
       countryCode: await SharedPreferencesAsync().getString(
@@ -294,9 +281,8 @@ class LocaleViewModel {
     _localeStreamController.sink.add(_locale);
   }
 
-  Locale _localeFromCountryCode({
-    required String? countryCode,
-  }) => countryCode == null
+  Locale _localeFromCountryCode({required String? countryCode}) =>
+      countryCode == null
       ? _defaultLocale
       : _availableLocales[countryCode] ?? _defaultLocale;
 }

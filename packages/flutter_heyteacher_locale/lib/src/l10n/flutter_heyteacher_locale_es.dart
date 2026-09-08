@@ -61,14 +61,11 @@ class FlutterHeyteacherLocaleLocalizationsEs
 
   @override
   String booleanValue(String booleanValue) {
-    String _temp0 = intl.Intl.selectLogic(
-      booleanValue,
-      {
-        'true': 'Sí',
-        'false': 'No',
-        'other': '',
-      },
-    );
+    String _temp0 = intl.Intl.selectLogic(booleanValue, {
+      'true': 'Sí',
+      'false': 'No',
+      'other': '',
+    });
     return '$_temp0';
   }
 

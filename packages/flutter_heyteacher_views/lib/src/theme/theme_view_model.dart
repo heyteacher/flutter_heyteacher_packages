@@ -43,36 +43,9 @@ class ThemeViewModel {
   /// [SharedPreferences].
   @visibleForTesting
   ThemeViewModel({
-    required ({
-      Color primary,
-      Color disabled,
-      Color onPrimary,
-      Color secondary,
-      Color onSecondary,
-      Color error,
-      Color onError,
-      Color onSurface,
-      Color surface,
-      Color onSurfaceVariant,
-      Color surfaceContainer,
-    })
-    darkColorScheme,
-    required ({
-      Color primary,
-      Color disabled,
-      Color onPrimary,
-      Color secondary,
-      Color onSecondary,
-      Color error,
-      Color onError,
-      Color onSurface,
-      Color surface,
-      Color onSurfaceVariant,
-      Color surfaceContainer,
-    })
-    lightColorScheme,
-  }) : _lightColorScheme = lightColorScheme,
-       _darkColorScheme = darkColorScheme {
+    required this._darkColorScheme,
+    required this._lightColorScheme,
+  }) {
     // initialize dark and light theme
     darkTheme = _themeData(
       themeMode: ThemeMode.dark,
@@ -338,10 +311,7 @@ class ThemeViewModel {
       _SharedPreferencesKeys.fhuThemeMode.name,
       themeMode.name,
     );
-    _themeStreamController.sink.add((
-      themeData: theme,
-      themeMode: themeMode,
-    ));
+    _themeStreamController.sink.add((themeData: theme, themeMode: themeMode));
   }
 
   /// Resets the light and dark themes to their initial default color schemes.
@@ -528,18 +498,14 @@ class ThemeViewModel {
       textButtonTheme: const TextButtonThemeData(
         style: ButtonStyle(
           textStyle: WidgetStatePropertyAll(
-            TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           textStyle: const WidgetStatePropertyAll(
-            TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            TextStyle(fontWeight: FontWeight.bold),
           ),
           backgroundColor: WidgetStatePropertyAll(primary),
           foregroundColor: WidgetStatePropertyAll(onPrimary),
@@ -555,9 +521,7 @@ class ThemeViewModel {
       cardTheme: CardThemeData(color: surfaceContainer),
       snackBarTheme: const SnackBarThemeData(
         insetPadding: EdgeInsets.all(20),
-        contentTextStyle: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
+        contentTextStyle: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
