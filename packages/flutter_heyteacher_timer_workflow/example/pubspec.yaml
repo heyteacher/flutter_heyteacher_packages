@@ -1,0 +1,34 @@
+name: flutter_heyteacher_timer_workflow_example
+description: "Flutter Heyteacher Timer Workflow example app."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.3
+
+resolution: workspace
+
+dependencies:
+  cupertino_icons: ^1.0.9
+  flutter:
+    sdk: flutter
+  flutter_heyteacher_locale:
+    path: ../../flutter_heyteacher_locale
+  flutter_heyteacher_logger:
+    path: ../../flutter_heyteacher_logger
+  flutter_heyteacher_timer_workflow:
+    path: ../
+  flutter_heyteacher_views:
+    path: ../../flutter_heyteacher_views
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^11.0.0
+
+flutter:
+  uses-material-design: true

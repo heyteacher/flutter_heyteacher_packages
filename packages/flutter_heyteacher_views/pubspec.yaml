@@ -17,7 +17,7 @@ resolution: workspace
 
 dependencies:
   app_tutorial: ^1.0.6
-  cloud_firestore: ^6.9.0
+  cloud_firestore: ^6.10.0
   collection: ^1.19.1
   equatable: ^2.1.0
   flutter:

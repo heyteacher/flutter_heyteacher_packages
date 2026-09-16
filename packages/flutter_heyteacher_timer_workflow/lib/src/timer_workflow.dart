@@ -1,19 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter_heyteacher_platform/flutter_heyteacher_platform.dart';
-import 'package:flutter_heyteacher_timer_workflow/src/l10n/flutter_heyteacher_timer_workflow.dart';
-
-/// Represents the possible states of a [TimerWorkflow].
-enum WorkflowStatus {
-  /// The workflow is actively running and progressing through tasks.
-  started,
-
-  /// The workflow is not running and is at its initial or reset state.
-  stopped,
-
-  /// The workflow is temporarily suspended and can be resumed.
-  paused,
-}
+import 'package:flutter_heyteacher_timer_workflow/src/exceptions.dart';
+import 'package:flutter_heyteacher_timer_workflow/src/timer_workflow_data.dart';
 
 /// Manages a sequential workflow of timed tasks.
 ///
@@ -51,25 +39,34 @@ enum WorkflowStatus {
 ///   }
 /// }
 /// ```
-abstract class TimerWorkflow<T extends TimerTask> {
+class TimerWorkflow<T extends TimerTask> {
   /// Initializes the workflow by calling [initializeTasks].
-  TimerWorkflow() {
+  TimerWorkflow({this._name}) {
     initializeTasks();
+  }
+
+  /// Disposes of the resources used by the workflow.
+  ///
+  /// This should be called when the workflow is no longer needed to prevent
+  /// memory leaks from the [Timer] and [StreamController].
+  void dispose() {
+    _timer?.cancel();
+    _timer = null;
+    unawaited(_streamController.close());
   }
 
   /// The list of tasks to be executed in the workflow.
   ///
   /// This list should be populated within the [initializeTasks] method in a
   /// subclass.
-  List<T> tasks = [];
+  final List<T> _tasks = [];
 
-  /// The name of the workflow.
-  String get name;
+  final String? _name;
 
   bool _paused = false;
 
-  /// The elapsed time in milliseconds for the current task.
-  int _currentTaskCompletedInMilliseconds = 0;
+  /// The elapsed time for the current task.
+  Duration _completedDuration = Duration.zero;
 
   /// The timer that drives the workflow execution.
   Timer? _timer;
@@ -84,29 +81,14 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// including the current task, next task, and remaining times.
   Stream<RunningTask<T>> get stream => _streamController.stream;
 
+  /// The name of the workflow.
+  String get name => _name ?? '';
+
+  /// Returns an unmodifiable view of the tasks in the workflow.
+  List<T> get tasks => _tasks;
+
   /// Returns `true` if all tasks in the workflow have been completed.
   bool get isCompleted => _currentTask == null;
-
-  /// Disposes of the resources used by the workflow.
-  ///
-  /// This should be called when the workflow is no longer needed to prevent
-  /// memory leaks from the [Timer] and [StreamController].
-  void dispose() {
-    _timer?.cancel();
-    _timer = null;
-    unawaited(_streamController.close());
-  }
-
-  /// Initializes the tasks for the workflow.
-  ///
-  /// Subclasses should override this method to populate the [tasks] list.
-  /// This base implementation ensures that tasks are not initialized more
-  /// than once.
-  void initializeTasks() {
-    if (tasks.isNotEmpty) {
-      throw WorkflowTaskAlreadyInitialized();
-    }
-  }
 
   /// The current status of the workflow.
   WorkflowStatus get status => _timer == null
@@ -115,27 +97,57 @@ abstract class TimerWorkflow<T extends TimerTask> {
       ? WorkflowStatus.paused
       : WorkflowStatus.started;
 
+  /// Gets the current state of the workflow.
+  ///
+  /// The current state in composed by the index and elapsed time of current
+  /// task, first state not completed.
+  ({int index, Duration elapsedTime}) get currentState => (
+    index: _tasks.where((task) => task.completed).length,
+    elapsedTime: (_currentTask?.duration ?? Duration.zero) - _completedDuration,
+  );
+
+  /// The total duration of all tasks in the workflow.
+  Duration get totalDuration =>
+      _tasks.map((task) => task.duration).reduce((a, b) => a + b);
+
+  /// The total number of tasks in the workflow.
+  int get tasksCount => _tasks.length;
+
+  /// The number of completed tasks.
+  int get completedTaskCount => _tasks.where((task) => task.completed).length;
+
+  /// Initializes the tasks for the workflow.
+  ///
+  /// Subclasses should override this method to populate the [tasks] list.
+  /// This base implementation ensures that tasks are not initialized more
+  /// than once.
+  void initializeTasks() {
+    if (_tasks.isNotEmpty) {
+      throw WorkflowTaskAlreadyInitialized();
+    }
+  }
+
   /// Starts or resumes the workflow.
   ///
   /// If the workflow is paused, it will resume from where it left off.
   /// If it's stopped or has not started, it will begin from the first task.
   /// Throws a [WorkflowTaskNotInitialized] if the [tasks] list is empty.
-  void play({({int index, int completedInMilliseconds})? currentState}) {
-    if (tasks.isEmpty) {
+  void start({({int index, Duration elapsedTime})? currentState}) {
+    if (_tasks.isEmpty) {
       throw WorkflowTaskNotInitialized();
     }
     _paused = false;
     if (currentState != null) {
       _restore(currentState);
     }
-    _timer ??= Timer.periodic(const Duration(milliseconds: 1000), _execute);
+    _timer ??= Timer.periodic(const Duration(seconds: 1), _execute);
     _execute(null);
   }
 
   /// Pauses the currently running workflow.
   ///
   /// The timer will stop ticking, but the internal state is preserved.
-  /// Use [play] to resume.
+  /// Use [start] to resume.
   void pause() {
     _paused = true;
   }
@@ -147,44 +159,35 @@ abstract class TimerWorkflow<T extends TimerTask> {
     _timer?.cancel();
     _timer = null;
     _paused = false;
-    _currentTaskCompletedInMilliseconds = 0;
-    tasks.forEach(_reopenTask);
+    _completedDuration = Duration.zero;
+    _tasks.forEach(_reopenTask);
     _streamController.sink.add(
       RunningTask(
         workflowName: name,
         status: WorkflowStatus.stopped,
         current: null,
         next: null,
-        changed: true,
-        remainingTaskMilliseconds: 0,
-        remainingTotalMilliseconds: 0,
+        changed: false,
+        taskElapsedTime: Duration.zero,
+        totalElapsedTime: Duration.zero,
       ),
     );
   }
 
   /// Restarts the workflow from the beginning.
   ///
-  /// This is a convenience method equivalent to calling [stop] then [play].
-  void replay() {
+  /// This is a convenience method equivalent to calling [stop] then [start].
+  void restart() {
     stop();
-    play();
+    start();
   }
 
-  /// Skips the remainder of the current task and moves to the next one.
-  void skip() {
+  /// Moves to the next task.
+  void next() {
     final currentTask = _currentTask;
-    _currentTaskCompletedInMilliseconds = 0;
+    _completedDuration = Duration.zero;
     currentTask?.completed = true;
   }
-
-  /// Gets the current state of the workflow.
-  ///
-  /// The current state in composed by the index and milliseconds completed
-  /// of the current task, first state not completed.
-  ({int index, int completedInMilliseconds}) get currentState => (
-    index: tasks.where((task) => task.completed).length,
-    completedInMilliseconds: _currentTaskCompletedInMilliseconds,
-  );
 
   /// Restores the workflow to a specific state.
   ///
@@ -193,13 +196,14 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// elapsed time for the current task.
   ///
   /// - [currentState]: The current state in composed by the `index` and
-  ///   `completedInMilliseconds`  of the current task, the first state not
+  ///   `elapsedTime`  of the current task, the first state not
   ///   completed.
-  void _restore(({int index, int completedInMilliseconds}) currentState) {
+  void _restore(({int index, Duration elapsedTime}) currentState) {
     for (var i = 0; i < currentState.index; i++) {
-      skip();
+      next();
     }
-    _currentTaskCompletedInMilliseconds = currentState.completedInMilliseconds;
+    _completedDuration =
+        (_currentTask?.duration ?? Duration.zero) - currentState.elapsedTime;
   }
 
   /// The main execution loop of the workflow, called by the timer every second.
@@ -208,53 +212,49 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// the new state to the [stream].
   void _execute(Timer? timer) {
     final currentTask = _currentTask;
+    final nextTask = _nextTask;
     var changed = false;
     if (currentTask == null) {
       // all task completed
       stop();
       return;
-    }
-    var remainingTaskMilliseconds =
-        currentTask.duration.inMilliseconds -
-        _currentTaskCompletedInMilliseconds;
-    if (remainingTaskMilliseconds <= 0) {
-      // current task finished, mask as completed and reset current task counter
-      _currentTaskCompletedInMilliseconds = 0;
-      changed = true;
-      currentTask.completed = true;
-      remainingTaskMilliseconds = _currentTask?.duration.inMilliseconds ?? 0;
-      if (isCompleted) {
-        // all tasks completed
-        stop();
-        return;
-      }
     } else if (!_paused && timer != null /*first run skip*/ ) {
       // current task running and remaining second
-      _currentTaskCompletedInMilliseconds += 1000;
+      _completedDuration += const Duration(seconds: 1);
+      if (currentTask.duration - _completedDuration <= Duration.zero) {
+        // current task finished, mask as completed and reset current
+        // task counter
+        _completedDuration = Duration.zero;
+        changed = true;
+        currentTask.completed = true;
+        if (isCompleted) {
+          // all tasks completed
+          stop();
+        }
+      }
     }
-    final remainingTotalMilliseconds =
-        totalDurationInMilliseconds -
-        _totalCompletedTaskInMilliseconds -
-        _currentTaskCompletedInMilliseconds;
     // yield the current task and the remaining second
     _streamController.sink.add(
       RunningTask(
         workflowName: name,
         status: status,
-        current: _currentTask,
-        next: _nextTask,
+        current: currentTask,
+        next: nextTask,
         changed: changed,
-        remainingTaskMilliseconds: remainingTaskMilliseconds,
-        remainingTotalMilliseconds: remainingTotalMilliseconds,
+        taskElapsedTime: isCompleted
+            ? Duration.zero
+            : currentTask.duration - _completedDuration,
+        totalElapsedTime:
+            totalDuration - _totalCompletedDuration - _completedDuration,
       ),
     );
   }
 
   /// Gets the current active task (the first one not marked as completed).
-  T? get _currentTask => tasks.where(_isNotCompletedTask).firstOrNull;
+  T? get _currentTask => _tasks.where(_isNotCompletedTask).firstOrNull;
 
   /// Gets the next task in the sequence.
-  T? get _nextTask => tasks.where(_isNotCompletedTask).skip(1).firstOrNull;
+  T? get _nextTask => _tasks.where(_isNotCompletedTask).skip(1).firstOrNull;
 
   /// A predicate to check if a task is not completed.
   bool _isNotCompletedTask(T task) => !task.completed;
@@ -262,118 +262,9 @@ abstract class TimerWorkflow<T extends TimerTask> {
   /// Resets the completion status of a task.
   void _reopenTask(T task) => task.completed = false;
 
-  /// The total duration of all tasks in the workflow, in milliseconds.
-  int get totalDurationInMilliseconds =>
-      tasks.map((task) => task.duration.inMilliseconds).reduce((a, b) => a + b);
-
-  /// The total duration of all completed tasks, in milliseconds.
-  int get _totalCompletedTaskInMilliseconds => tasks
+  /// The total elapsed time of completed tasks.
+  Duration get _totalCompletedDuration => _tasks
       .where((task) => task.completed)
-      .map((task) => task.duration.inMilliseconds)
-      .fold(0, (a, b) => a + b);
-
-  /// The total number of tasks in the workflow.
-  int get taskCount => tasks.length;
-}
-
-/// Represents a single, timed task within a [TimerWorkflow].
-///
-/// This is a base class that holds the essential properties of a task,
-/// such as its name, description, duration, and completion status.
-/// Subclasses can extend this to add more specific properties to a task.
-class TimerTask {
-  /// Creates a new [TimerTask].
-  TimerTask({
-    required this.name,
-    required this.description,
-    required this.duration,
-    this.completed = false,
-  });
-
-  /// The name of the task.
-  final String name;
-
-  /// A description of the task.
-  final String description;
-
-  /// Whether the task has been completed.
-  bool completed;
-
-  /// The total duration of the task.
-  final Duration duration;
-}
-
-/// An exception thrown when an attempt is made to initialize tasks in a
-/// workflow that has already been initialized.
-class WorkflowTaskAlreadyInitialized implements Exception {
-  /// Returns a localized error message.
-  @override
-  String toString() {
-    if (ContextHelper.context != null) {
-      return FlutterHeyteacherTimerWorkflowLocalizations.of(
-        ContextHelper.context!,
-      )!.errorWorkflowTaskAlreadyInitialized;
-    } else {
-      return 'error: workflow task already initialized';
-    }
-  }
-}
-
-/// An exception thrown when an attempt is made to play a workflow that has
-/// not been initialized with any tasks.
-class WorkflowTaskNotInitialized implements Exception {
-  /// Returns a localized error message.
-  @override
-  String toString() {
-    if (ContextHelper.context != null) {
-      return FlutterHeyteacherTimerWorkflowLocalizations.of(
-        ContextHelper.context!,
-      )!.errorWorkflowNotInitialized;
-    } else {
-      return 'error: workflow not initialized';
-    }
-  }
-}
-
-/// Represents the current state of a running [TimerWorkflow].
-///
-/// This object is emitted by the [TimerWorkflow.stream] every second and
-/// provides
-/// a snapshot of the workflow's progress.
-class RunningTask<T extends TimerTask> {
-  /// Creates a snapshot of the current workflow state.
-  RunningTask({
-    required this.workflowName,
-    required this.status,
-    required this.current,
-    required this.next,
-    required this.changed,
-    required this.remainingTaskMilliseconds,
-    required this.remainingTotalMilliseconds,
-  });
-
-  /// The name of the workflow.
-  final String workflowName;
-
-  /// The current status of the workflow ([WorkflowStatus.started],
-  /// [WorkflowStatus.paused], or [WorkflowStatus.stopped]).
-  final WorkflowStatus status;
-
-  /// The task that is currently being executed. Can be `null` if the workflow
-  /// has completed.
-  final T? current;
-
-  /// The next task in the sequence. Can be `null` if the current task is the
-  /// last one.
-  final T? next;
-
-  /// The remaining time for the current task, in milliseconds.
-  final int remainingTaskMilliseconds;
-
-  /// The total remaining time for the entire workflow, in milliseconds.
-  final int remainingTotalMilliseconds;
-
-  /// A flag indicating if the task has just changed in this tick.
-  /// `true` on the first tick of a new task.
-  final bool changed;
+      .map((task) => task.duration)
+      .fold(Duration.zero, (a, b) => a + b);
 }

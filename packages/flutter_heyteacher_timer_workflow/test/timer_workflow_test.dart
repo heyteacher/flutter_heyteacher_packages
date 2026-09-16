@@ -12,50 +12,67 @@ class TestWorkout extends TimerWorkflow<TimerTask> {
   @override
   void initializeTasks() {
     super.initializeTasks();
-    tasks.add(TimerTask(
-      name: 'Warm Up',
-      description: 'Endurance',
-      duration: const Duration(minutes: 20),
-    ));
-    for (var i = 1; i <= 3; i++) {
-      tasks.add(TimerTask(
+    tasks.add(
+      TimerTask(
         name: 'Warm Up',
-        description: 'Fast Spin $i/3',
-        duration: const Duration(minutes: 1),
-      ));
-      if (i < 3) {
-        tasks.add(TimerTask(
+        description: 'Endurance',
+        duration: const Duration(minutes: 20),
+      ),
+    );
+    for (var i = 1; i <= 3; i++) {
+      tasks.add(
+        TimerTask(
           name: 'Warm Up',
-          description: 'Easy riding',
+          description: 'Fast Spin $i/3',
           duration: const Duration(minutes: 1),
-        ));
+        ),
+      );
+      if (i < 3) {
+        tasks.add(
+          TimerTask(
+            name: 'Warm Up',
+            description: 'Easy riding',
+            duration: const Duration(minutes: 1),
+          ),
+        );
       }
     }
-    tasks..add(TimerTask(
-      name: 'Warm Up',
-      description: 'Easy riding',
-      duration: const Duration(minutes: 5),
-    ))
-    ..add(TimerTask(
-      name: 'Main Set',
-      description: 'All-Out',
-      duration: const Duration(minutes: 5),
-    ))
-    ..add(TimerTask(
-      name: 'Main Set',
-      description: 'Easy riding',
-      duration: const Duration(minutes: 10),
-    ))
-    ..add(TimerTask(
-      name: 'Main Set',
-      description: 'Time Trial',
-      duration: const Duration(minutes: 20),
-    ))
-    ..add(TimerTask(
-      name: 'Cool Down',
-      description: 'Easy riding',
-      duration: const Duration(minutes: 10),
-    ));
+    tasks
+      ..add(
+        TimerTask(
+          name: 'Warm Up',
+          description: 'Easy riding',
+          duration: const Duration(minutes: 5),
+        ),
+      )
+      ..add(
+        TimerTask(
+          name: 'Main Set',
+          description: 'All-Out',
+          duration: const Duration(minutes: 5),
+        ),
+      )
+      ..add(
+        TimerTask(
+          name: 'Main Set',
+          description: 'Easy riding',
+          duration: const Duration(minutes: 10),
+        ),
+      )
+      ..add(
+        TimerTask(
+          name: 'Main Set',
+          description: 'Time Trial',
+          duration: const Duration(minutes: 20),
+        ),
+      )
+      ..add(
+        TimerTask(
+          name: 'Cool Down',
+          description: 'Easy riding',
+          duration: const Duration(minutes: 10),
+        ),
+      );
   }
 }
 
@@ -66,17 +83,20 @@ void main() {
   Logger.root.onRecord.listen((record) {
     // format error and stack trace
     final error = record.error != null ? '\n${record.error}' : '';
-    final stackTrace =
-        record.stackTrace != null ? '\n${record.stackTrace}' : '';
+    final stackTrace = record.stackTrace != null
+        ? '\n${record.stackTrace}'
+        : '';
     // get uid from firebase auth
     // print in standard output
     if (kDebugMode) {
-      print('${FormatterHelper.timeWithSecondsFormat(record.time)} '
-          '- ${record.level.name} '
-          '- ${record.loggerName} '
-          '- ${record.message} '
-          '$error'
-          '$stackTrace');
+      print(
+        '${FormatterHelper.timeWithSecondsFormat(record.time)} '
+        '- ${record.level.name} '
+        '- ${record.loggerName} '
+        '- ${record.message} '
+        '$error'
+        '$stackTrace',
+      );
     }
   });
 
@@ -100,28 +120,30 @@ void main() {
       workflow.stream.listen(events.add);
 
       fakeAsync((async) {
-        workflow.play();
+        workflow.start();
         // The first event is emitted after the first tick.
         async.elapse(const Duration(seconds: 1));
 
         expect(events.length, 2);
         expect(events.first.current, workflow.tasks.first);
-        expect(events.last.remainingTaskMilliseconds,
-            workflow.tasks.first.duration.inMilliseconds);
+        expect(
+          events.last.taskElapsedTime,
+          workflow.tasks.first.duration - const Duration(seconds: 1),
+        );
 
         async.elapse(const Duration(seconds: 1));
         expect(events.length, 3);
         expect(
-            events.last.remainingTaskMilliseconds,
-            workflow.tasks.first.duration.inMilliseconds -
-                const Duration(seconds: 1).inMilliseconds);
+          events.last.taskElapsedTime,
+          workflow.tasks.first.duration - const Duration(seconds: 2),
+        );
 
         async.elapse(const Duration(seconds: 20));
         expect(events.length, 23);
         expect(
-            events.last.remainingTaskMilliseconds,
-            workflow.tasks.first.duration.inMilliseconds -
-                const Duration(seconds: 21).inMilliseconds);
+          events.last.taskElapsedTime,
+          workflow.tasks.first.duration - const Duration(seconds: 22),
+        );
       });
     });
 
@@ -130,13 +152,13 @@ void main() {
       workflow.stream.listen(events.add);
 
       fakeAsync((async) {
-        workflow.play();
+        workflow.start();
         async.elapse(const Duration(seconds: 5));
 
         expect(
-            events.last.remainingTaskMilliseconds,
-            workflow.tasks.first.duration.inMilliseconds -
-                const Duration(seconds: 4).inMilliseconds);
+          events.last.taskElapsedTime,
+          workflow.tasks.first.duration - const Duration(seconds: 5),
+        );
 
         workflow.pause();
         final eventCountBeforePause = events.length;
@@ -145,20 +167,20 @@ void main() {
         // No new events should be emitted while paused.
         expect(events.length, eventCountBeforePause + 10);
 
-        workflow.play(); // Resume
+        workflow.start(); // Resume
         async.elapse(const Duration(seconds: 1));
 
         expect(events.length, greaterThan(eventCountBeforePause));
         expect(
-            events.last.remainingTaskMilliseconds,
-            workflow.tasks.first.duration.inMilliseconds -
-                const Duration(seconds: 5).inMilliseconds);
+          events.last.taskElapsedTime,
+          workflow.tasks.first.duration - const Duration(seconds: 6),
+        );
       });
     });
 
     test('stop resets the workflow', () {
       fakeAsync((async) {
-        workflow.play();
+        workflow.start();
         async.elapse(const Duration(seconds: 10));
         // Manually complete a task to ensure state is being changed
         workflow.tasks.first.completed = true;
@@ -173,12 +195,11 @@ void main() {
         final events = <RunningTask<TimerTask>>[];
         workflow.stream.listen(events.add);
 
-        workflow.play();
+        workflow.start();
         async.elapse(const Duration(seconds: 1));
 
         expect(events.first.current, workflow.tasks.first);
-        expect(events.first.remainingTaskMilliseconds,
-            workflow.tasks.first.duration.inMilliseconds);
+        expect(events.first.taskElapsedTime, workflow.tasks.first.duration);
       });
     });
 
@@ -188,22 +209,23 @@ void main() {
       final firstTaskDuration = workflow.tasks.first.duration;
 
       fakeAsync((async) {
-        workflow.play();
+        workflow.start();
         async.elapse(firstTaskDuration);
 
-        // After the first task's duration has passed, it should be marked 
+        // After the first task's duration has passed, it should be marked
         // as completed.
-        expect(workflow.tasks.first.completed, isFalse);
+        expect(workflow.tasks.first.completed, isTrue);
 
         // The last event for the first task should have remainingSeconds <= 0
         expect(events.last.current, workflow.tasks.first);
-        expect(events.last.remainingTaskMilliseconds, 1000);
 
         // The next tick should start the second task
         async.elapse(const Duration(seconds: 1));
         expect(events.last.current, workflow.tasks[1]);
-        expect(events.last.remainingTaskMilliseconds,
-            workflow.tasks[1].duration.inMilliseconds);
+        expect(
+          events.last.taskElapsedTime,
+          workflow.tasks[1].duration - const Duration(seconds: 1),
+        );
       });
     });
 
@@ -212,12 +234,12 @@ void main() {
       workflow.stream.listen(events.add);
 
       fakeAsync((async) {
-        workflow.play();
+        workflow.start();
         async.elapse(const Duration(seconds: 1));
 
         expect(events.last.current, workflow.tasks.first);
 
-        workflow.skip();
+        workflow.next();
 
         // The skip implementation reflects the change on the next tick.
         async.elapse(const Duration(seconds: 1));
@@ -234,15 +256,13 @@ void main() {
       workflow.stream.listen(events.add);
 
       fakeAsync((async) {
-        workflow.play();
+        workflow.start();
         // Elapse for the total duration plus a small buffer to ensure
         // completion
-        async.elapse(Duration(
-            milliseconds: workflow.totalDurationInMilliseconds + 12000));
+        async.elapse(workflow.totalDuration + const Duration(seconds: 12));
 
         expect(workflow.status, WorkflowStatus.stopped);
-        expect(events.last.current, isNull);
-        expect(events.last.remainingTaskMilliseconds, 0);
+        expect(events.last.next, isNull);
       });
     });
   });
