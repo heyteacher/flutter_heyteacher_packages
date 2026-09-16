@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_timer_workflow-2.1.0+144] - 2026-09-16
+
+### 🚀 Features [2.1.0]
+
+- Add `example` app ([1b32354](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1b3235491a706beebfb20ad09590814d4817a875)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [2.1.0]
+
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- *(release)* New version 2.1.0+144 which closes ([#389](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/389)) ([e79e302](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e79e302a57799a6980c17b52a401b7396a24a907)) by **heyteacher**
+
 ## [flutter_heyteacher_timer_workflow-2.0.11+143] - 2026-09-08
 
 ### ⚙️ Miscellaneous Tasks [2.0.11]
