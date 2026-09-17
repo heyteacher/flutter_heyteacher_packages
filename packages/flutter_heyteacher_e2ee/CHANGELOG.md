@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.2.7+177] - 2026-09-17
+
+### ⚙️ Miscellaneous Tasks [3.2.7]
+
+- Bump Android Gradle plugin to 9.0.1 and Kotlin plugin to 2.3.20 across all example projects ([904ad64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/904ad64a13026d045ce1ee3e3ff4c98da6f4d966)) by **heyteacher**
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- Remove severe logging on `encrypt` and `decrypt` exception wrapping `error` and `stacktrace` into `ErrorOnEncryptException` and `ErrorOnDecryptException` ([7a638ce](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7a638cea937ea4bff0ff6852ed5af01a009cfe77)) by **heyteacher**
+- *(release)* New version 3.2.7+177 which closes ([#306](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/306)) ([ca443e2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ca443e284b9ec34cb3e05fed91b10156f57341cc)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.2.6+176] - 2026-09-08
 
 ### 🚜 Refactor [3.2.6]
