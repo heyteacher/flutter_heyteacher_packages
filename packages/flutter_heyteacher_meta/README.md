@@ -24,11 +24,12 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - [Requirements](#requirements)
   - [Environment Setup](#environment-setup)
     - [Flutter](#flutter)
-    - [Visual Studio Code](#visual-studio-code)
-    - [Android Studio](#android-studio)
+    - [`Visual Studio Code` or `Antigravity IDE`](#visual-studio-code-or-antigravity-ide)
+    - [`Android Studio`](#android-studio)
     - [`git-cliff`](#git-cliff)
     - [`FastLane`](#fastlane)
     - [`nodeJs`](#nodejs)
+    - [`adb-wifi`](#adb-wifi)
     - [Firebase CLI](#firebase-cli)
   - [`dartsemver` dart command](#dartsemver-dart-command)
   - [Create a flutter project](#create-a-flutter-project)
@@ -121,6 +122,8 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 
 - [git-filter-repo](https://github.com/newren/git-filter-repo): Quickly rewrite git repository history (filter-branch replacement). Used in [Migrate a repository to a package of a `monorepo`](#migrate-a-repository-to-a-package-of-a-monorepo)
 
+- [adb-wifi](https://github.com/saleehk/adb-wifi): utility to easly pair anandroid device to computer via wifi showing a qr code in the terminal to be scanned with the android device. No need to connect device to computer via usb cable.
+
 ## Requirements
 
 - a shell terminal on `Linux`, `MacOS` or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) on `Windows`
@@ -170,11 +173,14 @@ install flutter manually following instructions <https://docs.flutter.dev/instal
   export PATH="$project_meta_root/tool":$PATH
   ```
 
-### Visual Studio Code
+### `Visual Studio Code` or `Antigravity IDE`
 
-install `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
+Install one of the following IDE:
 
-You can configure you `vscode` to execute the [`dartsemver` dart command](#dartsemver-dart-command) in order to automatically update build version every run/debug execution of your code:
+- `Visual Studio Code` 1.77 or later with the `Flutter extension for VS Code`
+- [`Antigravity` IDE](https://antigravity.dev/)
+
+You can configure your IDE to execute the [`dartsemver` dart command](#dartsemver-dart-command) in order to automatically update build version every run/debug execution of your code:
 
 - install `flutter_heyteacher_meta` package as dev dependency ad described in [Installing](#installing)
 
@@ -304,6 +310,33 @@ on git `commits` and `tags`.
   ```bash
   npm install -g firebase-tools
   ```
+
+### `adb-wifi`
+
+[adb-wifi](https://github.com/saleehk/adb-wifi) is an utility to easly pair
+anandroid device to computer via wifi showing a qr code in the terminal to be
+scanned with the android device. No need to connect device to computer via usb
+cable.
+
+- install `adb-wifi`:
+
+  ```bash
+  npm i adb-wifi -g
+  ```
+
+- run `adb-wifi`
+
+  ```bash
+  adb-wifi
+  ```
+
+  a qr code will be shown on terminal.
+
+- enable `usb debugging` and `wireless debugging` on android device:
+  - Go to `Developer options` from `settings`
+  - Select `Wireless debugging`
+  - Select `Pair device with QR code`
+  - Scan the qr code and device will be connected
 
 ## `dartsemver` dart command
 
