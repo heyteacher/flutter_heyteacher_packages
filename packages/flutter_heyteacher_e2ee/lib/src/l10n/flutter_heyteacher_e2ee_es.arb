@@ -4,10 +4,22 @@
   "@encryptionPassphraseIsEmptySetIt": {},
   "missingEncryptionSecretKeyImportIt": "Falta la Clave Criptográfica, impórtela",
   "@missingEncryptionSecretKeyImportIt": {},
-  "errorOnEncryptionCheckPassphrase": "Error en el cifrado, verifique la frase de contraseña",
-  "@errorOnEncryptionCheckPassphrase": {},
-  "errorOnDecryptionCheckPassphrase": "Error en el descifrado, verifique la frase de contraseña",
-  "@errorOnDecryptionCheckPassphrase": {},
+  "errorOnEncryptionCheckPassphrase": "Error en el cifrado: {error}",
+  "@errorOnEncryptionCheckPassphrase": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorOnDecryptionCheckPassphrase": "Error en el descifrado: {error}",
+  "@errorOnDecryptionCheckPassphrase": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "areYouSureToChangeEncryptionPassphrase": "Si cambia la frase de contraseña, no podrá acceder a los datos cifrados con la frase de contraseña antigua.\n\n¿Está seguro de que desea cambiar la frase de contraseña?",
   "@areYouSureToChangeEncryptionPassphrase": {},
   "areYouSureToImportEncryptionSecretKey": "Si importa una Clave Criptográfica, la clave antigua se sobrescribirá y los datos cifrados con la clave antigua se perderán.\n\n¿Está seguro de que desea importar la Clave Criptográfica?",

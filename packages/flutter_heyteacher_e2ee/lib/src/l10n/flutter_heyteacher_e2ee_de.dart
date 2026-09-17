@@ -18,12 +18,14 @@ class FlutterHeyteacherE2EELocalizationsDe
       'Fehlender Kryptografischen Schlüssel, bitte importieren';
 
   @override
-  String get errorOnEncryptionCheckPassphrase =>
-      'Fehler bei der Verschlüsselung, überprüfen Sie die Verschlüsselungspassphrase';
+  String errorOnEncryptionCheckPassphrase(String error) {
+    return 'Fehler bei der Verschlüsselung: $error';
+  }
 
   @override
-  String get errorOnDecryptionCheckPassphrase =>
-      'Fehler bei der Entschlüsselung, überprüfen Sie die Verschlüsselungspassphrase';
+  String errorOnDecryptionCheckPassphrase(String error) {
+    return 'Fehler bei der Entschlüsselung: $error';
+  }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>

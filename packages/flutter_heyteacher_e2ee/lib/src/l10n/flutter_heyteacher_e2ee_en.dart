@@ -18,12 +18,14 @@ class FlutterHeyteacherE2EELocalizationsEn
       'Missing Encryption Key, import it';
 
   @override
-  String get errorOnEncryptionCheckPassphrase =>
-      'Error on encryption, check the Encryption Passphrase';
+  String errorOnEncryptionCheckPassphrase(String error) {
+    return 'Error on encryption: $error';
+  }
 
   @override
-  String get errorOnDecryptionCheckPassphrase =>
-      'Error on decryption, check the Encryption Passphrase';
+  String errorOnDecryptionCheckPassphrase(String error) {
+    return 'Error on decryption: $error';
+  }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>

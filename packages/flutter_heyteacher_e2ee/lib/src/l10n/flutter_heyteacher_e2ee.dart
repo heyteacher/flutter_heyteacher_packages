@@ -124,14 +124,14 @@ abstract class FlutterHeyteacherE2EELocalizations {
   /// No description provided for @errorOnEncryptionCheckPassphrase.
   ///
   /// In en, this message translates to:
-  /// **'Error on encryption, check the Encryption Passphrase'**
-  String get errorOnEncryptionCheckPassphrase;
+  /// **'Error on encryption: {error}'**
+  String errorOnEncryptionCheckPassphrase(String error);
 
   /// No description provided for @errorOnDecryptionCheckPassphrase.
   ///
   /// In en, this message translates to:
-  /// **'Error on decryption, check the Encryption Passphrase'**
-  String get errorOnDecryptionCheckPassphrase;
+  /// **'Error on decryption: {error}'**
+  String errorOnDecryptionCheckPassphrase(String error);
 
   /// No description provided for @areYouSureToChangeEncryptionPassphrase.
   ///

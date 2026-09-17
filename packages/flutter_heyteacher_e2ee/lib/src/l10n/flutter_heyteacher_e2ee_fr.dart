@@ -18,12 +18,14 @@ class FlutterHeyteacherE2EELocalizationsFr
       'Clé Cryptographique de chiffrement manquante, importez-la';
 
   @override
-  String get errorOnEncryptionCheckPassphrase =>
-      'Erreur de chiffrement, vérifiez la Phrase Cryptographique';
+  String errorOnEncryptionCheckPassphrase(String error) {
+    return 'Erreur de chiffrement : $error';
+  }
 
   @override
-  String get errorOnDecryptionCheckPassphrase =>
-      'Erreur de déchiffrement, vérifiez la Phrase Cryptographique';
+  String errorOnDecryptionCheckPassphrase(String error) {
+    return 'Erreur de déchiffrement : $error';
+  }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
