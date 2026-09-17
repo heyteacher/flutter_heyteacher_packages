@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.9.5+190] - 2026-09-17
+
+### 📚 Documentation [7.9.5]
+
+- Add `adb-wifi' utility and add `Antigravity IDE` as IDE ([0a548ff](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0a548ff6c89529ef7416b1d935fdbd23b3d32e1c)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.9.5]
+
+- Bump Android Gradle plugin to 9.0.1 and Kotlin plugin to 2.3.20 across all example projects ([904ad64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/904ad64a13026d045ce1ee3e3ff4c98da6f4d966)) by **heyteacher**
+- *(release)* New version 7.9.5+190 which closes ([#391](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/391)) ([61a2c13](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/61a2c137d87f5e7350b3a16523d0839257ffe589)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.9.4+189] - 2026-09-08
 
 ### 🚜 Refactor [7.9.4]
