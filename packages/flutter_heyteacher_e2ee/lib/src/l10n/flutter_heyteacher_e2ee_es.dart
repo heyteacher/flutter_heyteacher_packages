@@ -18,12 +18,14 @@ class FlutterHeyteacherE2EELocalizationsEs
       'Falta la Clave Criptográfica, impórtela';
 
   @override
-  String get errorOnEncryptionCheckPassphrase =>
-      'Error en el cifrado, verifique la frase de contraseña';
+  String errorOnEncryptionCheckPassphrase(String error) {
+    return 'Error en el cifrado: $error';
+  }
 
   @override
-  String get errorOnDecryptionCheckPassphrase =>
-      'Error en el descifrado, verifique la frase de contraseña';
+  String errorOnDecryptionCheckPassphrase(String error) {
+    return 'Error en el descifrado: $error';
+  }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>

@@ -200,11 +200,8 @@ class E2EEViewModel {
       );
       // return string encoded with the initial vector
       return E2EEValue(value: encryptedBytes, iv: iv);
-      // catch all exceptions
-      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
-      _logger.severe('(encrypt): error', error, stackTrace);
-      throw ErrorOnEncryptException();
+      throw ErrorOnEncryptException(error: error, stackTrace: stackTrace);
     }
   }
 
@@ -263,11 +260,8 @@ class E2EEViewModel {
       // return string decripted utf8 decoding bytes
       final decrypted = utf8.decode(decryptedBytes);
       return decrypted;
-      // catch all exceptions
-      // ignore: avoid_catches_without_on_clauses
     } catch (error, stackTrace) {
-      _logger.severe('(decrypt): error', error, stackTrace);
-      throw ErrorOnDecryptException();
+      throw ErrorOnDecryptException(error: error, stackTrace: stackTrace);
     }
   }
 
@@ -560,15 +554,24 @@ class E2EEViewModel {
 /// Exception thrown when an error occurs during the encryption process.
 /// Often indicates an issue with the AAD (passphrase) or the secret key.
 class ErrorOnEncryptException implements Exception {
+  /// Creates a new instance of [ErrorOnEncryptException].
+  ErrorOnEncryptException({required this.error, required this.stackTrace});
+
+  /// The error that occurred during the decryption process.
+  final Object error;
+
+  /// The stack trace of the error.
+  final StackTrace stackTrace;
+
   /// Returns a localized error message.
   @override
   String toString() {
     if (ContextHelper.context != null) {
       return FlutterHeyteacherE2EELocalizations.of(
         ContextHelper.context!,
-      )!.errorOnEncryptionCheckPassphrase;
+      )!.errorOnEncryptionCheckPassphrase(error.toString());
     } else {
-      return 'Error on encryption, check passphrase';
+      return 'Error on encryption: $error';
     }
   }
 }
@@ -577,15 +580,24 @@ class ErrorOnEncryptException implements Exception {
 /// Often indicates an issue with the AAD (passphrase), the secret key, or
 /// corrupted ciphertext.
 class ErrorOnDecryptException implements Exception {
+  /// Creates a new instance of [ErrorOnDecryptException].
+  ErrorOnDecryptException({required this.error, required this.stackTrace});
+
+  /// The error that occurred during the decryption process.
+  final Object error;
+
+  /// The stack trace of the error.
+  final StackTrace stackTrace;
+
   /// Returns a localized error message.
   @override
   String toString() {
     if (ContextHelper.context != null) {
       return FlutterHeyteacherE2EELocalizations.of(
         ContextHelper.context!,
-      )!.errorOnDecryptionCheckPassphrase;
+      )!.errorOnDecryptionCheckPassphrase(error.toString());
     } else {
-      return 'Error on decryption, check passphrase';
+      return 'Error on decryption: $error';
     }
   }
 }

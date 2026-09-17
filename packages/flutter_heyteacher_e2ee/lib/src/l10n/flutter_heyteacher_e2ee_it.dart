@@ -18,12 +18,14 @@ class FlutterHeyteacherE2EELocalizationsIt
       'Chiave Crittografica mancante, importala';
 
   @override
-  String get errorOnEncryptionCheckPassphrase =>
-      'Errore di crittografia, controlla la password di crittografia';
+  String errorOnEncryptionCheckPassphrase(String error) {
+    return 'Errore di crittografia: $error';
+  }
 
   @override
-  String get errorOnDecryptionCheckPassphrase =>
-      'Errore di decrittografia, controlla la password di crittografia';
+  String errorOnDecryptionCheckPassphrase(String error) {
+    return 'Errore di decrittografia: $error';
+  }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>

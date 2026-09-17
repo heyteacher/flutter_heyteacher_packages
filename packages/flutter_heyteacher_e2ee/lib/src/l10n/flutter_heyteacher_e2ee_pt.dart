@@ -18,12 +18,14 @@ class FlutterHeyteacherE2EELocalizationsPt
       'Chave Criptográfica ausente, importe-a';
 
   @override
-  String get errorOnEncryptionCheckPassphrase =>
-      'Erro na criptografia, verifique a Frase Criptográfica';
+  String errorOnEncryptionCheckPassphrase(String error) {
+    return 'Erro na criptografia: $error';
+  }
 
   @override
-  String get errorOnDecryptionCheckPassphrase =>
-      'Erro na descriptografia, verifique a Frase Criptográfica';
+  String errorOnDecryptionCheckPassphrase(String error) {
+    return 'Erro na descriptografia: $error';
+  }
 
   @override
   String get areYouSureToChangeEncryptionPassphrase =>
