@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.5.0+184] - 2026-09-18
+
+### 🚀 Features [6.5.0]
+
+- *(views)* Add `width` parameter to `PropertyEditorListTile` ([0e0e6d8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0e0e6d8ed1e5c2d2b5c7ab8ad54eddede0d3cbc2)) by **heyteacher**
+
+### 🐛 Bug Fixes [6.5.0]
+
+- Nullity check on `dataList` in `PagingSliverAnimatedState` ([91edd2b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/91edd2ba63168751bc333a933173d9b919247085)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.5.0]
+
+- Bump Android Gradle plugin to 9.0.1 and Kotlin plugin to 2.3.20 across all example projects ([904ad64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/904ad64a13026d045ce1ee3e3ff4c98da6f4d966)) by **heyteacher**
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- *(release)* New version 6.5.0+184 which closes ([#394](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/394)) ([cfdb2b9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cfdb2b95facac445756c729d75851cbd9b787baf)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.4.2+183] - 2026-09-08
 
 ### ⚙️ Miscellaneous Tasks [6.4.2]
