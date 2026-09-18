@@ -154,7 +154,7 @@ abstract class PagingSliverAnimatedState<
       setState(() => _loading = false);
       await Future<dynamic>.delayed(const Duration(seconds: 1));
       if (mounted && _currentStateIsNotNull) {
-        _insertAllItems(0, dataList!.length);
+        _insertAllItems(0, dataList?.length ?? 0);
       }
     }
     unawaited(_updateStreamSubscription?.cancel());
@@ -212,10 +212,12 @@ abstract class PagingSliverAnimatedState<
           deletedMessageCallback != null
       ? DismissibleWidget(
           dismissibleKey: UniqueKey(),
-          deleteConfirmMessage: deleteConfirmMessageCallback!.call(
-            dataList![index],
-          ),
-          deletedMessage: deletedMessageCallback!.call(dataList![index]),
+          deleteConfirmMessage: dataList?[index] != null
+              ? deleteConfirmMessageCallback!.call(dataList![index])
+              : '',
+          deletedMessage: dataList?[index] != null
+              ? deletedMessageCallback!.call(dataList![index])
+              : '',
           onDismissed: (_) async {
             await deleteData!.call(index);
             await animateDeleteData(index);
@@ -277,13 +279,14 @@ abstract class PagingSliverAnimatedState<
     // for each item not in old data list, animate delete
     var removed = false;
     if (dataList != null) {
-      final toBeRemoved = dataList!.reversed.where(
+      final toBeRemoved = dataList?.reversed.where(
         (item) => !newDataList.contains(item),
       );
       toBeRemoved
-          .map((item) => dataList!.indexOf(item))
+          ?.map((item) => dataList?.indexOf(item))
+          .nonNulls
           .forEach(animateDeleteData);
-      removed = toBeRemoved.isNotEmpty;
+      removed = toBeRemoved?.isNotEmpty ?? false;
     }
     dataList = newDataList.toList();
     if ((dataList?.length ?? 0) < _limit &&
@@ -306,7 +309,7 @@ abstract class PagingSliverAnimatedState<
   /// Checks the scroll position to trigger pagination.
   Future<void> _checkScollPosition() async {
     if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        (dataList == null || _limit == (dataList!.length))) {
+        (dataList == null || _limit == dataList?.length)) {
       // debugPrint(
       //  'PagingSliverAnimatedState._checkScollPosition(): $runtimeType '
       //   '_limit $_limit dataList.length ${dataList?.length}. UPDATE');
