@@ -21,6 +21,7 @@ class PropertyEditorListTile<T> extends StatefulWidget {
     this._setValue,
     this._defaultValue,
     this._icon,
+    this._width = 120,
     super.key,
   });
 
@@ -30,6 +31,7 @@ class PropertyEditorListTile<T> extends StatefulWidget {
   final List<String>? _labels;
   final T? _defaultValue;
   final Icon? _icon;
+  final double _width;
   final void Function(T?, {int? index}) _onSelected;
 
   @override
@@ -88,7 +90,7 @@ class _PropertyEditorListTileState<T> extends State<PropertyEditorListTile<T>> {
             },
           )
         : GenericsDropDownMenu<T>(
-            width: 120,
+            width: widget._width,
             isDense: true,
             onSelected: widget._onSelected,
             values: widget._values
