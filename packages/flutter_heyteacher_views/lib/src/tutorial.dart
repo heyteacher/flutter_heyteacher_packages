@@ -9,7 +9,7 @@ library;
 
 import 'dart:async';
 
-import 'package:app_tutorial/app_tutorial.dart';
+import 'package:app_tutorial_heyteacher/app_tutorial_heyteacher.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -178,9 +178,9 @@ class _TutorialItemContent extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 10),
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  color: Colors.white,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineMedium!.copyWith(color: Colors.white),
               ),
             ),
           ),
@@ -194,9 +194,9 @@ class _TutorialItemContent extends StatelessWidget {
                 child: Text(
                   textAlign: TextAlign.center,
                   content,
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  color: Colors.white,
-                ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.headlineSmall!.copyWith(color: Colors.white),
                 ),
               ),
             ],
