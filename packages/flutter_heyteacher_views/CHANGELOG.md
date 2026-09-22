@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.5.1+185] - 2026-09-22
+
+### ⚙️ Miscellaneous Tasks [6.5.1]
+
+- Replace `app_tutorial` with @heyteacher fork `app_tutorial_heyteacher` ([62d1b81](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/62d1b81798efb69026ebb0d092a4dafac80dfcbc)) by **heyteacher**
+- *(release)* New version 6.5.1+185 which closes ([#397](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/397)) ([7f3e11b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7f3e11b1c9181d59bfb8b3c4ecd6a112a7e75c72)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.5.0+184] - 2026-09-18
 
 ### 🚀 Features [6.5.0]
