@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
-## [flutter_heyteacher_shared_preferences-1.0.0+1] - 2026-09-28
+## [flutter_heyteacher_shared_preferences-1.0.1+2] - 2026-09-28
+
+### 📚 Documentation [1.0.1]
+
+- Add `SharedPreferencesListTile` documentation in `README.md` ([45ba5d0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/45ba5d0f0d58fe448990872175e1956c49ff2372)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [1.0.1]
+
+- *(release)* New version 1.0.1+2 which closes ([#403](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/403)) ([edfe281](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/edfe281f0dfc90e8f3c6b363fb08e302ade09c9d)) by **heyteacher**
+
+## [flutter_heyteacher_shared_preferences-1.0.0] - 2026-09-28
 
 ### 🚀 Features [1.0.0]
 
