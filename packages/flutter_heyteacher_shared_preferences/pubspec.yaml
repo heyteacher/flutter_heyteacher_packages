@@ -1,0 +1,29 @@
+name: flutter_heyteacher_shared_preferences
+description: "The flutter heyteacher package for shared preferences utilities."
+version: 0.0.1+0
+
+repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_shared_preferences
+license: BSD 3-Clause
+issue_tracker: https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues
+homepage: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_shared_preferences
+documentation: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_shared_preferences
+topics: [flutter, shared-preferences]
+funding: [https://liberapay.com/heyteacher]
+
+environment:
+  sdk: ">=3.12.0 <4.0.0"
+  flutter: ">=3.47.0"
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_heyteacher_views: ^6.5.1+185
+  shared_preferences: ^2.5.5
+
+dev_dependencies:
+  flutter_heyteacher_meta: ^7.9.4+189
+  flutter_test:
+    sdk: flutter
+  shared_preferences_platform_interface: ^2.4.2

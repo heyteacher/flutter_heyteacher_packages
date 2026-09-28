@@ -76,8 +76,6 @@ Complex logic can be optionally encapsulated in Logic Layer in `Use Case`. This 
 
 ![`Model-View-ViewModel` architecture with Use Case (Logic Layer)](https://docs.flutter.dev/assets/images/docs/app-architecture/guide/mvvm-intro-with-domain-layer.png)
 
-
-
 ## `Singleton` pattern
 
 The `View Model` implements the `Singleton` pattern, instantiating a single object instance and avoiding to invoke outside the class.
