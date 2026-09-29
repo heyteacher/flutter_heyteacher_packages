@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:logging/logging.dart';
 
 /// A singleton controller for monitoring network connectivity status.
 ///
@@ -10,18 +8,7 @@ import 'package:logging/logging.dart';
 /// stream of connectivity changes and a method to check the current
 /// connectivity state.
 class ConnectivityViewModel {
-  /// Disposes the singleton instance of [ConnectivityViewModel)
-
-  ConnectivityViewModel._() {
-    _streamSubscription = stream.listen((connected) {
-      _logger.info('<onConnectivityChanged>: connected $connected');
-    });
-  }
-  static final _logger = Logger('ConnectivityViewModel');
-
-  final InternetConnection _internetConnection =
-      InternetConnection.createInstance();
-  StreamSubscription<bool>? _streamSubscription;
+  ConnectivityViewModel._();
 
   static ConnectivityViewModel? _instance;
 
@@ -33,14 +20,14 @@ class ConnectivityViewModel {
   @visibleForTesting
   static set instance(ConnectivityViewModel instance) => _instance = instance;
 
+  final InternetConnection _internetConnection =
+      InternetConnection.createInstance();
+
   /// Disposes the controller, canceling the stream subscription to prevent
   ///  memory leaks.
   ///
   /// This should be called when the controller is no longer needed.
-  void dispose() {
-    unawaited(_internetConnection.dispose());
-    unawaited(_streamSubscription?.cancel());
-  }
+  void dispose() => unawaited(_internetConnection.dispose());
 
   /// A stream that emits the internet status whenever it changes.
   ///
@@ -50,13 +37,12 @@ class ConnectivityViewModel {
     (internetStatus) => internetStatus == InternetStatus.connected,
   );
 
-  /// A future that completes with the current internet status.
-  ///
   /// Returns `true` if there is an active internet connection
   /// Returns `false` if there is no active internet connection
   Future<bool> get connected async =>
       (await _internetConnection.internetStatus) == InternetStatus.connected;
 
-  /// A future that completes with the opposite of [connected].
+  /// Returns `false` if there is an active internet connection
+  /// Returns `true` if there is no active internet connection
   Future<bool> get notConnected async => !await connected;
 }
