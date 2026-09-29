@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_connectivity-3.1.3+155] - 2026-09-29
+
+### ⚙️ Miscellaneous Tasks [3.1.3]
+
+- Bump Android Gradle plugin to 9.0.1 and Kotlin plugin to 2.3.20 across all example projects ([904ad64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/904ad64a13026d045ce1ee3e3ff4c98da6f4d966)) by **heyteacher**
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- Remove `onConnectivityChanged` info logging and enhance docs ([31919d6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/31919d6e49698baa46045622dad86cf25ded7629)) by **heyteacher**
+- *(release)* New version 3.1.3+155 which closes ([#409](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/409)) ([80058f8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/80058f8419c59f93c7bf1902e14cd127d21ece57)) by **heyteacher**
+
 ## [flutter_heyteacher_connectivity-3.1.2+154] - 2026-09-08
 
 ### ⚙️ Miscellaneous Tasks [3.1.2]
