@@ -100,6 +100,8 @@ class SharedPreferencesViewModel {
         await setBool(key, value);
       case List<String>():
         await setStringList(key, value);
+      case null:
+        await remove(key);
       case _:
         throw UnsupportedError(
           'Unsupported type ${value.runtimeType} for key $key',

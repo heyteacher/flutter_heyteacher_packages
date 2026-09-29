@@ -37,8 +37,9 @@ void main() {
       await viewModel.setString('strKey', 'value1');
 
       final events = <({String key, String? value})>[];
-      final subscription =
-          viewModel.stream<String>(key: 'strKey').listen(events.add);
+      final subscription = viewModel
+          .stream<String>(key: 'strKey')
+          .listen(events.add);
 
       await viewModel.setString('strKey', 'value1');
       await Future<void>.delayed(Duration.zero);
@@ -63,8 +64,9 @@ void main() {
       await viewModel.setInt('intKey', 100);
 
       final events = <({String key, int? value})>[];
-      final subscription =
-          viewModel.stream<int>(key: 'intKey').listen(events.add);
+      final subscription = viewModel
+          .stream<int>(key: 'intKey')
+          .listen(events.add);
 
       await viewModel.setInt('intKey', 100);
       await Future<void>.delayed(Duration.zero);
@@ -89,8 +91,9 @@ void main() {
       await viewModel.setDouble('doubleKey', 2.71);
 
       final events = <({String key, double? value})>[];
-      final subscription =
-          viewModel.stream<double>(key: 'doubleKey').listen(events.add);
+      final subscription = viewModel
+          .stream<double>(key: 'doubleKey')
+          .listen(events.add);
 
       await viewModel.setDouble('doubleKey', 2.71);
       await Future<void>.delayed(Duration.zero);
@@ -118,8 +121,9 @@ void main() {
       await viewModel.setBool('boolKey', true);
 
       final events = <({String key, bool? value})>[];
-      final subscription =
-          viewModel.stream<bool>(key: 'boolKey').listen(events.add);
+      final subscription = viewModel
+          .stream<bool>(key: 'boolKey')
+          .listen(events.add);
 
       await viewModel.setBool('boolKey', true);
       await Future<void>.delayed(Duration.zero);
@@ -144,8 +148,9 @@ void main() {
       await viewModel.setStringList('listKey', ['a', 'b']);
 
       final events = <({String key, List<String>? value})>[];
-      final subscription =
-          viewModel.stream<List<String>>(key: 'listKey').listen(events.add);
+      final subscription = viewModel
+          .stream<List<String>>(key: 'listKey')
+          .listen(events.add);
 
       // Note: List comparison in _set checks oldValue == value which checks
       // reference equality.
@@ -180,6 +185,11 @@ void main() {
     test('handles List<String>', () async {
       await viewModel.setValue(key: 'key', value: <String>['x', 'y']);
       expect(await viewModel.getStringList('key'), ['x', 'y']);
+    });
+
+    test('handles null', () async {
+      await viewModel.setValue(key: 'key', value: null);
+      expect(await viewModel.getString('key'), isNull);
     });
 
     test('throws UnsupportedError for unsupported types', () async {
@@ -228,8 +238,9 @@ void main() {
   group('stream', () {
     test('emits updates for matching key and filters out other keys', () async {
       final events = <({String key, String? value})>[];
-      final subscription =
-          viewModel.stream<String>(key: 'targetKey').listen(events.add);
+      final subscription = viewModel
+          .stream<String>(key: 'targetKey')
+          .listen(events.add);
 
       await viewModel.setString('targetKey', 'first');
       await viewModel.setString('otherKey', 'ignored');
@@ -239,17 +250,21 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 20));
       await subscription.cancel();
 
-      expect(events, equals([
-        (key: 'targetKey', value: 'first'),
-        (key: 'targetKey', value: 'second'),
-        (key: 'targetKey', value: null),
-      ]));
+      expect(
+        events,
+        equals([
+          (key: 'targetKey', value: 'first'),
+          (key: 'targetKey', value: 'second'),
+          (key: 'targetKey', value: null),
+        ]),
+      );
     });
 
     test('distinct stream filters consecutive duplicate values', () async {
       final events = <({String key, int? value})>[];
-      final subscription =
-          viewModel.stream<int>(key: 'counter').listen(events.add);
+      final subscription = viewModel
+          .stream<int>(key: 'counter')
+          .listen(events.add);
 
       await viewModel.setInt('counter', 1);
       await viewModel.setInt('counter', 2);
@@ -257,10 +272,10 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 20));
       await subscription.cancel();
 
-      expect(events, equals([
-        (key: 'counter', value: 1),
-        (key: 'counter', value: 2),
-      ]));
+      expect(
+        events,
+        equals([(key: 'counter', value: 1), (key: 'counter', value: 2)]),
+      );
     });
   });
 }
