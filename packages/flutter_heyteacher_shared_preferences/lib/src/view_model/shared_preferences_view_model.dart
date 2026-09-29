@@ -21,7 +21,7 @@ class SharedPreferencesViewModel {
   final StreamController<({String key, Object? value})> _streamController =
       StreamController<({String key, Object? value})>.broadcast();
 
-  /// A stream that emits an event whenever a key changes.
+  /// A stream that emits an event whenever [key] changes.
   ///
   /// Widgets can listen to this stream to rebuild when the key is updated.
   Stream<({String key, T? value})> stream<T>({required String key}) =>
@@ -30,51 +30,53 @@ class SharedPreferencesViewModel {
           .cast<({String key, T? value})>()
           .distinct();
 
-  /// Gets a string value from [SharedPreferences].
+  /// Gets string for [key] in [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
+  /// If [key] is not found, it returns null.
   Future<String?> getString(String key) => _sharedPrefs.getString(key);
 
-  /// Gets an integer value from [SharedPreferences].
+  /// Gets int for [key] in [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
+  /// If [key] is not found, it returns null.
   Future<int?> getInt(String key) => _sharedPrefs.getInt(key);
 
-  /// Gets a double value from [SharedPreferences].
+  /// Gets double for [key] in [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
+  /// If [key] is not found, it returns null.
   Future<double?> getDouble(String key) => _sharedPrefs.getDouble(key);
 
-  /// Gets a boolean value from [SharedPreferences].
+  /// Gets boolean [key] in [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
+  /// If [key] is not found, it returns null.
   Future<bool?> getBool(String key) => _sharedPrefs.getBool(key);
 
-  /// Sets a string value in [SharedPreferences].
+  /// Gets a list of strings from [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
-  ///  - [value]: The value to store.
+  /// If [key] is not found, it returns null.
+  Future<List<String>?> getStringList(String key) =>
+      _sharedPrefs.getStringList(key);
+
+  /// Sets string [value] for [key] in [SharedPreferences].
+  ///
+  /// If the [value] is null, the key is removed from [SharedPreferences].
   Future<void> setString(String key, String? value) =>
       _set<String>(key, value, getString, _sharedPrefs.setString);
 
-  /// Sets an integer value in [SharedPreferences].
+  /// Sets int [value] for [key] in [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
-  ///  - [value]: The value to store.
+  /// If the [value] is null, the key is removed from [SharedPreferences].
   Future<void> setInt(String key, int? value) =>
       _set<int>(key, value, getInt, _sharedPrefs.setInt);
 
-  /// Sets a double value in [SharedPreferences].
+  /// Sets double [value] for [key] in [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
-  ///  - [value]: The value to store.
+  /// If the [value] is null, the key is removed from [SharedPreferences].
   Future<void> setDouble(String key, double? value) =>
       _set<double>(key, value, getDouble, _sharedPrefs.setDouble);
 
-  /// Sets a boolean value in [SharedPreferences].
+  /// Sets boolean [value] for [key] in [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
-  ///  - [value]: The value to store.
+  /// If the [value] is null, the key is removed from [SharedPreferences].
   Future<void> setBool(
     String key,
     //
@@ -82,12 +84,20 @@ class SharedPreferencesViewModel {
     bool? value,
   ) => _set<bool>(key, value, getBool, _sharedPrefs.setBool);
 
-  /// Sets a value in [SharedPreferences].
+  /// Sets a list of strings in [SharedPreferences].
   ///
-  ///  - [key]: The key used to store and retrieve the value.
-  ///  - [value]: The value to store.
+  /// If the [value] is null, the key is removed from [SharedPreferences].
+  Future<void> setStringList(String key, List<String>? value) =>
+      _set<List<String>>(key, value, getStringList, _sharedPrefs.setStringList);
+
+  /// Sets a generic [value] for [key] in [SharedPreferences].
   ///
-  ///  Throws [UnsupportedError] if the type is not supported.
+  ///  Throws [UnsupportedError] if the type is not supported:
+  ///  - [String]
+  ///  - [int]
+  ///  - [double]
+  ///  - [bool]
+  ///  - [List] of [String]
   Future<void> setValue({required String key, required Object? value}) async {
     switch (value) {
       case String():
@@ -109,6 +119,15 @@ class SharedPreferencesViewModel {
     }
   }
 
+  /// Removes [key] from [SharedPreferences].
+  Future<void> remove(String key) => _sharedPrefs.remove(key);
+
+  /// Checks if a [key] exists in [SharedPreferences].
+  Future<bool> containsKey(String key) => _sharedPrefs.containsKey(key);
+
+  /// Clears all keys from [SharedPreferences].
+  Future<void> clear() => _sharedPrefs.clear();
+
   Future<void> _set<T>(
     String key,
     T? value,
@@ -124,21 +143,4 @@ class SharedPreferencesViewModel {
     }
     _streamController.add((key: key, value: value));
   }
-
-  /// Removes [key] from [SharedPreferences].
-  Future<void> remove(String key) => _sharedPrefs.remove(key);
-
-  /// Gets a list of strings from [SharedPreferences].
-  Future<List<String>?> getStringList(String key) =>
-      _sharedPrefs.getStringList(key);
-
-  /// Sets a list of strings in [SharedPreferences].
-  Future<void> setStringList(String key, List<String>? value) =>
-      _set<List<String>>(key, value, getStringList, _sharedPrefs.setStringList);
-
-  /// Checks if a [key] exists in [SharedPreferences].
-  Future<bool> containsKey(String key) => _sharedPrefs.containsKey(key);
-
-  /// Clears all keys from [SharedPreferences].
-  Future<void> clear() => _sharedPrefs.clear();
 }
