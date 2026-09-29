@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_shared_preferences-1.0.2+3] - 2026-09-29
+
+### 🐛 Bug Fixes [1.0.2]
+
+- Handle `null` in `SharedPreferencesViewModel.setValue` removing key ([8f4c9ae](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8f4c9aebe5694aeec30cdcc441fc2b9a8a382885)) by **heyteacher**
+
+### 📚 Documentation [1.0.2]
+
+- Enhance documentation and organize code of `SharedPreferencesViewModel` ([22d6a12](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/22d6a124925e4583687ef38574092e18f4487137)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [1.0.2]
+
+- *(release)* New version 1.0.2+3 which closes ([#406](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/406)) ([e36cc06](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e36cc066d7185781f0331b00700414a8a1b24bba)) by **heyteacher**
+
 ## [flutter_heyteacher_shared_preferences-1.0.1+2] - 2026-09-28
 
 ### 📚 Documentation [1.0.1]
