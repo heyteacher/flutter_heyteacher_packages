@@ -1,6 +1,6 @@
 name: flutter_heyteacher_shared_preferences
 description: "The flutter heyteacher package for shared preferences utilities."
-version: 1.0.1+2
+version: 1.0.2+3
 
 repository: https://codeberg.org/heyteacher/flutter_heyteacher_packages/src/branch/main/packages/flutter_heyteacher_shared_preferences
 license: BSD 3-Clause
