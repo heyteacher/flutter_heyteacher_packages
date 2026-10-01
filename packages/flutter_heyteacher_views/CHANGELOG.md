@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-6.5.2+186] - 2026-10-01
+
+### 🐛 Bug Fixes [6.5.2]
+
+- Correct check of tutorial completed and enhance logging ([902e2b8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/902e2b877c4e1fbce03b06c9531ccaa5afae093f)) by **heyteacher**
+
+### 🎨 Styling [6.5.2]
+
+- Reduce the icon size of `FloatingActionTextIconButtom` ([5c2ac6e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5c2ac6ebafacf5d8c9fe6c1ade960552557c6647)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.5.2]
+
+- *(release)* New version 6.5.2+186 which closes ([#412](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/412)) ([7464949](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7464949f79963a1ce43c33a75cc286215a93dd93)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.5.1+185] - 2026-09-22
 
 ### ⚙️ Miscellaneous Tasks [6.5.1]
