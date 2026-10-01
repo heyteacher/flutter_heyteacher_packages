@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.2.8+178] - 2026-10-01
+
+### 🎨 Styling [3.2.8]
+
+- Reduce size of buttons of `E2EESecretKeyListTile` ([8d8adb0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8d8adb011b91cc008aa688433253eeeaa341a136)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.2.8]
+
+- *(release)* New version 3.2.8+178 which closes ([#411](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/411)) ([b45b7c2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b45b7c2feabdf3ffe1e5de917cb9734499418b1f)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.2.7+177] - 2026-09-17
 
 ### ⚙️ Miscellaneous Tasks [3.2.7]
