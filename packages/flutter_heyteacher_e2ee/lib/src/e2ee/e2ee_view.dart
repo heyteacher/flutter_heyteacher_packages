@@ -266,7 +266,7 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                   ),
                 ),
               ),
-              OutlinedButton.icon(
+              OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 3),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -316,18 +316,14 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                     }
                   }
                 },
-                icon: const Padding(
-                  padding: EdgeInsets.only(left: 4),
-                  child: Icon(Icons.create),
-                ),
-                label: Padding(
-                  padding: const EdgeInsets.only(right: 4),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 2, right: 2),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.generate,
                   ),
                 ),
               ),
-              OutlinedButton.icon(
+              OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 3),
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -350,12 +346,8 @@ class _E2EESecretKeyListTileState extends State<E2EESecretKeyListTile> {
                     }
                   }
                 },
-                icon: const Padding(
-                  padding: EdgeInsets.only(left: 4),
-                  child: Icon(Icons.edit),
-                ),
-                label: Padding(
-                  padding: const EdgeInsets.only(right: 4),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 2, right: 2),
                   child: Text(
                     FlutterHeyteacherE2EELocalizations.of(context)!.edit,
                   ),
