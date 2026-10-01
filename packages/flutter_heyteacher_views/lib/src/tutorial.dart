@@ -69,23 +69,28 @@ class TutorialViewModel {
     String screenName, {
     bool forceRestart = false,
   }) async {
-    _logger.finer('<start>: screenName $screenName');
-    if (!forceRestart &&
-        ((await SharedPreferencesAsync().getBool(
-                  '$screenName-tutorial-completed',
-                ) ??
-                false) ||
-            _started)) {
+    _logger.finer('<start>: screenName $screenName forceRestart $forceRestart');
+    final completed =
+        (await SharedPreferencesAsync().getBool(
+          '$screenName-tutorial-completed',
+        )) ??
+        false;
+    _logger.finer(
+      '(start): screenName $screenName forceRestart $forceRestart '
+      'completed $completed _started $_started',
+    );
+    if (!forceRestart && (completed || _started)) {
       return;
     }
-    _started = true;
     if (context.mounted) {
-      _logger.info('((start): screenName $screenName. Show tutorial');
+      _started = true;
+      _logger.info('(start): screenName $screenName. Show tutorial');
       unawaited(
         Tutorial.showTutorial(
           context,
           _screens[screenName]!,
           onTutorialComplete: () {
+            _started = false;
             _logger.info('(start): screenName $screenName. Tutorial completed');
             unawaited(
               SharedPreferencesAsync().setBool(
