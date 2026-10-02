@@ -565,13 +565,16 @@ class ErrorOnEncryptException implements Exception {
 
   /// Returns a localized error message.
   @override
-  String toString() {
+  String toString() => 'Error on encryption: $error';
+
+  /// Returns a localized error message.
+  String toLocalizedString() {
     if (ContextHelper.context != null) {
       return FlutterHeyteacherE2EELocalizations.of(
         ContextHelper.context!,
       )!.errorOnEncryptionCheckPassphrase(error.toString());
     } else {
-      return 'Error on encryption: $error';
+      return toString();
     }
   }
 }
@@ -591,13 +594,16 @@ class ErrorOnDecryptException implements Exception {
 
   /// Returns a localized error message.
   @override
-  String toString() {
+  String toString() => 'Error on decryption: $error';
+
+  /// Returns a localized error message.
+  String toLocalizedString() {
     if (ContextHelper.context != null) {
       return FlutterHeyteacherE2EELocalizations.of(
         ContextHelper.context!,
       )!.errorOnDecryptionCheckPassphrase(error.toString());
     } else {
-      return 'Error on decryption: $error';
+      return toString();
     }
   }
 }
@@ -607,13 +613,16 @@ class ErrorOnDecryptException implements Exception {
 class AADEmptyException implements Exception {
   /// Returns a localized error message prompting the user to set a passphrase.
   @override
-  String toString() {
+  String toString() => 'Encryption Passphrase is empty, set it';
+
+  /// Returns a localized error message prompting the user to set a passphrase.
+  String toLocalizedString() {
     if (ContextHelper.context != null) {
       return FlutterHeyteacherE2EELocalizations.of(
         ContextHelper.context!,
       )!.encryptionPassphraseIsEmptySetIt;
     } else {
-      return 'Encryption Passphrase is empty, set it';
+      return toString();
     }
   }
 }
@@ -624,13 +633,16 @@ class MissingEncryptionSecretKeyException implements Exception {
   /// Returns a localized error message prompting the user to import their
   /// secret key.
   @override
-  String toString() {
+  String toString() => 'Missing Encryption Secret Key, import it';
+
+  /// Returns a localized error message prompting the user to import their
+  String toLocalizedString() {
     if (ContextHelper.context != null) {
       return FlutterHeyteacherE2EELocalizations.of(
         ContextHelper.context!,
       )!.missingEncryptionSecretKeyImportIt;
     } else {
-      return 'Missing Encryption Secret Key, import it';
+      return toString();
     }
   }
 }
@@ -641,13 +653,16 @@ class MissingMasterSecretKeyJwkException implements Exception {
   /// Returns a localized error message prompting the user to import their
   /// secret key.
   @override
-  String toString() {
+  String toString() => 'Missing Master Secret Key JWK';
+
+  /// Returns a localized error message prompting the user to import their
+  String toLocalizedString() {
     if (ContextHelper.context != null) {
       return FlutterHeyteacherE2EELocalizations.of(
         ContextHelper.context!,
       )!.missingMasterSecretKeyJwk;
     } else {
-      return 'Missing Master Secret Key JWK';
+      return toString();
     }
   }
 }
@@ -655,13 +670,16 @@ class MissingMasterSecretKeyJwkException implements Exception {
 /// Exception thrown when action not permitter in debug mode.
 class DebugModeException implements Exception {
   @override
-  String toString() {
+  String toString() => 'Action not permitter in debug mode';
+
+  /// Returns a localized error message prompting the user to set a passphrase.
+  String toLocalizedString() {
     if (ContextHelper.context != null) {
       return FlutterHeyteacherE2EELocalizations.of(
         ContextHelper.context!,
       )!.actionNotPermittedInDebugMode;
     } else {
-      return 'Action not permitter in debug mode';
+      return toString();
     }
   }
 }
