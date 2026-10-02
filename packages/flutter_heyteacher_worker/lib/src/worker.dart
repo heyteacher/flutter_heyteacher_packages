@@ -91,7 +91,9 @@ final class Worker<I, O> {
       _completers[id] = completer;
       _sendPort?.send((id, input));
       return await completer.future;
-    } on Exception catch (error, stackTrace) {
+      //
+      // ignore: avoid_catches_without_on_clauses
+    } catch (error, stackTrace) {
       return (
         output: null,
         error: error.toString(),
