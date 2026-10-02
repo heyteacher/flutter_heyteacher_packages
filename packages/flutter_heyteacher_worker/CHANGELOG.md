@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_worker-2.0.13+147] - 2026-10-02
+
+### 🐛 Bug Fixes [2.0.13]
+
+- Catch all on `execute` ([6b0bc82](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6b0bc828a56d34eb80e7d4bee1b367b20d4a9bad)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [2.0.13]
+
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- *(release)* New version 2.0.13+147 which closes ([#415](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/415)) ([3c413d0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3c413d00e2ebca44d32b8fde07e148739ab5483d)) by **heyteacher**
+
 ## [flutter_heyteacher_worker-2.0.12+146] - 2026-09-08
 
 ### 🧪 Testing [2.0.12]
