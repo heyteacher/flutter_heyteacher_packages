@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_e2ee-3.2.9+179] - 2026-10-02
+
+### 🐛 Bug Fixes [3.2.9]
+
+- All exceptions return a generic message on `toString` and a localized message on `toLocalizedString` ([942313a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/942313af60a16f9f0225c4f9c1b941723e7ad8e4)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.2.9]
+
+- *(release)* New version 3.2.9+179 which closes ([#416](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/416)) ([36dd058](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/36dd058d97fe943e63d6a8604f815d86702e0263)) by **heyteacher**
+
 ## [flutter_heyteacher_e2ee-3.2.8+178] - 2026-10-01
 
 ### 🎨 Styling [3.2.8]
