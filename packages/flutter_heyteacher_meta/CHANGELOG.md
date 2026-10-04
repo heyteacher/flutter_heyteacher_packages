@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.9.6+191] - 2026-10-04
+
+### 🐛 Bug Fixes [7.9.6]
+
+- Correct `text` lane execution in `release` lane + correct typo ([7d1ccf5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/7d1ccf5e387014e120f31e7607d0596698a58615)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.9.6]
+
+- *(release)* New version 7.9.6+191 which closes ([#419](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/419)) ([3360bfe](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3360bfe98766d7611653f40f5be30e63dff39080)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.9.5+190] - 2026-09-17
 
 ### 📚 Documentation [7.9.5]
