@@ -59,7 +59,7 @@ lane :checkout do|options|
     begin
       issue_description = sh("fj issue search | grep \"##{issue_number}\"");
       issue_found = true
-    rescue => error
+    rescue => _
       puts "issue #{issue_number} not found in #{forge}"
     end
   end
@@ -97,7 +97,7 @@ lane :release do|options|
   Dir.chdir("../") do
     if options[:semver] != nil
       version = sh("dart run flutter_heyteacher_meta:dartsemver #{options[:semver]}")
-    elsif
+    else
       version = sh("git-cliff --bumped-version").lines.last.strip!.split("-").last.split("+").first
       confirm = UI.input("Version detected is #{version}, confirm? (Y/n):")
       if confirm != nil && confirm != "" && confirm.downcase != "y"
@@ -112,13 +112,7 @@ lane :release do|options|
     end
   end
   sh("git pull")
-  Dir.chdir("../") do
-    if Dir.exist?("test") && Dir.glob("test/**/*_test.dart").any?
-      test
-    else
-      puts "skipping tests since no test found"
-    end
-  end
+  test
   # commit bump and push remote
   puts "commit pubspec.yaml with new version #{version}"
   sh("git add ../pubspec.yaml")
