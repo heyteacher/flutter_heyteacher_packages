@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-5.0.0+173] - 2026-10-13
+
+### 🚀 Features [5.0.0]
+
+- [**breaking**] Add `preSignOutCallback`, rename `createAccountCallback` and  `deleteAccountCallback` ([bca7a5e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/bca7a5ed3f348fddb332cd781ad683c9761528cd)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [5.0.0]
+
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- *(release)* New version 5.0.0+173 which closes ([#421](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/421)) ([51e8743](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/51e87433b71eabc4070cf278f505ff51be7aac31)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-4.1.7+172] - 2026-09-08
 
 ### ⚙️ Miscellaneous Tasks [4.1.7]
