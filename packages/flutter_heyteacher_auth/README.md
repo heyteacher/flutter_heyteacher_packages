@@ -84,11 +84,11 @@ In order to use `Delete User Data` feature you need:
   AuthViewModel.initialize(enableDeleteUserData: true);
   ```
 
-- in `AccountCard` set `deleteAccountCallback` and `deleteAccountConfirmMessage`
+- in `AccountCard` set `deleteCallback` and `deleteConfirmMessage`
 
   ```dart
   AccountListTile(
-    deleteAccountConfirmMessage: 'Are you sure to delete your user data?',
+    deleteConfirmMessage: 'Are you sure to delete your user data?',
     deleteAccountCallback: () async {
       // insert here your logic to delete user data
       showSnackBar(context: context, message: 'content');

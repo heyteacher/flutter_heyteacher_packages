@@ -32,19 +32,14 @@ class MyApp extends StatelessWidget {
     theme: ThemeViewModel.instance.lightTheme,
     darkTheme: ThemeViewModel.instance.darkTheme,
     themeMode: ThemeMode.dark,
-    localizationsDelegates: const [
-      FlutterHeyteacherAuthLocalizations.delegate,
-    ],
+    localizationsDelegates: const [FlutterHeyteacherAuthLocalizations.delegate],
     routerConfig: GoRouter(
       routes: [
         GoRoute(
           path: '/',
           builder: (context, state) => const _MyHomePage(),
           routes: [
-            GoAuthRoute.builder(
-              landingRoutePath: '/',
-              fakeSignIn: _fakeSignIn,
-            ),
+            GoAuthRoute.builder(landingRoutePath: '/', fakeSignIn: _fakeSignIn),
           ],
         ),
       ],
@@ -69,18 +64,15 @@ class _MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<_MyHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Flutter Heyteacher Auth'),
-    ),
+    appBar: AppBar(title: const Text('Flutter Heyteacher Auth')),
     body: Padding(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Column(
         children: [
           const Divider(height: 1, color: Colors.white24),
           AccountListTile(
-            deleteAccountConfirmMessage:
-                'Are you sure to delete your user data?',
-            deleteAccountCallback: () async {
+            deleteConfirmMessage: 'Are you sure to delete your user data?',
+            deleteCallback: () async {
               // insert here your logic to delete user data
               showSnackBar(
                 context: context,
@@ -109,9 +101,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                                 : ThemeViewModel.instance.redColor,
                           ),
                     ),
-                    const TextSpan(
-                      text: '\nuid: ',
-                    ),
+                    const TextSpan(text: '\nuid: '),
                     TextSpan(
                       text: AuthViewModel.instance.uid ?? 'none',
                       style: const TextStyle(fontStyle: FontStyle.italic)
@@ -121,9 +111,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                                 : ThemeViewModel.instance.redColor,
                           ),
                     ),
-                    const TextSpan(
-                      text: '\nuser name: ',
-                    ),
+                    const TextSpan(text: '\nuser name: '),
                     TextSpan(
                       text: AuthViewModel.instance.displayName ?? 'none',
                       style: const TextStyle(fontStyle: FontStyle.italic)
@@ -133,9 +121,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                                 : ThemeViewModel.instance.redColor,
                           ),
                     ),
-                    const TextSpan(
-                      text: '\nemail: ',
-                    ),
+                    const TextSpan(text: '\nemail: '),
                     TextSpan(
                       text: AuthViewModel.instance.email ?? 'none',
                       style: const TextStyle(fontStyle: FontStyle.italic)
