@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
-## [flutter_heyteacher_e2ee-3.2.11+181] - 2026-10-14
+## [flutter_heyteacher_e2ee-3.2.10+180] - 2026-10-14
 
-### ⚙️ Miscellaneous Tasks [3.2.11]
+### ⚙️ Miscellaneous Tasks [3.2.10]
 
-- *(release)* New version 3.2.11+181 which closes ([#421](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/421)) ([f194021](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f19402128391cc4718cdbe114ffa216b728c4a42)) by **heyteacher**
+- *(release)* New version 3.2.10+180 which closes ([#421](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/421)) ([f194021](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f19402128391cc4718cdbe114ffa216b728c4a42)) by **heyteacher**
 
 ## [flutter_heyteacher_e2ee-3.2.9+179] - 2026-10-02
 
@@ -395,7 +395,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### 🚀 Features [2.0.3]
 
-- Add examples to dart workspace and add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics` ([5bc12ac](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5bc12ac326fdd6974d5c7c6ab7bf619fefbfb9c6)) by **Hey, Teacher**
+- Add examples to dart workspace and add metadata `repository`, `licence`, `issue_tracker',`homepage`,`documentation` and `topics` ([5bc12ac](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5bc12ac326fdd6974d5c7c6ab7bf619fefbfb9c6)) by **Hey, Teacher**
 
 ### 🚜 Refactor [2.0.3]
 
@@ -403,7 +403,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### 📚 Documentation [2.0.3]
 
-- Add metadata `repository`, `licence`, `issue_tracker', `homepage`, `documentation` and `topics` ([ddfa4a1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ddfa4a1b115e63fa8d1152ee55725e49b724c93e)) by **Hey, Teacher**
+- Add metadata `repository`, `licence`, `issue_tracker',`homepage`,`documentation` and `topics` ([ddfa4a1](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ddfa4a1b115e63fa8d1152ee55725e49b724c93e)) by **Hey, Teacher**
 - *(CHANGELOG)* Update CHANGELOG.md with release flutter_heyteacher_e2ee-2.0.3+132 ([54a7673](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/54a7673b0348cb229d30a7d29ddb97a035c09f88)) by **Hey, Teacher**
 
 ## [flutter_heyteacher_e2ee-2.0.2+130] - 2026-03-12
@@ -421,7 +421,7 @@ All notable changes to this project will be documented in this file. See [conven
 
 ### 🐛 Bug Fixes [2.0.1]
 
-- *(e2ee)* Remove `flutter_heyteacher_firebase` dependency and add `initializeDebug`,  `masterSecretKeyJwk' setter and `MissingMasterSecretKeyJwkException` ([93cae93](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/93cae93f06740d592ea4482297411198775f2af3)) by **Hey, Teacher**
+- *(e2ee)* Remove `flutter_heyteacher_firebase` dependency and add `initializeDebug`,  `masterSecretKeyJwk' setter and`MissingMasterSecretKeyJwkException` ([93cae93](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/93cae93f06740d592ea4482297411198775f2af3)) by **Hey, Teacher**
 - *(e2ee)* Change signature of `setAAD`, if value is null, generate and set it, and replace `initializeDebug` whit `debugSecretKeyJWK` setter and remove unused `_debugPassword` ([05e647b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/05e647b4b7f97e2cdf6b580d3816bd5365d0f82d)) by **Hey, Teacher**
 - *(e2ee)* Made `E2EESecretKeyCard` constructor `const` ([ad4d024](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ad4d0242f8f24e5b2c062d8e170c47b48e85540a)) by **Hey, Teacher**
 
