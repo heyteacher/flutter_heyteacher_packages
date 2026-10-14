@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-3.1.10+161] - 2026-10-14
+
+### ⚙️ Miscellaneous Tasks [3.1.10]
+
+- Bump Android Gradle plugin to 9.0.1 and Kotlin plugin to 2.3.20 across all example projects ([904ad64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/904ad64a13026d045ce1ee3e3ff4c98da6f4d966)) by **heyteacher**
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- *(release)* New version 3.1.10+161 which closes ([#421](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/421)) ([e662391](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e6623915f5d2dfc00aee21b8443ba1b70d427a0e)) by **heyteacher**
+
 ## [flutter_heyteacher_platform-3.1.9+160] - 2026-09-08
 
 ### 🚜 Refactor [3.1.9]
