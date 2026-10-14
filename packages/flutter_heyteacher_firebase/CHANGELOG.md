@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_firebase-2.0.17+153] - 2026-10-14
+
+### ⚙️ Miscellaneous Tasks [2.0.17]
+
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- *(release)* New version 2.0.17+153 which closes ([#421](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/421)) ([8c37823](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/8c3782300e9080e5d200c38d742180542d7e93c6)) by **heyteacher**
+
 ## [flutter_heyteacher_firebase-2.0.16+152] - 2026-09-08
 
 ### ⚙️ Miscellaneous Tasks [2.0.16]
