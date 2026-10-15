@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_firebase-2.0.18+154] - 2026-10-15
+
+### 🐛 Bug Fixes [2.0.18]
+
+- Publish updated dependecies after release major version of flutter_heyteacher_auth ([79988cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/79988cff3693753786ce40cb479566021ac32770)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [2.0.18]
+
+- *(release)* New version 2.0.18+154 which closes ([#429](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/429)) ([e6b0725](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e6b072505cba9d197c79deef4459f502dc6e8219)) by **heyteacher**
+
 ## [flutter_heyteacher_firebase-2.0.17+153] - 2026-10-14
 
 ### ⚙️ Miscellaneous Tasks [2.0.17]
