@@ -22,10 +22,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_locale: ^3.1.6+164
-  flutter_heyteacher_views: ^6.4.2+183
+  flutter_heyteacher_views: ^6.5.3+187
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.9.4+189
+  flutter_heyteacher_meta: ^7.9.6+191
   flutter_test:
     sdk: flutter
   very_good_analysis: ^11.0.0
