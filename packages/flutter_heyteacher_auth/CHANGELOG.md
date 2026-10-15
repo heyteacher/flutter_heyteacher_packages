@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-5.0.1+174] - 2026-10-15
+
+### 🐛 Bug Fixes [5.0.1]
+
+- Publish updated dependecies after release major version of flutter_heyteacher_auth ([79988cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/79988cff3693753786ce40cb479566021ac32770)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [5.0.1]
+
+- Remove unuseful maximum flutter constraint across workspace packages ([06fec13](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/06fec13c52a96c272cef39d3a804b016c0dfb2ca)) by **heyteacher**
+- *(release)* New version 5.0.1+174 which closes ([#429](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/429)) ([1319658](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/13196580bc46424a89fff173fd78c0f4256632cb)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-5.0.0+173] - 2026-10-13
 
 ### 🚀 Features [5.0.0]
