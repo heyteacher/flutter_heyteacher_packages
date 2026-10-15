@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-4.2.3+1058] - 2026-10-15
+
+### 🐛 Bug Fixes [4.2.3]
+
+- Publish updated dependecies after release major version of flutter_heyteacher_auth ([79988cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/79988cff3693753786ce40cb479566021ac32770)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.2.3]
+
+- *(release)* New version 4.2.3+1058 which closes ([#429](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/429)) ([0db8c5f](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0db8c5f959f0f9872c883f0e977a8ff0ed75e268)) by **heyteacher**
+
 ## [flutter_heyteacher_store-4.2.2+1057] - 2026-10-14
 
 ### ⚙️ Miscellaneous Tasks [4.2.2]
