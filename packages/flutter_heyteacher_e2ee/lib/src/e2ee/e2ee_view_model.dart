@@ -78,6 +78,14 @@ class E2EEViewModel {
     _masterSecretKeyJwk = masterSecretKeyJwk;
   }
 
+  /// debug mode changed notifier
+  static final StreamController<bool> _debugModeChangedStreamController =
+      StreamController<bool>.broadcast();
+
+  /// debug mode changed notifier
+  static Stream<bool> get debugModeChangedStream =>
+      _debugModeChangedStreamController.stream;
+
   /// The debug AAD
   static const String _debugAAD = '/&/8678bhnogvd6&/=gB097';
 
@@ -114,7 +122,11 @@ class E2EEViewModel {
     }
     final oldDebugMode = _debugMode;
     _debugMode = debugMode;
-    logger.info('(debugMode): changed from $oldDebugMode to $debugMode');
+    logger.info(
+      '(debugMode): changed from $oldDebugMode to $debugMode, '
+      'notifying debug mode changed',
+    );
+    _debugModeChangedStreamController.sink.add(debugMode);
   }
 
   /// Generate a Secret Key anr returns the JWK in JSON format.
@@ -297,7 +309,7 @@ class E2EEViewModel {
   ///
   /// Returns `null` if the user is not authenticated or if no AAD is set.
   Future<String?> getAAD() async {
-    _logger.finest('<getAAD>:');
+    _logger.finest('<getAAD>: debugMode $_debugMode');
     if (_debugMode) {
       // if debug returns debugAAD
       return _debugAAD;
@@ -549,6 +561,10 @@ class E2EEViewModel {
     // import the jwk into secret key
     return await AesGcmSecretKey.importJsonWebKey(secretJwk);
   }
+
+  /// notify AAD changed to all widget that listen to AAD changes
+  Future<void> notifyAADChanged() async =>
+      _aadChangedStreamController.add(await getAAD());
 }
 
 /// Exception thrown when an error occurs during the encryption process.
