@@ -133,12 +133,6 @@ abstract class FlutterHeyteacherE2EELocalizations {
   /// **'Error on decryption: {error}'**
   String errorOnDecryptionCheckPassphrase(String error);
 
-  /// No description provided for @areYouSureToChangeEncryptionPassphrase.
-  ///
-  /// In en, this message translates to:
-  /// **'If you change the Encryption Passphrase, you will not be able to access data encrypted with the old passphrase.\n\nAre you sure you want to change the Encryption Passphrase?'**
-  String get areYouSureToChangeEncryptionPassphrase;
-
   /// No description provided for @areYouSureToImportEncryptionSecretKey.
   ///
   /// In en, this message translates to:

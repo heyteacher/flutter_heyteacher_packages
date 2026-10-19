@@ -28,10 +28,6 @@ class FlutterHeyteacherE2EELocalizationsEs
   }
 
   @override
-  String get areYouSureToChangeEncryptionPassphrase =>
-      'Si cambia la frase de contraseña, no podrá acceder a los datos cifrados con la frase de contraseña antigua.\n\n¿Está seguro de que desea cambiar la frase de contraseña?';
-
-  @override
   String get areYouSureToImportEncryptionSecretKey =>
       'Si importa una Clave Criptográfica, la clave antigua se sobrescribirá y los datos cifrados con la clave antigua se perderán.\n\n¿Está seguro de que desea importar la Clave Criptográfica?';
 
