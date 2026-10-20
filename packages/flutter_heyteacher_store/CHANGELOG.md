@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-5.0.0+1059] - 2026-10-20
+
+### 🚀 Features [5.0.0]
+
+- Add `debugModeChangedStream` updated when debug mode changes + add `notifyAADChanged` method + correct password refresh in `E2EESecretKeyListTile` ([5be29cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5be29cf812acc74aa92c1cd5a5747416c1928cc6)) by **heyteacher**
+
+### 🐛 Bug Fixes [5.0.0]
+
+- Trap `PlatformException` in `Store.aggregates` if collection doesn't exists ([93f96b8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/93f96b88fa1fbc579ba4148a244d7d989b96206b)) by **heyteacher**
+- [**breaking**] Remove aggregated data from`Store.aggregateStream` and `notifyAggregatesChanges` doen't invoke `aggregates` which is delegate to clients ([92a1a4b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/92a1a4b8d562cd153b7887a702f4d52fc7728e7f)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [5.0.0]
+
+- *(release)* New version 5.0.0+1059 which closes ([#437](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/437)) ([0c885a3](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0c885a3524ec3ed03c88e660990c431e16a15315)) by **heyteacher**
+
 ## [flutter_heyteacher_store-4.2.3+1058] - 2026-10-15
 
 ### 🐛 Bug Fixes [4.2.3]
