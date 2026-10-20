@@ -2,9 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
-## [flutter_heyteacher_views-6.5.3+187] - 2026-10-14
+## [flutter_heyteacher_views-6.6.0+188] - 2026-10-20
 
-### ⚙️ Miscellaneous Tasks [6.5.3]
+### 🚀 Features [6.6.0]
+
+- Add `debugModeChangedStream` updated when debug mode changes + add `notifyAADChanged` method + correct password refresh in `E2EESecretKeyListTile` ([5be29cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5be29cf812acc74aa92c1cd5a5747416c1928cc6)) by **heyteacher**
+
+### 🐛 Bug Fixes [6.6.0]
+
+- Publish updated dependecies after release major version of flutter_heyteacher_auth ([79988cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/79988cff3693753786ce40cb479566021ac32770)) by **heyteacher**
+- Reorder pagination conditions in scroll position check to evaluate data limit before max extent ([e03f0ac](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e03f0ac7eae1895f6615bccca4cfc0a52e5867f1)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.6.0]
+
+- *(release)* New version 6.6.0+188 which closes ([#439](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/439)) ([f5c350a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f5c350a141d06978b52d1674bd9ce1b12d1df375)) by **heyteacher**
+
+## [flutter_heyteacher_e2ee-3.2.10+180] - 2026-10-14
+
+### ⚙️ Miscellaneous Tasks [3.2.10]
 
 - *(release)* New version 6.5.3+187 which closes ([#421](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/421)) ([2645c44](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2645c445293f2f8ca71bd72385a808d7bbb18594)) by **heyteacher**
 
