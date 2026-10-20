@@ -124,12 +124,13 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
         FloatingActionTextIconButtom(
           text: 'Play',
           iconData: Icons.play_circle,
-          onPressed: () => showSnackBar(context: context, message: 'Play'),
+          onPressed: () async =>
+              showSnackBar(context: context, message: 'Play'),
         ),
         FloatingActionTextIconButtom(
           text: 'Stop',
           iconData: Icons.stop_circle,
-          onPressed: () =>
+          onPressed: () async =>
               showSnackBar(context: context, message: 'Stop', error: true),
         ),
       ],
@@ -147,9 +148,7 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
               tutorialScreenName,
               forceRestart: true,
             ),
-            child: const Text(
-              'Start',
-            ),
+            child: const Text('Start'),
           ),
         ),
         const Divider(height: 1, color: Colors.white24),
@@ -201,10 +200,7 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
                   title: const Text('Title'),
                   content: const Text('Do you confirm this action?'),
                   confirmCallback: (_) async {
-                    showSnackBar(
-                      context: context,
-                      message: 'Confirmed',
-                    );
+                    showSnackBar(context: context, message: 'Confirmed');
                     return null;
                   },
                   cancelCallback: (_) async {
@@ -217,9 +213,7 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
                   },
                   timeout: const Duration(seconds: 5),
                 ),
-                child: const Text(
-                  'Open',
-                ),
+                child: const Text('Open'),
               ),
             ],
           ),
@@ -238,10 +232,8 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   OutlinedButton(
-                    onPressed: () => showSnackBar(
-                      context: context,
-                      message: 'SnackBar',
-                    ),
+                    onPressed: () =>
+                        showSnackBar(context: context, message: 'SnackBar'),
                     style: OutlinedButton.styleFrom(
                       minimumSize: Size.zero,
                       foregroundColor: ThemeViewModel.instance.greenColor,
@@ -280,10 +272,7 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
                     onPressed: () => showSnackBar(
                       context: context,
                       message: 'SnackBar with action',
-                      action: SnackBarAction(
-                        label: 'Action',
-                        onPressed: () {},
-                      ),
+                      action: SnackBarAction(label: 'Action', onPressed: () {}),
                     ),
                     style: OutlinedButton.styleFrom(
                       minimumSize: Size.zero,
@@ -338,9 +327,7 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
           title: const Text('Error View'),
           trailing: IconButton(
             onPressed: () => unawaited(
-              GoRouter.of(
-                context,
-              ).pushNamed(AppRouteName.errorView.name),
+              GoRouter.of(context).pushNamed(AppRouteName.errorView.name),
             ),
             icon: const Icon(Icons.keyboard_arrow_right),
           ),
@@ -361,9 +348,7 @@ class _WidgetsScreenState extends State<WidgetsScreen> {
                 IconButton(
                   onPressed: () async {
                     setState(() => _loading = true);
-                    await Future<void>.delayed(
-                      const Duration(seconds: 5),
-                    );
+                    await Future<void>.delayed(const Duration(seconds: 5));
                     setState(() => _loading = false);
                   },
                   icon: const Icon(Icons.timer),
@@ -432,9 +417,7 @@ class _SampleTableView extends TableView {
       2: FlexColumnWidth(1.5),
       3: FlexColumnWidth(),
     },
-    border: TableBorder.all(
-      color: ThemeViewModel.instance.darkGreyColor,
-    ),
+    border: TableBorder.all(color: ThemeViewModel.instance.darkGreyColor),
     children: [
       buildTableRow(
         context: context,
@@ -474,10 +457,7 @@ class _SampleTableView extends TableView {
             value: 'valueTextYellow',
             color: ThemeViewModel.instance.yellowColor,
           ),
-          const TableCellData(
-            label: 'label',
-            value: 'labelText',
-          ),
+          const TableCellData(label: 'label', value: 'labelText'),
         ],
       ),
     ],

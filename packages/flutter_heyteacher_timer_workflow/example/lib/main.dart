@@ -243,21 +243,21 @@ class _MyHomePageState extends State<_MyHomePage> {
                 : 'Resume',
             iconData: Icons.play_circle,
             backgroundColor: ThemeViewModel.instance.greenColor,
-            onPressed: _workflow.start,
+            onPressed: () async => _workflow.start(),
           ),
         if (_workflow.status == WorkflowStatus.started)
           FloatingActionTextIconButtom(
             text: 'restart',
             iconData: Icons.restart_alt,
             backgroundColor: ThemeViewModel.instance.greenColor,
-            onPressed: _workflow.restart,
+            onPressed: () async => _workflow.restart(),
           ),
         if (_workflow.status == WorkflowStatus.started)
           FloatingActionTextIconButtom(
             text: 'Pause',
             iconData: Icons.pause_circle,
             backgroundColor: ThemeViewModel.instance.yellowColor,
-            onPressed: _workflow.pause,
+            onPressed: () async => _workflow.pause(),
           ),
         if (_workflow.status == WorkflowStatus.started ||
             _workflow.status == WorkflowStatus.paused)
@@ -265,7 +265,7 @@ class _MyHomePageState extends State<_MyHomePage> {
             text: 'Skip',
             iconData: Icons.skip_next,
             backgroundColor: ThemeViewModel.instance.blueColor,
-            onPressed: _workflow.next,
+            onPressed: () async => _workflow.next(),
           ),
         if (_workflow.status == WorkflowStatus.started ||
             _workflow.status == WorkflowStatus.paused)
@@ -273,7 +273,7 @@ class _MyHomePageState extends State<_MyHomePage> {
             text: 'Stop',
             iconData: Icons.stop_circle,
             backgroundColor: ThemeViewModel.instance.redColor,
-            onPressed: _workflow.stop,
+            onPressed: () async => _workflow.stop(),
           ),
       ],
     ),
