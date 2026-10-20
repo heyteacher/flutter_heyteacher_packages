@@ -31,9 +31,7 @@ void main() {
     FlutterSecureStorage.setMockInitialValues({});
     PackageInfoPlusLinuxPlugin.registerWith();
     // mock sign-in
-    unawaited(
-      AuthViewModel.instance.localInitialize(),
-    );
+    unawaited(AuthViewModel.instance.localInitialize());
 
     // set AAD
     unawaited(E2EEViewModel.instance(AuthViewModel.instance.uid).setAAD());
@@ -65,8 +63,9 @@ void main() {
         startTime: DateTime.parse('2023-07-12 17:15:22'),
         stopTime: DateTime.parse('2023-07-12 20:15:22'),
         distance: 30000,
-        avgBpm: await E2EEViewModel.instance(AuthViewModel.instance.uid)
-            .encrypt('100'),
+        avgBpm: await E2EEViewModel.instance(
+          AuthViewModel.instance.uid,
+        ).encrypt('100'),
       ),
     );
     await TrackStore.instance.set(
@@ -86,27 +85,29 @@ void main() {
         reason: 'wrong store size',
       );
     });
-    test('store should contains 2 tracks filtered by startTime in 2023',
-        () async {
-      TrackStore.instance.storeFilter = LogicalStoreFilter(
-        logicalOperator: LogicalOperator.and,
-        filter1: ValueStoreFilter(
-          field: 'startTime',
-          operator: Operator.isGreaterThanOrEqualTo,
-          value: DateTime(2023),
-        ),
-        filter2: ValueStoreFilter(
-          field: 'startTime',
-          operator: Operator.isLessThan,
-          value: DateTime(2024),
-        ),
-      );
-      expect(
-        (await TrackStore.instance.list()).length,
-        2,
-        reason: 'wrong store size after filtering',
-      );
-    });
+    test(
+      'store should contains 2 tracks filtered by startTime in 2023',
+      () async {
+        TrackStore.instance.storeFilter = LogicalStoreFilter(
+          logicalOperator: LogicalOperator.and,
+          filter1: ValueStoreFilter(
+            field: 'startTime',
+            operator: Operator.isGreaterThanOrEqualTo,
+            value: DateTime(2023),
+          ),
+          filter2: ValueStoreFilter(
+            field: 'startTime',
+            operator: Operator.isLessThan,
+            value: DateTime(2024),
+          ),
+        );
+        expect(
+          (await TrackStore.instance.list()).length,
+          2,
+          reason: 'wrong store size after filtering',
+        );
+      },
+    );
   });
   group('track exists and get:', () {
     test('store contains 20230712_171522', () async {
@@ -128,8 +129,9 @@ void main() {
       final trackData = await TrackStore.instance.get('20230712_171522');
       expect(trackData.avgBpm != null, true, reason: 'avgBpm is null ');
       expect(
-        await E2EEViewModel.instance(AuthViewModel.instance.uid)
-            .decrypt(trackData.avgBpm!),
+        await E2EEViewModel.instance(
+          AuthViewModel.instance.uid,
+        ).decrypt(trackData.avgBpm!),
         '100',
         reason: 'avgBpm wrong',
       );
@@ -140,15 +142,16 @@ void main() {
 
   group('track update group:', () {
     test('update', () async {
-      var trackData = (await TrackStore.instance.get('20230712_171522'))
-          .copyWith
-          .avgRpm(80);
+      var trackData = (await TrackStore.instance.get(
+        '20230712_171522',
+      )).copyWith.avgRpm(80);
       await TrackStore.instance.update(trackData, fields: ['avgRpm']);
       trackData = await TrackStore.instance.get('20230712_171522');
       expect(trackData.avgRpm, 80, reason: 'avgRpm wrong');
       expect(
-        await E2EEViewModel.instance(AuthViewModel.instance.uid)
-            .decrypt(trackData.avgBpm!),
+        await E2EEViewModel.instance(
+          AuthViewModel.instance.uid,
+        ).decrypt(trackData.avgBpm!),
         '100',
         reason: 'avgBpm wrong',
       );
@@ -175,13 +178,16 @@ void main() {
         avgRpm: 80,
         distance: 30000,
       );
-      await TrackStore.instance
-          .update(trackData, fields: ['avgRpm', 'distance']);
+      await TrackStore.instance.update(
+        trackData,
+        fields: ['avgRpm', 'distance'],
+      );
       trackData = await TrackStore.instance.get('20230712_171522');
       expect(trackData.avgRpm, 80, reason: 'avgRpm wrong');
       expect(
-        await E2EEViewModel.instance(AuthViewModel.instance.uid)
-            .decrypt(trackData.avgBpm!),
+        await E2EEViewModel.instance(
+          AuthViewModel.instance.uid,
+        ).decrypt(trackData.avgBpm!),
         '100',
         reason: 'avgBpm wrong',
       );
@@ -193,21 +199,25 @@ void main() {
   group('track aggregateStream group:', () {
     test('aggregateStream check', () async {
       unawaited(TrackStore.instance.notifyAggregatesChanges());
-      final aggregate = await TrackStore.instance.aggregateStream.first;
-      expect(aggregate.count, 4, reason: 'aggregate count wrong');
-      expect(aggregate.getSum('distance'), 80000, reason: 'sum distance wrong');
+      final aggregate = await TrackStore.instance.aggregates;
+      expect(aggregate?.count, 4, reason: 'aggregate count wrong');
       expect(
-        aggregate.getAverage('distance'),
+        aggregate?.getSum('distance'),
+        80000,
+        reason: 'sum distance wrong',
+      );
+      expect(
+        aggregate?.getAverage('distance'),
         20000,
         reason: 'average distance wrong',
       );
       expect(
-        aggregate.getSum('duration'),
+        aggregate?.getSum('duration'),
         8 * 3600 * 1000,
         reason: 'sum duration wrong',
       );
       expect(
-        aggregate.getAverage('duration'),
+        aggregate?.getAverage('duration'),
         2 * 3600 * 1000,
         reason: 'average duration wrong',
       );
@@ -220,20 +230,20 @@ void main() {
           distance: 20000,
         ),
       );
-      final aggregate = await TrackStore.instance.aggregateStream.first;
-      expect(aggregate.count, 5, reason: 'aggregate count wrong');
+      final aggregate = await TrackStore.instance.aggregates;
+      expect(aggregate?.count, 5, reason: 'aggregate count wrong');
       expect(
-        aggregate.getSum('distance'),
+        aggregate?.getSum('distance'),
         80000 + 20000,
         reason: 'sum distance wrong',
       );
       expect(
-        aggregate.getSum('duration'),
+        aggregate?.getSum('duration'),
         (8 + 2) * 3600 * 1000,
         reason: 'sum duration wrong',
       );
       expect(
-        aggregate.getAverage('duration'),
+        aggregate?.getAverage('duration'),
         2 * 3600 * 1000,
         reason: 'average duration wrong',
       );
@@ -255,21 +265,25 @@ void main() {
       final list = await TrackStore.instance.list();
       expect(list.length, 2, reason: 'list length after filter wrong');
       unawaited(TrackStore.instance.notifyAggregatesChanges());
-      final aggregate = await TrackStore.instance.aggregateStream.first;
-      expect(aggregate.count, 2, reason: 'aggregate count wrong');
-      expect(aggregate.getSum('distance'), 20000, reason: 'sum distance wrong');
+      final aggregate = await TrackStore.instance.aggregates;
+      expect(aggregate?.count, 2, reason: 'aggregate count wrong');
       expect(
-        aggregate.getAverage('distance'),
+        aggregate?.getSum('distance'),
+        20000,
+        reason: 'sum distance wrong',
+      );
+      expect(
+        aggregate?.getAverage('distance'),
         10000,
         reason: 'avg distance wrong',
       );
       expect(
-        aggregate.getSum('duration'),
+        aggregate?.getSum('duration'),
         2 * 3600 * 1000,
         reason: 'sum duration wrong',
       );
       expect(
-        aggregate.getAverage('duration'),
+        aggregate?.getAverage('duration'),
         3600 * 1000,
         reason: 'aggregate duration wrong',
       );

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_heyteacher_locale/flutter_heyteacher_locale.dart'
     show FormatterHelper;
+import 'package:flutter_heyteacher_store_example/src/data/base_track_data.dart';
 import 'package:flutter_heyteacher_store_example/src/store/track_store.dart'
     show TrackStore;
 import 'package:flutter_heyteacher_views/flutter_heyteacher_views.dart'
@@ -19,19 +20,48 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
+  int? _count;
+  double? _sumDistanceInMeters;
+  double? _avgDistanceInMeters;
+
+  StreamSubscription<void>? _aggregatesSubscription;
+
   @override
   void initState() {
     super.initState();
-    unawaited(TrackStore.instance.notifyAggregatesChanges());
+    WidgetsBinding.instance.addPostFrameCallback(_init);
+  }
+
+  void _init(_) {
+    unawaited(_aggregatesSubscription?.cancel());
+    _aggregatesSubscription = TrackStore.instance.aggregateStream.listen((
+      aggregates,
+    ) async {
+      final aggregatesAsyncSnapshot = await TrackStore.instance.aggregates;
+      setState(() {
+        _count = aggregatesAsyncSnapshot?.count;
+        _sumDistanceInMeters = aggregatesAsyncSnapshot?.getSum(
+          'distanceInMeters',
+        );
+        _avgDistanceInMeters = aggregatesAsyncSnapshot?.getAverage(
+          'distanceInMeters',
+        );
+      });
+      unawaited(TrackStore.instance.notifyAggregatesChanges());
+    });
+  }
+
+  @override
+  void dispose() {
+    unawaited(_aggregatesSubscription?.cancel());
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
       title: const Text('Flutter Heyteacher Store'),
-      actions: const [
-        ThemeModeButton(),
-      ],
+      actions: const [ThemeModeButton()],
     ),
     body: Padding(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
@@ -40,17 +70,11 @@ class _ListScreenState extends State<ListScreen> {
           StreamBuilder(
             stream: TrackStore.instance.aggregateStream,
             builder: (context, aggregatesAsyncSnapshot) => Text(
-              'count ${aggregatesAsyncSnapshot.data?.count}, '
-              'total distance ${FormatterHelper.intFormat(
-                aggregatesAsyncSnapshot.data?.getSum(
-                  'distanceInMeters',
-                ),
-              )} meters, '
-              'avg distance ${FormatterHelper.intFormat(
-                aggregatesAsyncSnapshot.data?.getAverage(
-                  'distanceInMeters',
-                ),
-              )} meters',
+              'count $_count, '
+              'total distance '
+              '${FormatterHelper.intFormat(_sumDistanceInMeters)} meters, '
+              'avg distance '
+              '${FormatterHelper.intFormat(_avgDistanceInMeters)} meters',
             ),
           ),
           const Divider(height: 1),
@@ -65,23 +89,7 @@ class _ListScreenState extends State<ListScreen> {
                             children: [
                               ListTile(
                                 title: Text(trackData.id),
-                                subtitle: Text(
-                                  'start time '
-                                  '${FormatterHelper.timeWithSecondsFormat(
-                                    trackData.startTime,
-                                  )}\n'
-                                  'stop time '
-                                  '${FormatterHelper.timeWithSecondsFormat(
-                                    trackData.stopTime,
-                                  )}\n'
-                                  'distance  ${FormatterHelper.intFormat(
-                                    trackData.distanceInMeters,
-                                  )} meters \n'
-                                  'duration  ${FormatterHelper.formatDuration(
-                                    trackData.durationInMilliseconds,
-                                    showSeconds: true,
-                                  )}',
-                                ),
+                                subtitle: _buildSubtitle(trackData),
                                 onTap: () => GoRouter.of(context).pushNamed(
                                   'details',
                                   pathParameters: {'id': trackData.id},
@@ -101,5 +109,18 @@ class _ListScreenState extends State<ListScreen> {
         ],
       ),
     ),
+  );
+
+  Text _buildSubtitle(BaseTrackData trackData) => Text(
+    'start time '
+    '${FormatterHelper.timeWithSecondsFormat(trackData.startTime)}\n'
+    'stop time '
+    '${FormatterHelper.timeWithSecondsFormat(trackData.stopTime)}\n'
+    'distance '
+    '${FormatterHelper.intFormat(trackData.distanceInMeters)} meters \n'
+    'duration '
+    //
+    // ignore: lines_longer_than_80_chars
+    '${FormatterHelper.formatDuration(trackData.durationInMilliseconds, showSeconds: true)}',
   );
 }

@@ -167,20 +167,19 @@ abstract class BaseStore<
   StreamSubscription<User?>? _aggregatesSubscription;
 
   /// The stream controller to yield aggregates changes.
-  final StreamController<AggregateData> _aggregateStreamController =
-      StreamController<AggregateData>.broadcast();
+  final StreamController<void> _aggregateStreamController =
+      StreamController<void>.broadcast();
 
   /// return the aggregate stream controller
   @protected
-  StreamController<AggregateData> get aggregateStreamController =>
+  StreamController<void> get aggregateStreamController =>
       _aggregateStreamController;
 
   /// return True if is a `FakeFirebaseFirestore`
   bool get fakeFirestore;
 
   /// The aggregate stream where aggregate changes are notified
-  Stream<AggregateData> get aggregateStream => _aggregateStreamController.stream
-      .where((aggregateData) => aggregateData.count != null);
+  Stream<void> get aggregateStream => _aggregateStreamController.stream;
 
   /// On dispose, cancel the subscriptions.
   @mustCallSuper
@@ -288,19 +287,7 @@ abstract class BaseStore<
   Future<void> delete(String id, {dynamic batch});
 
   /// Deletes massively documents identified by list [ids].
-  Future<void> bulkDelete(Iterable<String> ids) async {
-    _logger.finer(
-      '<$runtimeType.bulkDelete>: $detailsCollectionPathLog, ids: $ids)',
-    );
-    checkAuthenticated();
-    for (var i = 0; i < ids.length; i++) {
-      // need await operation in order batch commit will by executed as last
-      // operation
-      await delete(ids.elementAt(i));
-      storeCache?.delete(ids.elementAt(i));
-    }
-    unawaited(notifyAggregatesChanges());
-  }
+  Future<void> bulkDelete(Iterable<String> ids);
 
   /// Creates (override) the document [detailsData] with identifier [id].
   ///
@@ -313,17 +300,7 @@ abstract class BaseStore<
   Future<void> bulkSet(
     List<DetailsDataType> documents, {
     Iterable<String>? ids,
-  }) async {
-    _logger.finer('<$runtimeType.bulkSet>: $detailsCollectionPathLog ids $ids');
-    checkAuthenticated();
-    for (var i = 0; i < documents.length; i++) {
-      // need await operation in order batch commit will by executed as
-      // last operation
-      await set(documents[i], id: ids?.elementAt(i));
-      storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
-    }
-    unawaited(notifyAggregatesChanges());
-  }
+  });
 
   /// Updates the document [document] with identifier [id].
   ///
@@ -348,32 +325,17 @@ abstract class BaseStore<
     List<DetailsDataType> documents, {
     required List<String> fields,
     Iterable<String>? ids,
-  }) async {
-    _logger.finer(
-      '<$runtimeType.bulkUpdate>: $detailsCollectionPathLog fields $fields',
-    );
-    checkAuthenticated();
-    for (var i = 0; i < documents.length; i++) {
-      // need await operation in order batch commit will by executed as last
-      // operation
-      await update(documents[i], fields: fields, id: ids?.elementAt(i));
-      storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
-    }
-    unawaited(notifyAggregatesChanges());
-  }
+  });
 
   /// Yields an aggregation result based on [aggregateFields].
   Future<AggregateData?> get aggregates;
 
-  /// Yields an aggregation result based on [aggregateFields].
+  /// Notifies an aggregate changes.
   Future<void> notifyAggregatesChanges() async {
     _logger.finer('<$runtimeType.notifyAggregatesChanges>:');
     if (AuthViewModel.instance.autenticated &&
         await ConnectivityViewModel.instance.connected) {
-      final aggregatesValue = await aggregates;
-      if (aggregatesValue != null) {
-        _aggregateStreamController.sink.add(aggregatesValue);
-      }
+      _aggregateStreamController.sink.add(null);
     }
   }
 
