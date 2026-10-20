@@ -40,7 +40,7 @@ class _ThemeScreenState extends State<ThemeScreen>
         FloatingActionTextIconButtom(
           text: 'Theme',
           iconData: Icons.color_lens,
-          onPressed: () {},
+          onPressed: () async {},
         ),
       ],
     ),
@@ -119,9 +119,7 @@ class _ThemeScreenState extends State<ThemeScreen>
                 children: [
                   Text(
                     'Blue',
-                    style: TextStyle(
-                      color: ThemeViewModel.instance.blueColor,
-                    ),
+                    style: TextStyle(color: ThemeViewModel.instance.blueColor),
                   ),
                   Text(
                     'Dark Grey',
@@ -137,15 +135,11 @@ class _ThemeScreenState extends State<ThemeScreen>
                   ),
                   Text(
                     'Green',
-                    style: TextStyle(
-                      color: ThemeViewModel.instance.greenColor,
-                    ),
+                    style: TextStyle(color: ThemeViewModel.instance.greenColor),
                   ),
                   Text(
                     'Grey',
-                    style: TextStyle(
-                      color: ThemeViewModel.instance.greyColor,
-                    ),
+                    style: TextStyle(color: ThemeViewModel.instance.greyColor),
                   ),
                 ],
               ),
@@ -155,9 +149,7 @@ class _ThemeScreenState extends State<ThemeScreen>
                 children: [
                   Text(
                     'Grey',
-                    style: TextStyle(
-                      color: ThemeViewModel.instance.greyColor,
-                    ),
+                    style: TextStyle(color: ThemeViewModel.instance.greyColor),
                   ),
                   Text(
                     'Orange',
@@ -245,14 +237,8 @@ class _ThemeScreenState extends State<ThemeScreen>
             TabBar(
               controller: _tabController,
               tabs: const <Widget>[
-                Tab(
-                  icon: Icon(Icons.list),
-                  text: 'Tab 1',
-                ),
-                Tab(
-                  icon: Icon(Icons.history),
-                  text: 'Tab 2',
-                ),
+                Tab(icon: Icon(Icons.list), text: 'Tab 1'),
+                Tab(icon: Icon(Icons.history), text: 'Tab 2'),
               ],
             ),
             SizedBox(
