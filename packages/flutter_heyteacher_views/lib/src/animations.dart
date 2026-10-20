@@ -308,8 +308,8 @@ abstract class PagingSliverAnimatedState<
 
   /// Checks the scroll position to trigger pagination.
   Future<void> _checkScollPosition() async {
-    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
-        (dataList == null || _limit == dataList?.length)) {
+    if ((dataList == null || _limit == dataList?.length) &&
+        scrollController.offset >= scrollController.position.maxScrollExtent) {
       // debugPrint(
       //  'PagingSliverAnimatedState._checkScollPosition(): $runtimeType '
       //   '_limit $_limit dataList.length ${dataList?.length}. UPDATE');
