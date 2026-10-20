@@ -22,7 +22,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_heyteacher_locale: ^3.1.6+164
-  flutter_heyteacher_views: ^7.0.0+189
+  flutter_heyteacher_views: ^7.0.0+190
 
 dev_dependencies:
   flutter_heyteacher_meta: ^7.9.6+191
