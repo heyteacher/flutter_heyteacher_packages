@@ -657,6 +657,7 @@ abstract class Store<
     _logger.finest('<$runtimeType.aggregates>:');
     checkAuthenticated();
     if (aggregateFields == null || aggregateFields!.isEmpty) return null;
+    _logger.finest('($runtimeType.aggregates): not null');
     final aggregateParams = <firestore.AggregateField?>[
       for (var i = 0; i < 29; i++)
         if (aggregateFields!.length > i)
@@ -667,43 +668,51 @@ abstract class Store<
         else
           null,
     ];
-    _logger.finest('($runtimeType.aggregates): not null');
-    return _AggregateQueryData(
-      await _query()
-          .aggregate(
-            firestore.count(),
-            aggregateParams[0],
-            aggregateParams[1],
-            aggregateParams[2],
-            aggregateParams[3],
-            aggregateParams[4],
-            aggregateParams[5],
-            aggregateParams[6],
-            aggregateParams[7],
-            aggregateParams[8],
-            aggregateParams[9],
-            aggregateParams[10],
-            aggregateParams[11],
-            aggregateParams[12],
-            aggregateParams[13],
-            aggregateParams[14],
-            aggregateParams[15],
-            aggregateParams[16],
-            aggregateParams[17],
-            aggregateParams[18],
-            aggregateParams[19],
-            aggregateParams[20],
-            aggregateParams[21],
-            aggregateParams[22],
-            aggregateParams[23],
-            aggregateParams[24],
-            aggregateParams[25],
-            aggregateParams[26],
-            aggregateParams[27],
-            aggregateParams[28],
-          )
-          .get(),
-    );
+    try {
+      return _AggregateQueryData(
+        await _query()
+            .aggregate(
+              firestore.count(),
+              aggregateParams[0],
+              aggregateParams[1],
+              aggregateParams[2],
+              aggregateParams[3],
+              aggregateParams[4],
+              aggregateParams[5],
+              aggregateParams[6],
+              aggregateParams[7],
+              aggregateParams[8],
+              aggregateParams[9],
+              aggregateParams[10],
+              aggregateParams[11],
+              aggregateParams[12],
+              aggregateParams[13],
+              aggregateParams[14],
+              aggregateParams[15],
+              aggregateParams[16],
+              aggregateParams[17],
+              aggregateParams[18],
+              aggregateParams[19],
+              aggregateParams[20],
+              aggregateParams[21],
+              aggregateParams[22],
+              aggregateParams[23],
+              aggregateParams[24],
+              aggregateParams[25],
+              aggregateParams[26],
+              aggregateParams[27],
+              aggregateParams[28],
+            )
+            .get(),
+      );
+      //
+      // ignore: avoid_catches_without_on_clauses
+    } catch (error) {
+      _logger.finer(
+        '($runtimeType.aggregates): error $error, empty collection?',
+      );
+      return null;
+    }
   }
 
   /// Return a query of [LightDataType].
