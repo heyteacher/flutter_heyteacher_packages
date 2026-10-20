@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-7.0.0+190] - 2026-10-20
+
+### 🚀 Features [7.0.0]
+
+- [**breaking**] Convert `FloatingActionTextIconButtom.onPressed` in async callback and show progress indicator on press of `FloatingActionTextIconButtom` ([e45b7bd](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e45b7bd3d0ec2c3402400003bc26842e770a1307)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.0.0]
+
+- *(release)* New version 7.0.0+190 which closes ([#440](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/440)) ([0238922](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0238922def950830d93665ffb9f319873de4f85e)) by **heyteacher**
+
 ## [flutter_heyteacher_views-6.6.0+188] - 2026-10-20
 
 ### 🚀 Features [6.6.0]
