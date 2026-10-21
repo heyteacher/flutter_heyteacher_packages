@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_text_to_speech-4.1.1+167] - 2026-10-21
+
+### ⚙️ Miscellaneous Tasks [4.1.1]
+
+- Bump package dependencies and go_router versions across workspace ([3890da0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/3890da02ab5a57cb9bd6405d9ad07c17c85fb689)) by **heyteacher**
+- *(release)* New version 4.1.1+167 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([db43662](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/db436628c34fe05990b5ebde6647a24e5c47429c)) by **heyteacher**
+
 ## [flutter_heyteacher_text_to_speech-4.1.0+166] - 2026-10-21
 
 ### 🚀 Features [4.1.0]
