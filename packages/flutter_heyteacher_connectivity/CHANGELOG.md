@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_connectivity-3.1.4+156] - 2026-10-21
+
+### 🐛 Bug Fixes [3.1.4]
+
+- Publish updated dependecies after release major version of flutter_heyteacher_auth ([79988cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/79988cff3693753786ce40cb479566021ac32770)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.4]
+
+- Remove unuseful maximum flutter constraint across workspace packages ([06fec13](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/06fec13c52a96c272cef39d3a804b016c0dfb2ca)) by **heyteacher**
+- *(release)* New version 3.1.4+156 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([6f60cb0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6f60cb0deffa660cff45f0a9b1938a1072a5f658)) by **heyteacher**
+
 ## [flutter_heyteacher_connectivity-3.1.3+155] - 2026-09-29
 
 ### ⚙️ Miscellaneous Tasks [3.1.3]
