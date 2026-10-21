@@ -16,77 +16,79 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 - migration guide for `monorepo` project
 
 ## Table of Contents
+<!-- TOC -->
 
 - [Flutter Heyteacher Meta](#flutter-heyteacher-meta)
   - [Table of Contents](#table-of-contents)
   - [Installing](#installing)
   - [Credits](#credits)
   - [Requirements](#requirements)
+  - [dartsemver dart command](#dartsemver-dart-command)
   - [Environment Setup](#environment-setup)
     - [Flutter](#flutter)
-    - [`Visual Studio Code` or `Antigravity IDE`](#visual-studio-code-or-antigravity-ide)
-    - [`Android Studio`](#android-studio)
-    - [`git-cliff`](#git-cliff)
-    - [`FastLane`](#fastlane)
-    - [`nodeJs`](#nodejs)
-    - [`adb-wifi`](#adb-wifi)
+    - [Visual Studio Code or Antigravity IDE](#visual-studio-code-or-antigravity-ide)
+    - [Android Studio](#android-studio)
+    - [git-cliff](#git-cliff)
+    - [FastLane](#fastlane)
+    - [nodeJs](#nodejs)
     - [Firebase CLI](#firebase-cli)
-  - [`dartsemver` dart command](#dartsemver-dart-command)
+    - [adb-wifi](#adb-wifi)
   - [Create a flutter project](#create-a-flutter-project)
-    - [Configure `monorepo`](#configure-monorepo)
-    - [Configure `FastLane`](#configure-fastlane)
-  - [`Fastlane` lines for `dart` projects](#fastlane-lines-for-dart-projects)
+    - [Configure monorepo](#configure-monorepo)
+    - [Configure FastLane](#configure-fastlane)
+  - [Fastlane lines for dart projects](#fastlane-lines-for-dart-projects)
     - [doc](#doc)
     - [docweb](#docweb)
     - [test](#test)
     - [checkout](#checkout)
     - [release](#release)
-    - [forge\_release](#forge_release)
+    - [forge_release](#forge_release)
     - [bump](#bump)
-  - [`Fastlane` lines for `app` projects](#fastlane-lines-for-app-projects)
+  - [Fastlane lines for app projects](#fastlane-lines-for-app-projects)
     - [appbundle](#appbundle)
-    - [integration\_test](#integration_test)
+    - [integration_test](#integration_test)
     - [testlab](#testlab)
-    - [firestore\_backup](#firestore_backup)
-    - [firestore\_restore](#firestore_restore)
-    - [firestore\_remove\_backup](#firestore_remove_backup)
-    - [app\_distribution](#app_distribution)
+    - [firestore_backup](#firestore_backup)
+    - [firestore_restore](#firestore_restore)
+    - [firestore_remove_backup](#firestore_remove_backup)
+    - [app_distribution](#app_distribution)
     - [playstore](#playstore)
-    - [playstore\_promote](#playstore_promote)
+    - [playstore_promote](#playstore_promote)
     - [buildweb](#buildweb)
     - [deployweb](#deployweb)
-  - [`git` utilities](#git-utilities)
-    - [`git` conventional commit](#git-conventional-commit)
-    - [avoid commit on `main` branch](#avoid-commit-on-main-branch)
+  - [git utilities](#git-utilities)
+    - [git conventional commit](#git-conventional-commit)
+    - [avoid commit on main branch](#avoid-commit-on-main-branch)
   - [example: release a new version and close an issue](#example-release-a-new-version-and-close-an-issue)
-  - [`Firebase` setup for `app` flutter project](#firebase-setup-for-app-flutter-project)
+  - [Firebase setup for app flutter project](#firebase-setup-for-app-flutter-project)
   - [Release app](#release-app)
     - [Sign app](#sign-app)
     - [Firebase App Distribution](#firebase-app-distribution)
     - [Google Play](#google-play)
   - [Integration Test](#integration-test)
     - [Firebase Test Lab](#firebase-test-lab)
-  - [`Firestore` backup, restore and Point-in-time recovery](#firestore-backup-restore-and-point-in-time-recovery)
-    - [install `gcloud`](#install-gcloud)
+  - [Firestore backup, restore and Point-in-time recovery](#firestore-backup-restore-and-point-in-time-recovery)
+    - [install gcloud](#install-gcloud)
     - [Restore a Point-in-time Recovery (PITR)](#restore-a-point-in-time-recovery-pitr)
     - [Backup and Restore database](#backup-and-restore-database)
   - [Firebase Hosting](#firebase-hosting)
-    - [Deploy default `site`](#deploy-default-site)
+    - [Deploy default site](#deploy-default-site)
     - [Alternative sites](#alternative-sites)
-  - [`localization` setup](#localization-setup)
+  - [localization setup](#localization-setup)
   - [documentation utilities](#documentation-utilities)
   - [Launcher Icon](#launcher-icon)
   - [Splash](#splash)
-  - [`webcrypto` setup for tests](#webcrypto-setup-for-tests)
+  - [webcrypto setup for tests](#webcrypto-setup-for-tests)
   - [Dart Builders](#dart-builders)
   - [Appendice](#appendice)
-    - [Customize `CHANGELOG.md` template](#customize-changelogmd-template)
-    - [Migrate a repository to a package of a `monorepo`](#migrate-a-repository-to-a-package-of-a-monorepo)
+    - [Customize CHANGELOG.md template](#customize-changelogmd-template)
+    - [Migrate a repository to a package of a monorepo](#migrate-a-repository-to-a-package-of-a-monorepo)
       - [Setup](#setup)
       - [update git history of all repositories](#update-git-history-of-all-repositories)
-      - [Merge all repositories to `monorepo`](#merge-all-repositories-to-monorepo)
-    - [Migrate from `Github` to  `forgejo` public instance](#migrate-from-github-to--forgejo-public-instance)
-  
+      - [Merge all repositories to monorepo](#merge-all-repositories-to-monorepo)
+    - [Migrate from Github to forgejo public instance](#migrate-from-github-to-forgejo-public-instance)
+
+<!-- /TOC -->
 ## Installing
 
 - setup environment following instruction [Environment Setup](#environment-setup)
@@ -149,6 +151,26 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
   - for `Github`: `gh` 2.46.0 or later [GitHub CLI](https://cli.github.com/)
 
 - other software and utilities as described in [Environment Setup](#environment-setup)
+
+## `dartsemver` dart command
+
+From the root of your project, run:
+
+```bash
+dart run flutter_heyteacher_meta:dartsemver major|minor|patch|build|show|show-build [--dry-run]
+```
+
+- `major`,`minor`, `patch` increment the version in your `pubsec.yaml`.
+  `--dry-run` show how the version will be changed without modify `pubsec.yaml`
+
+- `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on
+  the current time.
+  
+- `dry-run` show how the version will be changed without modify `pubsec.yaml`
+
+- `show` print the version in `pubsec.yaml`
+
+- `show-build` print only the build version from `pubsec.yaml`
 
 ## Environment Setup
 
@@ -338,26 +360,6 @@ cable.
   - Select `Pair device with QR code`
   - Scan the qr code and device will be connected
 
-## `dartsemver` dart command
-
-From the root of your project, run:
-
-```bash
-dart run flutter_heyteacher_meta:dartsemver major|minor|patch|build|show|show-build [--dry-run]
-```
-
-- `major`,`minor`, `patch` increment the version in your `pubsec.yaml`.
-  `--dry-run` show how the version will be changed without modify `pubsec.yaml`
-
-- `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on
-  the current time.
-  
-- `dry-run` show how the version will be changed without modify `pubsec.yaml`
-
-- `show` print the version in `pubsec.yaml`
-
-- `show-build` print only the build version from `pubsec.yaml`
-
 ## Create a flutter project
 
 After setup the environment run from root project directory and create the project:
@@ -372,6 +374,12 @@ After setup the environment run from root project directory and create the proje
 
   ```bash
   flutter create -t package <app project name>
+  ```
+
+- add `flutter_heyteacher_meta` as dev dependency:
+
+  ```bash
+  dart pub add dev:flutter_heyteacher_meta
   ```
 
 ### Configure `monorepo`
@@ -718,14 +726,14 @@ You can't commit directly to main branch
 
    ```bash
    firebase login
+   flutter pub add firebase_core
    dart pub global activate flutterfire_cli
    flutterfire configure
    ```
 
-- add firebase core and other packages
+- add other packages, for example
 
   ```bash
-  flutter pub add firebase_core
   flutter pub add firebase_auth
   flutter pub add cloud_firestore
   flutterfire configure
@@ -1425,7 +1433,7 @@ Based on [Migrating Git from multirepo to monorepo without losing history](https
   git push --tags 
   ```
 
-### Migrate from `Github` to  `forgejo` public instance
+### Migrate from `Github` to `forgejo` public instance
 
 - install `forgejo-cli`
 
