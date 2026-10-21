@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_charts-3.0.3+124] - 2026-10-21
+
+### 🐛 Bug Fixes [3.0.3]
+
+- Publish updated dependecies after release major version of flutter_heyteacher_auth ([79988cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/79988cff3693753786ce40cb479566021ac32770)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.0.3]
+
+- Bump Android Gradle plugin to 9.0.1 and Kotlin plugin to 2.3.20 across all example projects ([904ad64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/904ad64a13026d045ce1ee3e3ff4c98da6f4d966)) by **heyteacher**
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- Remove unuseful maximum flutter constraint across workspace packages ([06fec13](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/06fec13c52a96c272cef39d3a804b016c0dfb2ca)) by **heyteacher**
+- Bump dependencies across packages and examples ([b436189](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/b436189fb0d295238f18f0b4b875bb9059d8568d)) by **heyteacher**
+- *(release)* New version 3.0.3+124 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([2c4a9a2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2c4a9a2e4c8f830cc814404de81e624e40d0e2fb)) by **heyteacher**
+
 ## [flutter_heyteacher_charts-3.0.2+123] - 2026-09-08
 
 ### 🚜 Refactor [3.0.2]
