@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_platform-3.2.1+164] - 2026-10-21
+
+### ⚙️ Miscellaneous Tasks [3.2.1]
+
+- Bump package dependencies and go_router version across workspace ([eb93627](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/eb93627bf096d4d42ab8571e7db75fea0385f487)) by **heyteacher**
+- *(release)* New version 3.2.1+164 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([f859684](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f85968445e9297f62dac7c6a88cc7059c2a535d7)) by **heyteacher**
+
 ## [flutter_heyteacher_platform-3.2.0+163] - 2026-10-21
 
 ### 🚀 Features [3.2.0]
