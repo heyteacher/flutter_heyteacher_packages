@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-7.0.1+191] - 2026-10-21
+
+### ⚙️ Miscellaneous Tasks [7.0.1]
+
+- *(release)* New version 7.0.1+191 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([e0d2054](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e0d2054e5d2639d666ad9a5711f6d19978e0683d)) by **heyteacher**
+
 ## [flutter_heyteacher_views-7.0.0+190] - 2026-10-20
 
 ### 🚀 Features [7.0.0]
