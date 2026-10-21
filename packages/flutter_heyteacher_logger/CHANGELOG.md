@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_logger-3.1.0+171] - 2026-10-21
+
+### 🚀 Features [3.1.0]
+
+- Add `debugModeChangedStream` updated when debug mode changes + add `notifyAADChanged` method + correct password refresh in `E2EESecretKeyListTile` ([5be29cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5be29cf812acc74aa92c1cd5a5747416c1928cc6)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.1.0]
+
+- *(release)* New version 3.1.0+171 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([447d285](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/447d28549b3669814c5bf87976999025a5a9f2dd)) by **heyteacher**
+
 ## [flutter_heyteacher_logger-3.0.11+170] - 2026-10-15
 
 ### 🐛 Bug Fixes [3.0.11]
