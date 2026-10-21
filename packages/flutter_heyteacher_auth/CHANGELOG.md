@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-5.1.1+177] - 2026-10-21
+
+### ⚙️ Miscellaneous Tasks [5.1.1]
+
+- Bump internal package dependencies and go_router version across packages ([f7919ce](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/f7919ce2aebb7dda2042f39a51d722a63fef2fdd)) by **heyteacher**
+- *(release)* New version 5.1.1+176 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([45dc87a](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/45dc87a2a4b614007eb31759c681f211b12762fb)) by **heyteacher**
+- *(release)* New version 5.1.1+177 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([610610d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/610610d72289733c9e4db27d7863083d048507ff)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-5.1.0+175] - 2026-10-21
 
 ### 🚀 Features [5.1.0]
