@@ -24,11 +24,11 @@ dependencies:
   firebase_auth: ^6.7.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^5.0.1+174
-  flutter_heyteacher_connectivity: ^3.1.3+155
+  flutter_heyteacher_auth: ^5.1.1+177
+  flutter_heyteacher_connectivity: ^3.1.4+156
   flutter_heyteacher_e2ee: ^3.3.0+182
   flutter_heyteacher_firebase: ^2.0.18+154
-  flutter_heyteacher_platform: ^3.1.11+162
+  flutter_heyteacher_platform: ^3.2.1+164
 
   intl: ^0.20.3
   logging: ^1.3.0

@@ -20,11 +20,11 @@ dependencies:
   device_info_plus: ^13.3.0
   flutter:
     sdk: flutter
-  flutter_heyteacher_auth: ^5.1.0+175
+  flutter_heyteacher_auth: ^5.1.1+177
   flutter_heyteacher_connectivity: ^3.1.4+156
   flutter_heyteacher_firebase: ^2.0.18+154
-  flutter_heyteacher_locale: ^3.2.0+165
-  flutter_heyteacher_logger: ^3.1.0+171
+  flutter_heyteacher_locale: ^3.2.1+166
+  flutter_heyteacher_logger: ^3.1.1+172
   flutter_heyteacher_views: ^7.0.1+191
   flutter_localizations:
     sdk: flutter

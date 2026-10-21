@@ -42,7 +42,7 @@ dependencies:
     path: ../../flutter_heyteacher_shared_preferences
   flutter_heyteacher_views:
     path: ../../flutter_heyteacher_views
-  go_router: ^18.1.0
+  go_router: ^18.1.1
 
 dev_dependencies:
   flutter_heyteacher_meta:
