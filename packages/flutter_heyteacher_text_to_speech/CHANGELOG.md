@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_text_to_speech-4.1.0+166] - 2026-10-21
+
+### 🚀 Features [4.1.0]
+
+- Add `debugModeChangedStream` updated when debug mode changes + add `notifyAADChanged` method + correct password refresh in `E2EESecretKeyListTile` ([5be29cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5be29cf812acc74aa92c1cd5a5747416c1928cc6)) by **heyteacher**
+
+### 🐛 Bug Fixes [4.1.0]
+
+- Publish updated dependecies after release major version of flutter_heyteacher_auth ([79988cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/79988cff3693753786ce40cb479566021ac32770)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [4.1.0]
+
+- Bump Android Gradle plugin to 9.0.1 and Kotlin plugin to 2.3.20 across all example projects ([904ad64](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/904ad64a13026d045ce1ee3e3ff4c98da6f4d966)) by **heyteacher**
+- Bump dependencies ([077762b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/077762b475b25bb709a3e3f6fb8456be6d798756)) by **heyteacher**
+- *(build)* Migrate example app to  to Built-in Kotlin ([17955fc](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/17955fc4046c26c00692f21fcceab44fbb432ccc)) by **heyteacher**
+- Remove unuseful maximum flutter constraint across workspace packages ([06fec13](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/06fec13c52a96c272cef39d3a804b016c0dfb2ca)) by **heyteacher**
+- *(release)* New version 4.1.0+166 which closes ([#443](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/443)) ([5a85f4e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5a85f4e958324393ac581d36ea2828e04f26ea4a)) by **heyteacher**
+
 ## [flutter_heyteacher_text_to_speech-4.0.6+165] - 2026-09-08
 
 ### 🚜 Refactor [4.0.6]
