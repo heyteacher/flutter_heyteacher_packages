@@ -196,9 +196,8 @@ void main() {
     });
   });
 
-  group('track aggregateStream group:', () {
-    test('aggregateStream check', () async {
-      unawaited(TrackStore.instance.notifyAggregatesChanges());
+  group('track aggregates group:', () {
+    test('aggregates check', () async {
       final aggregate = await TrackStore.instance.aggregates;
       expect(aggregate?.count, 4, reason: 'aggregate count wrong');
       expect(
@@ -222,7 +221,7 @@ void main() {
         reason: 'average duration wrong',
       );
     });
-    test('aggregateStream after add track', () async {
+    test('aggregates after add track', () async {
       await TrackStore.instance.set(
         TrackData(
           startTime: DateTime.parse('2020-04-23 08:12:44'),
@@ -248,7 +247,7 @@ void main() {
         reason: 'average duration wrong',
       );
     });
-    test('aggregateStream after filter', () async {
+    test('aggregates after filter', () async {
       TrackStore.instance.storeFilter = LogicalStoreFilter(
         logicalOperator: LogicalOperator.and,
         filter1: ValueStoreFilter(
@@ -264,7 +263,6 @@ void main() {
       );
       final list = await TrackStore.instance.list();
       expect(list.length, 2, reason: 'list length after filter wrong');
-      unawaited(TrackStore.instance.notifyAggregatesChanges());
       final aggregate = await TrackStore.instance.aggregates;
       expect(aggregate?.count, 2, reason: 'aggregate count wrong');
       expect(
@@ -313,7 +311,6 @@ void main() {
   });
 
   tearDown(() async {
-    await TrackStore.instance.notifyAggregatesChanges();
     for (final baseTrackData in await TrackStore.instance.list()) {
       await TrackStore.instance.delete(baseTrackData.id);
     }

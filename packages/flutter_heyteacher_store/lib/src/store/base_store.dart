@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_heyteacher_auth/flutter_heyteacher_auth.dart'
     show AuthViewModel, UserNotAuthenticatedException;
-import 'package:flutter_heyteacher_connectivity/flutter_heyteacher_connectivity.dart';
 import 'package:flutter_heyteacher_store/src/store/store_cache.dart';
 import 'package:flutter_heyteacher_store/src/store/store_data.dart';
 import 'package:flutter_heyteacher_store/src/store/store_exceptions.dart';
@@ -163,29 +162,8 @@ abstract class BaseStore<
   /// The update stream where detail changes are notified
   Stream<Iterable<String>> get updateStream => _updateStreamController.stream;
 
-  /// The subscrition to listen aggregate changes.
-  StreamSubscription<User?>? _aggregatesSubscription;
-
-  /// The stream controller to yield aggregates changes.
-  final StreamController<void> _aggregateStreamController =
-      StreamController<void>.broadcast();
-
-  /// return the aggregate stream controller
-  @protected
-  StreamController<void> get aggregateStreamController =>
-      _aggregateStreamController;
-
   /// return True if is a `FakeFirebaseFirestore`
   bool get fakeFirestore;
-
-  /// The aggregate stream where aggregate changes are notified
-  Stream<void> get aggregateStream => _aggregateStreamController.stream;
-
-  /// On dispose, cancel the subscriptions.
-  @mustCallSuper
-  void dispose() {
-    unawaited(_aggregatesSubscription?.cancel());
-  }
 
   /// Returns the stream.
   ///
@@ -329,15 +307,6 @@ abstract class BaseStore<
 
   /// Yields an aggregation result based on [aggregateFields].
   Future<AggregateData?> get aggregates;
-
-  /// Notifies an aggregate changes.
-  Future<void> notifyAggregatesChanges() async {
-    _logger.finer('<$runtimeType.notifyAggregatesChanges>:');
-    if (AuthViewModel.instance.autenticated &&
-        await ConnectivityViewModel.instance.connected) {
-      _aggregateStreamController.sink.add(null);
-    }
-  }
 
   /// The cache used to store [DetailsDataType] objects.
   @protected
