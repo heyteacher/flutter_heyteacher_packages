@@ -19,6 +19,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
     this._height = 40,
     this._width,
     this._menuHeight = 300,
+    this._menuStyle,
     this._trailingIcon = Icons.filter_list,
     super.key,
   });
@@ -57,6 +58,9 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
 
   /// The height of the dropdown menu's list of entries.
   final double _menuHeight;
+
+  /// The style of the dropdown menu.
+  final MenuStyle? _menuStyle;
 
   /// A list of values that are not allowed to be added.
   final List<String> _deniedValues;
@@ -108,6 +112,7 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
     ).textTheme.labelSmall!.copyWith(color: _value?.icon?.color),
     width: widget._width,
     menuHeight: widget._menuHeight,
+    menuStyle: widget._menuStyle,
     dropdownMenuEntries: [
       DropdownMenuEntry<T?>(value: null, label: ''),
       ...widget._values.map(
