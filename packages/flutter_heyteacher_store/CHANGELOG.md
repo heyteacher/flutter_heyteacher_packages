@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_store-6.0.0+1060] - 2026-10-26
+
+### 🐛 Bug Fixes [6.0.0]
+
+- Capitalize `docs: Release notes` regex in git-cliff configs to skip ([4e64fc0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4e64fc0a6e5447fa5024b295dad360e3446ce98c)) by **heyteacher**
+
+### 🚜 Refactor [6.0.0]
+
+- [**breaking**] Remove `aggregateStream` and `notifyAggregatesChanges`. Use `updateStream` instead ([1d66eb2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1d66eb244d498998383f93679c8e06a6071b12bf)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [6.0.0]
+
+- Bump dependencies across packages and examples ([e8425a8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e8425a835a873ad74b2aa292bef7ba91b809df87)) by **heyteacher**
+- Skip automated release notes commits in git-cliff ([e0d22b2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e0d22b2e84fd59d9b77c9e8ff4877ed7eb5d6c54)) by **heyteacher**
+- *(release)* New version 6.0.0+1060 which closes ([#459](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/459)) ([dc9f842](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/dc9f8428600f862d50d00bb2253061a5ff8f1b63)) by **heyteacher**
+
 ## [flutter_heyteacher_store-5.0.0+1059] - 2026-10-20
 
 ### 🚀 Features [5.0.0]
