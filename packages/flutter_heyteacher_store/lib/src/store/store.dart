@@ -22,8 +22,8 @@
 
 /// * manage multiple order by field with [Store.orderByFields]
 
-/// * manage aggregate field via [Store.aggregateFields] and notify aggregate
-///   value changes via [Store.aggregateStream]
+/// * manage (`count`, `sum` and `average`) aggregate field via
+/// [Store.aggregateFields]
 
 /// * cache `DetailsDataType` object in [SharedPreferencesAsync]
 
@@ -444,7 +444,6 @@ abstract class Store<
     // if isn't a bulk delete (batch == null), delegate thee caller to notify
     // changes
     if (batch == null) {
-      unawaited(notifyAggregatesChanges());
       updateStreamController.sink.add([id]);
     }
   }
@@ -464,7 +463,6 @@ abstract class Store<
       storeCache?.delete(ids.elementAt(i));
     }
     await batch.commit();
-    unawaited(notifyAggregatesChanges());
     updateStreamController.sink.add(ids);
   }
 
@@ -504,7 +502,6 @@ abstract class Store<
     // if batch in set, delegate thee caller to notify changes
     if (batch == null) {
       storeCache?.set(id, detailsData);
-      unawaited(notifyAggregatesChanges());
       updateStreamController.sink.add([id]);
     }
   }
@@ -527,7 +524,6 @@ abstract class Store<
       storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
     }
     await batch.commit();
-    unawaited(notifyAggregatesChanges());
     updateStreamController.sink.add(idsUpdated);
   }
 
@@ -592,7 +588,6 @@ abstract class Store<
       // if batch in set, delegate thee caller to notify changes
       if (batch == null) {
         storeCache?.set(id, document);
-        unawaited(notifyAggregatesChanges());
         updateStreamController.sink.add([id]);
       }
     } else {
@@ -633,7 +628,6 @@ abstract class Store<
       storeCache?.set(ids?.elementAt(i) ?? documents[i].id, documents[i]);
     }
     await batch.commit();
-    unawaited(notifyAggregatesChanges());
     updateStreamController.sink.add(idsUpdated);
   }
 

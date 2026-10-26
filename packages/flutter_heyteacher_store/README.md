@@ -20,7 +20,7 @@ Firebase Firestore library using [generics](https://dart.dev/language/generics|g
 
 - manage multiple order by field with `Store.orderByFields`
 
-- manage aggregate field via `Store.aggregateFields` and notify aggregate value changes via `Store.aggregateStream`
+- manage (`count`, `sum` and `average`) aggregate field via `Store.aggregateFields`
 
 - cache `DetailsDataType` object in `SharedPreferencesAsync`
 

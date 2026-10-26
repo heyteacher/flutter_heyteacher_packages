@@ -34,8 +34,8 @@ class _ListScreenState extends State<ListScreen> {
 
   void _init(_) {
     unawaited(_aggregatesSubscription?.cancel());
-    _aggregatesSubscription = TrackStore.instance.aggregateStream.listen((
-      aggregates,
+    _aggregatesSubscription = TrackStore.instance.updateStream.listen((
+      _,
     ) async {
       final aggregatesAsyncSnapshot = await TrackStore.instance.aggregates;
       setState(() {
@@ -47,7 +47,6 @@ class _ListScreenState extends State<ListScreen> {
           'distanceInMeters',
         );
       });
-      unawaited(TrackStore.instance.notifyAggregatesChanges());
     });
   }
 
@@ -68,8 +67,8 @@ class _ListScreenState extends State<ListScreen> {
       child: Column(
         children: [
           StreamBuilder(
-            stream: TrackStore.instance.aggregateStream,
-            builder: (context, aggregatesAsyncSnapshot) => Text(
+            stream: TrackStore.instance.updateStream,
+            builder: (_, _) => Text(
               'count $_count, '
               'total distance '
               '${FormatterHelper.intFormat(_sumDistanceInMeters)} meters, '
