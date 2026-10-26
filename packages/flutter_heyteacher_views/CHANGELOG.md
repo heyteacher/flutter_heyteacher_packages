@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-7.1.0+192] - 2026-10-26
+
+### 🚀 Features [7.1.0]
+
+- Add `menuStyle` parameter to `GenericsDropDownMenu` widget ([c775d88](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c775d88f7078c29cbfbad4dc0939c9d07a5c9f94)) by **heyteacher**
+
+### 🐛 Bug Fixes [7.1.0]
+
+- Capitalize `docs: Release notes` regex in git-cliff configs to skip ([4e64fc0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4e64fc0a6e5447fa5024b295dad360e3446ce98c)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.1.0]
+
+- Bump dependencies across packages and examples ([e8425a8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e8425a835a873ad74b2aa292bef7ba91b809df87)) by **heyteacher**
+- Skip automated release notes commits in git-cliff ([e0d22b2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e0d22b2e84fd59d9b77c9e8ff4877ed7eb5d6c54)) by **heyteacher**
+- *(release)* New version 7.1.0+192 which closes ([#457](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/457)) ([652409d](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/652409ddbfb918ef28d3553983bb09500936136c)) by **heyteacher**
+
 ## [flutter_heyteacher_views-7.0.1+191] - 2026-10-21
 
 ### ⚙️ Miscellaneous Tasks [7.0.1]
