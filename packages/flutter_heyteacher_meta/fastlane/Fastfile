@@ -82,7 +82,7 @@ lane :forge_release do
   create_forge_release(version)
 end
 
-desc "fl release [semver:major|minor|patch] [suffix:<version_suffix>] [merge:true|false] [delete_branch:true|false] [forge:true|false] [publish:false|true]- Creates new release, merge branch into main and creates a forge release"
+desc "fl release [semver:major|minor|patch] [suffix:<version_suffix>] merge:true(default)|false delete_branch:true(default)|false forge:true(default)|false publish:false(default)|true - Creates new release, merge branch into main and creates a forge release"
 lane :release do|options|
   if options[:semver] != nil && !["major", "minor", "patch"].include?(options[:semver])
     puts "invalid semver. Must be major|minor|patch found #{options[:semver]}"

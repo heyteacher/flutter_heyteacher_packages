@@ -52,6 +52,7 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
     - [firestore_restore](#firestore_restore)
     - [firestore_remove_backup](#firestore_remove_backup)
     - [app_distribution](#app_distribution)
+    - [playstore_show](#playstore_show)
     - [playstore](#playstore)
     - [playstore_promote](#playstore_promote)
     - [buildweb](#buildweb)
@@ -486,21 +487,20 @@ Else if <issue_number> is not set, show open issues in repository and ask to ins
 ### release
 
 ```bash
-fl release semver:major|minor|patch [suffix:<nmenonic_tag_suffix>] [merge:true|false] [forge:false|true] [publish:false|true]
+fl release [semver:major|minor|patch] [suffix:<nmenonic_tag_suffix>] merge:true(default)|false forge:true(default)|false publish:true(default)|false
 ```
 
-Creates new release, merge branch into main and creates a forge release.
+Creates new release, merge branch into main, update the `CHANGELOG.md`and creates a forge release.
 
-- `semver`: increments the version into `pubspec.yaml` following [Semantic Versioning](https://semver.org/), for example:
+- `semver`: (optional) increments the version into `pubspec.yaml` following [Semantic Versioning](https://semver.org/), for example:
   - `major`: move version from `1.0.0` to `2.0.0`
   - `minor`: move version from `1.0.0` to `1.1.0`
   - `patch`: move version from `1.0.0` to `1.0.1`
+  if `semver` is omitted, use `git-cliff` to determine the semantic version based on [conventional commits specification](https://www.conventionalcommits.org/en/v1.0.0/).
 - `suffix`: (optional) add a mnemonic suffix to git `tag` greated
 - `merge`: (optional, default `true`) make the marge to `main` branch
 - `forge`: (optional, default `true`) create the release into your `forge` instance
 - `publish`: (optional, default `publish`) publish to `pub.dev`
-
-and update the `CHANGELOG.md`
 
 These command make several tasks:
 
@@ -603,6 +603,14 @@ fl app_distribution
 
 Build the release and publish app in `Google Play` via `Firebase App Distribution`
 
+### playstore_show
+
+```bash
+fl playstore_show track:all(default)|production|beta|alpha|internal
+```
+
+Show the release name and version code for the track specified or all tracks (default)
+
 ### playstore
 
 ```bash
@@ -622,7 +630,7 @@ Promote a release in Google Play via `supply` from `from_track` to `to_track`.
 ### buildweb
 
 ```bash
-fl buildweb [version:profile|debug]
+fl buildweb version:release(default)|profile|debug wasm:true(default)|false tree-shake-icons:false(default)|true
 ```
 
 Build web and run local webserver on `http://localhost:8080`.
@@ -635,10 +643,10 @@ In order reload all resources after e new version released, the suffix
 ### deployweb
 
 ```bash
-fl deployweb [release_type:release|profile|debug]
+fl deployweb release_type:release(default)|profile|debug wasm:true(default)|false tree-shake-icons:false(default)|true
 ```
 
-Deploy web in `Firabase Hosting` with release type `release_type` (default `release`)
+Deploy web in `Firebase Hosting` with release type `release_type` (default `release`)
 
 `release_type`, must be `release`, `profile` or `debug` (default `release`).
 
