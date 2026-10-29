@@ -118,6 +118,25 @@ platform :android do
     puts "release #{release}"
   end
 
+
+  desc "fl playstore_show track:all(default)|beta|alpha|internal - show the release name and version code for the track specified or all tracks (default)"
+  lane :playstore_show do |options|
+    ret = [
+      "| #{"".center(10,"-")} | #{"".center(12,"-")} | #{"".center(12,"-")} |",
+      "| #{"track".center(10)} | #{"release name".center(12)} | #{"version code".center(12)} |",
+      "| #{"".center(10,"-")} | #{"".center(12,"-")} | #{"".center(12,"-")} |"
+  ]
+    for track in ["production", "beta", "alpha", "internal"]
+      if (options[:track] == track || options[:track] == nil || options[:track] == 'all')
+        release = google_play_track_release_names(track: track)
+        version_code = google_play_track_version_codes(track: track)
+        ret.push("| #{track.ljust(10)} | #{release[0].rjust(12)} | #{version_code[0].to_s.rjust(12)} |")
+      end
+    end
+    ret.push("| #{"".center(10,"-")} | #{"".center(12,"-")} | #{"".center(12,"-")} |")
+    puts ret.join("\n")
+  end
+
   desc "fl playstore_promote from_track:beta|alpha|internal to_track:production|beta|alpha|internal - promote a release in Google Play via `supply`"
   lane :playstore_promote do |options|
     upload_to_play_store(
@@ -181,7 +200,7 @@ platform :android do
     )
   end
 
-  desc "fl buildweb [version:profile|debug] [wasm:true|false] [tree-shake-icons:false|true] - build web and run local webserver on it"
+  desc "fl buildweb [version:profile|debug] wasm:true(default)|false tree-shake-icons:false(default)|true - build web and run local webserver on it"
   lane :buildweb do|options|
     test
     increment_build
@@ -206,7 +225,7 @@ platform :android do
     end
   end
 
-  desc "fl deployweb [release_type:release|profile|debug] [wasm:true|false] [tree-shake-icons:false|true] - deploy web in firabase hosting"
+  desc "fl deployweb [release_type:release(default)|profile|debug] wasm:true(default)|false tree-shake-icons:false(default)|true - deploy web in firabase hosting"
   lane :deployweb do|options|
     test
     # release type: release, profile or debug  (default release)
