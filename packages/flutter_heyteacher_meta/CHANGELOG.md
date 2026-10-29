@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.10.0+192] - 2026-10-29
+
+### 🚀 Features [7.10.0]
+
+- Add `playstore_show` lane which show release name and version code of tracks ([c8924ed](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/c8924edf8c7face5398e481c1a4873f6d0f0db8d)) by **heyteacher**
+
+### 🐛 Bug Fixes [7.10.0]
+
+- Publish updated dependecies after release major version of flutter_heyteacher_auth ([79988cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/79988cff3693753786ce40cb479566021ac32770)) by **heyteacher**
+- Capitalize `docs: Release notes` regex in git-cliff configs to skip ([4e64fc0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4e64fc0a6e5447fa5024b295dad360e3446ce98c)) by **heyteacher**
+
+### 📚 Documentation [7.10.0]
+
+- Update README with TOC, reordered sections, and new instructions ([33dd5ea](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/33dd5ea5abfbba54319cc31bc862a4a6c5657aff)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.10.0]
+
+- Remove unuseful maximum flutter constraint across workspace packages ([06fec13](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/06fec13c52a96c272cef39d3a804b016c0dfb2ca)) by **heyteacher**
+- Skip automated release notes commits in git-cliff ([e0d22b2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e0d22b2e84fd59d9b77c9e8ff4877ed7eb5d6c54)) by **heyteacher**
+- *(release)* New version 7.10.0+192 which closes ([#461](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/461)) ([47b8829](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/47b88298459cf38e17ed8127d77aa7ba6e8c36f8)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.9.6+191] - 2026-10-04
 
 ### 🐛 Bug Fixes [7.9.6]
