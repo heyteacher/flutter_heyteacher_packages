@@ -76,11 +76,20 @@ class _FloatingActionTextIconButtomState
                 setState(() {
                   _loading = true;
                 });
-                await widget._onPressed();
-                if (mounted) {
-                  setState(() {
-                    _loading = false;
-                  });
+                try {
+                  await widget._onPressed();
+                  if (mounted) {
+                    setState(() {
+                      _loading = false;
+                    });
+                  }
+                } catch (_) {
+                  if (mounted) {
+                    setState(() {
+                      _loading = false;
+                    });
+                  }
+                  rethrow;
                 }
               },
               child: Wrap(
