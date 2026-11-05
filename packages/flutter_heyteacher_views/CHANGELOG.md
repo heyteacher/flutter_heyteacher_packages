@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-7.1.1+193] - 2026-11-05
+
+### 🐛 Bug Fixes [7.1.1]
+
+- Reverse ls sort order for fetching latest `flutter_heyteacher_meta` version in Fastfile setup ([5e5dbe5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5e5dbe5ef1ce2a37fc0e2b80d3b558f4f247f4b4)) by **heyteacher**
+- Manage exception raised in `FloatingActionTextIconButtom.onPressed` callback  set loading false ([fccc4de](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/fccc4de0ca305ce7b3982447fca77ad157366825)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.1.1]
+
+- *(release)* New version 7.1.1+193 which closes ([#465](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/465)) ([04b8382](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/04b8382d1dfa8e46dc104258987bc023c954f45e)) by **heyteacher**
+
 ## [flutter_heyteacher_views-7.1.0+192] - 2026-10-26
 
 ### 🚀 Features [7.1.0]
