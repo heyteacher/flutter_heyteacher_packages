@@ -32,29 +32,35 @@ class SharedPreferencesViewModel {
 
   /// Gets string for [key] in [SharedPreferences].
   ///
-  /// If [key] is not found, it returns null.
-  Future<String?> getString(String key) => _sharedPrefs.getString(key);
+  /// If [key] is not found, it returns [defaultValue].
+  Future<String?> getString(String key, {String? defaultValue}) async =>
+      (await _sharedPrefs.getString(key)) ?? defaultValue;
 
   /// Gets int for [key] in [SharedPreferences].
   ///
-  /// If [key] is not found, it returns null.
-  Future<int?> getInt(String key) => _sharedPrefs.getInt(key);
+  /// If [key] is not found, it returns [defaultValue].
+  Future<int?> getInt(String key, {int? defaultValue}) async =>
+      (await _sharedPrefs.getInt(key)) ?? defaultValue;
 
   /// Gets double for [key] in [SharedPreferences].
   ///
-  /// If [key] is not found, it returns null.
-  Future<double?> getDouble(String key) => _sharedPrefs.getDouble(key);
+  /// If [key] is not found, it returns [defaultValue].
+  Future<double?> getDouble(String key, {double? defaultValue}) async =>
+      (await _sharedPrefs.getDouble(key)) ?? defaultValue;
 
   /// Gets boolean [key] in [SharedPreferences].
   ///
-  /// If [key] is not found, it returns null.
-  Future<bool?> getBool(String key) => _sharedPrefs.getBool(key);
+  /// If [key] is not found, it returns [defaultValue].
+  Future<bool?> getBool(String key, {bool? defaultValue}) async =>
+      (await _sharedPrefs.getBool(key)) ?? defaultValue;
 
   /// Gets a list of strings from [SharedPreferences].
   ///
-  /// If [key] is not found, it returns null.
-  Future<List<String>?> getStringList(String key) =>
-      _sharedPrefs.getStringList(key);
+  /// If [key] is not found, it returns [defaultValue].
+  Future<List<String>?> getStringList(
+    String key, {
+    List<String>? defaultValue,
+  }) async => (await _sharedPrefs.getStringList(key)) ?? defaultValue;
 
   /// Sets string [value] for [key] in [SharedPreferences].
   ///
@@ -77,12 +83,9 @@ class SharedPreferencesViewModel {
   /// Sets boolean [value] for [key] in [SharedPreferences].
   ///
   /// If the [value] is null, the key is removed from [SharedPreferences].
-  Future<void> setBool(
-    String key,
-    //
-    // ignore: avoid_positional_boolean_parameters
-    bool? value,
-  ) => _set<bool>(key, value, getBool, _sharedPrefs.setBool);
+  // ignore: avoid_positional_boolean_parameters
+  Future<void> setBool(String key, bool? value) =>
+      _set<bool>(key, value, getBool, _sharedPrefs.setBool);
 
   /// Sets a list of strings in [SharedPreferences].
   ///
