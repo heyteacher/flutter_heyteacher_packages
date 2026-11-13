@@ -119,11 +119,14 @@ class LoggerViewModel {
   ///
   /// If [reconfigure] is `true`, reload configuration.
   ///
-  /// If [clearTemporaryLog] is true, it clears the temporary log directory.
+  /// If [clearTemporaryLog] is true, it clears the temporary log directory
+  /// from [clearTemporaryLogToDateTime] to the beginning, default is today at
+  /// 00:00 mantaining today's logs.
   ///
   /// If [enableFirebaseAnalytics] is true, sent events to Firebase Analytics.
   Future<void> initialize({
     bool clearTemporaryLog = true,
+    DateTime? clearTemporaryLogToDateTime,
     bool reconfigure = false,
     Level? defaultLevel,
     bool? defaultEnableLogsStorage,
@@ -176,11 +179,9 @@ class LoggerViewModel {
     // if reset is true, delete all logs in the temporary directory except last
     // day
     if (clearTemporaryLog) {
-      final toDateTime = DateTime(
-        clock.now().year,
-        clock.now().month,
-        clock.now().day,
-      );
+      final toDateTime =
+          clearTemporaryLogToDateTime ??
+          DateTime(clock.now().year, clock.now().month, clock.now().day);
       developer.log(
         'flutter() ${clock.now().toIso8601String()} (initialize): '
         'reset $clearTemporaryLog reconfigure $reconfigure. '
