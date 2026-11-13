@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_logger-3.2.0+173] - 2026-11-13
+
+### 🚀 Features [3.2.0]
+
+- Add `clearTemporaryLogToDateTime` parameter to initialize method, the date from clean temporary logs ([435ef7b](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/435ef7be86472aec15ffa7fb02951a0a79a15bb4)) by **heyteacher**
+
+### 🐛 Bug Fixes [3.2.0]
+
+- Capitalize `docs: Release notes` regex in git-cliff configs to skip ([4e64fc0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4e64fc0a6e5447fa5024b295dad360e3446ce98c)) by **heyteacher**
+- Reverse ls sort order for fetching latest `flutter_heyteacher_meta` version in Fastfile setup ([5e5dbe5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5e5dbe5ef1ce2a37fc0e2b80d3b558f4f247f4b4)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.2.0]
+
+- Skip automated release notes commits in git-cliff ([e0d22b2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e0d22b2e84fd59d9b77c9e8ff4877ed7eb5d6c54)) by **heyteacher**
+- *(release)* New version 3.2.0+173 which closes ([#467](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/467)) ([6bae265](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/6bae265dd1ddc8556bffade91d6595da84806378)) by **heyteacher**
+
 ## [flutter_heyteacher_logger-3.1.1+172] - 2026-10-21
 
 ### ⚙️ Miscellaneous Tasks [3.1.1]
