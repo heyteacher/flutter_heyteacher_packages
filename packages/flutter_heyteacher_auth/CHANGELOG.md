@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_auth-5.1.2+178] - 2026-11-23
+
+### 🐛 Bug Fixes [5.1.2]
+
+- Capitalize `docs: Release notes` regex in git-cliff configs to skip ([4e64fc0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4e64fc0a6e5447fa5024b295dad360e3446ce98c)) by **heyteacher**
+- Reverse ls sort order for fetching latest `flutter_heyteacher_meta` version in Fastfile setup ([5e5dbe5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5e5dbe5ef1ce2a37fc0e2b80d3b558f4f247f4b4)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [5.1.2]
+
+- Skip automated release notes commits in git-cliff ([e0d22b2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e0d22b2e84fd59d9b77c9e8ff4877ed7eb5d6c54)) by **heyteacher**
+- *(release)* New version 5.1.2+178 which closes ([#470](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/470)) ([55923a0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/55923a05b1f2f634b676aebc3df97eb4e80f439b)) by **heyteacher**
+
 ## [flutter_heyteacher_auth-5.1.1+177] - 2026-10-21
 
 ### ⚙️ Miscellaneous Tasks [5.1.1]
