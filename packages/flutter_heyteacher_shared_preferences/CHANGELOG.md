@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_shared_preferences-1.1.0+5] - 2026-11-23
+
+### ⚙️ Miscellaneous Tasks [1.1.0]
+
+- *(release)* New version 1.1.0+5 which closes ([#470](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/470)) ([a92a5a6](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/a92a5a654ad54377c09c209f042ac7f6b57b0e0e)) by **heyteacher**
+
 ## [flutter_heyteacher_shared_preferences-1.1.0+4] - 2026-11-13
 
 ### 🚀 Features [1.1.0]
