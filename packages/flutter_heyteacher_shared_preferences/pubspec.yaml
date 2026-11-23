@@ -19,11 +19,11 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_heyteacher_views: ^7.0.1+191
+  flutter_heyteacher_views: ^7.1.1+194
   shared_preferences: ^2.5.6
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.9.6+191
+  flutter_heyteacher_meta: ^7.10.1+193
   flutter_test:
     sdk: flutter
   shared_preferences_platform_interface: ^2.4.2
