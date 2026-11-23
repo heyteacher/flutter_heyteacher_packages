@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_firebase-2.1.0+155] - 2026-11-23
+
+### 🚀 Features [2.1.0]
+
+- Add `debugModeChangedStream` updated when debug mode changes + add `notifyAADChanged` method + correct password refresh in `E2EESecretKeyListTile` ([5be29cf](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5be29cf812acc74aa92c1cd5a5747416c1928cc6)) by **heyteacher**
+
+### 🐛 Bug Fixes [2.1.0]
+
+- Capitalize `docs: Release notes` regex in git-cliff configs to skip ([4e64fc0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4e64fc0a6e5447fa5024b295dad360e3446ce98c)) by **heyteacher**
+- Reverse ls sort order for fetching latest `flutter_heyteacher_meta` version in Fastfile setup ([5e5dbe5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5e5dbe5ef1ce2a37fc0e2b80d3b558f4f247f4b4)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [2.1.0]
+
+- Bump dependencies across packages and examples ([e8425a8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e8425a835a873ad74b2aa292bef7ba91b809df87)) by **heyteacher**
+- Skip automated release notes commits in git-cliff ([e0d22b2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e0d22b2e84fd59d9b77c9e8ff4877ed7eb5d6c54)) by **heyteacher**
+- *(release)* New version 2.1.0+155 which closes ([#470](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/470)) ([4450410](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4450410e7462f0636dad21575bff5efc161928b9)) by **heyteacher**
+
 ## [flutter_heyteacher_firebase-2.0.18+154] - 2026-10-15
 
 ### 🐛 Bug Fixes [2.0.18]
