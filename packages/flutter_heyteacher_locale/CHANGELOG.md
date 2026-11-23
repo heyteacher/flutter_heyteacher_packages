@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_locale-3.2.2+167] - 2026-11-23
+
+### 🐛 Bug Fixes [3.2.2]
+
+- Capitalize `docs: Release notes` regex in git-cliff configs to skip ([4e64fc0](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4e64fc0a6e5447fa5024b295dad360e3446ce98c)) by **heyteacher**
+- Reverse ls sort order for fetching latest `flutter_heyteacher_meta` version in Fastfile setup ([5e5dbe5](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/5e5dbe5ef1ce2a37fc0e2b80d3b558f4f247f4b4)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [3.2.2]
+
+- Bump dependencies across packages and examples ([e8425a8](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e8425a835a873ad74b2aa292bef7ba91b809df87)) by **heyteacher**
+- Skip automated release notes commits in git-cliff ([e0d22b2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/e0d22b2e84fd59d9b77c9e8ff4877ed7eb5d6c54)) by **heyteacher**
+- *(release)* New version 3.2.2+167 which closes ([#470](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/470)) ([4e6da02](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4e6da02a9ef44c7f4bbb57773405097aa2c3306e)) by **heyteacher**
+
 ## [flutter_heyteacher_locale-3.2.1+166] - 2026-10-21
 
 ### ⚙️ Miscellaneous Tasks [3.2.1]
