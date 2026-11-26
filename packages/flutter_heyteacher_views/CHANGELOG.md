@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_views-7.2.0+195] - 2026-11-26
+
+### 🚀 Features [7.2.0]
+
+- *(views)* Add `_showSelectedLeadingIcon` to  `GenericsDropDownMenu` (default `true`) ([22af56e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/22af56e98eff96a9aa7040acc611a21598470edd)) by **heyteacher**
+
+### 🚜 Refactor [7.2.0]
+
+- Lower to `finest` theme log levels ([4d86a93](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/4d86a939b0afd8f00ffeb7831cf0d2e7e4397e1f)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.2.0]
+
+- *(release)* New version 7.2.0+195 which closes ([#488](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/488)) ([cdf6a8c](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/cdf6a8c4a5695290de92c8d9f30d4e665838999d)) by **heyteacher**
+
 ## [flutter_heyteacher_views-7.1.1+194] - 2026-11-23
 
 ### ⚙️ Miscellaneous Tasks [7.1.1]
