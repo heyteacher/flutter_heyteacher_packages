@@ -58,7 +58,7 @@ class ThemeViewModel {
     unawaited(
       themeMode.then(
         (themeMode) =>
-            _logger.finer('<costructor>: themeMode ${themeMode.name}'),
+            _logger.finest('<costructor>: themeMode ${themeMode.name}'),
       ),
     );
   }
@@ -280,7 +280,7 @@ class ThemeViewModel {
     final themeModeName = await SharedPreferencesAsync().getString(
       _SharedPreferencesKeys.fhuThemeMode.name,
     );
-    _logger.finer(
+    _logger.finest(
       '(themeMode): themeMode from shared preferences $themeModeName',
     );
 
@@ -295,7 +295,7 @@ class ThemeViewModel {
       themeData: theme,
       themeMode: _themeMode ?? ThemeMode.system,
     ));
-    _logger.finer('(themeMode): initialized themeMode ${_themeMode?.name}');
+    _logger.finest('(themeMode): initialized themeMode ${_themeMode?.name}');
     return _themeMode ?? ThemeMode.system;
   }
 
@@ -321,7 +321,7 @@ class ThemeViewModel {
   /// given. An event is emitted on the [themeStream].
   /// An event is emitted on the [themeStream].
   void setDefault() {
-    _logger.finer('<setDefault>:');
+    _logger.finest('<setDefault>:');
     darkTheme = _themeData(
       themeMode: ThemeMode.dark,
       colorScheme: _darkColorScheme,
