@@ -21,6 +21,7 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
     this._menuHeight = 300,
     this._menuStyle,
     this._trailingIcon = Icons.filter_list,
+    this._showSelectedLeadingIcon = true,
     super.key,
   });
   final String? _label;
@@ -39,6 +40,9 @@ class GenericsDropDownMenu<T> extends StatefulWidget {
 
   /// Whether to enable searching of the dropdown menu entries.
   final bool _enableSearch;
+
+  /// Whether to show the leading icon of the selected value.
+  final bool _showSelectedLeadingIcon;
 
   /// A callback to add a new item to the dropdown menu.
   final void Function(String, {int? index})? _addCallback;
@@ -105,6 +109,8 @@ class _GenericsDropDownMenuState<T> extends State<GenericsDropDownMenu<T>> {
     filterCallback: widget._enableFilter ? _filterCallback : null,
     leadingIcon: widget._addCallback != null && _enableAddTag
         ? IconButton(onPressed: _preAddCallback, icon: const Icon(Icons.add))
+        : widget._showSelectedLeadingIcon
+        ? _value?.icon
         : null,
     trailingIcon: Icon(widget._trailingIcon, applyTextScaling: true),
     textStyle: Theme.of(
