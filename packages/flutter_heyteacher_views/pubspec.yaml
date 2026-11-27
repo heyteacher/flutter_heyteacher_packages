@@ -30,7 +30,7 @@ dependencies:
   shared_preferences: ^2.5.6
 
 dev_dependencies:
-  flutter_heyteacher_meta: ^7.10.1+193
+  flutter_heyteacher_meta: ^7.10.3+195
   flutter_test:
     sdk: flutter
   mockito: ^5.8.1
