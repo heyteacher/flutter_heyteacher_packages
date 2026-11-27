@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.10.2+194] - 2026-11-27
+
+### 🐛 Bug Fixes [7.10.2]
+
+- Update version in `example/pubspec.yaml` during `release` fastlane action ([0e9564e](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0e9564e5dc4b2fe2ce038afd0fc4aed31b6621b3)) by **heyteacher**
+
+### 📚 Documentation [7.10.2]
+
+- Update dartsemver CLI usage and options in README ([0021c81](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/0021c815aa4386092d055e8c998c44b1e71361f0)) by **heyteacher**
+
+### ⚙️ Miscellaneous Tasks [7.10.2]
+
+- *(release)* New version 7.10.2+194 which closes ([#490](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/490)) ([2d46aee](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/2d46aeed8e578c6e6e84b85d3763c1c402973d9d)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.10.1+193] - 2026-10-29
 
 ### 🐛 Bug Fixes [7.10.1]
