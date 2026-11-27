@@ -158,8 +158,11 @@ A Flutter meta project implementing utilities and best practices for Flutter `pa
 From the root of your project, run:
 
 ```bash
-dart run flutter_heyteacher_meta:dartsemver major|minor|patch|build|show|show-build [--dry-run]
+dart run flutter_heyteacher_meta:dartsemver major|minor|patch|build|set|show|show-build [--dry-run] [--version <X.Y.Z>]
+
 ```
+
+- `set --version <X.Y.Z>` set the version to <X.Y.Z>.
 
 - `major`,`minor`, `patch` increment the version in your `pubsec.yaml`.
   `--dry-run` show how the version will be changed without modify `pubsec.yaml`
@@ -167,7 +170,7 @@ dart run flutter_heyteacher_meta:dartsemver major|minor|patch|build|show|show-bu
 - `build` set the build version in your `pubsec.yaml`  to `YYMMddHHm` based on
   the current time.
   
-- `dry-run` show how the version will be changed without modify `pubsec.yaml`
+- `--dry-run` show how the version will be changed without modify `pubsec.yaml`
 
 - `show` print the version in `pubsec.yaml`
 
