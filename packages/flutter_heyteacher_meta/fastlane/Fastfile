@@ -104,7 +104,12 @@ lane :release do|options|
         exit(0)
       end
       version = sh("dart run flutter_heyteacher_meta:dartsemver set --version #{version}")
-      puts "\"pubspec.yaml\" updated with new version #{version}"
+      if Dir.exist?("example")
+        Dir.chdir("example") do
+          sh("dart run flutter_heyteacher_meta:dartsemver set --version #{version}")
+        end
+      end
+      puts "\"pubspec.yaml\" and \"example/pubspec.yaml\" updated with new version #{version}"
     end  
     # append tag suffix if set
     if options[:suffix] != nil && options[:suffix] != ""
@@ -116,6 +121,9 @@ lane :release do|options|
   # commit bump and push remote
   puts "commit pubspec.yaml with new version #{version}"
   sh("git add ../pubspec.yaml")
+  if Dir.exist?("../example")
+    sh("git add ../example/pubspec.yaml")
+  end
   sh("git commit -m \"chore(release): new version #{version} which closes ##{currentBranch}\"")
   push_to_git_remote
   if options[:merge] == nil || options[:merge] == true
