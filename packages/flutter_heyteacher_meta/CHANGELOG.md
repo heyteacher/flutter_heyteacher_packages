@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
+## [flutter_heyteacher_meta-7.10.3+195] - 2026-11-27
+
+### ⚙️ Miscellaneous Tasks [7.10.3]
+
+- Corrected getting of `flutter_heyteacher_meta` latest version in fastlane configuration ([1965fc2](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/1965fc2b193eb393e2871ae5acc206a894b314fa)) by **heyteacher**
+- *(release)* New version 7.10.3+195 which closes ([#492](https://codeberg.org/heyteacher/flutter_heyteacher_packages/issues/492)) ([ef0a3c9](https://codeberg.org/heyteacher/flutter_heyteacher_packages/commit/ef0a3c9f9b9038282fd967419c3ecaf9f54a655d)) by **heyteacher**
+
 ## [flutter_heyteacher_meta-7.10.2+194] - 2026-11-27
 
 ### 🐛 Bug Fixes [7.10.2]
